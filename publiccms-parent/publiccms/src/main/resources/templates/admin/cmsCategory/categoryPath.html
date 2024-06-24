@@ -2,20 +2,22 @@
 <div class="pageFormContent" layoutH>
     <ul class="tree treeFolder">
         <#if site.useStatic>
-            <li><a href="javascript:;" onclick="$.bringBack({${field!'path'}:'<#noparse>category/${category.code}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'category.code'/>}.html</a></li>
-            <li><a href="javascript:;" onclick="$.bringBack({${field!'path'}:'<#noparse><@cms.category id=category.parentId>${object.code}/</@cms.category>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.parent'/>}/{<@t.page 'category.code'/>}/</a></li>
-            <li><a href="javascript:;" onclick="$.bringBack({${field!'path'}:'<#noparse>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.code'/>}/</a></li>
-            <li><a href="javascript:;" onclick="$.bringBack({${field!'path'}:'<#noparse>category/${category.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'category.id'/>}.html</a></li>
+            <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>category/${category.code}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'category.code'/>}.html</a></li>
+            <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse><@cms.category id=category.parentId>${object.code}/</@cms.category>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.parent'/>}/{<@t.page 'category.code'/>}/</a></li>
+            <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.code'/>}/</a></li>
+            <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>category/${category.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'category.id'/>}.html</a></li>
         </#if>
-        <li><a href="javascript:;" onclick="$.bringBack({${field!'path'}:'<#noparse>category.html?id=${category.id}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template_path'/>?id={<@t.page 'category.id'/>}</a></li>
-        <li><a href="javascript:;" onclick="$.bringBack({${field!'path'}:'<#noparse>category/${category.id}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>/{<@t.page 'category.id'/>}</a></li>
-        <li><a href="javascript:;" onclick="$.bringBack({${field!'path'}:'<#noparse><@cms.categoryList parentId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@cms.categoryList></#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.first_child'/></a></li>
-        <li><a href="javascript:;" onclick="$.bringBack({${field!'path'}:'<#noparse><@cms.contentList categoryId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@cms.contentList></#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.first_content'/></a></li>
+        <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>category/category.html?id=${category.id}</#noparse>','templatePath':''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template_path'/>?id={<@t.page 'category.id'/>}</a></li>
+        <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>category/category/${category.id}</#noparse>','templatePath':''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>/{<@t.page 'category.id'/>}</a></li>
+        <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>${site.useStatic?then(site.sitePath,site.dynamicPath)}#${category.code}</#noparse>','templatePath':''});return false;"><@t.page 'dynamic_path'/>:#<@t.page 'category.code'/></a></li>
+        <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse><@cms.categoryList parentId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@cms.categoryList></#noparse>','templatePath':''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.first_child'/></a></li>
+        <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse><@cms.contentList categoryId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@cms.contentList></#noparse>','templatePath':''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.first_content'/></a></li>
+        <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse><@cms.category id=category.parentId>${object.url}</@cms.category></#noparse>','templatePath':''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.parent'/></a></li>
     </ul>
 </div>
 <div class="formBar">
     <ul>
-        <li><a class="button" href="javascript:;" onclick="$.bringBack({${field!'path'}:''});return false;"><@t.page 'button.clear_select'/></a></li>
+        <li><a class="button" href="javascript:;" onclick="$.bringBack({'${field!'path'}':''});return false;"><@t.page 'button.clear_select'/></a></li>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>

@@ -11,7 +11,11 @@
 <#if user?has_content>
 </#noparse>
 </#if>
-<form method="post" action="<#noparse>${site.dynamicPath}</#noparse>place/save">
+<#noparse>
+<@cms.place id=id>
+    <#assign place=object/>
+</@cms.place>
+<form name="contribute" method="post" action="${site.dynamicPath}place/save"></#noparse>
 <#if !a.allowAnonymous>
     <input type="hidden" name="_csrf" value="<#noparse><@tools.csrfToken/></#noparse>"/>
 </#if>
@@ -19,29 +23,28 @@
     <input name="returnUrl" type="hidden" value="<#noparse>${site.dynamicPath}</#noparse>"/>
     <p>
         <label>${(a.fieldTextMap['title'])!}:</label>
-        <input name="title" type="text" size="60" required="true" maxlength="255"/>
+        <input name="title" type="text" size="60" required="true" maxlength="255" value="<#noparse>${(place.title)!}</#noparse>"/>
     </p>
 <#if fieldList?seq_contains('description')>
     <p>
         <label>${(a.fieldTextMap['description'])!}:</label>
-        <textarea name="description" maxlength="300"></textarea>
+        <textarea name="description" maxlength="300"><#noparse>${(place.description)!}</#noparse></textarea>
     </p>
 </#if>
 <#if fieldList?seq_contains('url')>
     <p>
         <label>${(a.fieldTextMap['url'])!}:</label>
-        <input name="url" type="text" size="60" maxlength="1000"/>
+        <input name="url" type="text" size="60" maxlength="1000" value="<#noparse>${(place.url)!}</#noparse>"/>
     </p>
 </#if>
 <#if fieldList?seq_contains('cover')>
     <p>
         <label>${(a.fieldTextMap['cover'])!}:</label>
-        <input name="cover" type="text" size="60" maxlength="1000"/>
+        <input name="cover" type="text" size="50" maxlength="1000" value="<#noparse>${(place.cover)!}</#noparse>"/>
     </p>
 </#if>
     <#include "../include_page/extendData.html"/>
-    <#assign extendValues=getPlaceAttribute((a.id)!)/>
-    <@extendData name='extendDataList' extendList=a.extendList extendValues=extendValues type='customform'/>
+    <@extendData extendList=a.extendList extendValues=((place.attribute)!{}) type="customform"/>
 <#noparse>
     <@sys.configData code="safe">
         <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("contribute")>
@@ -54,6 +57,28 @@
 </#noparse>
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
+<#noparse>
+<script src="${site.dynamicPath}resource/js/loadscripts.js"></script>
+<script>
+var editors = document.querySelectorAll(".editor");
+if(editors.length){
+    window.UEDITOR_HOME_URL = "${site.dynamicPath}resource/plugins/ueditor/";
+    var base="${site.dynamicPath}";
+    loadScripts(["${site.dynamicPath}resource/plugins/ueditor/ueditor.config.js","${site.dynamicPath}resource/plugins/ueditor/ueditor.all.min.js","${site.dynamicPath}resource/plugins/ueditor/lang/</#noparse><@t.page 'ueditor.lang_js'/><#noparse>"],function(){
+        window.UEDITOR_CONFIG.topOffset=0;
+        for(var key in editors){
+            var editor = new baidu.editor.ui.Editor();
+            editor.render(key);
+        }
+        document.querySelector("form[name=contribute]").onsubmit=function(){
+            for(var key in editors){
+                UE.getEditor(key).sync();
+            }
+        }
+    });
+}
+</script>
+</#noparse>
 <#if a.adminIds?has_content>
     ${'<#assign path=\''?no_esc+path+'\'/>'?no_esc}
 <#noparse>

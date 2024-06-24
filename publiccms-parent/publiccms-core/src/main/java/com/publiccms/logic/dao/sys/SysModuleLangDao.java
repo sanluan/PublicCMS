@@ -25,7 +25,7 @@ public class SysModuleLangDao extends BaseDao<SysModuleLang> {
      * @param lang
      * @return results page
      */
-    public List<?> getList(String moduleId, String lang) {
+    public List<SysModuleLang> getList(String moduleId, String lang) {
         QueryHandler queryHandler = getQueryHandler("from SysModuleLang bean");
         if (CommonUtils.notEmpty(moduleId)) {
             queryHandler.condition("bean.id.moduleId = :moduleId").setParameter("moduleId", moduleId);
@@ -33,7 +33,7 @@ public class SysModuleLangDao extends BaseDao<SysModuleLang> {
         if (null != lang) {
             queryHandler.condition("bean.id.lang = :lang").setParameter("lang", lang);
         }
-        return getList(queryHandler);
+        return getEntityList(queryHandler);
     }
 
     @Override

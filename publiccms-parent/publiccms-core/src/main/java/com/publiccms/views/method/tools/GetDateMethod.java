@@ -1,6 +1,5 @@
 package com.publiccms.views.method.tools;
 
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -48,15 +47,11 @@ public class GetDateMethod extends BaseMethod {
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         Date date;
         if (arguments.size() >= 2) {
-            try {
-                date = getDate(1, arguments);
-            } catch (ParseException e) {
-                date = CommonUtils.getDate();
-            }
+            date = getDate(1, arguments);
         } else {
             date = CommonUtils.getDate();
         }
-        if (arguments.size() >= 1) {
+        if (!arguments.isEmpty()) {
             String type = getString(0, arguments);
             switch (type) {
             case "thisSunday":
@@ -77,6 +72,7 @@ public class GetDateMethod extends BaseMethod {
             case "nextSunday":
                 date = getLastSunday(date);
                 break;
+            default:
             }
         }
         return date;

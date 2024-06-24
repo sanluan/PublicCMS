@@ -4,6 +4,8 @@ package com.publiccms.entities.sys;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -27,6 +29,7 @@ public class SysRoleAuthorizedId implements java.io.Serializable {
      * 地址
      */
     @GeneratorColumn(title = "地址", condition = true)
+    @Length(max = 100)
     private String url;
 
     public SysRoleAuthorizedId() {

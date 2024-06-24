@@ -12,6 +12,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.component.template.ModelComponent;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * modelList 内容模型列表查询指令
@@ -28,8 +30,7 @@ import com.publiccms.logic.component.template.ModelComponent;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
- * <li><code>page.list</code>:List类型 查询结果实体列表
+ * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.views.pojo.entities.CmsModel}
  * </ul>
  * 使用示例
@@ -40,7 +41,7 @@ import com.publiccms.logic.component.template.ModelComponent;
  * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/cms/modelList', function(data){    
-    console.log(data.totalCount);
+    console.log(data.page.totalCount);
   });
   &lt;/script&gt;
  * </pre>
@@ -49,7 +50,7 @@ import com.publiccms.logic.component.template.ModelComponent;
 public class CmsModelListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = new PageHandler(null, null);
         page.setList(modelComponent.getModelList(getSite(handler), handler.getString("parentId"),
                 handler.getBoolean("queryAll", false), handler.getBoolean("hasChild"), handler.getBoolean("onlyUrl"),

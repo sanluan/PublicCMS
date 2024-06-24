@@ -22,6 +22,7 @@ import com.publiccms.views.pojo.diy.CmsLayoutData;
 import com.publiccms.views.pojo.diy.CmsModuleData;
 import com.publiccms.views.pojo.diy.CmsRegionData;
 
+import freemarker.template.TemplateException;
 import jakarta.annotation.Resource;
 
 /**
@@ -56,7 +57,7 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
             .compile("<@[_a-z\\.]*includePlace[ ]+path=[\"|\']([^\"\']*)[\"|\'][ ]*/>");
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
         Set<String> placeSet = new LinkedHashSet<>();
         Set<String> regionList = new LinkedHashSet<>();
@@ -74,8 +75,8 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
                 }
                 Set<String> placeSet2 = new HashSet<>();
                 for (String place : placeSet) {
-                    String placeContent = CmsFileUtils
-                            .getFileContent(siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + place));
+                    String placeContent = CmsFileUtils.getFileContent(siteComponent.getTemplateFilePath(site.getId(),
+                            CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, place)));
                     if (CommonUtils.notEmpty(placeContent)) {
                         Matcher placeMatcher = PLACE_PATTERN.matcher(placeContent);
                         while (placeMatcher.find()) {

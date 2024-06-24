@@ -1,0 +1,52 @@
+<#if 'view'=type>
+    <#if value?has_content>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th><@t.page 'key'/></th>
+                    <th><@t.page 'value'/></th>
+                </tr>
+            </thead>
+            <tbody>
+            <#list value?split(',')?chunk(2) as row>
+                <tr>
+                    <#list row as a>
+                    <td>${a}</td>
+                    </#list>
+                </tr>
+            </#list>
+            </tbody>
+        </table>
+    </#if>
+<#else>
+        <table<#if 'customform'!=type> class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate2.html?field1=${inputName?url}&fieldName1=key&field2=${inputName?url}&fieldName2=value&suffix1=key&suffix2=value"</#if>>
+            <thead>
+                <tr>
+                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas<#if extend.required> required</#if>" fieldAttrs="{'batchGroup':''<#if extend.maxlength?has_content>,'maxlength':'${extend.maxlength}'</#if>}" suffix="key"</#if>><@t.page 'key'/></th>
+                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas<#if extend.required> required</#if>"<#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}"</#if> suffix="value"</#if>><@t.page 'value'/></th>
+                    <th width="60"<#if 'customform'!=type> type="del"</#if>><@t.page 'operate'/></th>
+                </tr>
+            </thead>
+            <tbody>
+            <#if value?has_content>
+                <#list value?split(',')?chunk(2) as row>
+                    <tr class="unitBox">
+                        <#list row as a>
+                        <td>
+                            <input name="${inputName}" type="text" size="30"<#if 'customform'=type><#if extend.required||a?is_first> required="required"</#if><#else> class="nocommas<#if extend.required||a?is_first> required</#if>"</#if><#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> value="${a}"/>
+                        </td>
+                        </#list>
+                        <td>
+                            <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
+                        </td>
+                    </tr>
+                </#list>
+            </#if>
+                <#if 'customform'=type>
+                    <tr>
+                        <td colspan="3"><a href="javascript:;" onclick="var thisNode=this.parentElement.parentElement;var tr = document.createElement('tr');tr.innerHTML='<#list 0..1 as a><td><input name=\'${inputName}\' type=\'text\' size=\'30\'<#if extend.required||a?is_first> required=\'required\'</#if><#if extend.maxlength?has_content> maxlength=\'${extend.maxlength}\'</#if>/></td></#list><td><a href=\'javascript:;\' onclick=\'this.parentElement.parentElement.remove()\'><@t.page 'button.delete'/></a></td>';thisNode.parentElement.insertBefore(tr,thisNode);"><@t.page 'button.new_line'/></a></td>
+                    </tr>
+                </#if>
+            </tbody>
+        </table>
+</#if>

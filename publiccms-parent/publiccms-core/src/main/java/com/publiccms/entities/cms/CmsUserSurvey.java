@@ -39,6 +39,13 @@ public class CmsUserSurvey implements java.io.Serializable {
     @GeneratorColumn(title = "站点", condition = true)
     private short siteId;
     /**
+     * anonymous
+     * <p>
+     * 匿名用户
+     */
+    @GeneratorColumn(title = "匿名用户", condition = true)
+    private boolean anonymous;
+    /**
      * score
      * <p>
      * 分数
@@ -48,7 +55,7 @@ public class CmsUserSurvey implements java.io.Serializable {
     /**
      * ip
      */
-    @GeneratorColumn(title = "IP")
+    @GeneratorColumn(title = "IP", condition = true, like = true)
     private String ip;
     /**
      * create date
@@ -61,14 +68,16 @@ public class CmsUserSurvey implements java.io.Serializable {
     public CmsUserSurvey() {
     }
 
-    public CmsUserSurvey(short siteId, String ip, Date createDate) {
+    public CmsUserSurvey(short siteId, boolean anonymous, String ip, Date createDate) {
         this.siteId = siteId;
+        this.anonymous = anonymous;
         this.ip = ip;
         this.createDate = createDate;
     }
 
-    public CmsUserSurvey(short siteId, Integer score, String ip, Date createDate) {
+    public CmsUserSurvey(short siteId, boolean anonymous, Integer score, String ip, Date createDate) {
         this.siteId = siteId;
+        this.anonymous = anonymous;
         this.score = score;
         this.ip = ip;
         this.createDate = createDate;
@@ -92,6 +101,15 @@ public class CmsUserSurvey implements java.io.Serializable {
 
     public void setSiteId(short siteId) {
         this.siteId = siteId;
+    }
+
+    @Column(name = "anonymous", nullable = false)
+    public boolean isAnonymous() {
+        return this.anonymous;
+    }
+
+    public void setAnonymous(boolean anonymous) {
+        this.anonymous = anonymous;
     }
 
     @Column(name = "score")

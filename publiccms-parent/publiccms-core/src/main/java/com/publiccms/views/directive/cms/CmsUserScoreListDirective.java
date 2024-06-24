@@ -7,6 +7,9 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.cms.CmsUserScoreService;
+
+import freemarker.template.TemplateException;
+
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.handler.PageHandler;
@@ -38,7 +41,7 @@ import com.publiccms.common.handler.PageHandler;
 * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/cms/userScoreList?userId=1&amp;pageSize=10', function(data){    
- console.log(data.totalCount);
+ console.log(data.page.totalCount);
 });
 &lt;/script&gt;
 * </pre>
@@ -47,7 +50,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userScoreList?userId=1&amp;pageS
 public class CmsUserScoreListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(handler.getLong("userId"), handler.getString("itemType"), handler.getLong("itemId"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();

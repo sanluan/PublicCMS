@@ -14,8 +14,11 @@ dependencies {
     implementation project(':publiccms-analyzer')
     implementation project(path:':publiccms-trade', configuration: 'instrumentedJars')
     implementation project(':publiccms-trade')
+    implementation project(path:':publiccms-oss', configuration: 'instrumentedJars')
+    implementation project(':publiccms-oss')
 
-    implementation "mysql:mysql-connector-java:${mysqlVersion}"
+    implementation "com.mysql:mysql-connector-j:${mysqlVersion}"
+    implementation "org.apache.logging.log4j:log4j-api:${log4jVersion}"
     implementation "org.apache.logging.log4j:log4j-core:${log4jVersion}"
     implementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
     implementation ("org.springframework.boot:spring-boot-starter-web:${springBootVersion}") {
@@ -27,6 +30,8 @@ dependencies {
     testImplementation "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
     testImplementation ("org.hibernate:hibernate-tools:${hibernateToolsVersion}") {
         exclude group:"org.eclipse.jdt", module: 'org.eclipse.jdt.core'
+        exclude group:"org.hibernate", module:"hibernate-core"
+        exclude group:"org.hibernate.common", module:"hibernate-commons-annotations"
     }
 
     providedCompile "org.mybatis.generator:mybatis-generator-core:${mybatisGenerator}"

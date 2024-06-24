@@ -11,12 +11,18 @@ import org.hibernate.id.enhanced.SequenceStyleGenerator;
 import org.hibernate.internal.util.config.ConfigurationHelper;
 import org.hibernate.service.ServiceRegistry;
 
+import com.publiccms.common.tools.CommonUtils;
+
 /**
  *
  * IDSequenceStyleGenerator
  *
  */
 public class IDSequenceStyleGenerator extends SequenceStyleGenerator {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     /**
      * 
      */
@@ -33,12 +39,10 @@ public class IDSequenceStyleGenerator extends SequenceStyleGenerator {
         if (null == tableName) {
             return super.determineSequenceName(params, dialect, jdbcEnv, serviceRegistry);
         } else {
-            Identifier catalog = jdbcEnv.getIdentifierHelper()
-                    .toIdentifier(ConfigurationHelper.getString(CATALOG, params));
-            Identifier schema = jdbcEnv.getIdentifierHelper()
-                    .toIdentifier(ConfigurationHelper.getString(SCHEMA, params));
+            Identifier catalog = jdbcEnv.getIdentifierHelper().toIdentifier(ConfigurationHelper.getString(CATALOG, params));
+            Identifier schema = jdbcEnv.getIdentifierHelper().toIdentifier(ConfigurationHelper.getString(SCHEMA, params));
             return new QualifiedNameParser.NameParts(catalog, schema,
-                    jdbcEnv.getIdentifierHelper().toIdentifier(tableName.toUpperCase() + DEF_SEQUENCE_SUFFIX));
+                    jdbcEnv.getIdentifierHelper().toIdentifier(CommonUtils.joinString(tableName.toUpperCase(), DEF_SEQUENCE_SUFFIX)));
         }
     }
 

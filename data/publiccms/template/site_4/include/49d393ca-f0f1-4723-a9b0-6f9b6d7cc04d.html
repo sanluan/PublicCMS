@@ -1,8 +1,0 @@
-<header class="tab-header fs-5" data-diy="place" data-diy-id="${path}">
-    <b class="pb-2">编辑推荐</b>
-</header>
-<div class="list-group list-group-flush article-list-side py-2 fs-7 mb-4" data-diy="content">
-<#list page.list as a>
-    <a href="${site.dynamicPath}place/redirect?id=${a.id!}" class="list-group-item" data-diy-item="${a.id}">${a.title}</a>
-</#list>
-</div>

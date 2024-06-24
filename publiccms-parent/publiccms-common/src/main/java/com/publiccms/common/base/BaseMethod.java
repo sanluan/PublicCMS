@@ -1,6 +1,5 @@
 package com.publiccms.common.base;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -32,11 +31,12 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         return execute((List<TemplateModel>) arguments);
     }
-    
+
     public abstract Object execute(List<TemplateModel> arguments) throws TemplateModelException;
 
-    public Object execute(@SuppressWarnings("unused") HttpServletRequest request, List<TemplateModel> arguments) throws TemplateModelException {
-        return execute((List<TemplateModel>) arguments);
+    public Object execute(@SuppressWarnings("unused") HttpServletRequest request, List<TemplateModel> arguments)
+            throws TemplateModelException {
+        return execute(arguments);
     }
 
     protected static TemplateModel getModel(int index, List<TemplateModel> arguments) {
@@ -134,7 +134,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
             }
             return set.toArray(new Integer[set.size()]);
         }
-        return null;
+        return new Integer[0];
     }
 
     /**
@@ -155,7 +155,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
             }
             return set.toArray(new Long[set.size()]);
         }
-        return null;
+        return new Long[0];
     }
 
     /**
@@ -173,9 +173,8 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
      * @param arguments
      * @return date
      * @throws TemplateModelException
-     * @throws ParseException
      */
-    public static Date getDate(int index, List<TemplateModel> arguments) throws TemplateModelException, ParseException {
+    public static Date getDate(int index, List<TemplateModel> arguments) throws TemplateModelException {
         return TemplateModelUtils.converDate(getModel(index, arguments));
     }
 

@@ -5,6 +5,14 @@
     <title>${metadata.alias!}${word?has_content?then(' - '+word,'')}</title>
     <meta name="keywords" content="<#list getKeywords(word) as a>${a}<#sep>,</#list>"/>
     <meta name="description" content="${site.name} - Search"/>
+    <style>
+        .result b{color:red;}
+        .pagination{list-style:none;}
+		.pagination:after{content:"";display:block;clear:both;}
+        .pagination .page-item{padding:0 0.3rem;float:left;}
+        .pagination .page-item .page-link{margin-left:0;border-radius:0.2rem;padding:0.375rem 0.875rem;color:#999;border-color:#eee;}
+        .page-item.active .page-link{background-color:#4C81E7;border-color:#eee;color:#FFF;}
+    </style>
 </head>
 <body>
     <header data-diy="config" data-diy-id="siteAttribute">
@@ -16,8 +24,8 @@
     <nav data-diy="category">
         <a href="${site.dynamicPath}">Home</a>
 <@cms.categoryList>
-    <#list page.list as a>
-        <a href="${a.url!}" target="_blank" data-diy-item="${a.id}">${a.name}</a>
+    <#list page.list as category>
+        <a href="${category.url!}" target="_blank" data-diy-item="${category.id}">${category.name}</a>
     </#list>
 </@cms.categoryList>
     </nav>
@@ -30,18 +38,18 @@
         <@merge 'categoryIds' a.categoryId!/>
     </#list>
     <@cms.category ids=categoryIds><#assign categoryMap=map/></@cms.category>
-        <div>
-    <#list page.list as a>
-            <article data-diy-item="${a.id}">
-                <h3>[<a href="${(categoryMap[a.categoryId?string].url)!}" target="_blank">${(categoryMap[a.categoryId?string].name)!}</a>]<a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title?no_esc}</a></h3>
+        <div class="result">
+    <#list page.list as content>
+            <article data-diy-item="${content.id}">
+                <h3>[<a href="${(categoryMap[content.categoryId?string].url)!}" target="_blank">${(categoryMap[content.categoryId?string].name)!}</a>]<a href="<#if content.onlyUrl>${site.dynamicPath}content/redirect?id=${content.id}<#else>${content.url!}</#if>" target="_blank">${content.title?no_esc}</a></h3>
                 <p>
-                    <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
-                    ${(a.description?no_esc)!}
+                    <#if content.cover?has_content><img src="${content.cover}" alt="${content.title}"/></#if>
+                    ${(content.description?no_esc)!}
                 </p>
             </article>
     </#list>
         </div>
-        <div>
+        <ul class="pagination">
             <#if !page.firstPage>
                 <a href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.prePage}">Previous page</a>
             <#else>
@@ -57,35 +65,30 @@
             <#if (page.pageIndex+5) lt end>
                 <#assign end=page.pageIndex+4/>
             </#if>
+            <li class="page-item"><a class="page-link" href="${getPage(url,page.prePage,'pageIndex')}">Previous page</a></li>
             <#if start gt 1>
-                <a href="?word=${word!}&tagId=${tagId!}">1</a> ...
+                <li class="page-item"><a class="page-link" href="?word=${word!}&tagId=${tagId!}">1</a></li>
+                <li class="page-item"><span class="page-link">...</span></li>
             </#if>
             <#list start..end as n>
-                <#if n=page.pageIndex>
-                    ${n}
-                <#else>
-                    <a href="?word=${word!}&tagId=${tagId!}&pageIndex=${n}">${n}</a>
-                </#if>
+                <li class="page-item<#if n=page.pageIndex> active</#if>"><a class="page-link" href="?word=${word!}&tagId=${tagId!}&pageIndex=${n}">${n}</a></li>
             </#list>
             <#if end lt page.totalPage>
-                ... <a href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.totalPage}">${page.totalPage}</a>
+                <li class="page-item"><span class="page-link">...</span></li>
+                <li class="page-item"><a class="page-link" href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.totalPage}">${page.totalPage}</a></li>
             </#if>
-            <#if !page.lastPage>
-                <a href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.nextPage}">Next page</a>
-            <#else>
-                <span>Next page</span>
-            </#if>
+            <li class="page-item"><a class="page-link" href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.nextPage}">Next page</a></li>
         </div>
     </#if>
 </@cms.search>
         <aside>
             <h3>Popular content</h3>
             <ul data-diy="content">
-<@cms.contentList orderField='clicks' pageSize=10>
-    <#list page.list as a>
-                <li data-diy-item="${a.id}"><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
-    </#list>
-</@cms.contentList>
+        <@cms.contentList orderField='clicks' pageSize=10>
+            <#list page.list as content>
+                <li data-diy-item="${content.id}"><a href="<#if content.onlyUrl>${site.dynamicPath}content/redirect?id=${content.id}<#else>${content.url!}</#if>" target="_blank">${content.title}</a><span>${content.clicks}</span></li>
+            </#list>
+        </@cms.contentList>
             </ul>
         </aside>
     </main>

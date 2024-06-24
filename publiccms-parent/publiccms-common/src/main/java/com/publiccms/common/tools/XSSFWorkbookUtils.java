@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -20,15 +21,20 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 
+import com.publiccms.common.constants.Constants;
+
 public class XSSFWorkbookUtils {
+    private XSSFWorkbookUtils() {
+    }
+
     public static String workbookToHtml(Workbook wb) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int sheetCounts = wb.getNumberOfSheets();
         for (int i = 0; i < sheetCounts; i++) {
             Sheet sheet = wb.getSheetAt(i);
             int lastRowNum = sheet.getLastRowNum();
-            Map<String, String> map0 = new HashMap<String, String>();
-            Map<String, String> map1 = new HashMap<String, String>();
+            Map<String, String> map0 = new HashMap<>();
+            Map<String, String> map1 = new HashMap<>();
             int mergedNum = sheet.getNumMergedRegions();
             CellRangeAddress range = null;
             for (int j = 0; j < mergedNum; j++) {
@@ -37,17 +43,18 @@ public class XSSFWorkbookUtils {
                 int topCol = range.getFirstColumn();
                 int bottomRow = range.getLastRow();
                 int bottomCol = range.getLastColumn();
-                map0.put(topRow + "," + topCol, bottomRow + "," + bottomCol);
+                String mergeKey = CommonUtils.joinString(topRow, ",", topCol);
+                map0.put(mergeKey, CommonUtils.joinString(bottomRow, ",", bottomCol));
                 int tempRow = topRow;
                 while (tempRow <= bottomRow) {
                     int tempCol = topCol;
                     while (tempCol <= bottomCol) {
-                        map1.put(tempRow + "," + tempCol, "");
+                        map1.put(CommonUtils.joinString(tempRow, ",", tempCol), "");
                         tempCol++;
                     }
                     tempRow++;
                 }
-                map1.remove(topRow + "," + topCol);
+                map1.remove(mergeKey);
             }
             sb.append("<h3>").append(sheet.getSheetName()).append("</h3>");
             sb.append("<table style='border-collapse:collapse;' width='100%'>");
@@ -68,16 +75,17 @@ public class XSSFWorkbookUtils {
                         continue;
                     }
                     String stringValue = getCellValue(cell);
-                    if (map0.containsKey(rowNum + "," + colNum)) {
-                        String pointString = map0.get(rowNum + "," + colNum);
-                        map0.remove(rowNum + "," + colNum);
-                        int bottomeRow = Integer.valueOf(pointString.split(",")[0]);
-                        int bottomeCol = Integer.valueOf(pointString.split(",")[1]);
+                    String key = CommonUtils.joinString(rowNum, ",", colNum);
+                    if (map0.containsKey(key)) {
+                        String pointString = map0.get(key);
+                        map0.remove(key);
+                        int bottomeRow = Integer.parseInt(pointString.split(",")[0]);
+                        int bottomeCol = Integer.parseInt(pointString.split(",")[1]);
                         int rowSpan = bottomeRow - rowNum + 1;
                         int colSpan = bottomeCol - colNum + 1;
                         sb.append("<td rowspan= '").append(rowSpan).append("' colspan= '").append(colSpan).append("' ");
-                    } else if (map1.containsKey(rowNum + "," + colNum)) {
-                        map1.remove(rowNum + "," + colNum);
+                    } else if (map1.containsKey(key)) {
+                        map1.remove(key);
                         continue;
                     } else {
                         sb.append("<td ");
@@ -95,14 +103,14 @@ public class XSSFWorkbookUtils {
             }
             sb.append("</table>");
         }
-        return HtmlUtils.UNESCAPE_HTML4.translate(sb.toString());
+        return StringEscapeUtils.unescapeHtml4(sb.toString());
     }
 
     /**
      * 获取表格单元格Cell内容
      */
     private static String getCellValue(Cell cell) {
-        String result = new String();
+        String result;
         switch (cell.getCellType()) {
         case NUMERIC:// 数字类型
             if (DateUtil.isCellDateFormatted(cell)) {// 处理日期格式、时间格式
@@ -136,11 +144,8 @@ public class XSSFWorkbookUtils {
             result = cell.getRichStringCellValue().toString();
             break;
         case BLANK:
-            result = "";
-            break;
         default:
-            result = "";
-            break;
+            result = Constants.BLANK;
         }
         return result;
     }
@@ -148,13 +153,13 @@ public class XSSFWorkbookUtils {
     /**
      * 处理表格样式
      */
-    private static void dealExcelStyle(Sheet sheet, Cell cell, StringBuffer sb) {
+    private static void dealExcelStyle(Sheet sheet, Cell cell, StringBuilder sb) {
         XSSFCellStyle cellStyle = (XSSFCellStyle) cell.getCellStyle();
         if (cellStyle != null) {
             HorizontalAlignment alignment = cellStyle.getAlignment();
-            sb.append("align='" + convertAlignToHtml(alignment) + "' ");// 单元格内容的水平对齐方式
+            sb.append("align='").append(convertAlignToHtml(alignment)).append("' ");// 单元格内容的水平对齐方式
             VerticalAlignment verticalAlignment = cellStyle.getVerticalAlignment();
-            sb.append("valign='" + convertVerticalAlignToHtml(verticalAlignment) + "' ");// 单元格中内容的垂直排列方式
+            sb.append("valign='").append(convertVerticalAlignToHtml(verticalAlignment)).append("' ");// 单元格中内容的垂直排列方式
             XSSFFont font = cellStyle.getFont();
             sb.append("style='");
             if (font.getBold()) {
@@ -170,7 +175,7 @@ public class XSSFWorkbookUtils {
             if (xc != null && xc.isRGB()) {
                 sb.append("color:#").append(xc.getARGBHex().substring(2)).append(";");
             }
-            XSSFColor bgColor = (XSSFColor) cellStyle.getFillForegroundColorColor();
+            XSSFColor bgColor = cellStyle.getFillForegroundColorColor();
             if (bgColor != null && bgColor.isAuto()) {
                 sb.append("background-color:#").append(bgColor.getARGBHex().substring(2)).append(";");
             }
@@ -227,13 +232,13 @@ public class XSSFWorkbookUtils {
 
     private static String getBorderStyle(int b, short s, XSSFColor xc) {
         if (s == 0) {
-            return bordesr[b] + borderStyles[s] + "#d0d7e5 1px;";
+            return CommonUtils.joinString(bordesr[b], borderStyles[s], "#d0d7e5 1px;");
         }
         if (xc != null && xc.isRGB()) {
             String borderColorStr = xc.getARGBHex();
             borderColorStr = borderColorStr == null || borderColorStr.length() < 1 ? "#000000" : borderColorStr.substring(2);
-            return bordesr[b] + borderStyles[s] + borderColorStr + " 1px;";
+            return CommonUtils.joinString(bordesr[b], borderStyles[s], borderColorStr, " 1px;");
         }
-        return "";
+        return Constants.BLANK;
     }
 }

@@ -11,7 +11,7 @@
                 <li><a href="cmsTemplate/metadata.html?demo=search.html&name=search_page&acceptParameters=word,pageIndex;number,tagId" target="ajax" rel="cmsTemplateBox"><@t.page 'search_page'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=vote.html&name=vote_page&acceptParameters=pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'vote_page'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=surveyList.html&name=survey_list_page&acceptParameters=pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'survey_list_page'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=survey.html&name=survey_page&acceptParameters=id;number" target="ajax" rel="cmsTemplateBox"><@t.page 'survey_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=survey.html&name=survey_page&acceptParameters=id;survey" target="ajax" rel="cmsTemplateBox"><@t.page 'survey_page'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=sitemap.xml&name=sitemap" target="ajax" rel="cmsTemplateBox"><@t.page 'sitemap'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=comment.html&name=comment_page&acceptParameters=id;number,replyId;number,contentId;content,pageIndex;number,error" target="ajax" rel="cmsTemplateBox"><@t.page 'comment_page'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=ftl/tools.ftl&name=tools.ftl&useDynamic=false" target="ajax" rel="cmsTemplateBox">tools.ftl</a></li>
@@ -39,8 +39,7 @@
         <li>
             <a href="javascript:;" onclick="return false;"><@t.page 'content_page'/></a>
             <ul>
-                <li><a href="cmsTemplate/metadata.html?demo=content/content.html&name=content_page&acceptParameters=id;content,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'content_page'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=content/content_rest.html&name=content_page_rest&acceptParameters=id;content,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'content_page_rest'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=content/content.html&name=content_page&acceptParameters=id;content,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'dynamic_content_page'/></a></li>
                 <#if site.useStatic>
                     <li><a href="cmsTemplate/metadata.html?demo=content/staticContent.html&name=static_content_page&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'static_content_page'/></a></li>
                 </#if>
@@ -49,9 +48,8 @@
         <li>
             <a href="javascript:;" onclick="return false;"><@t.page 'category_page'/></a>
             <ul>
-                <li><a href="cmsTemplate/metadata.html?demo=category/category.html&name=category_page&acceptParameters=id;category,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=category/category_rest.html&name=category_page_rest&acceptParameters=id;category,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_rest'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=category/category_code.html&name=category_page_code&acceptParameters=code,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_code'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=category/category.html&name=category_page&acceptParameters=id;category,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'dynamic_category_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=category/category.html&name=category_page&acceptParameters=code;category.code,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_code'/></a></li>
                 <#if site.useStatic>
                     <li><a href="cmsTemplate/metadata.html?demo=category/staticCategory.html&name=static_category_page&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'static_category_page'/></a></li>
                 </#if>
@@ -64,6 +62,7 @@
                 <li><a href="cmsTemplate/metadata.html?demo=json/comment.json&name=comment_interface&acceptParameters=contentId;content,replyId;number,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'comment_interface'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=json/contentList.json&name=content_list_interface&acceptParameters=categoryId;number,containChild,modelId,parentId;number,userId;number,orderField,orderType,pageIndex;number,pageSize;number" target="ajax" rel="cmsTemplateBox"><@t.page 'content_list_interface'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=json/categoryList.json&name=category_list_interface&acceptParameters=parentId,allowContribute,pageIndex,pageSize" target="ajax" rel="cmsTemplateBox"><@t.page 'category_list_interface'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=json/result.json&name=result_interface&acceptParameters=dataId;error" target="ajax" rel="cmsTemplateBox"><@t.page 'result_interface'/></a></li>
             </ul>
         </li>
     </ul>

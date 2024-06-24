@@ -14,6 +14,8 @@ import com.publiccms.entities.cms.CmsDictionaryExclude;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * dictionaryExcludeList 数据字典数据列表
@@ -46,7 +48,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 public class CmsDictionaryExcludeListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         List<CmsDictionaryExclude> list = null;
         String dictionaryId = handler.getString("dictionaryId");
         String excludeDictionaryId = handler.getString("excludeDictionaryId");

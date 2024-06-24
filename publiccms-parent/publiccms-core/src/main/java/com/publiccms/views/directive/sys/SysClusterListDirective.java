@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.sys.SysClusterService;
+
+import freemarker.template.TemplateException;
+
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +44,7 @@ import com.publiccms.common.handler.RenderHandler;
 * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/sys/clusterList?pageSize=10', function(data){    
-    console.log(data.totalCount);
+    console.log(data.page.totalCount);
   });
   &lt;/script&gt;
 * </pre>
@@ -50,7 +53,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class SysClusterListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(handler.getDate("startHeartbeatDate"), handler.getDate("endHeartbeatDate"),
                 handler.getBoolean("master"), handler.getString("orderField"), handler.getString("orderType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));

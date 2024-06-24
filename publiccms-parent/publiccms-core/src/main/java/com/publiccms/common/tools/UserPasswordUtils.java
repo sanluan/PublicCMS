@@ -18,9 +18,10 @@ public class UserPasswordUtils {
         }
         if (null != salt && SALT_LENGTH == salt.length()) {
             if (ENCODE_SHA512.equalsIgnoreCase(encode)) {
-                return salt + SALT_SPLIT + VerificationUtils.sha512Encode(password + salt);
+                return CommonUtils.joinString(salt, SALT_SPLIT, VerificationUtils.sha512Encode(CommonUtils.joinString(password, salt)));
             } else {
-                return salt + SALT_SPLIT + VerificationUtils.sha512Encode(VerificationUtils.sha512Encode(password) + salt);
+                return CommonUtils.joinString(salt, SALT_SPLIT,
+                        VerificationUtils.sha512Encode(CommonUtils.joinString(VerificationUtils.sha512Encode(password), salt)));
             }
         } else {
             return VerificationUtils.md5Encode(password);

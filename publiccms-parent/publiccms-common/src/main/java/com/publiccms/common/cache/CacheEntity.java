@@ -23,7 +23,7 @@ public interface CacheEntity<K, V> {
     /**
      * @param key
      * @param value
-     * @param expiryInSeconds 
+     * @param expiryInSeconds
      */
     void put(K key, V value, Long expiryInSeconds);
 
@@ -53,8 +53,9 @@ public interface CacheEntity<K, V> {
     V get(K key);
 
     /**
+     * @param recycling 
      * @return values list
      */
-    List<V> clear();
+    List<V> clear(boolean recycling);
 
 }

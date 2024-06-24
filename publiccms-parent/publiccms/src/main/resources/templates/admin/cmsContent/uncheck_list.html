@@ -3,7 +3,7 @@
 <@cms.contentList advanced=true status=2 modelId=modelIds title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@sys.authorized roleIds=admin.roles urls='cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/moveParameters,cmsComment/list'><#assign authorizedMap=map/></@sys.authorized>
+<@sys.authorized roleIds=admin.roles urls='cmsContent/delete,cmsContent/add,cmsContent/check,cmsContent/reject,cmsComment/list'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader card">
     <form class="pagerForm" action="cmsContent/uncheck_list.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -104,8 +104,14 @@
                         </div>
                     </#if>
                     <div class="box">
-                        <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
-                            <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a>
+                        <h3>
+                            <#if lockMap?has_content && lockMap[a.id?string]?has_content>
+                                <#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>
+                                <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"></i>
+                            </#if>
+                            [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
+                            ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
+                            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" width="1000" height="600" rel="viewContent${a.id}">${(a.title)!}</a>
                         </h3>
                         <p>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
@@ -119,7 +125,7 @@
                 </td>
                 <td class="center">
                     <#if authorizedMap['cmsComment/list']>
-                        <a href="cmsComment/list.html?contentId=${a.id}" target="navTab" rel="cmsComment/list" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>">${a.comments!}</a>
+                        <a href="cmsComment/list.html?contentId=${a.id}" target="navTab" rel="cmsComment/list" title="<@t.page 'comment.management'/>">${a.comments!}</a>
                     <#else>
                         ${a.comments!}
                     </#if>
@@ -130,6 +136,9 @@
                     <@t.page 'status.content.'+a.status/>
                 </td>
                 <td class="wrap">
+                    <#if authorizedMap['cmsContent/add']>
+                        <a href="cmsContent/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsContent/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a>
+                    </#if>
                     <#if authorizedMap['cmsContent/check']>
                         <a href="cmsContent/check?ids=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-check"></i><@t.page 'button.check'/></a>
                     </#if>

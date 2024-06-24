@@ -11,6 +11,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.LicenseUtils;
 import com.publiccms.common.tools.VerificationUtils;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * licenseVerify 授权文件验证指令
@@ -40,7 +42,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/licenseVerify?licenseData=cont
 public class LicenseVerifyDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String licenseData = handler.getString("licenseData");
         handler.put("result", false);
         if (CommonUtils.notEmpty(licenseData)) {

@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.publiccms.common.copyright.CmsCopyright;
 import com.publiccms.common.copyright.Copyright;
 import com.publiccms.common.copyright.License;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -12,6 +13,9 @@ import com.publiccms.common.copyright.License;
  *
  */
 public class CmsVersion {
+    private CmsVersion() {
+    }
+
     private static final String clusterId = UUID.randomUUID().toString();
     private static boolean master = false;
     private static boolean initialized = false;
@@ -19,23 +23,29 @@ public class CmsVersion {
     private static Copyright copyright = new CmsCopyright();
 
     /**
+     * base version
+     */
+    public static final String BASE_VERSION = "V5";
+
+    /**
      * @return version
      */
     public static final String getVersion() {
-        return "V5.202302";
+        return BASE_VERSION + ".202406";
     }
+
     /**
      * @return revision
      */
     public static final String getRevision() {
-        return "f";
+        return "a";
     }
 
     /**
      * @return whether the authorization edition
      */
     public static boolean isAuthorizationEdition() {
-        return copyright.verify(CommonConstants.CMS_FILEPATH + CommonConstants.LICENSE_FILENAME);
+        return copyright.verify(getLicense());
     }
 
     /**
@@ -43,14 +53,14 @@ public class CmsVersion {
      * @return whether the domain authorized
      */
     public static boolean verifyDomain(String domain) {
-        return copyright.verify(CommonConstants.CMS_FILEPATH + CommonConstants.LICENSE_FILENAME, domain);
+        return copyright.verify(getLicense(), domain);
     }
 
     /**
      * @return license
      */
     public static License getLicense() {
-        return copyright.getLicense(CommonConstants.CMS_FILEPATH + CommonConstants.LICENSE_FILENAME);
+        return copyright.getLicense(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.LICENSE_FILENAME));
     }
 
     /**
@@ -87,14 +97,17 @@ public class CmsVersion {
     public static void setInitialized(boolean initialized) {
         CmsVersion.initialized = initialized;
     }
+
     /**
      * @return the scheduled
      */
     public static boolean isScheduled() {
         return scheduled && initialized;
     }
+
     /**
-     * @param scheduled the scheduled to set
+     * @param scheduled
+     *            the scheduled to set
      */
     public static void setScheduled(boolean scheduled) {
         CmsVersion.scheduled = scheduled;

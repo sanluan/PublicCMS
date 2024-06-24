@@ -1,0 +1,45 @@
+<#if extend.multiple>
+    <@cms.vote ids=value><#assign values=map/></@cms.vote>
+    <#if 'view'=type>
+        <#if values?has_content><#list values as k,v><p>${k!}:${(v.title)!}</p></#list></#if>
+    <#else>
+        <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>">
+            <thead>
+                <tr>
+                    <th width="250"<#if 'customform'!=type> type="lookup" name="${extend.id.code}_title" fieldClass="<#if extend.required>required</#if>" size="30" fieldAttrs="{'readonly':'readonly','width':'1200','height':'580'}" lookupUrl="cmsVote/lookup.html?field=${inputName?url}&titleField=${extend.id.code?url}_title" lookupGroup="" lookupPk="${inputName}"</#if>><@t.page 'vote'/></th>
+                    <th width="60"<#if 'customform'!=type> type="del" </#if>><@t.page 'operate'/></th>
+                </tr>
+            </thead>
+            <tbody>
+                <#if values?has_content>
+                    <#list values as k,v>
+                    <tr<#if 'customform'!=type> class="unitBox"</#if>>
+                        <td>
+                            <input name="${inputName}" value="${k!}" type="hidden"/>
+                            <input name="${extend.id.code}_title" readonly="readonly" size="30" value="${(v.title)!}" type="text" class="<#if extend.required>required</#if>"/>
+                            <a class="btnLook" href="cmsVote/lookup.html?field=${inputName?url}&titleField=${extend.id.code?url}_title" width="1200" height="580" lookupGroup=""><@t.page 'select'/></a>
+                        </td>
+                        <td>
+                            <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
+                        </td>
+                    </tr>
+                    </#list>
+                </#if>
+                <#if 'customform'=type>
+                    <tr>
+                        <td colspan="2"><a href="javascript:;" onclick="var thisNode=this.parentElement.parentElement;var tr = document.createElement('tr');tr.innerHTML='<td><input name=\'${inputName}\' type=\'number\' size=\'30\'<#if extend.maxlength?has_content> maxlength=\'${extend.maxlength}\'</#if><#if extend.required> required=\'required\'</#if>/></td><td><a href=\'javascript:;\' onclick=\'this.parentElement.parentElement.remove()\'><@t.page 'button.delete'/></a></td>';thisNode.parentElement.insertBefore(tr,thisNode);"><@t.page 'button.new_line'/></a></td>
+                    </tr>
+                </#if>
+            </tbody>
+        </table>
+    </#if>
+<#else>
+    <@cms.vote id=value><#assign values=object/></@cms.vote>
+    <#if 'view'=type>
+        ${(value)!}:${(values.title)!}
+    <#else>
+        <input name="${inputName}" value="${(value)!}" type="hidden"/>
+        <input name="${extend.id.code}_title" readonly="readonly" size="30" value="${(values.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+        <a class="btnLook" href="cmsVote/lookup.html?field=${inputName?url}&titleField=${extend.id.code?url}_title" lookupGroup="" width="1000" height="500"><@t.page 'select'/></a>
+    </#if>
+</#if>

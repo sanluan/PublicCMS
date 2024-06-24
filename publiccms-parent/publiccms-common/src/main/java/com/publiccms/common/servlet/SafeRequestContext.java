@@ -33,9 +33,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UrlPathHelper;
 import org.springframework.web.util.WebUtils;
 
+import com.publiccms.common.tools.CommonUtils;
+
 public class SafeRequestContext {
 
-    public static final String WEB_APPLICATION_CONTEXT_ATTRIBUTE = RequestContext.class.getName() + ".CONTEXT";
+    public static final String WEB_APPLICATION_CONTEXT_ATTRIBUTE = CommonUtils.joinString(RequestContext.class.getName(), ".CONTEXT");
 
     private HttpServletRequest request;
 
@@ -78,8 +80,7 @@ public class SafeRequestContext {
         if (wac == null) {
             wac = RequestContextUtils.findWebApplicationContext(request, servletContext);
             if (wac == null) {
-                throw new IllegalStateException("No WebApplicationContext found: not in a DispatcherServlet "
-                        + "request and no ContextLoaderListener registered?");
+                throw new IllegalStateException("No WebApplicationContext found: not in a DispatcherServlet request and no ContextLoaderListener registered?");
             }
         }
         this.webApplicationContext = wac;
@@ -286,7 +287,7 @@ public class SafeRequestContext {
      *         URL-encoded accordingly)
      */
     public String getContextUrl(String relativeUrl) {
-        String url = getContextPath() + relativeUrl;
+        String url = CommonUtils.joinString(getContextPath(), relativeUrl);
         if (this.response != null) {
             url = this.response.encodeURL(url);
         }
@@ -302,7 +303,7 @@ public class SafeRequestContext {
      *         URL-encoded accordingly)
      */
     public String getContextUrl(String relativeUrl, Map<String, ?> params) {
-        String url = getContextPath() + relativeUrl;
+        String url = CommonUtils.joinString(getContextPath(), relativeUrl);
         url = UriComponentsBuilder.fromUriString(url).buildAndExpand(params).encode().toUri().toASCIIString();
         if (this.response != null) {
             url = this.response.encodeURL(url);
@@ -317,7 +318,7 @@ public class SafeRequestContext {
     public String getPathToServlet() {
         String path = this.urlPathHelper.getOriginatingContextPath(this.request);
         if (StringUtils.hasText(this.urlPathHelper.getPathWithinServletMapping(this.request))) {
-            path += this.urlPathHelper.getOriginatingServletPath(this.request);
+            path = CommonUtils.joinString(path + this.urlPathHelper.getOriginatingServletPath(this.request));
         }
         return path;
     }
@@ -501,13 +502,13 @@ public class SafeRequestContext {
      */
     @Nullable
     public Errors getErrors(String name, boolean htmlEscape) {
-        if (this.errorsMap == null) {
-            this.errorsMap = new HashMap<>();
+        if (errorsMap == null) {
+            errorsMap = new HashMap<>();
         }
-        Errors errors = this.errorsMap.get(name);
+        Errors errors = errorsMap.get(name);
         boolean put = false;
         if (errors == null) {
-            errors = (Errors) getModelObject(BindingResult.MODEL_KEY_PREFIX + name);
+            errors = (Errors) getModelObject(CommonUtils.joinString(BindingResult.MODEL_KEY_PREFIX, name));
             if (errors instanceof BindException) {
                 errors = ((BindException) errors).getBindingResult();
             }
@@ -524,7 +525,7 @@ public class SafeRequestContext {
             put = true;
         }
         if (put) {
-            this.errorsMap.put(name, errors);
+            errorsMap.put(name, errors);
         }
         return errors;
     }

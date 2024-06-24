@@ -15,6 +15,8 @@ import org.apache.commons.logging.LogFactory;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 
+import freemarker.template.TemplateModelException;
+
 /**
  * 指令处理器基类
  * 
@@ -181,47 +183,47 @@ public abstract class BaseHandler implements RenderHandler {
         return map.size();
     }
 
-    protected abstract Integer getIntegerWithoutRegister(String name) throws Exception;
+    protected abstract Integer getIntegerWithoutRegister(String name) throws TemplateModelException;
 
-    protected abstract Byte getByteWithoutRegister(String name) throws Exception;
+    protected abstract Byte getByteWithoutRegister(String name) throws TemplateModelException;
 
-    protected abstract String[] getStringArrayWithoutRegister(String name) throws Exception;
+    protected abstract String[] getStringArrayWithoutRegister(String name) throws TemplateModelException;
 
-    protected abstract String getStringWithoutRegister(String name) throws Exception;
+    protected abstract String getStringWithoutRegister(String name) throws TemplateModelException;
 
-    protected abstract Boolean getBooleanWithoutRegister(String name) throws Exception;
+    protected abstract Boolean getBooleanWithoutRegister(String name) throws TemplateModelException;
 
-    protected abstract Date getDateWithoutRegister(String name) throws Exception;
+    protected abstract Date getDateWithoutRegister(String name) throws TemplateModelException;
 
     @Override
-    public String getString(String name) throws Exception {
+    public String getString(String name) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_STRING, name);
         return getStringWithoutRegister(name);
     }
 
     @Override
-    public String[] getStringArray(String name, String[] defaultValue) throws Exception {
+    public String[] getStringArray(String name, String[] defaultValue) throws TemplateModelException {
         try {
             String[] result = getStringArray(name);
             return null == result ? defaultValue : result;
-        } catch (Exception e) {
+        } catch (TemplateModelException e) {
             return defaultValue;
         }
     }
 
     @Override
-    public String getString(String name, String defaultValue) throws Exception {
+    public String getString(String name, String defaultValue) throws TemplateModelException {
         try {
             String result = getString(name);
             regristerParameter(PARAMETER_TYPE_STRING, name, defaultValue);
             return null == result ? defaultValue : result;
-        } catch (Exception e) {
+        } catch (TemplateModelException e) {
             return defaultValue;
         }
     }
 
     @Override
-    public Character getCharacter(String name) throws Exception {
+    public Character getCharacter(String name) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_CHAR, name);
         String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
@@ -231,51 +233,51 @@ public abstract class BaseHandler implements RenderHandler {
     }
 
     @Override
-    public Integer getInteger(String name) throws Exception {
+    public Integer getInteger(String name) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_INTEGER, name);
         return getIntegerWithoutRegister(name);
     }
 
     @Override
-    public Integer getInteger(String name, Integer defaultValue) {
+    public int getInteger(String name, int defaultValue) {
         try {
             regristerParameter(PARAMETER_TYPE_INTEGER, name, defaultValue);
             Integer result = getIntegerWithoutRegister(name);
             return null == result ? defaultValue : result;
-        } catch (Exception e) {
+        } catch (TemplateModelException e) {
             return defaultValue;
         }
     }
 
     @Override
-    public Long getLong(String name, Long defaultValue) {
+    public long getLong(String name, long defaultValue) throws TemplateModelException {
         try {
             Long result = getLong(name);
             return null == result ? defaultValue : result;
-        } catch (Exception e) {
+        } catch (TemplateModelException e) {
             return defaultValue;
         }
     }
 
     @Override
-    public Byte getByte(String name) throws Exception {
+    public Byte getByte(String name) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_BYTE, name);
         return getByteWithoutRegister(name);
     }
 
     @Override
-    public Byte getByte(String name, Byte defaultValue) {
+    public byte getByte(String name, byte defaultValue) {
         try {
             regristerParameter(PARAMETER_TYPE_BYTE, name, defaultValue);
             Byte result = getByteWithoutRegister(name);
             return null == result ? defaultValue : result;
-        } catch (Exception e) {
+        } catch (TemplateModelException e) {
             return defaultValue;
         }
     }
 
     @Override
-    public Integer[] getIntegerArray(String name) throws Exception {
+    public Integer[] getIntegerArray(String name) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_INTEGERARRAY, name);
         String[] arr = getStringArrayWithoutRegister(name);
         if (CommonUtils.notEmpty(arr)) {
@@ -288,11 +290,11 @@ public abstract class BaseHandler implements RenderHandler {
             }
             return set.toArray(new Integer[set.size()]);
         }
-        return null;
+        return new Integer[0];
     }
 
     @Override
-    public Long[] getLongArray(String name) throws Exception {
+    public Long[] getLongArray(String name) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_LONGARRAY, name);
         String[] arr = getStringArrayWithoutRegister(name);
         if (CommonUtils.notEmpty(arr)) {
@@ -305,11 +307,11 @@ public abstract class BaseHandler implements RenderHandler {
             }
             return set.toArray(new Long[set.size()]);
         }
-        return null;
+        return new Long[0];
     }
 
     @Override
-    public Short[] getShortArray(String name) throws Exception {
+    public Short[] getShortArray(String name) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_SHORTARRAY, name);
         String[] arr = getStringArrayWithoutRegister(name);
         if (CommonUtils.notEmpty(arr)) {
@@ -327,49 +329,49 @@ public abstract class BaseHandler implements RenderHandler {
             }
             return ids;
         }
-        return null;
+        return new Short[0];
     }
 
     protected Boolean getBooleanWithoutRegister(String name, Boolean defaultValue) {
         try {
             Boolean result = getBooleanWithoutRegister(name);
             return null != result ? result : defaultValue;
-        } catch (Exception e) {
+        } catch (TemplateModelException e) {
             return defaultValue;
         }
     }
 
     @Override
-    public Boolean getBoolean(String name) throws Exception {
+    public Boolean getBoolean(String name) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_BOOLEAN, name);
         return getBooleanWithoutRegister(name);
     }
 
     @Override
-    public Boolean getBoolean(String name, Boolean defaultValue) throws Exception {
+    public boolean getBoolean(String name, boolean defaultValue) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_BOOLEAN, name, defaultValue);
         return getBooleanWithoutRegister(name, defaultValue);
     }
 
     @Override
-    public Date getDate(String name) throws Exception {
+    public Date getDate(String name) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_DATE, name);
         return getDateWithoutRegister(name);
     }
 
     @Override
-    public Date getDate(String name, Date defaultValue) throws Exception {
+    public Date getDate(String name, Date defaultValue) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_DATE, name, defaultValue);
         try {
             Date result = getDateWithoutRegister(name);
             return null != result ? result : defaultValue;
-        } catch (Exception e) {
+        } catch (TemplateModelException e) {
             return defaultValue;
         }
     }
 
     @Override
-    public String[] getStringArray(String name) throws Exception {
+    public String[] getStringArray(String name) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_STRINGARRAY, name);
         return getStringArrayWithoutRegister(name);
     }

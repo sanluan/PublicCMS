@@ -14,13 +14,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategory;
@@ -110,13 +108,11 @@ public class DiyComponent implements SiteCache {
         if (null == map) {
             return new ArrayList<>();
         } else {
-            return map.values().stream().filter(layout -> {
-                return showGlobal
-                        ? (CommonUtils.empty(region) || CommonUtils.empty(layout.getRegion())
-                                || region.equals(layout.getRegion()))
-                        : (CommonUtils.empty(region) && CommonUtils.empty(layout.getRegion())
-                                || CommonUtils.notEmpty(region) && region.equals(layout.getRegion()));
-            }).collect(Collectors.toList());
+            return map.values().stream().filter(layout -> showGlobal
+                    ? (CommonUtils.empty(region) || CommonUtils.empty(layout.getRegion()) || region.equals(layout.getRegion()))
+                    : (CommonUtils.empty(region) && CommonUtils.empty(layout.getRegion())
+                            || CommonUtils.notEmpty(region) && region.equals(layout.getRegion())))
+                    .collect(Collectors.toList());
         }
     }
 
@@ -135,13 +131,11 @@ public class DiyComponent implements SiteCache {
         if (null == map) {
             return null;
         } else {
-            return map.values().stream().filter(module -> {
-                return showGlobal
-                        ? (CommonUtils.empty(region) || CommonUtils.empty(module.getRegion())
-                                || region.equals(module.getRegion()))
-                        : (CommonUtils.empty(region) && CommonUtils.empty(module.getRegion())
-                                || CommonUtils.notEmpty(region) && region.equals(module.getRegion()));
-            }).collect(Collectors.toList());
+            return map.values().stream().filter(module -> showGlobal
+                    ? (CommonUtils.empty(region) || CommonUtils.empty(module.getRegion()) || region.equals(module.getRegion()))
+                    : (CommonUtils.empty(region) && CommonUtils.empty(module.getRegion())
+                            || CommonUtils.notEmpty(region) && region.equals(module.getRegion())))
+                    .collect(Collectors.toList());
         }
     }
 
@@ -353,12 +347,12 @@ public class DiyComponent implements SiteCache {
     private Map<String, CmsRegion> getRegionMap(SysSite site) {
         Map<String, CmsRegion> metadataMap = regionCache.get(site.getId());
         if (null == metadataMap) {
-            File file = new File(
-                    siteComponent.getTemplateFilePath() + SiteComponent.getFullTemplatePath(site.getId(), REGION_FILE));
+            File file = new File(CommonUtils.joinString(siteComponent.getTemplateFilePath(),
+                    SiteComponent.getFullTemplatePath(site.getId(), REGION_FILE)));
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    metadataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsRegion.class));
+                    metadataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
+                            .constructMapType(CaseInsensitiveMap.class, String.class, CmsRegion.class));
                 } catch (IOException | ClassCastException e) {
                     metadataMap = new CaseInsensitiveMap<>();
                 }
@@ -379,12 +373,12 @@ public class DiyComponent implements SiteCache {
     private Map<String, CmsLayout> getLayoutMap(SysSite site) {
         Map<String, CmsLayout> metadataMap = layoutCache.get(site.getId());
         if (null == metadataMap) {
-            File file = new File(
-                    siteComponent.getTemplateFilePath() + SiteComponent.getFullTemplatePath(site.getId(), LAYOUT_FILE));
+            File file = new File(CommonUtils.joinString(siteComponent.getTemplateFilePath(),
+                    SiteComponent.getFullTemplatePath(site.getId(), LAYOUT_FILE)));
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    metadataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsLayout.class));
+                    metadataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
+                            .constructMapType(CaseInsensitiveMap.class, String.class, CmsLayout.class));
                 } catch (IOException | ClassCastException e) {
                     metadataMap = new CaseInsensitiveMap<>();
                 }
@@ -405,12 +399,12 @@ public class DiyComponent implements SiteCache {
     private Map<String, CmsModule> getModuleMap(SysSite site) {
         Map<String, CmsModule> metadataMap = moduleCache.get(site.getId());
         if (null == metadataMap) {
-            File file = new File(
-                    siteComponent.getTemplateFilePath() + SiteComponent.getFullTemplatePath(site.getId(), MODULE_FILE));
+            File file = new File(CommonUtils.joinString(siteComponent.getTemplateFilePath(),
+                    SiteComponent.getFullTemplatePath(site.getId(), MODULE_FILE)));
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    metadataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsModule.class));
+                    metadataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
+                            .constructMapType(CaseInsensitiveMap.class, String.class, CmsModule.class));
                 } catch (IOException | ClassCastException e) {
                     metadataMap = new CaseInsensitiveMap<>();
                 }
@@ -430,8 +424,8 @@ public class DiyComponent implements SiteCache {
      */
     public CmsRegionData getRegionData(SysSite site, CmsCategory category, String diydataString) {
         try {
-            List<Map<String, Object>> datalist = CommonConstants.objectMapper.readValue(diydataString,
-                    CommonConstants.objectMapper.getTypeFactory().constructCollectionLikeType(List.class, Map.class));
+            List<Map<String, Object>> datalist = Constants.objectMapper.readValue(diydataString,
+                    Constants.objectMapper.getTypeFactory().constructCollectionLikeType(List.class, Map.class));
             if (null != datalist && 1 == datalist.size()) {
                 Map<String, Object> map = datalist.get(0);
                 if (null != map) {
@@ -465,10 +459,10 @@ public class DiyComponent implements SiteCache {
                                     String placePath = templateComponent.generatePlaceFilePath(module.getFilePath(), category,
                                             modulMap);
                                     String destFilepath = siteComponent.getTemplateFilePath(site.getId(),
-                                            TemplateComponent.INCLUDE_DIRECTORY + placePath);
+                                            CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, placePath));
                                     if (!CmsFileUtils.exists(destFilepath)) {
                                         String filepath = siteComponent.getTemplateFilePath(site.getId(),
-                                                TemplateComponent.INCLUDE_DIRECTORY + module.getPlace());
+                                                CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, module.getPlace()));
                                         CmsFileUtils.createFile(destFilepath, CmsFileUtils.getFileContent(filepath));
                                         CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
                                         metadata.setAlias(moduleData.getName());
@@ -548,12 +542,12 @@ public class DiyComponent implements SiteCache {
     private Map<String, CmsRegionData> getRegionDataMap(SysSite site) {
         Map<String, CmsRegionData> dataMap = regionDataCache.get(site.getId());
         if (null == dataMap) {
-            File file = new File(
-                    siteComponent.getTemplateFilePath() + SiteComponent.getFullTemplatePath(site.getId(), DATA_FILE));
+            File file = new File(CommonUtils.joinString(siteComponent.getTemplateFilePath(),
+                    SiteComponent.getFullTemplatePath(site.getId(), DATA_FILE)));
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    dataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsRegionData.class));
+                    dataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
+                            .constructMapType(CaseInsensitiveMap.class, String.class, CmsRegionData.class));
                 } catch (IOException | ClassCastException e) {
                     dataMap = new CaseInsensitiveMap<>();
                 }
@@ -570,18 +564,16 @@ public class DiyComponent implements SiteCache {
      *
      * @param site
      * @param map
-     * @throws JsonGenerationException
-     * @throws JsonMappingException
      * @throws IOException
      */
-    private void saveRegion(SysSite site, Map<String, CmsRegion> map)
-            throws JsonGenerationException, JsonMappingException, IOException {
-        File file = new File(siteComponent.getTemplateFilePath() + SiteComponent.getFullTemplatePath(site.getId(), REGION_FILE));
+    private void saveRegion(SysSite site, Map<String, CmsRegion> map) throws IOException {
+        File file = new File(CommonUtils.joinString(siteComponent.getTemplateFilePath(),
+                SiteComponent.getFullTemplatePath(site.getId(), REGION_FILE)));
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            CommonConstants.objectMapper.writeValue(file, map);
+            Constants.objectMapper.writeValue(file, map);
         }
         regionCache.remove(site.getId());
     }
@@ -591,18 +583,16 @@ public class DiyComponent implements SiteCache {
      *
      * @param site
      * @param map
-     * @throws JsonGenerationException
-     * @throws JsonMappingException
      * @throws IOException
      */
-    private void saveLayout(SysSite site, Map<String, CmsLayout> map)
-            throws JsonGenerationException, JsonMappingException, IOException {
-        File file = new File(siteComponent.getTemplateFilePath() + SiteComponent.getFullTemplatePath(site.getId(), LAYOUT_FILE));
+    private void saveLayout(SysSite site, Map<String, CmsLayout> map) throws IOException {
+        File file = new File(CommonUtils.joinString(siteComponent.getTemplateFilePath(),
+                SiteComponent.getFullTemplatePath(site.getId(), LAYOUT_FILE)));
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            CommonConstants.objectMapper.writeValue(file, map);
+            Constants.objectMapper.writeValue(file, map);
         }
         layoutCache.remove(site.getId());
     }
@@ -612,18 +602,16 @@ public class DiyComponent implements SiteCache {
      *
      * @param site
      * @param map
-     * @throws JsonGenerationException
-     * @throws JsonMappingException
      * @throws IOException
      */
-    private void saveModule(SysSite site, Map<String, CmsModule> map)
-            throws JsonGenerationException, JsonMappingException, IOException {
-        File file = new File(siteComponent.getTemplateFilePath() + SiteComponent.getFullTemplatePath(site.getId(), MODULE_FILE));
+    private void saveModule(SysSite site, Map<String, CmsModule> map) throws IOException {
+        File file = new File(CommonUtils.joinString(siteComponent.getTemplateFilePath(),
+                SiteComponent.getFullTemplatePath(site.getId(), MODULE_FILE)));
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            CommonConstants.objectMapper.writeValue(file, map);
+            Constants.objectMapper.writeValue(file, map);
         }
         moduleCache.remove(site.getId());
     }
@@ -633,18 +621,16 @@ public class DiyComponent implements SiteCache {
      *
      * @param site
      * @param map
-     * @throws JsonGenerationException
-     * @throws JsonMappingException
      * @throws IOException
      */
-    private void saveRegionData(SysSite site, Map<String, CmsRegionData> map)
-            throws JsonGenerationException, JsonMappingException, IOException {
-        File file = new File(siteComponent.getTemplateFilePath() + SiteComponent.getFullTemplatePath(site.getId(), DATA_FILE));
+    private void saveRegionData(SysSite site, Map<String, CmsRegionData> map) throws IOException {
+        File file = new File(CommonUtils.joinString(siteComponent.getTemplateFilePath(),
+                SiteComponent.getFullTemplatePath(site.getId(), DATA_FILE)));
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            CommonConstants.objectMapper.writeValue(file, map);
+            Constants.objectMapper.writeValue(file, map);
         }
         regionDataCache.remove(site.getId());
     }
@@ -659,10 +645,10 @@ public class DiyComponent implements SiteCache {
 
     @Override
     public void clear() {
-        regionDataCache.clear();
-        regionCache.clear();
-        layoutCache.clear();
-        moduleCache.clear();
+        regionDataCache.clear(false);
+        regionCache.clear(false);
+        layoutCache.clear(false);
+        moduleCache.clear(false);
     }
 
     /**

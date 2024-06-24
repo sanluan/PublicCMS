@@ -7,6 +7,9 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.trade.TradePaymentService;
+
+import freemarker.template.TemplateException;
+
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.handler.PageHandler;
@@ -44,7 +47,7 @@ import com.publiccms.common.handler.PageHandler;
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/trade/paymentList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id', function(data){    
- console.log(data.totalCount);
+ console.log(data.page.totalCount);
 });
 &lt;/script&gt;
  * </pre>
@@ -53,7 +56,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/paymentList?pageSize=10&amp;au
 public class TradePaymentListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException{
         PageHandler page = service.getPage(getSite(handler).getId(), getUserId(handler, "userId"), handler.getString("tradeType"),
                 handler.getString("serialNumber"), handler.getString("accountType"), handler.getString("accountSerialNumber"),
                 handler.getIntegerArray("status"), handler.getDate("startCreateDate"), handler.getDate("endCreateDate"),

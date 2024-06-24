@@ -8,6 +8,7 @@ import java.util.List;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -44,6 +45,7 @@ public class CmsSurveyQuestionItemService extends BaseService<CmsSurveyQuestionI
      * @param votes
      * @return entity
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public List<CmsSurveyQuestionItem> updateVotes(Collection<Serializable> ids, int votes) {
         List<CmsSurveyQuestionItem> entityList = getEntitys(ids);
         if (null != entityList) {

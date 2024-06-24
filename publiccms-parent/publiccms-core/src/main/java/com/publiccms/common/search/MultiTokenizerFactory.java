@@ -7,10 +7,12 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Tokenizer;
-import org.apache.lucene.analysis.util.ResourceLoader;
-import org.apache.lucene.analysis.util.ResourceLoaderAware;
-import org.apache.lucene.analysis.util.TokenizerFactory;
+import org.apache.lucene.util.ResourceLoader;
+import org.apache.lucene.util.ResourceLoaderAware;
+import org.apache.lucene.analysis.TokenizerFactory;
 import org.apache.lucene.util.AttributeFactory;
+
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -37,15 +39,13 @@ public class MultiTokenizerFactory extends TokenizerFactory implements ResourceL
         }
         args.putAll(MultiTokenizerFactory.args);
         tokenizerFactory = forName(name, args);
-        log.info(new StringBuilder().append(name).append(" tokenizer factory created,available tokenizers:").append(set)
-                .toString());
+        log.info(CommonUtils.joinString(name, " tokenizer factory created,available tokenizers:", set.toString()));
     }
 
     @Override
     public Tokenizer create(AttributeFactory factory) {
         return tokenizerFactory.create(factory);
     }
-    
 
     @Override
     public void inform(ResourceLoader loader) throws IOException {
@@ -56,7 +56,7 @@ public class MultiTokenizerFactory extends TokenizerFactory implements ResourceL
 
     /**
      * @param name
-     * @param args 
+     * @param args
      */
     public static void init(String name, Map<String, String> args) {
         MultiTokenizerFactory.name = name;

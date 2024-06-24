@@ -8,6 +8,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.IpUtils;
 import com.publiccms.common.tools.LicenseUtils;
 
@@ -21,14 +22,13 @@ public class CmsCopyright implements Copyright {
     private License license;
 
     @Override
-    public boolean verify(String licenseFilePath) {
-        return LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, getLicense(licenseFilePath));
+    public boolean verify(License license) {
+        return LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, license);
     }
 
     @Override
-    public boolean verify(String licenseFilePath, String domain) {
-        License l = getLicense(licenseFilePath);
-        return LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, l) && verifyDomain(domain, l.getDomain());
+    public boolean verify(License license, String domain) {
+        return LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, license) && verifyDomain(domain, license.getDomain());
     }
 
     @Override
@@ -37,7 +37,7 @@ public class CmsCopyright implements Copyright {
             File licenseFile = new File(licenseFilePath);
             if (null == license || lastModify != licenseFile.lastModified()) {
                 try {
-                    String licenseText = FileUtils.readFileToString(licenseFile, CommonConstants.DEFAULT_CHARSET_NAME);
+                    String licenseText = FileUtils.readFileToString(licenseFile, Constants.DEFAULT_CHARSET_NAME);
                     license = LicenseUtils.readLicense(licenseText);
                     lastModify = licenseFile.lastModified();
                 } catch (IOException e) {
@@ -49,12 +49,13 @@ public class CmsCopyright implements Copyright {
 
     private static boolean verifyDomain(String domain, String licenseDomain) {
         if ("*".equals(licenseDomain) || IpUtils.isIp(domain) || domain.toLowerCase().startsWith("dev.")
-                || domain.toLowerCase().contains(".dev.") || "localhost".equals(domain)) {
+                || domain.toLowerCase().contains(".dev.") || domain.toLowerCase().startsWith("test.")
+                || domain.toLowerCase().contains(".test.") || "localhost".equals(domain)) {
             return true;
         } else {
-            String[] licenseDomains = StringUtils.split(licenseDomain, CommonConstants.COMMA_DELIMITED);
+            String[] licenseDomains = StringUtils.split(licenseDomain, Constants.COMMA);
             int index;
-            while (0 < (index = domain.indexOf(CommonConstants.DOT))) {
+            while (0 < (index = domain.indexOf(Constants.DOT))) {
                 if (ArrayUtils.contains(licenseDomains, domain)) {
                     return true;
                 } else {

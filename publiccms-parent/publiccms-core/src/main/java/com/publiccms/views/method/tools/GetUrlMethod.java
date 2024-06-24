@@ -6,14 +6,16 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.TemplateModelUtils;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -45,6 +47,8 @@ console.log(data);
  */
 @Component
 public class GetUrlMethod extends BaseMethod {
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
     @Override
     public Object execute(HttpServletRequest request, List<TemplateModel> arguments) throws TemplateModelException {
@@ -66,9 +70,9 @@ public class GetUrlMethod extends BaseMethod {
         String sitePath = getString(0, arguments);
         String url = getString(1, arguments);
         if (CommonUtils.notEmpty(sitePath) && CommonUtils.notEmpty(url)) {
-            return TemplateComponent.getUrl(sitePath, url);
+            return CmsUrlUtils.getUrl(sitePath, url);
         } else if (CommonUtils.notEmpty(sitePath) && null != site) {
-            return TemplateComponent.getUrl(site.getSitePath(), sitePath);
+            return CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), sitePath);
         }
         return url;
     }

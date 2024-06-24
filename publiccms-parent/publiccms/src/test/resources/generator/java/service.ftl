@@ -2,6 +2,8 @@ package ${base}.${servicePack};
 
 // Generated ${.now?date} by com.publiccms.common.generator.SourceGenerator
 
+import javax.annotation.Resource;
+
 <#include "../include_imports/field_type.ftl">
 
 import org.springframework.stereotype.Service;

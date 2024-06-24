@@ -37,11 +37,9 @@ public class LinkedProperties extends Properties {
     @Override
     public Set<String> stringPropertyNames() {
         Set<String> set = new LinkedHashSet<>();
-
         for (Object key : this.keys) {
             set.add((String) key);
         }
-
         return set;
     }
 }

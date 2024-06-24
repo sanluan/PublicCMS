@@ -12,6 +12,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.cms.CmsContentRelatedService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * contentRelatedList 内容推荐列表查询指令
@@ -42,7 +44,7 @@ import com.publiccms.logic.service.cms.CmsContentRelatedService;
  * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/cms/contentRelatedList?contentId=1&amp;pageSize=10', function(data){    
-    console.log(data.totalCount);
+    console.log(data.page.totalCount);
   });
   &lt;/script&gt;
  * </pre>
@@ -51,7 +53,7 @@ import com.publiccms.logic.service.cms.CmsContentRelatedService;
 public class CmsContentRelatedListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(handler.getLong("contentId"), handler.getLong("relatedContentId"),
                 handler.getString("relationType"), handler.getString("relation"), handler.getString("orderField"),
                 handler.getString("orderType"), handler.getInteger("pageIndex", 1),

@@ -1,8 +1,6 @@
 package com.publiccms.views.pojo.model;
 
-import java.util.List;
-
-import com.publiccms.views.pojo.entities.ExtendData;
+import java.util.Map;
 
 /**
  *
@@ -15,19 +13,19 @@ public class ExtendDataParameters implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    List<ExtendData> extendDataList;
+    private Map<String, String> extendData;
 
     /**
-     * @return
+     * @return extend data
      */
-    public List<ExtendData> getExtendDataList() {
-        return extendDataList;
+    public Map<String, String> getExtendData() {
+        return extendData;
     }
 
     /**
-     * @param extendDataList
+     * @param extendData
      */
-    public void setExtendDataList(List<ExtendData> extendDataList) {
-        this.extendDataList = extendDataList;
+    public void setExtendData(Map<String, String> extendData) {
+        this.extendData = extendData;
     }
 }

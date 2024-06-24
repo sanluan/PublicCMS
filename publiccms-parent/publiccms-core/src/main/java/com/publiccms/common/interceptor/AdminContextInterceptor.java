@@ -12,18 +12,18 @@ import jakarta.annotation.Resource;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
 import com.publiccms.logic.service.sys.SysRoleService;
-import com.publiccms.logic.service.sys.SysUserService;
 
 /**
  *
@@ -43,10 +43,6 @@ public class AdminContextInterceptor extends WebContextInterceptor {
     private SysRoleAuthorizedService roleAuthorizedService;
     @Resource
     private SysRoleService sysRoleService;
-    @Resource
-    private SysUserService sysUserService;
-    @Resource
-    private SiteComponent siteComponent;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -59,9 +55,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                 try {
                     RequestUtils.addCookie(ctxPath, request.getScheme(), response, CommonConstants.getCookiesSite(),
                             currentSiteId, Integer.MAX_VALUE, null);
-                    StringBuilder sb = new StringBuilder(ctxPath);
-                    sb.append(adminContextPath).append(CommonConstants.SEPARATOR);
-                    response.sendRedirect(sb.toString());
+                    response.sendRedirect(CommonUtils.joinString(ctxPath, adminContextPath, Constants.SEPARATOR));
                     return false;
                 } catch (IOException e) {
                     return true;
@@ -83,9 +77,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
         String path = CmsFileUtils.getSafeFileName(urlPathHelper.getLookupPathForRequest(request));
         if (adminContextPath.equals(path)) {
             try {
-                StringBuilder sb = new StringBuilder(ctxPath);
-                sb.append(adminContextPath).append(CommonConstants.SEPARATOR);
-                response.sendRedirect(sb.toString());
+                response.sendRedirect(CommonUtils.joinString(ctxPath, adminContextPath, Constants.SEPARATOR));
                 return false;
             } catch (IOException e) {
                 return true;
@@ -113,23 +105,20 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                 } catch (IllegalStateException | IOException e) {
                     return true;
                 }
-            } else if (verifyNeedAuthorized(path)) {
-                if (!CommonConstants.SEPARATOR.equals(path)) {
-                    int index = path.lastIndexOf(CommonConstants.DOT);
-                    path = path.substring(0 < path.indexOf(CommonConstants.SEPARATOR) ? 0 : 1,
-                            index > -1 ? index : path.length());
-                    if (0 == roleAuthorizedService.count(entity.getRoles(), path) && !ownsAllRight(entity.getRoles())) {
-                        try {
-                            StringBuilder sb = new StringBuilder(ctxPath);
-                            sb.append(adminContextPath).append(unauthorizedUrl);
-                            response.sendRedirect(sb.toString());
-                            return false;
-                        } catch (IOException e) {
-                            return true;
-                        }
+            } else if (verifyNeedAuthorized(path) && (!Constants.SEPARATOR.equals(path))) {
+                int index = path.lastIndexOf(Constants.DOT);
+                path = path.substring(path.startsWith(Constants.SEPARATOR) ? 1 : 0, index > -1 ? index : path.length());
+                if (0 == roleAuthorizedService.count(entity.getRoles(), path) && !ownsAllRight(entity.getRoles())) {
+                    try {
+                        response.sendRedirect(CommonUtils.joinString(ctxPath, adminContextPath, unauthorizedUrl));
+                        return false;
+                    } catch (IOException e) {
+                        return true;
                     }
                 }
+
             }
+            entity.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), entity.getCover()));
             entity.setPassword(null);
             ControllerUtils.setAdminToSession(session, entity);
         }
@@ -144,13 +133,13 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             sb.append(loginJsonUrl);
         } else {
             sb.append(loginUrl).append("?returnUrl=");
-            sb.append(RequestUtils.getEncodePath(adminContextPath + path, queryString));
+            sb.append(RequestUtils.getEncodePath(CommonUtils.joinString(adminContextPath, path), queryString));
         }
         response.sendRedirect(sb.toString());
     }
 
     private boolean ownsAllRight(String roles) {
-        String[] roleIdArray = StringUtils.split(roles, CommonConstants.COMMA_DELIMITED);
+        String[] roleIdArray = StringUtils.split(roles, Constants.COMMA);
         if (null != roles && 0 < roleIdArray.length) {
             Integer[] roleIds = new Integer[roleIdArray.length];
             for (int i = 0; i < roleIdArray.length; i++) {
@@ -169,10 +158,8 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                 return false;
             }
             for (String needNotLoginUrl : needNotLoginUrls) {
-                if (null != needNotLoginUrl) {
-                    if (url.startsWith(needNotLoginUrl)) {
-                        return false;
-                    }
+                if (null != needNotLoginUrl && (url.startsWith(needNotLoginUrl))) {
+                    return false;
                 }
             }
         }
@@ -187,10 +174,8 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                 return false;
             }
             for (String needNotAuthorizedUrl : needNotAuthorizedUrls) {
-                if (null != needNotAuthorizedUrl) {
-                    if (url.startsWith(needNotAuthorizedUrl)) {
-                        return false;
-                    }
+                if (null != needNotAuthorizedUrl && (url.startsWith(needNotAuthorizedUrl))) {
+                    return false;
                 }
             }
         }

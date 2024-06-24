@@ -1,0 +1,68 @@
+<@cms.category id=parentId><#assign parent=object/></@cms.category>
+<form method="post" autocomplete="off" action="cmsCategory/saveSeo?navTabId=cmsCategory/seo" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <div class="formBar card">
+        <ul>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+        <#if parent?has_content>
+            <div class="unit">
+                <a href="cmsCategory/seo.html?parentId=${(parent.parentId)!}" target="navTab" rel="cmsCategory/seo" class="button"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a>
+            </div>
+            <dl class="nowrap">
+                <dt><@t.page 'category.parent'/>:</dt>
+                <dd><label>${(parent.name)!}</label></dd>
+            </dl>
+        </#if>
+            <dl class="nowrap">
+                <dt><@t.page 'keywords'/>:</dt>
+                <dd><@t.page 'category.keywords.description'/></dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'description'/>:</dt>
+                <dd><@t.page 'category.description.description'/></dd>
+            </dl>
+            <fieldset>
+                <legend><@t.page 'seo'/></legend>
+                <table class="list nowrap"width="100%">
+                    <thead>
+                        <tr>
+                            <th><@t.page 'category'/></th>
+                            <th><@t.page 'title'/></th>
+                            <th><@t.page 'keywords'/></th>
+                            <th><@t.page 'description'/></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <@cms.categoryList advanced=true parentId=parentId pageSize=500>
+                        <#list page.list as a>
+                            <@t.merge 'ids' a.id!/>
+                        </#list>
+                        <#assign attributeMap=getCategoryAttributes(t.ids)/>
+                        <#list page.list as a>
+                        <tr>
+                            <td>
+                                ${a.name}
+                                <a href="${a.url!}" target="_blank"><i class="icon-external-link"></i></a>
+                                <input name="attributeList[${a?index}].categoryId" type="hidden" value="${a.id}"/>
+                                <#if a.childIds?has_content>
+                                    <br/>
+                                    <a href="cmsCategory/seo.html?parentId=${a.id}" target="navTab" rel="cmsCategory/seo"><@t.page 'category.child_management'/></a>
+                                </#if>
+                            </td>
+                            <td><input name="attributeList[${a?index}].title" type="text" maxlength="80" size="30" value="${(attributeMap[a.id?string].title)!}"/></td>
+                            <td><textarea name="attributeList[${a?index}].keywords" maxlength="100" cols="50" rows="2">${(attributeMap[a.id?string].keywords)!}</textarea></td>
+                            <td><textarea name="attributeList[${a?index}].description" maxlength="150" cols="50" rows="2">${(attributeMap[a.id?string].description)!}</textarea></td>
+                        </tr>
+                        </#list>
+                    </@cms.categoryList>
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+</form>

@@ -2,6 +2,7 @@ package com.publiccms.controller.admin.cms;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -95,12 +96,17 @@ public class CmsModelAdminController {
             entity.setSearchable(false);
         }
         if (CommonUtils.notEmpty(entity.getExtendList())) {
-            entity.getExtendList().sort((e1, e2) -> e1.getSort() - e2.getSort());
+            entity.getExtendList().sort(Comparator.comparing(SysExtendField::getSort));
+            entity.getExtendList().forEach(e -> {
+                if (CommonUtils.empty(e.getName())) {
+                    e.setName(e.getId().getCode());
+                }
+            });
         }
         entity.setSearchableModel(searchableModel);
         if (CommonUtils.notEmpty(entity.getRelatedList())) {
             List<Integer> templist = new ArrayList<>();
-            Set<String> dictionarySet = new HashSet<String>();
+            Set<String> dictionarySet = new HashSet<>();
             int i = 0;
             for (ContentRelated related : entity.getRelatedList()) {
                 if (!dictionarySet.add(related.getDictionaryId())) {
@@ -207,7 +213,8 @@ public class CmsModelAdminController {
                 if (null != category) {
                     contentService.batchWorkId(site.getId(), category.getId(), id, (list, i) -> {
                         templateComponent.createContentFile(site, list, category, categoryModel);
-                        log.info("publish for category : " + category.getName() + " batch " + i + " size : " + list.size());
+                        log.info(CommonUtils.joinString("publish for category : ", category.getName(), " batch ", i, " size : ",
+                                list.size()));
                     }, PageHandler.MAX_PAGE_SIZE);
                 }
             }
@@ -233,17 +240,17 @@ public class CmsModelAdminController {
             for (CmsCategoryModel categoryModel : categoryModelService.getList(site.getId(), id, null)) {
                 CmsCategory category = categoryService.getEntity(categoryModel.getId().getCategoryId());
                 if (null != category) {
-                    log.info("begin rebuild search text for category : " + category.getName());
+                    log.info(CommonUtils.joinString("begin rebuild search text for category : ", category.getName()));
                     contentService.batchWorkContent(site.getId(), category.getId(), id, (list, i) -> {
                         List<SysExtendField> categoryExtendList = null;
                         if (null != category.getExtendId()) {
                             categoryExtendList = extendFieldService.getList(category.getExtendId(), null, true);
                         }
                         contentService.rebuildSearchText(site, entity, categoryExtendList, list);
-                        log.info("rebuild search text for category : " + category.getName() + " batch " + i + " size : "
-                                + list.size());
+                        log.info(CommonUtils.joinString("rebuild search text for category : ", category.getName(), " batch ", i,
+                                " size : ", list.size()));
                     }, PageHandler.MAX_PAGE_SIZE);
-                    log.info("complete rebuild search text for category : " + category.getName());
+                    log.info(CommonUtils.joinString("complete rebuild search text for category : ", category.getName()));
                 }
             }
         }

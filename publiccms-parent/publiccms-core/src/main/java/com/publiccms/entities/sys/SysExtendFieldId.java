@@ -3,6 +3,9 @@ package com.publiccms.entities.sys;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
@@ -25,6 +28,8 @@ public class SysExtendFieldId implements java.io.Serializable {
      * 字段编码
      */
     @GeneratorColumn(title = "字段")
+    @NotNull
+    @Length(max = 20)
     private String code;
 
     public SysExtendFieldId() {

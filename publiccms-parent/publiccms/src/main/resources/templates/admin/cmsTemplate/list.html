@@ -1,7 +1,7 @@
-<#macro templateTree filepath>
+<#macro templateList filepath=''>
     <@tools.fileList path=filepath>
         <#list list as a>
-            <#if !a.directory><@t.merge 'paths' filepath+'/'+a.fileName/></#if>
+            <#if !a.directory><@t.merge 'paths' filepath?has_content?then(filepath+'/','')+a.fileName/></#if>
         </#list>
         <@sys.lock userId=admin.id itemType='template' itemIds=t.paths><#assign lockMap=map!/></@sys.lock>
         <#if lockMap?has_content>
@@ -11,43 +11,50 @@
         </#if>
         <@sys.user ids=t.userIds><#assign userMap=map!/></@sys.user>
         <#list list as a>
-            <li>
-                <#local path=filepath+'/'+a.fileName>
+            <#local path=filepath?has_content?then(filepath+'/','')+a.fileName>
+            <li<#if a.directory> _src="cmsTemplate/list.html?parent=${path}"</#if>>
                 <@tools.metadata path=path>
-                    <a href="cmsTemplate/${a.directory?then('directory','content')}.html?path=${(path?url)!}"<#if lockMap?has_content && lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if> target="ajax" rel="cmsTemplateBox">
-                        <#if lockMap?has_content && lockMap[path]?has_content><i class="icon-lock icon-large"></i></#if>${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
+                    <a href="cmsTemplate/${a.directory?then('directory','content')}.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox">
+                        <#if !a.directory && lockMap?has_content && lockMap[path]?has_content>
+                            <#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>
+                            <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"></i>
+                        </#if>
+                        ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                     </a>
                 </@tools.metadata>
-            <#if a.directory>
-                <ul>
-                    <@templateTree path/>
-                </ul>
-            </#if>
             </li>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@tools.fileList>
 </#macro>
-<div class="pageContent">
-    <div class="leftPageContent">
-        <h2 class="contentTitle">
-            <a class="button" href="cmsTemplate/metadata.html" target="ajax" rel="cmsTemplateBox"><@t.page 'template.create'/></a>
-            <a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true"><@t.page 'template.example'/></a></li>
-        </h2>
-        <ul class="tree treeFolder" layoutH>
-            <@templateTree ''/>
-        </ul>
-    </div>
-    <div id="cmsTemplateBox" class="unitBox rightPageContent">
-        <#if path?has_content>
-            <#if editType?has_content&&'metadata'=editType>
-                <#include "metadata.html"/>
+<#if parent?has_content>
+     <ul>
+         <@templateList parent/>
+     </ul>
+<#else>
+    <div class="pageContent">
+        <div class="leftPageContent">
+            <div class="card">
+                <h2 class="contentTitle">
+                    <a class="button" href="cmsTemplate/metadata.html" target="ajax" rel="cmsTemplateBox"><@t.page 'template.create'/></a>
+                    <a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true"><@t.page 'template.example'/></a></li>
+                </h2>
+                <ul class="tree treeFolder" layoutH>
+                    <@templateList/>
+                </ul>
+            </div>
+        </div>
+        <div id="cmsTemplateBox" class="unitBox rightPageContent">
+            <#if path?has_content>
+                <#if editType?has_content&&'metadata'=editType>
+                    <#include "metadata.html"/>
+                <#else>
+                    <#include "content.html"/>
+                </#if>
             <#else>
-                <#include "content.html"/>
+                <#include "directory.html"/>
             </#if>
-        <#else>
-            <#include "directory.html"/>
-        </#if>
+        </div>
     </div>
-</div>
+</#if>

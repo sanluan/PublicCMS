@@ -13,6 +13,8 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.RequestUtils;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * csrfToken 防跨站请求伪造token指令
@@ -35,7 +37,7 @@ import com.publiccms.common.tools.RequestUtils;
 public class CsrfTokenDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String cookiesName = null;
         if (handler.getBoolean("admin", false)) {
             cookiesName = CommonConstants.getCookiesAdmin();

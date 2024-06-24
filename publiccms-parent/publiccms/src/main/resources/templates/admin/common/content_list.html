@@ -4,8 +4,8 @@
         containChild=object.ownsAllCategory
     />
 </@sys.dept>
-<@sys.deptItem itemType='category' deptId=admin.deptId!'' itemId=categoryId!''><#assign deptCategory=object!/></@sys.deptItem>
-<#if deptCategory?has_content&&deptCategory || dept?has_content && dept.ownsAllCategory>
+<@sys.deptItem itemType='category' deptId=admin.deptId itemId=categoryId><#assign deptCategory=object/></@sys.deptItem>
+<#if deptCategory?has_content && deptCategory || dept?has_content && dept.ownsAllCategory>
     <#if parentId?has_content>
         <@cms.content id=parentId><#assign parent=object/></@cms.content>
     </#if>
@@ -15,12 +15,13 @@
             modelId=modelIds parentId=parentId emptyParent=true title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@sys.authorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsDiy/preview,cmsCategory/lookupBySiteId,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsContent/import,cmsContent/workload,cmsComment/list,cmsContent/sortParameters,cmsCategory/add'><#assign authorizedMap=map/></@sys.authorized>
+<@sys.authorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsCategory/lookupBySiteId,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsContent/import,cmsContent/workload,cmsComment/list,cmsContent/sortParameters,cmsCategory/add'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader card">
     <form class="pagerForm" action="common/content_list.html" autocomplete="off" onsubmit="return divSearch(this,'contentBox');" method="post">
         <#include "../include_page/parameters.html"/>
         <input name="categoryId" type="hidden" value="${categoryId!}"/>
         <input name="parentId" type="hidden" value="${(parent.id)!}"/>
+        <input name="status" type="hidden" value="1"/>
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
@@ -73,7 +74,7 @@
                 <li><a href="cmsContent/list.html?parentId=${(parent.parentId)!}&categoryId=${categoryId!}" target="navTab" rel="cmsContent/list"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
-<#if authorizedMap['cmsContent/add'] && categoryId?has_content>
+<#if authorizedMap['cmsContent/add']>
         <@cms.modelList parentId=(parent.modelId)!''>
             <#list page.list as a>
                 <@t.merge 'tempModelIds' a.id!/>
@@ -82,20 +83,26 @@
             <li>
                 <a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}&parentId=${parentId!}" target="dialog" mask="true" class="addMore"><i class="icon-double-angle-down icon-large"></i><@t.page 'content.add'/></a>
                 <ul>
-            <@cms.category id=categoryId>
-                <#if object.typeId?has_content && authorizedMap['cmsCategory/add']>
-                    <li><a href="cmsCategory/add.html?id=${categoryId!}" target="navTab" rel="cmsCategory/edit"><i class="icon-edit icon-large"></i><@t.page 'category.edit'/></a></li>
-               </#if>
-            </@cms.category>
-            <@cms.categoryModel modelIds=t.tempModelIds categoryId=categoryId><#assign categoryModelMap=map/></@cms.categoryModel>
-            <#list page.list as a>
-                <#if categoryModelMap?has_content&&categoryModelMap[a.id]?has_content>
-                    <#assign size++/>
-                    <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus icon-large"></i><@t.page 'button.add_some_things' a.name/></a></li>
+            <#if categoryId?has_content>
+                <@cms.categoryModel modelIds=t.tempModelIds categoryId=categoryId><#assign categoryModelMap=map/></@cms.categoryModel>
+                <#list page.list as a>
+                    <#if categoryModelMap?has_content&&categoryModelMap[a.id]?has_content>
+                        <#assign size++/>
+                        <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus icon-large"></i><@t.page 'button.add_some_things' a.name/></a></li>
+                    </#if>
+                </#list>
+                <@cms.category id=categoryId>
+                    <#if authorizedMap['cmsCategory/add']>
+                        <li><a href="cmsCategory/add.html?id=${categoryId!}" target="navTab" rel="cmsCategory/edit"><i class="icon-edit icon-large"></i><@t.page 'category.edit'/></a></li>
+                   </#if>
+                </@cms.category>
+                <#if size=0 && authorizedMap['cmsCategory/add']>
+                        <li><a href="cmsCategory/add.html?id=${categoryId!}&showTab=model" target="navTab" rel="cmsCategory/edit" title="<@t.page 'category.edit'/>"><i class="icon-edit icon-large"></i><@t.page 'content.no_model'/></a></li>
                 </#if>
-            </#list>
-            <#if size=0 && authorizedMap['cmsCategory/add']>
-                    <li><a href="cmsCategory/add.html?id=${categoryId!}&showTab=model" target="navTab" rel="cmsCategory/edit" title="<@t.page 'category.edit'/>"><i class="icon-edit icon-large"></i><@t.page 'content.no_model'/></a></li>
+            <#elseif !parent?has_content>
+                <#list page.list as a>
+                    <li><a href="cmsContent/addMore.html?modelId=${a.id}" target="dialog" mask="true"><i class="icon-plus icon-large"></i><@t.page 'button.add_some_things' a.name/></a></li>
+                </#list>
             </#if>
                 </ul>
             </li>
@@ -135,8 +142,8 @@
                 <th width="200"><@t.page 'content'/></th>
                 <th width="30" orderField="comments"><@t.page 'content.comments'/></th>
                 <th width="30" orderField="clicks"><@t.page 'clicks'/></th>
+                <th width="30" orderField="collections"><@t.page 'collections'/></th>
                 <th width="70" orderField="publishDate"><@t.page 'publish_date'/></th>
-                <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
                 <th width="100"><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -164,16 +171,18 @@
                 <td class="wrap">
                     <#if a.cover?has_content>
                         <div class="thumbnail">
-                            <img src="${(a.cover)!}"/>
+                            <img src="${(a.cover)!}" alt="${a.title}"/>
                         </div>
                     </#if>
                     <div class="box">
-                        <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
-                            <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
-                            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a>
-                            <#if authorizedMap['cmsDiy/preview'] && !a.onlyUrl && a.url?has_content>
-                                <a href="cmsDiy/preview.html?url=${((a.url)?url)!}" target="navTab" rel="cmsDiy/preview"  icon="<i class='bi bi-palette2 icon-large'></i>" title="<@t.page 'diy.preview'/>"><i class="bi bi-palette2"></i></a>
+                        <h3>
+                            <#if lockMap?has_content && lockMap[a.id?string]?has_content>
+                                <#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>
+                                <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"></i>
                             </#if>
+                            [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
+                            ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
+                            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}" width="1000" height="600">${(a.title)!}</a>
                             <#if a.url?has_content><a href="${a.url!}" target="_blank"><i class="icon-external-link"></i></a></#if>
                         </h3>
                         <p>
@@ -181,6 +190,7 @@
                                 <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="btnText" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></label>
                             </#if>
                             <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickname)!}</span>
+                            <label><@t.page 'inspector'/>:</label><span class="exclude-translate">${(userMap[a.checkUserId?string].nickname)!}</span>
                             <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
                         </p>
                         <#if a.expiryDate?has_content><p><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></p></#if>
@@ -188,26 +198,23 @@
                 </td>
                 <td class="center">
                     <#if authorizedMap['cmsComment/list']>
-                        <a href="cmsComment/list.html?contentId=${a.id}" target="navTab" rel="cmsComment/list" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>">${a.comments!}</a>
+                        <a href="cmsComment/list.html?contentId=${a.id}" target="navTab" rel="cmsComment/list" title="<@t.page 'comment.management'/>">${a.comments!}</a>
                     <#else>
                         ${a.comments!}
                     </#if>
                 </td>
                 <td class="center">${a.clicks!}</td>
+                <td class="center">${a.collections!}</td>
                 <td class="center" title="<@t.page 'create_date'/>:${a.createDate!}">${a.publishDate!}</td>
-                <td>
-                    <@t.page 'status.content.'+a.status/>
-                    / <span class="exclude-translate">${(userMap[a.checkUserId?string].nickname)!}</span>
-                </td>
                 <td class="wrap">
                     <a href="cmsContent/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsContent/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a>
                     <#if authorizedMap['cmsContent/sortParameters']>
                         <#if dept?has_content>
-                            <a href="cmsContent/sortParameters.html?id=${a.id}&sort=${a.sort}" class="btnText <#if a.sort gt 0>warn<#else>blue</#if>" target="dialog" width="450" height="180" mask="true"><@t.page 'top'/></a>
+                            <a href="cmsContent/sortParameters.html?id=${a.id}&sort=${a.sort}" class="btnText <#if a.sort gt 0>warn<#else>blue</#if>" target="dialog" width="450" height="180" mask="true"><@t.page 'top'/><#if a.sort gt 0>(${a.sort})</#if></a>
                         </#if>
                     </#if>
                     <#if authorizedMap['cmsContent/add']>
-                        <a href="cmsContent/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsContent/add" icon="<i class='icon-plus'></i>" title="<@t.page 'content.add'/>"><i class="icon-copy"></i><@t.page 'button.copy'/></a>
+                        <a href="cmsContent/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsContent/add" title="<@t.page 'content.add'/>"><i class="icon-copy"></i><@t.page 'button.copy'/></a>
                     </#if>
                     <#if authorizedMap['cmsCategory/lookupBySiteId']>
                         <a href="cmsCategory/lookupBySiteId.html?id=${a.id}&modelId=${a.modelId!}&currentCategoryId=${a.categoryId!}" class="btnText blue" target="dialog" mask="true"><i class="icon-asterisk"></i><@t.page 'button.distribute'/></a>

@@ -37,7 +37,7 @@ public class SysLockAdminController {
     @RequestMapping("lock")
     @ResponseBody
     public Lock lock(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String itemType, String itemId) {
-        SysLock lock = lockComponent.lock(site.getId(), itemType, itemId, admin.getId(), false);
+        SysLock lock = lockComponent.lock(site.getId(), itemType, itemId, admin.getId());
         if (null == lock || admin.getId().equals(lock.getUserId())) {
             return null;
         } else {

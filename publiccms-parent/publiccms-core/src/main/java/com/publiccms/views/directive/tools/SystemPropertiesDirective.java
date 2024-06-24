@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.RenderHandler;
 
+import freemarker.template.TemplateException;
+
 /**
  * systemProperties 服务器参数指令
  * <p>
@@ -33,11 +35,11 @@ import com.publiccms.common.handler.RenderHandler;
  * <p>
  * 使用示例
  * <p>
- * &lt;@tools.systemProperties&gt;${.vars['java.version']}&lt;/@tools.placeMetadata&gt;
- * 
+ * &lt;@tools.systemProperties&gt;${.vars['java.version']}&lt;/@tools.systemProperties&gt;
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/systemProperties?appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/systemProperties?appToken=接口访问授权Token', function(data){
    console.log(data['java.version']);
  });
  &lt;/script&gt;
@@ -48,7 +50,7 @@ public class SystemPropertiesDirective extends AbstractTemplateDirective {
     Properties props = System.getProperties();
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Iterator<Object> keysIterator = props.keySet().iterator();
         while (keysIterator.hasNext()) {
             Object key = keysIterator.next();

@@ -6,20 +6,26 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
+
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -32,7 +38,7 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
  * <li><code>absoluteURL</code>:url处理为绝对路径 默认为<code> true</code>
  * <li><code>absoluteId</code>:id处理为引用内容的ID 默认为<code> true</code>
  * <li><code>containsAttribute</code>
- * id不为空时有效,默认为<code>false</code>,结果返回<code>attribute</code>内容扩展数据<code>map</code>(字段编码,<code>value</code>)
+ * 默认为<code>false</code>,http请求时为高级选项,为true时<code>object.attribute</code>为内容扩展数据<code>map</code>(字段编码,<code>value</code>)
  * <li><code>ids</code>:
  * 多个内容id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
@@ -53,12 +59,22 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
  */
 @Component
 public class CmsContentDirective extends AbstractTemplateDirective {
+    @Resource
+    protected ContentConfigComponent contentConfigComponent;
+    @Resource
+    private CmsContentAttributeService attributeService;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
+    @Resource
+    private StatisticsComponent statisticsComponent;
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         boolean absoluteId = handler.getBoolean("absoluteId", true);
+        boolean containsAttribute = handler.getBoolean("containsAttribute", false);
+        containsAttribute = handler.inHttp() ? getAdvanced(handler) && containsAttribute : containsAttribute;
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
             CmsContent entity = service.getEntity(id);
@@ -71,23 +87,14 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     entity.setId(entity.getQuoteContentId());
                 }
                 if (absoluteURL) {
-                    TemplateComponent.initContentUrl(site, entity);
-                    TemplateComponent.initContentCover(site, entity);
+                    CmsUrlUtils.initContentUrl(site, entity);
+                    fileUploadComponent.initContentCover(site, entity);
+                }
+                if (containsAttribute) {
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(id),
+                            contentConfigComponent.getKeywordsConfig(site.getId())));
                 }
                 handler.put("object", entity);
-                if (handler.getBoolean("containsAttribute", false)) {
-                    CmsContentAttribute attribute = attributeService.getEntity(id);
-                    if (null != attribute) {
-                        Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
-                        map.put("text", attribute.getText());
-                        map.put("source", attribute.getSource());
-                        map.put("sourceUrl", attribute.getSourceUrl());
-                        map.put("wordCount", String.valueOf(attribute.getWordCount()));
-                        map.put("minPrice", String.valueOf(attribute.getMinPrice()));
-                        map.put("maxPrice", String.valueOf(attribute.getMaxPrice()));
-                        handler.put("attribute", map);
-                    }
-                }
                 handler.render();
             }
         } else {
@@ -95,7 +102,10 @@ public class CmsContentDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
                 Consumer<CmsContent> consumer;
-                if (absoluteURL) {
+                if (containsAttribute) {
+                    List<CmsContentAttribute> attributeList = attributeService.getEntitys(ids);
+                    KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
+                    Map<Long, CmsContentAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getContentId());
                     consumer = e -> {
                         ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
                         if (null != statistics) {
@@ -104,17 +114,24 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                         if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
                             e.setId(e.getQuoteContentId());
                         }
-                        TemplateComponent.initContentUrl(site, e);
-                        TemplateComponent.initContentCover(site, e);
+                        if (absoluteURL) {
+                            CmsUrlUtils.initContentUrl(site, e);
+                            fileUploadComponent.initContentCover(site, e);
+                        }
+                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()), config));
                     };
                 } else {
                     consumer = e -> {
                         ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                        if (null != statistics) {
+                            e.setClicks(e.getClicks() + statistics.getClicks());
+                        }
                         if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
                             e.setId(e.getQuoteContentId());
                         }
-                        if (null != statistics) {
-                            e.setClicks(e.getClicks() + statistics.getClicks());
+                        if (absoluteURL) {
+                            CmsUrlUtils.initContentUrl(site, e);
+                            fileUploadComponent.initContentCover(site, e);
                         }
                     };
                 }
@@ -125,10 +142,11 @@ public class CmsContentDirective extends AbstractTemplateDirective {
         }
     }
 
+    @Override
+    public boolean supportAdvanced() {
+        return true;
+    }
+
     @Resource
     private CmsContentService service;
-    @Resource
-    private CmsContentAttributeService attributeService;
-    @Resource
-    private StatisticsComponent statisticsComponent;
 }

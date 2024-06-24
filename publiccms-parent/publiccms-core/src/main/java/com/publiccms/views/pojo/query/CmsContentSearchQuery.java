@@ -20,6 +20,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     private String exclude;
     private String[] fields;
     private Long[] tagIds;
+    private Long userId;
+    private Long parentId;
     private Integer categoryId;
     private Integer[] categoryIds;
     private String[] modelIds;
@@ -36,10 +38,10 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     public CmsContentSearchQuery() {
 
     }
-    
+
     public CmsContentSearchQuery(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery, String text,
-            String exclude, String[] fields, Long[] tagIds, Integer categoryId, Integer[] categoryIds, String[] modelIds,
-            String[] extendsValues, String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate,
+            String exclude, String[] fields, Long[] tagIds, Long userId, Long parentId, Integer categoryId, Integer[] categoryIds,
+            String[] modelIds, String[] extendsValues, String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate,
             Date endPublishDate, Date expiryDate) {
         super();
         this.siteId = siteId;
@@ -50,6 +52,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
         this.exclude = exclude;
         this.fields = fields;
         this.tagIds = tagIds;
+        this.userId = userId;
+        this.parentId = parentId;
         this.categoryId = categoryId;
         this.categoryIds = categoryIds;
         this.modelIds = modelIds;
@@ -60,7 +64,7 @@ public class CmsContentSearchQuery implements java.io.Serializable {
         this.endPublishDate = endPublishDate;
         this.expiryDate = expiryDate;
     }
-    
+
     /**
      * @return the siteId
      */
@@ -69,7 +73,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param siteId the siteId to set
+     * @param siteId
+     *            the siteId to set
      */
     public void setSiteId(Short siteId) {
         this.siteId = siteId;
@@ -83,7 +88,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param projection the projection to set
+     * @param projection
+     *            the projection to set
      */
     public void setProjection(boolean projection) {
         this.projection = projection;
@@ -97,7 +103,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param phrase the phrase to set
+     * @param phrase
+     *            the phrase to set
      */
     public void setPhrase(boolean phrase) {
         this.phrase = phrase;
@@ -111,7 +118,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param highLighterQuery the highLighterQuery to set
+     * @param highLighterQuery
+     *            the highLighterQuery to set
      */
     public void setHighLighterQuery(HighLighterQuery highLighterQuery) {
         this.highLighterQuery = highLighterQuery;
@@ -125,7 +133,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param text the text to set
+     * @param text
+     *            the text to set
      */
     public void setText(String text) {
         this.text = text;
@@ -139,7 +148,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param exclude the exclude to set
+     * @param exclude
+     *            the exclude to set
      */
     public void setExclude(String exclude) {
         this.exclude = exclude;
@@ -153,7 +163,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param fields the fields to set
+     * @param fields
+     *            the fields to set
      */
     public void setFields(String[] fields) {
         this.fields = fields;
@@ -167,10 +178,40 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param tagIds the tagIds to set
+     * @param tagIds
+     *            the tagIds to set
      */
     public void setTagIds(Long[] tagIds) {
         this.tagIds = tagIds;
+    }
+
+    /**
+     * @return the userId
+     */
+    public Long getUserId() {
+        return userId;
+    }
+
+    /**
+     * @param userId
+     *            the userId to set
+     */
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+    /**
+     * @return the parentId
+     */
+    public Long getParentId() {
+        return parentId;
+    }
+
+    /**
+     * @param parentId
+     *            the parentId to set
+     */
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     /**
@@ -181,7 +222,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param categoryId the categoryId to set
+     * @param categoryId
+     *            the categoryId to set
      */
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
@@ -195,7 +237,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param categoryIds the categoryIds to set
+     * @param categoryIds
+     *            the categoryIds to set
      */
     public void setCategoryIds(Integer[] categoryIds) {
         this.categoryIds = categoryIds;
@@ -209,7 +252,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param modelIds the modelIds to set
+     * @param modelIds
+     *            the modelIds to set
      */
     public void setModelIds(String[] modelIds) {
         this.modelIds = modelIds;
@@ -223,7 +267,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param extendsValues the extendsValues to set
+     * @param extendsValues
+     *            the extendsValues to set
      */
     public void setExtendsValues(String[] extendsValues) {
         this.extendsValues = extendsValues;
@@ -237,7 +282,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param dictionaryValues the dictionaryValues to set
+     * @param dictionaryValues
+     *            the dictionaryValues to set
      */
     public void setDictionaryValues(String[] dictionaryValues) {
         this.dictionaryValues = dictionaryValues;
@@ -251,7 +297,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param dictionaryUnion the dictionaryUnion to set
+     * @param dictionaryUnion
+     *            the dictionaryUnion to set
      */
     public void setDictionaryUnion(Boolean dictionaryUnion) {
         this.dictionaryUnion = dictionaryUnion;
@@ -265,7 +312,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param startPublishDate the startPublishDate to set
+     * @param startPublishDate
+     *            the startPublishDate to set
      */
     public void setStartPublishDate(Date startPublishDate) {
         this.startPublishDate = startPublishDate;
@@ -279,7 +327,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param endPublishDate the endPublishDate to set
+     * @param endPublishDate
+     *            the endPublishDate to set
      */
     public void setEndPublishDate(Date endPublishDate) {
         this.endPublishDate = endPublishDate;
@@ -293,7 +342,8 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @param expiryDate the expiryDate to set
+     * @param expiryDate
+     *            the expiryDate to set
      */
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;

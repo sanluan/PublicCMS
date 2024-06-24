@@ -7,6 +7,9 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.cms.CmsVoteService;
+
+import freemarker.template.TemplateException;
+
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.handler.PageHandler;
@@ -44,7 +47,7 @@ import com.publiccms.common.handler.PageHandler;
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/cms/voteList?pageSize=10', function(data){    
-console.log(data.totalCount);
+console.log(data.page.totalCount);
 });
 &lt;/script&gt;
  * </pre>
@@ -53,7 +56,7 @@ console.log(data.totalCount);
 public class CmsVoteListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Boolean disabled = false;
         String title = null;
         if (getAdvanced(handler)) {

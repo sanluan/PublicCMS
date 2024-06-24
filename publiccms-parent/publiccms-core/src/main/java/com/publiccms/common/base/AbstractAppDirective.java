@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
-import jakarta.annotation.Resource;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.directive.BaseHttpDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -21,6 +21,10 @@ import com.publiccms.logic.service.sys.SysAppTokenService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateModelException;
+import jakarta.annotation.Resource;
+
 /**
  * 
  * BaseDirective 自定义接口指令基类
@@ -30,26 +34,25 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
     /**
      * @param handler
      * @return site
-     * @throws IOException
-     * @throws Exception
+     * @throws TemplateModelException
      */
-    public SysSite getSite(RenderHandler handler) throws IOException, Exception {
+    public SysSite getSite(RenderHandler handler) throws TemplateModelException {
         return (SysSite) handler.getAttribute(CommonConstants.getAttributeSite());
     }
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         SysApp app = null;
         SysUser user = null;
-        if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis()) || !ArrayUtils
-                .contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED), getName()))) {
+        if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis())
+                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), Constants.COMMA), getName()))) {
             if (null == app) {
-                handler.put("error", ApiController.NEED_APP_TOKEN).render();
+                handler.put(CommonConstants.ERROR, ApiController.NEED_APP_TOKEN).render();
             } else {
-                handler.put("error", ApiController.UN_AUTHORIZED).render();
+                handler.put(CommonConstants.ERROR, ApiController.UN_AUTHORIZED).render();
             }
         } else if (needUserToken() && null == (user = getUser(handler))) {
-            handler.put("error", ApiController.NEED_LOGIN).render();
+            handler.put(CommonConstants.ERROR, ApiController.NEED_LOGIN).render();
         } else {
             execute(handler, app, user);
             if (!handler.getRenderd()) {
@@ -58,7 +61,7 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
         }
     }
 
-    protected SysApp getApp(RenderHandler handler) throws Exception {
+    protected SysApp getApp(RenderHandler handler) throws TemplateModelException {
         SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));
         if (null != appToken && (null == appToken.getExpiryDate() || CommonUtils.getDate().before(appToken.getExpiryDate()))) {
             SysApp app = appService.getEntity(appToken.getAppId());
@@ -69,7 +72,7 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
         return null;
     }
 
-    protected SysUser getUser(RenderHandler handler) throws Exception {
+    protected SysUser getUser(RenderHandler handler) throws TemplateModelException {
         String authToken = handler.getString("authToken");
         Long authUserId = handler.getLong("authUserId");
         if (CommonUtils.notEmpty(authToken) && null != authUserId) {
@@ -88,9 +91,9 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
      * @param app
      * @param user
      * @throws IOException
-     * @throws Exception
+     * @throws TemplateException
      */
-    public abstract void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception;
+    public abstract void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException;
 
     /**
      * @return whether need the app token

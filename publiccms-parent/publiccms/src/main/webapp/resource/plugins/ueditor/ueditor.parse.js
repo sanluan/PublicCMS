@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Wed Apr 27 2022 18:45:51 GMT+0800 (中国标准时间)
+ * build: Mon Mar 20 2023 08:28:24 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -641,7 +641,7 @@ UE.parse.register('charts',function( utils ){
         if ( !window.jQuery ) {
 
             utils.loadFile(document,{
-                src : resourceRoot + "/third-party/jquery-1.10.2.min.js",
+                src : resourceRoot + "/third-party/jquery.min.js",
                 tag : "script",
                 type : "text/javascript",
                 defer : "defer"
@@ -905,7 +905,7 @@ UE.parse.register('list',function(utils){
 
 
     utils.extend(this,{
-        liiconpath : 'http://bs.baidu.com/listicon/',
+        liiconpath : this.rootPath +'themes/ueditor-list/',
         listDefaultPaddingLeft : '40'
     });
 

@@ -1,0 +1,77 @@
+<#assign sitefile=getSitefile(name)/>
+<style>
+#content img,#content video{max-width:100%;}
+</style>
+<form method="post" action="cmsTemplate/doImport?callbackType=closeCurrent&navTabId=cmsTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <input type="hidden" name="fileName" value="${name!}"/>
+    <div class="pageFormContent" layoutH>
+        <dl class="nowrap">
+            <dt><@t.page 'name'/>:</dt>
+            <dd class="exclude-translate">
+                ${(sitefile.name)!name}<#if sitefile.url?has_content><a href="${sitefile.url}" target="_blank"><i class="icon-external-link"></i></a></#if>
+            </dd>
+        </dl>
+        <#if sitefile?has_content>
+            <dl class="nowrap">
+                <dt><@t.page 'description'/>:</dt>
+                <dd class="exclude-translate">${sitefile.description!}</dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'site.enable_static'/>:</dt>
+                <dd class="exclude-translate">${t.pageMessage(sitefile.useStatic?then('yes','no'))}</dd>
+            </dl>
+            <dl>
+                <dt><@t.page 'version'/>:</dt>
+                <dd class="exclude-translate">${sitefile.version!}</dd>
+            </dl>
+            <dl>
+                <dt><@t.page 'content.author'/>:</dt>
+                <dd class="exclude-translate">${sitefile.author!}</dd>
+            </dl>
+            <#if sitefile.cmsVersionList?has_content>
+                <@tools.version>
+                    <dl class="nowrap">
+                        <dt><@t.page 'version.available'/>:</dt>
+                        <dd class="exclude-translate">
+                            <#list sitefile.cmsVersionList as a>${a}<#if a=cms>[<@t.page 'compare.now'/>]</#if><#sep>,</#list>
+                        </dd>
+                    </dl>
+                    <dl class="nowrap">
+                        <dt><@t.page 'compare.now'/>:</dt>
+                        <dd class="exclude-translate">
+                            ${cms}
+                        </dd>
+                    </dl>
+                </@tools.version>
+            </#if>
+            <#if sitefile.cover?has_content>
+                <dl class="nowrap">
+                    <dt><@t.page 'cover'/>:</dt>
+                    <dd>
+                        <div class="thumbnail">
+                            <img src="${base+adminContextPath}/visitSitefileImage?sitefile=${name!}&imageFile=${sitefile.cover}" alt="${(sitefile.name)!name}"/>
+                        </div>
+                    </dd>
+                </dl>
+            </#if>
+            <#if sitefile.text?has_content>
+                <dl class="nowrap">
+                    <dt><@t.page 'content.text'/>:</dt>
+                    <dd id="content" class="exclude-translate">
+                        ${(sitefile.text?no_esc)!}
+                    </dd>
+                </dl>
+            </#if>
+        </#if>
+    </div>
+    <div class="formBar">
+        <ul>
+            <#if showImport?has_content>
+                <li><label><input type="checkbox" name="overwrite" class="form-check-input" checked="checked"><@t.page 'import.overwrite'/></label></li>
+                <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'import'/></button></li>
+            </#if>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+</form>

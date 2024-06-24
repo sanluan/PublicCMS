@@ -50,7 +50,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/createContentFile?id=1&amp;tem
 public class CreateContentFileDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         String templatePath = handler.getString("templatePath");
         String filepath = handler.getString("filePath");

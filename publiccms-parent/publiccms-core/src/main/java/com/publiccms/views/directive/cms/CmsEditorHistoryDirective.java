@@ -15,6 +15,7 @@ import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.logic.service.cms.CmsEditorHistoryService;
 
 import jakarta.annotation.Resource;
+import freemarker.template.TemplateException;
 
 /**
 *
@@ -46,7 +47,7 @@ import jakarta.annotation.Resource;
 public class CmsEditorHistoryDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         if (CommonUtils.notEmpty(id)) {
             CmsEditorHistory entity = service.getEntity(id);

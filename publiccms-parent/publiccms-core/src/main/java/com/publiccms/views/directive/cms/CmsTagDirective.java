@@ -13,6 +13,8 @@ import com.publiccms.entities.cms.CmsTag;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsTagService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * tag 标签查询指令
@@ -43,7 +45,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/tag?id=1', function(data){
 public class CmsTagDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

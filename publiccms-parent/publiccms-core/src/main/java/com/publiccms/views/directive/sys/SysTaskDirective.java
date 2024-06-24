@@ -13,6 +13,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysTask;
 import com.publiccms.logic.service.sys.SysTaskService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * sysTask 任务计划查询指令
@@ -43,7 +45,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/task?id=1&amp;appToken=接口�
 public class SysTaskDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer id = handler.getInteger("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

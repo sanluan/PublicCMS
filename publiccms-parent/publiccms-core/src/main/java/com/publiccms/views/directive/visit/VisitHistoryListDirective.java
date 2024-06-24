@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.visit.VisitHistoryService;
+
+import freemarker.template.TemplateException;
+
 import com.publiccms.common.handler.PageHandler;
 
 /**
@@ -18,6 +21,7 @@ import com.publiccms.common.handler.PageHandler;
  * 参数列表
  * <ul>
  * <li><code>sessionId</code>:会话id
+ * <li><code>ip</code>:ip
  * <li><code>url</code>:url
  * <li><code>startCreateDate</code>:起始创建日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>endCreateDate</code>:终止创建日期,【2020-01-01 23:59:59】,【2020-01-01】
@@ -40,7 +44,7 @@ import com.publiccms.common.handler.PageHandler;
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/visit/historyList?hourAnalytics=false&amp;appToken=接口访问授权Token', function(data){    
-  console.log(data.totalCount);
+  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
  * </pre>
@@ -49,10 +53,11 @@ $.getJSON('${site.dynamicPath}api/directive/visit/historyList?hourAnalytics=fals
 public class VisitHistoryListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("sessionId"), handler.getString("url"),
-                handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("sessionId"), handler.getString("ip"),
+                handler.getString("url"), handler.getLong("userId"), handler.getDate("startCreateDate"),
+                handler.getDate("endCreateDate"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
+                handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
 

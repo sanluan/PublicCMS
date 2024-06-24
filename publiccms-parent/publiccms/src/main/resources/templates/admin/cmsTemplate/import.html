@@ -5,7 +5,8 @@
             <dt><@t.page 'file'/>:</dt>
             <dd>
                 <input type="file" name="file" class="required" size="30" accept="application/zip"/>
-                <label><input type="checkbox" name="overwrite" checked="checked"><@t.page 'import.overwrite'/></label>
+                <label><input type="checkbox" name="overwrite" checked="checked" class="form-check-input"><@t.page 'import.overwrite'/></label>
+                <span class="info"><@t.page 'file_type'/>:*-site.zip</span>
             </dd>
         </dl>
     </div>

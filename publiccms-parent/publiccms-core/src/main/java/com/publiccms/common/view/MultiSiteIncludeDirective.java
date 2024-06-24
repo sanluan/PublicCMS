@@ -3,7 +3,7 @@ package com.publiccms.common.view;
 import java.io.IOException;
 import java.util.Map;
 
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.TemplateModelUtils;
 import com.publiccms.entities.sys.SysSite;
@@ -37,7 +37,7 @@ public class MultiSiteIncludeDirective implements TemplateDirectiveModel {
         @SuppressWarnings("unchecked")
         String path = TemplateModelUtils.converString(((Map<String, TemplateModel>) parameters).get("path"));
         if (CommonUtils.notEmpty(path) && null != environment) {
-            environment.include(SiteComponent.getFullTemplatePath(site.getId(), path), CommonConstants.DEFAULT_CHARSET_NAME, true);
+            environment.include(SiteComponent.getFullTemplatePath(site.getId(), path), Constants.DEFAULT_CHARSET_NAME, true);
         }
     }
 }

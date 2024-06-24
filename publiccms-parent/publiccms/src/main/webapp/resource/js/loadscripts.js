@@ -1,4 +1,4 @@
-function loadScripts(urls, callback) {
+function loadScripts(urls, callback,base) {
     function loadScript(url, callback){
         var head = document.head || document.getElementsByTagName("head")[0] || document.documentElement;
         var script = document.createElement("script")
@@ -29,8 +29,16 @@ function loadScripts(urls, callback) {
                 callbacks[j]();
             }
         } else {
-            loadScript(urls[++i],loadOrCallback);
+            if(base){
+                loadScript(base+urls[++i],loadOrCallback);
+            }else{
+                loadScript(urls[++i],loadOrCallback);
+            }
         }
     };
-    loadScript(urls[i],loadOrCallback);
+    if(base){
+        loadScript(base+urls[i],loadOrCallback);
+    }else{
+        loadScript(urls[i],loadOrCallback);
+    }
 }

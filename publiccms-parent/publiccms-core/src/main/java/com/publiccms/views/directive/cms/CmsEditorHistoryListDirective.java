@@ -12,6 +12,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.cms.CmsEditorHistoryService;
 
 import jakarta.annotation.Resource;
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -43,7 +44,7 @@ import jakarta.annotation.Resource;
  * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/cms/editorHistoryList?contentId=1&amp;fieldName='text'&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
-    console.log(data.totalCount);
+    console.log(data.page.totalCount);
   });
   &lt;/script&gt;
  * </pre>
@@ -52,7 +53,7 @@ import jakarta.annotation.Resource;
 public class CmsEditorHistoryListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(handler.getString("itemType"), handler.getString("itemId"),
                 handler.getString("fieldName"), handler.getLong("userId"), handler.getString("orderType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));

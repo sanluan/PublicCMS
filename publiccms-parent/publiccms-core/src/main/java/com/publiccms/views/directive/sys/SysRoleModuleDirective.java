@@ -10,17 +10,18 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysRoleModule;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.service.sys.SysRoleModuleService;
 import com.publiccms.logic.service.sys.SysRoleService;
+
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -39,8 +40,8 @@ import com.publiccms.logic.service.sys.SysRoleService;
  * &lt;@sys.roleModule roleIds='1,2,3'
  * modelId='page'&gt;${object}&lt;/@sys.roleModule&gt;
  * <p>
- * &lt;@sys.roleModule roleIds='1,2,3' modelIds='page,content'&gt;&lt;#list map as
- * k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.roleModule&gt;
+ * &lt;@sys.roleModule roleIds='1,2,3' modelIds='page,content'&gt;&lt;#list map
+ * as k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.roleModule&gt;
  *
  * <pre>
 &lt;script&gt;
@@ -55,17 +56,17 @@ public class SysRoleModuleDirective extends AbstractTemplateDirective {
     @Resource
     private SysRoleService sysRoleService;
     @Resource
-    protected ConfigComponent configComponent;
+    protected ConfigDataComponent configDataComponent;
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer[] roleIds = handler.getIntegerArray("roleIds");
         String moduleId = handler.getString("moduleId");
         if (CommonUtils.notEmpty(roleIds)) {
             SysSite site = getSite(handler);
-            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
             String[] excludeModules = StringUtils.split(config.get(SiteConfigComponent.CONFIG_SITE_EXCLUDE_MODULE),
-                    CommonConstants.COMMA);
+                    Constants.COMMA);
             if (CommonUtils.notEmpty(moduleId)) {
                 handler.put("object",
                         (CommonUtils.empty(excludeModules) || !ArrayUtils.contains(excludeModules, moduleId))

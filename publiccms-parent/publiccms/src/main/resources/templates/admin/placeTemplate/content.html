@@ -29,9 +29,16 @@
             <a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true"><@t.page 'template.fragment'/></a>
             <a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true"><@t.page 'place'/></a>
             <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true"><@t.page 'webfile'/></a>
-            <a class="button" href="cmsFileHistory/list.html?path=/include${(path?url)!}" lookupGroup=""><@t.page 'history'/></a>
             <a class="button" href="cmsTemplate/help.html?type=place&path=${(path?url)!}" target="dialog" mask="true"><@t.page 'template.help'/></a>
+            <a class="button" href="cmsFileHistory/list.html?path=/include${(path?url)!}" lookupGroup=""><@t.page 'history'/></a>
             <a class="button" href="<@t.page 'template.manual.url'/>" target="_blank"><@t.page 'template.manual'/></a>
+            <div class="float-right">
+                <select class="combox codeTheme">
+                <#list codeTheme as k,a>
+                    <option value="${k}">${a}</option>
+                </#list>
+                 </select>
+            </div>
         </h2>
         <div class="pageFormContent" layoutH>
             <div>

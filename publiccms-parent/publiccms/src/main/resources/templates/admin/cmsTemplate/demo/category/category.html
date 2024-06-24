@@ -1,4 +1,4 @@
-<#assign attribute=getCategoryAttribute(category.id)/>
+<#assign attribute=category.attribute/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,6 +9,11 @@
     <style>
         nav a.selected{border-bottom:1px solid #f099f0;}
         .bread{border-bottom:1px solid #eee;}
+        .pagination{list-style:none;}
+		.pagination:after{content:"";display:block;clear:both;}
+        .pagination .page-item{padding:0 0.3rem;float:left;}
+        .pagination .page-item .page-link{margin-left:0;border-radius:0.2rem;padding:0.375rem 0.875rem;color:#999;border-color:#eee;}
+        .page-item.active .page-link{background-color:#4C81E7;border-color:#eee;color:#FFF;}
     </style>
 </head>
 <body>
@@ -18,8 +23,8 @@
     <nav data-diy="category">
         <a href="${site.dynamicPath}" data-id="home">Home</a>
 <@cms.categoryList>
-    <#list page.list as a>
-        <a href="${a.url!}" target="_blank" data-id="${a.id}" data-diy-item="${a.id}">${a.name}</a>
+    <#list page.list as category>
+        <a href="${category.url!}" target="_blank" data-id="${category.id}" data-diy-item="${category.id}">${category.name}</a>
     </#list>
 </@cms.categoryList>
     </nav>
@@ -32,21 +37,22 @@
     </#if>
     <a href="${category.url}" data-id="${category.id}">${category.name}</a> &gt;
 </#macro>
-        <p class="bread"><@bread category/> <a href="${category.url}" data-id="${category.id}">${category.name}</a></p>
+        <p class="bread"><@bread category/></p>
         <h1 data-diy="category" data-diy-id="${(category.id)!}">${(category.name)!}</h1>
-<@cms.contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
+    <@cms.contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
         <ul data-diy="content">
-    <#list page.list as a>
-            <li data-diy-item="${a.id}">
-                <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
+        <#list page.list as content>
+            <li data-diy-item="${content.id}">
+                <h3><a href="<#if content.onlyUrl>${site.dynamicPath}content/redirect?id=${content.id}<#else>${content.url!}</#if>" target="_blank">${content.title}</a></h3>
                 <p>
-                    <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
-                    ${a.description!}
+                    <#if content.cover?has_content><img src="${content.cover}" alt="${content.title}"/></#if>
+                    ${content.description!}
                 </p>
             </li>
-    </#list>
+        </#list>
         </ul>
-        <div>
+        <ul class="pagination">
+            <#if category.url?contains('?')><#assign pageParameter="pageIndex"/></#if>
             <#assign
                 start=1
                 end=page.totalPage
@@ -57,39 +63,29 @@
             <#if (page.pageIndex+5) lt end>
                 <#assign end=page.pageIndex+4/>
             </#if>
-            <#if !page.firstPage>
-                <a href="${getPage(category.url,page.prePage,'pageIndex')}">Previous page</a>
-            <#else>
-                <span>Previous page</span>
-            </#if>
+            <li class="page-item"><a class="page-link" href="${getPage(category.url,page.prePage,pageParameter)}">Previous page</a></li>
             <#if start gt 1>
-                <a href="${category.url}">1</a> ...
+                <li class="page-item"><a class="page-link" href="${category.url}">1</a></li>
+                <li class="page-item"><span class="page-link">...</span></li>
             </#if>
             <#list start..end as n>
-                <#if n=page.pageIndex>
-                    ${n}
-                <#else>
-                    <a href="${getPage(category.url,n,'pageIndex')}">${n}</a>
-                </#if>
+                <li class="page-item<#if n=page.pageIndex> active</#if>"><a class="page-link" href="${getPage(category.url,n,pageParameter)}">${n}</a></li>
             </#list>
             <#if end lt page.totalPage>
-                ... <a href="${getPage(category.url,page.totalPage,'pageIndex')}">${page.totalPage}</a>
+                <li class="page-item"><span class="page-link">...</span></li>
+                <li class="page-item"><a class="page-link" href="${getPage(category.url,page.totalPage,pageParameter)}">${page.totalPage}</a></li>
             </#if>
-            <#if !page.lastPage>
-                <a href="${getPage(category.url,page.nextPage,'pageIndex')}">Next page</a>
-            <#else>
-                <span>Next page</span>
-            </#if>
-        </div>
-</@cms.contentList>
+            <li class="page-item"><a class="page-link" href="${getPage(category.url,page.nextPage,pageParameter)}">Next page</a></li>
+        </ul>
+    </@cms.contentList>
         <aside>
             <h3>Popular content</h3>
             <ul data-diy="content">
-<@cms.contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
-    <#list page.list as a>
-                <li data-diy-item="${a.id}"><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
-    </#list>
-</@cms.contentList>
+        <@cms.contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
+            <#list page.list as content>
+                <li data-diy-item="${content.id}"><a href="<#if content.onlyUrl>${site.dynamicPath}content/redirect?id=${content.id}<#else>${content.url!}</#if>" target="_blank">${content.title}</a><span>${content.clicks}</span></li>
+            </#list>
+        </@cms.contentList>
             </ul>
         </aside>
     </main>
@@ -116,7 +112,7 @@
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
         }
-        ca.setDomain('${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}');
+        ca.setDomain("${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}");
         ca.setPath('/');
         ca.report(url);
     </script>

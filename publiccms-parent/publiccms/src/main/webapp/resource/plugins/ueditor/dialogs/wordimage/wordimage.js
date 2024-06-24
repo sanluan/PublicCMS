@@ -8,17 +8,17 @@
 
 (function () {
     var uploadImage;
-    
+
     window.onload = function () {
         initUploader();
         initButtons();
     };
-    
+
     function initUploader(){
         showLocalPath("localPath");
         uploadImage = new UploadImage('queueList');
     }
-    
+
     function showLocalPath(id) {
         //单张编辑
         var img = editor.selection.getRange().getClosedNode();
@@ -66,13 +66,13 @@
             }
         };
     }
-    
+
     /* 上传图片 */
     function UploadImage(target) {
         this.$wrap = target.constructor == String ? $('#' + target) : $(target);
         this.init();
     }
-    
+
     UploadImage.prototype = {
         init: function () {
             this.imageList = [];
@@ -151,7 +151,6 @@
                     extensions: acceptExtensions,
                     mimeTypes: 'image/*'
                 },
-                swf: '../../third-party/webuploader/Uploader.swf',
                 server: actionUrl,
                 fileVal: editor.getOpt('imageFieldName'),
                 duplicate: true,
@@ -512,7 +511,7 @@
 
             uploader.on('uploadError', function (file, code) {
             });
-            uploader.on('error', function (code, file) {
+            uploader.on('error', function (code, size, file) {
                 if (code == 'Q_TYPE_DENIED' || code == 'F_EXCEED_SIZE') {
                     addFile(file);
                 }
@@ -541,7 +540,7 @@
             var file, i, status, readyFile = 0, files = this.uploader.getFiles();
             for (i = 0; file = files[i++]; ) {
                 status = file.getStatus();
-                if (status == 'queued' || status == 'uploading' || status == 'progress') readyFile++;
+                if (status == 'inited' || status == 'queued' || status == 'uploading' || status == 'progress') readyFile++;
             }
             return readyFile;
         },

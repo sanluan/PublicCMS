@@ -7,13 +7,14 @@
             <dt><@t.page 'file'/>:</dt>
             <dd>
                 <input type="file" name="file" class="required" size="30" accept="application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/msword,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+                <label><input type="checkbox" name="overrideTitle" class="form-check-input"<#if !field?has_content> checked="checked"</#if>><@t.page 'title.override'/></label>
                 <span class="info"><@t.page 'import_doc.support_type'/></span>
             </dd>
         </dl>
         <dl class="nowrap iframe hide">
             <dt><@t.page 'iframe'/>:</dt>
             <dd>
-                <p><label><input type="checkbox" name="useIframe"><@t.page 'upload.useIframe'/></label></p>
+                <p><label><input type="checkbox" name="useIframe" class="form-check-input"><@t.page 'upload.useIframe'/></label></p>
                 <div class="iframeSize hide">
                     <label><@t.page 'width'/></label><input name="width" data-required="true" type="text" value="100%"/>
                     <label><@t.page 'height'/></label><input name="height" data-required="true" type="text" value="800px"/>
@@ -45,24 +46,17 @@ $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",func
         var filenames=$(this)[0].files[0].name.toLowerCase().split('.');
         if('pdf' == filenames[filenames.length-1]){
             $('.iframe',$.pdialog.getCurrent()).show();
+            $('input[name=useIframe]',$.pdialog.getCurrent()).click();
         } else {
             $('.iframe',$.pdialog.getCurrent()).hide();
         }
         if('pptx' == filenames[filenames.length-1]||'ppt' == filenames[filenames.length-1]){
             $('.font',$.pdialog.getCurrent()).show();
-            if ("function" === typeof $.cookie && $.cookie("import_font")) {
-                $("select[name=defaultFontFamily]",$.pdialog.getCurrent()).comboxVal($.cookie("import_font"));
-            }
         } else {
             $('.font',$.pdialog.getCurrent()).hide();
         }
     }
 });
-if ("function" === typeof $.cookie){
-    $("select[name=defaultFontFamily]",$.pdialog.getCurrent()).change(function(){
-        $.cookie("import_font",$(this).val());
-    });
-}
 $('input[name=useIframe]',$.pdialog.getCurrent()).click(function(){
     if($(this).is(':checked')) {
         $('.iframeSize',$.pdialog.getCurrent()).show();

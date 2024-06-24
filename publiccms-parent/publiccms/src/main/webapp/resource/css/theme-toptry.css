@@ -6,30 +6,29 @@ body,html{color:#31353e;}
 a{color:#448af3;}
 h2.contentTitle{border-color:#e4e9f2;background-color:#fff;}
 header{background-color:#131a23;color:#afc5f6;}
-header .nav ul{background-color:#667ea7;}
-header .nav ul li a { color:#000;}
+header .navbar-toggler li:hover{background-color:#2c3343;}
+header .navbar-toggler li:hover a,header .nav a:hover{color:#fff;}
+header .nav>li>ul{background-color:#667ea7;}
 header a{color:#afc5f6;}
-#navMenu li.selected,#navMenu li:hover{background-color:#2c3343;}
-#navMenu li.selected a,#navMenu li:hover a,header .nav a:hover{color:#fff;}
 /* 主界面 */
 
-#sidebar,#sidebar_s{background-color:#2c3343;}
+#sidebar,#sidebar_s{background-color:#2A3042;}
 .tabsPage{background-color:#edf1f5;}
-.accordion .accordionHeader{background-color:#222836;}
-.accordion .accordionHeader h2.collapsable{color:#fff;}
-.accordion .accordionContent{background-color:#2c3343;}
+.accordion .accordionHeader{background-color:#2A3042;}
+.accordion .accordionHeader h2.collapsable,.accordion .accordionContent h2{color:#fff;background-color:#3B445F;}
+.accordion .accordionHeader a h2.collapsable{color:#fff;}
+.accordion .accordionContent{background-color:#2A3042;}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC;}
 
-#sidebar_s,.accordion .accordionHeader,.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover{color:#9ab;}
+#sidebar_s,.accordion .accordionHeader,.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover,.accordion .accordionHeader a{color:#9ab;}
 .accordionContent .tree div:hover a{background-color:#19202f;color:#8d95a7;}
 .accordionContent .tree div.selected a{background-color:#667ea7;color:#fff;}
 
-.tabsPage .tabsPageHeader{background-color:#516485;}
-.tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight{color:#a8b6ce;}
-.tabsPage .tabsPageHeader li a{color:#b5c3db;}
-.tabsPage .tabsPageHeader li.selected{background-color:#f2f6f9;color:#667ea7}
-.tabsPage .tabsPageHeader li:hover,.tabsPage .tabsPageHeader li:hover a{color:#dde2ec;}
-.tabsPage .tabsPageHeader li.selected a{color:#516485;}
+.tabsPage .tabsPageHeader{background-color:#e7ecf0;}
+.tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight{color:#667ea7;}
+.tabsPage .tabsPageHeader li a{background-color:#fff;color:#516485;}
+.tabsPage .tabsPageHeader li:hover a,.tabsPage .tabsPageHeader li.selected a{background-color:#1584DD;color:#fff;}
+.tabsPage .tabsPageHeader li.selected a.close,.tabsPage .tabsPageHeader li:hover a.close{background-color:#fff;color:#1584DD;}
 .tabsPage .tabsMoreList{background-color:#fff;border-color:#dde2ec;}
 .tabsPage .tabsMoreList li a{color:#333;}
 .tabsPage .tabsMoreList li a:hover,.tabsPage .tabsMoreList li.selected a{background-color:#667ea7;color:#fff;}
@@ -46,14 +45,12 @@ fieldset legend:before{background-color:#3587ef;}
 .formBar{background-color:#edf1f5;}
 .tagsBox span,.parametersBox span {background-color: #edf2f6;}
 
-.leftPageContent{border-color:#e4e9f2;background-color:#f2f6f9;}
-
 button.buttonActive{color:#fff;background-color:#667ea7;border-color:#667ea7;}
 button.buttonActive:hover{background-color:#5d7298;border-color:#5d7298;}
 button.buttonDisabled{color:#516485;background-color:#eee;border-color:#dde2ec;}
 a.button,button.button{color:#516485;background-color:#fff;border-color:#dde2ec;}
 a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec;}
-.pagination li.jumpto .textInput,.textInput,input.disabled,input.error,input.focus,input.readonly,input.required,textarea.disabled,textarea.error,textarea.focus,textarea.readonly,textarea.required,.inputDateButton{border-color:#dde2ec;}
+.pagination li.jumpto .textInput,.textInput,input.disabled,input.error,input.focus,input.readonly,input.required,textarea.disabled,textarea.error,textarea.focus,textarea.readonly,textarea.required,.inputDateButton,.inputClearButton{border-color:#dde2ec;}
 input.disabled,textarea.disabled{background-color:#eee;cursor:not-allowed;}
 textarea.readonly,input.readonly{background-color:#eee;}
 .pageHeader{background-color:#f2f6f9;color:#31353e;}

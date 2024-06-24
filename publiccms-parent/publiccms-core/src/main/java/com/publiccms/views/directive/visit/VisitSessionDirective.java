@@ -3,9 +3,12 @@ package com.publiccms.views.directive.visit;
 // Generated 2021-1-14 22:44:06 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 import jakarta.annotation.Resource;
+
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -14,6 +17,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.visit.VisitSession;
 import com.publiccms.entities.visit.VisitSessionId;
 import com.publiccms.logic.service.visit.VisitSessionService;
+
+import freemarker.template.TemplateException;
 
 /**
 *
@@ -40,10 +45,11 @@ import com.publiccms.logic.service.visit.VisitSessionService;
 public class VisitSessionDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String sessionId = handler.getString("sessionId");
         Date visitDate = handler.getDate("visitDate");
         if (CommonUtils.notEmpty(sessionId) && null != visitDate) {
+            visitDate = DateUtils.truncate(visitDate, Calendar.DATE);
             VisitSession entity = service.getEntity(new VisitSessionId(getSite(handler).getId(), sessionId, visitDate));
             if (null != entity) {
                 handler.put("object", entity).render();

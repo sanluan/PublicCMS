@@ -2,8 +2,12 @@ package com.publiccms.views.pojo.entities;
 
 import java.util.List;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.publiccms.entities.sys.SysExtendField;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * CmsCategoryType
@@ -22,6 +26,8 @@ public class CmsCategoryType implements java.io.Serializable {
      * name<p>
      * 名称
      */
+    @NotNull
+    @Length(max = 50)
     private String name;
     /**
      * extend link<p>

@@ -35,10 +35,10 @@ server {
     listen       ${dynamicPort?has_content?then(dynamicPort,80)};
     #listen 443 ssl;
     server_name  ${dynamicPath} <#list page.list as d><#if d.name!=dynamicPath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#if d.multiple><#assign multipleDomain=d/></#if><#sep> </#list>;
-    
+
     #ssl_certificate cert/xxx.pem;
     #ssl_certificate_key cert/xxx.key;
-     
+
         <#if a.useSsi>
     ssi on;
     ssi_silent_errors on;
@@ -49,15 +49,21 @@ server {
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto  $scheme;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header Sendfile X-Accel-Redirect;
         proxy_connect_timeout 5;
         proxy_send_timeout 30;
         proxy_read_timeout 10;
         proxy_pass http://cms;
     }
-
+    location /privatefile/ {
+        internal;
+        alias ${realRootPath}/web/private/site_${siteId}/;
+    }
         <#if a.useSsi>
     location /include/ {
+        internal;
         alias ${realRootPath}/web/site_${siteId}/include/;
     }
         </#if>
@@ -67,7 +73,7 @@ server {
         alias   ${realRootPath}/web/site_${siteId}/;
         index   index.html;
         <#if dynamicLocation=siteLocation>
-        try_files  $uri  $uri/  @cmsproxy; 
+        try_files  $uri  $uri/  @cmsproxy;
         </#if>
     }
             <#if multipleDomain?has_content>
@@ -79,34 +85,17 @@ server {
         alias   ${realRootPath}/web/site_${a.id}/;
         index  index.html;
         <#if dynamicLocation=siteLocation>
-        try_files  $uri  $uri/  @cmsproxy; 
+        try_files  $uri  $uri/  @cmsproxy;
         </#if>
     }
                         </#if>
                     </#list>
                 </@sys.siteList>
             </#if>
-        <#else>
-    location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/ {
-        alias   ${realRootPath}/web/site_${siteId}/webfile/;
-        index  index.html;
-    }
-    
-            <#if multipleDomain?has_content>
-                <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
-                    <#list page.list as a>
-                        <#if a.directory?has_content>
-    location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/${a.directory}/ {
-        alias   ${realRootPath}/web/site_${a.id}/webfile/;
-        index  index.html;
-    }
-                        </#if>
-                    </#list>
-                </@sys.siteList>
-            </#if>
         </#if>
+
     error_page 403 /error/403.html;
-    error_page 404 /error/403.html;
+    error_page 404 /error/404.html;
     error_page 500 502 503 504 /error/500.html;
 }
 </@sys.domainList>
@@ -119,12 +108,6 @@ server {
     ssi on;
     ssi_silent_errors on;
     ssi_types text/shtml;
-
-        <#if siteLocation?has_content>
-    location /include/ {
-        alias ${realRootPath}/web/site_${siteId}/include/;
-    }
-        </#if>
     </#if>
 
     location ${siteLocation?has_content?then('/'+siteLocation,'/')} {
@@ -132,7 +115,13 @@ server {
         index  index.html;
         add_header Access-Control-Allow-Origin *;
     }
-    
+    <#if a.useSsi>
+    location /include/ {
+        internal;
+        alias ${realRootPath}/web/site_${siteId}/include/;
+    }
+    </#if>
+
     <#if multipleDomain?has_content>
         <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
             <#list page.list as a>
@@ -145,8 +134,9 @@ server {
             </#list>
         </@sys.siteList>
     </#if>
+
     error_page 403 /error/403.html;
-    error_page 404 /error/403.html;
+    error_page 404 /error/404.html;
     error_page 500 502 503 504 /error/500.html;
 }
 </#if></textarea>
@@ -158,6 +148,29 @@ server {
         <dd>
             <textarea class="code" mode="xml">
 #<@t.page 'server_config.apache_common_description'/>
+<ifModule !proxy_module>
+LoadModule proxy_module modules/mod_proxy.so
+</ifModule>
+<ifModule !proxy_balancer_module>
+LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
+</ifModule>
+<ifModule !headers_module>
+LoadModule headers_module modules/mod_headers.so
+</ifModule>
+<#if dynamicLocation=siteLocation>
+<ifModule !rewrite_module>
+LoadModule rewrite_module modules/mod_rewrite.so
+</ifModule>
+</#if>
+# https://tn123.org/mod_xsendfile/
+<ifModule !xsendfile_module>
+LoadModule xsendfile_module modules/mod_xsendfile.so
+</ifModule>
+<ifModule xsendfile_module>
+    XSendFile on
+    XSendFilePath ${realRootPath}/web/private/
+</ifModule>
+
 ProxyRequests off
 ProxyPreserveHost On
 <Proxy "balancer://cmsproxy">
@@ -168,7 +181,7 @@ ProxyPreserveHost On
 #${a.name} <@t.page 'server_config.site'/>
 <Directory "${realRootPath}/web/site_${siteId}/">
     AllowOverride None
-    Options Indexes FollowSymLinks Includes
+    Options FollowSymLinks Includes
     Require all granted
 </Directory>
 
@@ -179,14 +192,22 @@ ProxyPreserveHost On
     ServerAlias <#list page.list as d><#if d.name!=dynamicPath&&d.name!=sitePath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#sep> </#list>
   </#if>
 </@sys.domainList>
+
+#SSLEngine On
+#SSLCertificateFile "conf/xxx.crt"
+#SSLCertificateKeyFile "conf/xxx.key"
+
   <#if a.useSsi>
     alias /include/ "${realRootPath}/web/site_${siteId}/include/"
     AddType text/html .html .shtml
     AddOutputFilter INCLUDES .html .shtml
   </#if>
+
+    RequestHeader set Sendfile X-Sendfile
+
     ProxyPass ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} balancer://cmsproxy${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
     ProxyPassReverse ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} balancer://cmsproxy${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
-    
+
     <#if multipleDomain?has_content>
         <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
             <#list page.list as a>
@@ -202,6 +223,7 @@ ProxyPreserveHost On
             </#list>
         </@sys.siteList>
     </#if>
+
     <#if dynamicPath=sitePath&&dynamicPort=sitePort>
     #${a.name} <@t.page 'server_config.static'/>
     Alias "/${siteLocation}" "${realRootPath}/web/site_${siteId}/"
@@ -211,11 +233,10 @@ ProxyPreserveHost On
     RewriteCond %{DOCUMENT_ROOT} %{REQUEST_FILENAME} !-f
     RewriteRule ^/(.*)$ balancer://cmsproxy/%{REQUEST_URI} [P,L]
         </#if>
-    <#else>
-    Alias "${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/" "${realRootPath}/web/site_${siteId}/webfile/"
     </#if>
+
     ErrorDocument 403 /error/403.html
-    ErrorDocument 404 /error/403.html
+    ErrorDocument 404 /error/404.html
     ErrorDocument 500 /error/500.html
     ErrorDocument 502 /error/500.html
     ErrorDocument 503 /error/500.html
@@ -246,13 +267,13 @@ ProxyPreserveHost On
     <#if siteLocation?has_content>
     Alias "/${siteLocation}/" "${realRootPath}/web/site_${siteId}/"
     <#else>
-    DocumentRoot "${realRootPath}/web/site_${siteId}/" 
+    DocumentRoot "${realRootPath}/web/site_${siteId}/"
     </#if>
     <IfModule headers_module>
         Header set Access-Control-Allow-Origin "*"
     </IfModule>
     ErrorDocument 403 /error/403.html
-    ErrorDocument 404 /error/403.html
+    ErrorDocument 404 /error/404.html
     ErrorDocument 500 /error/500.html
     ErrorDocument 502 /error/500.html
     ErrorDocument 503 /error/500.html
@@ -265,8 +286,8 @@ ProxyPreserveHost On
     <dl class="nowrap">
         <dt><@t.page 'server_config.tomcat'/>:</dt>
         <dd><textarea class="code" mode="xml">
-&lt;!-- this valve replaces the apparent client remote IP address and hostname and scheme for the request --&gt;
-&lt;Valve className="org.apache.catalina.valves.RemoteIpValve" protocolHeader="X-Forwarded-Proto"/&gt;</textarea>
+        &lt;!-- this valve replaces the apparent client remote IP address and hostname and scheme for the request --&gt;
+        &lt;Valve className="org.apache.catalina.valves.RemoteIpValve" protocolHeader="X-Forwarded-Proto" portHeader="X-Forwarded-Port"/&gt;</textarea>
             <span class="info"><@t.page 'server_config.tomcat_description'/></span>
         </dd>
     </dl>

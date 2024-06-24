@@ -8,6 +8,9 @@ import jakarta.annotation.Resource;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.sys.SysAppClientService;
+
+import freemarker.template.TemplateException;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.PageHandler;
@@ -49,7 +52,7 @@ import com.publiccms.common.handler.RenderHandler;
  * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/sys/appClientList?pageSize=10&amp;appToken=接口访问授权Token', function(data){    
-    console.log(data.totalCount);
+    console.log(data.page.totalCount);
   });
   &lt;/script&gt;
  * </pre>
@@ -58,7 +61,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class SysAppClientListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Boolean disabled = false;
         if (getAdvanced(handler)) {
             disabled = handler.getBoolean("disabled", false);

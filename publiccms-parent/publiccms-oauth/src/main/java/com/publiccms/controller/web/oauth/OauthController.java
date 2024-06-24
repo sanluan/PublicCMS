@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import com.publiccms.common.api.Config;
 import com.publiccms.common.api.oauth.OauthGateway;
 import com.publiccms.common.base.oauth.AbstractOauth;
 import com.publiccms.common.constants.CmsVersion;
@@ -28,7 +27,7 @@ import com.publiccms.entities.sys.SysAppClient;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.oauth.OauthComponent;
@@ -53,16 +52,16 @@ public class OauthController {
     /**
      * 
      */
-    public final static String STATE_COOKIE_NAME = "oauth_state";
+    public static final String STATE_COOKIE_NAME = "oauth_state";
     /**
      * 
      */
-    public final static String RETURN_URL = "oauth_return_url";
+    public static final String RETURN_URL = "oauth_return_url";
 
     @Resource
     private OauthComponent oauthComponent;
     @Resource
-    private ConfigComponent configComponent;
+    private ConfigDataComponent configDataComponent;
     @Resource
     protected SafeConfigComponent safeConfigComponent;
     @Resource
@@ -93,9 +92,9 @@ public class OauthController {
             RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, STATE_COOKIE_NAME, state, null, null);
             returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
             RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, RETURN_URL, returnUrl, null, null);
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + oauthGateway.getAuthorizeUrl(site.getId(), state);
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, oauthGateway.getAuthorizeUrl(site.getId(), state));
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, site.getDynamicPath());
     }
 
     /**
@@ -116,7 +115,7 @@ public class OauthController {
         Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
         RequestUtils.cancleCookie(request.getContextPath(), request.getScheme(), response, RETURN_URL, null);
         String returnUrl;
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
         String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
         if (null != cookie && CommonUtils.notEmpty(cookie.getValue())
                 && !SafeConfigComponent.isUnSafeUrl(cookie.getValue(), site, safeReturnUrl, request.getContextPath())) {
@@ -139,7 +138,7 @@ public class OauthController {
                         Date now = CommonUtils.getDate();
                         if (null == appClient) {
                             OauthUser oauthUser = oauthGateway.getUserInfo(site.getId(), oauthAccess);
-                            Map<String, String> oauthConfig = configComponent.getConfigData(site.getId(),
+                            Map<String, String> oauthConfig = configDataComponent.getConfigData(site.getId(),
                                     AbstractOauth.CONFIG_CODE);
                             if (null != oauthUser && CommonUtils.notEmpty(oauthConfig)
                                     && CommonUtils.notEmpty(config.get(SiteConfigComponent.CONFIG_REGISTER_URL))) {
@@ -152,13 +151,15 @@ public class OauthController {
                                 model.addAttribute("clientId", appClient.getId());
                                 model.addAttribute("uuid", oauthAccess.getOpenId());
                                 model.addAttribute("returnUrl", returnUrl);
-                                return UrlBasedViewResolver.REDIRECT_URL_PREFIX
-                                        + config.get(SiteConfigComponent.CONFIG_REGISTER_URL);
+                                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX,
+                                        config.get(SiteConfigComponent.CONFIG_REGISTER_URL));
                             }
                         } else if (null != appClient.getUserId() && !appClient.isDisabled()) {// 有授权则登录
                             appClientService.updateLastLogin(appClient.getId(), CmsVersion.getVersion(), ip);
-                            Map<String, String> safeConfig = configComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
-                            int expiryMinutes = ConfigComponent.getInt(safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                            Map<String, String> safeConfig = configDataComponent.getConfigData(site.getId(),
+                                    SafeConfigComponent.CONFIG_CODE);
+                            int expiryMinutes = ConfigDataComponent.getInt(
+                                    safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                                     SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
                             user = sysUserService.getEntity(appClient.getUserId());
                             if (null != user && !user.isDisabled()) {
@@ -188,6 +189,6 @@ public class OauthController {
                 log.error(e);
             }
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 }

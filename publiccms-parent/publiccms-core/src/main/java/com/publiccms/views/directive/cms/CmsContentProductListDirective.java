@@ -5,15 +5,19 @@ import java.io.IOException;
 import java.util.List;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsContentProductService;
+
+import freemarker.template.TemplateException;
 
 /**
 *
@@ -48,7 +52,7 @@ import com.publiccms.logic.service.cms.CmsContentProductService;
 * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/cms/contentProductList?contentId=1&amp;pageSize=10', function(data){    
-    console.log(data.totalCount);
+    console.log(data.page.totalCount);
   });
   &lt;/script&gt;
 * </pre>
@@ -57,7 +61,7 @@ import com.publiccms.logic.service.cms.CmsContentProductService;
 public class CmsContentProductListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("contentId"), handler.getLong("userId"),
                 handler.getString("title"), handler.getBigDecimal("startPrice"), handler.getBigDecimal("endPrice"),
                 handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
@@ -69,7 +73,7 @@ public class CmsContentProductListDirective extends AbstractTemplateDirective {
             SysSite site = getSite(handler);
             list.forEach(e -> {
                 if (absoluteURL) {
-                    e.setCover(TemplateComponent.getUrl(site.getSitePath(), e.getCover()));
+                    e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover()));
                 }
             });
         }
@@ -78,5 +82,7 @@ public class CmsContentProductListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsContentProductService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
 }

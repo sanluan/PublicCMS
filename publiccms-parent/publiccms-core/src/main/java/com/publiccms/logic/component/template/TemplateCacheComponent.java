@@ -2,47 +2,38 @@ package com.publiccms.logic.component.template;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Serializable;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.api.Cache;
-import com.publiccms.common.api.Config;
+import com.publiccms.common.api.ParameterTypeHandler;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.servlet.WebDispatcherServlet;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.entities.cms.CmsCategory;
-import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
-import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentService;
-import com.publiccms.logic.service.sys.SysUserService;
-import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.ParameterType;
@@ -80,37 +71,30 @@ public class TemplateCacheComponent implements Cache {
     @Resource
     private MetadataComponent metadataComponent;
     @Resource
-    private ConfigComponent configComponent;
-    @Resource
-    private CmsContentService contentService;
-    @Resource
-    private CmsCategoryService categoryService;
-    @Resource
-    private SysUserService userService;
-    @Resource
-    private StatisticsComponent statisticsComponent;
+    private ConfigDataComponent configDataComponent;
+    private Map<String, ParameterTypeHandler<?, ?>> parameterTypeHandlerMap;
 
     public String getViewName(LocaleResolver localeResolver, SysSite site, Long id, Integer pageIndex, String requestPath,
             String body, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         requestPath = siteComponent.getPath(site, requestPath);
         SysDomain domain = siteComponent.getDomain(request.getServerName());
         String fullRequestPath = siteComponent.getViewName(site.getId(), domain, requestPath);
-        String templatePath = siteComponent.getTemplateFilePath() + fullRequestPath;
+        String templatePath = CommonUtils.joinString(siteComponent.getTemplateFilePath(), fullRequestPath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath);
         if (metadata.isUseDynamic()) {
             if (metadata.isNeedLogin() && null == ControllerUtils.getUserFromSession(request.getSession())) {
-                Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
                 String loginPath = config.get(SiteConfigComponent.CONFIG_LOGIN_PATH);
                 StringBuilder sb = new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX);
                 if (CommonUtils.notEmpty(loginPath)) {
                     if (null != id) {
-                        int index = requestPath.lastIndexOf(CommonConstants.DOT);
+                        int index = requestPath.lastIndexOf(Constants.DOT);
                         if (0 < index) {
                             requestPath = requestPath.substring(0, index);
                         }
-                        requestPath = requestPath + CommonConstants.SEPARATOR + id;
+                        requestPath = CommonUtils.joinString(requestPath, Constants.SEPARATOR, id);
                         if (null != pageIndex) {
-                            requestPath = requestPath + CommonConstants.UNDERLINE + pageIndex;
+                            requestPath = CommonUtils.joinString(requestPath, Constants.UNDERLINE, pageIndex);
                         }
                     }
                     return sb.append(loginPath).append("?returnUrl=")
@@ -119,16 +103,14 @@ public class TemplateCacheComponent implements Cache {
                     return sb.append(site.getDynamicPath()).toString();
                 }
             }
-            String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), CommonConstants.COMMA_DELIMITED);
-            if (CommonUtils.notEmpty(acceptParameters)) {
-                if (!billingRequestParametersToModel(request, acceptParameters, id, pageIndex, metadata.getParameterTypeMap(),
-                        site, model)) {
-                    try {
-                        response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                    } catch (IOException e) {
-                    }
-                    return requestPath;
+            String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), Constants.COMMA);
+            if (CommonUtils.notEmpty(acceptParameters) && !billingRequestParametersToModel(request, acceptParameters, id,
+                    pageIndex, metadata.getParameterTypeMap(), site, model)) {
+                try {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                } catch (IOException e) {
                 }
+                return requestPath;
             }
             CmsPageData data = metadataComponent.getTemplateData(templatePath);
             model.addAttribute("metadata", metadata.getAsMap(data));
@@ -161,20 +143,32 @@ public class TemplateCacheComponent implements Cache {
     private boolean billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters, Long id,
             Integer pageIndex, Map<String, ParameterType> parameterTypeMap, SysSite site, ModelMap model) {
         for (String parameterName : acceptParameters) {
+            String[] values = request.getParameterValues(parameterName);
+            if ("id".equals(parameterName) && null != id) {
+                values = new String[] { id.toString() };
+            } else if (CommonConstants.DEFAULT_PAGEINDEX.equals(parameterName) && null != pageIndex) {
+                values = new String[] { pageIndex.toString() };
+            }
             ParameterType parameterType = null;
             if (null != parameterTypeMap) {
                 parameterType = parameterTypeMap.get(parameterName);
             }
-            String[] values = request.getParameterValues(parameterName);
-            if ("id".equals(parameterName) && null != id) {
-                values = new String[] { id.toString() };
-            } else if ("pageIndex".equals(parameterName) && null != pageIndex) {
-                values = new String[] { pageIndex.toString() };
-            }
             if (null == parameterType) {
-                billingValue(parameterName, request.getParameterValues(parameterName), model);
+                if (CommonUtils.notEmpty(values)) {
+                    if (1 < values.length) {
+                        RequestUtils.removeCRLF(values);
+                        model.addAttribute(parameterName, values);
+                    } else {
+                        model.addAttribute(parameterName, RequestUtils.removeCRLF(values[0]));
+                    }
+                }
             } else if (!parameterType.isRequired() || CommonUtils.notEmpty(values)) {
-                if (!billingValue(parameterName, values, parameterType, site, model)) {
+                try {
+                    if (!billingValue(CommonUtils.notEmpty(parameterType.getAlias()) ? parameterType.getAlias() : parameterName,
+                            values, parameterType, site, model)) {
+                        return false;
+                    }
+                } catch (IllegalArgumentException e) {
                     return false;
                 }
             } else {
@@ -184,189 +178,51 @@ public class TemplateCacheComponent implements Cache {
         return true;
     }
 
-    private void billingValue(String parameterName, String[] values, ModelMap model) {
-        if (CommonUtils.notEmpty(values)) {
-            if (1 < values.length) {
-                RequestUtils.removeCRLF(values);
-                model.addAttribute(parameterName, values);
-            } else {
-                model.addAttribute(parameterName, RequestUtils.removeCRLF(values[0]));
-            }
-        }
-    }
-
-    private boolean billingValue(String parameterName, String[] values, ParameterType parameterType, SysSite site,
+    private <E, P> boolean billingValue(String parameterName, String[] values, ParameterType parameterType, SysSite site,
             ModelMap model) {
-        if (CommonUtils.notEmpty(parameterType.getAlias())) {
-            parameterName = parameterType.getAlias();
-        }
-        switch (parameterType.getType()) {
-        case Config.INPUTTYPE_TEXTAREA:
-            if (parameterType.isArray()) {
-                model.addAttribute(parameterName, values);
-            } else if (CommonUtils.notEmpty(values)) {
-                model.addAttribute(parameterName, values[0]);
-            }
-            break;
-        case Config.INPUTTYPE_NUMBER:
-            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
-                Set<Long> set = new TreeSet<>();
-                for (String s : values) {
-                    if (CommonUtils.notEmpty(s)) {
-                        try {
-                            set.add(Long.valueOf(s));
-                        } catch (NumberFormatException e) {
-                            return false;
-                        }
-                    }
-                }
-                if (set.isEmpty() && parameterType.isRequired()) {
-                    return false;
-                } else {
-                    model.addAttribute(parameterName, set);
-                }
-            } else if (CommonUtils.notEmpty(values) && CommonUtils.notEmpty(values[0])) {
-                try {
-                    model.addAttribute(parameterName, Long.valueOf(values[0]));
-                } catch (NumberFormatException e) {
-                    return false;
-                }
-            } else if (parameterType.isRequired()) {
-                return false;
-            }
-            break;
-        case Config.INPUTTYPE_CONTENT:
-            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
-                Set<Serializable> set = new TreeSet<>();
-                for (String s : values) {
-                    try {
-                        set.add(Long.valueOf(s));
-                    } catch (NumberFormatException e) {
-                        return false;
-                    }
-                }
-                List<CmsContent> entityList = contentService.getEntitys(set);
-                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
-                        .collect(Collectors.toList());
-                entityList.forEach(e -> {
-                    ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
-                    if (null != statistics) {
-                        e.setClicks(e.getClicks() + statistics.getClicks());
-                    }
-                    TemplateComponent.initContentUrl(site, e);
-                    TemplateComponent.initContentCover(site, e);
-                });
-                if (entityList.isEmpty() && parameterType.isRequired()) {
-                    return false;
-                } else {
-                    model.addAttribute(parameterName, entityList);
-                }
-            } else if (CommonUtils.notEmpty(values)) {
-                try {
-                    CmsContent entity = contentService.getEntity(Long.valueOf(values[0]));
-                    if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
-                        if (parameterType.isRequired()) {
-                            return false;
-                        }
-                    } else {
-                        ClickStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
-                        if (null != statistics) {
-                            entity.setClicks(entity.getClicks() + statistics.getClicks());
-                        }
-                        TemplateComponent.initContentUrl(site, entity);
-                        TemplateComponent.initContentCover(site, entity);
-                        model.addAttribute(parameterName, entity);
-                    }
-                } catch (NumberFormatException e) {
-                    return false;
-                }
-            } else if (parameterType.isRequired()) {
-                return false;
-            }
-            break;
-        case Config.INPUTTYPE_CATEGORY:
-            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
-                Set<Serializable> set = new TreeSet<>();
-                for (String s : values) {
-                    try {
-                        set.add(Integer.valueOf(s));
-                    } catch (NumberFormatException e) {
-                        return false;
-                    }
-                }
-                List<CmsCategory> entityList = categoryService.getEntitys(set);
-                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
-                        .collect(Collectors.toList());
-                entityList.forEach(e -> {
-                    TemplateComponent.initCategoryUrl(site, e);
-                });
-                if (entityList.isEmpty() && parameterType.isRequired()) {
-                    return false;
-                } else {
-                    model.addAttribute(parameterName, entityList);
-                }
-            } else if (CommonUtils.notEmpty(values)) {
-                try {
-                    CmsCategory entity = categoryService.getEntity(Integer.valueOf(values[0]));
-                    if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
-                        if (parameterType.isRequired()) {
-                            return false;
-                        }
-                    } else {
-                        TemplateComponent.initCategoryUrl(site, entity);
-                        model.addAttribute(parameterName, entity);
-                    }
-                } catch (NumberFormatException e) {
-                    return false;
-                }
-            } else if (parameterType.isRequired()) {
-                return false;
-            }
-            break;
-        case Config.INPUTTYPE_USER:
-            if (parameterType.isArray()) {
-                Set<Serializable> set = new TreeSet<>();
-                for (String s : values) {
-                    try {
-                        set.add(Long.valueOf(s));
-                    } catch (NumberFormatException e) {
-                        return false;
-                    }
-                }
-                List<SysUser> entityList = userService.getEntitys(set);
-                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
-                        .collect(Collectors.toList());
-                if (entityList.isEmpty() && parameterType.isRequired()) {
-                    return false;
-                } else {
-                    model.addAttribute(parameterName, entityList);
-                }
-            } else if (CommonUtils.notEmpty(values)) {
-                try {
-                    SysUser entity = userService.getEntity(Long.valueOf(values[0]));
-                    if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
-                        if (parameterType.isRequired()) {
-                            return false;
-                        }
-                    } else {
-                        model.addAttribute(parameterName, entity);
-                    }
-                } catch (NumberFormatException e) {
-                    return false;
-                }
-            } else if (parameterType.isRequired()) {
-                return false;
-            }
-            break;
-        default:
+        @SuppressWarnings("unchecked")
+        ParameterTypeHandler<E, P> parameterTypeHandler = (ParameterTypeHandler<E, P>) parameterTypeHandlerMap
+                .get(parameterType.getType());
+        if (null == parameterTypeHandler) {
             if (parameterType.isArray()) {
                 RequestUtils.removeCRLF(values);
                 model.addAttribute(parameterName, values);
             } else if (CommonUtils.notEmpty(values)) {
                 model.addAttribute(parameterName, RequestUtils.removeCRLF(values[0]));
             }
+        } else {
+            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
+                P[] ids = parameterTypeHandler.dealParameterValues(values);
+                if (CommonUtils.empty(ids) && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    List<E> list = parameterTypeHandler.getParameterValueList(site, ids);
+                    if ((null == list || list.isEmpty()) && parameterType.isRequired()) {
+                        return false;
+                    } else {
+                        model.addAttribute(parameterName, list);
+                    }
+                }
+            } else if (CommonUtils.notEmpty(values) && CommonUtils.notEmpty(values[0])
+                    || parameterTypeHandler.supportDefaultValue() && CommonUtils.notEmpty(parameterType.getDefaultValue())) {
+                P id = parameterTypeHandler.dealParameterValue(
+                        parameterTypeHandler.supportDefaultValue() && CommonUtils.notEmpty(parameterType.getDefaultValue())
+                                ? parameterType.getDefaultValue()
+                                : values[0]);
+                if (null == id && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    E entity = parameterTypeHandler.getParameterValue(site, id);
+                    if (null == entity && parameterType.isRequired()) {
+                        return false;
+                    } else {
+                        model.addAttribute(parameterName, entity);
+                    }
+                }
+            } else if (parameterType.isRequired()) {
+                return false;
+            }
         }
-
         return true;
     }
 
@@ -388,7 +244,8 @@ public class TemplateCacheComponent implements Cache {
         AbstractFreemarkerView.exposeAttribute(model, request);
         model.addAttribute(CACHE_VAR, true);
         return createCache(requestPath, fullTemplatePath,
-                fullTemplatePath + getRequestParametersString(request, acceptParameters), locale, cacheMillisTime, model);
+                CommonUtils.joinString(fullTemplatePath, getRequestParametersString(request, acceptParameters)), locale,
+                cacheMillisTime, model);
     }
 
     private static String getRequestParametersString(HttpServletRequest request, String[] acceptParameters) {
@@ -399,7 +256,7 @@ public class TemplateCacheComponent implements Cache {
                 String[] values = request.getParameterValues(parameterName);
                 if (CommonUtils.notEmpty(values)) {
                     for (int i = 0; i < values.length; i++) {
-                        sb.append(CommonConstants.UNDERLINE);
+                        sb.append(Constants.UNDERLINE);
                         sb.append(parameterName);
                         sb.append("=");
                         sb.append(values[i]);
@@ -421,14 +278,14 @@ public class TemplateCacheComponent implements Cache {
 
     @Override
     public void clear() {
-        deleteCachedFile(getCachedFilePath(CommonConstants.BLANK));
+        deleteCachedFile(getCachedFilePath(Constants.BLANK));
     }
 
     private String createCache(String requestPath, String fullTemplatePath, String cachePath, Locale locale, int cacheMillisTime,
             ModelMap model) {
         String cachedFilePath = getCachedFilePath(cachePath);
-        String cachedtemplatePath = CACHE_FILE_DIRECTORY + cachePath;
-        String cachedPath = WebDispatcherServlet.GLOBLE_URL_PREFIX + cachedtemplatePath;
+        String cachedtemplatePath = CommonUtils.joinString(CACHE_FILE_DIRECTORY, cachePath);
+        String cachedPath = CommonUtils.joinString(WebDispatcherServlet.GLOBLE_URL_PREFIX, cachedtemplatePath);
         try {
             lock.lock();
             if (checkCacheFile(cachedFilePath, cacheMillisTime)) {
@@ -460,6 +317,24 @@ public class TemplateCacheComponent implements Cache {
     }
 
     private String getCachedFilePath(String path) {
-        return siteComponent.getTemplateFilePath() + CACHE_FILE_DIRECTORY + path;
+        return CommonUtils.joinString(siteComponent.getTemplateFilePath(), CACHE_FILE_DIRECTORY, path);
+    }
+
+    /**
+     * @return the parameterTypeHandlerMap
+     */
+    public Map<String, ParameterTypeHandler<?, ?>> getParameterTypeHandlerMap() {
+        return parameterTypeHandlerMap;
+    }
+
+    /**
+     * @param parameterTypeHandlerList
+     */
+    @Autowired
+    public <E, P> void setParameterTypeHandlerMap(List<ParameterTypeHandler<E, P>> parameterTypeHandlerList) {
+        this.parameterTypeHandlerMap = new LinkedHashMap<>();
+        for (ParameterTypeHandler<E, P> parameterTypeHandler : parameterTypeHandlerList) {
+            this.parameterTypeHandlerMap.put(parameterTypeHandler.getType(), parameterTypeHandler);
+        }
     }
 }

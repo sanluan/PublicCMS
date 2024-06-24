@@ -11,12 +11,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.context.request.async.CallableProcessingInterceptor;
+import org.springframework.web.context.request.async.TimeoutCallableProcessingInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -25,12 +30,12 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.publiccms.common.api.AdminContextPath;
 import com.publiccms.common.handler.FullBeanNameGenerator;
 import com.publiccms.common.interceptor.AdminContextInterceptor;
 import com.publiccms.common.interceptor.CsrfInterceptor;
 import com.publiccms.common.view.AdminFreeMarkerView;
 import com.publiccms.logic.component.cache.CacheComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 
 /**
  * AdminServlet配置类
@@ -86,20 +91,23 @@ public class AdminConfig implements WebMvcConfigurer {
     /**
      * 拦截器
      * 
-     * @param templateComponent
-     * 
+     * @param adminContextPathList
      * @return admin servlet interceptor
      */
     @Bean
-    public AdminContextInterceptor adminInterceptor(TemplateComponent templateComponent) {
-        templateComponent.setAdminContextPath(ADMIN_CONTEXT_PATH);
+    public AdminContextInterceptor adminInterceptor(List<AdminContextPath> adminContextPathList) {
+        if (null != adminContextPathList) {
+            for (AdminContextPath adminContextPath : adminContextPathList) {
+                adminContextPath.setAdminContextPath(ADMIN_CONTEXT_PATH);
+            }
+        }
         AdminContextInterceptor bean = new AdminContextInterceptor();
         bean.setAdminContextPath(ADMIN_CONTEXT_PATH);
         bean.setLoginUrl("/login.html");
         bean.setUnauthorizedUrl("/common/unauthorizedUrl.html");
         bean.setLoginJsonUrl("/common/ajaxTimeout.html");
         bean.setNeedNotLoginUrls(new String[] { "/changeLocale", "/login", "/getCaptchaImage" });
-        bean.setNeedNotAuthorizedUrls(new String[] { "/index", "/main", "/logout", "/menus", "/common/" });
+        bean.setNeedNotAuthorizedUrls(new String[] { "/index", "/main", "/logout", "/common/" });
         return bean;
     }
 
@@ -115,6 +123,28 @@ public class AdminConfig implements WebMvcConfigurer {
     }
 
     @Override
+    public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+        configurer.setDefaultTimeout((long) 10 * 60 * 1000);
+        configurer.registerCallableInterceptors(timeoutInterceptor());
+        configurer.setTaskExecutor(taskExecutor());
+    }
+
+    @Bean
+    public CallableProcessingInterceptor timeoutInterceptor() {
+        return new TimeoutCallableProcessingInterceptor();
+    }
+
+    @Bean
+    public AsyncTaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor bean = new ThreadPoolTaskExecutor();
+        bean.setCorePoolSize(5);
+        bean.setMaxPoolSize(50);
+        bean.setQueueCapacity(10);
+        bean.setThreadNamePrefix("cmsadmin-async-");
+        return bean;
+    }
+
+    @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         for (HttpMessageConverter<?> converter : converters) {
             if (converter instanceof MappingJackson2HttpMessageConverter) {
@@ -123,6 +153,7 @@ public class AdminConfig implements WebMvcConfigurer {
                 ((MappingJackson2HttpMessageConverter) converter).setSupportedMediaTypes(list);
                 SimpleModule module = new SimpleModule();
                 module.addSerializer(Long.class, ToStringSerializer.instance);
+                module.addSerializer(Long.TYPE, ToStringSerializer.instance);
                 ((MappingJackson2HttpMessageConverter) converter).getObjectMapper().registerModule(module);
             }
         }

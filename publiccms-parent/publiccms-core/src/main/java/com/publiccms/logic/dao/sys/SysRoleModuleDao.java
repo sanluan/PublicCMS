@@ -62,7 +62,7 @@ public class SysRoleModuleDao extends BaseDao<SysRoleModule> {
             QueryHandler queryHandler = getQueryHandler("from SysRoleModule bean");
             queryHandler.condition("bean.id.roleId in (:roleIds)").setParameter("roleIds", roleIds);
             queryHandler.condition("bean.id.moduleId in (:moduleIds)").setParameter("moduleIds", moduleIds);
-            return (List<SysRoleModule>) getList(queryHandler);
+            return getEntityList(queryHandler);
         }
         return Collections.emptyList();
     }

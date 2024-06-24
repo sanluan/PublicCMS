@@ -4,7 +4,6 @@ import static com.publiccms.common.constants.Constants.DEFAULT_CHARSET_NAME;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,8 +30,10 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import com.publiccms.common.base.AbstractCmsUpgrader;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.database.CmsUpgrader;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DatabaseUtils;
 import com.publiccms.common.tools.VerificationUtils;
 
@@ -133,7 +134,7 @@ public class InstallServlet extends HttpServlet {
                                 request.getParameter("password"), request.getParameter("siteurl"), map);
                         startCMS(map);
                     } catch (Exception e) {
-                        map.put("error", e.getMessage());
+                        map.put(CommonConstants.ERROR, e.getMessage());
                     }
                     break;
                 case STEP_UPDATE:
@@ -142,7 +143,7 @@ public class InstallServlet extends HttpServlet {
                         startCMS(map);
                     } catch (Exception e) {
                         map.put("message", "failed");
-                        map.put("error", e.getMessage());
+                        map.put(CommonConstants.ERROR, e.getMessage());
                     }
                     break;
                 case STEP_START:
@@ -151,25 +152,28 @@ public class InstallServlet extends HttpServlet {
                         step = "startSuccess";
                     } catch (IOException e) {
                         map.put("message", "failed");
-                        map.put("error", e.getMessage());
+                        map.put(CommonConstants.ERROR, e.getMessage());
                     }
                     break;
                 default:
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    try {
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    } catch (IOException e) {
+                    }
                 }
             }
             render(step, request.getLocale(), map, response);
         }
     }
 
-    private void start() throws FileNotFoundException, IOException {
+    private void start() throws IOException {
         CmsVersion.setInitialized(true);
         CmsDataSource.initDefaultDataSource();
-        File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
+        File file = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.INSTALL_LOCK_FILENAME));
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            outputStream.write(CmsVersion.getVersion().getBytes(CommonConstants.DEFAULT_CHARSET));
+            outputStream.write(CmsVersion.getVersion().getBytes(Constants.DEFAULT_CHARSET));
         }
-        log.info(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion()).append(" started!"));
+        log.info(CommonUtils.joinString("PublicCMS ", CmsVersion.getVersion(), " started!"));
     }
 
     /**
@@ -185,20 +189,21 @@ public class InstallServlet extends HttpServlet {
             cmsUpgrader.setDataBaseUrl(dbconfig, host, port, database, timeZone);
             dbconfig.setProperty("jdbc.username", request.getParameter("username"));
             dbconfig.setProperty("jdbc.encryptPassword", VerificationUtils
-                    .base64Encode(VerificationUtils.encrypt(request.getParameter("password"), CommonConstants.ENCRYPT_KEY)));
-            String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
+                    .base64Encode(VerificationUtils.encryptAES(request.getParameter("password"), CommonConstants.ENCRYPT_KEY)));
+            String databaseConfiFile = CommonUtils.joinString(CommonConstants.CMS_FILEPATH,
+                    CmsDataSource.DATABASE_CONFIG_FILENAME);
             File file = new File(databaseConfiFile);
             try (FileOutputStream outputStream = new FileOutputStream(file)) {
                 dbconfig.store(outputStream, null);
             }
             try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
                 map.put("siteurl", getSiteUrl(request));
-                map.put("usersql", new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql").exists());
+                map.put("usersql", new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, "/publiccms.sql")).exists());
                 map.put("message", "success");
             }
         } catch (Exception e) {
             startStep = null;
-            map.put("error", e.getMessage());
+            map.put(CommonConstants.ERROR, e.getMessage());
         }
     }
 
@@ -208,26 +213,24 @@ public class InstallServlet extends HttpServlet {
      * @param map
      */
     private void checkDatabse(HttpServletRequest request, Map<String, Object> map) {
-        String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
+        String databaseConfiFile = CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CmsDataSource.DATABASE_CONFIG_FILENAME);
         if (null != fromVersion && cmsUpgrader.getOldDatabaseConfigVersionList().contains(fromVersion)) {
             startStep = null;
         } else {
             try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
                 map.put("message", "success");
                 map.put("siteurl", getSiteUrl(request));
-                map.put("usersql", new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql").exists());
+                map.put("usersql", new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, "/publiccms.sql")).exists());
             } catch (Exception e) {
-                startStep = null;
-                map.put("error", e.getMessage());
+                map.put(CommonConstants.ERROR, e.getMessage());
             }
         }
     }
 
     private static String getSiteUrl(HttpServletRequest request) {
-        return "//" + request.getServerName()
-                + ("https".equals(request.getScheme()) && 443 == request.getServerPort() || 80 == request.getServerPort() ? ("")
-                        : (":" + request.getServerPort()))
-                + request.getContextPath();
+        return "https".equals(request.getScheme()) && 443 == request.getServerPort() || 80 == request.getServerPort()
+                ? CommonUtils.joinString("//", request.getServerName(), request.getContextPath())
+                : CommonUtils.joinString("//", request.getServerName(), ":", request.getServerPort(), request.getContextPath());
     }
 
     /**
@@ -237,19 +240,21 @@ public class InstallServlet extends HttpServlet {
      * @param username
      * @param password
      * @param map
+     * @throws SQLException
+     * @throws ClassNotFoundException
      * @throws IOException
      */
     private void initDatabase(String useSimple, String username, String password, String siteurl, Map<String, Object> map)
-            throws Exception {
-        String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
+            throws ClassNotFoundException, SQLException, IOException {
+        String databaseConfiFile = CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CmsDataSource.DATABASE_CONFIG_FILENAME);
         try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
             try {
                 map.put("history", install(connection, username, password, siteurl, null != useSimple));
                 map.put("message", "success");
-            } catch (Exception e) {
+            } catch (SQLException | IOException e) {
                 e.printStackTrace();
                 map.put("message", "failed");
-                map.put("error", e.getMessage());
+                map.put(CommonConstants.ERROR, e.getMessage());
             }
         }
     }
@@ -261,16 +266,16 @@ public class InstallServlet extends HttpServlet {
         runner.setLogWriter(null);
         runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
-        try (InputStream inputStream = InstallServlet.class.getResourceAsStream("/initialization/sql/initDatabase.sql")) {
-            runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
+        try (InputStream inputStream = InstallServlet.class.getResourceAsStream("/initialization/sql/init.sql")) {
+            runner.runScript(new InputStreamReader(inputStream, Constants.DEFAULT_CHARSET));
         }
         cmsUpgrader.setPassword(connection, username, password);
         cmsUpgrader.setSiteUrl(connection, siteurl);
         if (useSimple) {
-            File file = new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql");
+            File file = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, "/publiccms.sql"));
             if (file.exists()) {
                 try (InputStream simpleInputStream = new FileInputStream(file)) {
-                    runner.runScript(new InputStreamReader(simpleInputStream, CommonConstants.DEFAULT_CHARSET));
+                    runner.runScript(new InputStreamReader(simpleInputStream, Constants.DEFAULT_CHARSET));
                 }
             }
         }
@@ -279,10 +284,16 @@ public class InstallServlet extends HttpServlet {
 
     /**
      * 升级数据库
+     * 
+     * @throws IOException
+     * @throws SQLException
+     * @throws ClassNotFoundException
      */
-    private void upgradeDatabase(String version, Map<String, Object> map) throws Exception {
+    private void upgradeDatabase(String version, Map<String, Object> map)
+            throws ClassNotFoundException, SQLException, IOException {
         if (cmsUpgrader.getVersionList().contains(version)) {
-            String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
+            String databaseConfiFile = CommonUtils.joinString(CommonConstants.CMS_FILEPATH,
+                    CmsDataSource.DATABASE_CONFIG_FILENAME);
             try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
                 StringWriter stringWriter = new StringWriter();
                 try {
@@ -307,14 +318,15 @@ public class InstallServlet extends HttpServlet {
         } catch (Exception e) {
             CmsVersion.setInitialized(false);
             e.printStackTrace();
-            map.put("error", e.getMessage());
+            map.put(CommonConstants.ERROR, e.getMessage());
         }
     }
 
     private void render(String step, Locale locale, Map<String, Object> model, HttpServletResponse response) {
         if (!response.isCommitted()) {
             try {
-                Template template = freemarkerConfiguration.getTemplate(null == step ? "index.html" : step + ".html", locale);
+                Template template = freemarkerConfiguration
+                        .getTemplate(null == step ? "index.html" : CommonUtils.joinString(step, ".html"), locale);
                 response.setCharacterEncoding(DEFAULT_CHARSET_NAME);
                 response.setContentType("text/html");
                 template.process(model, response.getWriter());

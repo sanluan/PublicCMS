@@ -45,6 +45,7 @@ public class ApiConfig implements WebMvcConfigurer {
         list.add(MediaType.TEXT_PLAIN);
         SimpleModule module = new SimpleModule();
         module.addSerializer(Long.class, ToStringSerializer.instance);
+        module.addSerializer(Long.TYPE, ToStringSerializer.instance);
         bean.getObjectMapper().registerModule(module);
         bean.setSupportedMediaTypes(list);
         return bean;

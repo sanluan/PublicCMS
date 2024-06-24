@@ -1,10 +1,12 @@
 package com.publiccms.logic.component.task;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.quartz.CronExpression;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
 import org.quartz.JobBuilder;
@@ -18,7 +20,7 @@ import org.quartz.UnableToInterruptJobException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.log.LogTask;
 import com.publiccms.entities.sys.SysSite;
@@ -45,7 +47,7 @@ public class ScheduledTask {
     /**
      * 
      */
-    public static final String RUNONCE = "RUNONCE";
+    public static final String RUNONCE_FLAG = "RUNONCE";
     /**
      * 
      */
@@ -64,7 +66,7 @@ public class ScheduledTask {
     public static final int TASK_STATUS_ERROR = 3;
 
     @Resource
-    private SysTaskService sysTaskService;
+    private SysTaskService service;
     @Autowired(required = false)
     private Scheduler scheduler;
     @Resource
@@ -78,12 +80,9 @@ public class ScheduledTask {
     public void init(Date startDate) {
         if (null != scheduler) {
             @SuppressWarnings("unchecked")
-            List<SysTask> sysTaskList = (List<SysTask>) sysTaskService.getPage(null, null, startDate, null, null).getList();
+            List<SysTask> sysTaskList = (List<SysTask>) service.getPage(null, null, startDate, null, null).getList();
             for (SysTask sysTask : sysTaskList) {
                 SysSite site = siteService.getEntity(sysTask.getSiteId());
-                if (TASK_STATUS_ERROR == sysTask.getStatus()) {
-                    sysTaskService.updateStatus(sysTask.getId(), TASK_STATUS_READY);
-                }
                 create(site, sysTask.getId(), sysTask.getCronExpression());
                 if (TASK_STATUS_PAUSE == sysTask.getStatus()) {
                     pause(site, sysTask.getId());
@@ -94,11 +93,11 @@ public class ScheduledTask {
 
     // 结束一天以前执行但是没有结果的任务，可以误杀,误杀任务后续会被修复
     public void dealNotEndTask(Date startDate) {
-        List<LogTask> runingTaskList = (List<LogTask>) logTaskService.getNotEndList(null, startDate);
+        List<LogTask> runingTaskList = logTaskService.getNotEndList(null, startDate);
         for (LogTask logTask : runingTaskList) {
-            SysTask task = sysTaskService.getEntity(logTask.getTaskId());
+            SysTask task = service.getEntity(logTask.getTaskId());
             if (null != task && TASK_STATUS_RUNNING == task.getStatus()) {
-                sysTaskService.updateStatus(task.getId(), TASK_STATUS_READY);
+                service.updateStatus(task.getId(), TASK_STATUS_READY);
                 logTask.setEndtime(new Date());
                 logTask.setSuccess(false);
                 logTaskService.update(logTask.getId(), logTask, ScheduledJob.ignoreProperties);
@@ -120,8 +119,8 @@ public class ScheduledTask {
             TriggerKey triggerKey = TriggerKey.triggerKey(taskName);
             try {
                 CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
-                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
-                        .cronSchedule(site.getId() % 60 + CommonConstants.BLANK_SPACE + cronExpression);
+                CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(
+                        new CronExpression(CommonUtils.joinString(site.getId() % 60, Constants.BLANK_SPACE, cronExpression)));
                 if (null == trigger) {
                     JobDetail jobDetail = JobBuilder.newJob(ScheduledJob.class).withIdentity(taskName).build();
                     jobDetail.getJobDataMap().put(ID, id);
@@ -133,9 +132,14 @@ public class ScheduledTask {
                             .build();
                     scheduler.rescheduleJob(triggerKey, trigger);
                 }
-            } catch (SchedulerException e) {
-                sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
-                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
+                SysTask sysTask = service.getEntity(id);
+                if (null != sysTask && TASK_STATUS_ERROR == sysTask.getStatus()) {
+                    service.updateStatus(sysTask.getId(), TASK_STATUS_READY);
+                }
+            } catch (SchedulerException | ParseException e) {
+                if (service.updateStatus(id, TASK_STATUS_ERROR)) {
+                    logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
+                }
             }
         }
     }
@@ -152,10 +156,19 @@ public class ScheduledTask {
             try {
                 JobKey jobKey = JobKey.jobKey(getTaskName(id));
                 JobDetail job = scheduler.getJobDetail(jobKey);
-                job.getJobDataMap().put(RUNONCE, true);
-                scheduler.triggerJob(jobKey, job.getJobDataMap());
+                if (null == job) {
+                    SysTask task = service.getEntity(id);
+                    if (null != task) {
+                        create(site, id, task.getCronExpression());
+                    }
+                    job = scheduler.getJobDetail(jobKey);
+                }
+                if (null != job) {
+                    job.getJobDataMap().put(RUNONCE_FLAG, true);
+                    scheduler.triggerJob(jobKey, job.getJobDataMap());
+                }
             } catch (SchedulerException e) {
-                sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
+                service.updateStatus(id, TASK_STATUS_ERROR);
                 logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
             }
         }
@@ -173,7 +186,7 @@ public class ScheduledTask {
             try {
                 scheduler.pauseJob(JobKey.jobKey(getTaskName(id)));
             } catch (SchedulerException e) {
-                sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
+                service.updateStatus(id, TASK_STATUS_ERROR);
                 logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
             }
         }
@@ -191,7 +204,7 @@ public class ScheduledTask {
             try {
                 scheduler.interrupt(JobKey.jobKey(getTaskName(id)));
             } catch (UnableToInterruptJobException e) {
-                sysTaskService.updateStatus(id, TASK_STATUS_RUNNING);
+                service.updateStatus(id, TASK_STATUS_RUNNING);
                 logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
             }
         }
@@ -209,7 +222,7 @@ public class ScheduledTask {
             try {
                 scheduler.resumeJob(JobKey.jobKey(getTaskName(id)));
             } catch (SchedulerException e) {
-                sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
+                service.updateStatus(id, TASK_STATUS_ERROR);
                 logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
             }
         }
@@ -237,7 +250,7 @@ public class ScheduledTask {
      * @return task name
      */
     public String getTaskName(Integer id) {
-        return "task-" + id;
+        return CommonUtils.joinString("task-", id);
     }
 
     @PreDestroy

@@ -23,7 +23,7 @@ body {font-size: 14px;}
 .install .box-page .page-content form .wrapper span{color: #6999ec;}
 .install .box-page .page-content form label{width:140px;margin-right: 10px;}
 .install .box-page .page-content form input[type=text],input[type=number]{width:250px;height:28px;font-size: 14px;padding-left:5px;padding-right:5px;}
-.install .box-page .page-content pre {font-size: 13px; white-space : pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;white-space: pre-wrap;}
+.install .box-page .page-content pre{font-size: 13px;word-wrap: break-word;white-space: pre-wrap;}
 .install .box-page .checkbox {line-height: 30px;height: 30px;text-align: center;}
 .install .buttons {margin: auto;text-align: center;}
 .install .buttons button,.install .buttons a {width:120px;border:0px;color:white;line-height: 30px;cursor:pointer;}
@@ -113,7 +113,7 @@ select {
                     break;
                 case 2:
                     $(".buttons button").removeClass("active");
-                    $form = $(document.forms[0]);
+                    var $form = $(document.forms[0]);
                     $.post($form.attr("action"), $form.serialize() ,function(result){
                         $(".content-box").html(result);
                         if ($(".error",$(".content-box")).length <= 0) {

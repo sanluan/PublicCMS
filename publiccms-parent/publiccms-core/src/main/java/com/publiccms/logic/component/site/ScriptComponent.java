@@ -2,7 +2,6 @@ package com.publiccms.logic.component.site;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -17,7 +16,7 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.common.tools.DatabaseUtils;
 
 /**
  *
@@ -29,22 +28,17 @@ public class ScriptComponent {
     private static final Pattern PARAMETER_PATTERN = Pattern.compile("^[a-zA-Z0-9][a-zA-Z0-9_\\-\\.]{1,191}$");
     private static final String[] COMMANDS = { "sync.bat", "sync.sh", "backupdb.bat", "backupdb.sh" };
 
-    public String execute(String command, String[] parameters, long timeoutHours)
-            throws FileNotFoundException, IOException, InterruptedException {
+    public String execute(String command, String[] parameters, long timeoutHours) throws IOException, InterruptedException {
         if (CommonUtils.notEmpty(command) && ArrayUtils.contains(COMMANDS, command.toLowerCase())) {
-            String dir = CommonConstants.CMS_FILEPATH + "/script";
+            String dir = CommonUtils.joinString(CommonConstants.CMS_FILEPATH, "/script");
             String[] cmdarray;
             if ("backupdb.bat".equalsIgnoreCase(command) || "backupdb.sh".equalsIgnoreCase(command)) {
-                String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
+                String databaseConfiFile = CommonUtils.joinString(CommonConstants.CMS_FILEPATH,
+                        CmsDataSource.DATABASE_CONFIG_FILENAME);
                 Properties dbconfigProperties = CmsDataSource.loadDatabaseConfig(databaseConfiFile);
                 String userName = dbconfigProperties.getProperty("jdbc.username");
                 String database = dbconfigProperties.getProperty("database", "publiccms");
-                String password = dbconfigProperties.getProperty("jdbc.password");
-                String encryptPassword = dbconfigProperties.getProperty("jdbc.encryptPassword");
-                if (null != encryptPassword) {
-                    password = VerificationUtils.decrypt(VerificationUtils.base64Decode(encryptPassword),
-                            CommonConstants.ENCRYPT_KEY);
-                }
+                String password = DatabaseUtils.getPassword(dbconfigProperties);
                 cmdarray = new String[] { database, userName, password };
             } else {
                 cmdarray = new String[parameters.length];
@@ -60,11 +54,10 @@ public class ScriptComponent {
                     }
                 }
             }
-            String filepath = new StringBuilder(dir).append("/").append(command).toString();
+            String filepath = CommonUtils.joinString(dir, "/", command);
             File script = new File(filepath);
             if (!script.exists()) {
-                try (InputStream inputStream = getClass()
-                        .getResourceAsStream(new StringBuilder("/script/").append(command).toString())) {
+                try (InputStream inputStream = getClass().getResourceAsStream(CommonUtils.joinString("/script/", command))) {
                     FileUtils.copyInputStreamToFile(inputStream, script);
                 }
             }
@@ -84,7 +77,7 @@ public class ScriptComponent {
             }
             return sb.toString();
         }
-        return command + " not exits";
+        return CommonUtils.joinString(command, " not exits");
     }
 
 }

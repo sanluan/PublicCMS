@@ -45,7 +45,7 @@
             <tr>
                 <td>${a.id!}</td>
                 <td><@t.menu a.id/></td>
-                <td>${a.menu?then(t.pageMessage('module.menu'),t.pageMessage('module.not_menu'))}</td>
+                <td>${t.pageMessage(a.menu?then('module.menu','module.not_menu'))}</td>
                 <td>${a.url!}</td>
                 <td><#if a.parentId?has_content><@t.menu a.parentId/></#if></td>
                 <td>${a.sort!}</td>

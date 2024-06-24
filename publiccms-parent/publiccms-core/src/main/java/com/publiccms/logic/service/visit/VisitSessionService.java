@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -30,6 +31,7 @@ public class VisitSessionService extends BaseService<VisitSession> {
     /**
      * @param siteId
      * @param sessionId
+     * @param ip
      * @param startVisitDate
      * @param endVisitDate
      * @param orderType
@@ -38,13 +40,13 @@ public class VisitSessionService extends BaseService<VisitSession> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(short siteId, String sessionId, Date startVisitDate, Date endVisitDate, String orderType,
-            Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, sessionId, startVisitDate, endVisitDate, orderType, pageIndex, pageSize);
+    public PageHandler getPage(short siteId, String sessionId, String ip, Date startVisitDate, Date endVisitDate,
+            String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, sessionId, ip, startVisitDate, endVisitDate, orderType, pageIndex, pageSize);
     }
 
     /**
-     * @param siteId 
+     * @param siteId
      * @param visitDate
      * @return results page
      */
@@ -64,6 +66,8 @@ public class VisitSessionService extends BaseService<VisitSession> {
     /**
      * @param entityList
      */
+    @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void save(List<VisitSession> entityList) {
         for (VisitSession entity : entityList) {
             VisitSession oldEntity = getEntity(entity.getId());

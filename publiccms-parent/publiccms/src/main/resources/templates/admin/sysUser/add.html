@@ -20,15 +20,15 @@
             <dl class="nowrap">
                 <dt><@t.page 'user.username'/>:</dt>
                 <dd>
-                    <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
-                    <label><input name="superuser" type="checkbox"/><@t.page 'admin'/></label>
+                    <input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/>
+                    <label><input name="superuser" type="checkbox" class="form-check-input"/><@t.page 'admin'/></label>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'dept'/>:</dt>
                 <dd>
                     <input name="deptId" type="hidden" value="${(dept.id)!}"/>
-                    <input readonly="readonly" name="deptName" type="text" size="10" value="${(dept.name)!}"/>
+                    <input readonly="readonly" name="deptName" type="text" size="30" value="${(dept.name)!}"/>
                     <a class="btnLook" href="sysDept/lookup.html" width="920" lookupGroup=""><@t.page 'dept.select'/></a>
                     <span class="info"><@t.page 'user.dept.description'/></span>
                 </dd>
@@ -63,7 +63,7 @@
                 <dd>
                     <input name="cover" value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
                     <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="1000" height="600"><@t.page 'cover'/></a>
-                    <a class="view icon-eye-open" ref="cover" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                    <a class="view icon-eye-open" ref="cover" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                     <#include "../include_page/preview.html"/>
                     <@preview 'user' 'input[name=cover]'/>
                 </dd>

@@ -15,6 +15,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysRecordService;
 
 import jakarta.annotation.Resource;
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -43,21 +44,14 @@ $.getJSON('${site.dynamicPath}api/directive/sys/record?code=site&amp;data=data&a
 public class SysRecordDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String code = handler.getString("code");
         String[] codes = handler.getStringArray("codes");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(code)) {
             String data = handler.getString("data");
             SysRecordId id = new SysRecordId(site.getId(), code);
-            if (CommonUtils.notEmpty(data)) {
-                SysRecord entity = new SysRecord();
-                entity.setId(id);
-                entity.setData(data);
-                entity.setUpdateDate(CommonUtils.getDate());
-                service.saveOrUpdate(entity);
-            }
-            SysRecord entity = service.getEntity(id);
+            SysRecord entity = service.saveOrUpdate(id, data);
             if (null != entity) {
                 handler.put("object", entity).render();
             }

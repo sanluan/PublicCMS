@@ -8,15 +8,19 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsSurveyQuestion;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
+
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -50,7 +54,7 @@ import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
 public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         boolean advanced = getAdvanced(handler);
@@ -62,7 +66,7 @@ public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
                     entity.setAnswer(null);
                 }
                 if (absoluteURL) {
-                    entity.setCover(TemplateComponent.getUrl(site.getSitePath(), entity.getCover()));
+                    entity.setCover(CmsUrlUtils.getUrl(site.getSitePath(), entity.getCover()));
                 }
                 handler.put("object", entity).render();
             }
@@ -75,7 +79,7 @@ public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
                         e.setAnswer(null);
                     }
                     if (absoluteURL) {
-                        e.setCover(TemplateComponent.getUrl(site.getSitePath(), e.getCover()));
+                        e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover()));
                     }
                 };
                 Map<String, CmsSurveyQuestion> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer, null);
@@ -91,4 +95,6 @@ public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsSurveyQuestionService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 }

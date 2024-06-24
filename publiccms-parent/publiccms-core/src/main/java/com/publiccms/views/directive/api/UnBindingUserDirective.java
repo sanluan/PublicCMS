@@ -14,6 +14,8 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysAppClientService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * unBindingUser 客户端绑定用户接口
@@ -42,7 +44,7 @@ console.log(data.result);
 public class UnBindingUserDirective extends AbstractAppDirective {
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         String uuid = handler.getString("uuid");
         String channel = handler.getString("channel", LogLoginService.CHANNEL_WEB);
         boolean result = false;

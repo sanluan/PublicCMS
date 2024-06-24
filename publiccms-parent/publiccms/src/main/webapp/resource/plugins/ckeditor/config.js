@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+ * @license Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -11,9 +11,11 @@ CKEDITOR.editorConfig = function( config ) {
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
    // config.extraPlugins = 'audio';
   //  odeSnippet_theme: 'zenburn';
-
     config.filebrowserUploadUrl = base + '/ckeditor/upload?1=1';//定义图片上传的地址
-    config.filebrowserBrowseUrl = base + '/cmsWebFile/browse.html?type=image';  //定义图片的浏览服务器窗口.
+    config.filebrowserBrowseUrl = base + '/cmsWebFile/browse.html';  //定义图片的浏览服务器窗口.
+    config.filebrowserVideoBrowseUrl = base + '/cmsWebFile/browse.html?type=video';  //定义图片的浏览服务器窗口.
+    config.filebrowserAudioBrowseUrl = base + '/cmsWebFile/browse.html?type=audio';  //定义图片的浏览服务器窗口.
+    config.filebrowserImageBrowseUrl = base + '/cmsWebFile/browse.html?type=image';  //定义图片的浏览服务器窗口.
 };
 
 CKEDITOR.on('instanceReady', function(event){

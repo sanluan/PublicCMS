@@ -1,5 +1,6 @@
 package com.publiccms.controller.admin.cms;
 
+import java.util.Comparator;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -60,7 +62,12 @@ public class CmsCategoryTypeAdminController {
         }
         modelComponent.clear(site.getId());
         if (CommonUtils.notEmpty(entity.getExtendList())) {
-            entity.getExtendList().sort((e1, e2) -> e1.getSort() - e2.getSort());
+            entity.getExtendList().sort(Comparator.comparing(SysExtendField::getSort));
+            entity.getExtendList().forEach(e -> {
+                if (CommonUtils.empty(e.getName())) {
+                    e.setName(e.getId().getCode());
+                }
+            });
         }
         if (CommonUtils.notEmpty(categoryTypeId)) {
             Map<String, CmsCategoryType> categoryTypeMap = modelComponent.getCategoryTypeMap(site.getId());

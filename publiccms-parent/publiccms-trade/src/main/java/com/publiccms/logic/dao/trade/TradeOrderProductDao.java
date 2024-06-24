@@ -49,7 +49,7 @@ public class TradeOrderProductDao extends BaseDao<TradeOrderProduct> {
         if (null != siteId && CommonUtils.notEmpty(orderId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
             queryHandler.condition("bean.orderId = :orderId").setParameter("orderId", orderId);
-            return (List<TradeOrderProduct>) getList(queryHandler);
+            return getEntityList(queryHandler);
         }
         return null;
     }

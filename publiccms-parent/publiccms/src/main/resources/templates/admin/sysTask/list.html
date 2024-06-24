@@ -37,6 +37,7 @@
                 <th><@t.page 'description'/></th>
                 <th><@t.page 'task.cron'/></th>
                 <th><@t.page 'task_template'/></th>
+                <th><@t.page 'multiple_node'/></th>
                 <th><@t.page 'status'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
@@ -49,6 +50,7 @@
                 <td class="exclude-translate">${(a.description)!}</td>
                 <td>${(a.cronExpression)!}</td>
                 <td>${(a.filePath)!}</td>
+                <td><#if a.multiNode><@t.page 'multiple_node'/></#if></td>
                 <td><@t.page 'status.task.'+a.status/></td>
                 <td class="wrap">
                     <a href="sysTask/add.html?id=${a.id}" class="edit btnText" target="navTab" rel="sysTask/edit"><i class="icon-edit"></i><@t.page 'task.edit'/></a>

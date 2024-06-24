@@ -12,6 +12,8 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 
+import freemarker.template.TemplateException;
+
 /**
  * fileExists 文件是否存在指令
  * <p>
@@ -43,7 +45,7 @@ import com.publiccms.entities.sys.SysSite;
 public class FileExistDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String type = handler.getString("type");
         String path = handler.getString("path");
         SysSite site = getSite(handler);

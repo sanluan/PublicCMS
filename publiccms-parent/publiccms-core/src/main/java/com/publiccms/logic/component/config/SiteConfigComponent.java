@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsContentService;
@@ -21,6 +24,16 @@ import com.publiccms.logic.service.cms.CmsContentService;
 public class SiteConfigComponent implements Config {
 
     /**
+     *
+     */
+    public static final String CONFIG_CODE = "site";
+
+    /**
+     *
+     */
+    public static final String CONFIG_CODE_DESCRIPTION = CommonUtils.joinString(CONFIGPREFIX, CONFIG_CODE);
+
+    /**
      * login url
      */
     public static final String CONFIG_LOGIN_PATH = "login_path";
@@ -28,6 +41,10 @@ public class SiteConfigComponent implements Config {
      * register url
      */
     public static final String CONFIG_REGISTER_URL = "register_url";
+    /**
+     * pdfviewer url
+     */
+    public static final String CONFIG_PDFVIEWER_URL = "pdfviewer_url";
     /**
      * site exclude module
      */
@@ -44,6 +61,10 @@ public class SiteConfigComponent implements Config {
      * category path
      */
     public static final String CONFIG_CATEGORY_PATH = "category_path";
+    /**
+     * max image width
+     */
+    public static final String CONFIG_MAX_IMAGE_WIDTH = "max_image_width";
     /**
      * comment need check
      */
@@ -75,45 +96,71 @@ public class SiteConfigComponent implements Config {
     public static final int DEFAULT_MAX_SCORES = 5;
 
     @Override
+    public String getCode(short siteId, boolean showAll) {
+        return CONFIG_CODE;
+    }
+
+    /**
+     * @param locale
+     * @return
+     */
+    @Override
+    public String getCodeDescription(Locale locale) {
+        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
+    }
+
+    @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new SysExtendField(CONFIG_SITE_EXCLUDE_MODULE, INPUTTYPE_MODULE,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SITE_EXCLUDE_MODULE), null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_SITE_EXCLUDE_MODULE)),
+                null));
         extendFieldList.add(new SysExtendField(CONFIG_SITE_EXCLUDE_LANG, INPUTTYPE_LANG,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SITE_EXCLUDE_LANG), null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_SITE_EXCLUDE_LANG)),
+                null));
 
         extendFieldList.add(new SysExtendField(CONFIG_REGISTER_URL, INPUTTYPE_TEXT,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_REGISTER_URL), null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_REGISTER_URL)), null));
         extendFieldList.add(new SysExtendField(CONFIG_LOGIN_PATH, INPUTTYPE_TEXT,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGIN_PATH), null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_LOGIN_PATH)), null));
+        extendFieldList.add(new SysExtendField(CONFIG_PDFVIEWER_URL, INPUTTYPE_TEXT,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PDFVIEWER_URL)), null));
 
         if (site.isUseStatic()) {
-            extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_TEMPLATE_PATH, INPUTTYPE_TEMPLATE, true,
-                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CATEGORY_TEMPLATE_PATH), null,
-                    "category.html"));
+            extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_TEMPLATE_PATH, INPUTTYPE_TEMPLATE, false,
+                    getMessage(locale,
+                            CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_CATEGORY_TEMPLATE_PATH)),
+                    null, "category/staticCategory.html"));
         }
         extendFieldList.add(new SysExtendField(CONFIG_CATEGORY_PATH, INPUTTYPE_CATEGORY_PATH, true,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_CATEGORY_PATH), null,
-                site.isUseStatic() ? "category/${category.code}.html" : "category.html?id=${category.id}"));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_CATEGORY_PATH)), null,
+                site.isUseStatic() ? "category/${category.code}.html" : "content/category.html?id=${category.id}"));
+
+        extendFieldList.add(new SysExtendField(CONFIG_MAX_IMAGE_WIDTH, INPUTTYPE_NUMBER,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_MAX_IMAGE_WIDTH)),
+                null));
 
         extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_STATUS, INPUTTYPE_CONTENT_STATUS, true,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULT_CONTENT_STATUS), null,
-                String.valueOf(CmsContentService.STATUS_PEND)));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_DEFAULT_CONTENT_STATUS)),
+                null, String.valueOf(CmsContentService.STATUS_PEND)));
         extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_USER, INPUTTYPE_USER,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULT_CONTENT_USER), null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_DEFAULT_CONTENT_USER)),
+                null));
 
         extendFieldList.add(new SysExtendField(CONFIG_COMMENT_NEED_CHECK, INPUTTYPE_BOOLEAN, false,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_COMMENT_NEED_CHECK), null, "true"));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_COMMENT_NEED_CHECK)),
+                null, "true"));
         extendFieldList.add(new SysExtendField(CONFIG_MAX_SCORES, INPUTTYPE_NUMBER, false,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_MAX_SCORES), null,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_MAX_SCORES)), null,
                 String.valueOf(DEFAULT_MAX_SCORES)));
         if (site.isUseStatic()) {
             extendFieldList.add(new SysExtendField(CONFIG_STATIC_AFTER_COMMENT, INPUTTYPE_BOOLEAN, false,
-                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_STATIC_AFTER_COMMENT), null,
-                    "false"));
+                    getMessage(locale,
+                            CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_STATIC_AFTER_COMMENT)),
+                    null, "false"));
             extendFieldList.add(new SysExtendField(CONFIG_STATIC_AFTER_SCORE, INPUTTYPE_BOOLEAN, false,
-                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_STATIC_AFTER_SCORE), null,
-                    "false"));
+                    getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_STATIC_AFTER_SCORE)),
+                    null, "false"));
         }
         return extendFieldList;
     }

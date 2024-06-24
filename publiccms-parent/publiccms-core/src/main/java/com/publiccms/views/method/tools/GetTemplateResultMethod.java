@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 
@@ -15,6 +15,7 @@ import freemarker.cache.StringTemplateLoader;
 import freemarker.core.TemplateClassResolver;
 import freemarker.template.Configuration;
 import freemarker.template.SimpleHash;
+import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
@@ -53,16 +54,16 @@ public class GetTemplateResultMethod extends BaseMethod {
      */
     public GetTemplateResultMethod() {
         configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        configuration.setDefaultEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
-        configuration.setURLEscapingCharset(CommonConstants.DEFAULT_CHARSET_NAME);
+        configuration.setDefaultEncoding(Constants.DEFAULT_CHARSET_NAME);
+        configuration.setURLEscapingCharset(Constants.DEFAULT_CHARSET_NAME);
         configuration.setTemplateUpdateDelayMilliseconds(0);
         configuration.setAPIBuiltinEnabled(false);
         configuration.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);
+        configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         configuration.setLogTemplateExceptions(false);
         configuration.setBooleanFormat("c");
         configuration.setTemplateLoader(new StringTemplateLoader());
         Map<String, Object> freemarkerVariables = new HashMap<>();
-        freemarkerVariables.put("null", CommonConstants.BLANK);
         try {
             configuration.setAllSharedVariables(new SimpleHash(freemarkerVariables, configuration.getObjectWrapper()));
         } catch (TemplateModelException e) {
@@ -73,7 +74,6 @@ public class GetTemplateResultMethod extends BaseMethod {
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String template = getString(0, arguments);
         if (CommonUtils.notEmpty(template)) {
-            template = "<#attempt>" + template + "<#recover>${.error!}</#attempt>";
             try {
                 return FreeMarkerUtils.generateStringByString(template, configuration, null);
             } catch (Exception e) {

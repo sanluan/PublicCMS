@@ -66,7 +66,7 @@ var navTab = {
     } ,
     _contextmenu: function($obj) { // navTab右键菜单
         var $this = this;
-        $obj.contextMenu('navTabCM', {
+        $obj.contextMenu("navTabCM", {
             bindings: {
                 reload: function(t, m) {
                     $this._reload(t, true);
@@ -84,10 +84,10 @@ var navTab = {
                     $this.closeAllTab();
                 }
             }, ctrSub: function(t, m) {
-                var mReload = m.find("[rel='reload']");
-                var mCur = m.find("[rel='closeCurrent']");
-                var mOther = m.find("[rel='closeOther']");
-                var mAll = m.find("[rel='closeAll']");
+                var mReload = m.find("[rel=\"reload\"]");
+                var mCur = m.find("[rel=\"closeCurrent\"]");
+                var mOther = m.find("[rel=\"closeOther\"]");
+                var mAll = m.find("[rel=\"closeAll\"]");
                 var $tabLi = $this._getTabs();
                 if ($tabLi.length < 2 ) {
                     mCur.addClass("disabled");
@@ -96,7 +96,7 @@ var navTab = {
                 }
                 if ($this._currentIndex == 0 || t.attr("tabid") == $this._op.mainTabId ) {
                     mCur.addClass("disabled");
-                    if(!t.attr('url')){
+                    if(!t.attr("url")){
                         mReload.addClass("disabled");
                     }
                 } else if ($tabLi.length == 2 ) {
@@ -196,7 +196,7 @@ var navTab = {
     _scrollTab: function(iLeft, isNext) {
         var $this = this;
         this._tabBox.animate({
-            left: iLeft + 'px'
+            left: iLeft + "px"
         }, 200, function() {
             $this._ctrlScrollBut();
         });
@@ -225,14 +225,27 @@ var navTab = {
             this._tabBox.parent().addClass("tabsPageHeaderMargin");
             if (this._getLeft() >= 0 ) {
                 this._prevBut.addClass("tabsLeftDisabled");
-            } else if (this._getLeft() <= this._getScrollBarW() - iW ) {
+            } else if (this._getLeft() <= this._getScrollBarW() - iW +0.5 ) {
                 this._nextBut.addClass("tabsRightDisabled");
             }
         }
     } ,
     _switchTab: function(iTabIndex) {
         var $tab = this._getTabs().removeClass("selected").eq(iTabIndex).addClass("selected");
-        this._getPanels().hide().eq(iTabIndex).show();
+        this._getPanels().each(function(){
+            // 防止iframe被隐藏后iframe滚动到最上面
+            if($(".iframe-box",$(this)).length){
+                $(this).css("visibility","hidden").height(0);
+            }else{
+                $(this).hide();
+            }
+        });
+        var currentPanel = this._getPanels().eq(iTabIndex);
+        if("hidden"===currentPanel.css("visibility")){
+            currentPanel.css("visibility","visible").css("height","auto");
+        } else {
+            currentPanel.show()
+        }
         this._getMoreLi().removeClass("selected").eq(iTabIndex).addClass("selected");
         this._currentIndex = iTabIndex;
         this._scrollCurrent();
@@ -268,9 +281,9 @@ var navTab = {
         }
     } ,
     closeAllTab: function() {
-        this._getTabs().filter(":gt(0)").remove();
-        this._getPanels().filter(":gt(0)").trigger(JUI.eventType.pageClear).remove();
-        this._getMoreLi().filter(":gt(0)").remove();
+        this._getTabs().slice(1).remove();
+        this._getPanels().slice(1).trigger(JUI.eventType.pageClear).remove();
+        this._getMoreLi().slice(1).remove();
         this._currentIndex = 0;
         this._init();
         this._scrollCurrent();
@@ -279,9 +292,9 @@ var navTab = {
         index = index || this._currentIndex;
         if (index > 0 ) {
             var str$ = ":eq(" + index + ")";
-            this._getTabs().not(str$).filter(":gt(0)").remove();
-            this._getPanels().not(str$).filter(":gt(0)").trigger(JUI.eventType.pageClear).remove();
-            this._getMoreLi().not(str$).filter(":gt(0)").remove();
+            this._getTabs().not(str$).slice(1).remove();
+            this._getPanels().not(str$).slice(1).trigger(JUI.eventType.pageClear).remove();
+            this._getMoreLi().not(str$).slice(1).remove();
             this._currentIndex = 1;
             this._init();
             this._scrollCurrent();
@@ -389,7 +402,7 @@ var navTab = {
     openTab: function(tabid, url, options) { // if found tabid replace tab,
         // else create a new tab.
         var op = $.extend({
-            title: "New Tab", icon: "", data: {}, fresh: true, external: false, focusNewWindow:false
+            title: "New Tab", data: {}, fresh: true, external: false, focusNewWindow:false
         }, options);
         var iOpenIndex = this._indexTabId(tabid);
         if (iOpenIndex >= 0 && !op.focusNewWindow) {
@@ -414,9 +427,9 @@ var navTab = {
             if(op.focusNewWindow){
               tabid += Math.round(Math.random() * 10000000);
             }
-            this._getPanels().eq(this._currentIndex).after('<div class="page unitBox"></div>');
-            this._getTabs().eq(this._currentIndex).after($('<li><a href="javascript:;" class="close"><i class="icon-remove-sign"></i></a></li>').attr('tabid',tabid).prepend($('<a href="javascript:"></a>').attr('title',op.title).text(op.title).prepend(op.icon)));
-            this._getMoreLi().eq(this._currentIndex).after($('<li></li>').append($('<a href="javascript:"></a>').attr('title',op.title).text(op.title).prepend(op.icon)));
+            this._getPanels().eq(this._currentIndex).after("<div class=\"page unitBox\"></div>");
+            this._getTabs().eq(this._currentIndex).after($("<li><a href=\"javascript:;\" class=\"close\"><i class=\"icon-remove-sign\"></i></a></li>").attr("tabid",tabid).prepend($("<a href=\"javascript:\"></a>").attr("title",op.title).text(op.title)));
+            this._getMoreLi().eq(this._currentIndex).after($("<li></li>").append($("<a href=\"javascript:\"></a>").attr("title",op.title).text(op.title)));
             var $tabs = this._getTabs();
             var $tab = $tabs.eq(this._currentIndex+1);
             var $panel = this._getPanels().eq(this._currentIndex+1);
@@ -434,9 +447,8 @@ var navTab = {
             }
             if ($.History) {
                 setTimeout(function(){
-                    $.History.addHistory($('#navMenu .selected a').attr('parentid') + '_' + tabid, function(hash){
-                        var tabid = hash.substring(hash.indexOf('_')+1);
-                        var i = navTab._indexTabId(tabid);
+                    $.History.addHistory(tabid, function(hash){
+                        var i = navTab._indexTabId(hash);
                         if (i >= 0) {
                             navTab._switchTab(i);
                         }

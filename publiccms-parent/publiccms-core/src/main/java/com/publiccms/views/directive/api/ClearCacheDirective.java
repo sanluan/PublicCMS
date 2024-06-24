@@ -11,6 +11,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.cache.CacheComponent;
 
 import jakarta.annotation.Resource;
+import freemarker.template.TemplateException;
 
 /**
 *
@@ -30,7 +31,7 @@ import jakarta.annotation.Resource;
 public class ClearCacheDirective extends AbstractAppDirective {
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         cacheComponent.clear();
         handler.render();
     }

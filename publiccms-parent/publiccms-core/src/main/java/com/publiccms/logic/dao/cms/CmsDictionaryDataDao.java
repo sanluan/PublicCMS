@@ -31,14 +31,14 @@ public class CmsDictionaryDataDao extends BaseDao<CmsDictionaryData> {
         queryHandler.condition("bean.id.dictionaryId = :dictionaryId").setParameter("dictionaryId", dictionaryId);
         if (CommonUtils.notEmpty(parentValue)) {
             queryHandler.condition("bean.parentValue = :parentValue").setParameter("parentValue", parentValue);
-        }else {
+        } else {
             queryHandler.condition("bean.parentValue is null");
         }
         queryHandler.order("bean.sort asc");
         queryHandler.order("bean.id.value asc");
         return getList(queryHandler);
     }
-    
+
     /**
      * @param siteId
      * @param dictionaryId
@@ -81,6 +81,9 @@ public class CmsDictionaryDataDao extends BaseDao<CmsDictionaryData> {
 
     @Override
     protected CmsDictionaryData init(CmsDictionaryData entity) {
+        if (CommonUtils.empty(entity.getText())) {
+            entity.setText(entity.getId().getValue());
+        }
         return entity;
     }
 

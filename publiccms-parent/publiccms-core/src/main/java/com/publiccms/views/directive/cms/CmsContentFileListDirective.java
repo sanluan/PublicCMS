@@ -12,11 +12,14 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.cms.CmsContentFileService;
+
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -49,7 +52,7 @@ import com.publiccms.logic.service.cms.CmsContentFileService;
  * <pre>
 *  &lt;script&gt;
    $.getJSON('${site.dynamicPath}api/directive/cms/contentFileList?contentId=1&amp;pageSize=10', function(data){    
-     console.log(data.totalCount);
+     console.log(data.page.totalCount);
    });
    &lt;/script&gt;
  * </pre>
@@ -59,7 +62,7 @@ import com.publiccms.logic.service.cms.CmsContentFileService;
 public class CmsContentFileListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String[] fileTypes = handler.getStringArray("fileTypes");
         if (CommonUtils.empty(fileTypes) && handler.getBoolean("image", false)) {
             fileTypes = new String[] { CmsFileUtils.FILE_TYPE_IMAGE };
@@ -72,15 +75,15 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
         if (null != list) {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             SysSite site = getSite(handler);
-            list.forEach(e -> {
-                if (absoluteURL) {
-                    e.setFilePath(TemplateComponent.getUrl(site, true, e.getFilePath()));
-                }
-            });
+            if (absoluteURL) {
+                list.forEach(e -> e.setFilePath(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getFilePath())));
+            }
         }
         handler.put("page", page).render();
     }
 
     @Resource
     private CmsContentFileService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 }

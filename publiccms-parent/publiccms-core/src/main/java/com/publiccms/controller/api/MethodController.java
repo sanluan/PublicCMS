@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysAppToken;
@@ -45,7 +46,7 @@ public class MethodController {
     /**
      *
      */
-    public static final Map<String, String> NEED_APP_TOKEN_MAP = new HashMap<String, String>() {
+    protected static final Map<String, String> NEED_APP_TOKEN_MAP = new HashMap<String, String>() {
         private static final long serialVersionUID = 1L;
         {
             put(CommonConstants.ERROR, ApiController.NEED_APP_TOKEN);
@@ -71,9 +72,8 @@ public class MethodController {
                         return NEED_APP_TOKEN_MAP;
                     }
                     SysApp app = appService.getEntity(token.getAppId());
-                    if (null == app || CommonUtils.empty(app.getAuthorizedApis())
-                            || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED),
-                                    method.getName())) {
+                    if (null == app || CommonUtils.empty(app.getAuthorizedApis()) || !ArrayUtils
+                            .contains(StringUtils.split(app.getAuthorizedApis(), Constants.COMMA), method.getName())) {
                         return NEED_APP_TOKEN_MAP;
                     }
                 }

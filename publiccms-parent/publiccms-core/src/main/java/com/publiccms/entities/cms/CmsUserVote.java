@@ -33,7 +33,15 @@ public class CmsUserVote implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private CmsUserVoteId id;
     /**
-     * item id<p>
+     * anonymous
+     * <p>
+     * 匿名用户
+     */
+    @GeneratorColumn(title = "匿名用户", condition = true)
+    private boolean anonymous;
+    /**
+     * item id
+     * <p>
      * 选项id
      */
     @GeneratorColumn(title = "选项")
@@ -44,7 +52,8 @@ public class CmsUserVote implements java.io.Serializable {
     @GeneratorColumn(title = "IP")
     private String ip;
     /**
-     * create date<p>
+     * create date
+     * <p>
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)
@@ -53,15 +62,15 @@ public class CmsUserVote implements java.io.Serializable {
     public CmsUserVote() {
     }
 
-    public CmsUserVote(CmsUserVoteId id, long itemId, String ip, Date createDate) {
+    public CmsUserVote(CmsUserVoteId id, boolean anonymous, long itemId, String ip, Date createDate) {
         this.id = id;
+        this.anonymous = anonymous;
         this.itemId = itemId;
         this.ip = ip;
         this.createDate = createDate;
     }
 
     @EmbeddedId
-
     @AttributeOverrides({ @AttributeOverride(name = "userId", column = @Column(name = "user_id", nullable = false)),
             @AttributeOverride(name = "voteId", column = @Column(name = "vote_id", nullable = false)) })
     public CmsUserVoteId getId() {
@@ -70,6 +79,15 @@ public class CmsUserVote implements java.io.Serializable {
 
     public void setId(CmsUserVoteId id) {
         this.id = id;
+    }
+
+    @Column(name = "anonymous", nullable = false)
+    public boolean isAnonymous() {
+        return this.anonymous;
+    }
+
+    public void setAnonymous(boolean anonymous) {
+        this.anonymous = anonymous;
     }
 
     @Column(name = "item_id", nullable = false)

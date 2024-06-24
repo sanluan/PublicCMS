@@ -12,6 +12,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.sys.SysDeptItemService;
 
 import jakarta.annotation.Resource;
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -40,7 +41,7 @@ import jakarta.annotation.Resource;
  * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/sys/deptCategoryList?deptId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
-    console.log(data.totalCount);
+    console.log(data.page.totalCount);
   });
   &lt;/script&gt;
  * </pre>
@@ -49,7 +50,7 @@ import jakarta.annotation.Resource;
 public class SysDeptItemListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(handler.getInteger("deptId"), handler.getString("itemType"),
                 handler.getString("itemId"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize"));
         handler.put("page", page).render();

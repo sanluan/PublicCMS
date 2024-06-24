@@ -16,6 +16,8 @@ import com.publiccms.entities.cms.CmsComment;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsCommentService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * comment 评论查询指令
@@ -46,7 +48,7 @@ import com.publiccms.logic.service.cms.CmsCommentService;
 public class CmsCommentDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

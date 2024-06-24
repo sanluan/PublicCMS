@@ -8,7 +8,7 @@
 </#macro>
 <div class="pageFormContent" layoutH>
     <ul class="tree treeFolder">
-<@cms.categoryModelList modelId=id>
+<@cms.categoryModelList modelId=modelId>
     <#list list as a>
         <@t.merge 'categoryIds' a.id.categoryId/>
     </#list>
@@ -16,7 +16,7 @@
     <#list list as a>
         <li>
             <#if categoryMap[a.id.categoryId?string]?has_content>
-                <a href="cmsCategory/add.html?id=${a.id.categoryId}" class="exclude-translate" class="edit btnText blue" target="navTab" rel="cmsCategory/edit" icon="<i class='icon-edit'></i>" title="${categoryMap[a.id.categoryId?string].name}"><@bread categoryMap[a.id.categoryId?string]/> ${categoryMap[a.id.categoryId?string].name} <#if a.customContentPath><@t.page 'custorm_path'/></#if></a>
+                <a href="cmsModel/template.html?modelId=${modelId!}&categoryId=${a.id.categoryId}" class="exclude-translate" target="dialog" rel="categoryList" width="1200" height="580" title="<@t.page 'template'/>"><@bread categoryMap[a.id.categoryId?string]/> ${categoryMap[a.id.categoryId?string].name} <#if categoryMap[a.id.categoryId?string].extendId?has_content><@t.page 'content.extend_field'/></#if></a>
             </#if>
         </li>
     </#list>
@@ -30,6 +30,7 @@ $('ul li a',$.pdialog.getCurrent()).click(function(){
 </script>
 <div class="formBar">
     <ul>
+        <li><a class="button" href="cmsModel/template.html?modelId=${modelId!}" class="exclude-translate" target="dialog" rel="categoryList" width="1200" height="580"><@t.page 'template'/></a>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>

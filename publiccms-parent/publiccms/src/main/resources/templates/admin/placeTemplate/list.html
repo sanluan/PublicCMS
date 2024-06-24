@@ -1,4 +1,4 @@
-<#macro placeTree filepath=''>
+<#macro placeList filepath=''>
     <@tools.fileList path='/include'+filepath orderField='createDate'>
         <#list list as a>
             <#if !a.directory><@t.merge 'paths' filepath+'/'+a.fileName/></#if>
@@ -11,15 +11,17 @@
         </#if>
         <@sys.user ids=t.userIds><#assign userMap=map!/></@sys.user>
         <#list list as a>
-            <li>
-                <#local path=filepath+'/'+a.fileName>
+            <#local path=filepath+'/'+a.fileName>
+            <li<#if a.directory> _src="placeTemplate/list.html?parent=${path}"</#if>>
                 <#if a.directory>
                     <a href="placeTemplate/directory.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">${a.fileName}</a>
-                    <ul><@placeTree path/></ul>
                 <#else>
-                    <a href="placeTemplate/content.html?path=${(path?url)!}" <#if lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if> target="ajax" rel="cmsTemplatePlace">
+                    <a href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">
                         <@tools.placeMetadata path=path>
-                            <#if lockMap[path]?has_content><i class="icon-lock icon-large"></i></#if>
+                            <#if lockMap?has_content && lockMap[path]?has_content>
+                                <#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>
+                                <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"></i>
+                            </#if>
                             ${(object.alias)!a.fileName}<#if 0 lt ((object.size)!0)> <@t.page 'place_data'/>(${object.size})</#if>
                         </@tools.placeMetadata>
                     </a>
@@ -30,24 +32,32 @@
         </#list>
     </@tools.fileList>
 </#macro>
-<div class="pageContent">
-    <div class="leftPageContent">
-        <h2 class="contentTitle">
-            <a class="button" href="placeTemplate/metadata.html" target="ajax" rel="cmsTemplatePlace"><@t.page 'place.create'/></a>
-        </h2>
-        <ul class="tree treeFolder" layoutH>
-            <@placeTree/>
-        </ul>
-    </div>
-    <div id="cmsTemplatePlace" class="unitBox rightPageContent">
-        <#if path?has_content>
-            <#if editType?has_content&&'metadata'=editType>
-                <#include "metadata.html"/>
+<#if parent?has_content>
+     <ul>
+         <@placeList parent/>
+     </ul>
+<#else>
+    <div class="pageContent">
+        <div class="leftPageContent">
+            <div class="card">
+                <h2 class="contentTitle">
+                    <a class="button" href="placeTemplate/metadata.html" target="ajax" rel="cmsTemplatePlace"><@t.page 'place.create'/></a>
+                </h2>
+                <ul class="tree treeFolder" layoutH>
+                    <@placeList/>
+                </ul>
+            </div>
+        </div>
+        <div id="cmsTemplatePlace" class="unitBox rightPageContent">
+            <#if path?has_content>
+                <#if editType?has_content&&'metadata'=editType>
+                    <#include "metadata.html"/>
+                <#else>
+                    <#include "content.html"/>
+                </#if>
             <#else>
-                <#include "content.html"/>
+                <#include "directory.html"/>
             </#if>
-        <#else>
-            <#include "directory.html"/>
-        </#if>
+        </div>
     </div>
-</div>
+</#if>

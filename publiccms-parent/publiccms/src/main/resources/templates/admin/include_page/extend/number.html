@@ -1,0 +1,33 @@
+<#if 'view'=type>
+        ${(value)!}
+<#elseif extend.multiple>
+        <table<#if 'customform'!=type> class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate.html?field=${inputName?url}"</#if>>
+            <thead>
+                <tr>
+                    <th width="250"<#if 'customform'!=type> type="number" name="${inputName}" fieldClass="number<#if extend.required> required</#if>" size="30" fieldAttrs="{<#if extend.maxlength?has_content>,'maxlength':'${extend.maxlength}'</#if>}"</#if>><@t.page 'value'/></th>
+                    <th width="60"<#if 'customform'!=type> type="del"</#if>><@t.page 'operate'/></th>
+                </tr>
+            </thead>
+            <tbody>
+                <#if value?has_content>
+                    <#list value?split(',') as a>
+                    <tr>
+                        <td>
+                            <input name="${inputName}" type="number" size="30"<#if 'customform'=type><#if extend.required||a?is_first> required="required"</#if><#else>class="required"</#if><#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> value="${a}"/>
+                        </td>
+                        <td>
+                            <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
+                        </td>
+                    </tr>
+                    </#list>
+                </#if>
+                <#if 'customform'=type>
+                    <tr>
+                        <td colspan="2"><a href="javascript:;" onclick="var thisNode=this.parentElement.parentElement;var tr = document.createElement('tr');tr.innerHTML='<td><input name=\'${inputName}\' type=\'number\' size=\'30\'<#if extend.maxlength?has_content> maxlength=\'${extend.maxlength}\'</#if><#if extend.required> required=\'required\'</#if>/></td><td><a href=\'javascript:;\' onclick=\'this.parentElement.parentElement.remove()\'><@t.page 'button.delete'/></a></td>';thisNode.parentElement.insertBefore(tr,thisNode);"><@t.page 'button.new_line'/></a></td>
+                    </tr>
+                </#if>
+            </tbody>
+        </table>
+<#else>
+        <input name="${inputName}" type="number"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if><#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
+</#if>

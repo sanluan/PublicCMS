@@ -4,14 +4,12 @@ import jakarta.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.task.ScheduledTask;
-import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
-import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogTaskService;
 import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysTaskService;
@@ -23,18 +21,14 @@ import com.publiccms.logic.service.sys.SysTaskService;
  */
 @Component
 public class BeanComponent {
-
     private static SiteComponent siteComponent;
-    private static ConfigComponent configComponent;
+    private static ConfigDataComponent configDataComponent;
     private static SysTaskService sysTaskService;
     private static LogTaskService logTaskService;
     private static SysSiteService siteService;
     private static ScheduledTask scheduledTask;
-
     private static CmsContentAttributeService contentAttributeService;
-    private static CmsContentService contentService;
     private static TemplateComponent templateComponent;
-    private static MetadataComponent metadataComponent;
     private static ModelComponent modelComponent;
 
     /**
@@ -47,8 +41,8 @@ public class BeanComponent {
     /**
      * @return the configComponent
      */
-    public static ConfigComponent getConfigComponent() {
-        return configComponent;
+    public static ConfigDataComponent getConfigDataComponent() {
+        return configDataComponent;
     }
 
     /**
@@ -92,13 +86,6 @@ public class BeanComponent {
     public static CmsContentAttributeService getContentAttributeService() {
         return contentAttributeService;
     }
-
-    /**
-     * @return the contentService
-     */
-    public static CmsContentService getContentService() {
-        return contentService;
-    }
     /**
      * @param siteComponent
      *            the siteComponent to set
@@ -109,12 +96,12 @@ public class BeanComponent {
     }
 
     /**
-     * @param configComponent
-     *            the configComponent to set
+     * @param configDataComponent
+     *            the configDataComponent to set
      */
     @Resource
-    public void setConfigComponent(ConfigComponent configComponent) {
-        BeanComponent.configComponent = configComponent;
+    public void setConfigDataComponent(ConfigDataComponent configDataComponent) {
+        BeanComponent.configDataComponent = configDataComponent;
     }
 
     /**
@@ -163,36 +150,12 @@ public class BeanComponent {
     }
     
     /**
-     * @param contentService
-     *            the contentService to set
-     */
-    @Resource
-    public void setContentService(CmsContentService contentService) {
-        BeanComponent.contentService = contentService;
-    }
-
-    /**
      * @param templateComponent
      *            the templateComponent to set
      */
     @Resource
     public void setTemplateComponent(TemplateComponent templateComponent) {
         BeanComponent.templateComponent = templateComponent;
-    }
-
-    /**
-     * @return the metadataComponent
-     */
-    public static MetadataComponent getMetadataComponent() {
-        return metadataComponent;
-    }
-
-    /**
-     * @param metadataComponent the metadataComponent to set
-     */
-    @Resource
-    public void setMetadataComponent(MetadataComponent metadataComponent) {
-        BeanComponent.metadataComponent = metadataComponent;
     }
     
 

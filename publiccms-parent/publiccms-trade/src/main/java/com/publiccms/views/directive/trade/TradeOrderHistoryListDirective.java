@@ -11,6 +11,8 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.trade.TradeOrderHistoryService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * tradeOrderHistoryList 订单历史列表查询指令
@@ -39,7 +41,7 @@ import com.publiccms.logic.service.trade.TradeOrderHistoryService;
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/trade/orderHistoryList?orderId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
- console.log(data.totalCount);
+ console.log(data.page.totalCount);
 });
 &lt;/script&gt;
  * </pre>
@@ -48,7 +50,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/orderHistoryList?orderId=1&amp
 public class TradeOrderHistoryListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("orderId"),
                 handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), handler.getString("orderType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -19,6 +18,10 @@ import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
+
+import freemarker.template.TemplateException;
+import jakarta.annotation.Resource;
+import jakarta.mail.MessagingException;
 
 /**
  * sendEmail 发送邮件指令
@@ -43,11 +46,11 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
  * 使用示例
  * <p>
  * &lt;@tools.sendEmail email='master@puliccms.com' title='title'
- * content='content' parameters={"parameter1","value1"}/&gt;
+ * content='content' parameters={"parameter1":"value1"}/&gt;
  * 
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/placeMetadata?email=master@puliccms.com&amp;title=title&amp;content=content&amp;parameters.parameter1=value1&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/sendEmail?email=master@puliccms.com&amp;title=title&amp;content=content&amp;parameters.parameter1=value1&amp;appToken=接口访问授权Token', function(data){    
    console.log(data.alias);
  });
  &lt;/script&gt;
@@ -58,7 +61,7 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
 public class SendEmailDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String[] email = handler.getStringArray("email");
         String[] cc = handler.getStringArray("cc");
         String[] bcc = handler.getStringArray("bcc");
@@ -83,21 +86,31 @@ public class SendEmailDirective extends AbstractTemplateDirective {
                 String filepath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
                 CmsPageData data = metadataComponent.getTemplateData(filepath);
-                Map<String, Object> parameters = handler.getMap("parameters");
-                if (null != parameters) {
+                Map<String, String> parameters = handler.getMap("parameters");
+                if (!parameters.isEmpty()) {
                     model.putAll(parameters);
                 }
                 model.put("metadata", metadata.getAsMap(data));
                 String content = FreeMarkerUtils.generateStringByFile(
                         SiteComponent.getFullTemplatePath(site.getId(), templatePath), templateComponent.getWebConfiguration(),
                         model);
-                handler.put("result", emailComponent.sendHtml(site.getId(), email, cc, bcc, title, content, fileNames, files))
-                        .render();
+                try {
+                    handler.put("result", emailComponent.sendHtml(site.getId(), email, cc, bcc, title, content, fileNames, files))
+                            .render();
+                } catch (MessagingException e) {
+                    handler.print(e.getMessage());
+                    handler.put("result", false).render();
+                }
             } else {
                 String content = handler.getString("content");
                 if (CommonUtils.notEmpty(content)) {
-                    handler.put("result", emailComponent.send(site.getId(), email, cc, bcc, title, content, fileNames, files))
-                            .render();
+                    try {
+                        handler.put("result", emailComponent.send(site.getId(), email, cc, bcc, title, content, fileNames, files))
+                                .render();
+                    } catch (MessagingException e) {
+                        handler.print(e.getMessage());
+                        handler.put("result", false).render();
+                    }
                 }
             }
 

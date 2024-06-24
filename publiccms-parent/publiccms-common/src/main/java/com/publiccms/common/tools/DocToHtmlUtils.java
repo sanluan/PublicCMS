@@ -9,13 +9,13 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -25,7 +25,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hwpf.HWPFDocument;
@@ -56,9 +58,12 @@ import fr.opensagres.poi.xwpf.converter.core.ImageManager;
 import fr.opensagres.poi.xwpf.converter.xhtml.XHTMLOptions;
 
 public class DocToHtmlUtils {
-    public static final Pattern WIDTH_HEIGHT_PATTERN = Pattern
+    private DocToHtmlUtils() {
+    }
+
+    protected static final Pattern WIDTH_HEIGHT_PATTERN = Pattern
             .compile("^\\d+(\\.\\d+)?(cm|px|em|ex|mm|in|pt|pc|vh|vw|vmin|vmax|ch|rem|%)?");
-    public static List<String> allFonts = Arrays
+    protected static final List<String> allFonts = Arrays
             .asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
 
     /**
@@ -88,10 +93,11 @@ public class DocToHtmlUtils {
     public static String docxToHtml(File file, ImageManager imageManager) throws IOException {
         ZipSecureFile.setMinInflateRatio(-1.0d);
         try (XWPFDocument document = new XWPFDocument(new FileInputStream(file))) {
-            XHTMLOptions options = XHTMLOptions.create().setImageManager(imageManager).setFragment(true);
+            XHTMLOptions options = XHTMLOptions.create().setImageManager(imageManager).setFragment(true)
+                    .setIgnoreStylesIfUnused(true).setOmitHeaderFooterPages(true);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             CustomXHTMLConverter.getInstance().convert(document, out, options);
-            return HtmlUtils.UNESCAPE_HTML4.translate(new String(out.toByteArray()));
+            return StringEscapeUtils.unescapeHtml4(new String(out.toByteArray()));
         }
     }
 
@@ -108,7 +114,6 @@ public class DocToHtmlUtils {
             sb.append("\" style=\"width:").append(width).append(";height:").append(height);
         }
         sb.append("\" frameborder=\"0\"></iframe>");
-
         return sb.toString();
     }
 
@@ -118,13 +123,10 @@ public class DocToHtmlUtils {
      * @return
      * @throws IOException
      * @throws ClassCastException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws ClassNotFoundException
      * @throws TransformerException
      */
-    public static String pdfToHtml(File file, HtmlResourceHandler imageHandler) throws IOException, ClassNotFoundException,
-            InstantiationException, IllegalAccessException, ClassCastException, TransformerException {
+    public static String pdfToHtml(File file, HtmlResourceHandler imageHandler)
+            throws IOException, ClassCastException, TransformerException {
         try (PDDocument pdf = PDDocument.load(file)) {
             PDFDomTreeConfig config = PDFDomTreeConfig.createDefaultConfig();
             config.setFontHandler(PDFDomTreeConfig.ignoreResource());
@@ -139,9 +141,11 @@ public class DocToHtmlUtils {
      * @param defaultFontFamily
      * @param imageManager
      * @return
-     * @throws Exception
+     * @throws IOException
+     * @throws EncryptedDocumentException
      */
-    public static String pptToHtml(File file, String defaultFontFamily, ImageManager imageManager) throws Exception {
+    public static String pptToHtml(File file, String defaultFontFamily, ImageManager imageManager)
+            throws EncryptedDocumentException, IOException {
         StringBuilder sb = new StringBuilder();
         try (SlideShow<?, ?> sw = SlideShowFactory.create(new FileInputStream(file))) {
             Dimension pgSize = sw.getPageSize();
@@ -165,7 +169,7 @@ public class DocToHtmlUtils {
                 slide.draw(graphics);
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 ImageIO.write(img, ImageUtils.FORMAT_NAME_JPG, out);
-                imageManager.extract(slide.getSlideNumber() + ".jpg", out.toByteArray());
+                imageManager.extract(CommonUtils.joinString(slide.getSlideNumber(), ".jpg"), out.toByteArray());
                 sb.append("<p style=\"text-align:center\"><img src=\"").append(imageManager.resolve(null)).append("\" alt=\"")
                         .append(slide.getSlideNumber()).append("\"/></p>");
             }
@@ -182,6 +186,8 @@ public class DocToHtmlUtils {
         StreamResult streamResult = new StreamResult(out);
         DOMSource domSource = new DOMSource(htmlDocument);
         TransformerFactory tf = TransformerFactory.newInstance();
+        tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
         Transformer serializer = tf.newTransformer();
         serializer.setOutputProperty(OutputKeys.ENCODING, Constants.DEFAULT_CHARSET_NAME);
         serializer.setOutputProperty(OutputKeys.METHOD, "html");
@@ -192,7 +198,7 @@ public class DocToHtmlUtils {
         if (-1 < index1 && -1 < index2) {
             html = html.substring(html.indexOf('>', index1) + 1, index2);
         }
-        return HtmlUtils.UNESCAPE_HTML4.translate(html);
+        return StringEscapeUtils.unescapeHtml4(html);
     }
 
     /**
@@ -200,12 +206,11 @@ public class DocToHtmlUtils {
      * @param imageManager
      * @return
      * @throws IOException
-     * @throws FileNotFoundException
      * @throws ParserConfigurationException
      * @throws TransformerException
      */
     public static String excelToHtml(File file, ImageManager imageManager)
-            throws FileNotFoundException, IOException, ParserConfigurationException, TransformerException {
+            throws IOException, ParserConfigurationException, TransformerException {
         try (Workbook wb = WorkbookFactory.create(new FileInputStream(file))) {
             if (wb instanceof HSSFWorkbook) {
                 HSSFWorkbook hWb = (HSSFWorkbook) wb;
@@ -234,8 +239,9 @@ public class DocToHtmlUtils {
         @Override
         public void addStyleClass(Element element, String classNamePrefix, String style) {
             String exising = element.getAttribute("style");
-            String newStyleValue = CommonUtils.empty(exising) ? style : (exising + (exising.endsWith(";") ? style : ";" + style));
-            element.setAttribute("style", newStyleValue);
+            String newStyleValue = CommonUtils.notEmpty(exising) && exising.endsWith(";") ? CommonUtils.joinString(exising, style)
+                    : CommonUtils.joinString(exising, ";", style);
+            element.setAttribute("style", CommonUtils.empty(exising) ? style : newStyleValue);
         }
     }
 }

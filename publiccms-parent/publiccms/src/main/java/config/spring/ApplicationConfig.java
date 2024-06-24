@@ -1,6 +1,5 @@
 package config.spring;
 
-import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,6 +11,7 @@ import javax.sql.DataSource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.cn.smart.hhmm.DictionaryReloader;
 import org.hibernate.SessionFactory;
+import org.hibernate.validator.HibernateValidator;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.FactoryBean;
@@ -31,12 +31,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.github.pagehelper.PageInterceptor;
 import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.search.MultiTokenFilterFactory;
 import com.publiccms.common.search.MultiTokenizerFactory;
@@ -49,6 +51,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 
 import config.initializer.InitializationInitializer;
 import freemarker.cache.FileTemplateLoader;
+import jakarta.validation.ValidatorFactory;
 
 /**
  *
@@ -75,23 +78,21 @@ public class ApplicationConfig implements EnvironmentAware{
      * 序列生成器
      *
      * @return idWorker
-     * @throws PropertyVetoException
      */
     @Bean
-    public IdWorker idWorker() throws PropertyVetoException {
-        IdWorker bean = new IdWorker(Long.valueOf(env.getProperty("cms.workerId")));
-        return bean;
+    public IdWorker idWorker() {
+        return new IdWorker(Long.valueOf(env.getProperty("cms.workerId")));
     }
 
     /**
      * 数据源
      *
      * @return datasource
-     * @throws PropertyVetoException
      */
     @Bean
-    public DataSource dataSource() throws PropertyVetoException {
-        CmsDataSource bean = new CmsDataSource(getDirPath(CommonConstants.BLANK) + CmsDataSource.DATABASE_CONFIG_FILENAME);
+    public DataSource dataSource() {
+        CmsDataSource bean = new CmsDataSource(
+                CommonUtils.joinString(getDirPath(Constants.BLANK), CmsDataSource.DATABASE_CONFIG_FILENAME));
         CmsDataSource.initDefaultDataSource();
         return bean;
     }
@@ -104,8 +105,7 @@ public class ApplicationConfig implements EnvironmentAware{
      */
     @Bean
     public HibernateTransactionManager hibernateTransactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager bean = new HibernateTransactionManager(sessionFactory);
-        return bean;
+        return new HibernateTransactionManager(sessionFactory);
     }
 
     /**
@@ -134,11 +134,10 @@ public class ApplicationConfig implements EnvironmentAware{
      *
      * @param dataSource
      * @return hibernate session factory
-     * @throws PropertyVetoException
      * @throws IOException
      */
     @Bean
-    public FactoryBean<SessionFactory> hibernateSessionFactory(DataSource dataSource) throws PropertyVetoException, IOException {
+    public FactoryBean<SessionFactory> hibernateSessionFactory(DataSource dataSource) throws IOException {
         LocalSessionFactoryBean bean = new LocalSessionFactoryBean();
         bean.setDataSource(dataSource);
         bean.setPackagesToScan("com.publiccms.entities");
@@ -158,6 +157,18 @@ public class ApplicationConfig implements EnvironmentAware{
     }
 
     /**
+     * 验证工厂
+     *
+     * @return cache factory
+     */
+    @Bean
+    public ValidatorFactory validatorFactoryBean() {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setProviderClass(HibernateValidator.class);
+        return bean;
+    }
+
+    /**
      * 缓存工厂
      *
      * @return cache factory
@@ -165,8 +176,7 @@ public class ApplicationConfig implements EnvironmentAware{
      */
     @Bean
     public CacheEntityFactory cacheEntityFactory() throws IOException {
-        CacheEntityFactory bean = new CacheEntityFactory(env.getProperty("cms.cache.configFilePath"));
-        return bean;
+        return new CacheEntityFactory(env.getProperty("cms.cache.configFilePath"));
     }
 
     /**
@@ -179,7 +189,7 @@ public class ApplicationConfig implements EnvironmentAware{
     @Bean
     public MessageSource messageSource(MenuMessageComponent menuMessageComponent) {
         ResourceBundleMessageSource bean = new ResourceBundleMessageSource();
-        bean.setBasenames(StringUtils.split(env.getProperty("cms.language"), CommonConstants.COMMA_DELIMITED));
+        bean.setBasenames(StringUtils.split(env.getProperty("cms.language"), Constants.COMMA));
         bean.setCacheSeconds(300);
         bean.setUseCodeAsDefaultMessage(true);
         bean.setParentMessageSource(menuMessageComponent);
@@ -208,7 +218,7 @@ public class ApplicationConfig implements EnvironmentAware{
     @Bean
     public SiteComponent siteComponent() {
         SiteComponent bean = new SiteComponent();
-        bean.setRootPath(getDirPath(CommonConstants.BLANK));
+        bean.setRootPath(getDirPath(Constants.BLANK));
         bean.setMasterSiteIds(env.getProperty("cms.masterSiteIds"));
         bean.setDefaultSiteId(Short.parseShort(env.getProperty("cms.defaultSiteId")));
         if ("hmmChinese".equalsIgnoreCase(env.getProperty("cms.tokenizerFactory"))) {
@@ -261,12 +271,10 @@ public class ApplicationConfig implements EnvironmentAware{
      * 文件上传解决方案
      *
      * @return file upload resolver
-     * @throws IOException
      */
     @Bean
-    public StandardServletMultipartResolver multipartResolver() throws IOException {
-        StandardServletMultipartResolver bean = new StandardServletMultipartResolver();
-        return bean;
+    public StandardServletMultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
     }
 
     /**
@@ -276,7 +284,7 @@ public class ApplicationConfig implements EnvironmentAware{
     private Map<String, String> getMap(String property) {
         Map<String, String> parametersMap = new HashMap<>();
         if (CommonUtils.notEmpty(property)) {
-            String[] parameters = StringUtils.split(property, CommonConstants.COMMA_DELIMITED);
+            String[] parameters = StringUtils.split(property, Constants.COMMA);
             for (String parameter : parameters) {
                 String[] values = StringUtils.split(parameter, "=", 2);
                 if (values.length == 2) {
@@ -297,7 +305,7 @@ public class ApplicationConfig implements EnvironmentAware{
         if (null == CommonConstants.CMS_FILEPATH) {
             InitializationInitializer.initFilePath(env.getProperty("cms.filePath"), System.getProperty("user.dir"));
         }
-        File dir = new File(CommonConstants.CMS_FILEPATH + path);
+        File dir = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, path));
         dir.mkdirs();
         return dir.getAbsolutePath();
     }

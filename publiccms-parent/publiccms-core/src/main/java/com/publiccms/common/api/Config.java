@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Locale;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
@@ -18,24 +20,10 @@ public interface Config {
      * 
      */
     String CONFIGPREFIX = "config.";
-
     /**
      * 
      */
-    String CONFIG_CODE_SITE = "site";
-
-    /**
-     * 
-     */
-    String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE_SITE;
-    /**
-     * 
-     */
-    String CONFIG_CODE_DESCRIPTION_SUFFIX = CommonConstants.DOT + "description";
-    /**
-     * 
-     */
-    String CONFIG_CODE_SITEA_TTRIBUTE = "siteAttribute";
+    String CONFIG_CODE_DESCRIPTION_SUFFIX = CommonUtils.joinString(Constants.DOT, "description");
 
     /**
      * 
@@ -51,11 +39,27 @@ public interface Config {
      * 
      */
     String INPUTTYPE_FILE = "file";
+    /**
+     * 
+     */
+    String INPUTTYPE_PRIVATEFILE = "privatefile";
 
     /**
      * 
      */
     String INPUTTYPE_IMAGE = "image";
+    /**
+     * 
+     */
+    String INPUTTYPE_PRIVATEIMAGE = "privateimage";
+    /**
+     * 
+     */
+    String INPUTTYPE_VIDEO = "video";
+    /**
+     * 
+     */
+    String INPUTTYPE_PRIVATEVIDEO = "privatevideo";
 
     /**
      * 
@@ -75,6 +79,11 @@ public interface Config {
     /**
      * 
      */
+    String INPUTTYPE_TIME = "time";
+
+    /**
+     * 
+     */
     String INPUTTYPE_USER = "user";
 
     /**
@@ -90,12 +99,29 @@ public interface Config {
     /**
      * 
      */
+    String INPUTTYPE_KEYVALUE = "keyvalue";
+
+    /**
+     * 
+     */
     String INPUTTYPE_CONTENT = "content";
 
     /**
      * 
      */
     String INPUTTYPE_CATEGORY = "category";
+    /**
+     * 
+     */
+    String INPUTTYPE_VOTE = "vote";
+    /**
+     * 
+     */
+    String INPUTTYPE_SURVEY = "survey";
+    /**
+     * 
+     */
+    String INPUTTYPE_TAG = "tag";
 
     /**
      * 
@@ -149,9 +175,15 @@ public interface Config {
     /**
      * 
      */
+    public static final String INPUTTYPE_KEYWORDS = "keywords";
+    /**
+     * 
+     */
     public static final String INPUTTYPE_CAPTCHA = "captcha";
 
-    public static final String[] INPUT_TYPE_EDITORS = { "kindeditor", "ckeditor", "tinymce", "editor" };
+    public static final String[] INPUT_TYPE_EDITORS = { "ckeditor", "tinymce", "editor" };
+    public static final String[] INPUT_TYPE_FILES = { INPUTTYPE_FILE, INPUTTYPE_IMAGE, INPUTTYPE_VIDEO };
+    public static final String[] INPUT_TYPE_PRIVATE_FILES = { INPUTTYPE_PRIVATEFILE, INPUTTYPE_PRIVATEIMAGE, INPUTTYPE_PRIVATEVIDEO  };
 
     /**
      * @param site
@@ -165,9 +197,7 @@ public interface Config {
      * @param showAll
      * @return config code or null
      */
-    default String getCode(@SuppressWarnings("unused") short siteId, @SuppressWarnings("unused") boolean showAll) {
-        return CONFIG_CODE_SITE;
-    }
+    String getCode(short siteId, boolean showAll);
 
     /**
      * @param locale
@@ -190,13 +220,13 @@ public interface Config {
     /**
      * @return exportable
      */
-    boolean exportable();
+    default boolean exportable() {
+        return false;
+    }
 
     /**
      * @param locale
      * @return
      */
-    default String getCodeDescription(Locale locale) {
-        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
-    }
+    String getCodeDescription(Locale locale);
 }

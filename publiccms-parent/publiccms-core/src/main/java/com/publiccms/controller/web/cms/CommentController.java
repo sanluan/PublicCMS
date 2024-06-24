@@ -14,7 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -24,7 +23,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
@@ -55,7 +54,7 @@ public class CommentController {
     @Resource
     protected SafeConfigComponent safeConfigComponent;
     @Resource
-    protected ConfigComponent configComponent;
+    protected ConfigDataComponent configDataComponent;
     @Resource
     private CmsContentService contentService;
     @Resource
@@ -106,33 +105,37 @@ public class CommentController {
                 null);
         if (ControllerUtils.errorCustom("locked.user", locked, model)) {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_COMMENT, String.valueOf(user.getId()), null, true);
-            return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        if (CommonUtils.notEmpty(captcha) || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_COMMENT)) {
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
+        if (CommonUtils.notEmpty(captcha)
+                || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_COMMENT)) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
-            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), model)) {
-                return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
+                    model)) {
+                return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
             }
         }
         CmsContent content = null;
         if (CommonUtils.notEmpty(entity.getText())) {
-            boolean needCheck = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_COMMENT_NEED_CHECK), true);
-            boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+            boolean needCheck = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_COMMENT_NEED_CHECK), true);
+            boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT),
+                    false);
             entity.setStatus(CmsCommentService.STATUS_PEND);
             String ip = RequestUtils.getIpAddress(request);
             entity.setIp(ip);
             if (null != entity.getId()) {
                 CmsComment oldEntity = service.getEntity(entity.getId());
-                if (null != oldEntity && !oldEntity.isDisabled()
-                        && (oldEntity.getUserId() == user.getId() || user.isSuperuser())) {
-                    entity.setUpdateDate(CommonUtils.getDate());
-                    entity = service.update(entity.getId(), entity, ignoreProperties);
-                    logOperateService
-                            .save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                                    "update.cmsComment", ip, CommonUtils.getDate(), JsonUtils.getString(entity)));
+                if (null == oldEntity || oldEntity.isDisabled()
+                        || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
+                        || oldEntity.getUserId() != user.getId() && !user.isSuperuser()) {
+                    return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
                 }
+                entity.setUpdateDate(CommonUtils.getDate());
+                entity = service.update(entity.getId(), entity, ignoreProperties);
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
+                        "update.cmsComment", ip, CommonUtils.getDate(), JsonUtils.getString(entity)));
             } else {
                 Date now = CommonUtils.getDate();
                 entity.setSiteId(site.getId());
@@ -145,10 +148,13 @@ public class CommentController {
                 }
                 if (null != entity.getReplyId()) {
                     CmsComment reply = service.getEntity(entity.getReplyId());
-                    if (null == reply) {
+                    if (null == reply || reply.isDisabled()) {
                         entity.setReplyId(null);
                     } else {
                         entity.setContentId(reply.getContentId());
+                        if (null == entity.getReplyId()) {
+                            entity.setReplyId(reply.getReplyId());
+                        }
                         if (null == entity.getReplyUserId()) {
                             entity.setReplyUserId(reply.getUserId());
                         }
@@ -171,9 +177,9 @@ public class CommentController {
                     }
                 }
             }
-            model.addAttribute("id", entity.getId());
+            model.addAttribute("dataId", entity.getId());
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     @Resource

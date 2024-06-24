@@ -140,6 +140,36 @@ function commandParameter(command,parametersName){
         }
     }
 }
+function bringBackBatchValue(keys,suffixs){
+    var value =$("textarea[name=batchValue]",$.pdialog.getCurrent()).val();
+    if(value){
+        var list=[];
+        var values = value.split("\n");
+        $.each(values,function(m,v){
+            var vs = v.split(",");
+            var obj={};
+            if(suffixs){
+                $.each(suffixs,function(n,k){
+                    if(n < vs.length){
+                        obj[k]=vs[n].trim();
+                    }
+                });
+            }else{
+                $.each(keys,function(n,k){
+                    if(n < vs.length){
+                        obj[k]=vs[n].trim();
+                    }
+                });
+            }
+            list.push(obj);
+        });
+        if(suffixs){
+            $.batchBringBack(list,keys);
+        }else{
+            $.batchBringBack(list);
+        }
+    }
+}
 var diyMenuTimer,diyButtonTimer,diyTimer;
 window.addEventListener("message", function(event) {
     var op = event.data;
@@ -162,7 +192,7 @@ window.addEventListener("message", function(event) {
                 }
             } else if("enter" === op.diyevent) {
                 if(diyShowMenu(op.itemType, op.itemId, op.noborder)) {
-                    moveMenu(op.x, op.y, op.width, op.height);
+                    moveMenu(op.x, op.y, op.width, op.height,op.position);
                 }
             } else if("leave" === op.diyevent) {
                 diyMenuTimer = setTimeout("diyHideMenu()",100);
@@ -170,13 +200,13 @@ window.addEventListener("message", function(event) {
         }
         if("hoverItem" === op.diyevent) {
             if(diyShowButton($(".diy-menu",navTab.getCurrentPanel()).data("itemType"), op.itemId)) {
-                moveButton(op.x, op.y, op.width, op.height);
+                moveButton(op.x, op.y, op.width, op.height,op.position);
             }
         } else if("leaveItem" === op.diyevent) {
             diyButtonTimer = setTimeout("diyHideButton()",100);
         }
         if("scroll" === op.diyevent) {
-            moveMenu(op.x, op.y, op.width, op.height);
+            moveMenu(op.x, op.y, op.width, op.height,op.position);
         }
     }
 });
@@ -193,7 +223,7 @@ function diyHideButton(){
         diyButtonTimer=null;
     }
 }
-function moveMenu(x,y,width,height){
+function moveMenu(x,y,width,height,positon){
     var boxWidth = $("iframe", navTab.getCurrentPanel()).width();
     var boxHeight = $("iframe", navTab.getCurrentPanel()).height();
     var menuHeight = $(".diy-menu",navTab.getCurrentPanel()).height();
@@ -217,13 +247,13 @@ function moveMenu(x,y,width,height){
     $(".diy-border-right", navTab.getCurrentPanel()).css({
         top: 0 > y ? 0 : y, left: right - 1, height: height
     });
-    if(menuHeight > y) {
+    if(menuHeight > y || "bottom" == positon) {
         $(".diy-menu",navTab.getCurrentPanel()).appendTo($(".diy-border-bottom",navTab.getCurrentPanel()));
     } else {
         $(".diy-menu",navTab.getCurrentPanel()).appendTo($(".diy-border-top",navTab.getCurrentPanel()));
     }
 }
-function moveButton(x,y,width,height){
+function moveButton(x,y,width,height,position){
     var boxHeight = $("iframe", navTab.getCurrentPanel()).height();
     var buttonHeight = $(".diy-button",navTab.getCurrentPanel()).height();
 
@@ -232,7 +262,7 @@ function moveButton(x,y,width,height){
     }
     var bottom = boxHeight < (y + height) ? boxHeight : (y + height);
 
-    if(buttonHeight > y) {
+    if(buttonHeight > y + height || "bottom" == position) {
         $(".diy-button",navTab.getCurrentPanel()).css({top: buttonHeight > y ? 0 : y - buttonHeight,left: 0 > x ? width /2 : (width / 2 + x) }).show();
     } else {
         $(".diy-button",navTab.getCurrentPanel()).css({top: bottom , left: 0 > x ? width /2 : (width / 2 + x)}).show();

@@ -24,11 +24,12 @@ import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.BeanComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 
 import jakarta.annotation.PreDestroy;
 import jakarta.mail.MessagingException;
@@ -89,8 +90,11 @@ public class EmailComponent implements SiteCache, Config {
     /**
      * 
      */
-    public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
+    public static final String CONFIG_CODE_DESCRIPTION = CommonUtils.joinString(CONFIGPREFIX, CONFIG_CODE);
     private final Log log = LogFactory.getLog(getClass());
+
+    @Resource
+    protected ConfigDataComponent configDataComponent;
 
     private CacheEntity<Short, JavaMailSenderImpl> cache;
 
@@ -217,11 +221,11 @@ public class EmailComponent implements SiteCache, Config {
 
     private boolean send(short siteId, String[] toAddress, String[] cc, String[] bcc, String title, String content,
             boolean isHtml, String[] fileNames, File[] files) throws MessagingException {
-        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
+        Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_FROMADDRESS))) {
             JavaMailSender mailSender = getMailSender(siteId, config);
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, CommonConstants.DEFAULT_CHARSET_NAME);
+            MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, Constants.DEFAULT_CHARSET_NAME);
             messageHelper.setTo(toAddress);
             if (CommonUtils.notEmpty(cc)) {
                 messageHelper.setCc(cc);
@@ -235,7 +239,7 @@ public class EmailComponent implements SiteCache, Config {
                 messageHelper.setFrom(config.get(CONFIG_FROMADDRESS));
             }
             if (null != title) {
-                title = title.replaceAll("\r|\n", CommonConstants.BLANK);
+                title = title.replaceAll("\r|\n", Constants.BLANK);
             }
             messageHelper.setSubject(title);
             messageHelper.setText(content, isHtml);
@@ -251,7 +255,7 @@ public class EmailComponent implements SiteCache, Config {
                 }
             }
             log.info(new StringBuilder(config.get(CONFIG_FROMADDRESS)).append(" send a email to ")
-                    .append(StringUtils.join(toAddress, CommonConstants.COMMA)).append(" title [").append(title).append("]")
+                    .append(StringUtils.join(toAddress, Constants.COMMA)).append(" title [").append(title).append("]")
                     .toString());
             pool.execute(new SendTask(mailSender, message));
             return true;
@@ -273,37 +277,38 @@ public class EmailComponent implements SiteCache, Config {
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new SysExtendField(CONFIG_DEFAULTENCODING, INPUTTYPE_TEXT, true,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULTENCODING), null,
-                CommonConstants.DEFAULT_CHARSET_NAME));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_DEFAULTENCODING)),
+                null, Constants.DEFAULT_CHARSET_NAME));
         extendFieldList.add(new SysExtendField(CONFIG_HOST, INPUTTYPE_TEXT, true,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_HOST), null, null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_HOST)), null,
+                null));
         extendFieldList.add(new SysExtendField(CONFIG_PORT, INPUTTYPE_NUMBER, true,
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PORT),
+                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PORT)),
                 null, String.valueOf(25)));
         extendFieldList.add(new SysExtendField(CONFIG_USERNAME, INPUTTYPE_TEXT, true,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_USERNAME), null, null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_USERNAME)), null,
+                null));
         extendFieldList.add(new SysExtendField(CONFIG_PASSWORD, INPUTTYPE_PASSWORD, true,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PASSWORD), null, null));
-        extendFieldList
-                .add(new SysExtendField(
-                        CONFIG_TIMEOUT, INPUTTYPE_NUMBER, true, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                                locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_TIMEOUT),
-                        null, String.valueOf(3000)));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PASSWORD)), null,
+                null));
+        extendFieldList.add(new SysExtendField(CONFIG_TIMEOUT, INPUTTYPE_NUMBER, true,
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_TIMEOUT)),
+                null, String.valueOf(3000)));
         extendFieldList.add(new SysExtendField(CONFIG_AUTH, INPUTTYPE_BOOLEAN, true,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_AUTH), null, "true"));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_AUTH)), null,
+                "true"));
         extendFieldList.add(new SysExtendField(CONFIG_SSL, INPUTTYPE_BOOLEAN, true,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SSL), null, "true"));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_SSL)), null,
+                "true"));
         extendFieldList.add(new SysExtendField(CONFIG_FROMADDRESS, INPUTTYPE_EMAIL, true,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_FROMADDRESS), null, null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_FROMADDRESS)),
+                null, null));
         extendFieldList.add(new SysExtendField(CONFIG_PERSONAL, INPUTTYPE_EMAIL, true,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PERSONAL), null, null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PERSONAL)), null,
+                null));
         return extendFieldList;
-    }
-
-    @Override
-    public boolean exportable() {
-        return false;
     }
 
     @Override
@@ -313,7 +318,7 @@ public class EmailComponent implements SiteCache, Config {
 
     @Override
     public void clear() {
-        cache.clear();
+        cache.clear(false);
     }
 
     /**

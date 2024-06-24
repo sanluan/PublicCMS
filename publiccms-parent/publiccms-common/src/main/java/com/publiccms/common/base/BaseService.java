@@ -23,14 +23,14 @@ import com.publiccms.common.tools.CommonUtils;
 public abstract class BaseService<E> {
     protected final Log log = LogFactory.getLog(getClass());
     @Autowired
-    protected BaseDao<E> dao;
+    protected BaseDao<E> basedao;
 
     /**
      * @param id
      * @return entity
      */
     public E getEntity(Serializable id) {
-        return null != id ? dao.getEntity(id) : null;
+        return null != id ? basedao.getEntity(id) : null;
     }
 
     /**
@@ -39,7 +39,7 @@ public abstract class BaseService<E> {
      * @return entity
      */
     public E getEntity(Serializable id, String pk) {
-        return dao.getEntity(id, pk);
+        return basedao.getEntity(id, pk);
     }
 
     /**
@@ -48,7 +48,7 @@ public abstract class BaseService<E> {
      * @return entitys list
      */
     public List<E> getEntitys(Serializable[] ids, String pk) {
-        return dao.getEntitys(ids, pk);
+        return basedao.getEntitys(ids, pk);
     }
 
     /**
@@ -57,7 +57,7 @@ public abstract class BaseService<E> {
      * @return entitys list
      */
     public List<E> getEntitys(Collection<Serializable> ids, String pk) {
-        return dao.getEntitys(ids, pk);
+        return basedao.getEntitys(ids, pk);
     }
 
     /**
@@ -65,7 +65,7 @@ public abstract class BaseService<E> {
      * @return entitys list
      */
     public List<E> getEntitys(Serializable[] ids) {
-        return dao.getEntitys(ids);
+        return basedao.getEntitys(ids);
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class BaseService<E> {
      * @return entitys list
      */
     public List<E> getEntitys(Collection<Serializable> ids) {
-        return dao.getEntitys(ids);
+        return basedao.getEntitys(ids);
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class BaseService<E> {
      * @param id
      */
     public void delete(Serializable id) {
-        dao.delete(id);
+        basedao.delete(id);
     }
 
     /**
@@ -110,7 +110,7 @@ public abstract class BaseService<E> {
     public E update(Serializable id, E newEntity, String[] ignoreProperties) {
         E entity = getEntity(id);
         if (null != entity) {
-            BeanUtils.copyProperties(dao.init(newEntity), entity, ignoreProperties);
+            BeanUtils.copyProperties(basedao.init(newEntity), entity, ignoreProperties);
         }
         return entity;
     }
@@ -123,7 +123,7 @@ public abstract class BaseService<E> {
     public E update(Serializable id, E newEntity) {
         E entity = getEntity(id);
         if (null != entity) {
-            BeanUtils.copyProperties(dao.init(newEntity), entity);
+            BeanUtils.copyProperties(basedao.init(newEntity), entity);
         }
         return entity;
     }
@@ -131,26 +131,12 @@ public abstract class BaseService<E> {
     /**
      * @param entity
      */
-    public void saveOrUpdate(E entity) {
-        dao.saveOrUpdate(entity);
-    }
-
-    /**
-     * @param entity
-     */
     public void save(E entity) {
-        dao.save(entity);
+        basedao.save(entity);
     }
 
-    /**
-     * @param entityList
-     */
-    public void saveOrUpdate(List<E> entityList) {
-        if (CommonUtils.notEmpty(entityList)) {
-            for (E entity : entityList) {
-                saveOrUpdate(entity);
-            }
-        }
+    public long getId() {
+        return basedao.getId();
     }
 
     /**

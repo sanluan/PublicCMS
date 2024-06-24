@@ -13,10 +13,12 @@ dependencies {
     implementation "org.springframework:spring-web:${springVersion}"
     implementation "org.springframework:spring-beans:${springVersion}"
 
-    implementation "org.hibernate.search:hibernate-search-mapper-orm-jakarta:${hibernateSearchVersion}"
+    implementation "org.hibernate.search:hibernate-search-mapper-orm:${hibernateSearchVersion}"
     implementation "org.hibernate.search:hibernate-search-backend-lucene:${hibernateSearchVersion}"
-    implementation "org.hibernate.search:hibernate-search-backend-elasticsearch:${hibernateSearchVersion}"
-    implementation "org.hibernate:hibernate-core-jakarta:${hibernateVersion}"
+    implementation ("org.hibernate.search:hibernate-search-backend-elasticsearch:${hibernateSearchVersion}") {
+        exclude group:"commons-logging", module:"commons-logging"
+    }
+    implementation "org.hibernate.orm:hibernate-core:${hibernateVersion}"
     implementation "org.mybatis:mybatis:${mybatisVersion}"
     
     implementation ("org.hibernate:hibernate-jcache:${hibernateVersion}") {
@@ -27,36 +29,41 @@ dependencies {
     }
     
     implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
     implementation "org.freemarker:freemarker:${freemarkerVersion}"
-    
-    implementation "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}"
+
     implementation "org.apache.lucene:lucene-backward-codecs:${luceneVersion}"
     implementation "org.apache.lucene:lucene-highlighter:${luceneVersion}"
-    
+
     implementation ("org.quartz-scheduler:quartz:${quartzVersion}") {
         exclude group:"com.mchange"
         exclude group:"com.zaxxer"
     }
-    
+
     implementation "fr.opensagres.xdocreport:fr.opensagres.poi.xwpf.converter.xhtml:${xhtmlConverterVersion}"
     implementation "org.apache.poi:poi-ooxml:${poiVersion}"
     implementation "org.apache.poi:poi-scratchpad:${poiVersion}"
-    
+
     implementation "commons-fileupload:commons-fileupload:${fileuploadVersion}"
     implementation "org.apache.commons:commons-collections4:${collectionsVersion}"
     implementation "org.apache.commons:commons-lang3:${langVersion}"
     implementation "commons-io:commons-io:${ioVersion}"
     implementation "org.apache.commons:commons-text:${textVersion}"
+    implementation "org.apache.commons:commons-compress:${compressVersion}"
     implementation "commons-codec:commons-codec:${codecVersion}"
-    implementation "org.apache.httpcomponents:httpclient:${httpclientVersion}"
+    implementation ("org.apache.httpcomponents:httpclient:${httpclientVersion}") {
+        exclude group:"commons-logging", module:"commons-logging"
+    }
 
     implementation "org.sejda.imageio:webp-imageio:${webpVersion}"
     implementation "net.ifok.image:image4j:${image4jVersion}"
-    implementation "net.sf.cssbox:pdf2dom:${pdf2domVersion}"
+    implementation ("net.sf.cssbox:pdf2dom:${pdf2domVersion}") {
+        exclude group:"commons-logging", module:"commons-logging"
+    }
+    implementation "org.apache.pdfbox:jbig2-imageio:${jbig2Version}"
     implementation "com.github.bgalek.security.svg:safe-svg:${safeSvgVersion}"
     implementation "org.jsoup:jsoup:${jsoupVersion}"
 
-    implementation "org.apache.ant:ant:${antVersion}"
     implementation "org.glassfish.jaxb:jaxb-runtime:${jaxbVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
 }

@@ -16,8 +16,9 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.base.BaseMethod;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.directive.BaseTemplateDirective;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.template.NoCacheDirective;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -49,17 +50,13 @@ public class DirectiveComponent {
     private SiteComponent siteComponent;
 
     public String getDirectiveName(String className) {
-        return StringUtils.uncapitalize(className.replaceAll(directiveRemoveRegex, CommonConstants.BLANK));
-    }
-
-    public static void main(String[] args) {
-
+        return StringUtils.uncapitalize(className.replaceAll(directiveRemoveRegex, Constants.BLANK));
     }
 
     private String getDirectiveNamespace(Class<? extends BaseTemplateDirective> clazz) {
         String packagename = clazz.getPackage().getName();
-        if (packagename.contains(CommonConstants.DOT)) {
-            return packagename.substring(packagename.lastIndexOf(CommonConstants.DOT) + 1);
+        if (packagename.contains(Constants.DOT)) {
+            return packagename.substring(packagename.lastIndexOf(Constants.DOT) + 1);
         }
         return DEFAULT_NAMESPACE;
     }
@@ -67,9 +64,9 @@ public class DirectiveComponent {
     private String getDirectiveShortName(String namespace, String className) {
         if (className.toLowerCase().startsWith(namespace)) {
             return StringUtils.uncapitalize(className.substring(namespace.length(), className.length())
-                    .replaceAll(directiveRemoveRegex, CommonConstants.BLANK));
+                    .replaceAll(directiveRemoveRegex, Constants.BLANK));
         }
-        return StringUtils.uncapitalize(className.replaceAll(directiveRemoveRegex, CommonConstants.BLANK));
+        return StringUtils.uncapitalize(className.replaceAll(directiveRemoveRegex, Constants.BLANK));
     }
 
     @Autowired
@@ -107,27 +104,26 @@ public class DirectiveComponent {
             taskDirectiveMap.put(directive.getName(), directive);
         }
         for (Entry<String, Map<String, BaseTemplateDirective>> entry : namespaceMap.entrySet()) {
-            log.info(new StringBuilder().append("namespace ").append(entry.getKey()).append(" has ").append(entry.getValue().keySet().size())
-                    .append(" directives : ").append(entry.getValue().keySet()).toString());
+            log.info(CommonUtils.joinString("namespace ", entry.getKey(), " has ", entry.getValue().keySet().size(),
+                    " directives : ", entry.getValue().keySet().toString()));
         }
         for (BaseMethod method : methodList) {
             if (null == method.getName()) {
                 method.setName(StringUtils
-                        .uncapitalize(method.getClass().getSimpleName().replaceAll(methodRemoveRegex, CommonConstants.BLANK)));
+                        .uncapitalize(method.getClass().getSimpleName().replaceAll(methodRemoveRegex, Constants.BLANK)));
             }
             methodMap.put(method.getName(), method);
         }
-        log.info(new StringBuilder().append(methodMap.size()).append(" methods created:").append(methodMap.keySet()).toString());
+        log.info(CommonUtils.joinString(methodMap.size(), " methods created:", methodMap.keySet().toString()));
         initTemplateComponent(freeMarkerConfigurer, directivePrefix);
     }
 
     private void initTemplateComponent(FreeMarkerConfigurer freeMarkerConfigurer, String directivePrefix)
             throws IOException, TemplateModelException {
         Map<String, Object> freemarkerVariables = new HashMap<>();
-        freemarkerVariables.put("null", CommonConstants.BLANK);
         Configuration adminConfiguration = freeMarkerConfigurer.getConfiguration();
         for (Entry<String, AbstractTemplateDirective> entry : getTemplateDirectiveMap().entrySet()) {
-            freemarkerVariables.put(directivePrefix + entry.getKey(), entry.getValue());
+            freemarkerVariables.put(CommonUtils.joinString(directivePrefix, entry.getKey()), entry.getValue());
         }
         for (Entry<String, Map<String, BaseTemplateDirective>> entry : getNamespaceMap().entrySet()) {
             freemarkerVariables.put(entry.getKey(), entry.getValue());
@@ -152,7 +148,7 @@ public class DirectiveComponent {
         taskConfiguration.setDirectoryForTemplateLoading(taskFile);
         copyConfig(adminConfiguration, taskConfiguration);
         for (Entry<String, AbstractTaskDirective> entry : taskDirectiveMap.entrySet()) {
-            freemarkerVariables.put(directivePrefix + entry.getKey(), entry.getValue());
+            freemarkerVariables.put(CommonUtils.joinString(directivePrefix, entry.getKey()), entry.getValue());
         }
         taskConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, taskConfiguration.getObjectWrapper()));
         templateComponent.setTaskConfiguration(taskConfiguration);

@@ -13,6 +13,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.logic.service.sys.SysDomainService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * sysDomain 域名查询指令
@@ -43,7 +45,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/domain?id=1&amp;appToken=接口�
 public class SysDomainDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String id = handler.getString("id");
         if (CommonUtils.notEmpty(id)) {
             SysDomain entity = service.getEntity(id);

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,15 +15,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -32,16 +31,15 @@ import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.view.ExcelView;
-import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptItemId;
-import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.exchange.PlaceExchangeComponent;
+import com.publiccms.logic.component.exchange.PlaceExportComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -87,6 +85,8 @@ public class CmsPlaceAdminController {
     private CmsEditorHistoryService editorHistoryService;
     @Resource
     private PlaceExchangeComponent exchangeComponent;
+    @Resource
+    private PlaceExportComponent exportComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "status", "userId", "type", "clicks", "path", "createDate",
             "disabled" };
@@ -100,24 +100,27 @@ public class CmsPlaceAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "save", method = RequestMethod.POST)
+    @PostMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsPlace entity,
             @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request, ModelMap model) {
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
-            if (!entity.getPath().startsWith(CommonConstants.SEPARATOR)) {
-                entity.setPath(CommonConstants.SEPARATOR + entity.getPath());
+            if (!entity.getPath().startsWith(Constants.SEPARATOR)) {
+                entity.setPath(CommonUtils.joinString(Constants.SEPARATOR, entity.getPath()));
             }
-            entity.setPath(entity.getPath().replace("//", CommonConstants.SEPARATOR));
+            entity.setPath(entity.getPath().replace("//", Constants.SEPARATOR));
 
             SysDept dept = sysDeptService.getEntity(admin.getDeptId());
             if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                     || ControllerUtils.errorNotEmpty("deptId", dept, model)
-                    || ControllerUtils.errorCustom("noright",
-                            !(dept.isOwnsAllPage() || null != sysDeptItemService
-                                    .getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE,
-                                            CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))),
-                            model)) {
+                    || ControllerUtils
+                            .errorCustom("noright",
+                                    !(dept.isOwnsAllPage()
+                                            || null != sysDeptItemService.getEntity(
+                                                    new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE,
+                                                            CommonUtils.joinString(Constants.SEPARATOR,
+                                                                    TemplateComponent.INCLUDE_DIRECTORY, entity.getPath())))),
+                                    model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             if (CommonUtils.empty(entity.getItemType()) || CommonUtils.empty(entity.getItemId())) {
@@ -131,6 +134,10 @@ public class CmsPlaceAdminController {
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 if (null != entity) {
+                    if (CmsPlaceService.STATUS_OFFSHELF == entity.getStatus()
+                            && (entity.getClicks() < entity.getMaxClicks() || 0 == entity.getMaxClicks())) {
+                        service.shelf(entity.getId(), true);
+                    }
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.place", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -146,32 +153,20 @@ public class CmsPlaceAdminController {
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
             String filepath = siteComponent.getTemplateFilePath(site.getId(),
-                    TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+                    CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, entity.getPath()));
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
-            Map<String, String> map = ExtendUtils.getExtentDataMap(extendDataParameters.getExtendDataList(),
-                    metadata.getExtendList());
 
+            Map<String, String> map = extendDataParameters.getExtendData();
             CmsPlaceAttribute oldAttribute = attributeService.getEntity(entity.getId());
-            if (null != oldAttribute) {
-                if (CommonUtils.notEmpty(oldAttribute.getData()) && CommonUtils.notEmpty(metadata.getExtendList())) {
-                    Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
-                    for (SysExtendField extendField : metadata.getExtendList()) {
-                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
-                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
-                                            .equals(map.get(extendField.getId().getCode())))) {
-                                CmsEditorHistory history = new CmsEditorHistory(site.getId(),
-                                        CmsEditorHistoryService.ITEM_TYPE_PLACE_EXTEND, String.valueOf(entity.getId()),
-                                        extendField.getId().getCode(), CommonUtils.getDate(), admin.getId(),
-                                        map.get(extendField.getId().getCode()));
-                                editorHistoryService.save(history);
-                            }
-                        }
-                    }
-                }
+            attributeService.updateAttribute(entity.getId(),
+                    ExtendUtils.getExtendString(map, site.getSitePath(), metadata.getExtendList()));
+
+            if (null != oldAttribute && CommonUtils.notEmpty(oldAttribute.getData())) {
+                Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
+                editorHistoryService.saveHistory(site.getId(), admin.getId(), CmsEditorHistoryService.ITEM_TYPE_PLACE_EXTEND,
+                        String.valueOf(entity.getId()), oldMap, map, metadata.getExtendList());
             }
 
-            attributeService.updateAttribute(entity.getId(), ExtendUtils.getExtendString(map));
             staticPlace(site, entity.getPath());
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -193,18 +188,19 @@ public class CmsPlaceAdminController {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
-                || ControllerUtils.errorCustom("noright",
-                        !(dept.isOwnsAllPage() || null != sysDeptItemService
-                                .getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE,
-                                        CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + path))),
-                        model)) {
+                || ControllerUtils
+                        .errorCustom("noright",
+                                !(dept.isOwnsAllPage() || null != sysDeptItemService.getEntity(new SysDeptItemId(
+                                        admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE,
+                                        CommonUtils.joinString(Constants.SEPARATOR, TemplateComponent.INCLUDE_DIRECTORY, path)))),
+                                model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
             service.refresh(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "refresh.place", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
             staticPlace(site, path);
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -226,18 +222,19 @@ public class CmsPlaceAdminController {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
-                || ControllerUtils.errorCustom("noright",
-                        !(dept.isOwnsAllPage() || null != sysDeptItemService
-                                .getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE,
-                                        CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + path))),
-                        model)) {
+                || ControllerUtils
+                        .errorCustom("noright",
+                                !(dept.isOwnsAllPage() || null != sysDeptItemService.getEntity(new SysDeptItemId(
+                                        admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE,
+                                        CommonUtils.joinString(Constants.SEPARATOR, TemplateComponent.INCLUDE_DIRECTORY, path)))),
+                                model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
             service.check(site.getId(), admin.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    StringUtils.join(ids, CommonConstants.COMMA)));
+                    StringUtils.join(ids, Constants.COMMA)));
             staticPlace(site, path);
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -259,18 +256,19 @@ public class CmsPlaceAdminController {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
-                || ControllerUtils.errorCustom("noright",
-                        !(dept.isOwnsAllPage() || null != sysDeptItemService
-                                .getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE,
-                                        CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + path))),
-                        model)) {
+                || ControllerUtils
+                        .errorCustom("noright",
+                                !(dept.isOwnsAllPage() || null != sysDeptItemService.getEntity(new SysDeptItemId(
+                                        admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE,
+                                        CommonUtils.joinString(Constants.SEPARATOR, TemplateComponent.INCLUDE_DIRECTORY, path)))),
+                                model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
             service.uncheck(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    StringUtils.join(ids, CommonConstants.COMMA)));
+                    StringUtils.join(ids, Constants.COMMA)));
             staticPlace(site, path);
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -297,11 +295,11 @@ public class CmsPlaceAdminController {
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date endPublishDate, String orderField, String orderType,
             HttpServletRequest request) {
         if (CommonUtils.notEmpty(path)) {
-            path = path.replace("//", CommonConstants.SEPARATOR);
+            path = path.replace("//", Constants.SEPARATOR);
         }
         Locale locale = RequestContextUtils.getLocale(request);
-        return exchangeComponent.exportExcelByQuery(site, path, userId, status, itemType, itemId, startPublishDate,
-                endPublishDate, orderField, orderType, locale);
+        return exportComponent.exportExcelByQuery(site, path, userId, status, itemType, itemId, startPublishDate, endPublishDate,
+                orderField, orderType, locale);
     }
 
     /**
@@ -319,11 +317,12 @@ public class CmsPlaceAdminController {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
-                || ControllerUtils.errorCustom("noright",
-                        !(dept.isOwnsAllPage() || null != sysDeptItemService
-                                .getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE,
-                                        CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + path))),
-                        model)) {
+                || ControllerUtils
+                        .errorCustom("noright",
+                                !(dept.isOwnsAllPage() || null != sysDeptItemService.getEntity(new SysDeptItemId(
+                                        admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE,
+                                        CommonUtils.joinString(Constants.SEPARATOR, TemplateComponent.INCLUDE_DIRECTORY, path)))),
+                                model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {
@@ -352,27 +351,29 @@ public class CmsPlaceAdminController {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
-                || ControllerUtils.errorCustom("noright",
-                        !(dept.isOwnsAllPage() || null != sysDeptItemService
-                                .getEntity(new SysDeptItemId(admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE,
-                                        CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + path))),
-                        model)) {
+                || ControllerUtils
+                        .errorCustom("noright",
+                                !(dept.isOwnsAllPage() || null != sysDeptItemService.getEntity(new SysDeptItemId(
+                                        admin.getDeptId(), SysDeptItemService.ITEM_TYPE_PAGE,
+                                        CommonUtils.joinString(Constants.SEPARATOR, TemplateComponent.INCLUDE_DIRECTORY, path)))),
+                                model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
             service.delete(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.place", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
             staticPlace(site, path);
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     private void staticPlace(SysSite site, String path) {
-        if (CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path))) {
+        String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
+        if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
             try {
-                String filepath = siteComponent.getTemplateFilePath(site.getId(), TemplateComponent.INCLUDE_DIRECTORY + path);
+                String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
                 CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
                 CmsPageData data = metadataComponent.getTemplateData(filepath);
                 templateComponent.staticPlace(site, path, metadata, data);

@@ -2,9 +2,6 @@ package com.publiccms.controller.admin.cms;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,13 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptItemId;
@@ -42,7 +37,6 @@ import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
-import com.publiccms.views.pojo.model.ExtendDataParameters;
 
 import freemarker.template.TemplateException;
 
@@ -82,7 +76,7 @@ public class CmsPageAdminController {
      * @param admin
      * @param path
      * @param type
-     * @param extendDataParameters
+     * @param pageDate
      * @param request
      * @param model
      * @return view name
@@ -90,7 +84,7 @@ public class CmsPageAdminController {
     @RequestMapping("save")
     @Csrf
     public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String type,
-            @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request, ModelMap model) {
+            @ModelAttribute CmsPageData pageDate, HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
@@ -102,13 +96,11 @@ public class CmsPageAdminController {
         }
         if (CommonUtils.notEmpty(path)) {
             String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
-            CmsPageData olddata = metadataComponent.getTemplateData(filepath);
-            CmsPageData pageDate = new CmsPageData();
-            pageDate.setExtendDataList(extendDataParameters.getExtendDataList());
             metadataComponent.updateTemplateData(filepath, pageDate);
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "update.template.data", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+            CmsPageData olddata = metadataComponent.getTemplateData(filepath);
             if (null != olddata && null != olddata.getExtendData()) {
                 List<SysExtendField> extendList = null;
                 if ("place".equalsIgnoreCase(type)) {
@@ -119,28 +111,31 @@ public class CmsPageAdminController {
                     extendList = metadata.getExtendList();
                 }
                 if (CommonUtils.notEmpty(olddata.getExtendData()) && CommonUtils.notEmpty(extendList)) {
-                    Map<String, String> oldMap = olddata.getExtendData();
-                    Map<String, String> map = pageDate.getExtendData();
-                    for (SysExtendField extendField : extendList) {
-                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
-                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
-                                            .equals(map.get(extendField.getId().getCode())))) {
-                                CmsEditorHistory history = new CmsEditorHistory(site.getId(),
-                                        CmsEditorHistoryService.ITEM_TYPE_METADATA_EXTEND, path, extendField.getId().getCode(),
-                                        CommonUtils.getDate(), admin.getId(), map.get(extendField.getId().getCode()));
-                                editorHistoryService.save(history);
-                            }
-                        }
-                    }
+                    editorHistoryService.saveHistory(site.getId(), admin.getId(),
+                            CmsEditorHistoryService.ITEM_TYPE_METADATA_EXTEND, path, olddata.getExtendData(),
+                            pageDate.getExtendData(), extendList);
                 }
-                if ("place".equalsIgnoreCase(type) && path.startsWith(TemplateComponent.INCLUDE_DIRECTORY)
+            }
+            if ("place".equalsIgnoreCase(type)) {
+                if (path.startsWith(TemplateComponent.INCLUDE_DIRECTORY)
                         && (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), path)))) {
                     CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
                     CmsPageData data = metadataComponent.getTemplateData(filepath);
                     try {
                         templateComponent.staticPlace(site, path.substring(TemplateComponent.INCLUDE_DIRECTORY.length()),
                                 metadata, data);
+                    } catch (IOException | TemplateException e) {
+                        log.error(e.getMessage(), e);
+                    }
+                }
+            } else {
+                CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
+                if (site.isUseStatic() && CommonUtils.notEmpty(metadata.getPublishPath())) {
+                    String templatePath = SiteComponent.getFullTemplatePath(site.getId(), path);
+                    CmsPageData data = metadataComponent.getTemplateData(filepath);
+                    try {
+                        templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null,
+                                metadata.getAsMap(data), null, null);
                     } catch (IOException | TemplateException e) {
                         log.error(e.getMessage(), e);
                     }

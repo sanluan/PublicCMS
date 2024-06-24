@@ -16,6 +16,7 @@ import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.logic.service.sys.SysDeptService;
 
 import jakarta.annotation.Resource;
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -48,7 +49,7 @@ import jakarta.annotation.Resource;
 public class SysDeptItemDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer deptId = handler.getInteger("deptId");
         String itemType = handler.getString("itemType");
         String itemId = handler.getString("itemId");

@@ -1,7 +1,7 @@
-<#if !startVisitDate?has_content>
+<#if !startVisitDate??>
     <#assign startVisitDate=(.now?long-7*24*3600*1000)?number_to_date/>
 </#if>
-<@visit.sessionList sessionId=sessionId startVisitDate=startVisitDate endVisitDate=endVisitDate orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@visit.sessionList sessionId=sessionId ip=ip startVisitDate=startVisitDate endVisitDate=endVisitDate orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -9,7 +9,11 @@
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'visit.session'/>:</label>
-                    <input type="text" name="sessionId" value="${sessionId!}" size="40"/>
+                    <input type="text" name="sessionId" value="${sessionId!}" size="20"/>
+                </li>
+                <li>
+                    <label><@t.page 'visit.ip'/>:</label>
+                    <input type="text" name="ip" value="${ip!}" size="20"/>
                 </li>
                 <li>
                     <label><@t.page 'visit.visit_date'/>:</label>
@@ -24,6 +28,9 @@
                 <ul>
                     <li>
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                    <li>
+                        <a class="button" href="visit/exportSession?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                     </li>
                 </ul>
             </div>
@@ -48,7 +55,7 @@
         <tbody>
             <#list page.list as a>
             <tr>
-                <td><a href="visit/history.html?sessionId=${a.id.sessionId!}" target="navTab" rel="visit/history" icon="<i class='icon-bolt icon-large'></i>">${a.id.sessionId!}</a></td>
+                <td><a href="visit/history.html?sessionId=${a.id.sessionId!}" target="navTab" rel="visit/history">${a.id.sessionId!}</a></td>
                 <td>${a.lastVisitDate!}</td>
                 <td>${a.firstVisitDate!}</td>
                 <td>

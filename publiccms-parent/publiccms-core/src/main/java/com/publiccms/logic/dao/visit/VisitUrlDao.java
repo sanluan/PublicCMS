@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.visit.VisitUrl;
 
 /**
@@ -21,13 +22,15 @@ public class VisitUrlDao extends BaseDao<VisitUrl> {
 
     /**
      * @param siteId
+     * @param url
      * @param startVisitDate
      * @param endVisitDate
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(short siteId, Date startVisitDate, Date endVisitDate, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(short siteId, String url, Date startVisitDate, Date endVisitDate, Integer pageIndex,
+            Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from VisitUrl bean");
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
         if (null != startVisitDate) {
@@ -35,6 +38,9 @@ public class VisitUrlDao extends BaseDao<VisitUrl> {
         }
         if (null != endVisitDate) {
             queryHandler.condition("bean.id.visitDate <= :endVisitDate").setParameter("endVisitDate", endVisitDate);
+        }
+        if (CommonUtils.notEmpty(url)) {
+            queryHandler.condition("bean.url like :url").setParameter("url", like(url));
         }
         queryHandler.order("bean.id.visitDate").append(ORDERTYPE_DESC);
         queryHandler.order("bean.pv").append(ORDERTYPE_DESC);

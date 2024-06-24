@@ -88,8 +88,8 @@ public class CustomXHTMLMapper extends XHTMLMapper {
             startElement(SPAN_ELEMENT, attributes);
             String text = itemContext.getText();
             if (StringUtils.isNotEmpty(text)) {
-                text = fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.replaceNonUnicodeChars(text);
-                text = text + "\u0020";
+                text = CommonUtils.joinString(
+                        fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.replaceNonUnicodeChars(text), "\u0020");
                 SAXHelper.characters(contentHandler, StringEscapeUtils.escapeHtml(text));
             }
             endElement(SPAN_ELEMENT);
@@ -226,29 +226,29 @@ public class CustomXHTMLMapper extends XHTMLMapper {
         if (cssStyle != null) {
             TableCellBorder border = getStylesDocument().getTableBorder(table, BorderSide.TOP);
             if (border != null) {
-                String style = border.getBorderSize() + "px solid "
-                        + fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor());
+                String style = CommonUtils.joinString(border.getBorderSize(), "px solid ",
+                        fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor()));
                 cssStyle.addProperty(CSSStylePropertyConstants.BORDER_TOP, style);
             }
 
             border = getStylesDocument().getTableBorder(table, BorderSide.BOTTOM);
             if (border != null) {
-                String style = border.getBorderSize() + "px solid "
-                        + fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor());
+                String style = CommonUtils.joinString(border.getBorderSize(), "px solid ",
+                        fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor()));
                 cssStyle.addProperty(CSSStylePropertyConstants.BORDER_BOTTOM, style);
             }
 
             border = getStylesDocument().getTableBorder(table, BorderSide.LEFT);
             if (border != null) {
-                String style = border.getBorderSize() + "px solid "
-                        + fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor());
+                String style = CommonUtils.joinString(border.getBorderSize(), "px solid ",
+                        fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor()));
                 cssStyle.addProperty(CSSStylePropertyConstants.BORDER_LEFT, style);
             }
 
             border = getStylesDocument().getTableBorder(table, BorderSide.RIGHT);
             if (border != null) {
-                String style = border.getBorderSize() + "px solid "
-                        + fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor());
+                String style = CommonUtils.joinString(border.getBorderSize(), "px solid ",
+                        fr.opensagres.poi.xwpf.converter.core.utils.StringUtils.toHexString(border.getBorderColor()));
                 cssStyle.addProperty(CSSStylePropertyConstants.BORDER_RIGHT, style);
             }
         }

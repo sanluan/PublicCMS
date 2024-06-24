@@ -1,7 +1,5 @@
 package com.publiccms.common.tools;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Map;
 
 import jakarta.servlet.http.Cookie;
@@ -17,6 +15,11 @@ import com.publiccms.common.constants.Constants;
  * 
  */
 public class RequestUtils {
+    private RequestUtils() {
+    }
+
+    public static final String CRLF = "[\r\n]";
+
     /**
      * @param parameterMap
      * @param key
@@ -39,14 +42,10 @@ public class RequestUtils {
      */
     public static String getEncodePath(String path, String queryString) {
         String url = path;
-        try {
-            if (CommonUtils.notEmpty(queryString)) {
-                url += "?" + queryString;
-            }
-            url = URLEncoder.encode(url, Constants.DEFAULT_CHARSET_NAME);
-        } catch (UnsupportedEncodingException e) {
-            url = Constants.BLANK;
+        if (CommonUtils.notEmpty(queryString)) {
+            url = CommonUtils.joinString(url, "?", queryString);
         }
+        url = CommonUtils.encodeURI(url);
         return url;
     }
 
@@ -56,7 +55,7 @@ public class RequestUtils {
      */
     public static String removeCRLF(String string) {
         if (null != string) {
-            return string.replaceAll("\r|\n", Constants.BLANK);
+            return string.replaceAll(CRLF, Constants.BLANK);
         }
         return string;
     }
@@ -64,7 +63,7 @@ public class RequestUtils {
     /**
      * @param values
      */
-    public static void removeCRLF(String values[]) {
+    public static void removeCRLF(String[] values) {
         if (null != values) {
             for (int i = 0; i < values.length; i++) {
                 values[i] = removeCRLF(values[i]);
@@ -118,13 +117,7 @@ public class RequestUtils {
      */
     public static Cookie addCookie(String contextPath, String schema, HttpServletResponse response, String name, String value,
             Integer expiry, String domain) {
-        if (null != name) {
-            name = name.replaceAll("\r|\n", Constants.BLANK);
-        }
-        if (null != value) {
-            value = value.replaceAll("\r|\n", Constants.BLANK);
-        }
-        Cookie cookie = new Cookie(name, value);
+        Cookie cookie = new Cookie(removeCRLF(name), removeCRLF(value));
         if (CommonUtils.notEmpty(expiry)) {
             cookie.setMaxAge(expiry);
         }
@@ -167,5 +160,4 @@ public class RequestUtils {
         }
         return null;
     }
-
 }

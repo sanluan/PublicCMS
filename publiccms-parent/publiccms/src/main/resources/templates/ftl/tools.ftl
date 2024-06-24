@@ -12,7 +12,7 @@
 <#function pageMessage code><#return springMacroRequestContext.getMessage('page.'+code,code)/></#function>
 <#macro secrecy text maxshow><#local length=text?length/><#if length gt maxshow*2>${text[0..*maxshow]+text[length-maxshow..]?left_pad(length-maxshow,'*')}<#else>${text}</#if></#macro>
 <#function fileType fileName>
-    <#assign fileSuffix = fileName?keep_after_last('.')/>
+    <#assign fileSuffix = fileName?keep_after_last('.')?lower_case/>
     <#switch fileSuffix>
         <#case 'jpg'>
         <#case 'png'>
@@ -20,6 +20,7 @@
         <#case 'jpeg'>
         <#case 'gif'>
         <#case 'svg'>
+        <#case 'webp'>
             <#return 'image'/><#break>
         <#case 'ogg'>
         <#case 'webm'>

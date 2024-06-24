@@ -7,14 +7,13 @@ import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.entities.cms.CmsTag;
-import com.publiccms.views.pojo.entities.ExtendData;
 
 /**
  *
  * CmsContentParameters
  * 
  */
-public class CmsContentParameters implements java.io.Serializable {
+public class CmsContentParameters extends ExtendDataParameters implements java.io.Serializable {
 
     /**
      * 
@@ -26,8 +25,6 @@ public class CmsContentParameters implements java.io.Serializable {
     private List<CmsContentFile> files;
     private List<CmsContentFile> images;
     private List<CmsContentProduct> products;
-    private List<ExtendData> modelExtendDataList;
-    private List<ExtendData> categoryExtendDataList;
     private List<CmsTag> tags;
 
     /**
@@ -91,34 +88,6 @@ public class CmsContentParameters implements java.io.Serializable {
     /**
      * @return
      */
-    public List<ExtendData> getModelExtendDataList() {
-        return modelExtendDataList;
-    }
-
-    /**
-     * @param modelExtendDataList
-     */
-    public void setModelExtendDataList(List<ExtendData> modelExtendDataList) {
-        this.modelExtendDataList = modelExtendDataList;
-    }
-
-    /**
-     * @return
-     */
-    public List<ExtendData> getCategoryExtendDataList() {
-        return categoryExtendDataList;
-    }
-
-    /**
-     * @param categoryExtendDataList
-     */
-    public void setCategoryExtendDataList(List<ExtendData> categoryExtendDataList) {
-        this.categoryExtendDataList = categoryExtendDataList;
-    }
-
-    /**
-     * @return
-     */
     public List<CmsContentFile> getImages() {
         return images;
     }
@@ -138,7 +107,8 @@ public class CmsContentParameters implements java.io.Serializable {
     }
 
     /**
-     * @param products the products to set
+     * @param products
+     *            the products to set
      */
     public void setProducts(List<CmsContentProduct> products) {
         this.products = products;

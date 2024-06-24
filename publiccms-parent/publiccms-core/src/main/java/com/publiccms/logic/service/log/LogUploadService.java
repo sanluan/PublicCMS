@@ -24,8 +24,9 @@ public class LogUploadService extends BaseService<LogUpload> {
      * @param siteId
      * @param userId
      * @param channel
-     * @param fileTypes 
-     * @param originalName 
+     * @param privatefile
+     * @param fileTypes
+     * @param originalName
      * @param filepath
      * @param orderField
      * @param orderType
@@ -34,9 +35,10 @@ public class LogUploadService extends BaseService<LogUpload> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Long userId, String channel, String[] fileTypes, String originalName, String filepath, String orderField,
-            String orderType, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, userId, channel, fileTypes, originalName, filepath, orderField, orderType, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, Long userId, String channel, Boolean privatefile, String[] fileTypes,
+            String originalName, String filepath, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, userId, channel, privatefile, fileTypes, originalName, filepath, orderField, orderType,
+                pageIndex, pageSize);
     }
 
     /**

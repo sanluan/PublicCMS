@@ -18,15 +18,15 @@
                 style[1] = $th.attr("align");
                 aStyles[aStyles.length] = style;
             }
-            $(this).wrap("<div class='grid'></div>");
+            $(this).wrap("<div class=\"grid\"></div>");
             var $grid = $table.parent().html($table.html());
             var thead = $grid.find("thead");
-            thead.wrap("<div class='gridHeader'><div class='gridThead'><table style='width:" + (tlength - 20) + "px;'></table></div></div>");
+            thead.wrap("<div class=\"gridHeader\"><div class=\"gridThead\"><table style=\"width:" + (tlength - 20) + "px;\"></table></div></div>");
             var lastH = $(">tr:last-child", thead);
             var ths = $(">th", lastH);
             $("th",thead).each(function(){
                 var $th = $(this);
-                $th.html("<div class='gridCol' title='"+$th.text()+"'>"+ $th.html() +"</div>");
+                $th.html("<div class=\"gridCol\" title=\""+$th.text()+"\">"+ $th.html() +"</div>");
             });
 
             ths.each(function(i){
@@ -42,9 +42,9 @@
             });
 
             var tbody = $grid.find(">tbody");
-            tbody.wrap("<div class='gridScroller' layoutH style='width:" + $tc.width() + "px;'><div class='gridTbody'><table style='width:" + (tlength - 20) + "px;'></table></div></div>");
+            tbody.wrap("<div class=\"gridScroller\" layoutH style=\"width:" + $tc.width() + "px;\"><div class=\"gridTbody\"><table style=\"width:" + (tlength - 20) + "px;\"></table></div></div>");
             var ftr = $(">tr:first-child", tbody);
-            var $trs = tbody.find('>tr');
+            var $trs = tbody.find(">tr");
 
             $trs.each(function(){
                 var $tr = $(this);
@@ -60,23 +60,23 @@
                     }
                 }
                 $tr.click(function(){
-                    $trs.filter(".selected").removeClass("selected");
+                    tbody.find(">tr.selected").removeClass("selected");
                     $tr.addClass("selected");
                     var sTarget = $tr.attr("target");
                     if (sTarget) {
                         if ($("#"+sTarget, $grid).length == 0) {
-                            $grid.prepend('<input id="'+sTarget+'" type="hidden" />');
+                            $grid.prepend("<input id=\""+sTarget+"\" type=\"hidden\" />");
                         }
                         $("#"+sTarget, $grid).val($tr.attr("rel"));
                     }
                 });
                 if ($(".edit", $tr).length) {
                     $tr.dblclick(function() {
-                        $(".edit:eq(0)", $tr).click();
+                        $(".edit", $tr).eq(0).click();
                     });
                 } else if ($(".icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).length ) {
                     $tr.dblclick(function() {
-                        $(".icon-edit:eq(0)", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).parent().click();
+                        $(".icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).eq(0).parent().click();
                     });
                 }
             });
@@ -84,7 +84,7 @@
             $(">td",ftr).each(function(i){
                 if (i < aStyles.length) $(this).width(aStyles[i][0]);
             });
-            $grid.append("<div class='resizeMarker' style='height:300px; left:57px;display:none;'></div><div class='resizeProxy' style='height:300px; left:377px;display:none;'></div>");
+            $grid.append("<div class=\"resizeMarker\" style=\"height:300px; left:57px;display:none;\"></div><div class=\"resizeProxy\" style=\"height:300px; left:377px;display:none;\"></div>");
 
             var scroller = $(".gridScroller", $grid);
             scroller.scroll(function(event){
@@ -259,7 +259,7 @@
     };
 })(jQuery);
 /**
- * Theme Plugins
+ * cssTable Plugins
  *
  * @author ZhangHuihua@msn.com
  */
@@ -268,29 +268,29 @@
         cssTable: function(options) {
             return this.each(function() {
                 var $this = $(this);
-                var $trs = $this.find('tbody>tr');
+                var $trs = $this.find("tbody>tr");
                 var $grid = $this.parent(); // table
 
                 $trs.each(function(index) {
                     var $tr = $(this);
                     $tr.click(function() {
-                        $trs.filter(".selected").removeClass("selected");
+                        $this.find("tbody>tr.selected").removeClass("selected");
                         $tr.addClass("selected");
                         var sTarget = $tr.attr("target");
                         if (sTarget ) {
                             if ($("#" + sTarget, $grid).length == 0 ) {
-                                $grid.prepend('<input id="' + sTarget + '" type="hidden" />');
+                                $grid.prepend("<input id=\"" + sTarget + "\" type=\"hidden\"/>");
                             }
                             $("#" + sTarget, $grid).val($tr.attr("rel"));
                         }
                     });
                     if ($(".edit", $tr).length) {
                         $tr.dblclick(function() {
-                            $(".edit:eq(0)", $tr).click();
+                            $(".edit", $tr).eq(0).click();
                         });
                     } else if ($(".panelBar .icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).length ) {
                         $tr.dblclick(function() {
-                            $(".panelBar .icon-edit:eq(0)", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).parent().click();
+                            $(".panelBar .icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).eq(0).parent().click();
                         });
                     }
                 });

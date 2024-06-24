@@ -7,6 +7,9 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.trade.TradeAccountService;
+
+import freemarker.template.TemplateException;
+
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.handler.PageHandler;
@@ -38,7 +41,7 @@ import com.publiccms.common.handler.PageHandler;
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/trade/accountList?pageSize=10&amp;appToken=接口访问授权Token', function(data){    
- console.log(data.totalCount);
+ console.log(data.page.totalCount);
 });
 &lt;/script&gt;
  * </pre>
@@ -47,7 +50,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/accountList?pageSize=10&amp;ap
 public class TradeAccountListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("orderField"),
                 handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();

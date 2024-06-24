@@ -1,21 +1,21 @@
 <div class="pageContent">
     <div class="leftPageContent">
-        <ul class="tree treeFolder" layoutH>
-            <li>
-                <a href="common/category_list.html" target="ajax" rel="categoryBox"><@t.page 'category.parent'/></a>
-                <ul>
-                    <@cms.categoryList advanced=true parentId=parentId pageSize=500>
-                        <#list page.list as a>
-                            <#if a.childIds?has_content>
+        <div class="card">
+            <ul class="tree treeFolder" layoutH>
+                <li>
+                    <a href="common/category_list.html" target="ajax" rel="categoryBox"><@t.page 'category.parent'/></a>
+                    <ul>
+                        <@cms.categoryList advanced=true parentId=parentId pageSize=500>
+                            <#list page.list as a>
                                 <li _src="common/categoryTree.html?parentId=${a.id}">
-                                    <a href="common/category_list.html?categoryId=${a.id}" class="exclude-translate" target="ajax" rel="categoryBox">${(a.name)!}</a>
+                                    <a href="common/category_list.html?parentId=${a.id}" class="exclude-translate" target="ajax" rel="categoryBox">${(a.name)!}</a>
                                 </li>
-                            </#if>
-                        </#list>
-                    </@cms.categoryList>
-                </ul>
-            </li>
-        </ul>
+                            </#list>
+                        </@cms.categoryList>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
     <div id="categoryBox" class="rightPageContent">
         <#include "../common/category_list.html"/>

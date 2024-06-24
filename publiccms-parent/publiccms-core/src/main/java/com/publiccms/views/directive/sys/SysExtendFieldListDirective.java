@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
+
+import freemarker.template.TemplateException;
+
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +21,7 @@ import com.publiccms.common.handler.RenderHandler;
  * 参数列表
  * <ul>
  * <li><code>extendId</code>:扩展id
- * <li><code>inputType</code>:多个输入框类型【text:输入框,number:数字,textarea:多行文本,file:文件,image:图片,video:视频,password:密码,editor:百度编辑器,ckeditor:CK编辑器,tinymce:TinyMCE编辑器,kindeditor:KIND编辑器,date:日期,datetime:时间,color:颜色,alphaColor:带透明度的颜色,template:模板路径,boolean:是否,user:用户,dept:部门,content:内容,category:分类,dictionary:数据字典,categoryType:分类类型,tagType:标签类型,vote:投票,survey:调查问卷,tag:标签】
+ * <li><code>inputType</code>:多个输入框类型【text:输入框,number:数字,textarea:多行文本,file:文件,image:图片,video:视频,password:密码,editor:百度编辑器,ckeditor:CK编辑器,tinymce:TinyMCE编辑器,date:日期,datetime:时间,color:颜色,alphaColor:带透明度的颜色,template:模板路径,boolean:是否,user:用户,dept:部门,content:内容,category:分类,dictionary:数据字典,categoryType:分类类型,tagType:标签类型,vote:投票,survey:调查问卷,tag:标签】
  * <li><code>searchable</code>:可搜索,【true,false】
  * </ul>
  * <p>
@@ -44,7 +47,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class SysExtendFieldListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer extendId = handler.getInteger("extendId");
         String[] inputType = handler.getStringArray("inputType");
         Boolean searchable = handler.getBoolean("searchable");

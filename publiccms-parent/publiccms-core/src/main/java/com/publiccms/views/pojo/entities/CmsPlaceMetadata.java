@@ -13,6 +13,10 @@ import com.publiccms.entities.sys.SysExtendField;
  * CmsPlaceMetadata
  * 
  */
+/**
+ * CmsPlaceMetadata
+ * 
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CmsPlaceMetadata implements java.io.Serializable {
 
@@ -62,6 +66,12 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      * 封面图高度
      */
     private Integer coverHeight;
+    /**
+     * workflow
+     * <p>
+     * 流程
+     */
+    private Integer workflowId;
     /**
      * accept item types
      * <p>
@@ -183,6 +193,21 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      */
     public void setCoverHeight(Integer coverHeight) {
         this.coverHeight = coverHeight;
+    }
+
+    /**
+     * @return the workflowId
+     */
+    public Integer getWorkflowId() {
+        return workflowId;
+    }
+
+    /**
+     * @param workflowId
+     *            the workflowId to set
+     */
+    public void setWorkflowId(Integer workflowId) {
+        this.workflowId = workflowId;
     }
 
     /**

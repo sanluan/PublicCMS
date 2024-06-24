@@ -10,6 +10,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.views.pojo.diy.CmsRegionData;
 
+import freemarker.template.TemplateException;
 import jakarta.annotation.Resource;
 
 /**
@@ -43,7 +44,7 @@ import jakarta.annotation.Resource;
 public class DiyRegionDataDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String id = handler.getString("id");
         Integer categoryId = handler.getInteger("categoryId");
         if (CommonUtils.notEmpty(id)) {

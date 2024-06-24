@@ -44,7 +44,7 @@ public class VisitItemService extends BaseService<VisitItem> {
             Integer pageIndex, Integer pageSize) {
         PageHandler page = dao.getPage(siteId, startVisitDate, endVisitDate, itemType, itemId, pageIndex, pageSize);
         Date now = CommonUtils.getMinuteDate();
-        if ((null == pageIndex || 1 == pageIndex) && (null == endVisitDate || DateUtils.isSameDay(now, endVisitDate))) {
+        if (null!= page.getList() && (null == pageIndex || 1 == pageIndex) && (null == endVisitDate || DateUtils.isSameDay(now, endVisitDate))) {
             ((List<VisitItem>) page.getList()).addAll(0, visitHistoryService.getItemList(siteId, now, itemType, itemId));
         }
         return page;

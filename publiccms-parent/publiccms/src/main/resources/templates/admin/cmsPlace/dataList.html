@@ -11,9 +11,9 @@
                     <label>${(a.size)!} ${(a.allowContribute?then('['+t.pageMessage('allow_contribute')+']',''))!}</label>
                 </li>
                 <li class="width:auto">
-                    <#list 0..2 as s>
+                    <#list 0..3 as s>
                         <label>
-                            <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
+                            <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox" class="form-check-input"/>
                             <@t.page 'status.place.data.'+s/>
                         </label>
                     </#list>
@@ -97,12 +97,16 @@
                 <td class="wrap">
                     <#if a.cover?has_content>
                         <div class="thumbnail">
-                            <img src="${(a.cover)!}"/>
+                            <img src="${(a.cover)!}" alt="${a.title}"/>
                         </div>
                     </#if>
                     <div class="box">
-                        <h3 <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
-                           <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i></#if><a href="cmsPlace/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${a.title}</a>
+                        <h3>
+                            <#if lockMap?has_content && lockMap[a.id?string]?has_content>
+                                <#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickname)!''/>
+                                <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"></i>
+                            </#if>
+                            <a href="cmsPlace/view.html?id=${a.id}" target="dialog" width="1000" height="600" rel="viewContent${a.id}">${a.title}</a>
                         </h3>
                     </div>
                 </td>
@@ -117,7 +121,7 @@
                 </td>
                 <td class="wrap">
                     <a href="cmsPlace/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsPlace/edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
-                    <a href="cmsPlace/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsPlace/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'place_data.add'/>"><@t.page 'button.copy'/></a>
+                    <a href="cmsPlace/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsPlace/add" title="<@t.page 'place_data.add'/>"><@t.page 'button.copy'/></a>
                     <#if 2=a.status>
                         <a href="cmsPlace/check?ids=${a.id}&_csrf=<@tools.csrfToken admin=true/>&path=${(path?url)!}" class="btnText green" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-check"></i><@t.page 'button.check'/></a>
                     <#elseif 1=a.status>

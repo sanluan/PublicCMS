@@ -1,0 +1,15 @@
+<div class="pageFormContent" layoutH>
+    <dl class="nowrap">
+        <dt><@t.page 'value'/>:</dt>
+        <dd>
+            <textarea name="batchValue" cols="100" rows="15" placeholder="<@t.page fieldName1!'code'/>1,<@t.page fieldName2!'name'/>2&#10;<@t.page fieldName1!'code'/>2&#10;<@t.page fieldName1!'code'/>3,<@t.page fieldName2!'name'/>3"></textarea>
+            <span class="info"><@t.page 'batch_create.description'/></span>
+        </dd>
+    </dl>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="submit" onclick="bringBackBatchValue(['${field1!'code'}','${field2!'name'}']<#if suffix1?has_content&&suffix2?has_content>,['${suffix1}','${suffix2}']</#if>);" class="buttonActive" title="ctrl+s"><@t.page 'use'/></button></li>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

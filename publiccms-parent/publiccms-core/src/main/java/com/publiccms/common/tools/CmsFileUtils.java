@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,14 +22,18 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.pdfbox.cos.COSBase;
+import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
+import org.apache.pdfbox.cos.COSObject;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.views.pojo.entities.FileSize;
+import com.publiccms.views.pojo.entities.FileUploadResult;
 
 /**
  *
@@ -36,10 +41,22 @@ import com.publiccms.views.pojo.entities.FileSize;
  *
  */
 public class CmsFileUtils {
+    private CmsFileUtils() {
+    }
+
+    public static final String UPLOAD_PATH = "upload/";
+    public static final String USER_PRIVATE_PATH = "user/";
+
+    public static final String HEADERS_SEND_CTRL = "Sendfile";
+    public static final String HEADERS_SEND_NGINX = "X-Accel-Redirect";
+    public static final String HEADERS_SEND_APACHE = "X-Sendfile";
+    public static final String NGINX_PRIVATEFILE_PREFIX = "/privatefile/";
+
     public static final String ORDERFIELD_FILENAME = "fileName";
     public static final String ORDERFIELD_FILESIZE = "fileSize";
     public static final String ORDERFIELD_CREATEDATE = "createDate";
     public static final String ORDERFIELD_MODIFIEDDATE = "modifiedDate";
+
     private static final FileInfoComparator FILENAME_COMPARATOR = new FileInfoComparator();
     private static final FileInfoComparator FILESIZE_COMPARATOR = new FileInfoComparator(ORDERFIELD_FILESIZE);
     private static final FileInfoComparator CREATEDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_CREATEDATE);
@@ -163,8 +180,10 @@ public class CmsFileUtils {
                 if (CommonUtils.notEmpty(result.getPath()) && null != result.getIndexs()) {
                     File file = Paths.get(dirPath, CmsFileUtils.getSafeFileName(result.getPath())).toFile();
                     try {
-                        List<String> list = FileUtils.readLines(file, CommonConstants.DEFAULT_CHARSET_NAME);
-                        int i = 0, j = 0, n = 0;
+                        List<String> list = FileUtils.readLines(file, Constants.DEFAULT_CHARSET_NAME);
+                        int i = 0;
+                        int j = 0;
+                        int n = 0;
                         for (String line : list) {
                             if (line.contains(word)) {
                                 if (result.getIndexs().length > j && j == result.getIndexs()[n]) {
@@ -175,7 +194,7 @@ public class CmsFileUtils {
                             }
                             i++;
                         }
-                        FileUtils.writeLines(file, CommonConstants.DEFAULT_CHARSET_NAME, list);
+                        FileUtils.writeLines(file, Constants.DEFAULT_CHARSET_NAME, list);
                     } catch (IOException e) {
                     }
                 }
@@ -197,17 +216,17 @@ public class CmsFileUtils {
                 Path fileNamePath = entry.getFileName();
                 if (null != fileNamePath) {
                     String fileName = fileNamePath.toString();
-                    if (!parentPath.endsWith(CommonConstants.SEPARATOR)) {
-                        parentPath += CommonConstants.SEPARATOR;
+                    if (!parentPath.endsWith(Constants.SEPARATOR)) {
+                        parentPath = CommonUtils.joinString(parentPath, Constants.SEPARATOR);
                     }
                     File file = entry.toFile();
                     if (file.isDirectory()) {
                         if (!TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
-                            searchFileList(entry, parentPath + fileName, word, fileList);
+                            searchFileList(entry, CommonUtils.joinString(parentPath, fileName), word, fileList);
                         }
                     } else if (!fileName.endsWith(".data")) {
                         List<String> matchList = new ArrayList<>();
-                        List<String> list = FileUtils.readLines(entry.toFile(), CommonConstants.DEFAULT_CHARSET_NAME);
+                        List<String> list = FileUtils.readLines(entry.toFile(), Constants.DEFAULT_CHARSET_NAME);
                         for (String line : list) {
                             if (line.contains(word)) {
                                 matchList.add(line);
@@ -215,7 +234,7 @@ public class CmsFileUtils {
                         }
                         if (!matchList.isEmpty()) {
                             FileSearchResult result = new FileSearchResult();
-                            result.setPath(parentPath + fileName);
+                            result.setPath(CommonUtils.joinString(parentPath, fileName));
                             result.setMatchList(matchList);
                             fileList.add(result);
                         }
@@ -282,48 +301,69 @@ public class CmsFileUtils {
 
     /**
      * @param filepath
+     * @param filename
      * @param suffix
-     * @return fileSize
+     * @return uploadResult
      */
-    public static FileSize getFileSize(String filepath, String suffix) {
-        return getFileSize(new File(filepath), suffix);
+    public static FileUploadResult getFileSize(String filepath, String filename, String suffix) {
+        return getFileSize(new File(filepath), filename, suffix);
     }
 
     /**
      * @param file
      * @param suffix
-     * @return fileSize
+     * @return uploadResult
      */
-    private static FileSize getFileSize(File file, String suffix) {
-        FileSize fileSize = new FileSize();
-        fileSize.setFileSize(file.length());
-        if (null != suffix && !suffix.startsWith(CommonConstants.DOT)) {
-            suffix = CommonConstants.DOT + suffix;
+    private static FileUploadResult getFileSize(File file, String filename, String suffix) {
+        FileUploadResult uploadResult = new FileUploadResult();
+        uploadResult.setFileSize(file.length());
+        uploadResult.setFilename(filename);
+
+        if (null != suffix && !suffix.startsWith(Constants.DOT)) {
+            suffix = CommonUtils.joinString(Constants.DOT, suffix);
         }
         if (ArrayUtils.contains(IMAGE_FILE_SUFFIXS, suffix)) {
             try (FileInputStream fis = new FileInputStream(file)) {
                 BufferedImage bufferedImg = ImageIO.read(fis);
                 if (null != bufferedImg) {
-                    fileSize.setWidth(bufferedImg.getWidth());
-                    fileSize.setHeight(bufferedImg.getHeight());
+                    uploadResult.setImage(true);
+                    uploadResult.setWidth(bufferedImg.getWidth());
+                    uploadResult.setHeight(bufferedImg.getHeight());
                 }
             } catch (Exception e) {
             }
         }
-        return fileSize;
+        return uploadResult;
     }
 
     /**
      * @param source
      * @param destination
-     * @param suffix
-     * @return
      * @throws IOException
      */
-    public static FileSize copyInputStreamToFile(InputStream source, String destination, String suffix) throws IOException {
+    public static void copyInputStreamToFile(InputStream source, String destination) throws IOException {
         File dest = new File(destination);
         FileUtils.copyInputStreamToFile(source, dest);
-        return getFileSize(dest, suffix);
+    }
+
+    /**
+     * @param source
+     * @param destination
+     * @throws IOException
+     */
+    public static void copyFileToFile(String source, String destination) throws IOException {
+        FileUtils.copyFile(new File(source), new File(destination));
+    }
+
+    /**
+     * @param filepath
+     * @param outputStream
+     * @throws IOException
+     */
+    public static void copyFileToOutputStream(String filepath, OutputStream outputStream) throws IOException {
+        try (InputStream inputStream = new FileInputStream(filepath)) {
+            IOUtils.copy(inputStream, outputStream);
+        }
     }
 
     /**
@@ -379,7 +419,7 @@ public class CmsFileUtils {
     public static boolean createFile(String filepath, String content) throws IOException {
         File file = new File(filepath);
         if (CommonUtils.empty(file)) {
-            FileUtils.writeStringToFile(file, content, CommonConstants.DEFAULT_CHARSET_NAME);
+            FileUtils.writeStringToFile(file, content, Constants.DEFAULT_CHARSET_NAME);
             return true;
         }
         return false;
@@ -418,7 +458,7 @@ public class CmsFileUtils {
      */
     public static String getSafeFileName(String path) {
         if (CommonUtils.notEmpty(path) && path.contains("..")) {
-            return path.replace("..", CommonConstants.BLANK);
+            return path.replace("..", Constants.BLANK);
         } else {
             return path;
         }
@@ -457,7 +497,7 @@ public class CmsFileUtils {
             }
             FileUtils.copyFile(file, history);
             try (FileOutputStream outputStream = new FileOutputStream(file)) {
-                outputStream.write(content.getBytes(CommonConstants.DEFAULT_CHARSET));
+                outputStream.write(content.getBytes(Constants.DEFAULT_CHARSET));
             }
             return true;
         }
@@ -472,25 +512,37 @@ public class CmsFileUtils {
      * @return is safe
      */
     public static boolean isSafe(String filepath, String suffix) {
-        if (CommonUtils.notEmpty(suffix)) {
+        File file = new File(filepath);
+        if (CommonUtils.notEmpty(suffix) && file.isFile()) {
             if (suffix.endsWith(ImageUtils.FORMAT_NAME_SVG)) {
-                File file = new File(filepath);
                 try {
-                    if (file.isFile()) {
-                        return ImageUtils.svgSafe(file);
-                    }
+                    return ImageUtils.svgSafe(file);
                 } catch (IOException e) {
                     return false;
                 }
             } else if (suffix.endsWith(FILE_TYPE_PDF)) {
-                File file = new File(filepath);
-                try {
-                    PDDocument document = PDDocument.load(file);
-                    return document.getDocument().getObjects().stream()
-                            .noneMatch(obj -> COSName.JS.equals(obj) || COSName.JAVA_SCRIPT.equals(obj));
+                try (PDDocument document = PDDocument.load(file)) {
+                    return isSafe(document.getDocument().getObjects());
                 } catch (IOException e) {
                     return false;
                 }
+            }
+        }
+        return true;
+    }
+
+    private static boolean isSafe(List<COSObject> pdfObjects) {
+        for (COSObject object : pdfObjects) {
+            COSBase realObject = object.getObject();
+            if (realObject instanceof COSDictionary) {
+                COSDictionary dic = (COSDictionary) realObject;
+                if (null != dic.getDictionaryObject(COSName.JS) || null != dic.getDictionaryObject(COSName.JAVA_SCRIPT)) {
+                    return false;
+                }
+            } else if (realObject instanceof COSName
+                    && (COSName.JS.equals(realObject) || COSName.JAVA_SCRIPT.equals(realObject))) {
+                return false;
+
             }
         }
         return true;
@@ -506,7 +558,7 @@ public class CmsFileUtils {
         File file = new File(filepath);
         try {
             if (file.isFile()) {
-                return FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);
+                return FileUtils.readFileToString(file, Constants.DEFAULT_CHARSET_NAME);
             }
         } catch (IOException e) {
             return null;
@@ -521,14 +573,52 @@ public class CmsFileUtils {
      * @return upload file name
      */
     public static String getUploadFileName(String suffix) {
-        StringBuilder sb = new StringBuilder("upload/");
+        StringBuilder sb = new StringBuilder(UPLOAD_PATH);
         sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.UPLOAD_FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
-        sb.append(CommonConstants.random.nextInt());
-        if (!suffix.contains(CommonConstants.DOT)) {
-            sb.append(CommonConstants.DOT);
+        sb.append(Constants.random.nextInt());
+        if (!suffix.contains(Constants.DOT)) {
+            sb.append(Constants.DOT);
         }
         sb.append(suffix);
         return sb.toString();
+    }
+
+    /**
+     * 获取私有文件前面字符串
+     * 
+     * @param expiry
+     * @param filepath
+     * @return avatar file name
+     */
+    public static String getPrivateFileSignString(long expiry, String filepath) {
+        return CommonUtils.joinString("expiry=", expiry, "&filePath=", filepath);
+    }
+
+    /**
+     * 获取用户私有文件名
+     * 
+     * @param userId
+     * @param filepath
+     * @return user private file name
+     */
+    public static String getUserPrivateFileName(long userId, String filepath) {
+        return CommonUtils.joinString(USER_PRIVATE_PATH, userId, Constants.SEPARATOR, filepath);
+    }
+
+    /**
+     * 获取文件名
+     * 
+     * @param filePath
+     * @return suffix
+     */
+    public static String getFileName(String filePath) {
+        if (null != filePath) {
+            int index = filePath.lastIndexOf(Constants.SEPARATOR);
+            if (-1 < index) {
+                return filePath.substring(filePath.lastIndexOf(Constants.SEPARATOR) + 1, filePath.length());
+            }
+        }
+        return null;
     }
 
     /**
@@ -539,9 +629,9 @@ public class CmsFileUtils {
      */
     public static String getSuffix(String originalFilename) {
         if (null != originalFilename) {
-            int index = originalFilename.lastIndexOf(CommonConstants.DOT);
+            int index = originalFilename.lastIndexOf(Constants.DOT);
             if (-1 < index) {
-                return originalFilename.substring(originalFilename.lastIndexOf(CommonConstants.DOT), originalFilename.length())
+                return originalFilename.substring(originalFilename.lastIndexOf(Constants.DOT), originalFilename.length())
                         .toLowerCase();
             }
         }
@@ -549,8 +639,8 @@ public class CmsFileUtils {
     }
 
     public static String getFileType(String suffix) {
-        if (null != suffix && !suffix.startsWith(CommonConstants.DOT)) {
-            suffix = CommonConstants.DOT + suffix;
+        if (null != suffix && !suffix.startsWith(Constants.DOT)) {
+            suffix = CommonUtils.joinString(Constants.DOT, suffix);
         }
         if (ArrayUtils.contains(IMAGE_FILE_SUFFIXS, suffix)) {
             return FILE_TYPE_IMAGE;
@@ -575,9 +665,31 @@ public class CmsFileUtils {
      * @throws IOException
      */
     public static String upload(byte[] data, String fileName) throws IllegalStateException, IOException {
+        return upload(data, fileName, null, null);
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param data
+     * @param fileName
+     * @param originalName
+     * @param metadataPath
+     * @return file name
+     * @throws IllegalStateException
+     * @throws IOException
+     */
+    public static String upload(byte[] data, String fileName, String originalName, String metadataPath)
+            throws IllegalStateException, IOException {
         File dest = new File(fileName);
         dest.getParentFile().mkdirs();
         FileUtils.writeByteArrayToFile(dest, data);
+        if (CommonUtils.notEmpty(originalName) && CommonUtils.notEmpty(metadataPath)) {
+            try {
+                FileUtils.writeStringToFile(new File(metadataPath), originalName, Constants.DEFAULT_CHARSET_NAME);
+            } catch (IOException e) {
+            }
+        }
         return dest.getName();
     }
 
@@ -587,14 +699,13 @@ public class CmsFileUtils {
      * @param file
      * @param fileName
      * @return file name
-     * @throws IllegalStateException
      * @throws IOException
      */
-    public static String upload(MultipartFile file, String fileName) throws IllegalStateException, IOException {
+    public static Path upload(MultipartFile file, String fileName) throws IOException {
         File dest = new File(fileName);
         dest.getParentFile().mkdirs();
         file.transferTo(dest);
-        return dest.getName();
+        return dest.toPath();
     }
 
     public static class FileInfoComparator implements Comparator<FileInfo> {
@@ -676,7 +787,7 @@ public class CmsFileUtils {
 
         @Override
         public String toString() {
-            return "FileReplaceResult [path=" + path + ", indexs=" + Arrays.toString(indexs) + "]";
+            return CommonUtils.joinString("FileReplaceResult [path=", path, ", indexs=", Arrays.toString(indexs), "]");
         }
     }
 
@@ -720,7 +831,7 @@ public class CmsFileUtils {
 
         @Override
         public String toString() {
-            return "FileSearchResult [path=" + path + ", matchList=" + matchList + "]";
+            return CommonUtils.joinString("FileSearchResult [path=", path, ", matchList=", matchList, "]");
         }
     }
 

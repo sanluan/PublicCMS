@@ -1,4 +1,4 @@
-<@cms.userSurveyList userId=userId surveyId=surveyId orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@cms.userSurveyList userId=userId surveyId=surveyId anonymous=anonymous ip=ip orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
     <form class="pagerForm" action="cmsUserSurvey/list.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -10,8 +10,21 @@
                     <label><@cms.survey id=surveyId>${object.title!}</@cms.survey></label>
                 </li>
                 <li>
+                    <select class="combox" name="anonymous">
+                        <option value><@t.page 'anonymous'/></option>
+                        <option value="false"${(anonymous?has_content&&"false"=anonymous)?then(' selected="true"','')?no_esc}><@t.page 'user'/></option>
+                        <option value="true"${(anonymous?has_content&&"true"=anonymous)?then(' selected="true"','')?no_esc}><@t.page 'anonymous'/></option>
+                    </select>
+                </li>
+                <#if !anonymous?has_content || "false"=anonymous>
+                <li>
                     <label><@t.page 'content.promulgator'/>:</label>
                     <#include "../include_page/userId.html"/>
+                </li>
+                </#if>
+                <li>
+                    <label><@t.page 'log.operate_ip'/>:</label>
+                    <input type="text" name="ip" value="${ip!}"/>
                 </li>
             </ul>
             <div class="subBar">
@@ -31,6 +44,7 @@
                 <th><@t.page 'survey'/></th>
                 <th><@t.page 'user'/></th>
                 <th orderField="score"><@t.page 'content.score'/></th>
+                <th><@t.page 'log.operate_ip'/></th>
                 <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
@@ -38,7 +52,7 @@
         <tbody>
             <#list page.list as a>
                 <@t.merge 'surveyIds' a.id.surveyId!/>
-                <@t.merge 'userIds' a.id.userId!/>
+                <#if !a.anonymous><@t.merge 'userIds' a.id.userId!/></#if>
             </#list>
 
             <@cms.survey ids=t.surveyIds!><#assign surveyMap=map!/></@cms.survey>
@@ -47,8 +61,16 @@
             <#list page.list as a>
             <tr>
                 <td><a href="cmsSurvey/view.html?id=${a.id.surveyId}" class="exclude-translate" target="dialog" rel="viewSurvey${a.id.surveyId}">${(surveyMap[a.id.surveyId?string].title)!}</a></td>
-                <td class="exclude-translate">${(userMap[a.id.userId?string].nickname)!}</td>
+                <td>
+                    <#if a.anonymous><b><@t.page 'anonymous'/></b><#else><span class="exclude-translate">${(userMap[a.id.userId?string].nickname)!}</span></#if>
+                </td>
                 <td>${a.score!}</td>
+                <td>
+                    <div class="box">
+                        <p>${a.ip!}</p>
+                        <p>${(getIpRegion(a.ip).address)!}</p>
+                    </div>
+                </td>
                 <td>${a.createDate!}</td>
                 <td>
                     <a href="cmsUserSurvey/add.html?userId=${a.id.userId}&surveyId=${a.id.surveyId!}" class="edit btnText blue" target="navTab" rel="cmsuserSurvey/edit"><i class="icon-eye-open"></i><@t.page 'button.view'/></a>

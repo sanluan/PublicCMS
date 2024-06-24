@@ -46,7 +46,7 @@ public class RedisDomainDataStorageAccessImpl implements DomainDataStorageAccess
 
     @Override
     public void evictData() {
-        cache.clear();
+        cache.clear(false);
     }
 
     @Override

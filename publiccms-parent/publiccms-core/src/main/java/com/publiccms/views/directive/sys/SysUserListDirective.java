@@ -9,10 +9,13 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.sys.SysUserService;
+
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -23,15 +26,17 @@ import com.publiccms.logic.service.sys.SysUserService;
  * <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
  * <li><code>disabled</code>:高级选项:已禁用,【true,false】, 默认为<code>false</code>
  * <li><code>deptId</code>:部门id
- * <li><code>startRegisteredDate</code>:起始注册日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>startRegisteredDate</code>:起始注册日期,【2020-01-01
+ * 23:59:59】,【2020-01-01】
  * <li><code>endRegisteredDate</code>:终止注册日期,【2020-01-01 23:59:59】,【2020-01-01】
- * <li><code>startLastLoginDate</code>:起始上次登录日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>startLastLoginDate</code>:起始上次登录日期,【2020-01-01
+ * 23:59:59】,【2020-01-01】
  * <li><code>endLastLoginDate</code>:终止上次登录日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>superuser</code>:管理员,【true,false】
  * <li><code>emailChecked</code>:邮箱已验证,【true,false】
  * <li><code>name</code>:昵称、用户名、邮箱
  * <li><code>orderField</code>
- * 排序字段,【expiryDate:,createDate:,】,默认创建日期按orderType排序
+ * 排序字段,【lastLoginDate:上次登录日期,loginCount:登录次数,registeredDate:注册日期,followers:粉丝数】,默认创建日期按orderType排序
  * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为倒序
  * <li><code>pageIndex</code>:页码
  * <li><code>pageSize</code>:每页条数
@@ -51,7 +56,7 @@ import com.publiccms.logic.service.sys.SysUserService;
  * <pre>
 &lt;script&gt;
  $.getJSON('${site.dynamicPath}api/directive/sys/userList?deptId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
-   console.log(data.totalCount);
+   console.log(data.page.totalCount);
  });
  &lt;/script&gt;
  * </pre>
@@ -60,7 +65,7 @@ import com.publiccms.logic.service.sys.SysUserService;
 public class SysUserListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Boolean disabled = false;
         if (getAdvanced(handler)) {
             disabled = handler.getBoolean("disabled", false);
@@ -75,13 +80,13 @@ public class SysUserListDirective extends AbstractTemplateDirective {
         List<SysUser> list = (List<SysUser>) page.getList();
         if (null != list) {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
-            list.forEach(e -> {
-                if (absoluteURL) {
-                    e.setCover(TemplateComponent.getUrl(site.getSitePath(), e.getCover()));
-                }
-            });
+            if (absoluteURL) {
+                list.forEach(e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover())));
+            }
+
         }
         handler.put("page", page).render();
+
     }
 
     @Override
@@ -96,5 +101,7 @@ public class SysUserListDirective extends AbstractTemplateDirective {
 
     @Resource
     private SysUserService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -76,7 +77,7 @@ public class ModelComponent implements SiteCache {
     public List<CmsCategoryType> getCategoryTypeList(short siteId) {
         Map<String, CmsCategoryType> map = getCategoryTypeMap(siteId);
         List<CmsCategoryType> list = new ArrayList<>(map.values());
-        list.sort((e1, e2) -> e1.getSort() - e2.getSort());
+        list.sort(Comparator.comparing(CmsCategoryType::getSort));
         return list;
     }
 
@@ -100,8 +101,8 @@ public class ModelComponent implements SiteCache {
             File file = new File(siteComponent.getModelFilePath(siteId));
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    modelMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(HashMap.class, String.class, CmsModel.class));
+                    modelMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
+                            .constructMapType(HashMap.class, String.class, CmsModel.class));
                 } catch (IOException | ClassCastException e) {
                     modelMap = new HashMap<>();
                 }
@@ -132,8 +133,8 @@ public class ModelComponent implements SiteCache {
             File file = new File(siteComponent.getCategoryTypeFilePath(siteId));
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    typeMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(HashMap.class, String.class, CmsCategoryType.class));
+                    typeMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
+                            .constructMapType(HashMap.class, String.class, CmsCategoryType.class));
                 } catch (IOException | ClassCastException e) {
                     typeMap = new HashMap<>();
                 }
@@ -158,7 +159,7 @@ public class ModelComponent implements SiteCache {
             file.getParentFile().mkdirs();
         }
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            CommonConstants.objectMapper.writeValue(file, modelMap);
+            Constants.objectMapper.writeValue(file, modelMap);
         } catch (IOException e) {
             log.error(e.getMessage());
             return false;
@@ -180,7 +181,7 @@ public class ModelComponent implements SiteCache {
             file.getParentFile().mkdirs();
         }
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            CommonConstants.objectMapper.writeValue(file, typeMap);
+            Constants.objectMapper.writeValue(file, typeMap);
         } catch (IOException e) {
             log.error(e.getMessage());
             return false;
@@ -195,8 +196,8 @@ public class ModelComponent implements SiteCache {
 
     @Override
     public void clear() {
-        modelCache.clear();
-        typeCache.clear();
+        modelCache.clear(false);
+        typeCache.clear(false);
     }
 
     @Override

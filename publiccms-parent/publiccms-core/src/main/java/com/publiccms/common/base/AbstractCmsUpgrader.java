@@ -21,6 +21,8 @@ import java.util.Properties;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.sys.SysExtendField;
@@ -36,18 +38,6 @@ import com.publiccms.views.pojo.entities.CmsPageData;
  *
  */
 public abstract class AbstractCmsUpgrader {
-    /**
-     * 表名_ID_SEQ SEQUENCE主键策略
-     */
-    public static final String IDENTIFIER_GENERATOR_SEQUENCE = "com.publiccms.common.datasource.IDSequenceStyleGenerator";
-    /**
-     * ID自增主键策略
-     */
-    public static final String IDENTIFIER_GENERATOR_IDENTITY = "org.hibernate.id.IdentityGenerator";
-    /**
-     * 主键策略
-     */
-    public static final String IDENTIFIER_GENERATOR = IDENTIFIER_GENERATOR_IDENTITY;
     protected String version;
 
     /**
@@ -86,7 +76,7 @@ public abstract class AbstractCmsUpgrader {
     public abstract void setDataBaseUrl(Properties dbconfig, String host, String port, String database, String timeZone)
             throws IOException, URISyntaxException;
 
-    public void setPassword(Connection connection, String username, String password) throws SQLException, IOException {
+    public void setPassword(Connection connection, String username, String password) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("update sys_user set name=?,password=? where id = 1")) {
             statement.setString(1, username);
             statement.setString(2, UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, null));
@@ -94,10 +84,10 @@ public abstract class AbstractCmsUpgrader {
         }
     }
 
-    public void setSiteUrl(Connection connection, String siteurl) throws SQLException, IOException {
+    public void setSiteUrl(Connection connection, String siteurl) throws SQLException {
         if (null != siteurl) {
-            String dynamicPath = siteurl.endsWith("/") ? siteurl : (siteurl + "/");
-            String sitePath = dynamicPath + "webfile/";
+            String dynamicPath = siteurl.endsWith("/") ? siteurl : CommonUtils.joinString(siteurl, "/");
+            String sitePath = CommonUtils.joinString(dynamicPath, "webfile/");
             try (PreparedStatement statement = connection
                     .prepareStatement("update sys_site set dynamic_path=?,site_path=? where id = 1")) {
                 statement.setString(1, dynamicPath);
@@ -111,21 +101,16 @@ public abstract class AbstractCmsUpgrader {
         try (Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery("select * from sys_site")) {
             while (rs.next()) {
-                String filepath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
-                        + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX + rs.getString("id")
-                        + CommonConstants.SEPARATOR + MetadataComponent.METADATA_FILE;
+                String filepath = CommonUtils.joinString(CommonConstants.CMS_FILEPATH, Constants.SEPARATOR,
+                        SiteComponent.TEMPLATE_PATH, Constants.SEPARATOR, SiteComponent.SITE_PATH_PREFIX, rs.getString("id"),
+                        Constants.SEPARATOR, MetadataComponent.METADATA_FILE);
                 File file = new File(filepath);
                 try {
-                    Map<String, CmsPageData> dataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper
-                            .getTypeFactory().constructMapLikeType(HashMap.class, String.class, CmsPageData.class));
-                    try {
-                        CommonConstants.objectMapper.writeValue(new File(CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR
-                                + SiteComponent.TEMPLATE_PATH + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX
-                                + rs.getString("id") + CommonConstants.SEPARATOR + MetadataComponent.DATA_FILE), dataMap);
-                    } catch (IOException e) {
-                        stringWriter.write(e.getMessage());
-                        stringWriter.write(System.lineSeparator());
-                    }
+                    Map<String, CmsPageData> dataMap = Constants.objectMapper.readValue(file, Constants.objectMapper
+                            .getTypeFactory().constructMapType(HashMap.class, String.class, CmsPageData.class));
+                    Constants.objectMapper.writeValue(new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH,
+                            Constants.SEPARATOR, SiteComponent.TEMPLATE_PATH, Constants.SEPARATOR, SiteComponent.SITE_PATH_PREFIX,
+                            rs.getString("id"), Constants.SEPARATOR, MetadataComponent.DATA_FILE)), dataMap);
                 } catch (IOException | ClassCastException e) {
                     stringWriter.write(e.getMessage());
                     stringWriter.write(System.lineSeparator());
@@ -176,7 +161,7 @@ public abstract class AbstractCmsUpgrader {
                         if (!safeConfig.isEmpty()) {
                             insertStatement.setShort(1, rs.getShort("site_id"));
                             insertStatement.setString(2, "safe");
-                            insertStatement.setString(3, ExtendUtils.getExtendString(safeConfig));
+                            insertStatement.setString(3, ExtendUtils.getExtendString(safeConfig, ""));
                             insertStatement.executeUpdate();
                         }
                     } catch (ClassCastException e) {
@@ -199,15 +184,15 @@ public abstract class AbstractCmsUpgrader {
             while (rs.next()) {
                 try {
                     CmsCategoryType entity = new CmsCategoryType();
-                    String filepath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
-                            + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX + rs.getString("site_id")
-                            + CommonConstants.SEPARATOR + SiteComponent.CATEGORY_TYPE_FILE;
+                    String filepath = CommonUtils.joinString(CommonConstants.CMS_FILEPATH, Constants.SEPARATOR,
+                            SiteComponent.TEMPLATE_PATH, Constants.SEPARATOR, SiteComponent.SITE_PATH_PREFIX,
+                            rs.getString("site_id"), Constants.SEPARATOR, SiteComponent.CATEGORY_TYPE_FILE);
                     File file = new File(filepath);
                     file.getParentFile().mkdirs();
                     Map<String, CmsCategoryType> categoryTypeMap;
                     try {
-                        categoryTypeMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper
-                                .getTypeFactory().constructMapLikeType(HashMap.class, String.class, CmsCategoryType.class));
+                        categoryTypeMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
+                                .constructMapType(HashMap.class, String.class, CmsCategoryType.class));
                     } catch (IOException | ClassCastException e) {
                         categoryTypeMap = new HashMap<>();
                     }
@@ -218,8 +203,8 @@ public abstract class AbstractCmsUpgrader {
                     if (null != rs.getString("extend_id")) {
                         List<SysExtendField> extendList = new ArrayList<>();
                         try (Statement extendFieldStatement = connection.createStatement();
-                                ResultSet extendFieldRs = extendFieldStatement.executeQuery(
-                                        "select * from sys_extend_field where extend_id = " + rs.getString("extend_id"))) {
+                                ResultSet extendFieldRs = extendFieldStatement.executeQuery(CommonUtils.joinString(
+                                        "select * from sys_extend_field where extend_id = ", rs.getString("extend_id")))) {
                             while (extendFieldRs.next()) {
                                 SysExtendField e = new SysExtendField(extendFieldRs.getString("code"),
                                         extendFieldRs.getString("input_type"), extendFieldRs.getBoolean("required"),
@@ -241,7 +226,7 @@ public abstract class AbstractCmsUpgrader {
                         entity.setExtendList(extendList);
                     }
                     categoryTypeMap.put(entity.getId(), entity);
-                    CommonConstants.objectMapper.writeValue(file, categoryTypeMap);
+                    Constants.objectMapper.writeValue(file, categoryTypeMap);
                 } catch (IOException | SQLException e) {
                     stringWriter.write(e.getMessage());
                     stringWriter.write(System.lineSeparator());
@@ -256,15 +241,15 @@ public abstract class AbstractCmsUpgrader {
     }
 
     protected void runScript(StringWriter stringWriter, Connection connection, String fromVersion, String toVersion)
-            throws SQLException, IOException {
+            throws IOException {
         ScriptRunner runner = new ScriptRunner(connection);
         runner.setLogWriter(null);
         runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
-        try (InputStream inputStream = getClass().getResourceAsStream(new StringBuilder("/initialization/upgrade/")
-                .append(fromVersion).append("-").append(toVersion).append(".sql").toString())) {
+        try (InputStream inputStream = getClass()
+                .getResourceAsStream(CommonUtils.joinString("/initialization/sql/", fromVersion, "-", toVersion, ".sql"))) {
             if (null != inputStream) {
-                runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
+                runner.runScript(new InputStreamReader(inputStream, Constants.DEFAULT_CHARSET));
             }
         }
         version = toVersion;

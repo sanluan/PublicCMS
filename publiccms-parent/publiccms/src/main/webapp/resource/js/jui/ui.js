@@ -15,9 +15,9 @@ function initEnv() {
     });
     var ajaxbg = $("#background,#progressBar");
     ajaxbg.hide();
-    $(document).ajaxStart(function() {
+    $(document).on("ajaxStart",function() {
         ajaxbg.show();
-    }).ajaxStop(function() {
+    }).on("ajaxStop",function() {
         ajaxbg.hide();
     });
     $("#progressBar").click(function(){
@@ -36,25 +36,14 @@ function initEnv() {
         }
         initUI();
         if ($.fn.navMenu ){
-            var hash = location.hash.skipChar('#').replace(/\?.*$/, '');
-            var callback;
-            var parentId;
+            $("#navMenu").navMenu();
+            var hash = location.hash.skipChar("#").replace(/\?.*$/, "");
             if(hash ) {
-                parentId = hash.substring(0, hash.indexOf('_'));
-                var tabid = hash.substring(hash.indexOf('_') + 1);
-                if(tabid ) {
-                    callback = function(){
-                        var $box = $('#menu a[rel='+escapeJquery(tabid)+']').closest('.accordionContent');
-                        if(!$box.is(":visible")){
-                            $box.prev().click();
-                        }
-                        $('#menu a[rel='+escapeJquery(tabid)+']').click();
-                    }
+                var $box = $("#menu a[rel="+escapeJquery(hash)+"]").closest(".accordionContent");
+                if(!$box.is(":visible")){
+                    $box.prev().click();
                 }
-            }
-            $("#navMenu").navMenu(callback);
-            if(parentId ) {
-                $('#navMenu a[parentid='+parentId+']').click();
+                $("#menu a[rel="+escapeJquery(hash)+"]").click();
             }
         }
         $(document).trigger(JUI.eventType.initEnvAfter);
@@ -64,15 +53,15 @@ function initEnv() {
  * 初始化布局
  */
 function initLayout() {
-    var iContentW = $(window).width() - (JUI.ui.sbar ? $("#sidebar").width() : 0);
-    var iContentH = $(window).height() - $('header').outerHeight(true) - $('footer').outerHeight(true);
-    $("#navTab").css({"width":iContentW+'px'});
-    $("main .tabsPageContent").height(iContentH - $('.tabsPageHeader').outerHeight(true)).find("[layoutH]").layoutH();
+    var iContentW = $(window).width() - $("#sidebar").width();
+    var iContentH = $(window).height() - $("header").outerHeight(true);
+    $("#navTab").css({"width":iContentW+"px"});
+    $("main .tabsPageContent").height(iContentH - $(".tabsPageHeader").outerHeight(true)).find("[layoutH]").layoutH();
     $("#splitBar, #splitBarProxy").height(iContentH - 2);
     $("#taskbar").css({
-        top: (iContentH + $("header").height())+'px', width: $(window).width()+'px'
+        top: (iContentH + $("header").height())+"px", width: $(window).width()+"px"
     });
-    $("#menu").css({'max-height':(iContentH-$("#sidebar .collapse").height())+'px'});
+    $("#menu").css({"max-height":(iContentH-$("#sidebar .collapse").height())+"px"});
 }
 /**
  * 为容器初始化UI
@@ -81,9 +70,9 @@ function initLayout() {
 function initUI(_box) {
     var $p = $(_box || document);
     // css tables
-    $('table.list', $p).cssTable();
+    $("table.list", $p).cssTable();
     // jTables
-    $('table.table', $p).jTable();
+    $("table.table", $p).jTable();
 
     // auto bind tabs
     $("div.tabs", $p).each(function() {
@@ -94,10 +83,10 @@ function initUI(_box) {
         $this.tabs(options);
     });
     $("ul.tree", $p).jTree();
-    $('div.accordion', $p).each(function() {
+    $("div.accordion", $p).each(function() {
         var $this = $(this);
         $this.accordion({
-            alwaysOpen: false, active: 0, autoheight:false
+            alwaysOpen: false, active: 0, fillSpace:$(this).attr("fillSpace")
         });
     });
     $(":button.checkboxCtrl, :checkbox.checkboxCtrl", $p).checkboxCtrl($p);
@@ -137,7 +126,7 @@ function initUI(_box) {
         });
     });
     if ($.fn.datepicker ) {
-        $('input.date', $p).each(function() {
+        $("input.date", $p).each(function() {
             var $this = $(this);
             var opts = {};
             if ($this.attr("dateFmt") ) {
@@ -186,7 +175,6 @@ function initUI(_box) {
     $("input[type=text], input[type=number], input[type=password], textarea", $p).not("textarea.editor", $p).addClass("textInput");
     $("input[readonly], textarea[readonly]", $p).addClass("readonly");
     $("input[disabled=true], textarea[disabled=true]", $p).addClass("disabled");
-    $("input[type=text]", $p).not("div.tabs input[type=text]", $p).filter("[alt]").inputAlert();
 }
 /**
  * 为容器初始化链接
@@ -201,7 +189,6 @@ function initLink($p) {
             if(title){
                 title = title.replace(/<[^>]*>/gi,"");
             }
-            var icon = $this.attr("icon") || $this.find("i").prop("outerHTML");
             var tabid = $this.attr("rel") || "_blank";
             var fresh = eval($this.attr("fresh") || "true");
             var external = eval($this.attr("external") || "false");
@@ -213,7 +200,7 @@ function initLink($p) {
                 return false;
             }
             navTab.openTab(tabid, url, {
-                title: title, icon: icon, fresh: fresh, external: external, focusNewWindow:newWindow
+                title: title, fresh: fresh, external: external, focusNewWindow:newWindow
             });
             return false;
         });
@@ -289,24 +276,26 @@ function initLink($p) {
     $.fn.extend({
         theme: function(options) {
             var op = $.extend({
-                themeBase: "themes", defaultTheme: "default"
+                themeBase: "themes", defaultTheme: "toptry"
             }, options);
             var _themeHref = op.themeBase + "#theme#.css";
             var $themeItem = $("<link href=\"" + _themeHref.replace("#theme#", op.defaultTheme) + "\" rel=\"stylesheet\" media=\"screen\"/>");
             var setTheme = function(themeName) {
                 $themeItem.attr("href", _themeHref.replace("#theme#", themeName));
-                jThemeLi.find(">div").removeClass("selected");
-                jThemeLi.filter("[theme=" + themeName + "]").find(">div").addClass("selected");
+                jThemeLi.removeClass("selected");
+                $(".theme").prop("class","theme "+themeName);
+                jThemeLi.filter("." + themeName).addClass("selected");
                 if ("function" === typeof $.cookie ) {
-                    $.cookie("dwz_theme", themeName);
+                    $.cookie("dwz_theme", themeName, { expires: 30 });
                 }
             }
-            var jThemeLi = $(this).find(">li[theme]");
+            var jThemeLi = $(this).find(">li");
             jThemeLi.each(function(index) {
                 var $this = $(this);
-                var themeName = $this.attr("theme");
+                var themeName = $this.attr("class");
                 if(themeName == op.defaultTheme){
-                    $this.find(">div").addClass("selected");
+                    $this.addClass("selected");
+                    $(".theme").prop("class","theme "+themeName);
                 }
                 $this.addClass(themeName).click(function() {
                     setTheme(themeName);

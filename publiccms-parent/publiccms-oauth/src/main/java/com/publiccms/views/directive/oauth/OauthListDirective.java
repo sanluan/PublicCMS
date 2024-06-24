@@ -12,6 +12,8 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.entities.sys.SysSite;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * oauthList 账户查询指令
@@ -36,7 +38,7 @@ import com.publiccms.entities.sys.SysSite;
 @Component
 public class OauthListDirective extends AbstractTemplateDirective {
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         List<String> list = new ArrayList<>();
         if (null != oauthList) {

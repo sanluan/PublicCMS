@@ -34,14 +34,14 @@
     <@tools.fileList type='file' path=path>
         <#if path?has_content>
             <div class="image-list">
-                <a href="cmsWebFile/lookup.html?path=${path?keep_before_last('/')?url}&fullPath=${(fullPath?url)!}" target="dialog" mask="true" title="${path?keep_before_last('/')}">
+                <a href="cmsWebFile/lookup.html?path=${path?contains('/')?then(path?keep_before_last('/'),'')?url}&fullPath=${(fullPath?url)!}" target="dialog" mask="true">
                     <i class="thumb icon-folder-open-alt icon-large"></i>
                     <p><@t.page 'button.return'/></p>
                 </a>
             </div>
         </#if>
         <#list list as a>
-        <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
+        <#assign filePath=path?has_content?then(path+'/','')+a.fileName/>
             <div class="image-list">
                 <#if a.directory>
                     <a href="cmsWebFile/lookup.html?path=${filePath?url}&fullPath=${(fullPath?url)!}" target="dialog" mask="true" title="${filePath}">
@@ -55,7 +55,7 @@
                         <i class="thumb icon-file-alt icon-large"></i>
                     </#if>
                     <p title="<@t.page 'modified_date'/>:${a.lastModifiedTime?date},<@t.page 'create_date'/>:${a.creationTime?date}">
-                        <a href="javascript:;" onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${useFile(filePath?keep_after('/'),a.fileName,fullPath!)}');$.pdialog.closeCurrent();return false;">
+                        <a href="javascript:;" onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${useFile(filePath,a.fileName,fullPath!)}');$.pdialog.closeCurrent();return false;">
                             ${a.fileName}(<@t.fileSize a.size/>)
                         </a>
                     </p>

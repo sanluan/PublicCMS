@@ -1,5 +1,6 @@
 package com.publiccms.logic.service.sys;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysModule;
@@ -63,9 +64,7 @@ public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
                         urls.add(module.getUrl().substring(0, 0 < index ? index : module.getUrl().length()));
                     }
                     if (CommonUtils.notEmpty(module.getAuthorizedUrl())) {
-                        for (String url : StringUtils.split(module.getAuthorizedUrl(), CommonConstants.COMMA)) {
-                            urls.add(url);
-                        }
+                        urls.addAll(Arrays.asList(StringUtils.split(module.getAuthorizedUrl(), Constants.COMMA)));
                     }
                 }
             }
@@ -98,7 +97,7 @@ public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
      */
     @Transactional(readOnly = true)
     public long count(String roleIds, String url) {
-        String[] roleIdArray = StringUtils.split(roleIds, CommonConstants.COMMA);
+        String[] roleIdArray = StringUtils.split(roleIds, Constants.COMMA);
         if (CommonUtils.notEmpty(roleIds) && 0 < roleIdArray.length) {
             Integer[] intRoleIds = new Integer[roleIdArray.length];
             for (int i = 0; i < roleIdArray.length; i++) {

@@ -1,34 +1,53 @@
-<#assign maxlengthDisableTypes=['user','dept','content','category','categoryType','tag','tagType','vote','survey','date','datetime','file','image','video','dictionary']/>
-<#assign sizeEnableTypes=['image']/>
-<#assign dictionaryTypes=['number','boolean','user','dept','content','category','dictionary','categoryType','tagType','tag','vote','survey']/>
-<#macro extendsFieldType inputName value='' searchable=false>
-<#local inputTypes={'text':t.pageMessage('input'),'number':t.pageMessage('number'),'textarea':t.pageMessage('textarea'),'file':t.pageMessage('file'),'image':t.pageMessage('image'),'video':t.pageMessage('video'),'password':t.pageMessage('password'),'editor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor'),'tinymce':t.pageMessage('tinymce'),'kindeditor':t.pageMessage('kindeditor'),'date':t.pageMessage('date'),'datetime':t.pageMessage('datetime'),'color':t.pageMessage('color'),'alphaColor':t.pageMessage('alphaColor'),'template':t.pageMessage('template_path'),'boolean':t.pageMessage('true_or_false'),'user':t.pageMessage('user'),'dept':t.pageMessage('dept'),'content':t.pageMessage('content'),'category':t.pageMessage('category'),'dictionary':t.pageMessage('dictionary'),'categoryType':t.pageMessage('category_type'),'tagType':t.pageMessage('tag_type'),'vote':t.pageMessage('vote'),'survey':t.pageMessage('survey'),'tag':t.pageMessage('tag')}/>
+<#assign maxlengthDisableTypes=["user","dept","content","category","categoryType","tag","tagType","vote","survey","date","datetime","file","privatefile","image","video","dictionary","keyvalue"]/>
+<#assign sizeEnableTypes=["image"]/>
+<#assign multipleEnableTypes=["text","number","dictionary","content","category","categoryType","user","dept","tag","tagType","vote","survey"]/>
+<#assign dictionaryTypes=["number","boolean","user","dept","content","category","dictionary","categoryType","tagType","tag","vote","survey"]/>
+<#assign sortableTypes=["text","number","dictionary","datetime","date","time","boolean"]/>
+<#macro extendsFieldType inputName value="" searchable=false>
+<#local inputTypes={"text":"input","number":"number","textarea":"textarea","file":"file","image":"image","video":"video","privatefile":"privatefile","privateimage":"privateimage","privatevideo":"privatevideo","editor":"ueditor","tinymce":"tinymce","ckeditor":"ckeditor","datetime":"datetime","date":"date","time":"time","boolean":"true_or_false","dictionary":"dictionary","keyvalue":"key-value","user":"user","dept":"dept","content":"content","category":"category","categoryType":"category_type","vote":"vote","survey":"survey","tagType":"tag_type","tag":"tag","color":"color","alphaColor":"alphaColor","template":"template_path","password":"password"}/>
 <#assign flag=.now?long/>
 <select class="combox combox_${flag}" name="${inputName!}">
     <#list inputTypes as a,inputType>
-    <option value="${a}"${(a=value)?then(' selected="true"','')?no_esc}>${inputType}<#if searchable>(${t.pageMessage(dictionaryTypes?seq_contains(a)?then('dictionary_search','fulltext_search'))})</#if></option>
+    <option value="${a}"${(a=value)?then(' selected="true"','')?no_esc}><@t.page inputType/><#if searchable>(${t.pageMessage(dictionaryTypes?seq_contains(a)?then("dictionary_search","fulltext_search"))})</#if></option>
     </#list>
 </select>
 <script>
-$('.combox_${flag}').on('change',function(){
-    if($(this).val()=='dictionary') {
-        $(this).closest('tr').find('input[name$=dictionaryName]').addClass('required').show().next().show();
-        $(this).closest('tr').find('input[name$=multiple]').show();
+$(".combox_${flag}").on("change",function(){
+    if($(this).val()=="dictionary") {
+        $(this).closest("tr").find("input[name$=dictionaryName]").addClass("required").show().next().show();
     }else{
-        $(this).closest('tr').find('input[name$=dictionaryName]').removeClass('required').hide().next().hide();
-        $(this).closest('tr').find('input[name$=multiple]').hide();
+        $(this).closest("tr").find("input[name$=dictionaryName]").removeClass("required").hide().next().hide();
     }
-    if(-1<$.inArray($(this).val(), [<#list maxlengthDisableTypes as t>'${t}'<#sep>,</#list>])){
-        $(this).closest('tr').find('input[name$=maxlength]').hide();
-    }else{
-        $(this).closest('tr').find('input[name$=maxlength]').show();
+    if($(this).val()=="datetime"||$(this).val()=="date") {
+        $(this).closest("tr").find("input[name$=defaultValue]").attr("title","<@t.page 'default_value'/>:now,thisSunday,thisMonday,lastMonday,lastSunday,nextMonday,nextSunday");
+    } else if($(this).val()=="time") {
+        $(this).closest("tr").find("input[name$=defaultValue]").attr("title","<@t.page 'default_value'/>:now");
+    } else if($(this).val()=="keyvalue") {
+        $(this).closest("tr").find("input[name$=defaultValue]").attr("title","<@t.page 'default_value'/>:key1,value1,key2,value2,key3,value3");
+    } else {
+        $(this).closest("tr").find("input[name$=defaultValue]").attr("title","<@t.page 'default_value'/>");
     }
-    if(-1<$.inArray($(this).val(), [<#list sizeEnableTypes as t>'${t}'<#sep>,</#list>])){
-        $(this).closest('tr').find('input[name$=height]').show();
-        $(this).closest('tr').find('input[name$=width]').show();
+    if(-1<$.inArray($(this).val(), [<#list maxlengthDisableTypes as t>"${t}"<#sep>,</#list>])){
+        $(this).closest("tr").find("input[name$=maxlength]").hide();
     }else{
-        $(this).closest('tr').find('input[name$=height]').hide();
-        $(this).closest('tr').find('input[name$=width]').hide();
+        $(this).closest("tr").find("input[name$=maxlength]").show();
+    }
+    if(-1<$.inArray($(this).val(), [<#list sizeEnableTypes as t>"${t}"<#sep>,</#list>])){
+        $(this).closest("tr").find("input[name$=height]").show();
+        $(this).closest("tr").find("input[name$=width]").show();
+    }else{
+        $(this).closest("tr").find("input[name$=height]").hide();
+        $(this).closest("tr").find("input[name$=width]").hide();
+    }
+    if(-1<$.inArray($(this).val(), [<#list sortableTypes as t>"${t}"<#sep>,</#list>])){
+        $(this).closest("tr").find("input[name$=sortable]").show();
+    }else{
+        $(this).closest("tr").find("input[name$=sortable]").hide();
+    }
+    if(-1<$.inArray($(this).val(), [<#list multipleEnableTypes as t>"${t}"<#sep>,</#list>])){
+        $(this).closest("tr").find("input[name$=multiple]").show();
+    }else{
+        $(this).closest("tr").find("input[name$=multiple]").hide();
     }
 });
 </script>

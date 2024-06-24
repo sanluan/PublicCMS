@@ -1,12 +1,12 @@
 <@cms.contentList advanced=true status=status categoryId=categoryId containChild=containChild disabled=true
             modelId=modelIds parentId=parentId title=title userId=userId
-            startPublishDate=startPublishDate endPublishDate=endPublishDate
+            startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <#macro modelList parentId=''>
 <@cms.modelList parentId=parentId>
     <#list page.list as a>
         <label>
-            <input <@t.compare modelIds!'' a.id?string 'checked="checked"'/> name="modelIds" value="${a.id}" type="checkbox"/>
+            <input name="modelIds" value="${a.id}" type="checkbox" class="form-check-input"<@t.compare modelIds!'' a.id?string ' checked="checked"'/> />
             ${(a.name)!}
         </label>
         <#if a.hasChild>
@@ -100,7 +100,7 @@
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id}</td>
-                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></td>
+                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" width="1000" height="600" rel="viewContent${a.id}">${(a.title)!}</a></td>
                 <td>
                     ${(userMap[a.userId?string].nickname)!}
                 </td>

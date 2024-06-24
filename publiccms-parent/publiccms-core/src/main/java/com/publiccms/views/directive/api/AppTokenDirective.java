@@ -9,6 +9,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysApp;
@@ -16,6 +17,8 @@ import com.publiccms.entities.sys.SysAppToken;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.sys.SysAppService;
 import com.publiccms.logic.service.sys.SysAppTokenService;
+
+import freemarker.template.TemplateException;
 
 /**
 *
@@ -45,10 +48,10 @@ $.getJSON('${site.dynamicPath}api/appToken?appKey=1&amp;appSecret=1', function(d
 */
 @Component
 public class AppTokenDirective extends AbstractAppDirective {
-    private final static String SECRET_ERROR = "secretError";
+    private static final String SECRET_ERROR = "secretError";
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         SysApp entity = appService.getEntity(handler.getString("appKey"));
         if (null != entity) {
             if (entity.getAppSecret().equalsIgnoreCase(handler.getString("appSecret"))) {
@@ -61,10 +64,10 @@ public class AppTokenDirective extends AbstractAppDirective {
                 handler.put("appToken", token.getAuthToken());
                 handler.put("expiryDate", token.getExpiryDate());
             } else {
-                handler.put("error", SECRET_ERROR);
+                handler.put(CommonConstants.ERROR, SECRET_ERROR);
             }
         } else {
-            handler.put("error", SECRET_ERROR);
+            handler.put(CommonConstants.ERROR, SECRET_ERROR);
         }
         handler.render();
     }

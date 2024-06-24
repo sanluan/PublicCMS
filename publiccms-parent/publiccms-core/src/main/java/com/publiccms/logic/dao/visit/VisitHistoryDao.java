@@ -29,7 +29,9 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
     /**
      * @param siteId
      * @param sessionId
+     * @param ip
      * @param url
+     * @param userId 
      * @param startCreateDate
      * @param endCreateDate
      * @param orderType
@@ -37,11 +39,17 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, String sessionId, String url, Date startCreateDate, Date endCreateDate,
-            String orderType, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, String sessionId, String ip, String url, Long userId, Date startCreateDate,
+            Date endCreateDate, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from VisitHistory bean");
         if (null != siteId) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
+        if (null != startCreateDate) {
+            queryHandler.condition("bean.createDate > :startCreateDate").setParameter("startCreateDate", startCreateDate);
+        }
+        if (null != endCreateDate) {
+            queryHandler.condition("bean.createDate <= :endCreateDate").setParameter("endCreateDate", endCreateDate);
         }
         if (CommonUtils.notEmpty(sessionId)) {
             queryHandler.condition("bean.sessionId = :sessionId").setParameter("sessionId", sessionId);
@@ -49,11 +57,11 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         if (CommonUtils.notEmpty(url)) {
             queryHandler.condition("bean.url = :url").setParameter("url", url);
         }
-        if (null != startCreateDate) {
-            queryHandler.condition("bean.createDate > :startCreateDate").setParameter("startCreateDate", startCreateDate);
+        if (CommonUtils.notEmpty(userId)) {
+            queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        if (null != endCreateDate) {
-            queryHandler.condition("bean.createDate <= :endCreateDate").setParameter("endCreateDate", endCreateDate);
+        if (CommonUtils.notEmpty(ip)) {
+            queryHandler.condition("bean.ip like :ip").setParameter("ip", like(ip));
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
@@ -97,10 +105,11 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
 
     /**
      * @param siteId
+     * @param url
      * @param visitDate
      * @return results page
      */
-    public List<VisitUrl> getUrlList(Short siteId, Date visitDate) {
+    public List<VisitUrl> getUrlList(Short siteId, String url, Date visitDate) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new VisitUrl(bean.siteId,bean.visitDate,bean.url,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from VisitHistory bean");
         if (null != siteId) {
@@ -108,6 +117,9 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         }
         queryHandler.condition("bean.visitDate = :visitDate").setParameter("visitDate",
                 DateUtils.truncate(visitDate, Calendar.DAY_OF_MONTH));
+        if (CommonUtils.notEmpty(url)) {
+            queryHandler.condition("bean.url like :url").setParameter("url", like(url));
+        }
         queryHandler.group("bean.siteId");
         queryHandler.group("bean.visitDate");
         queryHandler.group("bean.url");
@@ -145,14 +157,14 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
     public List<VisitSession> getSessionList(Short siteId, Date startCreateDate, Date endCreateDate) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new VisitSession(bean.siteId,bean.sessionId,bean.visitDate,max(bean.createDate), min(bean.createDate), bean.ip, count(*)) from VisitHistory bean");
-        if (null != siteId) {
-            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
-        }
         if (null != startCreateDate) {
             queryHandler.condition("bean.createDate > :startCreateDate").setParameter("startCreateDate", startCreateDate);
         }
         if (null != endCreateDate) {
             queryHandler.condition("bean.createDate <= :endCreateDate").setParameter("endCreateDate", endCreateDate);
+        }
+        if (null != siteId) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
         queryHandler.group("bean.siteId");
         queryHandler.group("bean.sessionId");
@@ -168,9 +180,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
     public int delete(Date begintime) {
         if (null != begintime) {
             QueryHandler queryHandler = getQueryHandler("delete from VisitHistory bean");
-            if (null != begintime) {
-                queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", begintime);
-            }
+            queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", begintime);
             return delete(queryHandler);
         }
         return 0;

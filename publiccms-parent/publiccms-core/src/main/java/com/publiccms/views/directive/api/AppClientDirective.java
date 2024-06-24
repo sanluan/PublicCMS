@@ -3,6 +3,7 @@ package com.publiccms.views.directive.api;
 import java.io.IOException;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
@@ -14,6 +15,8 @@ import com.publiccms.entities.sys.SysAppClient;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.sys.SysAppClientService;
+
+import freemarker.template.TemplateException;
 
 /**
 *
@@ -38,7 +41,7 @@ $.getJSON('${site.dynamicPath}api/appClient?uuid=1&amp;clientVersion=1.0&amp;app
 public class AppClientDirective extends AbstractAppDirective {
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         String uuid = handler.getString("uuid");
         String clientVersion = handler.getString("clientVersion");
         if (CommonUtils.notEmpty(uuid)) {

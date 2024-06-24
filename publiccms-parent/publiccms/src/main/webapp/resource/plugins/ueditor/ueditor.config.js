@@ -17,17 +17,23 @@
      * "相对于网站根目录的相对路径"也就是以斜杠开头的形如"/myProject/ueditor/"这样的路径。
      * 如果站点中有多个不在同一层级的页面需要实例化编辑器，且引用了同一UEditor的时候，此处的URL可能不适用于每个页面的编辑器。
      * 因此，UEditor提供了针对不同页面的编辑器可单独配置的根路径，具体来说，在需要实例化编辑器的页面最顶部写上如下代码即可。当然，需要令此处的URL等于对应的配置。
-     * window.UEDITOR_HOME_URL = "/xxxx/xxxx/";
+     * window.UEDITOR_HOME_URL = "/xxxx/xxxx/"; // 图片等资源文件路径
+     * window.UEDITOR_BASE_URL = "/xxxx/xxxx/"; // 对话框页面等资源路径
      */
     var URL = window.UEDITOR_HOME_URL || getUEBasePath();
+
+    var BASE_URL = window.UEDITOR_BASE_URL || URL;
 
     /**
      * 配置项主体。注意，此处所有涉及到路径的配置别遗漏URL变量。
      */
     window.UEDITOR_CONFIG = {
 
-        //为编辑器实例添加一个路径，这个不能被注释
+        // 为编辑器实例添加一个资源路径，这个不能被注释
         UEDITOR_HOME_URL: URL
+
+        //为编辑器实例添加一个基本路径，这个不能被注释
+        , UEDITOR_BASE_URL: BASE_URL
 
         // 服务器统一请求接口路径
         , serverUrl: base+"/ueditor"
@@ -42,14 +48,14 @@
 //            'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
 //            'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
 //            'simpleupload', 'insertimage', 'emotion', 'scrawl', 'insertvideo',  'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'pagebreak', 'template', 'background', '|',
-//            'horizontal', 'date', 'time', 'spechars', 'wordimage', '|',
+//            'horizontal', 'date', 'time', 'spechars', 'wordimage', 'catchremoteimage', '|',
 //            'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
 //            'print', 'preview', 'searchreplace', 'drafts', 'help'
 //        ]]
     	, toolbars: [[
                   'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'blockquote', 'forecolor', 'backcolor','spechars', 'rowspacingtop', 'rowspacingbottom','lineheight', '|', 'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
                   'insertorderedlist', 'insertunorderedlist', 'directionalityltr', 'directionalityrtl', 'indent', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'touppercase', 'tolowercase', '|',  'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
-                  'insertvideo', 'simpleupload', 'insertimage', 'wordimage','emotion', 'scrawl', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'background', 'date', 'time', '|',
+                  'insertvideo', 'simpleupload', 'insertimage', 'wordimage', 'catchremoteimage', 'emotion', 'scrawl', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'background', 'date', 'time', '|',
                   'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts'],
               ['fullscreen','pagebreak', 'horizontal', 'searchreplace', 'selectall', '|',
                   'removeformat', 'formatmatch', 'autotypeset', 'pasteplain', 'template', 'preview','cleardoc', 'undo', 'redo', 'drafts','source', 'print', 'help']]
@@ -370,7 +376,7 @@
 		,outputXssFilter: true
 		// xss过滤白名单 名单来源: https://raw.githubusercontent.com/leizongmin/js-xss/master/lib/default.js
 		,whitList: {
-			a:      ['target', 'href', 'title', 'class', 'style'],
+			a:      ['target', 'href', 'name', 'id', 'title', 'download', 'class', 'style'],
 			abbr:   ['title', 'class', 'style'],
 			address: ['class', 'style'],
 			area:   ['shape', 'coords', 'href', 'alt'],
@@ -407,7 +413,7 @@
 			header: [],
 			hr:     ['class', 'noshade', 'size', 'style'],
 			i:      ['class', 'style'],
-			img:    ['src', 'alt', 'poster', 'title', 'width', 'height', 'id', '_src', '_url', 'loadingclass', 'class', 'data-latex', 'vspace', 'border' ,'word_img', 'style'],
+			img:    ['src', 'alt', 'poster', 'title', 'width', 'height', 'id', '_src', '_url', 'loadingclass', 'anchorname', 'class', 'data-latex', 'vspace', 'border' ,'word_img', 'style'],
 			ins:    ['datetime'],
 			li:     ['class', 'style' , '_src'],
 			mark:   [],
@@ -422,7 +428,7 @@
 			sub:    ['class', 'style'],
 			sup:    ['class', 'style'],
 			strong: ['class', 'style'],
-			table:  ['width', 'border', 'align', 'valign', 'class', 'style'],
+			table:  ['width', 'border', 'align', 'valign', 'data-chart', 'class', 'style'],
 			tbody:  ['align', 'valign', 'class', 'style'],
 			td:     ['width', 'rowspan', 'colspan', 'align', 'valign', 'class', 'style'],
 			tfoot:  ['align', 'valign', 'class', 'style'],

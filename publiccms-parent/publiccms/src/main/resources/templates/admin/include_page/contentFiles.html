@@ -1,7 +1,7 @@
 <#macro contentFiles image contentId='' copy=false>
     <#local name=image?then('images','files')/>
     <#local fileTypes=image?then('image','video,document,audio,other')/>
-<table class="list nowrap itemDetail ${name}" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_upload'/>" batchUploadUrl="common/batchUpload.html?field=filePath&originalField=description<#if image>&fileTypes=image</#if>" width="100%">
+<table class="list nowrap itemDetail ${name}" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_upload'/>" batchUrl="common/batchUpload.html?field=filePath&originalField=description<#if image>&fileTypes=image</#if>" width="100%">
     <thead>
         <tr>
             <th type="attach" name="${name}[#index#].filePath" size="50" fieldClass="required" lookupGroup="${name}[#index#]" lookupUrl="common/upload.html?field=filePath&originalField=description${image?then('&fileTypes=image','')}"><@t.page 'file_path'/></th>
@@ -21,7 +21,7 @@
                 <td>
                     <#if !copy><input type="hidden" name="${name}[${file?index}].id" value="${file.id}"/></#if>
                     <input type="text" name="${name}[${file?index}].filePath" value="${(file.filePath)!}" size="50" class="required"/>
-                    <a class="btnAttach" lookupGroup="${name}[${file?index}]" href="common/upload.html?field=filePath&originalField=description${image?then('&fileTypes=image','')}" width="1000" height="600">${image?then(t.pageMessage('upload.image'),t.pageMessage('upload.file'))}</a>
+                    <a class="btnAttach" lookupGroup="${name}[${file?index}]" href="common/upload.html?field=filePath&originalField=description${image?then('&fileTypes=image','')}" width="1000" height="600">${t.pageMessage(image?then('upload.image','upload.file'))}</a>
                 </td>
                 <td>
                     <textarea name="${name}[${file?index}].description" rows="3" cols="50" maxlength="150">${(file.description)!}</textarea>

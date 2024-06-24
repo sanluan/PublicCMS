@@ -11,11 +11,15 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.ResourceRegionHttpMessageConverter;
+import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
 
@@ -37,30 +41,31 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
 
     @Override
     public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setHeader(CommonConstants.getXPowered(), CmsVersion.getVersion());
-        super.handleRequest(request, response);
-
+        response.setHeader(CommonConstants.getXPowered(), CmsVersion.BASE_VERSION);
+        try {
+            super.handleRequest(request, response);
+        } catch (NoResourceFoundException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
     @Override
     protected Resource getResource(HttpServletRequest request) throws IOException {
+        String path = getUrlPathHelper().getLookupPathForRequest(request);
         if (CmsVersion.isInitialized()) {
-            String path = getUrlPathHelper().getLookupPathForRequest(request);
-            if (path.endsWith(CommonConstants.SEPARATOR)) {
-                path += CommonConstants.getDefaultPage();
+            if (path.endsWith(Constants.SEPARATOR)) {
+                path = CommonUtils.joinString(path, CommonConstants.getDefaultPage());
             }
             SysSite site = siteComponent.getSite(request.getServerName(), path);
             path = siteComponent.getPath(site, path);
             Resource resource = new FileSystemResource(siteComponent.getWebFilePath(site.getId(), path));
-            if (resource.exists()) {
-                if (resource.isReadable()) {
-                    return resource;
-                }
-            }
-            if ("/favicon.ico".equals(path)) {
+            if (resource.exists() && (resource.isReadable())) {
+                return resource;
+            } else if ("/favicon.ico".equals(path) && favicon.exists()) {
                 return favicon;
             }
         }
+        request.setAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, path);
         return null;
     }
 

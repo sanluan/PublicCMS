@@ -8,6 +8,9 @@ import jakarta.annotation.Resource;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.sys.SysDomainService;
+
+import freemarker.template.TemplateException;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.PageHandler;
@@ -40,7 +43,7 @@ import com.publiccms.common.handler.RenderHandler;
 * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/sys/domainList?pageSize=10&amp;appToken=接口访问授权Token', function(data){    
-    console.log(data.totalCount);
+    console.log(data.page.totalCount);
   });
   &lt;/script&gt;
 * </pre>
@@ -49,7 +52,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class SysDomainListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Short siteId = null;
         if (getAdvanced(handler)) {
             siteId = handler.getShort("siteId");

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 
 import freemarker.template.TemplateModel;
@@ -71,7 +72,7 @@ public class GetPageMethod extends BaseMethod {
                 for (int i = 0; i < parameters.length; i++) {
                     String[] temp = StringUtils.split(parameters[i], "=", 2);
                     if (pageParameter.equalsIgnoreCase(temp[0])) {
-                        parameters[i] = pageParameter + "=" + pageIndex;
+                        parameters[i] = CommonUtils.joinString(pageParameter, "=", pageIndex);
                         flag = false;
                         break;
                     }
@@ -90,12 +91,12 @@ public class GetPageMethod extends BaseMethod {
                 }
             }
         } else {
-            if (url.endsWith(CommonConstants.SEPARATOR) && 1 != pageIndex) {
-                url += CommonConstants.getDefaultPage();
+            if (url.endsWith(Constants.SEPARATOR) && 1 != pageIndex) {
+                url = CommonUtils.joinString(url, CommonConstants.getDefaultPage());
             }
-            int dotIndex = url.lastIndexOf(CommonConstants.DOT);
-            int separatorIndex = url.lastIndexOf(CommonConstants.SEPARATOR);
-            int underlineIndex = url.lastIndexOf(CommonConstants.UNDERLINE);
+            int dotIndex = url.lastIndexOf(Constants.DOT);
+            int separatorIndex = url.lastIndexOf(Constants.SEPARATOR);
+            int underlineIndex = url.lastIndexOf(Constants.UNDERLINE);
             if (separatorIndex < dotIndex) {
                 String prefixFilePath = url.substring(0, dotIndex);
                 String suffixFilePath = url.substring(dotIndex, url.length());
@@ -107,9 +108,9 @@ public class GetPageMethod extends BaseMethod {
                     }
                 }
                 if (1 < pageIndex) {
-                    return prefixFilePath + CommonConstants.UNDERLINE + pageIndex + suffixFilePath;
+                    return CommonUtils.joinString(prefixFilePath, Constants.UNDERLINE, pageIndex, suffixFilePath);
                 } else {
-                    return prefixFilePath + suffixFilePath;
+                    return CommonUtils.joinString(prefixFilePath, suffixFilePath);
                 }
             } else {
                 String prefixFilePath = url;
@@ -117,7 +118,7 @@ public class GetPageMethod extends BaseMethod {
                     prefixFilePath = prefixFilePath.substring(0, underlineIndex);
                 }
                 if (1 < pageIndex) {
-                    return prefixFilePath + CommonConstants.UNDERLINE + pageIndex;
+                    return CommonUtils.joinString(prefixFilePath, Constants.UNDERLINE, pageIndex);
                 } else {
                     return prefixFilePath;
                 }

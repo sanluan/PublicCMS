@@ -7,7 +7,7 @@
  */
 UE.I18N['en'] = {
     'labelMap':{
-        'anchor':'Anchor', 'undo':'Undo', 'redo':'Redo', 'bold':'Bold', 'indent':'Indent',
+        'anchor':'Anchor', 'catchremoteimage':'Catch remote image', 'undo':'Undo', 'redo':'Redo', 'bold':'Bold', 'indent':'Indent',
         'italic':'Italic', 'underline':'Underline', 'strikethrough':'Strikethrough', 'subscript':'SubScript','fontborder':'text border',
         'superscript':'SuperScript', 'formatmatch':'Format Match', 'source':'Source', 'blockquote':'BlockQuote',
         'pasteplain':'PastePlain', 'selectall':'SelectAll', 'print':'Print', 'preview':'Preview',
@@ -221,9 +221,10 @@ UE.I18N['en'] = {
         'removeFormat':"Remove format",
         'indent':"Indent",
         'alignment':"Alignment",
+        'captionCenter':"Image caption",
         'imageFloat':"Image float",
         'removeImageSize':"Remove image size",
-        'imageWidth':"Image width",
+        'imageWidth':"Max image width",
         'removeFontsize':"Remove font size",
         'removeFontFamily':"Remove fontFamily",
         'defaultFontsize':"Default font size",

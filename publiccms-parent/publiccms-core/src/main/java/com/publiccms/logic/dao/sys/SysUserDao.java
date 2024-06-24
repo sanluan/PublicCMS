@@ -5,7 +5,7 @@ import java.util.Date;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -78,7 +78,7 @@ public class SysUserDao extends BaseDao<SysUser> {
             orderType = ORDERTYPE_DESC;
         }
         if (null == orderField) {
-            orderField = CommonConstants.BLANK;
+            orderField = Constants.BLANK;
         }
         switch (orderField) {
         case "lastLoginDate":
@@ -89,6 +89,9 @@ public class SysUserDao extends BaseDao<SysUser> {
             break;
         case "registeredDate":
             queryHandler.order("bean.registeredDate").append(orderType);
+            break;
+        case "followers":
+            queryHandler.order("bean.followers").append(orderType);
             break;
         default:
             queryHandler.order("bean.id").append(orderType);

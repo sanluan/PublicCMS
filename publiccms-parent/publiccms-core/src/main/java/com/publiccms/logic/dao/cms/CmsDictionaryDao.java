@@ -1,7 +1,7 @@
 package com.publiccms.logic.dao.cms;
 
 import java.util.List;
-import java.util.function.BiConsumer;
+import java.util.function.ObjIntConsumer;
 
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +19,7 @@ import com.publiccms.entities.cms.CmsDictionary;
 @Repository
 public class CmsDictionaryDao extends BaseDao<CmsDictionary> {
 
-    public void batchWork(short siteId, BiConsumer<List<CmsDictionary>, Integer> worker, int batchSize) {
+    public void batchWork(short siteId, ObjIntConsumer<List<CmsDictionary>> worker, int batchSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsDictionary bean");
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
         batchWork(queryHandler, worker, batchSize);

@@ -16,6 +16,8 @@ import com.publiccms.entities.cms.CmsUserScore;
 import com.publiccms.entities.cms.CmsUserScoreId;
 import com.publiccms.logic.service.cms.CmsUserScoreService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * userScore 用户评分查询指令
@@ -31,9 +33,9 @@ import com.publiccms.logic.service.cms.CmsUserScoreService;
 * </ul>
 * 使用示例
 * <p>
-* &lt;@cms.userScore id=1&gt;${object.scores}&lt;/@cms.userScore&gt;
+* &lt;@cms.userScore userId=1 itemType="content" itemId=1&gt;${object.scores}&lt;/@cms.userScore&gt;
 * <p>
-* &lt;@cms.userScore ids='1,2,3'&gt;&lt;#list map as
+* &lt;@cms.userScore userId=1 itemType="content" itemIds='1,2,3'&gt;&lt;#list map as
 * k,v&gt;${k}:${v.scores}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userScore&gt;
 * 
 * <pre>
@@ -48,7 +50,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userScore?id=1', function(data){
 public class CmsUserScoreDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long userId = handler.getLong("userId");
         String itemType = handler.getString("itemType");
         Long itemId = handler.getLong("itemId");

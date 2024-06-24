@@ -20,7 +20,7 @@ public class CustomPathDrawer {
     }
 
     public ImageResource drawPath(List<PathSegment> path) throws IOException {
-        if (path.size() == 0) {
+        if (path.isEmpty()) {
             return new ImageResource("PathImage", new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
         }
         Rectangle2D.Double bounds = getPathBounds(path);
@@ -79,8 +79,10 @@ public class CustomPathDrawer {
 
     private Rectangle2D.Double getPathBounds(List<PathSegment> path) {
         PathSegment first = path.get(0);
-        int minX = (int) first.getX1(), maxX = (int) first.getX1();
-        int minY = (int) first.getY2(), maxY = (int) first.getY1();
+        int minX = (int) first.getX1();
+        int maxX = (int) first.getX1();
+        int minY = (int) first.getY2();
+        int maxY = (int) first.getY1();
 
         for (PathSegment segmentOn : path) {
             maxX = Math.max((int) segmentOn.getX1(), maxX);

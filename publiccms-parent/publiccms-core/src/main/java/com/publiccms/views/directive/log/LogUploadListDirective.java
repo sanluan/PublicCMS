@@ -14,6 +14,8 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.service.log.LogUploadService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * logUploadList 文件上传日志列表查询指令
@@ -24,6 +26,7 @@ import com.publiccms.logic.service.log.LogUploadService;
  * <li><code>image</code>:是否图片,【true,false】
  * <li><code>userId</code>:用户ID
  * <li><code>channel</code>:渠道
+ * <li><code>privatefile</code>:私有文件,【true,false】,默认<code>false</code>
  * <li><code>originalName</code>:原文件名
  * <li><code>filePath</code>:文件路径
  * <li><code>orderField</code>:排序字段,[createDate:创建日期,fileSize:文件大小],默认ID倒序
@@ -46,7 +49,7 @@ import com.publiccms.logic.service.log.LogUploadService;
  * <pre>
   &lt;script&gt;
    $.getJSON('${site.dynamicPath}api/directive/log/UploadList?pageSize=10&amp;appToken=接口访问授权Token', function(data){    
-     console.log(data.totalCount);
+     console.log(data.page.totalCount);
    });
    &lt;/script&gt;
  * </pre>
@@ -55,14 +58,15 @@ import com.publiccms.logic.service.log.LogUploadService;
 public class LogUploadListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         String[] fileTypes = handler.getStringArray("fileTypes");
         if (CommonUtils.empty(fileTypes) && handler.getBoolean("image", false)) {
             fileTypes = new String[] { CmsFileUtils.FILE_TYPE_IMAGE };
         }
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), handler.getString("channel"),
-                fileTypes, handler.getString("originalName"), handler.getString("filePath"), handler.getString("orderField"),
-                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+                handler.getBoolean("privatefile", false), fileTypes, handler.getString("originalName"),
+                handler.getString("filePath"), handler.getString("orderField"), handler.getString("orderType"),
+                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
 

@@ -6,7 +6,7 @@
             <a class="button" href="cmsTemplate/delete?path=${path?url}&navTabId=cmsTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>
             <a class="button" href="cmsTemplate/metadata.html?path=${(path?url_path)!}/" target="ajax" rel="cmsTemplateBox"><@t.page 'template.create_here'/></a>
         </#if>
-        <a class="button" href="cmsFileBackup/list.html?path=${(path?url)!}" target="navTab" rel="cmsFileBackup/list" icon="<i class='bi bi-recycle icon-large'></i>"><@t.page 'recycle_bin'/></a>
+        <a class="button" href="cmsFileBackup/list.html?path=${(path?url)!}" target="navTab" rel="cmsFileBackup/list"><@t.page 'recycle_bin'/></a>
     </h2>
     <div class="pageFormContent" layoutH>
         <fieldset>
@@ -32,44 +32,33 @@
         <fieldset>
             <legend><@t.page 'server_config.site'/></legend>
             <div><a href="sysConfigData/edit.html?code=site" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a></div>
-        <@sys.configData code="site">
+        <@sys.configData code="site"><#assign siteConfig=object/></@sys.configData>
             <dl class="nowrap">
                 <dt><@t.message 'config.site.site_exclude_module'/>:</dt>
-                <dd><#if (object.site_exclude_module)?has_content><#list object.site_exclude_module?split(',') as a><@t.menu a/><#sep>,</#list></#if></dd>
+                <dd><#if (siteConfig.site_exclude_module)?has_content><#list siteConfig.site_exclude_module?split(',') as a><@t.menu a/><#sep>,</#list></#if></dd>
             </dl>
             <dl>
                 <dt><@t.message 'config.site.login_path'/>:</dt>
-                <dd>${(object.login_path)!}</dd>
+                <dd>${(siteConfig.login_path)!}</dd>
             </dl>
             <dl>
                 <dt><@t.message 'config.site.register_url'/>:</dt>
-                <dd>${(object.register_url)!}</dd>
+                <dd>${(siteConfig.register_url)!}</dd>
             </dl>
+            <#if site.useStatic>
             <dl class="nowrap">
                 <dt><@t.message 'config.site.category_template_path'/>:</dt>
-                <dd>${(object.category_template_path)!}</dd>
+                <dd>${(siteConfig.category_template_path)!}</dd>
             </dl>
+            </#if>
             <dl class="nowrap">
                 <dt><@t.message 'config.site.category_path'/>:</dt>
-                <dd>${(object.category_path)!}</dd>
+                <dd>${(siteConfig.category_path)!}</dd>
             </dl>
-        </@sys.configData>
         </fieldset>
         <div class="divider"></div>
         <div class="unit">
-            <a class="button" href="cmsTemplate/import.html" target="dialog" mask="true" width="500" height="250"><@t.page 'import.site'/></a>
-            <form action="cmsTemplate/doImport?callbackType=closeCurrent&navTabId=cmsTemplate/list" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
-                <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
-                <dl class="nowrap">
-                    <dt><@t.menu 'sitefile'/>:</dt>
-                    <dd>
-                        <input type="text" name="fileName" class="required" readonly="readonly" size="30"/>
-                        <a class="btnLook" href="cmsTemplate/lookupSitefile.html" lookupGroup="" width="1000" height="600"><@t.menu 'sitefile'/></a>
-                        <label><input type="checkbox" name="overwrite" checked="checked"><@t.page 'import.overwrite'/></label>
-                    </dd>
-                </dl>
-                <div><button type="submit" class="buttonActive"><@t.page 'import'/></button></div>
-            </form>
+            <a class="button" href="cmsTemplate/sitefileList.html" target="navTab" rel="cmsTemplate/sitefileList"><@t.page 'import.site'/></a>
         </div>
 </#if>
     </div>

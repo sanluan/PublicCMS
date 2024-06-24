@@ -69,7 +69,7 @@
     function initButtons() {
 
         dialog.onok = function () {
-            var remote = false, list = [], id, tabs = $G('tabhead').children;
+            var list = [], id, tabs = $G('tabhead').children;
             for (var i = 0; i < tabs.length; i++) {
                 if (domUtils.hasClass(tabs[i], 'focus')) {
                     id = tabs[i].getAttribute('data-content-id');
@@ -96,7 +96,6 @@
 
             if(list) {
                 editor.execCommand('insertimage', list);
-                remote && editor.fireEvent("catchRemoteImage");
             }
         };
     }
@@ -115,7 +114,7 @@
 
     /* 设置对齐方式 */
     function setAlign(align){
-        align = align || 'none';
+        align = align || 'center';
         var aligns = $G("alignIcon").children;
         for(i = 0; i < aligns.length; i++){
             if(aligns[i].getAttribute('data-align') == align) {
@@ -128,7 +127,7 @@
     }
     /* 获取对齐方式 */
     function getAlign(){
-        var align = $G("align").value || 'none';
+        var align = $G("align").value || 'center';
         return align == 'none' ? '':align;
     }
 
@@ -370,7 +369,6 @@
                     extensions: acceptExtensions,
                     mimeTypes: 'image/*'
                 },
-                swf: '../../third-party/webuploader/Uploader.swf',
                 server: actionUrl,
                 fileVal: editor.getOpt('imageFieldName'),
                 duplicate: true,
@@ -733,7 +731,7 @@
 
             uploader.on('uploadError', function (file, code) {
             });
-            uploader.on('error', function (code, file) {
+            uploader.on('error', function (code, size, file) {
                 if (code == 'Q_TYPE_DENIED' || code == 'F_EXCEED_SIZE') {
                     addFile(file);
                 }
@@ -762,7 +760,7 @@
             var file, i, status, readyFile = 0, files = this.uploader.getFiles();
             for (i = 0; file = files[i++]; ) {
                 status = file.getStatus();
-                if (status == 'queued' || status == 'uploading' || status == 'progress') readyFile++;
+                if (status == 'inited' || status == 'queued' || status == 'uploading' || status == 'progress') readyFile++;
             }
             return readyFile;
         },

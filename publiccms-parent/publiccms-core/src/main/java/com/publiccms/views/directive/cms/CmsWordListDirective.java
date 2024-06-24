@@ -1,6 +1,6 @@
 package com.publiccms.views.directive.cms;
 
-// Generated 2016-3-22 11:21:35 by com.publiccms.common.source.SourceGenerator
+// Generated 2016-3-22 11:21:35 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
 
@@ -8,6 +8,9 @@ import jakarta.annotation.Resource;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.service.cms.CmsWordService;
+
+import freemarker.template.TemplateException;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.PageHandler;
@@ -45,7 +48,7 @@ import com.publiccms.common.handler.RenderHandler;
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/cms/wordList?userId=1&amp;pageSize=10', function(data){    
-console.log(data.totalCount);
+console.log(data.page.totalCount);
 });
 &lt;/script&gt;
  * </pre>
@@ -54,7 +57,7 @@ console.log(data.totalCount);
 public class CmsWordListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Boolean hidden = false;
         String orderField = "searchCount";
         String name = null;

@@ -3,6 +3,7 @@ package ${base}.${directivePack};
 // Generated ${.now?date} by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
+import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.handler.PageHandler;
 
 import jakarta.annotation.Resource;
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -23,7 +25,7 @@ import jakarta.annotation.Resource;
 public class ${entityName}List${directiveSuffix} extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(<#include "../include_condition/directive.ftl">);
         handler.put("page", page).render();
     }

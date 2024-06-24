@@ -1,20 +1,22 @@
 <#if parentId?has_content>
-<ul>
-    <@sys.deptList parentId=parentId pageSize=500>
-        <#list page.list as a>
+<@sys.deptList parentId=parentId pageSize=500>
+    <#list page.list>
+    <ul>
+        <#items as a>
             <li _src="sysDept/lookup.html?parentId=${a.id}&field=${(field?url)!'deptId'}&deptNameField=${(deptNameField?url)!'deptName'}">
-                <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({${field!'deptId'}:'${a.id}',${deptNameField!'deptName'}:'${a.name}'});return false;">${a.name!}</a>
+                <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({'${field!'deptId'}':'${a.id}','${deptNameField!'deptName'}':'${a.name}'});return false;">${a.name!}</a>
             </li>
-        </#list>
-    </@sys.deptList>
-</ul>
+        </#items>
+    </ul>
+    </#list>
+</@sys.deptList>
 <#else>
 <div class="pageFormContent" layoutH>
     <ul class="tree treeFolder">
 <@sys.deptList pageSize=500>
     <#list page.list as a>
         <li _src="sysDept/lookup.html?parentId=${a.id}&field=${(field?url)!'deptId'}&deptNameField=${(deptNameField?url)!'deptName'}">
-            <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({${field!'deptId'}:'${a.id}',${deptNameField!'deptName'}:'${a.name}'});return false;">${a.name!}</a>
+            <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({'${field!'deptId'}':'${a.id}','${deptNameField!'deptName'}':'${a.name}'});return false;">${a.name!}</a>
         </li>
     </#list>
 </@sys.deptList>
@@ -22,7 +24,7 @@
 </div>
 <div class="formBar">
     <ul>
-        <li><button type="button" class="button" onclick="$.bringBack({'${field!'deptId'}':'',${deptNameField!'deptName'}:''});return false;"><@t.page 'button.clear_select'/></button></li>
+        <li><button type="button" class="button" onclick="$.bringBack({'${field!'deptId'}':'','${deptNameField!'deptName'}':''});return false;"><@t.page 'button.clear_select'/></button></li>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>

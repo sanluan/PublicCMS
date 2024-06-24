@@ -29,6 +29,9 @@
                     <li>
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
+                    <li>
+                        <a class="button" href="visit/exportItem?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -53,7 +56,7 @@
         <tbody>
             <#list page.list as a>
             <tr>
-                <td><a href="visit/history.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="visit/history" title="<@t.page 'visit.history'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}</a></td>
+                <td><a href="visit/history.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="visit/history" title="<@t.page 'visit.history'/>">${a.id.visitDate?date}</a></td>
                 <td>${a.id.itemType!}</td>
                 <td>
                     ${a.id.itemId!}

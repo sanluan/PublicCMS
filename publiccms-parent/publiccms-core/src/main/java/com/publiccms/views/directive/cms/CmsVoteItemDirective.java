@@ -15,6 +15,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsVoteItem;
 import com.publiccms.logic.service.cms.CmsVoteItemService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * voteItem 投票选项查询指令
@@ -45,7 +47,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/voteItem?id=1', function(data){
 public class CmsVoteItemDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         if (CommonUtils.notEmpty(id)) {
             CmsVoteItem entity = service.getEntity(id);

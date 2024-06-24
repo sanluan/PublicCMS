@@ -11,6 +11,7 @@
     <form class="pagerForm" action="myself/contentList.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <input name="parentId" type="hidden" value="${(parent.id)!}"/>
+        <input name="userId" type="hidden" value="${(admin.id)!}"/>
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
@@ -39,7 +40,7 @@
                     </li>
                 <#if authorizedMap['cmsContent/export']>
                     <li>
-                        <a class="button" href="cmsContent/export?categoryId=${(parent.categoryId)!categoryId!}&_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
+                        <a class="button" href="cmsContent/export.html" target="dialog" mask="true" width="500" height="250"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
                     </li>
                 </#if>
                 </ul>
@@ -102,7 +103,11 @@
                         </div>
                     </#if>
                     <div class="box">
-                        <h3>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></h3>
+                        <h3>
+                            [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
+                            ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
+                            <a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" width="1000" height="600" rel="viewContent${contentId}">${(a.title)!}</a>
+                        </h3>
                         <p>
                             <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
@@ -114,7 +119,7 @@
                 </td>
                 <td class="center">
                     <#if authorizedMap['cmsComment/list']>
-                        <a href="cmsComment/list.html?contentId=${contentId}" target="navTab" rel="cmsComment/list" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>">${a.comments!}</a>
+                        <a href="cmsComment/list.html?contentId=${contentId}" target="navTab" rel="cmsComment/list" title="<@t.page 'comment.management'/>">${a.comments!}</a>
                     <#else>
                         ${a.comments!}
                     </#if>

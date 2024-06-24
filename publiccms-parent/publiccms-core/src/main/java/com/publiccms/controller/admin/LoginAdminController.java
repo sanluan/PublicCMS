@@ -1,22 +1,25 @@
 package com.publiccms.controller.admin;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -30,8 +33,9 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.cache.CacheComponent;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -63,7 +67,7 @@ public class LoginAdminController {
     @Resource
     private CacheComponent cacheComponent;
     @Resource
-    private ConfigComponent configComponent;
+    private ConfigDataComponent configDataComponent;
     @Resource
     private LockComponent lockComponent;
     @Resource
@@ -84,7 +88,7 @@ public class LoginAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @PostMapping("login")
     public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encoding,
             String captcha, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         username = StringUtils.trim(username);
@@ -95,49 +99,52 @@ public class LoginAdminController {
             model.addAttribute("returnUrl", returnUrl);
             return "login";
         }
+
         String ip = RequestUtils.getIpAddress(request);
         SysUser user = service.findByName(site.getId(), username);
-        boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null);
-
-        if (ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)
-                || CommonUtils.notEmpty(captcha)
+        if (CommonUtils.notEmpty(captcha)
                 || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_MANAGEMENT_SYSTEM)) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
             if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
                     model)) {
-                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+                if (null != user) {
+                    lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+                }
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
                 logLoginService.save(new LogLogin(site.getId(), username, null == user ? null : user.getId(), ip,
                         LogLoginService.CHANNEL_WEB_MANAGER, false, CommonUtils.getDate(), password));
                 return "login";
             }
         }
-        if (ControllerUtils.errorNotEquals("password", user, model)) {
+
+        boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null);
+        if (ControllerUtils.errorCustom("locked.ip", locked && ControllerUtils.ipNotEquals(ip, user), model)
+                || ControllerUtils.errorNotEquals("password", user, model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), username, null, ip, LogLoginService.CHANNEL_WEB_MANAGER, false,
                     CommonUtils.getDate(), password));
             return "login";
-        } else {
-            locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
-            if (ControllerUtils.errorCustom("locked.user", locked, model) || ControllerUtils.errorNotEquals("password",
-                    UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding), user.getPassword(), model)
-                    || verifyNotAdmin(user, model) || verifyNotEnablie(user, model)) {
-                model.addAttribute("username", username);
-                model.addAttribute("returnUrl", returnUrl);
-                Long userId = user.getId();
-                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
-                lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
-                logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB_MANAGER, false,
-                        CommonUtils.getDate(), password));
-                return "login";
-            }
         }
+        locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
+        if (ControllerUtils.errorCustom("locked.user", locked, model)
+                || ControllerUtils.errorNotEquals("password",
+                        UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding), user.getPassword(), model)
+                || verifyNotAdmin(user, model) || verifyNotEnablie(user, model)) {
+            model.addAttribute("username", username);
+            model.addAttribute("returnUrl", returnUrl);
+            Long userId = user.getId();
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
+            logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB_MANAGER, false,
+                    CommonUtils.getDate(), password));
+            return "login";
+        }
+
         lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
         lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
-
         if (UserPasswordUtils.needUpdate(user.getPassword())) {
             service.updatePassword(user.getId(),
                     UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
@@ -145,8 +152,8 @@ public class LoginAdminController {
         service.updateLoginStatus(user.getId(), ip);
         String authToken = UUID.randomUUID().toString();
         Date now = CommonUtils.getDate();
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        int expiryMinutes = ConfigComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
+        Map<String, String> safeConfig = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+        int expiryMinutes = ConfigDataComponent.getInt(safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
                 SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
         addLoginStatus(user, authToken, request, response, expiryMinutes);
 
@@ -154,21 +161,21 @@ public class LoginAdminController {
                 DateUtils.addMinutes(now, expiryMinutes), ip));
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
                 CommonUtils.getDate(), null));
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
         String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
         if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
             returnUrl = CommonConstants.getDefaultPage();
         }
-        return new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX).append(returnUrl).toString();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     public static void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response,
             int expiryMinutes) {
         user.setPassword(null);
         ControllerUtils.setAdminToSession(request.getSession(), user);
-        StringBuilder sb = new StringBuilder();
-        sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken);
-        RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, CommonConstants.getCookiesAdmin(),
-                sb.toString(), expiryMinutes * 60, null);
+        String cookie = CommonUtils.joinString(user.getId(), CommonConstants.getCookiesUserSplit(), authToken);
+        RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, CommonConstants.getCookiesAdmin(), cookie,
+                expiryMinutes * 60, null);
     }
 
     /**
@@ -182,7 +189,7 @@ public class LoginAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "loginDialog", method = RequestMethod.POST)
+    @PostMapping("loginDialog")
     public String loginDialog(@RequestAttribute SysSite site, String username, String password, String encoding, String captcha,
             HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         if ("login".equals(login(site, username, password, null, encoding, captcha, request, response, model))) {
@@ -203,7 +210,7 @@ public class LoginAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "changePassword", method = RequestMethod.POST)
+    @PostMapping("changePassword")
     @Csrf
     public String changeMyselfPassword(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String oldpassword,
             String password, String repassword, String encoding, HttpServletRequest request, HttpServletResponse response,
@@ -237,7 +244,7 @@ public class LoginAdminController {
      * @param response
      * @return view name
      */
-    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    @GetMapping(value = "logout")
     public String logout(Long userId, HttpServletRequest request, HttpServletResponse response) {
         SysUser admin = ControllerUtils.getAdminFromSession(request.getSession());
         if (null != userId && null != admin && userId.equals(admin.getId())) {
@@ -253,17 +260,24 @@ public class LoginAdminController {
             }
             ControllerUtils.clearAdminToSession(request.getContextPath(), request.getScheme(), request.getSession(), response);
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + CommonConstants.getDefaultPage();
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, CommonConstants.getDefaultPage());
     }
 
+    /**
+     * @param session
+     * @return response entity
+     */
     @RequestMapping(value = "getCaptchaImage")
-    public void getCaptchaImage(HttpSession session, HttpServletResponse response) {
-        try {
-            String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
-            session.setAttribute("captcha", captcha);
-            ImageUtils.drawImage(120, 30, captcha, response.getOutputStream());
-        } catch (IOException e) {
-        }
+    public ResponseEntity<StreamingResponseBody> getCaptchaImage(HttpSession session) {
+        String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
+        session.setAttribute("captcha", captcha);
+        StreamingResponseBody body = new StreamingResponseBody() {
+            @Override
+            public void writeTo(OutputStream outputStream) throws IOException {
+                ImageUtils.drawImage(120, 30, captcha, outputStream);
+            }
+        };
+        return ResponseEntity.ok().body(body);
     }
 
     /**

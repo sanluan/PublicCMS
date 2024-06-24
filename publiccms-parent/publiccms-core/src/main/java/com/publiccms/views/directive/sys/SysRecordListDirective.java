@@ -12,6 +12,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.sys.SysRecordService;
 
 import jakarta.annotation.Resource;
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -52,7 +53,7 @@ import jakarta.annotation.Resource;
 public class SysRecordListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("code"),
                 handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), handler.getString("orderField"),
                 handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));

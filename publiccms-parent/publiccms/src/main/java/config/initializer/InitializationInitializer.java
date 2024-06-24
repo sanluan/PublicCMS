@@ -21,10 +21,12 @@ import org.springframework.web.util.IntrospectorCleanupListener;
 
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.handler.UsernamePasswordAuthenticator;
 import com.publiccms.common.servlet.InstallHttpRequestHandler;
 import com.publiccms.common.servlet.InstallServlet;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -37,11 +39,11 @@ public class InitializationInitializer implements WebApplicationInitializer {
     /**
      * 安装Servlet映射路径
      */
-    public final static String INSTALL_SERVLET_MAPPING = "/install/";
+    public static final String INSTALL_SERVLET_MAPPING = "/install/";
     /**
      * 安装跳转处理器
      */
-    public final static HttpRequestHandler INSTALL_HTTPREQUEST_HANDLER = new InstallHttpRequestHandler(INSTALL_SERVLET_MAPPING);
+    public static final HttpRequestHandler INSTALL_HTTPREQUEST_HANDLER = new InstallHttpRequestHandler(INSTALL_SERVLET_MAPPING);
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
@@ -50,33 +52,33 @@ public class InitializationInitializer implements WebApplicationInitializer {
             Properties config = PropertiesLoaderUtils.loadAllProperties(CommonConstants.CMS_CONFIG_FILE);
             initProxy(config);
             if (null == CommonConstants.CMS_FILEPATH) {
-                initFilePath(config.getProperty("cms.filePath"), System.getProperty("user.dir"));
+                initFilePath(CommonUtils.getConfig(config, "cms.filePath"), System.getProperty("user.dir"));
             }
-            File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
+            File file = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.INSTALL_LOCK_FILENAME));
             if (file.exists()) {
-                String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);
+                String version = FileUtils.readFileToString(file, Constants.DEFAULT_CHARSET_NAME);
                 if (CmsVersion.getVersion().equals(version)
                         || version.contains(".") && CmsVersion.getVersion().substring(CmsVersion.getVersion().lastIndexOf("."))
                                 .equals(version.substring(version.lastIndexOf(".")))) {
                     if (!CmsVersion.getVersion().equals(version)) {
                         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-                            outputStream.write(CmsVersion.getVersion().getBytes(CommonConstants.DEFAULT_CHARSET));
+                            outputStream.write(CmsVersion.getVersion().getBytes(Constants.DEFAULT_CHARSET));
                         }
                     }
                     CmsVersion.setInitialized(true);
                     CmsDataSource.initDefaultDataSource();
-                    log.info(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion()).append(" will start normally in ")
-                            .append(CommonConstants.CMS_FILEPATH).toString());
+                    log.info(CommonUtils.joinString("PublicCMS ", CmsVersion.getVersion(), " will start normally in ",
+                            CommonConstants.CMS_FILEPATH));
                 } else {
                     createInstallServlet(servletContext, InstallServlet.STEP_CHECKDATABASE, version);
-                    log.warn(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion()).append(" installer will start in ")
-                            .append(CommonConstants.CMS_FILEPATH).append(", please upgrade your database!").toString());
+                    log.warn(CommonUtils.joinString("PublicCMS ", CmsVersion.getVersion(), " installer will start in ",
+                            CommonConstants.CMS_FILEPATH, ", please upgrade your database!"));
                 }
             } else {
                 createInstallServlet(servletContext, null, null);
-                log.warn(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion()).append(" installer will start in ")
-                        .append(CommonConstants.CMS_FILEPATH)
-                        .append(", please configure your database information and initialize the database!").toString());
+                log.warn(CommonUtils.joinString("PublicCMS ", CmsVersion.getVersion(), " installer will start in ",
+                        CommonConstants.CMS_FILEPATH,
+                        ", please configure your database information and initialize the database!"));
             }
         } catch (IOException e) {
             throw new ServletException(e);
@@ -92,14 +94,14 @@ public class InitializationInitializer implements WebApplicationInitializer {
      *
      */
     public static void initFilePath(String filePath, String defaultPath) {
-        File file = new File(System.getProperty("cms.filePath", filePath));
+        File file = new File(filePath);
         try {
             file.mkdirs();
         } catch (Exception e) {
         }
         if (!file.exists()) {
-            log.warn(new StringBuilder("PublicCMS ").append(CmsVersion.getVersion())
-                    .append(" the cms.filePath parameter is invalid , try to use the temporary directory.").toString());
+            log.warn(CommonUtils.joinString("PublicCMS ", CmsVersion.getVersion(),
+                    " the cms.filePath parameter is invalid , try to use the temporary directory."));
             file = new File(defaultPath, "data/publiccms");
         }
         CommonConstants.CMS_FILEPATH = file.getAbsolutePath();
@@ -108,7 +110,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
     private static void createInstallServlet(ServletContext servletcontext, String startStep, String version) {
         Dynamic registration = servletcontext.addServlet("install", new InstallServlet(startStep, version));
         registration.setLoadOnStartup(1);
-        registration.addMapping(new String[] { INSTALL_SERVLET_MAPPING });
+        registration.addMapping(INSTALL_SERVLET_MAPPING);
     }
 
     /**
@@ -125,14 +127,14 @@ public class InitializationInitializer implements WebApplicationInitializer {
      * @throws IOException
      */
     private static void initProxy(Properties config) throws IOException {
-        if ("true".equalsIgnoreCase(System.getProperty("cms.proxy.enable", config.getProperty("cms.proxy.enable", "false")))) {
-            Properties proxyProperties = PropertiesLoaderUtils.loadAllProperties(
-                    System.getProperty("cms.proxy.configFilePath", config.getProperty("cms.proxy.configFilePath")));
+        if ("true".equalsIgnoreCase(CommonUtils.getConfig(config, "cms.proxy.enable"))) {
+            Properties proxyProperties = PropertiesLoaderUtils
+                    .loadAllProperties(CommonUtils.getConfig(config, "cms.proxy.configFilePath"));
             for (String key : proxyProperties.stringPropertyNames()) {
                 System.setProperty(key, proxyProperties.getProperty(key));
             }
-            Authenticator.setDefault(new UsernamePasswordAuthenticator(config.getProperty("cms.proxy.userName"),
-                    config.getProperty("cms.proxy.password")));
+            Authenticator.setDefault(new UsernamePasswordAuthenticator(CommonUtils.getConfig(config, "cms.proxy.userName"),
+                    CommonUtils.getConfig(config, "cms.proxy.password")));
         }
     }
 }

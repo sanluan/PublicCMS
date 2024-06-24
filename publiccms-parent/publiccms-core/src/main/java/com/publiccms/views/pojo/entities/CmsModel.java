@@ -1,10 +1,17 @@
 package com.publiccms.views.pojo.entities;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  *
@@ -33,6 +40,8 @@ public class CmsModel implements java.io.Serializable {
      * 名称
      * 
      */
+    @NotNull
+    @Length(max = 50)
     private String name;
     /**
      * searchable model
@@ -182,6 +191,7 @@ public class CmsModel implements java.io.Serializable {
     public void setSearchableModel(boolean searchableModel) {
         this.searchableModel = searchableModel;
     }
+
     /**
      * @return
      */
@@ -195,13 +205,14 @@ public class CmsModel implements java.io.Serializable {
     public void setTemplatePath(String templatePath) {
         this.templatePath = templatePath;
     }
+
     /**
      * @return
      */
     public String getContentPath() {
         return contentPath;
     }
-    
+
     /**
      * @param contentPath
      */
@@ -370,6 +381,21 @@ public class CmsModel implements java.io.Serializable {
     }
 
     /**
+     * @return searchableFields
+     */
+    public Set<String> getSearchableFields() {
+        Set<String> set = new HashSet<>();
+        if (CommonUtils.notEmpty(extendList)) {
+            for (SysExtendField extend : extendList) {
+                if (extend.isSearchable()) {
+                    set.add(extend.getId().getCode());
+                }
+            }
+        }
+        return set;
+    }
+
+    /**
      * @return the fieldTextMap
      */
     public Map<String, String> getFieldTextMap() {
@@ -420,7 +446,8 @@ public class CmsModel implements java.io.Serializable {
     }
 
     /**
-     * @param relatedList the relatedList to set
+     * @param relatedList
+     *            the relatedList to set
      */
     public void setRelatedList(List<ContentRelated> relatedList) {
         this.relatedList = relatedList;

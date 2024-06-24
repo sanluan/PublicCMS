@@ -18,7 +18,10 @@ function validateCallback(form, callback, confirmMsg) {
     if (!$form.valid() ) {
         return false;
     }
-    $("textarea.editor[escape=true],textarea.code[escape=true]", $form).each(function() {
+    $("textarea[escape=true]", $form).each(function() {
+        if($(this).hasClass("hide")){
+            $(this).attr("escape",false);
+        }
         $(this).val(html2Escape($(this).val()));
     });
     $("input[escape=true]", $form).each(function() {
@@ -59,10 +62,7 @@ function iframeCallback(form, callback) {
         return false;
     }
     if ($iframe.length == 0 ) {
-        $iframe = $($.parseHTML("<iframe id='callbackframe' name='callbackframe' src='about:blank' style='display:none'></iframe>", document, true)).appendTo("body");
-    }
-    if (!form.ajax ) {
-        $form.append('<input type="hidden" name="ajax" value="1" />');
+        $iframe = $($.parseHTML("<iframe id=\"callbackframe\" name=\"callbackframe\" src=\"about:blank\" style=\"display:none\"></iframe>", document, true)).appendTo("body");
     }
     form.target = "callbackframe";
     _iframeResponse($iframe[0], callback || JUI.ajaxDone);
@@ -74,15 +74,15 @@ function _iframeResponse(iframe, callback) {
         $iframe.off("load");
         $document.trigger("ajaxStop");
 
-        if (iframe.src == "javascript:'%3Chtml%3E%3C/html%3E';" || // For
+        if (iframe.src == "javascript:\"%3Chtml%3E%3C/html%3E\";" || // For
             // Safari
-            iframe.src == "javascript:'<html></html>';" ) { // For FF, IE
+            iframe.src == "javascript:\"<html></html>\";" ) { // For FF, IE
             return;
         }
         var doc = iframe.contentDocument || iframe.document;
 
         // fixing Opera 9.26,10.00
-        if (doc.readyState && doc.readyState != 'complete' ) {
+        if (doc.readyState && doc.readyState != "complete" ) {
             return;
         }
         // fixing Opera 9.64
@@ -126,7 +126,7 @@ function navTabAjaxDone(json) {
     JUI.ajaxDone(json);
     if (json[JUI.keys.statusCode] == JUI.statusCode.ok ) {
         if (json.navTabId ) { // 把指定navTab页面标记为需要“重新载入”。注意navTabId不能是当前navTab页面的
-            if('page' == json.rel){
+            if("page" == json.rel){
                 navTab.reloadFlag(json.navTabId, 2);
             }else{
                 navTab.reloadFlag(json.navTabId);
@@ -194,7 +194,7 @@ function dialogAjaxDone(json) {
  */
 function navTabSearch(form, navTabId) {
     var $form = $(form);
-    navTab.reload($form.attr('action'), {
+    navTab.reload($form.attr("action"), {
         data: $form.serializeArray(), navTabId: navTabId
     });
     return false;
@@ -210,7 +210,7 @@ function dialogSearch(form) {
     if (form[JUI.pageInfo.pageNum] ) {
         form[JUI.pageInfo.pageNum].value = 1;
     }
-    $.pdialog.reload($form.attr('action'), {
+    $.pdialog.reload($form.attr("action"), {
         data: $form.serializeArray()
     });
     return false;
@@ -325,10 +325,10 @@ function dialogPageBreak(args, rel) {
 function ajaxTodo(url, callback) {
     var $callback = callback || navTabAjaxDone;
     if ("function" !== typeof $callback ) {
-        $callback = eval('(' + callback + ')');
+        $callback = eval("(" + callback + ")");
     }
     $.ajax({
-        type: 'POST', url: url, dataType: "json", cache: false, success: $callback, error: JUI.ajaxError
+        type: "POST", url: url, dataType: "json", cache: false, success: $callback, error: JUI.ajaxError
     });
 }
 
@@ -378,7 +378,7 @@ $.fn.extend({
         return this.each(function() {
             var $this = $(this);
             $this.click(function(event) {
-                var url = $this.attr("href").replaceTmById($(event.target).parents(".unitBox:first"));
+                var url = $this.attr("href").replaceTmById($(event.target).parents(".unitBox").first());
                 JUI.debug(url);
                 if (!url.isFinishedTm() ) {
                     alertMsg.error($this.attr("warn") || JUI.msg("alertSelectMsg"));
@@ -402,7 +402,7 @@ $.fn.extend({
             var $p = $this.attr("targetType") == "dialog" ? $.pdialog.getCurrent(): navTab.getCurrentPanel();
             var $form = $(".pagerForm", $p);
             var url = $this.attr("href");
-            window.location = url + ( url.indexOf('?') == -1 ? "?": "&" ) + $form.serialize();
+            window.location = url + ( url.indexOf("?") == -1 ? "?": "&" ) + $form.serialize();
         }
         return this.each(function() {
             var $this = $(this);

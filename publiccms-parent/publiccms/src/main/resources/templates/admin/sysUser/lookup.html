@@ -1,26 +1,26 @@
 <#if parentId?has_content>
-<ul>
-    <@sys.deptList parentId=parentId pageSize=500>
-        <#list page.list as a>
-            <li>
-                <a href="sysUser/lookup_list.html?deptId=${a.id}&field=${field!'userId'}&nicknameField=${nicknameField!'nickname'}" class="exclude-translate" target="ajax" rel="user_list">${a.name!}</a>
+<@sys.deptList parentId=parentId pageSize=500>
+    <#list page.list>
+    <ul>
+        <#items as a>
+            <li _src="sysUser/lookup.html?parentId=${a.id}&field=${(field?url)!'userId'}&nicknameField=${(nicknameField?url)!'nickname'}">
+                <a href="sysUser/lookup_list.html?deptId=${a.id}&field=${(field?url)!'userId'}&nicknameField=${(nicknameField?url)!'nickname'}" class="exclude-translate" target="ajax" rel="user_list">${a.name!}</a>
             </li>
-        <#else>
-            <li><a><@t.page 'empty_directory'/></a></li>
-        </#list>
-    </@sys.deptList>
-</ul>
+        </#items>
+    </ul>
+    </#list>
+</@sys.deptList>
 <#else>
 <div class="pageContent">
     <div class="unitBox leftPageContent">
         <ul class="tree treeFolder" layoutH>
             <li>
-                <a href="sysUser/lookup_list.html?field=${field!'userId'}&nicknameField=${nicknameField!'nickname'}" class="exclude-translate" target="ajax" rel="user_list"><@t.page 'dept.parent'/></a>
+                <a href="sysUser/lookup_list.html?field=${(field?url)!'userId'}&nicknameField=${(nicknameField?url)!'nickname'}" class="exclude-translate" target="ajax" rel="user_list"><@t.page 'dept.parent'/></a>
                 <ul>
             <@sys.deptList pageSize=500>
                 <#list page.list as a>
-                    <li>
-                        <a href="sysUser/lookup_list.html?deptId=${a.id}&field=${field!'userId'}&nicknameField=${nicknameField!'nickname'}" class="exclude-translate" target="ajax" rel="user_list">${a.name!}</a>
+                    <li _src="sysUser/lookup.html?parentId=${a.id}&field=${(field?url)!'userId'}&nicknameField=${(nicknameField?url)!'nickname'}">
+                        <a href="sysUser/lookup_list.html?deptId=${a.id}&field=${(field?url)!'userId'}&nicknameField=${(nicknameField?url)!'nickname'}" class="exclude-translate" target="ajax" rel="user_list">${a.name!}</a>
                     </li>
                 <#else>
                     <li><a><@t.page 'empty_directory'/></a></li>

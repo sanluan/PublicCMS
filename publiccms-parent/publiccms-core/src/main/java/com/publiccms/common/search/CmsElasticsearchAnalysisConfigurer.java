@@ -6,7 +6,7 @@ import org.hibernate.search.backend.elasticsearch.analysis.ElasticsearchAnalysis
 public class CmsElasticsearchAnalysisConfigurer implements ElasticsearchAnalysisConfigurer {
     @Override
     public void configure(ElasticsearchAnalysisConfigurationContext context) {
-        context.analyzer(CmsContentTextBinder.ANALYZER_NAME).custom().tokenizer(MultiTokenizerFactory.getName())
+        context.analyzer(CmsContentAttributeBinder.ANALYZER_NAME).custom().tokenizer(MultiTokenizerFactory.getName())
                 .tokenFilters(MultiTokenFilterFactory.getName());
     }
 }

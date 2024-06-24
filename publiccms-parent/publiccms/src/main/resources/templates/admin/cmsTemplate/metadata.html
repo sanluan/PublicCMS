@@ -30,12 +30,12 @@
                     <input name="alias" type="text" maxlength="40" size="20" value="${(a.alias)!}"/>
                     <#if site.useStatic>
                         <label>
-                            <input name="useStatic" type="checkbox"/>
+                            <input name="useStatic" type="checkbox" class="form-check-input"/>
                             <@t.page 'site.enable_static'/>
                         </label>
                     </#if>
                     <label>
-                        <input name="useDynamic" type="checkbox"/>
+                        <input name="useDynamic" type="checkbox" class="form-check-input"/>
                         <@t.page 'allow_dynamic'/>
                     </label>
                 </dd>
@@ -56,8 +56,8 @@
                 <dl class="nowrap">
                     <dt><@t.page 'dynamic_config.need_login'/>:</dt>
                     <dd>
-                        <label><input name="needLogin" type="checkbox"/></label>
-                        <span class="info"><@t.page 'dynamic_config.need_login.description'/>:<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit" icon="<i class='icon-edit icon-large'></i>"><@t.page 'server_config.site'/></a></span>
+                        <label><input name="needLogin" type="checkbox" class="form-check-input"/></label>
+                        <span class="info"><@t.page 'dynamic_config.need_login.description'/>:<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit"><@t.page 'server_config.site'/></a></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
@@ -68,22 +68,29 @@
                         <span class="info"><@t.page 'dynamic_config.accept_parameter.description'/></span>
                         <div class="parametersOperateBox">
                             <select class="combox" name="parameterType">
-                                <#list ['text','number','textarea','content','category','user'] as o>
+                                <#list getParameterTypeList() as o>
                                 <option value="${o}"><@t.page o/></option>
                                 </#list>
                             </select>
                             <label><@t.page 'name'/>:</label><input name="parameterName" type="text" autocomplete="on" size="8"/>
-                            <label><@t.page 'required'/>:<input name="required" type="checkbox"/></label>
+                            <label><@t.page 'required'/>:<input name="required" type="checkbox" class="form-check-input"/></label>
                             <label><@t.page 'alias'/>:</label><input name="parameterAlias" type="text" autocomplete="on" size="8"/>
-                            <label><@t.page 'array'/>:<input name="array" type="checkbox"/></label>
-                            <a href="javascript:;" class="btnText green" onclick="addParameter($('input[name=\'parameterName\']',navTab.getCurrentPanel()).val(),$('input[name=\'array\']',navTab.getCurrentPanel()).prop('checked'),$('input[name=\'required\']',navTab.getCurrentPanel()).prop('checked'),$('select[name=\'parameterType\']',navTab.getCurrentPanel()).val(),$('select[name=\'parameterType\'] option:selected',navTab.getCurrentPanel()).text(),$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok"></i><@t.page 'button.add'/></a>
+                            <label><@t.page 'array'/>:<input name="array" type="checkbox" class="form-check-input"/></label>
+                            <label class="hide defaultValue">
+                                <@t.page 'array'/>:
+                                <input name="defaultValue" type="hidden"/>
+                                <input name="categoryName" readonly="readonly" type="text" size="10"/>
+                                <a class="btnLook hide defauleValueId" href="cmsCategory/lookup.html?field=defaultValue" lookupGroup=""></a>
+                                <a class="btnLook hide defauleValueCode" href="cmsCategory/lookup.html?field=defaultValue&useCode=true" lookupGroup=""></a>
+                            </label>
+                            <a href="javascript:;" class="btnText green" onclick="addParameter($('input[name=\'parameterName\']',navTab.getCurrentPanel()).val(),$('input[name=\'array\']',navTab.getCurrentPanel()).prop('checked'),$('input[name=\'required\']',navTab.getCurrentPanel()).prop('checked'),$('select[name=\'parameterType\']',navTab.getCurrentPanel()).val(),$('select[name=\'parameterType\'] option:selected',navTab.getCurrentPanel()).text(),$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val(),$('input[name=\'categoryName\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok"></i><@t.page 'button.add'/></a>
                         </div>
                     </dd>
                 </dl>
                 <dl class="nowrap">
                     <dt><@t.page 'dynamic_config.need_body'/>:</dt>
                     <dd>
-                        <label><input name="needBody" type="checkbox"/></label>
+                        <label><input name="needBody" type="checkbox" class="form-check-input"/></label>
                         <span class="info"><@t.page 'dynamic_config.need_body.description'/></span>
                     </dd>
                 </dl>
@@ -105,10 +112,11 @@
             </fieldset>
             <fieldset>
                 <legend><@t.page 'metadata.extend_field'/></legend>
+                <span class="info"><@t.page 'extend_field.use.metadata'/>;<@t.page 'metadata.default_value_description'/></span>
                 <#include '../include_page/extends.html'/>
                 <#assign extendList=(a.extendList)![]/>
                 <@extends 'extendList' extendList/>
-                <span class="info"><@t.page 'extend_field.use.metadata'/>;<@t.page 'extend_field.use.content'/>;<@t.page 'metadata.default_value_description'/></span>
+                <span class="info"><@t.page 'extend_field.name.description'/></span>
             </fieldset>
     <script>
     $('input[name=useStatic]',navTab.getCurrentPanel()).on('change',function(){
@@ -128,13 +136,29 @@
         }
     });
     $('select[name=parameterType]').on('change',function() {
-        if($(this).val()=='content' || $(this).val()=='category' || $(this).val()=='user') {
+        if($(this).val()=='content' || $(this).val()=='category' || $(this).val()=='vote'|| $(this).val()=='survey' || $(this).val()=='user') {
             if(!$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val()){
                 $('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val($(this).val());
             }
+        } else if ('category.code'==$(this).val()){
+            if(!$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val()){
+                $('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val('category');
+            }
+        }
+        if('category' == $(this).val() || 'category.code'==$(this).val()){
+            $('.defaultValueCode',navTab.getCurrentPanel()).hide();
+            $('.defaultValueId',navTab.getCurrentPanel()).hide();
+            if('category' == $(this).val()){
+                $('.defaultValueId',navTab.getCurrentPanel()).show();
+            }else{
+                $('.defaultValueCode',navTab.getCurrentPanel()).show();
+            }
+            $('.defaultValue',navTab.getCurrentPanel()).show();
+        } else {
+            $('.defaultValue',navTab.getCurrentPanel()).hide();
         }
     });
-    function addParameter(parameterName,array,required,parameterType,parameterTypeText,alias) {
+    function addParameter(parameterName,array,required,parameterType,parameterTypeText,alias,value) {
         if(parameterName) {
             parameterName=parameterName.trim();
         }
@@ -155,6 +179,9 @@
             }
             $box.append($('<input type=\"hidden\"/>').attr("name","parameterTypeMap["+parameterName+"].name").val(parameterName)).append($('<input type=\"hidden\"/>').attr("name","parameterTypeMap["+parameterName+"].alias").val(alias));
             $box.append("<input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].type\" value=\""+parameterType+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].array\" value=\""+array+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].required\" value=\""+required+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a>");
+            if( 'content' == parameterType || 'category.code' == parameterType && value){
+                $box.append($('<input type=\"hidden\"/>').attr("name","parameterTypeMap["+parameterName+"].defaultValue").val(value)).append(':').append(value);
+            }
             $('.parametersBox',navTab.getCurrentPanel()).append($box);
         }
         $('input[name=\'parameterName\']',navTab.getCurrentPanel()).val('');
@@ -179,7 +206,15 @@
     });
     <#if (a.acceptParameters)?has_content>
         <#list a.acceptParameters?split(",") as p>
-        addParameter("${p}",${(a.parameterTypeMap[p].array?c)!false},${(a.parameterTypeMap[p].required?c)!false},"${(a.parameterTypeMap[p].type)!'text'}","${(t.pageMessage(a.parameterTypeMap[p].type))!t.pageMessage('text')}","${(a.parameterTypeMap[p].alias)!}");
+            <#assign tempDefaultValue=''/>
+            <#if a.parameterTypeMap[p]?has_content && a.parameterTypeMap[p].defaultValue?has_content>
+                <#if 'category'=a.parameterTypeMap[p].type>
+                <@cms.category id=a.parameterTypeMap[p].defaultValue><#assign tempDefaultValue=object.name/></@cms.category>
+                <#elseif 'category.code'=a.parameterTypeMap[p].type>
+                <@cms.category code=a.parameterTypeMap[p].defaultValue><#assign tempDefaultValue=object.name/></@cms.category>
+                </#if>
+            </#if>
+        addParameter("${p}",${(a.parameterTypeMap[p].array?c)!false},${(a.parameterTypeMap[p].required?c)!false},"${(a.parameterTypeMap[p].type)!'text'}","${(t.pageMessage(a.parameterTypeMap[p].type))!t.pageMessage('text')}","${(a.parameterTypeMap[p].alias)!}","${tempDefaultValue!}");
         </#list>
     </#if>
     </script>
@@ -216,13 +251,13 @@
             <#case "index.html">
                 <#if site.useStatic>
                     $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
-                    $('input[name=publishPath]',navTab.getCurrentPanel()).val('/index.html');
+                    $('input[name=publishPath]',navTab.getCurrentPanel()).val('index.html');
                 </#if>
                 <#break>
             <#case "sitemap.xml">
                 <#if site.useStatic>
                     $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
-                    $('input[name=publishPath]',navTab.getCurrentPanel()).val('/sitemap.xml');
+                    $('input[name=publishPath]',navTab.getCurrentPanel()).val('sitemap.xml');
                 <#else>
                     $('input[name=cacheTime]',navTab.getCurrentPanel()).val(7200);
                 </#if>
@@ -239,29 +274,21 @@
             <#case "json/content.json">
             <#case "json/contentList.json">
             <#case "json/categoryList.json">
+            <#case "json/result.json">
                 $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
         </#switch>
         <#if acceptParameters?has_content>
             <#list acceptParameters?split(",") as p>
             <#if p?contains(';')>
-            addParameter("${p?split(";")[0]}",false,${['user','content','category']?seq_contains(p?split(";")[1])?c},"${p?split(";")[1]}","${t.pageMessage(p?split(";")[1])}","${['user','content','category']?seq_contains(p?split(";")[1])?then(p?split(";")[1],'')}");
+            addParameter("${p?split(";")[0]}",false,${['user','content','category','category.code','vote','survey']?seq_contains(p?split(";")[1])?c},"${p?split(";")[1]}","${t.pageMessage(p?split(";")[1])}","${['user','content','category','category.code','vote','survey']?seq_contains(p?split(";")[1])?then(('category.code'=p?split(";")[1])?then('category',p?split(";")[1]),'')}");
             <#else>
             addParameter("${p}",false,false,"text","${t.pageMessage('text')}","");
             </#if>
             </#list>
         </#if>
-        <#if acceptArrayParameters?has_content>
-            <#list acceptArrayParameters?split(",") as p>
-            <#if p?contains(';')>
-            addParameter("${p?split(";")[0]}",true,${['user','content','category']?seq_contains(p?split(";")[1])?c},"${p?split(";")[1]}","${t.pageMessage(p?split(";")[1])}","${['user','content','category']?seq_contains(p?split(";")[1])?then(p?split(";")[1],'')}");
-            <#else>
-            addParameter("${p}",true,false,"text","${t.pageMessage('text')}","");
-            </#if>
-            </#list>
-        </#if>
             </script>
     <#else>
-            <textarea name="content" class="hide"><@html_escape><#include "demo/default.html" parse=false/></@html_escape></textarea>
+            <textarea name="content" class="hide" escape="true"><@html_escape><#include "demo/default.html" parse=false/></@html_escape></textarea>
             <script>
                 $('input[name=useDynamic]',navTab.getCurrentPanel()).click();
             </script>

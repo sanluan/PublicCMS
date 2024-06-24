@@ -85,9 +85,6 @@
                     jTab.addClass("selected");
                     jGroups.hide().eq(op.currentIndex).show();
                 }
-                if (!jGroup.attr("inited") ) {
-                    jGroup.attr("inited", 1000).find("input[type=text]").filter("[alt]").inputAlert();
-                }
             }
         }
     });

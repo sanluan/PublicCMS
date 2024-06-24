@@ -13,6 +13,8 @@ import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysDeptService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * sysDept 部门查询指令
@@ -43,7 +45,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/dept?id=1&amp;appToken=接口�
 public class SysDeptDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer id = handler.getInteger("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

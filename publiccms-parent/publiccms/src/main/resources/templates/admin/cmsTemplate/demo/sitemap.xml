@@ -10,10 +10,10 @@
     <priority>0.4</priority>
   </url>
 <@cms.categoryList advanced=true queryAll=true parentId=parentId pageSize=500>
-    <#list page.list as a>
-        <#if !a.onlyUrl>
+    <#list page.list as category>
+        <#if !category.onlyUrl>
     <url>
-        <loc>${a.url!}</loc>
+        <loc>${category.url!}</loc>
         <lastmod>${.now?date}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.3</priority>
@@ -27,11 +27,11 @@
     <#assign maxPageCount=(page.totalPage gt maxPageCount)?then(maxPageCount,page.totalPage)/>
     <#list 1..maxPageCount as n>
         <@cms.contentList advanced=true status=1 pageIndex=n pageSize=pageCount orderField='publishDate'>
-            <#list page.list as a>
-                <#if !a.onlyUrl>
+            <#list page.list as content>
+                <#if !content.onlyUrl>
     <url>
-        <loc>${a.url!}</loc>
-        <lastmod>${a.publishDate?date}</lastmod>
+        <loc>${content.url!}</loc>
+        <lastmod>${content.publishDate?date}</lastmod>
         <changefreq>never</changefreq>
         <priority>0.1</priority>
     </url>

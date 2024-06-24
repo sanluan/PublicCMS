@@ -1,5 +1,7 @@
 package com.publiccms.logic.dao.cms;
 
+import java.util.List;
+
 // Generated 2016-1-19 11:41:45 by com.publiccms.common.generator.SourceGenerator
 
 import org.springframework.stereotype.Repository;
@@ -63,6 +65,18 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
         return getEntity(queryHandler);
     }
 
+    /**
+     * @param siteId
+     * @param codes
+     * @return
+     */
+    public List<CmsCategory> getEntitysByCodes(short siteId, String[] codes) {
+        QueryHandler queryHandler = getQueryHandler("from CmsCategory bean");
+        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        queryHandler.condition("bean.code in (:codes)").setParameter("codes", codes);
+        return getEntityList(queryHandler);
+    }
+
     @Override
     protected CmsCategory init(CmsCategory entity) {
         if (CommonUtils.empty(entity.getChildIds())) {
@@ -74,7 +88,9 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
         if (CommonUtils.notEmpty(entity.getCode())) {
             entity.setCode(CommonUtils.keep(entity.getCode(), 50));
         }
+        if (CommonUtils.empty(entity.getName())) {
+            entity.setName(entity.getCode());
+        }
         return entity;
     }
-
 }

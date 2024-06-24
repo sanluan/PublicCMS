@@ -6,7 +6,7 @@
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'path'/>:</label>
-                    <label>${path?has_content?then(path+'/','/')}</label>
+                    <label>${path?has_content?then(path+'/','')}</label>
                 </li>
             </ul>
         </div>
@@ -37,7 +37,7 @@
                 <td></td>
                 <td class="tree"><div class="folder_expandable"></div></td>
                 <td>
-                    <a href="cmsFileBackup/list.html?type=${type!}&path=${path?keep_before_last('/')}" target="navTab" rel="cmsFileBackup/list" title="<@t.page 'button.return'/>">
+                    <a href="cmsFileBackup/list.html?type=${type!}&path=${path?contains('/')?then(path?keep_before_last('/'),'')}" target="navTab" rel="cmsFileBackup/list">
                         <@t.page 'button.return'/>
                     </a>
                 </td>
@@ -48,7 +48,7 @@
             </tr>
         </#if>
         <#list list as a>
-            <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
+            <#assign filePath=path?has_content?then(path+'/','')+a.fileName/>
             <tr>
                 <td><input name="paths" value="${filePath}" type="checkbox"></td>
                 <td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
@@ -67,7 +67,7 @@
                 <td class="wrap">
                     <a href="cmsFileBackup/recycle?type=${type!}&paths=${filePath?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.recycle'/>" target="ajaxTodo"><i class="icon-reply icon-large"></i><@t.page 'button.recycle'/></a>
                     <#if editableSubfix?seq_contains(a.fileName?keep_after_last('.')?lower_case)>
-                      <a href="cmsFileBackup/content?type=${type!}&path=${filePath?url}" class="edit btnText blue" target="navTab" rel="cmsWebBackup/content:${filePath}" icon="<i class='icon-edit'></i>" title="${a.fileName}"><i class="icon-eye-open"></i><@t.page 'button.view'/></a>
+                      <a href="cmsFileBackup/content?type=${type!}&path=${filePath?url}" class="edit btnText blue" target="navTab" rel="cmsWebBackup/content:${filePath}" title="${a.fileName}"><i class="icon-eye-open"></i><@t.page 'button.view'/></a>
                     </#if>
                 </td>
             </tr>

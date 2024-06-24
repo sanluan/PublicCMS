@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.http.client.ClientProtocolException;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.oauth.AbstractOauth;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.views.pojo.oauth.OauthAccess;
 import com.publiccms.views.pojo.oauth.OauthConfig;
@@ -49,15 +48,15 @@ public class WechatOauthComponent extends AbstractOauth {
      * 
      */
     @Override
-    public OauthAccess getAccessToken(short siteId, String code) throws ClientProtocolException, IOException {
+    public OauthAccess getAccessToken(short siteId, String code) throws IOException {
         OauthConfig config = getConfig(siteId);
         if (null != config) {
             StringBuilder sb = new StringBuilder("https://api.weixin.qq.com/sns/oauth2/access_token?appid=");
             sb.append(config.getAppKey()).append("&secret=").append(config.getAppSecret()).append("&code=").append(code)
                     .append("&grant_type=authorization_code");
             String html = get(sb.toString());
-            Map<String, Object> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper.getTypeFactory()
-                    .constructMapLikeType(HashMap.class, String.class, Object.class));
+            Map<String, Object> map = Constants.objectMapper.readValue(html, Constants.objectMapper.getTypeFactory()
+                    .constructMapType(HashMap.class, String.class, Object.class));
             if (null != map.get("access_token")) {
                 return new OauthAccess(code, (String) map.get("access_token"), (String) map.get("openid"));
             }
@@ -70,14 +69,14 @@ public class WechatOauthComponent extends AbstractOauth {
      * resource/res_list&verify=1&id=open1419316518&token=&lang=zh_CN
      */
     @Override
-    public OauthUser getUserInfo(short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
+    public OauthUser getUserInfo(short siteId, OauthAccess oauthInfo) throws IOException {
         if (null != oauthInfo) {
             StringBuilder sb = new StringBuilder("https://api.weixin.qq.com/sns/userinfo?access_token=");
             sb.append(oauthInfo.getAccessToken()).append("&openid=").append(oauthInfo.getOpenId());
             String html = get(sb.toString());
             if (CommonUtils.notEmpty(html)) {
-                Map<String, Object> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper
-                        .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
+                Map<String, Object> map = Constants.objectMapper.readValue(html, Constants.objectMapper
+                        .getTypeFactory().constructMapType(HashMap.class, String.class, Object.class));
                 return new OauthUser(oauthInfo.getOpenId(), (String) map.get("nickname"));
             }
         }

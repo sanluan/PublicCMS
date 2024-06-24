@@ -1,11 +1,14 @@
 package com.publiccms.logic.service.cms;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -14,6 +17,7 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.logic.dao.cms.CmsContentFileDao;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 
 /**
  *
@@ -24,7 +28,7 @@ import com.publiccms.logic.dao.cms.CmsContentFileDao;
 @Transactional
 public class CmsContentFileService extends BaseService<CmsContentFile> {
 
-    public static final String[] ignoreProperties = new String[] { "id", "userId", "contentId" };
+    public static final String[] ignoreProperties = new String[] { "id", "userId", "contentId", "clicks" };
 
     /**
      * @param contentId
@@ -50,6 +54,20 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
     @Transactional(readOnly = true)
     public List<CmsContentFile> getList(long contentId, String[] fileTypes) {
         return dao.getList(contentId, fileTypes);
+    }
+    
+
+    /**
+     * @param entitys
+     */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void updateStatistics(Collection<ClickStatistics> entitys) {
+        for (ClickStatistics entityStatistics : entitys) {
+            CmsContentFile entity = getEntity(entityStatistics.getId());
+            if (null != entity) {
+                entity.setClicks(entity.getClicks() + entityStatistics.getClicks());
+            }
+        }
     }
 
     /**

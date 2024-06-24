@@ -2,8 +2,7 @@ package com.publiccms.controller.admin.sys;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.io.OutputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,23 +10,24 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.Date;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletResponse;
-
+import org.apache.commons.compress.archivers.ArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import jakarta.annotation.Resource;
-import org.apache.tools.zip.ZipOutputStream;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CmsVersion;
@@ -41,7 +41,6 @@ import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.log.LogOperate;
-import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.exchange.SiteExchangeComponent;
@@ -50,12 +49,14 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.logic.service.log.LogUploadService;
 import com.publiccms.logic.service.sys.SysDomainService;
 import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.tools.HqlService;
 import com.publiccms.logic.service.tools.SqlService;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -76,8 +77,6 @@ public class SysSiteAdminController {
     private SqlService sqlService;
     @Resource
     private HqlService hqlService;
-    @Resource
-    protected LogUploadService logUploadService;
     @Resource
     protected LogOperateService logOperateService;
     @Resource
@@ -118,14 +117,14 @@ public class SysSiteAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null == entity.getDynamicPath()) {
-            entity.setDynamicPath(CommonConstants.SEPARATOR);
-        } else if (!entity.getDynamicPath().endsWith(CommonConstants.SEPARATOR)) {
-            entity.setDynamicPath(entity.getDynamicPath() + CommonConstants.SEPARATOR);
+            entity.setDynamicPath(Constants.SEPARATOR);
+        } else if (!entity.getDynamicPath().endsWith(Constants.SEPARATOR)) {
+            entity.setDynamicPath(CommonUtils.joinString(entity.getDynamicPath(), Constants.SEPARATOR));
         }
         if (null == entity.getSitePath()) {
-            entity.setSitePath(CommonConstants.SEPARATOR);
-        } else if (!entity.getSitePath().endsWith(CommonConstants.SEPARATOR)) {
-            entity.setSitePath(entity.getSitePath() + CommonConstants.SEPARATOR);
+            entity.setSitePath(Constants.SEPARATOR);
+        } else if (!entity.getSitePath().endsWith(Constants.SEPARATOR)) {
+            entity.setSitePath(CommonUtils.joinString(entity.getSitePath(), Constants.SEPARATOR));
         }
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -140,8 +139,8 @@ public class SysSiteAdminController {
                     || ControllerUtils.errorHasExist("domain", domainService.getEntity(domain), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            SysUser user = service.save(entity, domain, null == wild ? false : wild, null == multiple ? false : multiple,
-                    roleName, deptName, userName, password, encoding);
+            SysUser user = service.save(entity, domain, null != wild && wild, null != multiple && multiple, roleName, deptName,
+                    userName, password, encoding);
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -187,38 +186,42 @@ public class SysSiteAdminController {
 
     /**
      * @param id
-     * @param response
+     * @return response entity
      */
     @RequestMapping("export")
     @Csrf
-    public void export(Short id, HttpServletResponse response) {
+    public ResponseEntity<StreamingResponseBody> export(Short id) {
         SysSite site = service.getEntity(id);
         if (null != site) {
-            try {
-                DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
-                response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode(
-                        new StringBuilder(site.getName()).append(dateFormat.format(new Date())).append("-site.zip").toString(),
-                        "utf-8"));
-            } catch (UnsupportedEncodingException e1) {
-            }
-            try (ServletOutputStream outputStream = response.getOutputStream();
-                    ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)) {
-                zipOutputStream.setEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
-                {
-                    String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
-                    ZipUtils.compress(Paths.get(filepath), zipOutputStream, "template");
+            DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentDisposition(ContentDisposition.attachment()
+                    .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-site.zip"),
+                            Constants.DEFAULT_CHARSET)
+                    .build());
+            StreamingResponseBody body = new StreamingResponseBody() {
+                @Override
+                public void writeTo(OutputStream outputStream) throws IOException {
+                    try (ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
+                        {
+                            String filepath = siteComponent.getTemplateFilePath(site.getId(), Constants.SEPARATOR);
+                            ZipUtils.compress(Paths.get(filepath), archiveOutputStream, "template");
+                        }
+                        {
+                            String filepath = siteComponent.getWebFilePath(site.getId(), Constants.SEPARATOR);
+                            ZipUtils.compress(Paths.get(filepath), archiveOutputStream, "web");
+                        }
+                        {
+                            String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), Constants.SEPARATOR);
+                            ZipUtils.compress(Paths.get(filepath), archiveOutputStream, "tasktemplate");
+                        }
+                        siteExchangeComponent.exportAll(site, archiveOutputStream);
+                    }
                 }
-                {
-                    String filepath = siteComponent.getWebFilePath(site.getId(), CommonConstants.SEPARATOR);
-                    ZipUtils.compress(Paths.get(filepath), zipOutputStream, "web");
-                }
-                {
-                    String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
-                    ZipUtils.compress(Paths.get(filepath), zipOutputStream, "tasktemplate");
-                }
-                siteExchangeComponent.exportAll(site, zipOutputStream);
-            } catch (IOException e) {
-            }
+            };
+            return ResponseEntity.ok().headers(headers).body(body);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -237,12 +240,11 @@ public class SysSiteAdminController {
             boolean overwrite, HttpServletRequest request, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
-            if (originalName.endsWith("-site.zip")) {
+            if (null != originalName && originalName.endsWith("-site.zip")) {
                 try {
-                    File dest = new File(siteComponent.getSiteFilePath(originalName));
-                    if (overwrite || !dest.exists()) {
-                        dest.getParentFile().mkdirs();
-                        file.transferTo(dest);
+                    String filepath = siteComponent.getSiteFilePath(originalName);
+                    if (overwrite || !CmsFileUtils.exists(filepath)) {
+                        CmsFileUtils.upload(file, filepath);
                         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                                 LogLoginService.CHANNEL_WEB_MANAGER, "upload.sitefile", RequestUtils.getIpAddress(request),
                                 CommonUtils.getDate(), originalName));
@@ -250,13 +252,13 @@ public class SysSiteAdminController {
                     return CommonConstants.TEMPLATE_DONE;
                 } catch (IOException e) {
                     log.error(e.getMessage());
-                    model.addAttribute("error", e.getMessage());
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 }
             } else {
-                model.addAttribute("error", "verify.custom.fileType");
+                model.addAttribute(CommonConstants.ERROR, "verify.custom.fileType");
             }
         } else {
-            model.addAttribute("error", "verify.notEmpty.file");
+            model.addAttribute(CommonConstants.ERROR, "verify.notEmpty.file");
         }
         return CommonConstants.TEMPLATE_ERROR;
     }
@@ -277,36 +279,34 @@ public class SysSiteAdminController {
         if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        if ("update_url".contains(command)) {
-            if (null != parameters && 3 == parameters.length) {
-                try {
-                    short siteId = Short.parseShort(parameters[0]);
-                    String oldurl = parameters[1];
-                    String newurl = parameters[2];
-                    int i = sqlService.updateContentAttribute(siteId, oldurl, newurl);
-                    i += sqlService.updateContentRelated(siteId, oldurl, newurl);
-                    i += sqlService.updatePlace(siteId, oldurl, newurl);
-                    i += sqlService.updatePlaceAttribute(siteId, oldurl, newurl);
-                    i += sqlService.updateCategoryAttribute(siteId, oldurl, newurl);
-                    i += sqlService.updateConfigData(siteId, oldurl, newurl);
-                    String filepath = siteComponent.getTemplateFilePath(site.getId(), CommonConstants.SEPARATOR);
-                    try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(filepath))) {
-                        for (Path entry : stream) {
-                            File file = entry.toFile();
-                            if (file.isFile() && MetadataComponent.DATA_FILE.equalsIgnoreCase(file.getName())) {
-                                String content = StringUtils.replace(
-                                        FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET), oldurl, newurl);
-                                FileUtils.write(file, content, CommonConstants.DEFAULT_CHARSET);
-                                i += 1;
-                            }
+        if ("update_url".contains(command) && (null != parameters && 3 == parameters.length)) {
+            try {
+                short siteId = Short.parseShort(parameters[0]);
+                String oldurl = parameters[1];
+                String newurl = parameters[2];
+                int i = sqlService.updateContentAttribute(siteId, oldurl, newurl);
+                i += sqlService.updateContentRelated(siteId, oldurl, newurl);
+                i += sqlService.updatePlace(siteId, oldurl, newurl);
+                i += sqlService.updatePlaceAttribute(siteId, oldurl, newurl);
+                i += sqlService.updateCategoryAttribute(siteId, oldurl, newurl);
+                i += sqlService.updateConfigData(siteId, oldurl, newurl);
+                String filepath = siteComponent.getTemplateFilePath(site.getId(), Constants.SEPARATOR);
+                try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(filepath))) {
+                    for (Path entry : stream) {
+                        File file = entry.toFile();
+                        if (file.isFile() && MetadataComponent.DATA_FILE.equalsIgnoreCase(file.getName())) {
+                            String content = StringUtils.replace(FileUtils.readFileToString(file, Constants.DEFAULT_CHARSET),
+                                    oldurl, newurl);
+                            FileUtils.write(file, content, Constants.DEFAULT_CHARSET);
+                            i += 1;
                         }
-                    } catch (IOException e) {
                     }
-                    model.addAttribute("result", i);
-                } catch (NumberFormatException e) {
-                    model.addAttribute("error", e.getMessage());
                 }
+                model.addAttribute("result", i);
+            } catch (IOException | NumberFormatException e) {
+                model.addAttribute(CommonConstants.ERROR, e.getMessage());
             }
+
         }
         model.addAttribute("sqlcommand", command);
         model.addAttribute("sqlparameters", parameters);
@@ -334,14 +334,15 @@ public class SysSiteAdminController {
         if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        String log = null;
+        String message = null;
         try {
-            log = scriptComponent.execute(command, parameters, 1);
+            message = scriptComponent.execute(command, parameters, 1);
         } catch (IOException | InterruptedException e) {
-            log = e.getMessage();
+            message = e.getMessage();
+            Thread.currentThread().interrupt();
         }
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "execscript.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), log));
+                "execscript.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), message));
         return CommonConstants.TEMPLATE_DONE;
     }
 
@@ -350,33 +351,38 @@ public class SysSiteAdminController {
      * @return view name
      */
     @RequestMapping({ "sitefile.html", "sitefile" })
-    public String lookupSiteImage(ModelMap model) {
+    public String sitefile(ModelMap model) {
         model.addAttribute("list",
                 CmsFileUtils.getFileList(siteComponent.getSiteFilePath(Constants.BLANK), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
         return "sysSite/sitefile";
     }
 
     /**
-     * @param site
-     * @param admin
-     * @param file
-     * @param request
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "doUploadLicense", method = RequestMethod.POST)
+    @RequestMapping({ "lookupSitefile.html", "lookupSitefile" })
+    public String lookupSitefile(ModelMap model) {
+        model.addAttribute("list",
+                CmsFileUtils.getFileList(siteComponent.getSiteFilePath(Constants.BLANK), CmsFileUtils.ORDERFIELD_MODIFIEDDATE));
+        return "sysSite/lookupSitefile";
+    }
+
+    /**
+     * @param site
+     * @param file
+     * @param model
+     * @return view name
+     */
+    @PostMapping("doUploadLicense")
     @Csrf
-    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
-            HttpServletRequest request, ModelMap model) {
+    public String upload(@RequestAttribute SysSite site, MultipartFile file, ModelMap model) {
         if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null != file && !file.isEmpty()) {
             try {
-                CmsFileUtils.upload(file, siteComponent.getRootPath() + CommonConstants.LICENSE_FILENAME);
-                logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "license.dat", CmsFileUtils.FILE_TYPE_OTHER, file.getSize(), null, null,
-                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
+                CmsFileUtils.upload(file, CommonUtils.joinString(siteComponent.getRootPath(), CommonConstants.LICENSE_FILENAME));
                 return CommonConstants.TEMPLATE_DONE;
             } catch (IllegalStateException | IOException e) {
                 log.error(e.getMessage(), e);
@@ -396,7 +402,7 @@ public class SysSiteAdminController {
     public String reCreateIndex(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, HttpServletRequest request) {
         hqlService.reCreateIndex();
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "reCreateIndex", RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.BLANK));
+                "reCreateIndex", RequestUtils.getIpAddress(request), CommonUtils.getDate(), Constants.BLANK));
         return CommonConstants.TEMPLATE_DONE;
     }
 }

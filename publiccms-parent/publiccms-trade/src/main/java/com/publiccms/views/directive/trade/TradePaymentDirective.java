@@ -16,6 +16,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.logic.service.trade.TradePaymentService;
 
+import freemarker.template.TemplateException;
+
 /**
 *
 * tradePayment 支付订单查询指令
@@ -45,7 +47,7 @@ import com.publiccms.logic.service.trade.TradePaymentService;
 public class TradePaymentDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException{
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

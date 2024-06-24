@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 
+import freemarker.template.TemplateException;
+
 /**
  * exception 异常获取指令
  * <p>
@@ -24,7 +26,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class ExceptionDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Throwable throwable;
         try {
             throwable = (Throwable) handler.getRequest().getAttribute("jakarta.servlet.error.exception");

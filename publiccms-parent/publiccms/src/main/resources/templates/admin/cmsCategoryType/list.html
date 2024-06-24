@@ -24,6 +24,7 @@
                 <td>${a.sort!}</td>
                 <td class="wrap">
                     <a href="cmsCategoryType/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsCategoryType/edit"><i class="icon-edit"></i><@t.page 'category_type.edit'/></a>
+                    <a href="cmsCategoryType/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsCategoryType/add" title="<@t.page 'category_type.add'/>"><i class="icon-copy"></i><@t.page 'button.copy'/></a>
                     <a href="cmsCategoryType/categoryList.html?id=${a.id?url}" class="btnText" target="dialog" rel="categoryList"><i class="icon-folder-open"></i><@t.page 'category'/></a>
                     <a href="cmsCategoryType/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>

@@ -6,8 +6,8 @@
             <dt><@t.page 'decompress.position'/>:</dt>
             <dd>
                 <label><input type="radio" name="here" value="false" checked="checked"/><@t.page 'decompress.position.new'/>: ${path?keep_before_last('.')}/</label>
-                <label><input type="radio" name="here" value="true"/><@t.page 'decompress.position.here'/>: ${path?keep_before_last('/')}/</label>
-                <label><input type="checkbox" name="overwrite" checked="checked"><@t.page 'upload.overwrite'/></label>
+                <label><input type="radio" name="here" value="true"/><@t.page 'decompress.position.here'/>: ${path?contains('/')?then(path?keep_before_last('/'),'')}/</label>
+                <label><input type="checkbox" name="overwrite" class="form-check-input" checked="checked"><@t.page 'upload.overwrite'/></label>
             </dd>
         </dl>
         <dl class="nowrap">

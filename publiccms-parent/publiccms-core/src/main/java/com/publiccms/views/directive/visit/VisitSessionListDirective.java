@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.logic.service.visit.VisitSessionService;
+
+import freemarker.template.TemplateException;
+
 import com.publiccms.common.handler.PageHandler;
 
 /**
@@ -18,6 +21,7 @@ import com.publiccms.common.handler.PageHandler;
  * 参数列表
  * <ul>
  * <li><code>sessionId</code>:会话id
+ * <li><code>ip</code>:ip
  * <li><code>startVisitDate</code>:起始访问日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>endVisitDate</code>:终止访问日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>orderType</code>:排序类型,【asc:正序,desc:倒序】,默认为创建日期倒序
@@ -39,7 +43,7 @@ import com.publiccms.common.handler.PageHandler;
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/visit/sessionList?appToken=接口访问授权Token', function(data){    
-  console.log(data.totalCount);
+  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
  * </pre>
@@ -48,8 +52,8 @@ $.getJSON('${site.dynamicPath}api/directive/visit/sessionList?appToken=接口访
 public class VisitSessionListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("sessionId"),
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("sessionId"), handler.getString("ip"),
                 handler.getDate("startVisitDate"), handler.getDate("endVisitDate"), handler.getString("orderType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();

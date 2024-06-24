@@ -6,7 +6,7 @@
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'path'/>:</label>
-                    <label>${path?has_content?then(path+'/','/')}</label>
+                    <label>${path?has_content?then(path+'/','')}</label>
                 </li>
             </ul>
         </div>
@@ -19,7 +19,7 @@
             <li><a href="cmsWebFile/directory.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-folder-close-alt icon-large"></i><@t.page 'button.create_directory'/></a></li>
             <li><a href="cmsWebFile/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-upload icon-large"></i><@t.page 'button.upload_file'/></a></li>
             <li><a href="cmsWebFile/uploadIco.html?path=${(path?url)!}" target="dialog" mask="true" width="1000" height="600"><i class="icon-upload icon-large"></i><@t.page 'button.generate_ico'/></a></li>
-            <li><a href="cmsWebFile/zip?path=${path?has_content?then(path+'/','/')}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.compress_directory'/>" target="ajaxTodo"><i class="icon-upload icon-large"></i><@t.page 'button.compress_current_directory'/></a></li>
+            <li><a href="cmsWebFile/zip?path=${path?has_content?then(path+'/','')}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.compress_directory'/>" target="ajaxTodo"><i class="icon-upload icon-large"></i><@t.page 'button.compress_current_directory'/></a></li>
             <li><a href="cmsWebFile/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete_file'/>" target="selectedTodo" rel="paths"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
             <li><a href="cmsFileBackup/list.html?type=file&path=${(path?url)!}" target="navTab" rel="cmsFileBackup/list"><i class="bi bi-recycle"></i><@t.page 'recycle_bin'/></a></li>
         </ul>
@@ -43,7 +43,7 @@
                 <td></td>
                 <td class="tree"><div class="folder_expandable"></div></td>
                 <td>
-                    <a href="cmsWebFile/list.html?path=${path?keep_before_last('/')}" target="navTab" rel="cmsWebFile/list" title="<@t.page 'button.return'/>">
+                    <a href="cmsWebFile/list.html?path=${path?contains('/')?then(path?keep_before_last('/'),'')?url}" target="navTab" rel="cmsWebFile/list">
                         <@t.page 'button.return'/>
                     </a>
                 </td>
@@ -54,7 +54,7 @@
             </tr>
         </#if>
         <#list list as a>
-            <#if !a.directory><@t.merge 'paths' path?has_content?then(path+'/','/')+a.fileName/></#if>
+            <#if !a.directory><@t.merge 'paths' path?has_content?then(path+'/','')+a.fileName/></#if>
         </#list>
         <@sys.lock userId=admin.id itemType='file' itemIds=t.paths><#assign lockMap=map!/></@sys.lock>
         <#if lockMap?has_content>
@@ -64,17 +64,21 @@
         </#if>
         <@sys.user ids=t.userIds><#assign userMap=map!/></@sys.user>
         <#list list as a>
-            <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
+            <#assign filePath=path?has_content?then(path+'/','')+a.fileName/>
             <tr>
                 <td><input name="paths" value="${filePath}" type="checkbox"></td>
                 <td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
-                <td <#if !a.directory&&lockMap[filePath]?has_content><#assign lockUser=(userMap[lockMap[filePath].userId?string].nickname)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[filePath].createDate}"</#if>>
+                <td>
                     <#if a.directory>
                         <a href="cmsWebFile/list.html?path=${filePath?url}" target="navTab" rel="cmsWebFile/list">
                             ${a.fileName}
                         </a>
                     <#else>
-                        <#if lockMap[filePath]?has_content><i class="icon-lock icon-large"></i></#if>${a.fileName}
+                        <#if lockMap?has_content && lockMap[filePath]?has_content>
+                            <#assign lockUser=(userMap[lockMap[filePath].userId?string].nickname)!''/>
+                            <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[filePath].createDate}"></i>
+                        </#if>
+                        ${a.fileName}
                     </#if>
                 </td>
                 <td>${a.lastModifiedTime?datetime}</td>
@@ -88,9 +92,9 @@
                             <a href="cmsWebFile/unzipParameters.html?path=${filePath?url}" class="btnText blue" target="dialog" mask="true" width="500" height="250"><@t.page 'button.decompress'/></a>
                         </#if>
                         <#if editableSubfix?seq_contains(a.fileName?keep_after_last('.')?lower_case)>
-                          <a href="cmsWebFile/content.html?path=${filePath?url}" class="edit btnText blue" target="navTab" rel="cmsWebFile/content:${filePath}" icon="<i class='icon-edit'></i>" title="${a.fileName}"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
+                          <a href="cmsWebFile/content.html?path=${filePath?url}" class="edit btnText blue" target="navTab" rel="cmsWebFile/content:${filePath}" title="${a.fileName}"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
                         </#if>
-                        <a href="${site.sitePath+filePath?keep_after('/')}" class="btnText" target="_blank"><i class="icon-external-link"></i><@t.page 'button.view'/></a>
+                        <a href="${site.sitePath+filePath}" class="btnText" target="_blank"><i class="icon-external-link"></i><@t.page 'button.view'/></a>
                     </#if>
                 </td>
             </tr>

@@ -6,6 +6,6 @@ import org.hibernate.search.backend.lucene.analysis.LuceneAnalysisConfigurer;
 public class CmsLuceneAnalysisConfigurer implements LuceneAnalysisConfigurer {
     @Override
     public void configure(LuceneAnalysisConfigurationContext context) {
-        context.analyzer(CmsContentTextBinder.ANALYZER_NAME).custom().tokenizer(MultiTokenizerFactory.class).tokenFilter(MultiTokenFilterFactory.class);
+        context.analyzer(CmsContentAttributeBinder.ANALYZER_NAME).custom().tokenizer(MultiTokenizerFactory.class).tokenFilter(MultiTokenFilterFactory.class);
     }
 }

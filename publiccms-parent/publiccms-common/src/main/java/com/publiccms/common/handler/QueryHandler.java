@@ -4,11 +4,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
 import com.publiccms.common.constants.Constants;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -184,8 +186,8 @@ public class QueryHandler {
 
     public <T> TypedQuery<T> initQuery(TypedQuery<T> query, boolean pageable) {
         if (null != map) {
-            for (String key : map.keySet()) {
-                query.setParameter(key, map.get(key));
+            for (Entry<String, Object> entry : map.entrySet()) {
+                query.setParameter(entry.getKey(), entry.getValue());
             }
         }
         if (pageable) {
@@ -205,8 +207,8 @@ public class QueryHandler {
 
     public Query initQuery(Query query, boolean pageable) {
         if (null != map) {
-            for (String key : map.keySet()) {
-                query.setParameter(key, map.get(key));
+            for (Entry<String, Object> entry : map.entrySet()) {
+                query.setParameter(entry.getKey(), entry.getValue());
             }
         }
         if (pageable) {
@@ -231,7 +233,7 @@ public class QueryHandler {
         if (-1 != orderIndex) {
             sql = sql.substring(0, orderIndex);
         }
-        return COUNT_SQL + sql;
+        return CommonUtils.joinString(COUNT_SQL, sql);
     }
 
 }

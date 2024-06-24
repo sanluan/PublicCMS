@@ -235,7 +235,7 @@
             $(window).trigger(JUI.eventType.resizeChart);
         },
         close: function(dialog) {
-            if (typeof dialog == 'string' ) {
+            if (typeof dialog == "string" ) {
                 dialog = $("body").data(dialog);
             }
             var close = dialog.data("close");
@@ -265,7 +265,9 @@
             this._current = null;
         },
         closeCurrent: function() {
-            this.close($.pdialog._current);
+            if($.pdialog._current){
+                this.close($.pdialog._current);
+            }
         },
         checkTimeout: function() {
             var $conetnt = $(".dialogContent", $.pdialog._current);
@@ -281,7 +283,7 @@
             $("a.maximize", dialog).hide();
             $("a.restore", dialog).show();
             var iContentW = $(window).width();
-            var iContentH = $(window).height() - $('footer').height();
+            var iContentH = $(window).height() - $("footer").height();
             dialog.css({
                 top: "0px", left: "0px", width: iContentW + "px", height: iContentH + "px"
             });
@@ -327,8 +329,8 @@
  */
 ( function($) {
     $.fn.dialogDrag = function(options) {
-        if (typeof options == 'string' ) {
-            if (options == 'destroy' ) {
+        if (typeof options == "string" ) {
+            if (options == "destroy" ) {
                 return this.each(function() {
                     var dialog = this;
                     $("div.dialogHeader", dialog).off("mousedown");
@@ -396,11 +398,11 @@
 ( function($) {
     $.fn.extend({
         jresize: function(options) {
-            if (typeof options == 'string' ) {
-                if (options == 'destroy' ) {
+            if (typeof options == "string" ) {
+                if (options == "destroy" ) {
                     return this.each(function() {
                         var dialog = this;
-                        $("div[class^='resizable']", dialog).each(function() {
+                        $("div[class^=\"resizable\"]", dialog).each(function() {
                             $(this).hide();
                         });
                     });
@@ -409,7 +411,7 @@
             return this.each(function() {
                 var dialog = $(this);
                 var resizable = $(".resizable");
-                $("div[class^='resizable']", dialog).each(function() {
+                $("div[class^=\"resizable\"]", dialog).each(function() {
                     var bar = this;
                     $(bar).mousedown(function(event) {
                         $.pdialog.switchDialog(dialog);
@@ -423,14 +425,14 @@
     $.resizeTool = {
         start: function(resizable, dialog, e, target) {
             $.pdialog.initResize(resizable, dialog, target);
-            $.data(resizable[0], 'layer-drag', {
+            $.data(resizable[0], "layer-drag", {
                 options: $.extend($.pdialog._op, {
                     target: target, dialog: dialog, stop: $.resizeTool.stop
                 })
             });
             $.layerdrag.start(resizable[0], e, $.pdialog._op);
         }, stop: function() {
-            var data = $.data(arguments[0], 'layer-drag');
+            var data = $.data(arguments[0], "layer-drag");
             $.pdialog.resizeDialog(arguments[0], data.options.dialog, data.options.target);
             $("body").css("cursor", "");
             $(arguments[0]).hide();
@@ -443,8 +445,8 @@
                     el: obj, oleft: parseInt(obj.style.left) || 0, owidth: parseInt(obj.style.width) || 0, otop: parseInt(obj.style.top) || 0 ,
                     oheight: parseInt(obj.style.height) || 0, ox: e.pageX || e.screenX, oy: e.pageY || e.clientY
                 };
-                $(document).on('mouseup', null, null, $.layerdrag.stop);
-                $(document).on('mousemove', null, null, $.layerdrag.drag);
+                $(document).on("mouseup", null, null, $.layerdrag.stop);
+                $(document).on("mousemove", null, null, $.layerdrag.drag);
             }
             return $.layerdrag.preventEvent(e);
         }, drag: function(e) {
@@ -452,7 +454,7 @@
                 var e = window.event;
             }
             var current = $.layerdrag.current;
-            var data = $.data(current.el, 'layer-drag');
+            var data = $.data(current.el, "layer-drag");
             var lmove = ( e.pageX || e.screenX ) - current.ox;
             var tmove = ( e.pageY || e.clientY ) - current.oy;
             if ( ( e.pageY || e.clientY ) <= 0 || ( e.pageY || e.clientY ) >= ( $(window).height() - $(".dialogHeader", $(data.options.dialog)).outerHeight() ) ) {
@@ -466,10 +468,10 @@
             }
             if (width >= $.pdialog._op.minW ) {
                 if (target.indexOf("w") >= 0 ) {
-                    current.el.style.left = ( current.oleft + lmove ) + 'px';
+                    current.el.style.left = ( current.oleft + lmove ) + "px";
                 }
                 if (target != "n" && target != "s" ) {
-                    current.el.style.width = width + 'px';
+                    current.el.style.width = width + "px";
                 }
             }
             if (target != "w" && target != "e" ) {
@@ -477,18 +479,18 @@
             }
             if (height >= $.pdialog._op.minH ) {
                 if (target.indexOf("n") >= 0 ) {
-                    current.el.style.top = ( current.otop + tmove ) + 'px';
+                    current.el.style.top = ( current.otop + tmove ) + "px";
                 }
                 if (target != "w" && target != "e" ) {
-                    current.el.style.height = height + 'px';
+                    current.el.style.height = height + "px";
                 }
             }
             return $.layerdrag.preventEvent(e);
         }, stop: function(e) {
             var current = $.layerdrag.current;
-            var data = $.data(current.el, 'layer-drag');
-            $(document).off('mousemove', null, $.layerdrag.drag);
-            $(document).off('mouseup', null, $.layerdrag.stop);
+            var data = $.data(current.el, "layer-drag");
+            $(document).off("mousemove", null, $.layerdrag.drag);
+            $(document).off("mouseup", null, $.layerdrag.stop);
             if (data.options.stop ) {
                 data.options.stop.apply(current.el, [ current.el ]);
             }

@@ -7,6 +7,9 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.cms.CmsUserVoteService;
+
+import freemarker.template.TemplateException;
+
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.handler.PageHandler;
@@ -38,7 +41,7 @@ import com.publiccms.common.handler.PageHandler;
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/cms/userVoteList?userId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
- console.log(data.totalCount);
+ console.log(data.page.totalCount);
 });
 &lt;/script&gt;
  * </pre>
@@ -47,9 +50,9 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userVoteList?userId=1&amp;pageSi
 public class CmsUserVoteListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(handler.getLong("userId"), handler.getLong("voteId"), handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
+        PageHandler page = service.getPage(handler.getLong("userId"), handler.getLong("voteId"), handler.getBoolean("anonymous"),
+                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
 

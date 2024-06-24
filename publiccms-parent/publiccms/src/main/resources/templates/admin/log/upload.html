@@ -1,4 +1,4 @@
-<@log.uploadList userId=userId channel=channel fileTypes=fileTypes originalName=originalName filePath=filePath orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@log.uploadList userId=userId channel=channel privatefile=privatefile fileTypes=fileTypes originalName=originalName filePath=filePath orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -13,10 +13,16 @@
                     <input type="text" name="channel" value="${channel!}"/>
                 </li>
                 <li>
+                    <label>
+                        <input name="privatefile" type="checkbox" class="form-check-input"<#if privatefile?has_content && "true"=privatefile> checked="checked"</#if> value="true"/>
+                        <@t.page 'privatefile'/>
+                    </label>
+                </li>
+                <li>
                     <label><@t.page 'file_type'/>:</label>
                     <#list ['image','video','audio','other'] as a>
                         <label>
-                            <input <@t.compare fileTypes a 'checked="checked"'/> name="fileTypes" value="${a}" type="checkbox"/>
+                            <input name="fileTypes" value="${a}" type="checkbox" class="form-check-input"<@t.compare fileTypes a ' checked="checked"'/>/>
                             <@t.page 'file_type.'+a/>
                         </label>
                     </#list>
@@ -89,10 +95,16 @@
                 </td>
                 <td>${a.createDate!}</td>
                 <td>
-                    <a href="cmsWebFile/list.html?path=${a.filePath?keep_before_last('/')}" target="navTab" rel="cmsWebFile/list" icon="<i class='icon-globe icon-large'></i>" title="<@t.page 'webfile'/>">
+                    <#if a.privatefile>
                         ${(a.filePath)!}
-                    </a>
-                    <a href="${getUrl(a.filePath)!}" target="_blank"><i class="icon-external-link"></i></a>
+                        <a href="${getPrivateUrl(a.filePath)!}" target="_blank"><i class="icon-external-link"></i></a>
+                        <a href="${getPrivateUrl(a.filePath)!}" download="${a.originalName}"><i class="bi bi-download"></i></a>
+                    <#else>
+                        <a href="cmsWebFile/list.html?path=${a.filePath?keep_before_last('/')}" target="navTab" rel="cmsWebFile/list" title="<@t.page 'webfile'/>">
+                            ${(a.filePath)!}
+                        </a>
+                        <a href="${getUrl(a.filePath)!}" target="_blank"><i class="icon-external-link"></i></a>
+                    </#if>
                 </td>
             </tr>
             </#list>

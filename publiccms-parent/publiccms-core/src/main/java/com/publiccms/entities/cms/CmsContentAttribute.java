@@ -40,10 +40,6 @@ public class CmsContentAttribute implements java.io.Serializable {
     @GeneratorColumn(title = "数据字典值")
     @JsonIgnore
     private String dictionaryValues;
-    @GeneratorColumn(title = "扩展文本")
-    private String extendsText;
-    @GeneratorColumn(title = "扩展文本字段")
-    private String extendsFields;
     @GeneratorColumn(title = "附件文本")
     private String filesText;
     @GeneratorColumn(title = "最低价格")
@@ -63,7 +59,7 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.wordCount = wordCount;
     }
 
-    public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, int wordCount,BigDecimal minPrice,
+    public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, int wordCount, BigDecimal minPrice,
             BigDecimal maxPrice) {
         this.contentId = contentId;
         this.source = source;
@@ -75,7 +71,7 @@ public class CmsContentAttribute implements java.io.Serializable {
     }
 
     public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, String searchText,
-            String dictionaryValues, String extendsText,String extendsFields, String filesText, BigDecimal minPrice,
+            String dictionaryValues, String filesText, BigDecimal minPrice,
             BigDecimal maxPrice, String text, int wordCount) {
         this.contentId = contentId;
         this.source = source;
@@ -83,8 +79,6 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.data = data;
         this.searchText = searchText;
         this.dictionaryValues = dictionaryValues;
-        this.extendsText = extendsText;
-        this.extendsFields = extendsFields;
         this.filesText = filesText;
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
@@ -145,24 +139,6 @@ public class CmsContentAttribute implements java.io.Serializable {
 
     public void setDictionaryValues(String dictionaryValues) {
         this.dictionaryValues = dictionaryValues;
-    }
-
-    @Column(name = "extends_text", length = 65535)
-    public String getExtendsText() {
-        return this.extendsText;
-    }
-
-    public void setExtendsText(String extendsText) {
-        this.extendsText = extendsText;
-    }
-
-    @Column(name = "extends_fields", length = 65535)
-    public String getExtendsFields() {
-        return this.extendsFields;
-    }
-
-    public void setExtendsFields(String extendsFields) {
-        this.extendsFields = extendsFields;
     }
 
     @Column(name = "files_text", length = 65535)

@@ -1,5 +1,6 @@
 package com.publiccms.common.tools;
 
+import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -12,11 +13,14 @@ import java.security.Signature;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -29,6 +33,9 @@ import com.publiccms.common.constants.Constants;
  *
  */
 public class VerificationUtils {
+
+    private VerificationUtils() {
+    }
 
     /**
      * @param text
@@ -120,7 +127,7 @@ public class VerificationUtils {
             signature.initVerify(getPublicKey(publicKey));
             signature.update(data);
             return signature.verify(sign);
-        } catch (Throwable e) {
+        } catch (GeneralSecurityException e) {
             return false;
         }
     }
@@ -138,76 +145,8 @@ public class VerificationUtils {
             signature.initSign(getPrivateKey(privateKey));
             signature.update(data);
             return signature.sign();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /**
-     * 公钥加密
-     *
-     * @param publicKey
-     * @param input
-     * @return public key encode result
-     */
-    public static byte[] publicKeyEncode(byte[] publicKey, byte[] input) {
-        try {
-            Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(publicKey));
-            return cipher.doFinal(input);
-        } catch (Exception e) {
-            return input;
-        }
-    }
-
-    /**
-     * 公钥解密
-     *
-     * @param publicKey
-     * @param input
-     * @return public key decode result
-     */
-    public static byte[] publicKeyDecode(byte[] publicKey, byte[] input) {
-        try {
-            Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.DECRYPT_MODE, getPublicKey(publicKey));
-            return cipher.doFinal(input);
-        } catch (Exception e) {
-            return input;
-        }
-    }
-
-    /**
-     * 私钥加密
-     *
-     * @param privateKey
-     * @param input
-     * @return private key decode result
-     */
-    public static byte[] privateKeyDecode(byte[] privateKey, byte[] input) {
-        try {
-            Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.ENCRYPT_MODE, getPrivateKey(privateKey));
-            return cipher.doFinal(input);
-        } catch (Exception e) {
-            return input;
-        }
-    }
-
-    /**
-     * 私钥解密
-     *
-     * @param privateKey
-     * @param input
-     * @return private key encode result
-     */
-    public static byte[] privateKeyEncode(byte[] privateKey, byte[] input) {
-        try {
-            Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.DECRYPT_MODE, getPrivateKey(privateKey));
-            return cipher.doFinal(input);
-        } catch (Exception e) {
-            return input;
+        } catch (GeneralSecurityException e) {
+            return Constants.EMPTY_BYTE_ARRAY;
         }
     }
 
@@ -281,24 +220,55 @@ public class VerificationUtils {
         return encode(input, "SHA-256");
     }
 
+    private static byte[] iv = "1245656789012334".getBytes(Constants.DEFAULT_CHARSET);
+
     /**
-     * 3-DES加密
+     * AES加密
      *
      * @param input
      * @param key
-     * @return 3-DES encode result
+     * @return AES encode result
      */
-
-    public static byte[] encrypt(String input, String key) {
+    public static byte[] encryptAES(String input, String key) {
         try {
-            byte[] sha1Key = sha1Encode(key).getBytes(Constants.DEFAULT_CHARSET);
-            DESedeKeySpec dks = new DESedeKeySpec(sha1Key);
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
-            Cipher cipher = Cipher.getInstance("DESede");
-            cipher.init(Cipher.ENCRYPT_MODE, keyFactory.generateSecret(dks));
+            byte[] keybyte = CommonUtils.keep(key, 16, null).getBytes(Constants.DEFAULT_CHARSET);
+            if (keybyte.length < 16) {
+                int lenght = keybyte.length;
+                keybyte = Arrays.copyOf(keybyte, 16);
+                System.arraycopy(iv, 0, keybyte, lenght, 16 - lenght);
+            }
+            SecretKeySpec secretKeySpec = new SecretKeySpec(keybyte, "AES");
+            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, new GCMParameterSpec(128, iv));
             return cipher.doFinal(input.getBytes(Constants.DEFAULT_CHARSET));
-        } catch (Exception e) {
-            return null;
+        } catch (GeneralSecurityException e) {
+            return Constants.EMPTY_BYTE_ARRAY;
+        }
+    }
+
+    /**
+     *
+     * AES解密
+     *
+     * @param input
+     * @param key
+     * @return 3-DES decode result
+     */
+    public static String decryptAES(byte[] input, String key) {
+        try {
+            byte[] keybyte = CommonUtils.keep(key, 16, null).getBytes(Constants.DEFAULT_CHARSET);
+            if (keybyte.length < 16) {
+                int lenght = keybyte.length;
+                keybyte = Arrays.copyOf(keybyte, 16);
+                System.arraycopy(iv, 0, keybyte, lenght, 16 - lenght);
+            }
+            SecretKeySpec secretKeySpec = new SecretKeySpec(keybyte, "AES");
+            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new GCMParameterSpec(128, iv));
+            byte[] ciphertext = cipher.doFinal(input);
+            return new String(ciphertext, Constants.DEFAULT_CHARSET);
+        } catch (GeneralSecurityException e) {
+            return Constants.BLANK;
         }
     }
 
@@ -306,11 +276,13 @@ public class VerificationUtils {
      *
      * 3-DES解密
      *
+     * @deprecated 
      * @param input
      * @param key
      * @return 3-DES decode result
      */
-    private static String decrypt3DES(byte[] input, String key) {
+    @Deprecated
+    public static String decrypt3DES(byte[] input, String key) {
         try {
             byte[] sha1Key = sha1Encode(key).getBytes(Constants.DEFAULT_CHARSET);
             DESedeKeySpec dks = new DESedeKeySpec(sha1Key);
@@ -318,30 +290,18 @@ public class VerificationUtils {
             SecretKey sKey = keyFactory.generateSecret(dks);
             Cipher cipher = Cipher.getInstance("DESede");
             cipher.init(Cipher.DECRYPT_MODE, sKey);
-            byte ciphertext[] = cipher.doFinal(input);
+            byte[] ciphertext = cipher.doFinal(input);
             return new String(ciphertext, Constants.DEFAULT_CHARSET);
-        } catch (Exception e) {
+        } catch (GeneralSecurityException e) {
             return Constants.BLANK;
         }
-    }
-
-    /**
-     *
-     * 解密
-     *
-     * @param input
-     * @param key
-     * @return decode result
-     */
-    public static String decrypt(byte[] input, String key) {
-        return decrypt3DES(input, key);
     }
 
     /**
      * @param buffer
      * @return hex
      */
-    public static String byteToHex(byte buffer[]) {
+    public static String byteToHex(byte[] buffer) {
         StringBuilder sb = new StringBuilder(buffer.length * 2);
         for (int i = 0; i < buffer.length; i++) {
             sb.append(Character.forDigit((buffer[i] & 240) >> 4, 16));

@@ -1,25 +1,25 @@
 <#ftl output_format="JSON">
-{<#assign attribute=getContentAttribute(content.id)/>
+{<#assign attribute=content.attribute/>
     <@cms.category id=content.categoryId>
         <#assign category=object/>
     </@cms.category>
-    "id":${content.id?cn},
-    "cover":${content.cover?cn},
-    "title":${content.title?cn},
-    "url":${content.url?cn},
-    "description":${(content.description)?cn},
-    "categoryId":${content.categoryId?cn},
-    "categoryTitle":${category.name?cn},
-    "categoryUrl":${category.url?cn},
-    "editor":${content.editor?cn},
-    "publishDate":${content.publishDate?string?cn},
-    "text":${(attribute.text?html)?cn},
-    "sourceUrl":${(attribute.sourceUrl)?cn},
-    "source":${(attribute.source)?cn}<#if content.hasFiles>
+    "id":"${content.id}",
+    "cover":"${content.cover!}",
+    "title":"${content.title!}",
+    "url":"${content.url!}",
+    "description":"${content.description!}",
+    "categoryId":"${content.categoryId!}",
+    "categoryTitle":"${category.name!}",
+    "categoryUrl":"${category.url!}",
+    "editor":"${content.editor!}",
+    "publishDate":"${content.publishDate?string}",
+    "text":"${(attribute.text?html)!}",
+    "sourceUrl":"${(attribute.sourceUrl)!}",
+    "source":"${(attribute.source)!}"<#if content.hasFiles>
     ,"files":[<@cms.contentFileList contentId=content.id fileTypes='video,audio,other'><#list page.list as file>
-        {"filePath":${(file.filePath)?cn}}<#sep>,</#list></@cms.contentFileList>
+        {"filePath":"${(file.filePath)!}}"<#sep>,</#list></@cms.contentFileList>
     ]</#if><#if content.hasImages>
     ,"images":[<@cms.contentFileList contentId=content.id fileTypes='image'><#list page.list as file>
-        {"filePath":${(file.filePath)?cn}}<#sep>,</#list></@cms.contentFileList>
+        {"filePath":"${(file.filePath)!}}"<#sep>,</#list></@cms.contentFileList>
     ]</#if>
 }

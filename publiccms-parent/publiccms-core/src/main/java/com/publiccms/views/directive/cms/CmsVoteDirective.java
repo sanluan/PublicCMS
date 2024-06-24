@@ -16,6 +16,8 @@ import com.publiccms.entities.cms.CmsVote;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsVoteService;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * vote 投票查询指令
@@ -46,7 +48,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/vote?id=1', function(data){
 public class CmsVoteDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {

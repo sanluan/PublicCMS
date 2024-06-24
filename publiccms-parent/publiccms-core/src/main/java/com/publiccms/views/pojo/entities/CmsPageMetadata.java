@@ -82,12 +82,6 @@ public class CmsPageMetadata implements java.io.Serializable {
     private Map<String, ParameterType> parameterTypeMap;
 
     /**
-     * 
-     */
-    public CmsPageMetadata() {
-    }
-
-    /**
      * @return alias
      */
     public String getAlias() {

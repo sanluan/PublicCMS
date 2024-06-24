@@ -20,24 +20,29 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.api.AdminContextPath;
 import com.publiccms.common.api.Cache;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.entities.cms.CmsCategory;
-import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsPlace;
+import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.BeanComponent;
+import com.publiccms.logic.component.config.ConfigDataComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.config.SiteConfigComponent;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
@@ -45,6 +50,7 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.views.pojo.entities.CmsCategoryType;
 import com.publiccms.views.pojo.entities.CmsModel;
@@ -63,7 +69,7 @@ import jakarta.annotation.Resource;
  *
  */
 @Component
-public class TemplateComponent implements Cache {
+public class TemplateComponent implements Cache, AdminContextPath {
     protected final Log log = LogFactory.getLog(getClass());
     /**
      * 包含目录 include directory
@@ -97,6 +103,14 @@ public class TemplateComponent implements Cache {
     @Resource
     private CmsPlaceService placeService;
     @Resource
+    private CmsPlaceAttributeService placeAttributeService;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
+    @Resource
+    protected ConfigDataComponent configDataComponent;
+    @Resource
+    protected ContentConfigComponent contentConfigComponent;
+    @Resource
     private StatisticsComponent statisticsComponent;
 
     private static ExecutorService pool = Executors.newFixedThreadPool(2 * Runtime.getRuntime().availableProcessors());
@@ -120,24 +134,17 @@ public class TemplateComponent implements Cache {
         if (CommonUtils.empty(pageIndex)) {
             pageIndex = 1;
         }
-        initCategoryUrl(site, entity);
+        CmsUrlUtils.initCategoryUrl(site, entity);
+        entity.setAttribute(ExtendUtils.getAttributeMap(categoryAttributeService.getEntity(entity.getId())));
         model.put("category", entity);
-        CmsCategoryAttribute attribute = categoryAttributeService.getEntity(entity.getId());
-        if (null != attribute) {
-            Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
-            map.put("title", attribute.getTitle());
-            map.put("keywords", attribute.getKeywords());
-            map.put("description", attribute.getDescription());
-            model.put("attribute", map);
-        } else {
-            model.put("attribute", attribute);
-        }
+        model.put("attribute", entity.getAttribute());
+
         String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
         Map<String, Object> metadataMap = metadata.getAsMap(data);
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site.getId(), templatePath);
-        if (CommonUtils.notEmpty(totalPage) && pageIndex + 1 <= totalPage) {
+        if (CommonUtils.notEmpty(totalPage) && pageIndex < totalPage) {
             for (int i = pageIndex + 1; i <= totalPage; i++) {
                 createStaticFile(site, fullTemplatePath, filepath, i, metadataMap, model, url -> {
                     if (null == entity.getUrl()) {
@@ -172,26 +179,17 @@ public class TemplateComponent implements Cache {
             String templatePath, String filepath, Integer pageIndex) throws IOException, TemplateException {
         Map<String, Object> model = new HashMap<>();
 
-        initContentUrl(site, entity);
-        initContentCover(site, entity);
-        initCategoryUrl(site, category);
-
-        model.put("content", entity);
-        model.put("category", category);
+        CmsUrlUtils.initContentUrl(site, entity);
+        fileUploadComponent.initContentCover(site, entity);
+        CmsUrlUtils.initCategoryUrl(site, category);
 
         CmsContentAttribute attribute = contentAttributeService.getEntity(entity.getId());
-        if (null != attribute) {
-            Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
-            map.put("text", attribute.getText());
-            map.put("source", attribute.getSource());
-            map.put("sourceUrl", attribute.getSourceUrl());
-            map.put("wordCount", String.valueOf(attribute.getWordCount()));
-            map.put("minPrice", String.valueOf(attribute.getMinPrice()));
-            map.put("maxPrice", String.valueOf(attribute.getMaxPrice()));
-            model.put("attribute", map);
-        } else {
-            model.put("attribute", attribute);
-        }
+        KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
+        entity.setAttribute(ExtendUtils.getAttributeMap(attribute, config));
+        model.put("content", entity);
+        model.put("attribute", entity.getAttribute());
+        model.put("category", category);
+
         String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
         CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
@@ -203,8 +201,6 @@ public class TemplateComponent implements Cache {
                 pageBreakTag = CommonConstants.getCkeditorPageBreakTag();
             } else if (-1 < attribute.getText().indexOf(CommonConstants.getTinyMCEPageBreakTag())) {
                 pageBreakTag = CommonConstants.getTinyMCEPageBreakTag();
-            } else if (-1 < attribute.getText().indexOf(CommonConstants.getKindEditorPageBreakTag())) {
-                pageBreakTag = CommonConstants.getKindEditorPageBreakTag();
             } else {
                 pageBreakTag = CommonConstants.getUeditorPageBreakTag();
             }
@@ -213,7 +209,7 @@ public class TemplateComponent implements Cache {
                 for (int i = 1; i < texts.length; i++) {
                     PageHandler page = new PageHandler(i + 1, 1);
                     page.setTotalCount(texts.length);
-                    model.put("text", texts[i]);
+                    model.put("text", ExtendUtils.replaceText(texts[i], config));
                     model.put("page", page);
                     createStaticFile(site, fullTemplatePath, filepath, i + 1, metadataMap, model, url -> {
                         if (null == entity.getUrl()) {
@@ -226,7 +222,7 @@ public class TemplateComponent implements Cache {
             PageHandler page = new PageHandler(pageIndex, 1);
             page.setTotalCount(texts.length);
             model.put("page", page);
-            model.put("text", texts[page.getPageIndex() - 1]);
+            model.put("text", ExtendUtils.replaceText(texts[page.getPageIndex() - 1], config));
         }
         return createStaticFile(site, fullTemplatePath, filepath, pageIndex, metadataMap, model, url -> {
             if (null == entity.getUrl()) {
@@ -287,6 +283,10 @@ public class TemplateComponent implements Cache {
                         }
                     } else if (CommonUtils.notEmpty(contentPath)) {
                         Map<String, Object> modelMap = new HashMap<>();
+                        CmsUrlUtils.initContentUrl(site, entity);
+                        fileUploadComponent.initContentCover(site, entity);
+                        CmsUrlUtils.initCategoryUrl(site, category);
+                        entity.setAttribute(ExtendUtils.getAttributeMap(contentAttributeService.getEntity(entity.getId()), null));
                         modelMap.put("content", entity);
                         modelMap.put("category", category);
                         modelMap.put(CommonConstants.getAttributeSite(), site);
@@ -327,8 +327,7 @@ public class TemplateComponent implements Cache {
                 templatePath = entity.getTemplatePath();
                 categoryPath = entity.getPath();
             } else {
-                Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(),
-                        Config.CONFIG_CODE_SITE);
+                Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
                 if (CommonUtils.notEmpty(entity.getTypeId())) {
                     CmsCategoryType categoryType = modelComponent.getCategoryType(site.getId(), entity.getTypeId());
                     if (null != categoryType) {
@@ -352,7 +351,8 @@ public class TemplateComponent implements Cache {
                 return true;
             } else if (CommonUtils.notEmpty(categoryPath)) {
                 Map<String, Object> model = new HashMap<>();
-                initCategoryUrl(site, entity);
+                CmsUrlUtils.initCategoryUrl(site, entity);
+                entity.setAttribute(ExtendUtils.getAttributeMap(categoryAttributeService.getEntity(entity.getId())));
                 model.put("category", entity);
                 model.put(CommonConstants.getAttributeSite(), site);
                 String filepath = FreeMarkerUtils.generateStringByString(categoryPath, webConfiguration, model);
@@ -383,6 +383,7 @@ public class TemplateComponent implements Cache {
             try {
                 future.get();
             } catch (InterruptedException | ExecutionException e) {
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -421,7 +422,7 @@ public class TemplateComponent implements Cache {
         if (CommonUtils.notEmpty(templatePath)) {
             Map<String, Object> model = new HashMap<>();
             exposePlace(site, templatePath, metadata, data, model);
-            String placeTemplatePath = INCLUDE_DIRECTORY + templatePath;
+            String placeTemplatePath = CommonUtils.joinString(INCLUDE_DIRECTORY, templatePath);
             String templateFullPath = SiteComponent.getFullTemplatePath(site.getId(), placeTemplatePath);
             FreeMarkerUtils.generateFileByFile(templateFullPath, siteComponent.getWebFilePath(site.getId(), placeTemplatePath),
                     webConfiguration, model);
@@ -462,7 +463,8 @@ public class TemplateComponent implements Cache {
         if (CommonUtils.notEmpty(templatePath)) {
             Map<String, Object> model = new HashMap<>();
             exposePlace(site, templatePath, metadata, data, model);
-            String templateFullPath = SiteComponent.getFullTemplatePath(site.getId(), INCLUDE_DIRECTORY + templatePath);
+            String templateFullPath = SiteComponent.getFullTemplatePath(site.getId(),
+                    CommonUtils.joinString(INCLUDE_DIRECTORY, templatePath));
             FreeMarkerUtils.generateStringByFile(writer, templateFullPath, webConfiguration, model);
         }
     }
@@ -489,94 +491,32 @@ public class TemplateComponent implements Cache {
                 model = new HashMap<>();
             }
             model.put("metadata", metadataMap);
-            model.put("pageIndex", pageIndex);
+            model.put(CommonConstants.DEFAULT_PAGEINDEX, pageIndex);
             AbstractFreemarkerView.exposeSite(model, site);
             filepath = FreeMarkerUtils.generateStringByString(filepath, webConfiguration, model);
-            if (filepath.startsWith(CommonConstants.SEPARATOR)) {
+            if (filepath.startsWith(Constants.SEPARATOR)) {
                 filepath = filepath.substring(1);
             }
-            String fullPath = site.getSitePath() + filepath;
+            String fullPath = CommonUtils.joinString(site.getSitePath(), filepath);
             model.put("url", fullPath);
             if (null != urlConsumer) {
                 urlConsumer.accept(fullPath);
             }
             String staticFilePath;
-            if (filepath.endsWith(CommonConstants.SEPARATOR)) {
-                staticFilePath = filepath + CommonConstants.getDefaultPage();
+            if (filepath.endsWith(Constants.SEPARATOR)) {
+                staticFilePath = CommonUtils.joinString(filepath, CommonConstants.getDefaultPage());
             } else {
                 staticFilePath = filepath;
             }
             if (CommonUtils.notEmpty(pageIndex) && 1 < pageIndex) {
-                int index = staticFilePath.lastIndexOf(CommonConstants.DOT);
-                staticFilePath = staticFilePath.substring(0, index) + CommonConstants.UNDERLINE + pageIndex
-                        + staticFilePath.substring(index, staticFilePath.length());
+                int index = staticFilePath.lastIndexOf(Constants.DOT);
+                staticFilePath = CommonUtils.joinString(staticFilePath.substring(0, index), Constants.UNDERLINE, pageIndex,
+                        staticFilePath.substring(index, staticFilePath.length()));
             }
             FreeMarkerUtils.generateFileByFile(fullTemplatePath, siteComponent.getWebFilePath(site.getId(), staticFilePath),
                     webConfiguration, model);
         }
         return filepath;
-    }
-
-    /**
-     * @param site
-     * @param entity
-     */
-    public void initPlaceUrl(SysSite site, CmsPlace entity) {
-        entity.setCover(getUrl(site, true, entity.getCover()));
-        entity.setUrl(getUrl(site, site.isUseStatic(), entity.getUrl()));
-    }
-
-    /**
-     * @param site
-     * @param entity
-     */
-    public static void initContentUrl(SysSite site, CmsContent entity) {
-        entity.setUrl(getUrl(site, entity.isHasStatic(), entity.getUrl()));
-    }
-
-    /**
-     * @param site
-     * @param entity
-     */
-    public static void initContentCover(SysSite site, CmsContent entity) {
-        entity.setCover(getUrl(site, true, entity.getCover()));
-    }
-
-    /**
-     * @param site
-     * @param hasStatic
-     * @param url
-     * @return
-     */
-    public static String getUrl(SysSite site, boolean hasStatic, String url) {
-        if (CommonUtils.empty(url) || url.contains("://") || url.startsWith("//") || url.startsWith("#")) {
-            return url;
-        } else {
-            return hasStatic ? getUrl(site.getSitePath(), url) : getUrl(site.getDynamicPath(), url);
-        }
-    }
-
-    /**
-     * @param sitePath
-     * @param url
-     * @return
-     */
-    public static String getUrl(String sitePath, String url) {
-        if (CommonUtils.empty(url) || url.contains("://") || url.startsWith("//") || url.startsWith("#")) {
-            return url;
-        } else {
-            return sitePath + url;
-        }
-    }
-
-    /**
-     * @param site
-     * @param entity
-     */
-    public static void initCategoryUrl(SysSite site, CmsCategory entity) {
-        if (!entity.isOnlyUrl()) {
-            entity.setUrl(getUrl(site, entity.isHasStatic(), entity.getUrl()));
-        }
     }
 
     private void exposePlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, CmsPageData data,
@@ -588,12 +528,17 @@ public class TemplateComponent implements Cache {
             @SuppressWarnings("unchecked")
             List<CmsPlace> list = (List<CmsPlace>) page.getList();
             if (null != list) {
+                Long[] ids = list.stream().map(CmsPlace::getId).toArray(Long[]::new);
+                List<CmsPlaceAttribute> attributeList = placeAttributeService.getEntitys(ids);
+                Map<Long, CmsPlaceAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getPlaceId());
                 list.forEach(e -> {
                     Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
                     if (null != clicks) {
                         e.setClicks(e.getClicks() + clicks);
                     }
-                    initPlaceUrl(site, e);
+                    CmsUrlUtils.initPlaceUrl(site, e);
+                    fileUploadComponent.initPlaceCover(site, e);
+                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
                 });
             }
             model.put("page", page);
@@ -603,6 +548,7 @@ public class TemplateComponent implements Cache {
         AbstractFreemarkerView.exposeSite(model, site);
     }
 
+    @Override
     public void setAdminContextPath(String adminContextPath) {
         try {
             adminConfiguration.setSharedVariable(CONTEXT_ADMIN_CONTEXT_PATH, adminContextPath);

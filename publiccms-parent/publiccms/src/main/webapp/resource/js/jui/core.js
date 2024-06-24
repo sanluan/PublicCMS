@@ -2,7 +2,7 @@
  * @author ZhangHuihua@msn.com
  */
 var JUI = {
-    version: "1.6.2" ,
+    version: "1.7.0" ,
     regPlugins: [ ], // [function($parent){} ...]
     // sbar: show sidebar
     keyCode: {
@@ -31,9 +31,6 @@ var JUI = {
     } ,
     keys: {
         statusCode: "statusCode", message: "message"
-    } ,
-    ui: {
-        sbar: true
     } ,
     frag: {}, // page fragment
     _msg: {}, // alert message
@@ -100,8 +97,8 @@ var JUI = {
     } ,
     jsonEval: function(data) {
         try {
-            if (typeof data == 'string' ) {
-                return eval('(' + data + ')');
+            if (typeof data == "string" ) {
+                return eval("(" + data + ")");
             } else {
                 return data;
             }
@@ -110,23 +107,29 @@ var JUI = {
         }
     } ,
     ajaxError: function(xhr, ajaxOptions, thrownError) {
-        if (alertMsg ) {
-            if('undefined' == typeof thrownError||"" ==thrownError){
-                var exception = $($.parseHTML(xhr.responseText, document, true)).find('#divexception textarea');
-                if(exception.length){
-                    thrownError=exception.val();
-                }
+        if("undefined" == typeof thrownError||"" ==thrownError){
+            var exception = $($.parseHTML(xhr.responseText, document, true)).find("#divexception textarea");
+            if(exception.length){
+                thrownError=exception.val();
+            }else if(0===xhr.status){
+                thrownError = JUI.msg("networkError");
             }
-            alertMsg.error("<div>Http status: " + xhr.status + " " + xhr.statusText + "</div>" + "<div>ajaxOptions: " + ajaxOptions + "</div>" + "<div>thrownError: " + thrownError
-                    + "</div>");
+        }
+        if (alertMsg ) {
+            alertMsg.error("<div>Http status: " + xhr.status + " " + xhr.statusText + "</div>" + "<div>ajaxOptions: " + ajaxOptions + "</div>" + "<div>thrownError: " + thrownError + "</div>");
         } else {
-            alert("Http status: " + xhr.status + " " + xhr.statusText + "\najaxOptions: " + ajaxOptions + "\nthrownError:" + thrownError + "\n" + xhr.responseText);
+            alert("Http status: " + xhr.status + " " + xhr.statusText + "\najaxOptions: " + ajaxOptions + "\nthrownError:" + thrownError);
         }
     },
     ajaxDone: function(json) {
         if (json[JUI.keys.statusCode] == JUI.statusCode.error ) {
             if (json[JUI.keys.message] && alertMsg ) {
                 alertMsg.error(json[JUI.keys.message]);
+            }
+            if (json["fields"]){
+                $.each(json["fields"].split(","),function(index,field){
+                    $("[name="+escapeJquery(field)+"]", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).addClass("error");
+                })
             }
         } else if (json[JUI.keys.statusCode] == JUI.statusCode.timeout ) {
             if (alertMsg ){
@@ -161,7 +164,7 @@ var JUI = {
         $.extend(JUI.keys, op.keys);
         $.extend(JUI.pageInfo, op.pageInfo);
         $.ajax({
-            type: 'GET', url: pageFrag, dataType: 'html', cache: false, error: function(xhr) {
+            type: "GET", url: pageFrag, dataType: "html", cache: false, error: function(xhr) {
                 alert(xhr.statusText);
             }, success: function(html) {
                 $($.parseHTML(html, document, true)).each(function() {
@@ -191,7 +194,7 @@ var JUI = {
                 var box = event.target;
                 var $box = $(box);
                 $("textarea.editor", $box).each(function() {
-                    if('ckeditor'==$(this).attr('editorType')) {
+                    if("ckeditor"==$(this).attr("editorType")) {
                         if(CKEDITOR.instances[$(this).data("id")]) {
                             CKEDITOR.instances[$(this).data("id")].updateElement();
                         }
@@ -199,8 +202,6 @@ var JUI = {
                         if(tinymce.get($(this).data("id"))) {
                             tinymce.get($(this).data("id")).save();
                         }
-                    } else if ("kindeditor"==$(this).attr("editorType")){
-                        KindEditor.sync('#'+$(this).data("id"));
                     } else {
                         if(UE.instants[$(this).data("id")]) {
                             UE.instants[$(this).data("id")].sync();
@@ -226,14 +227,12 @@ var JUI = {
                 var box = event.target;
                 var $box = $(box);
                 $("textarea.editor", $box).each(function() {
-                    if('ckeditor'==$(this).attr('editorType')) {
+                    if("ckeditor"==$(this).attr("editorType")) {
                         if(CKEDITOR.instances[$(this).data("id")]) {
                             CKEDITOR.instances[$(this).data("id")].destroy();
                         }
                     } else if("tinymce"==$(this).attr("editorType")) {
-                        tinymce.remove('#'+$(this).data("id"));
-                    } else if("kindeditor"==$(this).attr("editorType")) {
-                        KindEditor.remove('#'+$(this).data("id"));
+                        tinymce.remove("#"+$(this).data("id"));
                     } else {
                         if(UE.instants[$(this).data("id")]) {
                             UE.instants[$(this).data("id")].destroy();
@@ -248,11 +247,10 @@ var JUI = {
                 });
                 $(".image-editor", $box).each(function() {
                     if(JUI.instances[$(this).data("id")]) {
-                        JUI.instances[$(this).data("id")].destroy();
                         delete JUI.instances[$(this).data("id")];
                     }
                 });
-                $('[close-url]',$box).each(function (){
+                $("[close-url]",$box).each(function (){
                     $.getJSON($(this).attr("close-url"), function(data) {});
                 });
             });
@@ -284,7 +282,7 @@ var JUI = {
             var $this = $(this);
             $this.trigger(JUI.eventType.pageClear);
             $.ajax({
-                type: op.type || 'GET', url: op.url, data: op.data, cache: false, success: function(response) {
+                type: op.type || "GET", url: op.url, data: op.data, cache: false, success: function(response) {
                     var json = JUI.jsonEval(response);
                     if (json[JUI.keys.statusCode] == JUI.statusCode.error ) {
                         if (json[JUI.keys.message] ) {
@@ -339,26 +337,26 @@ var JUI = {
             return this.each(function() {
                 var $this = $(this);
                 if (!$refBox ) {
-                    $refBox = $this.parents("div.layoutBox:first");
+                    $refBox = $this.parents("div.layoutBox").first();
                 }
                 var iRefH = $refBox.height();
 
                 var iLayoutH = 0;
-                if ($this.parents('.rightPageContent').length != 0){
-                    iLayoutH = $this.getSiblingsElemsH($this.parents('.rightPageContent'));
-                }else if ($this.parents('.leftPageContent').length != 0){
-                    iLayoutH = $this.getSiblingsElemsH($this.parents('.leftPageContent'));
-                }else if ($this.parents('.pageFormContent').length != 0){
-                    iLayoutH = $this.getSiblingsElemsH($this.parents('.pageFormContent')) + 30;
-                }else if ($this.parents('.page').length != 0 ) {
-                    iLayoutH = $this.getSiblingsElemsH($this.parents('.page'));
-                }else if ($this.parents('.dialogContent').length != 0){
-                    iLayoutH = $this.getSiblingsElemsH($this.parents('.dialogContent'));
+                if ($this.parents(".rightPageContent").length != 0){
+                    iLayoutH = $this.getSiblingsElemsH($this.parents(".rightPageContent"));
+                }else if ($this.parents(".leftPageContent").length != 0){
+                    iLayoutH = $this.getSiblingsElemsH($this.parents(".leftPageContent"));
+                }else if ($this.parents(".pageFormContent").length != 0){
+                    iLayoutH = $this.getSiblingsElemsH($this.parents(".pageFormContent")) + 30;
+                }else if ($this.parents(".page").length != 0 ) {
+                    iLayoutH = $this.getSiblingsElemsH($this.parents(".page"));
+                }else if ($this.parents(".dialogContent").length != 0){
+                    iLayoutH = $this.getSiblingsElemsH($this.parents(".dialogContent"));
                 }
 
                 var iH = iRefH - iLayoutH > 50 ? iRefH - iLayoutH: 50;
                 if ($this.isTag("table") ) {
-                    $this.removeAttr("layoutH").wrap('<div layoutH="' + iLayoutH + '" style="overflow:auto;height:' + iH + 'px"></div>');
+                    $this.removeAttr("layoutH").wrap("<div layoutH=\"" + iLayoutH + "\" style=\"overflow:auto;height:" + iH + "px\"></div>");
                 } else {
                     $this.outerHeight(iH).css("overflow", "auto");
                 }
@@ -369,13 +367,13 @@ var JUI = {
          */
         getSiblingsElemsH: function($container) {
             var $page = $container;
-            var headerH = this.getElemsH($page, '.pageHeader');
-            var formBarH = this.getElemsH($page, '.formBar');
-            var contentTitleH = this.getElemsH($page, '.contentTitle');
-            var gridHeaderH = this.getElemsH($page, '.gridHeader');
-            var tabsHeaderH = this.getElemsH($page, '.tabsHeader');
-            var pageBarH = this.getElemsH($page, '.pageBar.panelBar');
-            var panelBarH = this.getElemsH($page, '.panelBar:not(.pageBar)');
+            var headerH = this.getElemsH($page, ".pageHeader");
+            var formBarH = this.getElemsH($page, ".formBar");
+            var contentTitleH = this.getElemsH($page, ".contentTitle");
+            var gridHeaderH = this.getElemsH($page, ".gridHeader");
+            var tabsHeaderH = this.getElemsH($page, ".tabsHeader");
+            var pageBarH = this.getElemsH($page, ".pageBar.panelBar");
+            var panelBarH = this.getElemsH($page, ".panelBar:not(.pageBar)");
             return headerH + pageBarH + gridHeaderH + panelBarH + formBarH + tabsHeaderH + contentTitleH;
         },
         /**
@@ -402,39 +400,6 @@ var JUI = {
                 }
             }
             return h;
-        },
-        inputAlert: function() {
-            return this.each(function() {
-                var $this = $(this);
-                function getAltBox() {
-                    return $this.parent().find("label.alt");
-                }
-                function altBoxCss(opacity) {
-                    var position = $this.position();
-                    return {
-                        width: $this.width(), top: position.top + 'px', left: position.left + 'px', opacity: opacity || 1
-                    };
-                }
-                if (getAltBox().length < 1 ) {
-                    if (!$this.attr("id") ) {
-                        $this.attr("id", $this.attr("name") + "_" + Math.round(Math.random() * 10000));
-                    }
-                    var $label = $('<label class="alt" for="' + $this.attr("id") + '">' + $this.attr("alt") + '</label>').appendTo($this.parent());
-                    $label.css(altBoxCss(0.6));
-                    if ($this.val() ) {
-                        $label.hide();
-                    }
-                }
-                $this.focus(function() {
-                    getAltBox().css(altBoxCss(0.3));
-                }).blur(function() {
-                    if (!$(this).val() ) {
-                        getAltBox().show().css("opacity", 1);
-                    }
-                }).keydown(function() {
-                    getAltBox().hide();
-                });
-            });
         },
         isTag: function(tn) {
             if (!tn || undefined == $(this)[0] ) {
@@ -467,7 +432,7 @@ var JUI = {
         isNumber: function(value, element) {
             return (new RegExp(/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/).test(this));
         },
-        trim: function() {
+        trimstr: function() {
             return this.replace(/(^\s*)|(\s*$)|\r|\n/g, "");
         },
         startsWith: function(pattern) {
@@ -478,7 +443,7 @@ var JUI = {
             return d >= 0 && this.lastIndexOf(pattern) === d;
         },
         replaceSuffix: function(index) {
-            var i = this.lastIndexOf('[');
+            var i = this.lastIndexOf("[");
             return this.substring(0,i)+this.substring(i).replace(/\[[0-9]+\]/, "[" + index + "]").replace("#index#", index);
         },
         encodeTXT: function() {
@@ -518,7 +483,7 @@ var JUI = {
             return (new RegExp(/^([_]|[a-zA-Z0-9]){6,32}$/).test(this));
         },
         isValidMail: function() {
-            return (new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/).test(this.trim()));
+            return (new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/).test(this.trimstr()));
         },
         isUrl: function() {
             return ( new RegExp(/^([a-zA-z]+:)?\/\/([a-zA-Z0-9\-\.]+)([-\w .\/?%&=:]*)$/).test(this) );
@@ -568,83 +533,5 @@ function escapeHtml(str) {
         return str.encodeTXT();
     } else {
         return str;
-    }
-}
-/**
- * You can use this map like this: var myMap = new Map();
- * myMap.put("key","value"); var key = myMap.get("key"); myMap.remove("key");
- */
-function Map() {
-    this.elements = new Array();
-    this.size = function() {
-        return this.elements.length;
-    }
-    this.isEmpty = function() {
-        return ( this.elements.length < 1 );
-    }
-    this.clear = function() {
-        this.elements = new Array();
-    }
-    this.put = function(_key, _value) {
-        this.remove(_key);
-        this.elements.push({
-            key: _key, value: _value
-        });
-    }
-    this.remove = function(_key) {
-        try {
-            for (i = 0; i < this.elements.length; i++) {
-                if (this.elements[i].key == _key ) {
-                    this.elements.splice(i, 1);
-                    return true;
-                }
-            }
-        } catch (e) {
-            return false;
-        }
-        return false;
-    }
-    this.get = function(_key) {
-        try {
-            for (i = 0; i < this.elements.length; i++) {
-                if (this.elements[i].key == _key ) {
-                    return this.elements[i].value;
-                }
-            }
-        } catch (e) {
-            return null;
-        }
-    }
-    this.element = function(_index) {
-        if (_index < 0 || _index >= this.elements.length ) {
-            return null;
-        }
-        return this.elements[_index];
-    }
-    this.containsKey = function(_key) {
-        try {
-            for (i = 0; i < this.elements.length; i++) {
-                if (this.elements[i].key == _key ) {
-                    return true;
-                }
-            }
-        } catch (e) {
-            return false;
-        }
-        return false;
-    }
-    this.values = function() {
-        var arr = new Array();
-        for (i = 0; i < this.elements.length; i++) {
-            arr.push(this.elements[i].value);
-        }
-        return arr;
-    }
-    this.keys = function() {
-        var arr = new Array();
-        for (i = 0; i < this.elements.length; i++) {
-            arr.push(this.elements[i].key);
-        }
-        return arr;
     }
 }

@@ -6,20 +6,24 @@ import java.io.IOException;
 import java.util.List;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentQuery;
+
+import freemarker.template.TemplateException;
 
 /**
  *
@@ -60,7 +64,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath!}api/myContentList?pageSize=10&amp;authToken=用户登录授权&amp;authUserId=1', function(data){
-    console.log(data.totalCount);
+    console.log(data.page.totalCount);
 });
 &lt;/script&gt;
  * </pre>
@@ -69,7 +73,7 @@ $.getJSON('${site.dynamicPath!}api/myContentList?pageSize=10&amp;authToken=用�
 public class MyContentListDirective extends AbstractAppDirective {
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         PageHandler page = service.getPage(
                 new CmsContentQuery(site.getId(), handler.getIntegerArray("status"), handler.getInteger("categoryId"),
@@ -86,14 +90,16 @@ public class MyContentListDirective extends AbstractAppDirective {
             if (null != statistics) {
                 e.setClicks(e.getClicks() + statistics.getClicks());
             }
-            TemplateComponent.initContentUrl(site, e);
-            TemplateComponent.initContentCover(site, e);
+            CmsUrlUtils.initContentUrl(site, e);
+            fileUploadComponent.initContentCover(site, e);
         });
         handler.put("page", page).render();
     }
 
     @Resource
     private CmsContentService service;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
 

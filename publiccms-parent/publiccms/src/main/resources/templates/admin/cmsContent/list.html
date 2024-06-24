@@ -1,34 +1,36 @@
 <div class="pageContent">
     <div class="leftPageContent">
-        <ul class="tree treeFolder" layoutH>
-            <li>
-                <@sys.dept id=admin.deptId>
-                    <#assign  dept=object/>
-                </@sys.dept>
-                <#if dept?has_content&&dept.ownsAllCategory>
-                    <a href="common/content_list.html" target="ajax" rel="contentBox"><@t.page 'category'/></a>
-                <#else>
-                    <a href="javascript:;" onclick="return false;"><@t.page 'category'/></a>
-                </#if>
-                <ul>
-                    <@cms.categoryList advanced=true pageSize=500>
-                        <#list page.list as a>
-                            <@t.merge 'categoryIds' a.id!/>
-                        </#list>
-                        <@sys.deptItem itemType='category' deptId=admin.deptId!'' itemIds=t.categoryIds!><#assign deptCategoryMap=map!/></@sys.deptItem>
-                        <#list page.list as a>
-                            <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
-                                <li<#if a.childIds?has_content> _src="common/contentCategoryTree.html?parentId=${a.id}"</#if>>
-                                    <a href="common/content_list.html?categoryId=${a.id}" class="exclude-translate" target="ajax" rel="contentBox">${(a.name)!}</a>
-                                </li>
-                            </#if>
-                        <#else>
-                            <li><a><@t.page 'empty_directory'/></a></li>
-                        </#list>
-                    </@cms.categoryList>
-                </ul>
-            </li>
-        </ul>
+        <div class="card">
+            <ul class="tree treeFolder" layoutH>
+                <li>
+                    <@sys.dept id=admin.deptId>
+                        <#assign  dept=object/>
+                    </@sys.dept>
+                    <#if dept?has_content&&dept.ownsAllCategory>
+                        <a href="common/content_list.html" target="ajax" rel="contentBox"><@t.page 'category'/></a>
+                    <#else>
+                        <a href="javascript:;" onclick="return false;"><@t.page 'category'/></a>
+                    </#if>
+                    <ul>
+                        <@cms.categoryList advanced=true pageSize=500>
+                            <#list page.list as a>
+                                <@t.merge 'categoryIds' a.id!/>
+                            </#list>
+                            <@sys.deptItem itemType='category' deptId=admin.deptId!'' itemIds=t.categoryIds!><#assign deptCategoryMap=map!/></@sys.deptItem>
+                            <#list page.list as a>
+                                <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
+                                    <li<#if a.childIds?has_content> _src="common/contentCategoryTree.html?parentId=${a.id}"</#if>>
+                                        <a href="common/content_list.html?categoryId=${a.id}" class="exclude-translate" target="ajax" rel="contentBox">${(a.name)!}</a>
+                                    </li>
+                                </#if>
+                            <#else>
+                                <li><a><@t.page 'empty_directory'/></a></li>
+                            </#list>
+                        </@cms.categoryList>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
     <div id="contentBox" class="rightPageContent">
         <#include "../common/content_list.html"/>

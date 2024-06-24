@@ -1,4 +1,4 @@
-<@cms.categoryType id=id><#assign a=object/></@cms.categoryType>
+<@cms.categoryType id=id!copyId><#assign a=object/></@cms.categoryType>
 <div class="pageContent">
     <form method="post" autocomplete="off" action="cmsCategoryType/save?callbackType=closeCurrent&navTabId=cmsCategoryType/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
         <input name="categoryTypeId" type="hidden" value="${id!}"/>
@@ -34,14 +34,14 @@
                     <dl class="nowrap">
                         <dt><@t.page 'url'/>:</dt>
                         <dd>
-                            <label><input name="onlyUrl" type="checkbox"/></label>
+                            <label><input name="onlyUrl" type="checkbox" class="form-check-input"/></label>
                         </dd>
                     </dl>
                     <dl class="nowrap onlyUrl">
                         <dt><@t.page 'category.page_size'/>:</dt>
                         <dd>
                             <input class="required digits" name="pageSize" type="number" size="4" value="${(a.pageSize)!(categoryType.pageSize)!20}"/>
-                            <label><input name="containChild" type="checkbox"${(a?has_content&&a.containChild)?then(' checked="checked"','')?no_esc}/><@t.page 'category.contain_child'/></label>
+                            <label><input name="containChild" type="checkbox" class="form-check-input"${(a?has_content&&a.containChild)?then(' checked="checked"','')?no_esc}/><@t.page 'category.contain_child'/></label>
                         </dd>
                     </dl>
                 <#if site.useStatic>
@@ -64,11 +64,16 @@
                 </fieldset>
                 <fieldset>
                     <legend><@t.page 'category.extend_field'/></legend>
-                    <#include "../include_page/extends.html"/>
-                    <#assign categoryExtendList=(a.extendList)![]>
-                    <@extends 'extendList' categoryExtendList/>
-                    <span class="info"><@t.page 'extend_field.use.category'/>;<#noparse>&lt;#assign attribute=getCategoryAttribute(category.id)&gt;</#noparse></span>
+                    <span class="info"><@t.page 'extend_field.use.category'/></span>
                     <span class="info"><@t.page 'extend_field.invalid'/>:title,keywords,description;<@t.page 'metadata.default_value_description'/></span>
+                    <#include "../include_page/extends.html"/>
+                    <#assign categoryExtendList=[]/>
+                    <#if a?has_content&&a.extendList?has_content>
+                        <#assign categoryExtendList=a.extendList>
+                        <#if copyId?has_content && !id?has_content><#assign copy=true/></#if>
+                    </#if>
+                    <@extends 'extendList' categoryExtendList false false copy/>
+                    <span class="info"><@t.page 'extend_field.name.description'/></span>
                 </fieldset>
             </div>
         </div>
@@ -82,5 +87,8 @@
             $('.onlyUrl',navTab.getCurrentPanel()).show();
         }
     });
+    <#if a?has_content && a.onlyUrl>
+        $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
+    </#if>
 </script>
 </div>

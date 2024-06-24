@@ -2,6 +2,7 @@ package com.publiccms.views.pojo.query;
 
 import java.util.Date;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class CmsContentQuery implements java.io.Serializable {
@@ -23,6 +24,7 @@ public class CmsContentQuery implements java.io.Serializable {
     private Boolean hasFiles;
     private Boolean hasProducts;
     private Boolean hasCover;
+    @Length(max = 255)
     private String title;
     private Long userId;
     private Integer deptId;

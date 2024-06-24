@@ -36,7 +36,7 @@
             ${(object.createDate)!}
         </dd>
     </dl>
-    <@cms.surveyQuestionList surveyId=object.id pageSize=500>
+    <@cms.surveyQuestionList advanced=true surveyId=object.id pageSize=500>
         <#if page.totalCount gt 0>
     <fieldset>
         <legend><@t.page 'question'/></legend>
@@ -45,7 +45,7 @@
                 <p class="nowrap"><label><@t.page 'question'/>:</label>[<@t.page 'question.type.'+q.questionType/>] ${q.title}</p>
                 <#if q.cover?has_content>
                     <p class="thumbnail">
-                        <img src="${(q.cover)!}"/>
+                        <img src="${(q.cover)!}" alt="${q.title}"/>
                     </p>
                 </#if>
             </div>

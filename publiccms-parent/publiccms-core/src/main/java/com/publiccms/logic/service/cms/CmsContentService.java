@@ -1,7 +1,6 @@
 package com.publiccms.logic.service.cms;
 
 import static org.springframework.util.StringUtils.collectionToDelimitedString;
-import static org.springframework.util.StringUtils.collectionToCommaDelimitedString;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -13,17 +12,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiConsumer;
+import java.util.function.ObjIntConsumer;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.BaseService;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
@@ -31,6 +31,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.HtmlUtils;
+import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
@@ -41,10 +42,12 @@ import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.dao.cms.CmsContentDao;
+import com.publiccms.logic.dao.cms.CmsContentSearchDao;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsModel;
+import com.publiccms.views.pojo.entities.Workload;
 import com.publiccms.views.pojo.model.CmsContentParameters;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 import com.publiccms.views.pojo.query.CmsContentSearchQuery;
@@ -54,35 +57,41 @@ import jakarta.annotation.Resource;
 /**
  *
  * CmsContentService
- * 
+ *
  */
 @Service
 @Transactional
 public class CmsContentService extends BaseService<CmsContent> {
-    private static String[] DICTIONARY_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN, Config.INPUTTYPE_USER,
-            Config.INPUTTYPE_DEPT, Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY,
-            Config.INPUTTYPE_CATEGORYTYPE, Config.INPUTTYPE_TAGTYPE };
+    private static final String[] DICTIONARY_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN,
+            Config.INPUTTYPE_USER, Config.INPUTTYPE_DEPT, Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY,
+            Config.INPUTTYPE_DICTIONARY, Config.INPUTTYPE_CATEGORYTYPE, Config.INPUTTYPE_TAGTYPE };
 
-    public static final String[] ignoreProperties = new String[] { "id", "siteId" };
+    protected static final String[] ignoreCopyProperties = new String[] { "id", "siteId" };
+
+    public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds",
+            "createDate", "clicks", "comments", "scores", "scoreUsers", "collections", "score", "childs", "checkUserId",
+            "disabled" };
+
+    public static final String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, "url");
     /**
-     * 
+     *
      */
     public static final int STATUS_DRAFT = 0;
     /**
-     * 
+     *
      */
     public static final int STATUS_NORMAL = 1;
     /**
-     * 
+     *
      */
     public static final int STATUS_PEND = 2;
     /**
-     * 
+     *
      */
     public static final int STATUS_REJECT = 3;
 
     /**
-     * 
+     *
      */
     public static final Integer[] STATUS_NORMAL_ARRAY = new Integer[] { STATUS_NORMAL };
 
@@ -109,22 +118,24 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param queryEntity
      * @param containChild
      * @param orderField
+     * @param orderType
      * @param pageIndex
      * @param pageSize
      * @param maxResults
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler query(CmsContentSearchQuery queryEntity, Boolean containChild, String orderField, Integer pageIndex,
-            Integer pageSize, Integer maxResults) {
+    public PageHandler query(CmsContentSearchQuery queryEntity, Boolean containChild, String orderField, String orderType,
+            Integer pageIndex, Integer pageSize, Integer maxResults) {
         queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
-        return dao.query(queryEntity, orderField, pageIndex, pageSize, maxResults);
+        return searchDao.query(queryEntity, orderField, orderType, pageIndex, pageSize, maxResults);
     }
 
     /**
      * @param queryEntity
      * @param containChild
      * @param orderField
+     * @param orderType
      * @param pageIndex
      * @param pageSize
      * @param maxResults
@@ -132,9 +143,9 @@ public class CmsContentService extends BaseService<CmsContent> {
      */
     @Transactional(readOnly = true)
     public FacetPageHandler facetQuery(CmsContentSearchQuery queryEntity, Boolean containChild, String orderField,
-            Integer pageIndex, Integer pageSize, Integer maxResults) {
+            String orderType, Integer pageIndex, Integer pageSize, Integer maxResults) {
         queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
-        return dao.facetQuery(queryEntity, orderField, pageIndex, pageSize, maxResults);
+        return searchDao.facetQuery(queryEntity, orderField, orderType, pageIndex, pageSize, maxResults);
     }
 
     /**
@@ -164,20 +175,31 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
+     * @param queryEntity
+     * @param containChild
+     * @param orderField
+     * @param orderType
+     * @return results list
+     */
+    @Transactional(readOnly = true)
+    public List<CmsContent> getList(CmsContentQuery queryEntity, Boolean containChild, String orderField, String orderType) {
+        queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
+        return dao.getList(queryEntity, orderField, orderType);
+    }
+
+    /**
      * @param siteId
      * @param status
      * @param startCreateDate
      * @param endCreateDate
      * @param workloadType
      * @param dateField
-     * @param pageIndex
-     * @param pageSize
-     * @return
+     * @return results list
      */
     @Transactional(readOnly = true)
-    public PageHandler getWorkLoadPage(short siteId, Integer[] status, Date startCreateDate, Date endCreateDate,
-            String workloadType, String dateField, Integer pageIndex, Integer pageSize) {
-        return dao.getWorkLoadPage(siteId, status, startCreateDate, endCreateDate, workloadType, dateField, pageIndex, pageSize);
+    public List<Workload> getWorkLoadList(short siteId, Integer[] status, Date startCreateDate, Date endCreateDate,
+            String workloadType, String dateField) {
+        return dao.getWorkLoadList(siteId, status, startCreateDate, endCreateDate, workloadType, dateField);
     }
 
     /**
@@ -194,49 +216,70 @@ public class CmsContentService extends BaseService<CmsContent> {
         return dao.getListByTopId(siteId, topId);
     }
 
-    public CmsContent saveTagAndAttribute(SysSite site, Long userId, Long id, CmsContentParameters contentParameters,
-            CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
-        CmsContent entity = getEntity(id);
-        if (null != entity) {
-            Set<Serializable> tagIds = tagService.update(site.getId(), contentParameters.getTags());
-            entity.setTagIds(collectionToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
-            if (entity.isHasImages() || entity.isHasFiles()) {
-                contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
-                        entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
-            }
-            if (entity.isHasProducts()) {
-                contentProductService.update(site.getId(), entity.getId(), userId, contentParameters.getProducts());
-            }
-
-            List<SysExtendField> modelExtendList = cmsModel.getExtendList();
-            List<SysExtendField> categoryExtendList = null;
-            Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
-            if (null != extendId && null != extendService.getEntity(extendId)) {
-                categoryExtendList = extendFieldService.getList(extendId, null, null);
-                Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
-                        categoryExtendList);
-                if (CommonUtils.notEmpty(map)) {
-                    map.putAll(categoryMap);
-                } else {
-                    map = categoryMap;
-                }
-            }
-
-            dealAttribute(entity, site, modelExtendList, categoryExtendList, map, cmsModel,
-                    entity.isHasFiles() ? contentParameters.getFiles() : null,
-                    entity.isHasImages() ? contentParameters.getImages() : null,
-                    entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
-
-            saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, site.getId(), entity.getId(), userId,
-                    modelExtendList, categoryExtendList, map);// 保存编辑器字段历史记录
-
-            attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
-            cmsContentRelatedService.update(entity.getId(), userId, contentParameters.getContentRelateds());// 更新保存推荐内容
+    public static void initContent(CmsContent entity, SysSite site, CmsModel cmsModel, Boolean draft, Boolean checked,
+            CmsContentAttribute attribute, boolean base64, Date now) {
+        entity.setHasFiles(cmsModel.isHasFiles());
+        entity.setHasImages(cmsModel.isHasImages());
+        entity.setHasProducts(cmsModel.isHasProducts());
+        entity.setOnlyUrl(cmsModel.isOnlyUrl());
+        if ((null == checked || !checked) && null != draft && draft) {
+            entity.setStatus(CmsContentService.STATUS_DRAFT);
+        } else {
+            entity.setStatus(CmsContentService.STATUS_PEND);
         }
+        if (null == entity.getPublishDate()) {
+            entity.setPublishDate(now);
+        }
+        if (null != attribute.getText() && base64) {
+            attribute.setText(HtmlUtils.cleanUnsafeHtml(
+                    new String(VerificationUtils.base64Decode(attribute.getText()), Constants.DEFAULT_CHARSET),
+                    site.getSitePath()));
+        }
+    }
+
+    public CmsContent saveTagAndAttribute(SysSite site, Long userId, Integer deptId, CmsContent entity,
+            CmsContentParameters contentParameters, CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
+        if (null != entity.getId()) {
+            Date now = CommonUtils.getDate();
+            entity.setUpdateDate(now);
+            entity.setUpdateUserId(userId);
+            entity = update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
+        } else {
+            save(site.getId(), userId, deptId, entity);
+            if (CommonUtils.notEmpty(entity.getParentId())) {
+                updateChilds(entity.getParentId(), 1);
+            }
+        }
+        Set<Serializable> tagIds = tagService.update(site.getId(), contentParameters.getTags());
+        entity.setTagIds(collectionToDelimitedString(tagIds, Constants.BLANK_SPACE));
+        if (entity.isHasImages() || entity.isHasFiles()) {
+            contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
+                    entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
+        }
+        if (entity.isHasProducts()) {
+            contentProductService.update(site.getId(), entity.getId(), userId, contentParameters.getProducts());
+        }
+
+        List<SysExtendField> modelExtendList = cmsModel.getExtendList();
+        List<SysExtendField> categoryExtendList = null;
+        if (null != extendId && null != extendService.getEntity(extendId)) {
+            categoryExtendList = extendFieldService.getList(extendId, null, null);
+        }
+
+        dealAttribute(entity, site, modelExtendList, categoryExtendList, contentParameters.getExtendData(), cmsModel,
+                entity.isHasFiles() ? contentParameters.getFiles() : null,
+                entity.isHasImages() ? contentParameters.getImages() : null,
+                entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
+
+        saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, site.getId(), entity.getId(), userId,
+                modelExtendList, categoryExtendList, contentParameters.getExtendData());// 保存编辑器字段历史记录
+
+        attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
+        cmsContentRelatedService.update(entity.getId(), userId, contentParameters.getContentRelateds());// 更新保存推荐内容
         return entity;
     }
 
-    private void saveEditorHistory(CmsContentAttribute oldAttribute, CmsContentAttribute attribute, short siteId, long contentId,
+    public void saveEditorHistory(CmsContentAttribute oldAttribute, CmsContentAttribute attribute, short siteId, long contentId,
             long userId, List<SysExtendField> modelExtendList, List<SysExtendField> categoryExtendList, Map<String, String> map) {
         if (null != oldAttribute) {
             if (CommonUtils.notEmpty(oldAttribute.getText()) && !oldAttribute.getText().equals(attribute.getText())) {
@@ -247,34 +290,12 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (CommonUtils.notEmpty(oldAttribute.getData())) {
                 Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
                 if (CommonUtils.notEmpty(modelExtendList)) {
-                    for (SysExtendField extendField : modelExtendList) {
-                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
-                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
-                                            .equals(map.get(extendField.getId().getCode())))) {
-                                CmsEditorHistory history = new CmsEditorHistory(siteId,
-                                        CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND, String.valueOf(contentId),
-                                        extendField.getId().getCode(), CommonUtils.getDate(), userId,
-                                        map.get(extendField.getId().getCode()));
-                                editorHistoryService.save(history);
-                            }
-                        }
-                    }
+                    editorHistoryService.saveHistory(siteId, userId, CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND,
+                            String.valueOf(contentId), oldMap, map, modelExtendList);
                 }
                 if (CommonUtils.notEmpty(categoryExtendList)) {
-                    for (SysExtendField extendField : categoryExtendList) {
-                        if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                            if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
-                                    && (CommonUtils.notEmpty(map) || !oldMap.get(extendField.getId().getCode())
-                                            .equals(map.get(extendField.getId().getCode())))) {
-                                CmsEditorHistory history = new CmsEditorHistory(siteId,
-                                        CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND, String.valueOf(contentId),
-                                        extendField.getId().getCode(), CommonUtils.getDate(), userId,
-                                        map.get(extendField.getId().getCode()));
-                                editorHistoryService.save(history);
-                            }
-                        }
-                    }
+                    editorHistoryService.saveHistory(siteId, userId, CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND,
+                            String.valueOf(contentId), oldMap, map, categoryExtendList);
                 }
             }
         }
@@ -287,7 +308,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param worker
      * @param batchSize
      */
-    public void batchWorkId(short siteId, Integer categoryId, String modelId, BiConsumer<List<Serializable>, Integer> worker,
+    public void batchWorkId(short siteId, Integer categoryId, String modelId, ObjIntConsumer<List<Serializable>> worker,
             int batchSize) {
         dao.batchWorkId(siteId, categoryId, modelId, worker, batchSize);
     }
@@ -299,7 +320,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param worker
      * @param batchSize
      */
-    public void batchWorkContent(short siteId, Integer categoryId, String modelId, BiConsumer<List<CmsContent>, Integer> worker,
+    public void batchWorkContent(short siteId, Integer categoryId, String modelId, ObjIntConsumer<List<CmsContent>> worker,
             int batchSize) {
         dao.batchWorkContent(siteId, categoryId, modelId, worker, batchSize);
     }
@@ -338,7 +359,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         if (null != text) {
             attribute.setWordCount(text.length());
             if (cmsModel.isSearchable()) {
-                searchTextBuilder.append(text).append(CommonConstants.BLANK_SPACE);
+                searchTextBuilder.append(text).append(Constants.BLANK_SPACE);
             }
             if (CommonUtils.empty(entity.getDescription())) {
                 entity.setDescription(CommonUtils.keep(text, 300));
@@ -349,29 +370,48 @@ public class CmsContentService extends BaseService<CmsContent> {
 
         if (CommonUtils.notEmpty(map)) {
             Set<String> dictionaryValueList = new HashSet<>();
-            Set<String> extendsFieldList = new HashSet<>();
-            StringBuilder extendsTextBuilder = new StringBuilder();
-            dealExtend(modelExtendList, dictionaryValueList, extendsFieldList, map, extendsTextBuilder, site);
-            dealExtend(categoryExtendList, dictionaryValueList, extendsFieldList, map, extendsTextBuilder, site);
+            attribute.setData(ExtendUtils.getExtendString(map, site.getSitePath(), (extendField, value) -> {
+                if (ArrayUtils.contains(DICTIONARY_INPUT_TYPES, extendField.getInputType())) {
+                    if (Config.INPUTTYPE_DICTIONARY.equalsIgnoreCase(extendField.getInputType()) && extendField.isMultiple()) {
+                        String[] values = StringUtils.split(value, Constants.COMMA);
+                        if (CommonUtils.notEmpty(values)) {
+                            for (String v : values) {
+                                dictionaryValueList
+                                        .add(CommonUtils.joinString(extendField.getId().getCode(), Constants.UNDERLINE, v));
+                            }
+                        }
+                    } else {
+                        dictionaryValueList
+                                .add(CommonUtils.joinString(extendField.getId().getCode(), Constants.UNDERLINE, value));
+                    }
+                } else if (Config.INPUTTYPE_KEYVALUE.equalsIgnoreCase(extendField.getInputType())) {
+                    String[] values = StringUtils.splitPreserveAllTokens(value, Constants.COMMA);
+                    if (CommonUtils.notEmpty(values)) {
+                        int i = 0;
+                        for (String v : values) {
+                            if (i++ % 2 == 1) {
+                                searchTextBuilder.append(v).append(Constants.BLANK_SPACE);
+                            }
+                        }
+                    }
+                } else {
+                    if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
+                        map.put(extendField.getId().getCode(), value);
+                        value = HtmlUtils.removeHtmlTag(value);
+                    }
+                    if (CommonUtils.notEmpty(value)) {
+                        searchTextBuilder.append(value).append(Constants.BLANK_SPACE);
+                    }
+                }
+            }, modelExtendList, categoryExtendList));
             if (CommonUtils.notEmpty(dictionaryValueList)) {
-                attribute.setDictionaryValues(collectionToDelimitedString(dictionaryValueList, CommonConstants.BLANK_SPACE));
+                attribute.setDictionaryValues(collectionToDelimitedString(dictionaryValueList, Constants.BLANK_SPACE));
             } else {
                 attribute.setDictionaryValues(null);
             }
-            if (CommonUtils.notEmpty(extendsFieldList)) {
-                attribute.setExtendsFields(collectionToCommaDelimitedString(extendsFieldList));
-                attribute.setExtendsText(extendsTextBuilder.toString());
-                searchTextBuilder.append(attribute.getExtendsText());
-            } else {
-                attribute.setExtendsFields(null);
-                attribute.setExtendsText(null);
-            }
-            attribute.setData(ExtendUtils.getExtendString(map));
         } else {
             attribute.setData(null);
             attribute.setDictionaryValues(null);
-            attribute.setExtendsFields(null);
-            attribute.setExtendsText(null);
         }
         dealFiles(files, images, products, attribute);
 
@@ -387,12 +427,12 @@ public class CmsContentService extends BaseService<CmsContent> {
         StringBuilder filesTextBuilder = new StringBuilder();
         if (CommonUtils.notEmpty(files)) {
             for (CmsContentFile file : files) {
-                filesTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
+                filesTextBuilder.append(file.getDescription()).append(Constants.BLANK_SPACE);
             }
         }
         if (CommonUtils.notEmpty(images)) {
             for (CmsContentFile file : images) {
-                filesTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
+                filesTextBuilder.append(file.getDescription()).append(Constants.BLANK_SPACE);
             }
         }
         attribute.setFilesText(filesTextBuilder.toString());
@@ -412,43 +452,6 @@ public class CmsContentService extends BaseService<CmsContent> {
         } else {
             attribute.setMinPrice(null);
             attribute.setMaxPrice(null);
-        }
-    }
-
-    private static void dealExtend(List<SysExtendField> extendList, Set<String> dictionaryValueList, Set<String> extendsFieldList,
-            Map<String, String> map, StringBuilder searchTextBuilder, SysSite site) {
-        if (CommonUtils.notEmpty(extendList)) {
-            for (SysExtendField extendField : extendList) {
-                if (extendField.isSearchable()) {
-                    if (ArrayUtils.contains(DICTIONARY_INPUT_TYPES, extendField.getInputType())) {
-                        if (Config.INPUTTYPE_DICTIONARY.equals(extendField.getInputType())) {
-                            String[] values = StringUtils.split(map.get(extendField.getId().getCode()), CommonConstants.COMMA);
-                            if (CommonUtils.notEmpty(values)) {
-                                for (String value : values) {
-                                    dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
-                                }
-                            }
-                        } else {
-                            String value = map.get(extendField.getId().getCode());
-                            if (null != value) {
-                                dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
-                            }
-                        }
-                    } else {
-                        String value = map.get(extendField.getId().getCode());
-                        if (null != value) {
-                            if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                                map.put(extendField.getId().getCode(), HtmlUtils.cleanUnsafeHtml(value, site.getSitePath()));
-                                value = HtmlUtils.removeHtmlTag(value);
-                            }
-                            if (CommonUtils.notEmpty(value)) {
-                                extendsFieldList.add(extendField.getId().getCode());
-                                searchTextBuilder.append(value).append(CommonConstants.BLANK_SPACE);
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -561,8 +564,8 @@ public class CmsContentService extends BaseService<CmsContent> {
             for (CmsCategory c : categoryList) {
                 if (null != c && !category.getId().equals(c.getId())) {
                     CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), c.getId(),
-                            entity.getModelId(), entity.isCopied(), entity.isContribute(), true, entity.isHasImages(),
-                            entity.isHasFiles(), entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, BigDecimal.ZERO, 0, 0,
+                            entity.getModelId(), entity.isCopied(), true, entity.isHasImages(), entity.isHasFiles(),
+                            entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, BigDecimal.ZERO, 0, 0, 0,
                             entity.getPublishDate(), entity.getCreateDate(), 0, entity.getStatus(), false);
                     quote.setUrl(entity.getUrl());
                     quote.setDescription(entity.getDescription());
@@ -616,19 +619,21 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param user
+     * @param userId
+     * @param deptId
      * @param entity
      */
-    public void save(short siteId, SysUser user, CmsContent entity) {
+    public void save(short siteId, Long userId, Integer deptId, CmsContent entity) {
         entity.setSiteId(siteId);
-        entity.setUserId(user.getId());
-        entity.setDeptId(user.getDeptId());
+        entity.setUserId(userId);
+        entity.setDeptId(deptId);
         save(entity);
     }
 
     /**
      * @param entitys
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateStatistics(Collection<ClickStatistics> entitys) {
         for (ClickStatistics entityStatistics : entitys) {
             CmsContent entity = getEntity(entityStatistics.getId());
@@ -644,7 +649,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param comments
      * @return
      */
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateComments(short siteId, Serializable id, int comments) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -660,7 +665,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param scores
      * @return
      */
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateScores(short siteId, Serializable id, int scoreUsers, int scores) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -671,6 +676,21 @@ public class CmsContentService extends BaseService<CmsContent> {
             } else {
                 entity.setScore(BigDecimal.ZERO);
             }
+        }
+        return entity;
+    }
+
+    /**
+     * @param siteId
+     * @param id
+     * @param collections
+     * @return
+     */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public CmsContent updateCollections(short siteId, Serializable id, int collections) {
+        CmsContent entity = getEntity(id);
+        if (null != entity && siteId == entity.getSiteId()) {
+            entity.setCollections(entity.getCollections() + collections);
         }
         return entity;
     }
@@ -695,6 +715,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param num
      * @return result
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateChilds(Serializable id, int num) {
         CmsContent entity = getEntity(id);
         if (null != entity) {
@@ -781,8 +802,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         } else if (null != containChild && containChild) {
             CmsCategory category = categoryService.getEntity(categoryId);
             if (null != category) {
-                String[] categoryStringIds = ArrayUtils.add(
-                        StringUtils.splitByWholeSeparator(category.getChildIds(), CommonConstants.COMMA_DELIMITED),
+                String[] categoryStringIds = ArrayUtils.add(StringUtils.split(category.getChildIds(), Constants.COMMA),
                         String.valueOf(categoryId));
                 categoryIds = new Integer[categoryStringIds.length];
                 for (int i = 0; i < categoryStringIds.length; i++) {
@@ -801,7 +821,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         if (null != content && null != category) {
             Date now = CommonUtils.getDate();
             CmsContent entity = new CmsContent();
-            BeanUtils.copyProperties(content, entity, ignoreProperties);
+            BeanUtils.copyProperties(content, entity, ignoreCopyProperties);
             entity.setSiteId(category.getSiteId());
             entity.setStatus(status);
             entity.setPublishDate(now);
@@ -914,4 +934,6 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     @Resource
     private CmsContentDao dao;
+    @Resource
+    private CmsContentSearchDao searchDao;
 }

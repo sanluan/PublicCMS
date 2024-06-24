@@ -6,6 +6,7 @@ import org.springframework.util.Assert;
 
 public class FullBeanNameGenerator extends AnnotationBeanNameGenerator {
 
+    @Override
     protected String buildDefaultBeanName(BeanDefinition definition) {
         String beanClassName = definition.getBeanClassName();
         Assert.state(beanClassName != null, "No bean class name set");
