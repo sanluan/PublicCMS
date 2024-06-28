@@ -50,6 +50,7 @@ public class ExtendUtils {
             return map;
         }
     }
+
     /**
      * @param attribute
      * @param keywordsConfig
@@ -212,6 +213,60 @@ public class ExtendUtils {
     /**
      * @param map
      * @param sitePath
+     * @param notSafeKeys
+     * @param searchableConsumer
+     * @param extendFieldList
+     */
+    public static void decodeField(Map<String, String> map, String sitePath, List<SysExtendField> extendFieldList) {
+        Set<String> notSafeKeys = new HashSet<>();
+        notSafeKeys.addAll(map.keySet());
+        decodeField(map, sitePath, notSafeKeys, null, extendFieldList);
+    }
+
+    /**
+     * @param map
+     * @param sitePath
+     * @param notSafeKeys
+     * @param searchableConsumer
+     * @param extendFieldList
+     */
+    private static void decodeField(Map<String, String> map, String sitePath, Set<String> notSafeKeys,
+            BiConsumer<SysExtendField, String> searchableConsumer, List<SysExtendField> extendFieldList) {
+        if (CommonUtils.notEmpty(extendFieldList)) {
+            for (SysExtendField extend : extendFieldList) {
+                notSafeKeys.remove(extend.getId().getCode());
+                String value = map.get(extend.getId().getCode());
+                if (null == value) {
+                    if (null != extend.getDefaultValue()) {
+                        map.put(extend.getId().getCode(), value);
+                    }
+                } else if (null != extend.getMaxlength()) {
+                    if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extend.getInputType())) {
+                        value = HtmlUtils.cleanUnsafeHtml(
+                                HtmlUtils.keep(new String(VerificationUtils.base64Decode(value), Constants.DEFAULT_CHARSET),
+                                        extend.getMaxlength()),
+                                sitePath);
+                    } else {
+                        value = CommonUtils.keep(value, extend.getMaxlength(), null);
+                    }
+                    map.put(extend.getId().getCode(), value);
+                } else {
+                    if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extend.getInputType())) {
+                        value = HtmlUtils.cleanUnsafeHtml(
+                                new String(VerificationUtils.base64Decode(value), Constants.DEFAULT_CHARSET), sitePath);
+                        map.put(extend.getId().getCode(), value);
+                    }
+                }
+                if (extend.isSearchable() && null != value) {
+                    searchableConsumer.accept(extend, value);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param map
+     * @param sitePath
      * @param searchableConsumer
      * @param extendFieldListArrays
      * @return extend string
@@ -223,31 +278,7 @@ public class ExtendUtils {
             Set<String> notSafeKeys = new HashSet<>();
             notSafeKeys.addAll(map.keySet());
             for (List<SysExtendField> extendFieldList : extendFieldListArrays) {
-                if (CommonUtils.notEmpty(extendFieldList)) {
-                    for (SysExtendField extend : extendFieldList) {
-                        notSafeKeys.remove(extend.getId().getCode());
-                        String value = map.get(extend.getId().getCode());
-                        if (null == value) {
-                            if (null != extend.getDefaultValue()) {
-                                map.put(extend.getId().getCode(), value);
-                            }
-                        } else if (null != extend.getMaxlength()) {
-                            if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extend.getInputType())) {
-                                map.put(extend.getId().getCode(),
-                                        HtmlUtils.cleanUnsafeHtml(HtmlUtils.keep(value, extend.getMaxlength()), sitePath));
-                            } else {
-                                map.put(extend.getId().getCode(), CommonUtils.keep(value, extend.getMaxlength(), null));
-                            }
-                        } else {
-                            if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extend.getInputType())) {
-                                map.put(extend.getId().getCode(), HtmlUtils.cleanUnsafeHtml(value, sitePath));
-                            }
-                        }
-                        if (extend.isSearchable() && null != value) {
-                            searchableConsumer.accept(extend, value);
-                        }
-                    }
-                }
+                decodeField(map, sitePath, notSafeKeys, searchableConsumer, extendFieldList);
             }
             if (!notSafeKeys.isEmpty()) {
                 for (String key : notSafeKeys) {

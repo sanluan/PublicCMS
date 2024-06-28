@@ -396,7 +396,6 @@ public class CmsContentService extends BaseService<CmsContent> {
                     }
                 } else {
                     if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extendField.getInputType())) {
-                        map.put(extendField.getId().getCode(), value);
                         value = HtmlUtils.removeHtmlTag(value);
                     }
                     if (CommonUtils.notEmpty(value)) {
