@@ -69,7 +69,7 @@ public class CmsEditorHistoryService extends BaseService<CmsEditorHistory> {
                                 && (CommonUtils.empty(extendData) || !oldMap.get(extendField.getId().getCode())
                                         .equals(extendData.get(extendField.getId().getCode()))))) {
                     CmsEditorHistory history = new CmsEditorHistory(siteId, itemType, itemId, extendField.getId().getCode(),
-                            CommonUtils.getDate(), userId, extendData.get(extendField.getId().getCode()));
+                            CommonUtils.getDate(), userId, oldMap.get(extendField.getId().getCode()));
                     save(history);
 
                 }
