@@ -1,6 +1,7 @@
 package com.publiccms.controller.api;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +88,7 @@ public class MethodController {
                     map.put("result", method.execute(request, list));
                     return map;
                 } else if (CommonUtils.empty(parameters) && 0 == method.minParametersNumber()) {
-                    map.put("result", method.execute(request, new ArrayList<>()));
+                    map.put("result", method.execute(request, Collections.emptyList()));
                     return map;
                 } else {
                     map.put(CommonConstants.ERROR, "parametersError");

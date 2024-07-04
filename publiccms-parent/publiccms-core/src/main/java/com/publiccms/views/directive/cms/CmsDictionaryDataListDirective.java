@@ -1,10 +1,11 @@
 package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -57,7 +58,7 @@ public class CmsDictionaryDataListDirective extends AbstractTemplateDirective {
             short siteId = null == site.getParentId() ? site.getId() : site.getParentId();
             list = service.getList(siteId, dictionaryId, parentValue);
         } else {
-            list = new ArrayList<>();
+            list = Collections.emptyList();
         }
         handler.put("list", list).render();
     }
