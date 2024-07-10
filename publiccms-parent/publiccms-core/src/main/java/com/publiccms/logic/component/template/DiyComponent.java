@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +88,7 @@ public class DiyComponent implements SiteCache {
     public List<CmsRegion> getRegionList(SysSite site) {
         Map<String, CmsRegion> map = getRegionMap(site);
         if (null == map) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         } else {
             return map.values().stream().collect(Collectors.toList());
         }
@@ -106,7 +107,7 @@ public class DiyComponent implements SiteCache {
     public List<CmsLayout> getLayoutList(SysSite site, String region, boolean showGlobal) {
         Map<String, CmsLayout> map = getLayoutMap(site);
         if (null == map) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         } else {
             return map.values().stream().filter(layout -> showGlobal
                     ? (CommonUtils.empty(region) || CommonUtils.empty(layout.getRegion()) || region.equals(layout.getRegion()))
@@ -129,7 +130,7 @@ public class DiyComponent implements SiteCache {
     public List<CmsModule> getModuleList(SysSite site, String region, boolean showGlobal) {
         Map<String, CmsModule> map = getModuleMap(site);
         if (null == map) {
-            return null;
+            return Collections.emptyList();
         } else {
             return map.values().stream().filter(module -> showGlobal
                     ? (CommonUtils.empty(region) || CommonUtils.empty(module.getRegion()) || region.equals(module.getRegion()))

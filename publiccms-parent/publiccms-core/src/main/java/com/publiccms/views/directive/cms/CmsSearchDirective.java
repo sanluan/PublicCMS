@@ -3,6 +3,7 @@ package com.publiccms.views.directive.cms;
 // Generated 2015-5-10 17:54:56 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -187,7 +188,9 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             return page;
         } catch (Exception e) {
             log.error(e.getMessage());
-            return new PageHandler(pageIndex, pageSize);
+            PageHandler page = new PageHandler(pageIndex, pageSize);
+            page.setList(Collections.emptyList());
+            return page;
         }
     }
 

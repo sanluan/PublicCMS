@@ -116,6 +116,8 @@ function initUI(_box) {
                     var message = JUI.msg("validateFormError", [ errors ]);
                     alertMsg.error(message);
                 }
+            }, errorPlacement: function(place, element) {
+                place.insertBefore(element);
             }
         });
         $form.find("input[customvalid]").each(function() {
