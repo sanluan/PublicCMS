@@ -156,7 +156,7 @@ INSERT INTO `cms_place_attribute` VALUES (9, '{}');
 -- Records of sys_config_data
 -- ----------------------------
 INSERT INTO `sys_config_data` VALUES (2, 'site', '{\"register_url\":\"\",\"login_path\":\"\",\"category_path\":\"news/${category.id}\",\"default_content_status\":\"2\",\"default_content_user\":\"\",\"comment_need_check\":\"true\",\"max_scores\":\"5\",\"statistics\":\"\"}');
-INSERT INTO `sys_config_data` VALUES (2, 'siteAttribute', '{\"logo\":\"assets/images/logo.gif\",\"parentId\":\"71\",\"parentId_en\":\"72\"}');
+INSERT INTO `sys_config_data` VALUES (2, 'siteAttribute', '{\"logo\":\"assets/images/logo.gif\",\"parentId\":\"1\",\"parentId_en\":\"2\"}');
 
 -- ----------------------------
 -- Records of sys_dept
