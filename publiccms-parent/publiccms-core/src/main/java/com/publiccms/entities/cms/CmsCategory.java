@@ -306,7 +306,7 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
         this.customPath = customPath;
     }
 
-    @Column(name = "template_path")
+    @Column(name = "template_path", length=255)
     public String getTemplatePath() {
         return this.templatePath;
     }

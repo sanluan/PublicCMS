@@ -41,8 +41,8 @@ subprojects {
         // http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "6.4.9.Final"
-        // http://mvnrepository.com/artifact/org.hibernate/hibernate-tools
-        hibernateToolsVersion = "5.6.15.Final"
+        // http://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm
+        hibernateToolsVersion = "6.4.9.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
         hibernateSearchVersion = "7.1.1.Final"

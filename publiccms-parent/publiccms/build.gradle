@@ -28,10 +28,8 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
     testImplementation "org.springframework:spring-test:${springVersion}"
     testImplementation "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
-    testImplementation ("org.hibernate:hibernate-tools:${hibernateToolsVersion}") {
+    testImplementation ("org.hibernate.tool:hibernate-tools-orm:${hibernateToolsVersion}") {
         exclude group:"org.eclipse.jdt", module: 'org.eclipse.jdt.core'
-        exclude group:"org.hibernate", module:"hibernate-core"
-        exclude group:"org.hibernate.common", module:"hibernate-commons-annotations"
     }
 
     providedCompile "org.mybatis.generator:mybatis-generator-core:${mybatisGenerator}"
