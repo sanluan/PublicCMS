@@ -26,7 +26,7 @@
         index: 0
     };
     window.imageEditor = {
-        resources: [window.LOADSCRIPTS_BASE + "/resource/plugins/filerobot-image-editor/filerobot-image-editor.min.js"],
+        resources: [window.LOADSCRIPTS_BASE + "/resource/plugins/filerobot-image-editor/filerobot-image-editor.min.js",window.LOADSCRIPTS_BASE + "/resource/plugins/filerobot-image-editor/config.js",window.LOADSCRIPTS_BASE + "/resource/plugins/filerobot-image-editor/lang/" + window.LANGUAGE+".js"],
         initd: false,
         index: 0
     };

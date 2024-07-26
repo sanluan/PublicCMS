@@ -58,6 +58,9 @@
             $uploadWrap.after("<div class=\"image-editor\"></div>");
             $this = $uploadWrap.parent().find(".image-editor");
         }
+        $this.on("click","button",function(){
+            return false;
+        });
         var index = window.imageEditor.index++;
         var dataId = "imageEditor_"+index;
         var widthInput=$uploadWrap.find("input[name=width]");
