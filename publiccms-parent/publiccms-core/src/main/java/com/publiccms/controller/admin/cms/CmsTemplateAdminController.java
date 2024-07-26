@@ -163,16 +163,14 @@ public class CmsTemplateAdminController {
             try {
                 String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
-                content = new String(VerificationUtils.base64Decode(content), Constants.DEFAULT_CHARSET);
-                CmsFileUtils.createFile(filepath, content);
                 String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(), path, true);
-                CmsFileUtils.updateFile(filepath, historyFilePath, content);
+                CmsFileUtils.updateFile(filepath, historyFilePath, new String(VerificationUtils.base64Decode(content), Constants.DEFAULT_CHARSET));
+                logOperateService
+                .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        "update.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 if (CommonUtils.notEmpty(metadata.getCacheTime()) && 0 < metadata.getCacheTime()) {
                     templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site.getId(), path));
                 }
-                logOperateService
-                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                "update.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 templateComponent.clearTemplateCache();
                 cacheComponent.clearViewCache();
                 if (CommonUtils.notEmpty(metadata.getPublishPath())) {
@@ -263,9 +261,8 @@ public class CmsTemplateAdminController {
             try {
                 String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
                 String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
-                content = new String(VerificationUtils.base64Decode(content), Constants.DEFAULT_CHARSET);
                 String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(), placePath, true);
-                CmsFileUtils.updateFile(filepath, historyFilePath, content);
+                CmsFileUtils.updateFile(filepath, historyFilePath, new String(VerificationUtils.base64Decode(content), Constants.DEFAULT_CHARSET));
                 logOperateService
                         .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 "update.place.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
