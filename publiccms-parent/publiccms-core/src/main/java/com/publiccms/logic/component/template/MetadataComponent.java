@@ -293,7 +293,7 @@ public class MetadataComponent implements Cache {
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
             Constants.objectMapper.writeValue(file, dataMap);
         }
-        pageCache.clear(false);
+        pageDataCache.clear(false);
     }
 
     /**

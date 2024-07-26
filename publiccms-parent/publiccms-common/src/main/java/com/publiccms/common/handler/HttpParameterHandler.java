@@ -201,7 +201,7 @@ public class HttpParameterHandler extends BaseHandler {
         while (names.hasMoreElements()) {
             String temp = names.nextElement();
             if (temp.startsWith(mapNamePrefix)) {
-                map.put(temp.substring(name.length() + 1), request.getParameter(name));
+                map.put(temp.substring(name.length() + 1), request.getParameter(temp));
             }
         }
         return map;
