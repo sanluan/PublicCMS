@@ -4,10 +4,10 @@
   <a href="./README.md">English</a> | 简体中文
 </p>
 
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=xoxCUvv7bDCFQ8AAqaoWB1JsLz0L90qn">交流1群</a> 191381542
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=x15JZdCp8vWlxV1mMoMTyrHzMqw3dmI1">交流2群</a> 481589563
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=VogNtcpFOLxvjtvzUcAElZOK-KC4To_u">交流3群</a> 638756883
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=lsFbfVpj3yqWuY92GYkOG1esbyPNS7O3">交流4群</a> 930992232
+<a target="_blank" href="https://qm.qq.com/q/uk0kyc8Sru">交流1群</a> 191381542
+<a target="_blank" href="https://qm.qq.com/q/em30nS0dsA">交流2群</a> 481589563
+<a target="_blank" href="https://qm.qq.com/q/estzM3VONM">交流3群</a> 638756883
+<a target="_blank" href="https://qm.qq.com/q/l26b2Z2R3i">交流4群</a> 930992232
 
 ## 简介
 

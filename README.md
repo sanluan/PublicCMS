@@ -4,10 +4,10 @@
   English | <a href="./README.zh-CN.md">简体中文</a>
 </p>
 
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=xoxCUvv7bDCFQ8AAqaoWB1JsLz0L90qn">QQ Group 1</a> 191381542
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=x15JZdCp8vWlxV1mMoMTyrHzMqw3dmI1">QQ Group 2</a> 481589563
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=VogNtcpFOLxvjtvzUcAElZOK-KC4To_u">QQ Group 3</a> 638756883
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=lsFbfVpj3yqWuY92GYkOG1esbyPNS7O3">QQ Group 4</a> 930992232
+<a target="_blank" href="https://qm.qq.com/q/uk0kyc8Sru">QQ Group 1</a> 191381542
+<a target="_blank" href="https://qm.qq.com/q/em30nS0dsA">QQ Group 2</a> 481589563
+<a target="_blank" href="https://qm.qq.com/q/estzM3VONM">QQ Group 3</a> 638756883
+<a target="_blank" href="https://qm.qq.com/q/l26b2Z2R3i">QQ Group 4</a> 930992232
 
 ## Introduction
 
