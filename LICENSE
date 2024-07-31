@@ -1,23 +1,24 @@
 Copyright (c) 2022 PublicMS
 
-Ò»¡¢ÊÚÈ¨Ğí¿É
-  1.1 Äú¿ÉÒÔÃâ·ÑĞŞ¸Ä¡¢¸´ÖÆ¡¢·Ö·¢±¾Èí¼ş¼°±¾Èí¼şµÄÔ´Âë
-  1.2 Äú¿ÉÒÔÃâ·Ñ»ñµÃµÄ»ùÓÚÃâ·ÑĞ­ÒéµÄÊÚÈ¨ÎÄ¼ş£¬²¢»ñµÃ·ÇÉÌÒµÓÃÍ¾µÄÊ¹ÓÃÈ¨ÏŞ£¬·ÇÉÌÒµÓÃÍ¾ÏŞ¸öÈËÓÃ»§Ê¹ÓÃ
-  1.3 ÉÌÒµÓÃÍ¾ÓÃ»§ÔÊĞí²»³¬¹ı3¸öÔÂµÄÊÔÓÃ£¬ÊÔÓÃÆÚ¼ä£¬»ùÓÚ±¾Èí¼ş¿ª·¢µÄÒ³Ãæ±ØĞëÔÚÏÔÖøÎ»ÖÃÌí¼ÓPowered by PublicCMS±êÊ¶£¬²¢±£Áô²úÆ·ÖĞµÄÊÚÈ¨¼°logoµÈ±êÊ¶
-  1.4 ÔÚ½«±¾Èí¼şÓÃ×÷ÉÌÒµÓÃÍ¾Ê±£¬ĞèÒªÈ¡µÃÈí¼ş°æÈ¨·½ÉÌÒµÊ¹ÓÃÊÚÈ¨£¬ÊÚÈ¨µ¥Î»Ó¦Îª×îÖÕÊ¹ÓÃ²úÆ·µÄÓÃ»§µ¥Î»
-  1.5 ÒÑ»ñµÃÉÌÒµÊÚÈ¨µÄÓÃ»§¿ÉÒÔÊ¹ÓÃ¡¢¸´ÖÆ¡¢ĞŞ¸Ä¡¢·Ö·¢±¾Èí¼ş(º¬Ô´Âë)¼°°üº¬±¾Èí¼ş(º¬Ô´Âë)µÄ²úÆ·
-  1.6 ¸ÃĞ­Òé½ö¶Ôµ±Ç°°æ±¾ÓĞĞ§£¬ÀúÊ·ÒÑ·¢²¼°æ±¾Çë²ÎÕÕÈí¼ş·¢²¼Ê±¸½´øµÄÊÚÈ¨Ğ­Òé
-¶ş¡¢°æÈ¨
-  2.1 ¸ÃÈí¼ş°æÈ¨¹éPublicCMS¹Ù·½ËùÓĞ
-Èı¡¢ÃâÔğÉùÃ÷
-  3.1 ±¾Èí¼ş¼°Ëù¸½´øµÄÎÄ¼şÊÇ×÷Îª²»Ìá¹©ÈÎºÎÃ÷È·µÄ»òÒşº¬µÄÅâ³¥»òµ£±£µÄĞÎÊ½Ìá¹©µÄ
-  3.2 ÓÃ»§³öÓÚ×ÔÔ¸¶øÊ¹ÓÃ±¾Èí¼ş£¬Äú±ØĞëÁË½âÊ¹ÓÃ±¾Èí¼şµÄ·çÏÕ£¬ÔÚÉĞÎ´¹ºÂò²úÆ·¼¼Êõ·şÎñÖ®Ç°£¬ÎÒÃÇ²»³ĞÅµÌá¹©ÈÎºÎĞÎÊ½µÄ¼¼ÊõÖ§³Ö¡¢Ê¹ÓÃµ£±££¬Ò²²»³Ğµ£ÈÎºÎÒòÊ¹ÓÃ±¾Èí¼ş¶ø²úÉúÎÊÌâµÄÏà¹ØÔğÈÎ
+ä¸€ã€æˆæƒè®¸å¯
+  1.1 æ‚¨å¯ä»¥å…è´¹ä¿®æ”¹ã€å¤åˆ¶ã€åˆ†å‘æœ¬è½¯ä»¶åŠæœ¬è½¯ä»¶çš„æºç 
+  1.2 æ‚¨å¯ä»¥å…è´¹è·å¾—çš„åŸºäºå…è´¹åè®®çš„æˆæƒæ–‡ä»¶ï¼Œå¹¶è·å¾—éå•†ä¸šç”¨é€”çš„ä½¿ç”¨æƒé™ï¼Œéå•†ä¸šç”¨é€”é™ä¸ªäººç”¨æˆ·ä½¿ç”¨
+  1.3 å•†ä¸šç”¨é€”ç”¨æˆ·å…è®¸ä¸è¶…è¿‡3ä¸ªæœˆçš„è¯•ç”¨ï¼Œè¯•ç”¨æœŸé—´ï¼ŒåŸºäºæœ¬è½¯ä»¶å¼€å‘çš„é¡µé¢å¿…é¡»åœ¨æ˜¾è‘—ä½ç½®æ·»åŠ Powered by PublicCMSæ ‡è¯†ï¼Œå¹¶ä¿ç•™äº§å“ä¸­çš„æˆæƒåŠlogoç­‰æ ‡è¯†
+  1.4 åœ¨å°†æœ¬è½¯ä»¶ç”¨ä½œå•†ä¸šç”¨é€”æ—¶ï¼Œéœ€è¦å–å¾—è½¯ä»¶ç‰ˆæƒæ–¹å•†ä¸šä½¿ç”¨æˆæƒï¼Œæˆæƒå•ä½åº”ä¸ºæœ€ç»ˆä½¿ç”¨äº§å“çš„ç”¨æˆ·å•ä½
+  1.5 å·²è·å¾—å•†ä¸šæˆæƒçš„ç”¨æˆ·å¯ä»¥ä½¿ç”¨ã€å¤åˆ¶ã€ä¿®æ”¹ã€åˆ†å‘æœ¬è½¯ä»¶(å«æºç )åŠåŒ…å«æœ¬è½¯ä»¶(å«æºç )çš„äº§å“
+  1.6 è¯¥åè®®ä»…å¯¹å½“å‰ç‰ˆæœ¬æœ‰æ•ˆï¼Œå†å²å·²å‘å¸ƒç‰ˆæœ¬è¯·å‚ç…§è½¯ä»¶å‘å¸ƒæ—¶é™„å¸¦çš„æˆæƒåè®®
+äºŒã€ç‰ˆæƒ
+  2.1 è¯¥è½¯ä»¶ç‰ˆæƒå½’PublicCMSå®˜æ–¹æ‰€æœ‰
+ä¸‰ã€å…è´£å£°æ˜
+  3.1 æœ¬è½¯ä»¶åŠæ‰€é™„å¸¦çš„æ–‡ä»¶æ˜¯ä½œä¸ºä¸æä¾›ä»»ä½•æ˜ç¡®çš„æˆ–éšå«çš„èµ”å¿æˆ–æ‹…ä¿çš„å½¢å¼æä¾›çš„
+  3.2 ç”¨æˆ·å‡ºäºè‡ªæ„¿è€Œä½¿ç”¨æœ¬è½¯ä»¶ï¼Œæ‚¨å¿…é¡»äº†è§£ä½¿ç”¨æœ¬è½¯ä»¶çš„é£é™©ï¼Œåœ¨å°šæœªè´­ä¹°äº§å“æŠ€æœ¯æœåŠ¡ä¹‹å‰ï¼Œæˆ‘ä»¬ä¸æ‰¿è¯ºæä¾›ä»»ä½•å½¢å¼çš„æŠ€æœ¯æ”¯æŒã€ä½¿ç”¨æ‹…ä¿ï¼Œä¹Ÿä¸æ‰¿æ‹…ä»»ä½•å› ä½¿ç”¨æœ¬è½¯ä»¶è€Œäº§ç”Ÿé—®é¢˜çš„ç›¸å…³è´£ä»»
 
-# ÆäËûÊÚÈ¨Ğí¿É Other Licenses
+# å…¶ä»–æˆæƒè®¸å¯ Other Licenses
 
 This software includes projects with the following licenses
 
-¸ÃÈí¼ş°üÀ¨ÆäËû¿ªÔ´ÏîÄ¿Éæ¼°µÄÊÚÈ¨Ğ­Òé
+è¯¥è½¯ä»¶åŒ…æ‹¬å…¶ä»–å¼€æºé¡¹ç›®æ¶‰åŠçš„æˆæƒåè®®
+
 
 ### [Apache License](http://www.apache.org/licenses/LICENSE-2.0)
 This license is used by the following third-party libraries:
@@ -25,18 +26,24 @@ This license is used by the following third-party libraries:
   * jUI [DWZ] (http://j-ui.com/)
   * Spring Framework (http://projects.spring.io/spring-framework/)
   * FreeMarker (http://freemarker.org/)
+  * Echarts (https://github.com/apache/echarts)
 
 ### [LGPL License](https://www.gnu.org/copyleft/lesser.html)
 This license is used by the following third-party libraries:
 
   * hibernate (http://hibernate.org/orm/)
   * mybatis (http://www.mybatis.org/mybatis-3/)
+  * ckeditor 4 (https://ckeditor.com/ckeditor-4/)
 
 ### [MIT License](http://www.opensource.org/licenses/MIT)
 This license is used by the following third-party libraries:
 
   * jquery (http://jquery.com/)
+  * ueditor (https://github.com/fex-team/ueditor)
+  * tinymce 6 (https://github.com/tinymce/tinymce)
+  * codemirror (https://codemirror.net/)
+  * filerobot-image-editor (https://github.com/scaleflex/filerobot-image-editor)
 
-### [License(BSD)](https://github.com/ecomfe/echarts/blob/master/LICENSE)
+### [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)
 
-  * Echarts (http://echarts.baidu.com/)
+  * jsdiff (https://github.com/kpdecker/jsdiff)
