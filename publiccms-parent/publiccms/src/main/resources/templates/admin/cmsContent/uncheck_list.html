@@ -133,7 +133,7 @@
                 <td class="center">${a.clicks!}</td>
                 <td class="center" title="<@t.page 'create_date'/>:${a.createDate!}">${a.publishDate!}</td>
                 <td>
-                    <@t.page 'status.content.'+a.status/>
+                    <span class="statusText orange"><@t.page 'status.content.'+a.status/></span>
                 </td>
                 <td class="wrap">
                     <#if authorizedMap['cmsContent/add']>

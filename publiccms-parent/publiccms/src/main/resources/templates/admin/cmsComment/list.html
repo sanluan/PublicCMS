@@ -52,15 +52,14 @@
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-                <th><@t.page 'id'/></th>
                 <th><@t.page 'content.promulgator'/></th>
                 <th width="150"><@t.page 'content'/></th>
+                <th><@t.page 'comment'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th width="30" orderField="scores"><@t.page 'content.score'/></th>
                 <th width="30" orderField="replies"><@t.page 'replies'/></th>
                 <th orderField="updateDate"><@t.page 'modified_date'/></th>
-                <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th><@t.page 'status'/>/<@t.page 'inspector'/></th>
-                <th><@t.page 'comment'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -75,7 +74,6 @@
             <#list page.list as a>
             <tr>
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
-                <td>${a.id!}</td>
                 <td>
                     <div class="box">
                         <p class="center exclude-translate">${(userMap[a.userId?string].nickname)!}</p>
@@ -86,15 +84,15 @@
                 <td class="exclude-translate">
                     <a href="cmsContent/view.html?id=${a.contentId}" target="dialog" width="1000" height="600" rel="viewContent${a.contentId}">${(contentMap[a.contentId?string].title)!}</a>
                 </td>
+                <td><textarea rows="3" cols="50">${a.text!}</textarea></td>
+                <td>${a.createDate!}</td>
                 <td>${a.scores!}</td>
                 <td>${a.replies!}</td>
                 <td>${a.updateDate!}</td>
-                <td>${a.createDate!}</td>
                 <td>
-                    <@t.page 'status.content.'+a.status/>
-                    <#if 1=a.status>/ ${(userMap[a.checkUserId?string].nickname)!}</#if>
+                    <span class="statusText ${a.status?switch(1,'green',2,'red','')}"><@t.page 'status.content.'+a.status/></span>
+                    <#if 1=a.status><p>${(userMap[a.checkUserId?string].nickname)!}</p></#if>
                 </td>
-                <td><textarea rows="3" cols="50">${a.text!}</textarea></td>
                 <td class="wrap">
                 <#if !a.disabled>
                     <#if authorizedMap['cmsComment/edit']>
