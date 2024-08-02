@@ -1,11 +1,15 @@
 @charset "UTF-8";
-a.btnText{padding:2px 5px;font-size:13px;word-break:keep-all;white-space:nowrap;background-color:#ddd;border-radius:2px;margin-right:2px;}
+a.btnText,.statusText{padding:2px 5px;font-size:13px;word-break:keep-all;white-space:nowrap;background-color:#efefef;border-radius:3px;}
+a.btnText{background-color:#ddd;margin-right:2px;}
 a.btnText.red{background-color:#edd;}
 a.btnText.green{background-color:#ded;}
 a.btnText.blue{background-color:#dde;}
 a.btnText.warn{background-color:#edd;color:#f33;}
 a.btnText:hover{text-decoration:none;}
 a.btnText i{margin-right:3px;}
+.statusText.red{background-color:#fee;color:red;}
+.statusText.green{background-color:#efe;color:green;}
+.statusText.orange{background-color:#fed;color:orange;}
 .grid .gridTbody td div a.btnText:hover,table.list a.btnText:hover{text-decoration:none;}
 .button.float{position:absolute;right:30px;z-index:2;top:24px;}
 .unit .chart{min-width:430px;width:40%;height:234px;float:left;}
