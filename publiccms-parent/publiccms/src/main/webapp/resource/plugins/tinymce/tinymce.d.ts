@@ -101,22 +101,19 @@ declare class EventDispatcher<T extends {}> {
     once<K extends string>(name: K, callback: (event: EditorEvent<MappedEvent<T, K>>) => void, prepend?: boolean): this;
     has(name: string): boolean;
 }
-declare const enum UndoLevelType {
-    Fragmented = "fragmented",
-    Complete = "complete"
-}
+type UndoLevelType = 'fragmented' | 'complete';
 interface BaseUndoLevel {
     type: UndoLevelType;
     bookmark: Bookmark | null;
     beforeBookmark: Bookmark | null;
 }
 interface FragmentedUndoLevel extends BaseUndoLevel {
-    type: UndoLevelType.Fragmented;
+    type: 'fragmented';
     fragments: string[];
     content: '';
 }
 interface CompleteUndoLevel extends BaseUndoLevel {
-    type: UndoLevelType.Complete;
+    type: 'complete';
     fragments: null;
     content: string;
 }
@@ -152,6 +149,7 @@ interface ElementSettings {
     void_elements?: string;
     whitespace_elements?: string;
     transparent_elements?: string;
+    wrap_block_elements?: string;
 }
 interface SchemaSettings extends ElementSettings {
     custom_elements?: string;
@@ -223,6 +221,9 @@ interface Schema {
     getSpecialElements: () => SchemaRegExpMap;
     isValidChild: (name: string, child: string) => boolean;
     isValid: (name: string, attr?: string) => boolean;
+    isBlock: (name: string) => boolean;
+    isInline: (name: string) => boolean;
+    isWrapper: (name: string) => boolean;
     getCustomElements: () => SchemaMap;
     addValidElements: (validElements: string) => void;
     setValidElements: (validElements: string) => void;
@@ -548,7 +549,9 @@ interface HtmlPanelSpec {
 }
 interface IframeSpec extends FormComponentWithLabelSpec {
     type: 'iframe';
+    border?: boolean;
     sandboxed?: boolean;
+    streamContent?: boolean;
     transparent?: boolean;
 }
 interface ImagePreviewSpec extends FormComponentSpec {
@@ -562,10 +565,12 @@ interface InputSpec extends FormComponentWithLabelSpec {
     maximized?: boolean;
     enabled?: boolean;
 }
+type Alignment = 'start' | 'center' | 'end';
 interface LabelSpec {
     type: 'label';
     label: string;
     items: BodyComponentSpec[];
+    align?: Alignment;
 }
 interface ListBoxSingleItemSpec {
     text: string;
@@ -775,6 +780,7 @@ interface NestedMenuItemSpec extends CommonMenuItemSpec {
     onSetup?: (api: NestedMenuItemInstanceApi) => (api: NestedMenuItemInstanceApi) => void;
 }
 interface NestedMenuItemInstanceApi extends CommonMenuItemInstanceApi {
+    setTooltip: (tooltip: string) => void;
     setIconFill: (id: string, value: string) => void;
 }
 type MenuButtonItemTypes = NestedMenuItemContents;
@@ -830,6 +836,7 @@ interface ToolbarSplitButtonInstanceApi {
     setIconFill: (id: string, value: string) => void;
     isActive: () => boolean;
     setActive: (state: boolean) => void;
+    setTooltip: (tooltip: string) => void;
     setText: (text: string) => void;
     setIcon: (icon: string) => void;
 }
@@ -875,6 +882,7 @@ interface UrlInputSpec extends FormComponentWithLabelSpec {
     type: 'urlinput';
     filetype?: 'image' | 'media' | 'file';
     enabled?: boolean;
+    picker_text?: string;
 }
 interface UrlInputData {
     value: string;
@@ -964,7 +972,7 @@ interface DialogSpec<T extends DialogData> {
     title: string;
     size?: DialogSize;
     body: TabPanelSpec | PanelSpec;
-    buttons: DialogFooterButtonSpec[];
+    buttons?: DialogFooterButtonSpec[];
     initialData?: Partial<T>;
     onAction?: DialogActionHandler<T>;
     onChange?: DialogChangeHandler<T>;
@@ -1367,15 +1375,18 @@ interface DomParserSettings {
     allow_unsafe_link_target?: boolean;
     blob_cache?: BlobCache;
     convert_fonts_to_spans?: boolean;
+    convert_unsafe_embeds?: boolean;
     document?: Document;
     fix_list_elements?: boolean;
     font_size_legacy_values?: string;
     forced_root_block?: boolean | string;
     forced_root_block_attrs?: Record<string, string>;
     inline_styles?: boolean;
+    pad_empty_with_br?: boolean;
     preserve_cdata?: boolean;
     remove_trailing_brs?: boolean;
     root_name?: string;
+    sandbox_iframes?: boolean;
     sanitize?: boolean;
     validate?: boolean;
 }
@@ -1396,8 +1407,10 @@ interface StyleSheetLoaderSettings {
 }
 interface StyleSheetLoader {
     load: (url: string) => Promise<void>;
+    loadRawCss: (key: string, css: string) => void;
     loadAll: (urls: string[]) => Promise<string[]>;
     unload: (url: string) => void;
+    unloadRawCss: (key: string) => void;
     unloadAll: (urls: string[]) => void;
     _setReferrerPolicy: (referrerPolicy: ReferrerPolicy) => void;
     _setContentCssCors: (contentCssCors: boolean) => void;
@@ -1420,8 +1433,9 @@ declare namespace Ui_d {
     export { Ui_d_Registry as Registry, PublicDialog_d as Dialog, PublicInlineContent_d as InlineContent, PublicMenu_d as Menu, PublicView_d as View, PublicSidebar_d as Sidebar, PublicToolbar_d as Toolbar, Ui_d_EditorUiApi as EditorUiApi, Ui_d_EditorUi as EditorUi, };
 }
 interface WindowParams {
-    readonly inline?: 'cursor' | 'toolbar';
+    readonly inline?: 'cursor' | 'toolbar' | 'bottom';
     readonly ariaAttrs?: boolean;
+    readonly persistent?: boolean;
 }
 type InstanceApi<T extends DialogData> = UrlDialogInstanceApi | DialogInstanceApi<T>;
 interface WindowManagerImpl {
@@ -1579,6 +1593,8 @@ interface EditorEventMap extends Omit<NativeEventMap, 'blur' | 'focus'> {
     };
     'resize': UIEvent;
     'scroll': UIEvent;
+    'input': InputEvent;
+    'beforeinput': InputEvent;
     'detach': {};
     'remove': {};
     'init': {};
@@ -1781,6 +1797,7 @@ interface ToolbarGroup {
 }
 type ToolbarMode = 'floating' | 'sliding' | 'scrolling' | 'wrap';
 type ToolbarLocation = 'top' | 'bottom' | 'auto';
+type ForceHexColor = 'always' | 'rgb_only' | 'off';
 interface BaseEditorOptions {
     a11y_advanced_options?: boolean;
     add_form_submit_trigger?: boolean;
@@ -1821,11 +1838,13 @@ interface BaseEditorOptions {
     contextmenu?: string | string[] | false;
     contextmenu_never_use_native?: boolean;
     convert_fonts_to_spans?: boolean;
+    convert_unsafe_embeds?: boolean;
     convert_urls?: boolean;
     custom_colors?: boolean;
     custom_elements?: string;
     custom_ui_selector?: string;
     custom_undo_redo_levels?: number;
+    default_font_stack?: string[];
     deprecation_warnings?: boolean;
     directionality?: 'ltr' | 'rtl';
     doctype?: string;
@@ -1854,11 +1873,13 @@ interface BaseEditorOptions {
     font_size_style_values?: string;
     font_size_formats?: string;
     font_size_input_default_unit?: string;
+    force_hex_color?: ForceHexColor;
     forced_root_block?: string;
     forced_root_block_attrs?: Record<string, string>;
     formats?: Formats;
     format_noneditable_selector?: string;
     height?: number | string;
+    help_accessibility?: boolean;
     hidden_input?: boolean;
     highlight_on_focus?: boolean;
     icons?: string;
@@ -1908,6 +1929,7 @@ interface BaseEditorOptions {
     noneditable_regexp?: RegExp | RegExp[];
     nowrap?: boolean;
     object_resizing?: boolean | string;
+    pad_empty_with_br?: boolean;
     paste_as_text?: boolean;
     paste_block_drop?: boolean;
     paste_data_images?: boolean;
@@ -1931,6 +1953,7 @@ interface BaseEditorOptions {
     resize?: boolean | 'both';
     resize_img_proportional?: boolean;
     root_name?: string;
+    sandbox_iframes?: boolean;
     schema?: SchemaType;
     selector?: string;
     setup?: SetupCallback;
@@ -2014,7 +2037,9 @@ interface EditorOptions extends NormalizedEditorOptions {
     color_default_foreground: string;
     content_css: string[];
     contextmenu: string[];
+    convert_unsafe_embeds: boolean;
     custom_colors: boolean;
+    default_font_stack: string[];
     document_base_url: string;
     init_content_sync: boolean;
     draggable_modal: boolean;
@@ -2029,6 +2054,7 @@ interface EditorOptions extends NormalizedEditorOptions {
     font_size_style_values: string;
     forced_root_block: string;
     forced_root_block_attrs: Record<string, string>;
+    force_hex_color: ForceHexColor;
     format_noneditable_selector: string;
     height: number | string;
     highlight_on_focus: boolean;
@@ -2056,11 +2082,13 @@ interface EditorOptions extends NormalizedEditorOptions {
     noneditable_class: string;
     noneditable_regexp: RegExp[];
     object_resizing: string;
+    pad_empty_with_br: boolean;
     paste_as_text: boolean;
     preview_styles: string;
     promotion: boolean;
     readonly: boolean;
     removed_menuitems: string;
+    sandbox_iframes: boolean;
     toolbar: boolean | string | string[] | Array<ToolbarGroup>;
     toolbar_groups: Record<string, GroupToolbarButtonSpec>;
     toolbar_location: ToolbarLocation;
@@ -2082,6 +2110,7 @@ interface StylesSettings {
     allow_svg_data_urls?: boolean;
     url_converter?: URLConverter;
     url_converter_scope?: any;
+    force_hex_color?: ForceHexColor;
 }
 interface Styles {
     parse: (css: string | undefined) => Record<string, string>;
@@ -2142,6 +2171,7 @@ interface DOMUtilsSettings {
     onSetAttrib: (event: SetAttribEvent) => void;
     contentCssCors: boolean;
     referrerPolicy: ReferrerPolicy;
+    force_hex_color: ForceHexColor;
 }
 type Target = Node | Window;
 type RunArguments<T extends Node = Node> = string | T | Array<string | T> | null;
@@ -3024,6 +3054,8 @@ interface IconManager {
 interface Resource {
     load: <T = any>(id: string, url: string) => Promise<T>;
     add: (id: string, data: any) => void;
+    has: (id: string) => boolean;
+    get: (id: string) => any;
     unload: (id: string) => void;
 }
 type TextPatterns_d_Pattern = Pattern;
