@@ -446,6 +446,9 @@ var JUI = {
             var i = this.lastIndexOf("[");
             return this.substring(0,i)+this.substring(i).replace(/\[[0-9]+\]/, "[" + index + "]").replace("#index#", index);
         },
+        decodeTXT: function() {
+            return (this).replaceAll("\u00A0", " ");
+        },
         encodeTXT: function() {
             return (this).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll(" ", "&nbsp;");
         },
@@ -528,6 +531,13 @@ function escapeJquery(srcString) {
     return escapseResult;
 }
 
+function unEscapeHtml(str) {
+    if(str) {
+        return str.decodeTXT();
+    } else {
+        return str;
+    }
+}
 function escapeHtml(str) {
     if(str) {
         return str.encodeTXT();

@@ -120,8 +120,8 @@
                     $this.addClass("selected");
                     selector.text($this.text());
                     var $input = $("select", box);
-                    if ($input.val() != $this.attr("value") ) {
-                        $("select", box).val($this.attr("value")).trigger("change");
+                    if ($input.val() != unEscapeHtml($this.attr("value")) ) {
+                        $input.val(unEscapeHtml($this.attr("value"))).trigger("change");
                     }
                 });
             });
