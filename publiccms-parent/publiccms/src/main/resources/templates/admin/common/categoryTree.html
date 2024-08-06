@@ -3,7 +3,7 @@
     <#list page.list as a>
            <#if a.childIds?has_content>
             <li _src="common/categoryTree.html?parentId=${a.id}">
-                <a href="common/category_list.html?categoryId=${a.id}" target="ajax" rel="categoryBox" class="exclude-translate">${(a.name)!}</a>
+                <a href="common/category_list.html?parentId=${a.id}" target="ajax" rel="categoryBox" class="exclude-translate">${(a.name)!}</a>
             </li>
         </#if>
     </#list>

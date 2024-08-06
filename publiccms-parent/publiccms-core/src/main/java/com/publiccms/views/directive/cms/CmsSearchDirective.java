@@ -194,6 +194,11 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
         }
     }
 
+    @Override
+    public boolean supportAdvanced() {
+        return true;
+    }
+
     @Resource
     private CmsContentService service;
 }

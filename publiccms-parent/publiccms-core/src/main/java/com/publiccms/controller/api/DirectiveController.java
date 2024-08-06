@@ -148,19 +148,16 @@ public class DirectiveController {
                             AbstractTemplateDirective directive = (AbstractTemplateDirective) entry2.getValue();
                             map.put("needAppToken", directive.needAppToken());
                             map.put("needUserToken", directive.needUserToken());
+                            map.put("supportAdvanced", directive.supportAdvanced());
                         } else {
                             map.put("needAppToken", true);
                             map.put("needUserToken", false);
+                            map.put("supportAdvanced", false);
                         }
                         namespace.add(map);
                     }
                 }
-                Collections.sort(namespace, new Comparator<Map<String, Object>>() {
-                    @Override
-                    public int compare(Map<String, Object> o1, Map<String, Object> o2) {
-                        return Collator.getInstance().compare(o1.get("name"), o2.get("name"));
-                    }
-                });
+                Collections.sort(namespace, (o1, o2) -> Collator.getInstance().compare(o1.get("name"), o2.get("name")));
             }
         }
         return namespaceMap;
@@ -184,6 +181,7 @@ public class DirectiveController {
                 map.put("namespace", entry.getValue().getNamespace());
                 map.put("needAppToken", String.valueOf(entry.getValue().needAppToken()));
                 map.put("needUserToken", String.valueOf(entry.getValue().needUserToken()));
+                map.put("supportAdvanced", String.valueOf(entry.getValue().supportAdvanced()));
                 actionList.add(map);
                 actionMap.put(entry.getKey(), entry.getValue());
             }
@@ -196,9 +194,11 @@ public class DirectiveController {
                 map.put("namespace", entry.getValue().getNamespace());
                 map.put("needAppToken", String.valueOf(true));
                 map.put("needUserToken", String.valueOf(false));
+                map.put("supportAdvanced", String.valueOf(false));
                 actionList.add(map);
                 actionMap.put(entry.getKey(), entry.getValue());
             }
         }
+        Collections.sort(actionList, (o1, o2) -> Collator.getInstance().compare(o1.get("name"), o2.get("name")));
     }
 }

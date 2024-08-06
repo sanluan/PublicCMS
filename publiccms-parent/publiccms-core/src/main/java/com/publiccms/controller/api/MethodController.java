@@ -1,5 +1,6 @@
 package com.publiccms.controller.api;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -132,9 +133,11 @@ public class MethodController {
                 resultMap.put("minParameters", String.valueOf(entry.getValue().minParametersNumber()));
                 resultMap.put("needAppToken", String.valueOf(entry.getValue().needAppToken()));
                 resultMap.put("needUserToken", String.valueOf(false));
+                resultMap.put("supportAdvanced", String.valueOf(false));
                 methodList.add(resultMap);
             }
         }
+        Collections.sort(methodList, (o1, o2) -> Collator.getInstance().compare(o1.get("name"), o2.get("name")));
     }
 
     private ObjectWrapper getObjectWrapper() {
