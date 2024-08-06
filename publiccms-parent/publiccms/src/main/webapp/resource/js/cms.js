@@ -116,7 +116,7 @@ function apiRequest(base,api,apisArray,authorizedApis){
         dataType: "json",
         success: function (dataList) {
             $(dataList).each(function(index,data){
-                if("true"==data.needAppToken){
+                if("true"==data.needAppToken||(data.supportAdvanced&&"true"==data.supportAdvanced)) {
                     $(".authorizedApis a[data-id="+api+"]",navTab.getCurrentPanel()).next().append("<li><a tname=\"apis\" tvalue=\""+data.name+"\">"+data.name+"</a></li>");
                 }
             });

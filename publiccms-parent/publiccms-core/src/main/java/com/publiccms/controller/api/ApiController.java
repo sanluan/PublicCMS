@@ -1,6 +1,8 @@
 package com.publiccms.controller.api;
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,7 +139,9 @@ public class ApiController {
             map.put("name", appDirective.getName());
             map.put("needAppToken", String.valueOf(appDirective.needAppToken()));
             map.put("needUserToken", String.valueOf(appDirective.needUserToken()));
+            map.put("supportAdvanced", String.valueOf(false));
             appList.add(map);
         }
+        Collections.sort(appList, (o1, o2) -> Collator.getInstance().compare(o1.get("name"), o2.get("name")));
     }
 }

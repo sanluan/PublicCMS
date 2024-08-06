@@ -92,8 +92,14 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
             }
         } else if (needUserToken() && null == getUser(handler)) {
             handler.put(CommonConstants.ERROR, ApiController.NEED_LOGIN).render();
-        } else if (null != handler.getBoolean(ADVANCED) && (!supportAdvanced() || null == getApp(handler))) {
-            handler.put(CommonConstants.ERROR, ApiController.NEED_APP_TOKEN).render();
+        } else if (null != handler.getBoolean(ADVANCED)
+                && (!supportAdvanced() || null == app || CommonUtils.empty(app.getAuthorizedApis())
+                        || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), Constants.COMMA), getName()))) {
+            if (null == app) {
+                handler.put(CommonConstants.ERROR, ApiController.NEED_APP_TOKEN).render();
+            } else {
+                handler.put(CommonConstants.ERROR, ApiController.UN_AUTHORIZED).render();
+            }
         } else {
             execute(handler);
             if (!handler.renderd) {
