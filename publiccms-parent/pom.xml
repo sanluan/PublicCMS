@@ -515,19 +515,11 @@
             <id>nexus-aliyun</id>
             <url>https://maven.aliyun.com/nexus/content/repositories/central/</url>
         </repository>
-        <repository>
-            <id>jcenter</id>
-            <url>https://jcenter.bintray.com/</url>
-        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>nexus-aliyun</id>
             <url>https://maven.aliyun.com/nexus/content/repositories/central/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>jcenter</id>
-            <url>https://jcenter.bintray.com/</url>
         </pluginRepository>
     </pluginRepositories>
     <build>
