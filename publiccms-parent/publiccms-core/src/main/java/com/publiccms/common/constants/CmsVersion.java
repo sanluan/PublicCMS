@@ -38,7 +38,7 @@ public class CmsVersion {
      * @return revision
      */
     public static final String getRevision() {
-        return "c";
+        return "d";
     }
 
     /**
