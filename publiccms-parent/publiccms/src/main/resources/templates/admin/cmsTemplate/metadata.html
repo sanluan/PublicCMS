@@ -219,7 +219,7 @@
     </#if>
     </script>
     <#if a?has_content>
-            <textarea name="content" class="hide"><@tools.fileContent path=path>${(object)!}</@tools.fileContent></textarea>
+            <textarea name="content" class="hide" escape="true"><@tools.fileContent path=path>${(object)!}</@tools.fileContent></textarea>
             <script>
         <#if site.useStatic&&(a.publishPath)?has_content>
                 $('input[name=useStatic]',navTab.getCurrentPanel()).click();
@@ -235,7 +235,7 @@
         </#if>
             </script>
     <#elseif demo?has_content>
-            <textarea name="content" class="hide"><@html_escape><#include "demo/"+demo parse=false/></@html_escape></textarea>
+            <textarea name="content" class="hide" escape="true"><@html_escape><#include "demo/"+demo parse=false/></@html_escape></textarea>
             <script>
         <#if name?has_content>
                 $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page name/>');
