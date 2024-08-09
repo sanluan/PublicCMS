@@ -10,6 +10,7 @@
 <audio id="audioLoadPlay" src="${base}/resource/sounds/ria.mp3" preload="auto" class="hide"></audio>
 <div class="iframe-box">
     <iframe layoutH></iframe>
+    <div class="error"><span></span><a href="javascript:;" class="close"><i class="icon-remove-sign"></i></a></div>
     <div class="diy-border diy-border-top"><div class="diy-menu"></div></div>
     <div class="diy-border diy-border-right"></div>
     <div class="diy-border diy-border-bottom"></div>
@@ -18,4 +19,8 @@
 </div>
 <script>
 diyIframeRefresh();
+$(".navbar-toggler").not(".side-right").click();
+$(".iframe-box .error .close").click(function(){
+    $(".iframe-box .error").hide();
+});
 </script>
