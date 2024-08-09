@@ -181,7 +181,7 @@ window.addEventListener("message", function(event) {
                     diyTimer=null;
                 }
                 if(cmsSupportVersion!=op.version){
-                    alertMsg.error(JUI.msg("errorSupportVersion"));
+                    $(".iframe-box .error span").text(JUI.msg("errorSupportVersion")).parent().show();
                 } else if (op.templatePath) {
                     $("input[name=url]",navTab.getCurrentPanel()).val(op.url);
                     $("input[name=templatePath]",navTab.getCurrentPanel()).val(op.templatePath);
@@ -337,5 +337,5 @@ function diyIframeRefresh(){
     if(diyTimer){
         clearTimeout(diyTimer);
     }
-    diyTimer = setTimeout("alertMsg.error(JUI.msg(\"errorSupport\"))",8000);
+    diyTimer = setTimeout("$(\".iframe-box .error span\").text(JUI.msg(\"errorSupport\")).parent().show()",5000);
 }

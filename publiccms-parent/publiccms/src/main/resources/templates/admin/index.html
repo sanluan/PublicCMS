@@ -165,6 +165,9 @@
                 loadScripts([window.LOADSCRIPTS_BASE+"/resource/plugins/echarts/echarts.common.min.js"],function(){
                     echartsProxy(echarts);
                 });
+                if($(window).width() < 1024 ){
+                    $(".navbar-toggler").not(".side-right").click();
+                }
             }
         });
     </script>
