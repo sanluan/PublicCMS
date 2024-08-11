@@ -59,7 +59,7 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
 .diy-menu,.diy-button{position:absolute;top:0px;height:32px;left:50%;margin-top:-32px;white-space:nowrap;}
 .diy-border-bottom .diy-menu{bottom:-32px;top:auto;}
 .diy-button{z-index:10;margin-top:0px;}
-.iframe-box .error{position:absolute;top:0;width:100%;background-color:rgba(0,0,0,0.4);color:#fff;line-height:30px;text-align:center;}
+.iframe-box .error{display:none;position:absolute;top:0;width:100%;background-color:rgba(0,0,0,0.4);color:#fff;line-height:30px;text-align:center;}
 .iframe-box .error .close{float:right;width:30px;height:30px;color:#fff;}
 
 .avatar{width:35px;height:35px;border-radius:50%;vertical-align:middle;margin-right:5px;}
