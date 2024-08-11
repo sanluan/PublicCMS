@@ -51,7 +51,7 @@
                 <td>${(a.cronExpression)!}</td>
                 <td>${(a.filePath)!}</td>
                 <td><#if a.multiNode><@t.page 'multiple_node'/></#if></td>
-                <td><@t.page 'status.task.'+a.status/></td>
+                <td><span class="statusText ${a.status?switch(0,'green',2,'orange',3,'red','')}"><@t.page 'status.task.'+a.status/></span></td>
                 <td class="wrap">
                     <a href="sysTask/add.html?id=${a.id}" class="edit btnText" target="navTab" rel="sysTask/edit"><i class="icon-edit"></i><@t.page 'task.edit'/></a>
                     <#if a.status=0>

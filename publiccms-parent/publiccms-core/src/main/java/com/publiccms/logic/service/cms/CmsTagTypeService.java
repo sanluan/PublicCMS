@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -50,6 +52,21 @@ public class CmsTagTypeService extends BaseService<CmsTagType> {
 
     /**
      * @param siteId
+     * @param id
+     * @param count
+     * @return
+     */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public CmsTagType updateCount(short siteId, Serializable id, int count) {
+        CmsTagType entity = getEntity(id);
+        if (null != entity && siteId == entity.getSiteId()) {
+            entity.setCount(count);
+        }
+        return entity;
+    }
+
+    /**
+     * @param siteId
      * @param entitys
      * @return
      */
@@ -74,5 +91,5 @@ public class CmsTagTypeService extends BaseService<CmsTagType> {
 
     @Resource
     private CmsTagTypeDao dao;
-    
+
 }

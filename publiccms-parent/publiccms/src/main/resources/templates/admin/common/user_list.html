@@ -101,7 +101,7 @@
                 <td>
                     <div class="box">
                         <p class="exclude-translate">${(a.email)!}</p>
-                        <p>${a.emailChecked?then('[<font color="red">'+t.pageMessage('verified')+'</font>]','['+t.pageMessage('unverified')+']')?no_esc}</p>
+                        <p><span class="statusText ${a.emailChecked?then('green','red')}">${t.pageMessage(a.emailChecked?then('verified','unverified'))}</span></p>
                     </div>
                 </td>
                 <td>

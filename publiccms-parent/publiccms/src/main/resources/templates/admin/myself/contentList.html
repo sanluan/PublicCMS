@@ -127,7 +127,7 @@
                 <td class="center">${a.clicks!}</td>
                 <td class="center">${a.publishDate!}</td>
                 <td>
-                    <@t.page 'status.content.'+a.status/>
+                    <span class="statusText ${a.status?switch(1,'green',2,'orange',3,'red','')}"><@t.page 'status.content.'+a.status/></span>
                     <#if 1==a.status>/${(checkUserMap[a.checkUserId?string].nickname)!}</#if>
                 </td>
                 <td class="wrap">

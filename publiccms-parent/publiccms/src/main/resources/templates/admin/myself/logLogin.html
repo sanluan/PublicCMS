@@ -69,7 +69,7 @@
                         <p>${(getIpRegion(a.ip).address)!}</p>
                     </div>
                 </td>
-                <td>${t.pageMessage(a.result?then('success','fail'))}</td>
+                <td><span class="statusText ${a.result?then('green','red')}">${t.pageMessage(a.result?then('success','fail'))}</span></td>
                 <td>${a.createDate!}</td>
                 <td class="exclude-translate">${(a.errorPassword)!}</td>
             </tr>

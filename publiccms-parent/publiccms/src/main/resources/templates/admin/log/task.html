@@ -68,7 +68,7 @@
                 <td>${a.begintime!}</td>
                 <td>${a.endtime!}</td>
                 <td>
-                    <#if a.endtime?has_content>${a.success?string(t.pageMessage('success'),t.pageMessage('fail'))}</#if>
+                    <#if a.endtime?has_content><span class="statusText ${a.success?then('green','red')}">${t.pageMessage(a.success?then('success','fail'))}</span></#if>
                 </td>
                 <td class="wrap"><a href="log/taskView.html?id=${a.id}" class="btnText" target="dialog" rel="viewTask"><@t.page 'button.view_more'/></a></td>
             </tr>

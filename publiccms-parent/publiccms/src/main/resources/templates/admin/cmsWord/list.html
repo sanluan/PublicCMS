@@ -49,8 +49,8 @@
                 <th><@t.page 'name'/></th>
                 <th orderField="searchCount"><@t.page 'tag.search_count'/></th>
                 <th><@t.page 'display'/></th>
-                <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th><@t.page 'log.operate_ip'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -58,16 +58,16 @@
             <#list page.list as a>
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
-                <td class="exclude-translate"><a href="cmsContent/search.html?word=${a.name}" class="btnText" target="navTab" rel="cmsContent/search" title="<@t.page 'content.search'/>">${(a.name)!}</a></td>
+                <td class="exclude-translate"><a href="cmsContent/search.html?word=${a.name}" target="navTab" rel="cmsContent/search" title="<@t.page 'content.search'/>">${(a.name)!}</a></td>
                 <td>${a.searchCount!}</td>
-                <td>${t.pageMessage(a.hidden?then('hidden','show'))}</td>
-                <td>${a.createDate!}</td>
+                <td><span class="statusText ${a.hidden?then('red','green')}">${t.pageMessage(a.hidden?then('hidden','show'))}</span></td>
                 <td>
                     <div class="box">
                         <p>${a.ip!}</p>
                         <p>${(getIpRegion(a.ip).address)!}</p>
                     </div>
                 </td>
+                <td>${a.createDate!}</td>
                 <td class="wrap">
                     <a href="cmsWord/add.html?id=${a.id}" class="edit btnText blue" target="dialog" rel="cmsWord_edit" title="<@t.page 'search_word.edit'/>"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
                     <#if a.hidden>

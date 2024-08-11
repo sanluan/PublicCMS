@@ -97,7 +97,7 @@
                 <td>${a.serialNumber!}</td>
                 <td>${a.accountType!}</td>
                 <td>${a.accountSerialNumber!}</td>
-                <td><@t.page 'status.payment.'+a.status/></td>
+                <td><span class="statusText ${a.status?switch(1,'green',0,'orange',2,'orange','')}"><@t.page 'status.payment.'+a.status/></span></td>
                 <td>
                     ${a.processed?then(t.pageMessage('yes'),'')} ${a.processDate!}
                 </td>
