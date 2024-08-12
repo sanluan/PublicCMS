@@ -12,8 +12,9 @@
 </#noparse>
 </#if>
 <#noparse>
-<@cms.place id=id>
+<@cms.place id=id containsAttribute=true>
     <#assign place=object/>
+    <#assign attribute=place.attribute/>
 </@cms.place>
 <form name="contribute" method="post" action="${site.dynamicPath}place/save"></#noparse>
 <#if !a.allowAnonymous>
@@ -44,7 +45,7 @@
     </p>
 </#if>
     <#include "../include_page/extendData.html"/>
-    <@extendData extendList=a.extendList extendValues=((place.attribute)!{}) type="customform"/>
+    <@extendData extendList=a.extendList type="customform"/>
 <#noparse>
     <@sys.configData code="safe">
         <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("contribute")>
@@ -94,9 +95,9 @@ if(editors.length){
                     <p>
                         <a href="${a.url}" target="_blank">${a.title}</a> ${a.clicks} [${(userMap[a.userId?string].nickname)!}]
                     <#if 2=a.status>
-                        <a href="${site.dynamicPath}place/check?id=${a.id}&returnUrl=${site.dynamicPath}&_csrf=<@tools.csrfToken/>">Check</a> 
+                        <a href="${site.dynamicPath}place/check?id=${a.id}&returnUrl=${site.dynamicPath}&_csrf=<@tools.csrfToken/>">Check</a>
                     <#elseif 1=a.status>
-                        <a href="${site.dynamicPath}place/uncheck?id=${a.id}&returnUrl=${site.dynamicPath}&_csrf=<@tools.csrfToken/>">Uncheck</a> 
+                        <a href="${site.dynamicPath}place/uncheck?id=${a.id}&returnUrl=${site.dynamicPath}&_csrf=<@tools.csrfToken/>">Uncheck</a>
                     </#if>
                         <a href="${site.dynamicPath}place/delete?id=${a.id}&returnUrl=${site.dynamicPath}&_csrf=<@tools.csrfToken/>">Delete</a>
                     </p>

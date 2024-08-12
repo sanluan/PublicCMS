@@ -29,7 +29,7 @@
             <#if 'view'=type>
                 <a href="${getUrl(value)!}" target="_blank">${(value)!}</a>
             <#else>
-        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
+        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}" lookupGroup="" width="1000" height="600"><@t.page 'attach'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
@@ -40,7 +40,7 @@
             <#if 'view'=type>
                 <a href="${getPrivateUrl(value)!}" target="_blank">${(value)!}</a>
             <#else>
-        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
+        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&privatefile=true" lookupGroup="" width="1000" height="600"><@t.page 'attach'/></a>
                 </#if>
@@ -52,7 +52,7 @@
                 <br/>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
+        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
@@ -70,7 +70,7 @@
                 <br/>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
+        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}&privatefile=true" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
                     <#if (extend.width)?has_content && (extend.height)?has_content><span class="info">${extend.width!}*${extend.height!}</span></#if>
@@ -83,7 +83,7 @@
                 <br/>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
+        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=video" lookupGroup="" width="1000" height="600"><@t.page 'video'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
@@ -96,7 +96,7 @@
                 <br/>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
+        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=video&privatefile=true" lookupGroup="" width="1000" height="600"><@t.page 'video'/></a>
                 </#if>
@@ -106,14 +106,14 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" type="password"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="30"</#if><#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
+        <input name="${inputName}" type="password"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="30"</#if><#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
             </#if>
             <#break>
         <#case 'textarea'>
             <#if 'view'=type>
                 <pre>${(value)!}</pre>
             <#else>
-        <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if><#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> cols="80" rows="4"><#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if></textarea>
+        <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if><#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> cols="80" rows="4"><#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if></textarea>
             </#if>
             <#break>
         <#case 'template'>
@@ -163,14 +163,14 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" type="text"<#else> type="color"</#if> size="20" value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" type="text"<#else> type="color"</#if> size="20" value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
             </#if>
             <#break>
         <#case 'alphaColor'>
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-        <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" showAlpha="true" </#if>type="text" size="20" value="<#if 'customform'=type>${r'(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
+        <input name="${inputName}" <#if 'customform'!=type>class="color<#if extend.required> required</#if>" autocomplete="off" showAlpha="true" </#if>type="text" size="20" value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
             </#if>
             <#break>
         <#case 'categoryPath'>

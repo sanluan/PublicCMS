@@ -9,9 +9,9 @@
 <#assign formContent>
     <#if category.allowContribute>
 <#noparse><#if user?has_content>
-<@cms.content id=id>
+<@cms.content id=id containsAttribute=true>
     <#assign content=object/>
-    <#assign attribute=getContentAttribute(object.id)/>
+    <#assign attribute=content.attribute/>
 </@cms.content>
 <form name="contribute" method="post" action="${site.dynamicPath}content/save">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken/>"/>
@@ -45,9 +45,9 @@
 </#if>
     <#include "../include_page/extendData.html"/>
     <@sys.extendFieldList extendId=category.extendId>
-        <@extendData extendList=list extendValues=attribute type="customform"/>
+        <@extendData extendList=list type="customform"/>
     </@sys.extendFieldList>
-    <@extendData extendList=model.extendList extendValues=attribute type="customform"/>
+    <@extendData extendList=model.extendList type="customform"/>
 <#noparse>
     <@sys.configData code="safe">
         <#if object.captcha?has_content && object.captcha?split(",")?seq_contains("contribute")>
