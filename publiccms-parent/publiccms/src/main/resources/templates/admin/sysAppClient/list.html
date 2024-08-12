@@ -55,8 +55,8 @@
                 <th><@t.page 'version'/></th>
                 <th orderField="lastLoginDate"><@t.page 'user.last_login_date'/></th>
                 <th><@t.page 'user.last_login_ip'/></th>
-                <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th><@t.page 'disabled'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -75,8 +75,8 @@
                 <td>${a.clientVersion!}</td>
                 <td>${a.lastLoginDate!}</td>
                 <td>${a.lastLoginIp!}</td>
+                <td><span class="statusText ${a.disabled?then('red','green')}">${t.pageMessage(a.disabled?then('disabled','normal'))}</span></td>
                 <td>${a.createDate!}</td>
-                <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disabled')+'</font>',t.pageMessage('normal'))?no_esc}</td>
                 <td class="wrap">
                     <#if a.disabled>
                         <a href="sysAppClient/enable?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText blue" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle"></i><@t.page 'button.enable'/></a>

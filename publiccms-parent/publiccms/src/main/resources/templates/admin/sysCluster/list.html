@@ -47,7 +47,7 @@
         <tbody>
             <#list page.list as a>
             <tr>
-                <td>${a.uuid!}<#if a.master>[<@t.page 'cluster.master'/>]</#if></td>
+                <td><span class="statusText ${a.master?then('red','green')}">${a.uuid!}<#if a.master>[<@t.page 'cluster.master'/>]</#if></td>
                 <td>${a.createDate!}</td>
                 <td>${a.heartbeatDate!}</td>
                 <td>${a.cmsVersion!}</td>

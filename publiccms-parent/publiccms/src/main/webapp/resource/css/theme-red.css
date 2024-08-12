@@ -9,8 +9,8 @@ header{background-color:#8f0006;color:#afc5f6;}
 header .navbar-toggler li{background-color:#8f0006;}
 header .navbar-toggler li:hover{background-color:#b52e31;}
 header .navbar-toggler li:hover a,header .nav a:hover{color:#fff;}
-header .nav>li>ul{background-color:#D8403D;}
 header a{color:#efefef;}
+header .nav>li>ul a,header .nav>li>ul a:hover{color:#8f0006;}
 /* 主界面 */
 
 #sidebar{background-color:#FAE1E1;}

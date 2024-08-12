@@ -66,7 +66,7 @@
                 <td>${a.paymentId!}</td>
                 <td>${a.amount!}</td>
                 <td class="exclude-translate">${a.reason!}</td>
-                <td><@t.page 'status.refund.'+a.status/></td>
+                <td><span class="statusText ${a.status?switch(1,'green',0,'orange',4,'red','')}"><@t.page 'status.refund.'+a.status/></span></td>
                 <td>${a.refundUserId!}</td>
                 <td>${a.refundAmount!}</td>
                 <td class="exclude-translate">${a.reply!}</td>

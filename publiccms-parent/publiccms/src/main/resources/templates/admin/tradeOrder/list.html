@@ -96,7 +96,7 @@
                     </div>
                 </td>
                 <td>${a.remark!}</td>
-                <td><@t.page 'status.order.'+a.status/></td>
+                <td><span class="statusText ${a.status?switch(2,'green',0,'orange',3,'red','')}"><@t.page 'status.order.'+a.status/></span></td>
                 <td>
                     <div class="box">
                         <p>${a.processed?then(t.pageMessage('yes'),'')} ${a.processDate!}</p>

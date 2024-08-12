@@ -54,7 +54,7 @@
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id}</td>
-                <td class="exclude-translate"><a href="cmsContent/search.html?tagId=${a.id}" class="btnText" target="navTab" rel="cmsContent/search" title="<@t.page 'content.search'/>">${(a.name)!}</a></td>
+                <td class="exclude-translate"><a href="cmsContent/search.html?tagId=${a.id}" target="navTab" rel="cmsContent/search" title="<@t.page 'content.search'/>">${(a.name)!}</a></td>
                 <td class="exclude-translate">${(typeMap[a.typeId?string].name)!}</td>
                 <td>${a.searchCount!}</td>
                 <td class="wrap">

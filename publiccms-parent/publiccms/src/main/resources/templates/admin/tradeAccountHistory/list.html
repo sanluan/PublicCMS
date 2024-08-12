@@ -74,7 +74,7 @@
                 <td>${a.amount!}</td>
                 <td>${a.amountChange!}</td>
                 <td>${a.balance!}</td>
-                <td><@t.page 'status.accountHistory.'+a.status/></td>
+                <td><span class="statusText ${a.status?switch(1,'green',2,'green',3,'orange','')}"><@t.page 'status.accountHistory.'+a.status/></span></td>
                 <td>${a.description!}</td>
                 <td>${a.createDate!}</td>
             </tr>

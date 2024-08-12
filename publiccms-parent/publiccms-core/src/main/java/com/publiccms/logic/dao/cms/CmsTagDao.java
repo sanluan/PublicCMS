@@ -31,8 +31,8 @@ public class CmsTagDao extends BaseDao<CmsTag> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Integer typeId, String name, String orderField, String orderType,
-            Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Integer typeId, String name, String orderField, String orderType, Integer pageIndex,
+            Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsTag bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -57,6 +57,26 @@ public class CmsTagDao extends BaseDao<CmsTag> {
             queryHandler.order("bean.id").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
+    }
+
+    /**
+     * 获取标签数量
+     * 
+     * Get tag count
+     * 
+     * @param siteId
+     * @param typeId
+     * @return results count
+     */
+    public int getCount(Short siteId, Integer typeId) {
+        QueryHandler queryHandler = getQueryHandler("from CmsTag bean");
+        if (CommonUtils.notEmpty(siteId)) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
+        if (CommonUtils.notEmpty(typeId)) {
+            queryHandler.condition("bean.typeId = :typeId").setParameter("typeId", typeId);
+        }
+        return (int) count(queryHandler);
     }
 
     @Override

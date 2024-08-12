@@ -69,10 +69,10 @@
                 <th width="150"><@t.page 'title'/></th>
                 <th width="70" orderField="publishDate"><@t.page 'publish_date'/></th>
                 <th width="70"><@t.page 'expiry_date'/></th>
-                <th width="70" orderField="createDate"><@t.page 'create_date'/></th>
                 <th width="60"><@t.page 'content.promulgator'/></th>
                 <th width="80" orderField="clicks"><@t.page 'clicks'/></th>
                 <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
+                <th width="70" orderField="createDate"><@t.page 'create_date'/></th>
                 <th width="150"><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -112,13 +112,13 @@
                 </td>
                 <td>${a.publishDate}</td>
                 <td>${a.expiryDate!}</td>
-                <td>${a.createDate}</td>
                 <td>${(userMap[a.userId?string].nickname)!}</td>
                 <td>${a.clicks}</td>
                 <td>
-                    <@t.page 'status.place.data.'+a.status/>
+                    <span class="statusText ${a.status?switch(1,'green',2,'orange',3,'red','')}"><@t.page 'status.place.data.'+a.status/></span>
                     <#if 1=a.status&&a.checkUserId?has_content>/ ${(userMap[a.checkUserId?string].nickname)!}</#if>
                 </td>
+                <td>${a.createDate}</td>
                 <td class="wrap">
                     <a href="cmsPlace/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsPlace/edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
                     <a href="cmsPlace/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsPlace/add" title="<@t.page 'place_data.add'/>"><@t.page 'button.copy'/></a>
