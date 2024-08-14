@@ -129,7 +129,7 @@
                 <#if value?has_content>${t.pageMessage(('true'=value)?then('yes','no'))}</#if>
             <#else>
         <select<#if 'customform'!=type> class="combox<#if extend.required> required</#if>"</#if> name="${inputName}">
-            <option value><@t.page 'all'/></option>
+            <option value><@t.page 'please_select'/></option>
             <option value="true"${(value?has_content&&'true'=value)?then(' selected="true"','')?no_esc}><@t.page 'yes'/></option>
             <option value="false"${(!value?has_content||'false'=value)?then(' selected="true"','')?no_esc}><@t.page 'no'/></option>
         </select>

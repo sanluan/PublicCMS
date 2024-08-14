@@ -39,8 +39,9 @@ public class HtmlUtils {
                     "progress", "s", "samp", "section", "summary", "time", "var", "wbr")
             .addAttributes(":all", "class", "dir", "lang", "style").addAttributes("a", "name", "download", "id", "target")
             .addAttributes("audio", "autoplay", "controls", "loop", "muted", "preload", "src")
-            .addAttributes("iframe", "src", "width", "height").addAttributes("meter", "max", "min", "value")
-            .addAttributes("progress", "max", "value")
+            .addAttributes("iframe", "align", "frameborder", "longdesc", "scrolling", "src", "width", "height", "marginheight",
+                    "marginwidth", "name")
+            .addAttributes("meter", "max", "min", "value").addAttributes("progress", "max", "value")
             .addAttributes("video", "autoplay", "controls", "data-setup", "height", "loop", "muted", "preload", "poster", "src",
                     "width")
             .addAttributes("source", "media", "sizes", "src", "srcset", "type")
