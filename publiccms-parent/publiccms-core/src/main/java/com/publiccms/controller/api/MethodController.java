@@ -66,7 +66,7 @@ public class MethodController {
     @RequestMapping("method/{name}")
     public Object method(@PathVariable String name, String appToken, HttpServletRequest request) {
         BaseMethod method = methodMap.get(name);
-        if (null != method) {
+        if (null != method && method.httpEnabled()) {
             try {
                 if (method.needAppToken()) {
                     SysAppToken token = appTokenService.getEntity(appToken);

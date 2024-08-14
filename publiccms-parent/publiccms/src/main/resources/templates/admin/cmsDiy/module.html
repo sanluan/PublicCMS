@@ -21,7 +21,7 @@
                 <dt><@t.page 'region'/>:</dt></dt>
                 <dd>
                     <select name="region" class="combox">
-                        <option value><@t.page 'all'/></option>
+                        <option value><@t.page 'please_select'/></option>
                  <@tools.diyMetadataList itemType="region">
                     <#list list as r>
                         <option value="${(r.id)!}"<#if (a.region)?has_content&&a.region=r.id> selected="selected"</#if>>${r.name!}</option>

@@ -1,6 +1,6 @@
 <li>
     <select class="combox" name="disabled">
-        <option value><@t.page 'all'/></option>
+        <option value><@t.page 'please_select'/></option>
         <option value="false"${(!disabled?has_content||"false"=disabled)?then(' selected="true"','')?no_esc}><@t.page 'normal'/></option>
         <option value="true"${(disabled?has_content&&"true"=disabled)?then(' selected="true"','')?no_esc}><@t.page 'disabled'/></option>
     </select>
