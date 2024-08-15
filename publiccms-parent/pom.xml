@@ -69,7 +69,7 @@
         <!-- https://github.com/brettwooldridge/HikariCP -->
         <version.hikariCP>5.1.0</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
-        <version.mysql>8.4.0</version.mysql>
+        <version.mysql>9.0.0</version.mysql>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.14</version.httpclient>
@@ -90,7 +90,7 @@
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
         <version.compress>1.27.0</version.compress>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
-        <version.codec>1.17.0</version.codec>
+        <version.codec>1.17.1</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <version.log4j>2.23.1</version.log4j>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
