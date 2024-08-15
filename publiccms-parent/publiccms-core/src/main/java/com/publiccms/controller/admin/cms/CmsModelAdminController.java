@@ -91,7 +91,6 @@ public class CmsModelAdminController {
         if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        modelComponent.clear(site.getId());
         if (!(CommonUtils.notEmpty(entity.getFieldList()) && entity.getFieldList().contains("content"))) {
             entity.setSearchable(false);
         }
@@ -121,6 +120,7 @@ public class CmsModelAdminController {
                 }
             }
         }
+        modelComponent.clear(site.getId());
         if (CommonUtils.notEmpty(modelId)) {
             modelId = StringUtils.trim(modelId);
             Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
