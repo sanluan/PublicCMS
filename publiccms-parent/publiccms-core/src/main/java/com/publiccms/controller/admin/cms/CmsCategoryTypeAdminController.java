@@ -3,11 +3,7 @@ package com.publiccms.controller.admin.cms;
 import java.util.Comparator;
 import java.util.Map;
 
-import jakarta.servlet.http.HttpServletRequest;
-
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +12,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
@@ -28,6 +23,9 @@ import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.CmsCategoryType;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 
@@ -50,17 +48,12 @@ public class CmsCategoryTypeAdminController {
      * @param entity
      * @param categoryTypeId
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute CmsCategoryType entity,
-            String categoryTypeId, HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
-        modelComponent.clear(site.getId());
+            String categoryTypeId, HttpServletRequest request) {
         if (CommonUtils.notEmpty(entity.getExtendList())) {
             entity.getExtendList().sort(Comparator.comparing(SysExtendField::getSort));
             entity.getExtendList().forEach(e -> {
@@ -69,6 +62,7 @@ public class CmsCategoryTypeAdminController {
                 }
             });
         }
+        modelComponent.clear(site.getId());
         if (CommonUtils.notEmpty(categoryTypeId)) {
             Map<String, CmsCategoryType> categoryTypeMap = modelComponent.getCategoryTypeMap(site.getId());
             categoryTypeMap.remove(categoryTypeId);
@@ -93,16 +87,11 @@ public class CmsCategoryTypeAdminController {
      * @param admin
      * @param id
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String id, HttpServletRequest request,
-            ModelMap model) {
-        if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String id, HttpServletRequest request) {
         Map<String, CmsCategoryType> categoryTypeMap = modelComponent.getCategoryTypeMap(site.getId());
         CmsCategoryType entity = categoryTypeMap.remove(id);
         if (null != entity) {
