@@ -5,16 +5,15 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.publiccms.common.database.IDStyleGenerator;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -191,8 +190,7 @@ public class TradeOrder implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(generator = "cmsGenerator")
-    @GenericGenerator(name = "cmsGenerator", type = IDStyleGenerator.class)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
         return this.id;

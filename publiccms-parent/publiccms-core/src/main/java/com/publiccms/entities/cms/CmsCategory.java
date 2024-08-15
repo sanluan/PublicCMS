@@ -1,17 +1,16 @@
 package com.publiccms.entities.cms;
 
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.publiccms.common.database.IDStyleGenerator;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 import com.publiccms.views.pojo.entities.Attribute;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -196,7 +195,7 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
     public CmsCategory(short siteId, String name, Integer parentId, String typeId, String childIds, String tagTypeIds,
             String code, boolean customPath, String templatePath, String path, boolean onlyUrl, boolean hasStatic, String url,
             boolean customContentPath, String contentPath, boolean containChild, Integer pageSize, boolean allowContribute,
-            int sort, boolean hidden, boolean disabled,Integer workflowId, Integer extendId) {
+            int sort, boolean hidden, boolean disabled, Integer workflowId, Integer extendId) {
         this.siteId = siteId;
         this.name = name;
         this.parentId = parentId;
@@ -223,8 +222,7 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(generator = "cmsGenerator")
-    @GenericGenerator(name = "cmsGenerator", type = IDStyleGenerator.class)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return this.id;
@@ -306,7 +304,7 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
         this.customPath = customPath;
     }
 
-    @Column(name = "template_path", length=255)
+    @Column(name = "template_path", length = 255)
     public String getTemplatePath() {
         return this.templatePath;
     }

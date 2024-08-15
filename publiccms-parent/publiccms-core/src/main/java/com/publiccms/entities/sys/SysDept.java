@@ -1,16 +1,15 @@
 package com.publiccms.entities.sys;
 
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.publiccms.common.database.IDStyleGenerator;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -124,8 +123,7 @@ public class SysDept implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(generator = "cmsGenerator")
-    @GenericGenerator(name = "cmsGenerator", type = IDStyleGenerator.class)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return this.id;
