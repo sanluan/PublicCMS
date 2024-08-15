@@ -51,6 +51,7 @@ dependencies {
     implementation "org.apache.commons:commons-text:${textVersion}"
     implementation "org.apache.commons:commons-compress:${compressVersion}"
     implementation "commons-codec:commons-codec:${codecVersion}"
+    implementation "org.jboss.logging:jboss-logging:${jbossLoggingVersion}"
     implementation ("org.apache.httpcomponents:httpclient:${httpclientVersion}") {
         exclude group:"commons-logging", module:"commons-logging"
     }

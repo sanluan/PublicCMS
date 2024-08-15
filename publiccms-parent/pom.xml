@@ -93,6 +93,8 @@
         <version.codec>1.17.1</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <version.log4j>2.23.1</version.log4j>
+        <!-- https://mvnrepository.com/artifact/org.jboss.logging/jboss-logging -->
+        <version.jbossLogging>3.6.0.Final</version.jbossLogging>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
         <version.extractor>2.19.0</version.extractor>
         <!-- https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio -->
@@ -439,6 +441,11 @@
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-slf4j-impl</artifactId>
                 <version>${version.log4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging</artifactId>
+                <version>${version.jbossLogging}</version>
             </dependency>
             <dependency>
                 <groupId>com.drewnoakes</groupId>
