@@ -28,13 +28,13 @@
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
         <!-- 6.0,6.1 for Java 17 -->
-        <version.spring>5.3.36</version.spring>
+        <version.spring>5.3.37</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
         <!-- 3.0,3.1 for Java 17 -->
         <version.springBoot>2.7.18</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
-        <version.juint>5.10.2</version.juint>
+        <version.juint>5.11.0</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
         <!-- 6 for jakarta -->
@@ -62,14 +62,14 @@
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.10.8</version.ehcache>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-        <version.jackson>2.17.1</version.jackson>
+        <version.jackson>2.17.2</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.33</version.freemarker>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
         <version.lucene>8.11.2</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <!-- https://github.com/redis/jedis -->
-        <version.jedis>5.1.3</version.jedis>
+        <version.jedis>5.1.4</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
@@ -82,21 +82,21 @@
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.14</version.httpclient>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
-        <version.poi>5.2.5</version.poi>
+        <version.poi>5.3.0</version.poi>
         <!-- https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml -->
-        <version.xhtmlConverter>2.0.6</version.xhtmlConverter>
+        <version.xhtmlConverter>2.1.0</version.xhtmlConverter>
         <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
         <version.fileupload>1.5</version.fileupload>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
         <version.collections>4.4</version.collections>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-        <version.lang>3.14.0</version.lang>
+        <version.lang>3.16.0</version.lang>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <version.io>2.16.1</version.io>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <version.text>1.12.0</version.text>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
-        <version.compress>1.26.2</version.compress>
+        <version.compress>1.27.0</version.compress>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.17.0</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
@@ -116,7 +116,7 @@
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
         <version.userAgentUtils>1.21</version.userAgentUtils>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-        <version.jsoup>1.17.2</version.jsoup>
+        <version.jsoup>1.18.1</version.jsoup>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
         <version.annotation>1.3.5</version.annotation>
         <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->
