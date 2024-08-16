@@ -67,14 +67,15 @@ if(editors.length){
     var base="${site.dynamicPath}";
     loadScripts(["${site.dynamicPath}resource/plugins/ueditor/ueditor.config.js","${site.dynamicPath}resource/plugins/ueditor/ueditor.all.min.js","${site.dynamicPath}resource/plugins/ueditor/lang/</#noparse><@t.page 'ueditor.lang_js'/><#noparse>"],function(){
         window.UEDITOR_CONFIG.topOffset=0;
-        for(var key in editors){
+        editors.forEach(e => {
             var editor = new baidu.editor.ui.Editor();
-            editor.render(key);
-        }
+            editor.render(e);
+        });
         document.querySelector("form[name=contribute]").onsubmit=function(){
-            for(var key in editors){
-                UE.getEditor(key).sync();
-            }
+            editors.forEach(e => {
+                var editor = new baidu.editor.ui.Editor();
+                UE.getEditor(e).sync();
+            });
         }
     });
 }
