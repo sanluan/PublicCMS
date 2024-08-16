@@ -43,7 +43,8 @@ Switch to the develop,V5-develop branch and the free version to the V2019 branch
 
 * Compile and run
 
-Ensure that the operating system (OS) runs jdk1.8 or later,V5 Java17 and later
+Ensure that the operating system (OS) runs jdk
+
 ```
 cd publiccms-parent
 mvnw clean package

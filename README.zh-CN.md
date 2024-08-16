@@ -43,7 +43,8 @@ https://github.com/sanluan/PublicCMS
 
 * 编译运行
 
-保证操作系统中有jdk1.8及以上,V5 Java17及以上
+保证操作系统中有jdk
+
 ```
 cd publiccms-parent
 mvnw clean package
@@ -73,6 +74,7 @@ java -jar -Dfile.encoding="UTF-8" -Dcms.port=8080 -Dcms.contextPath=/publiccms -
 
 * tomcat中运行
 将publiccms.war.original重命名为publiccms.war或ROOT.war(上下文路径为/),移动文件到tomcat的webapps目录下,此时-Dcms.filePath参数依旧有效
+
 * docker中运行
 
 执行:
