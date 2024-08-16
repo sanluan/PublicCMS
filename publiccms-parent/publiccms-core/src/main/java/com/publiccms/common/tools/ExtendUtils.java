@@ -257,7 +257,7 @@ public class ExtendUtils {
                         map.put(extend.getId().getCode(), value);
                     }
                 }
-                if (extend.isSearchable() && null != value) {
+                if (extend.isSearchable() && null != searchableConsumer && null != value) {
                     searchableConsumer.accept(extend, value);
                 }
             }

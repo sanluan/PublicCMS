@@ -152,15 +152,15 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        for (HttpMessageConverter<?> converter : converters) {
-            if (converter instanceof MappingJackson2HttpMessageConverter) {
+        for (HttpMessageConverter<?> c : converters) {
+            if (c instanceof MappingJackson2HttpMessageConverter converter) {
                 List<MediaType> list = new ArrayList<>();
                 list.add(MediaType.TEXT_PLAIN);
-                ((MappingJackson2HttpMessageConverter) converter).setSupportedMediaTypes(list);
+                converter.setSupportedMediaTypes(list);
                 SimpleModule module = new SimpleModule();
                 module.addSerializer(Long.class, ToStringSerializer.instance);
                 module.addSerializer(Long.TYPE, ToStringSerializer.instance);
-                ((MappingJackson2HttpMessageConverter) converter).getObjectMapper().registerModule(module);
+                converter.getObjectMapper().registerModule(module);
             }
         }
     }
