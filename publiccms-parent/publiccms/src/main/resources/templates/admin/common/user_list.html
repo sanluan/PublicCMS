@@ -92,16 +92,16 @@
                         </div>
                     </#if>
                     <div class="box">
-                        <p class="exclude-translate"><@t.page 'user.username'/>:${(a.name)!}</p>
+                        <p class="exclude-translate">${(a.superuser)?then('<font color="red">'+t.pageMessage('admin')+'</font>',t.pageMessage('user.username'))?no_esc}:${(a.name)!}</p>
                         <p class="exclude-translate"><@t.page 'user.nickname'/>:${(a.nickname)!}</p>
-                        <p>${(a.superuser)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc} <font color="red"><@t.page 'user.content_permissions.'+a.contentPermissions/></font></p>
+                        <#if 0!=a.contentPermissions><p><font color="red"><@t.page 'user.content_permissions.'+a.contentPermissions/></font></p></#if>
                     </div>
                 </td>
                 <td class="exclude-translate">${(deptMap[a.deptId?string].name)!}</td>
                 <td>
                     <div class="box">
                         <p class="exclude-translate">${(a.email)!}</p>
-                        <p><span class="statusText ${a.emailChecked?then('green','red')}">${t.pageMessage(a.emailChecked?then('verified','unverified'))}</span></p>
+                        <p><#if (a.email)?has_content><span class="statusText ${a.emailChecked?then('green','red')}">${t.pageMessage(a.emailChecked?then('verified','unverified'))}</span></#if></p>
                     </div>
                 </td>
                 <td>
