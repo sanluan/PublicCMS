@@ -87,7 +87,7 @@ subprojects {
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.14"
         // https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml
-        // 2.10 for Java 17+
+        // 2.1.0 for Java 17+
         xhtmlConverterVersion = "2.0.6"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
         poiVersion = "5.3.0"
