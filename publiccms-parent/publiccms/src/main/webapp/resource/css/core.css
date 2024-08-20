@@ -50,7 +50,7 @@ header .nav>li>ul>li{padding:8px;white-space: nowrap;}
 header .nav>li:hover>ul{display:block;}
 header .nav>li>a [class*=" icon-"].icon-large{line-height:1.6em;font-size:1.6em;vertical-align:middle;}
 
-.langList img.theme{width:30px;height:20px;box-sizing:border-box;vertical-align:middle;}
+.langList img,.theme,.themeList img{width:30px;height:20px;box-sizing:border-box;vertical-align:middle;}
 header .nav>li ul img{border:1px solid #ccc;}
 header .nav>li>ul li.selected a{color:#333;}
 header .nav>li>ul li.selected img{border-color:#000;-moz-box-shadow:0px 0px 5px 1px #DDE4EF;box-shadow:0px 0px 5px 1px #DDE4EF;-ms-box-shadow:0px 0px 5px 1px #DDE4EF;-o-box-shadow:0px 0px 5px 1px #DDE4EF;-webkit-box-shadow:0px 0px 5px 1px #DDE4EF;}
