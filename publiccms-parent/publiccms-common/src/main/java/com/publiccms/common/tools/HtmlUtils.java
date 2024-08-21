@@ -1,6 +1,7 @@
 package com.publiccms.common.tools;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
@@ -67,6 +68,54 @@ public class HtmlUtils {
                 set.add(matcher.group(4));
             }
         }
+    }
+
+    public static String swapWord(String string, Map<Character, Character> swapWordMap, boolean html) {
+        if (html) {
+            Document document = Jsoup.parse(string);
+            Element body = document.body();
+            Document cloneDocument = document.shallowClone();
+            cloneDocument.outputSettings().prettyPrint(false);
+            Element clone = body.shallowClone();
+            cloneDocument.appendChild(clone);
+            swapWord(clone, body.childNodes(), swapWordMap);
+            return clone.html();
+        } else {
+            return swapWord(string, swapWordMap);
+        }
+    }
+
+    private static Element swapWord(Element element, Map<Character, Character> swapWordMap) {
+        Element clone = element.shallowClone();
+        swapWord(clone, element.childNodes(), swapWordMap);
+        return clone;
+    }
+
+    private static void swapWord(Element cloneParent, List<Node> nodeList, Map<Character, Character> swapWordMap) {
+        for (int i = 0; i < nodeList.size(); i++) {
+            Node current = nodeList.get(i);
+            if (current instanceof Element) {
+                Element child = swapWord((Element) current, swapWordMap);
+                if (null != child) {
+                    cloneParent.appendChild(child);
+                }
+            } else {
+                if (current instanceof TextNode) {
+                    cloneParent.appendChild(new TextNode(swapWord(((TextNode) current).text(), swapWordMap)));
+                } else {
+                    cloneParent.appendChild(current.shallowClone());
+                }
+            }
+        }
+    }
+
+    private static String swapWord(String string, Map<Character, Character> swapWordMap) {
+        StringBuilder out = new StringBuilder(string.length());
+        for (int i = 0; i < string.length(); i++) {
+            char c = string.charAt(i);
+            out.append(swapWordMap.getOrDefault(c, c));
+        }
+        return out.toString();
     }
 
     public static String keep(String string, int length) {

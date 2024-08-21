@@ -41,18 +41,20 @@ console.log(data);
  */
 @Component
 public class GetIpRegionMethod extends BaseMethod {
-    private final Searcher searcher;
+    private Searcher searcher;
 
-    public GetIpRegionMethod() throws IOException {
+    public GetIpRegionMethod() {
         try (InputStream inputStream = GetIpRegionMethod.class.getResourceAsStream("/ip2region.xdb")) {
             searcher = Searcher.newWithBuffer(IOUtils.toByteArray(inputStream));
+        } catch (IOException e) {
+            searcher = null;
         }
     }
 
     @Override
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String ip = getString(0, arguments);
-        if (CommonUtils.notEmpty(ip) && IpUtils.isIpv4(ip)) {
+        if (CommonUtils.notEmpty(ip) && IpUtils.isIpv4(ip) && null != searcher) {
             try {
                 return getIpRegion(searcher.search(ip));
             } catch (Exception e) {

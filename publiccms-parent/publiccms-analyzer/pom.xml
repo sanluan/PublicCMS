@@ -24,6 +24,10 @@
             <version>2.7.0</version>
         </dependency>
         <dependency>
+           <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j-charset</artifactId>
+        </dependency>
+        <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
             <scope>provided</scope>

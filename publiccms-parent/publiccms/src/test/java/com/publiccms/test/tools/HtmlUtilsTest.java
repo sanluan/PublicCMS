@@ -1,5 +1,8 @@
 package com.publiccms.test.tools;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.Assertions;
@@ -41,6 +44,17 @@ class HtmlUtilsTest {
     void cleanUnsafeHtml() {
         String result = HtmlUtils.cleanUnsafeHtml(html, Constants.BLANK);
         Assertions.assertFalse(result.toLowerCase().contains("script"));
+    }
+    @Test
+    @DisplayName("swap word")
+    void swapWord() {
+        Map<Character, Character> swapWordMap = new HashMap<>();
+        swapWordMap.put('a', 'b');
+        swapWordMap.put('p', 'c');
+        swapWordMap.put('c', 'p');
+        swapWordMap.put('b', 'a');
+        Assertions.assertTrue(HtmlUtils.swapWord("publiccms<a href=\"http://www.publiccms.com\">publiccms</a>publiccms", swapWordMap, true).contains("<a"));
+        Assertions.assertFalse(HtmlUtils.swapWord("publiccms<a href=\"http://www.publiccms.com\">publiccms</a>publiccms", swapWordMap, false).contains("<a"));
     }
 
     @Test

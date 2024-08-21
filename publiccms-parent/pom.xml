@@ -109,6 +109,8 @@
         <version.safeSvg>1.1.7</version.safeSvg>
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
         <version.userAgentUtils>1.21</version.userAgentUtils>
+        <!-- https://mvnrepository.com/artifact/com.ibm.icu/icu4j -->
+        <version.icu4j>75.1</version.icu4j>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
         <version.jsoup>1.18.1</version.jsoup>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
@@ -487,6 +489,16 @@
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
                 <version>${version.userAgentUtils}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ibm.icu</groupId>
+                <artifactId>icu4j</artifactId>
+                <version>${version.icu4j}</version>
+            </dependency>
+            <dependency>
+               <groupId>com.ibm.icu</groupId>
+                <artifactId>icu4j-charset</artifactId>
+                <version>${version.icu4j}</version>
             </dependency>
             <dependency>
                 <groupId>org.jsoup</groupId>

@@ -1,7 +1,6 @@
 package com.publiccms.common.tools;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
@@ -16,12 +15,15 @@ import org.apache.lucene.analysis.cn.smart.hhmm.DictionaryReloader;
  * 
  */
 public class AnalyzerDictUtils {
+    private AnalyzerDictUtils() {
+    }
+
     public static final String TXT_DICT = "dict.txt";
     public static final String TXT_SKIPWORD = "skipWord.txt";
     public static final String DIR_DICT = "/dict/";
 
     public static void generate(String newCoreDir, Map<String, Integer> wordMap, List<String> skipWordList)
-            throws FileNotFoundException, ClassNotFoundException, IOException {
+            throws ClassNotFoundException, IOException {
         Map<String, Map<String, Integer>> cnTFsMap = new HashMap<>();
         Map<String, Integer> deliFreqsMap = SmartcnDictUtils.defaultDelimiterFreqsMap;
         SmartcnDictUtils.readFromCoreMem(SmartChineseAnalyzer.class.getResourceAsStream("hhmm/coredict.mem"), cnTFsMap,
@@ -30,8 +32,8 @@ public class AnalyzerDictUtils {
         SmartcnDictUtils.skipWord(cnTFsMap, skipWordList);
         SmartcnDictUtils.create(CommonUtils.joinString(newCoreDir, DictionaryReloader.DICT_COREDICT), SmartcnDictUtils.TYPE_CORE,
                 cnTFsMap, deliFreqsMap);
-        SmartcnDictUtils.create(CommonUtils.joinString(newCoreDir, DictionaryReloader.DICT_BIGRAMDICT), SmartcnDictUtils.TYPE_BIGRAM,
-                cnTFsMap, deliFreqsMap);
+        SmartcnDictUtils.create(CommonUtils.joinString(newCoreDir, DictionaryReloader.DICT_BIGRAMDICT),
+                SmartcnDictUtils.TYPE_BIGRAM, cnTFsMap, deliFreqsMap);
         File file = new File(CommonUtils.joinString(newCoreDir, DictionaryReloader.MEM_COREDICT));
         if (file.exists()) {
             Files.delete(file.toPath());
