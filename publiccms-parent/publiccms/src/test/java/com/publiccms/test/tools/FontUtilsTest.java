@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.google.typography.font.sfntly.Font;
 import com.publiccms.common.tools.FontUtils;
 
 @DisplayName("font utils test case")
@@ -23,11 +24,12 @@ public class FontUtilsTest {
     void testFontGenerate() throws IOException {
         File fontFile = new File("src/test/resources/test/tools/Reckoner-1.ttf");
         File outputFile = new File("target/test.ttf");
-        List<Character> wordList = FontUtils.sortedCharList("publiccms");
+        Font font = FontUtils.loadFont(fontFile);
+        List<Character> wordList = FontUtils.sortedCharList(font, "publiccms黑核科技");
         Map<Character, Character> swapWordMap = FontUtils.swapWordMap(wordList, 5);
         outputFile.getParentFile().mkdirs();
         try (FileOutputStream fos = new FileOutputStream(outputFile)) {
-            FontUtils.generateFont(fontFile, fos, swapWordMap);
+            FontUtils.generateFont(font, fos, swapWordMap);
             Assertions.assertTrue(outputFile.exists());
         }
         log.info(swapWordMap);
