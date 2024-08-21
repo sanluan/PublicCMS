@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import com.google.typography.font.sfntly.Font;
 import com.google.typography.font.sfntly.FontFactory;
 import com.google.typography.font.sfntly.Tag;
+import com.google.typography.font.sfntly.table.core.CMap;
 import com.google.typography.font.sfntly.table.core.CMapTable;
 import com.google.typography.font.tools.sfnttool.GlyphCoverage;
 import com.google.typography.font.tools.subsetter.RenumberingSubsetter;
@@ -34,10 +35,14 @@ public class FontUtils {
     private FontUtils() {
     }
 
-    public static List<Character> sortedCharList(String input) {
+    public static List<Character> sortedCharList(Font font, String input) {
         Map<Character, Integer> frequencyMap = new HashMap<>();
+        CMapTable cmapTable = font.getTable(Tag.cmap);
+        CMap cmap = GlyphCoverage.getBestCMap(cmapTable);
         for (char c : input.toCharArray()) {
-            frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
+            if (CMapTable.NOTDEF < cmap.glyphId(c & 0xffff)) {
+                frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
+            }
         }
         return frequencyMap.entrySet().stream().sorted(Entry.comparingByValue()).map(Entry::getKey).collect(Collectors.toList());
     }
@@ -71,15 +76,6 @@ public class FontUtils {
         byteArrayOutputStream.close();
         return CommonUtils.joinString("data:font/ttf;charset=utf-8;base64,",
                 VerificationUtils.base64Encode(byteArrayOutputStream.toByteArray()));
-    }
-
-    public static String generateFontData(File fontFile, Map<Character, Character> swapWordMap) throws IOException {
-        return generateFontData(loadFont(fontFile), swapWordMap);
-    }
-
-    public static void generateFont(File fontFile, OutputStream outputStream, Map<Character, Character> swapWordMap)
-            throws IOException {
-        generateFont(loadFont(fontFile), outputStream, swapWordMap);
     }
 
     public static void generateFont(Font font, OutputStream outputStream, Map<Character, Character> swapWordMap)

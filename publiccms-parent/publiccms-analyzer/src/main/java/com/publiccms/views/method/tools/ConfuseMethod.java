@@ -104,7 +104,7 @@ public class ConfuseMethod extends BaseMethod {
                         string = HtmlUtils.removeHtmlTag(string);
                     }
 
-                    List<Character> wordList = FontUtils.sortedCharList(string);
+                    List<Character> wordList = FontUtils.sortedCharList(font, string);
                     if (null == size) {
                         size = wordList.size() / 5;
                     }
