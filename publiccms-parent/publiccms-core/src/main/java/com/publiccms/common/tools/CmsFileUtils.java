@@ -45,7 +45,6 @@ public class CmsFileUtils {
     }
 
     public static final String UPLOAD_PATH = "upload/";
-    public static final String FONT_PATH = "upload/font/";
     public static final String USER_PRIVATE_PATH = "user/";
 
     public static final String HEADERS_SEND_CTRL = "Sendfile";
@@ -575,23 +574,6 @@ public class CmsFileUtils {
      */
     public static String getUploadFileName(String suffix) {
         StringBuilder sb = new StringBuilder(UPLOAD_PATH);
-        sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.UPLOAD_FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
-        sb.append(Constants.random.nextInt());
-        if (!suffix.contains(Constants.DOT)) {
-            sb.append(Constants.DOT);
-        }
-        sb.append(suffix);
-        return sb.toString();
-    }
-    
-    /**
-     * 获取文件名
-     *
-     * @param suffix
-     * @return upload file name
-     */
-    public static String getFontFileName(String suffix) {
-        StringBuilder sb = new StringBuilder(FONT_PATH);
         sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.UPLOAD_FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
         sb.append(Constants.random.nextInt());
         if (!suffix.contains(Constants.DOT)) {

@@ -16,22 +16,21 @@
 
 package com.google.typography.font.tools.subsetter;
 
+import java.io.IOException;
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
 import com.google.typography.font.sfntly.Font;
 import com.google.typography.font.sfntly.FontFactory;
 import com.google.typography.font.sfntly.Tag;
 import com.google.typography.font.sfntly.table.Table;
 import com.google.typography.font.sfntly.table.core.CMap;
 import com.google.typography.font.sfntly.table.core.CMapTable;
-
-import java.io.IOException;
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * sfntly sample code demonstrating subsetting. Work in progress.
@@ -56,7 +55,7 @@ public abstract class Subsetter {
     // inverse of mapping, computed lazily
     private Map<Integer, Integer> oldToNewGlyphs = null;
 
-    protected Subsetter(Font font,Map<Character, Character> map) {
+    protected Subsetter(Font font, Map<Character, Character> map) {
         this.font = font;
         this.map = map;
     }
@@ -115,7 +114,7 @@ public abstract class Subsetter {
     }
 
     public void setRemoveTables(Set<Integer> removeTables) {
-        this.removeTables = new HashSet<>(removeTables);
+        this.removeTables = removeTables;
     }
 
     public Font.Builder subset() throws IOException {

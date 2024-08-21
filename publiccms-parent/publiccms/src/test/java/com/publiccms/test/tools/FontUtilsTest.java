@@ -1,7 +1,9 @@
 package com.publiccms.test.tools;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -21,8 +23,13 @@ public class FontUtilsTest {
     void testFontGenerate() throws IOException {
         File fontFile = new File("src/test/resources/test/tools/Reckoner-1.ttf");
         File outputFile = new File("target/test.ttf");
-        Map<Character, Character> swapWordMap = FontUtils.swapWordMap(fontFile, outputFile, "publiccms", 5);
-        Assertions.assertTrue(outputFile.exists());
+        List<Character> wordList = FontUtils.sortedCharList("publiccms");
+        Map<Character, Character> swapWordMap = FontUtils.swapWordMap(wordList, 5);
+        outputFile.mkdirs();
+        try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+            FontUtils.generateFont(fontFile, fos, swapWordMap);
+            Assertions.assertTrue(outputFile.exists());
+        }
         log.info(swapWordMap);
     }
 }

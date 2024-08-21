@@ -70,7 +70,7 @@ public class ImageUtils {
      * @return base64 encoded picture
      * @throws IOException
      */
-    public static String getImageData(int width, int height, String text) throws IOException {
+    public static String generateImageData(int width, int height, String text) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         drawImage(width, height, text, byteArrayOutputStream);
         byteArrayOutputStream.close();
