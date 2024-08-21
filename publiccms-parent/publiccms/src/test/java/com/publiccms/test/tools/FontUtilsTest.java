@@ -23,7 +23,7 @@ public class FontUtilsTest {
     void testFontGenerate() throws IOException {
         File fontFile = new File("src/test/resources/test/tools/Reckoner-1.ttf");
         File outputFile = new File("target/test.ttf");
-        List<Character> wordList = FontUtils.sortedCharList("publiccms");
+        List<Character> wordList = FontUtils.sortedCharList("publiccms黑核科技");
         Map<Character, Character> swapWordMap = FontUtils.swapWordMap(wordList, 5);
         outputFile.getParentFile().mkdirs();
         try (FileOutputStream fos = new FileOutputStream(outputFile)) {

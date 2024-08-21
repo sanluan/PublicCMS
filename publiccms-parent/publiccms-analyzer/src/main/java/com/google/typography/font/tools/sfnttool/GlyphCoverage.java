@@ -51,10 +51,18 @@ public class GlyphCoverage {
         coverage.add(0); // Always include notdef
         // TODO: doesn't support non-BMP scripts, should use
         // StringCharacterIterator instead
+        Set<Character> unset = new HashSet<>();
         for (Entry<Character, Character> entry : map.entrySet()) {
             int c = (entry.getKey()) & 0xffff;
             int glyphId = cmap.glyphId(c);
-            touchGlyph(font, coverage, glyphId);
+            if (0 == glyphId) {
+                unset.add(entry.getKey());
+            } else {
+                touchGlyph(font, coverage, glyphId);
+            }
+        }
+        for (Character c : unset) {
+            map.remove(c);
         }
         List<Integer> sortedCoverage = new ArrayList<>(coverage);
         Collections.sort(sortedCoverage);
