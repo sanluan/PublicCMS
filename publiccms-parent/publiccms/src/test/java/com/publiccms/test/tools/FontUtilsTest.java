@@ -25,7 +25,7 @@ public class FontUtilsTest {
         File outputFile = new File("target/test.ttf");
         List<Character> wordList = FontUtils.sortedCharList("publiccms");
         Map<Character, Character> swapWordMap = FontUtils.swapWordMap(wordList, 5);
-        outputFile.mkdirs();
+        outputFile.getParentFile().mkdirs();
         try (FileOutputStream fos = new FileOutputStream(outputFile)) {
             FontUtils.generateFont(fontFile, fos, swapWordMap);
             Assertions.assertTrue(outputFile.exists());

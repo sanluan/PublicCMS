@@ -40,23 +40,32 @@ import freemarker.template.TemplateModelException;
  * <li><code>ConfuseResult</code>:sha1值
  * </ul>
  * 使用示例
- * <p>
- * &lt;#assign result=confuse('&lt;a
- * href="http://www.publiccms.com"&gt;publiccms&lt;/a&gt;',11,true)/&gt;
+ * 
+ * <pre>
+ * &lt;#assign result=confuse('&lt;a href="http://www.publiccms.com"&gt;publiccms&lt;/a&gt;',11,true)/&gt;
+ * 
  * &lt;style&gt;
+ *     &#64;font-face {font-family:confuse;src:url(${result.font});}
+ *     #content{font-family:confuse !important;}
+ * &lt;/style&gt;
+ * &lt;div id="content"&gt;${(result.text?no_esc)!}&lt;/div&gt
+ * &lt;script&gt;
+ * var elements = document.querySelectorAll('#content > *');
+ *   elements.forEach(function(element) {
+ *       if(element.style.fontFamily){
+ *           element.style.fontFamily='confuse,'+element.style.fontFamily;
+ *       }
+ *   });
+ * &lt;/script&gt;
+ * </pre>
  * 
- * @font-face {font-family:confuse;src:url(${result.font});}
- *            #content{font-family:confuse !important;} &lt;/style&gt; &lt;div
- *            id="content"&gt;${(result.text?no_esc)!} &lt;/div&gt;
- *            <p>
- * 
- *            <pre>
-&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/confuse?parameters=aaa&amp;appToken=接口访问授权Token', function(data){
-console.log(data);
-});
-&lt;/script&gt;
- *            </pre>
+ * <pre>
+ * &lt;script&gt;
+ * $.getJSON('${site.dynamicPath}api/method/confuse?parameters=aaa&amp;appToken=接口访问授权Token', function(data){
+ *     console.log(data);
+ * });
+ * &lt;/script&gt;
+ * </pre>
  */
 @Component
 public class ConfuseMethod extends BaseMethod {
