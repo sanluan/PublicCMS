@@ -92,7 +92,7 @@ public class ExtendUtils {
             if (noMoreMatchesForReplIndex[i] || searchList[i] == null || searchList[i].isEmpty() || replacementList[i] == null) {
                 continue;
             }
-            tempIndex = text.indexOf(searchList[i]);
+            tempIndex = StringUtils.indexOfIgnoreCase(text, searchList[i]);
             if (tempIndex == -1) {
                 noMoreMatchesForReplIndex[i] = true;
             } else if (textIndex == -1 || tempIndex < textIndex) {
@@ -130,7 +130,7 @@ public class ExtendUtils {
                         || replacementList[i] == null) {
                     continue;
                 }
-                tempIndex = text.indexOf(searchList[i], start);
+                tempIndex = StringUtils.indexOfIgnoreCase(text, searchList[i], start);
                 if (tempIndex == -1) {
                     noMoreMatchesForReplIndex[i] = true;
                 } else if (textIndex == -1 || tempIndex < textIndex) {
