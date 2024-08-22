@@ -10,8 +10,11 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.sys.SysUserService;
 
@@ -24,6 +27,7 @@ import freemarker.template.TemplateException;
  * 参数列表
  * <ul>
  * <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
+ * <li><code>replaceSensitive</code>:替换敏感词, 默认为<code>true</code>
  * <li><code>disabled</code>:高级选项:已禁用,【true,false】, 默认为<code>false</code>
  * <li><code>deptId</code>:部门id
  * <li><code>startRegisteredDate</code>:起始注册日期,【2020-01-01
@@ -63,6 +67,8 @@ import freemarker.template.TemplateException;
  */
 @Component
 public class SysUserListDirective extends AbstractTemplateDirective {
+    @Resource
+    protected ContentConfigComponent contentConfigComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
@@ -79,9 +85,14 @@ public class SysUserListDirective extends AbstractTemplateDirective {
         @SuppressWarnings("unchecked")
         List<SysUser> list = (List<SysUser>) page.getList();
         if (null != list) {
-            boolean absoluteURL = handler.getBoolean("absoluteURL", true);
-            if (absoluteURL) {
+            if (handler.getBoolean("absoluteURL", true)) {
                 list.forEach(e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover())));
+            }
+            if (handler.getBoolean("replaceSensitive", true)) {
+                KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
+                list.forEach(e -> {
+                    e.setNickname(ExtendUtils.replaceSensitive(e.getNickname(), config));
+                });
             }
 
         }

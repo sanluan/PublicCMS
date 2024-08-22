@@ -12,8 +12,11 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.service.sys.SysUserService;
 
@@ -25,6 +28,7 @@ import freemarker.template.TemplateException;
  * <p>
  * 参数列表
  * <ul>
+ * <li><code>replaceSensitive</code>:替换敏感词, 默认为<code>true</code>
  * <li><code>id</code>:用户id,结果返回<code>object</code>
  * {@link com.publiccms.entities.sys.SysUser}
  * <li><code>ids</code>:
@@ -48,17 +52,24 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/user?id=1&amp;appToken=接口�
  */
 @Component
 public class SysUserDirective extends AbstractTemplateDirective {
+    @Resource
+    protected ContentConfigComponent contentConfigComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
+        boolean replaceSensitive = handler.getBoolean("replaceSensitive", true);
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
             SysUser entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
                     entity.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), entity.getCover()));
+                }
+                if (replaceSensitive) {
+                    KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
+                    entity.setNickname(ExtendUtils.replaceSensitive(entity.getNickname(), config));
                 }
                 entity.setPassword(null);
                 handler.put("object", entity).render();
@@ -67,10 +78,16 @@ public class SysUserDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<SysUser> entityList = service.getEntitys(ids);
-                Consumer<SysUser> consumer = null;
-                if (absoluteURL) {
-                    consumer = e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover()));
-                }
+                KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
+                Consumer<SysUser> consumer = e -> {
+                    if (absoluteURL) {
+                        e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover()));
+                    }
+                    if (replaceSensitive) {
+                        e.setNickname(ExtendUtils.replaceSensitive(e.getNickname(), config));
+                    }
+                };
+
                 Map<String, SysUser> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();

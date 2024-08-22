@@ -87,6 +87,7 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
                 placeData.setEntity(entity);
                 placeData.setAttribute(attributeService.getEntity(placeId));
                 if (null != placeData.getAttribute()) {
+                    placeData.getAttribute().setPlaceId(0);
                     if (needReplace(placeData.getAttribute().getData(), site.getDynamicPath())) {
                         placeData.getAttribute().setData(
                                 StringUtils.replace(placeData.getAttribute().getData(), site.getDynamicPath(), "#DYNAMICPATH#"));

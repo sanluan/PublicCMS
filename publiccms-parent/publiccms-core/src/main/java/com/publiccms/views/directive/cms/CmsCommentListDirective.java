@@ -2,14 +2,20 @@ package com.publiccms.views.directive.cms;
 
 // Generated 2018-11-7 16:25:07 by com.publiccms.common.generator.SourceGenerator
 import java.io.IOException;
+import java.util.List;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.ExtendUtils;
+import com.publiccms.entities.cms.CmsComment;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.service.cms.CmsCommentService;
 
 import freemarker.template.TemplateException;
@@ -25,6 +31,7 @@ import freemarker.template.TemplateException;
  * <li><code>contentId</code>:内容id
  * <li><code>emptyReply</code>:回复id是否为空, replyId为空时有效,默认为<code>false</code>
  * <li><code>replyUserId</code>:被回复用户id
+ * <li><code>replaceSensitive</code>:替换敏感词, 默认为<code>true</code>
  * <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
  * <li><code>status</code>:高级选项:评论状态,【1:已发布,2:待审核】
  * <li><code>checkUserId</code>:高级选项:审核用户id
@@ -57,6 +64,8 @@ import freemarker.template.TemplateException;
  */
 @Component
 public class CmsCommentListDirective extends AbstractTemplateDirective {
+    @Resource
+    protected ContentConfigComponent contentConfigComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
@@ -76,6 +85,16 @@ public class CmsCommentListDirective extends AbstractTemplateDirective {
                 handler.getBoolean("emptyReply", false), handler.getLong("replyUserId"), handler.getLong("contentId"),
                 checkUserId, status, disabled, handler.getString("orderField"), handler.getString("orderType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
+        if (handler.getBoolean("replaceSensitive", true)) {
+            @SuppressWarnings("unchecked")
+            List<CmsComment> list = (List<CmsComment>) page.getList();
+            if (null != list) {
+                KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
+                list.forEach(e -> {
+                    e.setText(ExtendUtils.replaceSensitive(e.getText(), config));
+                });
+            }
+        }
         handler.put("page", page).render();
     }
 
