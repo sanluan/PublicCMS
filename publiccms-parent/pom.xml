@@ -88,7 +88,7 @@
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <version.text>1.12.0</version.text>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
-        <version.compress>1.27.0</version.compress>
+        <version.compress>1.27.1</version.compress>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.17.1</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
