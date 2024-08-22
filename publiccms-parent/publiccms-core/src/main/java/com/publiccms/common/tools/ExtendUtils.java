@@ -166,27 +166,28 @@ public class ExtendUtils {
      * @return
      */
     public static String replaceText(String html, KeywordsConfig keywordsConfig) {
-        if (null != keywordsConfig && CommonUtils.notEmpty(html)
-                && (CommonUtils.notEmpty(keywordsConfig.getWords()) && CommonUtils.notEmpty(keywordsConfig.getWordWithUrls())
-                        || CommonUtils.notEmpty(keywordsConfig.getSensitiveWords())
-                                && CommonUtils.notEmpty(keywordsConfig.getReplaceWords()))) {
-            Matcher matcher = HTML_PATTERN.matcher(html);
-            StringBuilder sb = new StringBuilder();
-            int end = 0;
-            AtomicInteger counter = new AtomicInteger(keywordsConfig.getMax());
-            String[] replacementList = null == keywordsConfig.getWordWithUrls() ? null
-                    : Arrays.copyOf(keywordsConfig.getWordWithUrls(), keywordsConfig.getWordWithUrls().length);
-            while (matcher.find() && counter.get() > 0) {
-                String temp = matcher.group();
-                sb.append(html.substring(end, matcher.start())).append(">");
-                sb.append(replaceEachOnce(matcher.group(1), keywordsConfig.getWords(), replacementList, counter));
-                sb.append(temp.substring(temp.length() - 3, temp.length()));
-                end = matcher.end();
+        if (null != keywordsConfig && CommonUtils.notEmpty(html)) {
+            if (CommonUtils.notEmpty(keywordsConfig.getWords()) && CommonUtils.notEmpty(keywordsConfig.getWordWithUrls())) {
+                Matcher matcher = HTML_PATTERN.matcher(html);
+                StringBuilder sb = new StringBuilder();
+                int end = 0;
+                AtomicInteger counter = new AtomicInteger(keywordsConfig.getMax());
+                String[] replacementList = null == keywordsConfig.getWordWithUrls() ? null
+                        : Arrays.copyOf(keywordsConfig.getWordWithUrls(), keywordsConfig.getWordWithUrls().length);
+                while (matcher.find() && counter.get() > 0) {
+                    String temp = matcher.group();
+                    sb.append(html.substring(end, matcher.start())).append(">");
+                    sb.append(replaceEachOnce(matcher.group(1), keywordsConfig.getWords(), replacementList, counter));
+                    sb.append(temp.substring(temp.length() - 3, temp.length()));
+                    end = matcher.end();
+                }
+                if (end < html.length()) {
+                    sb.append(html.substring(end, html.length()));
+                }
+                return replaceSensitive(sb.toString(), keywordsConfig);
+            } else {
+                return replaceSensitive(html, keywordsConfig);
             }
-            if (end < html.length()) {
-                sb.append(html.substring(end, html.length()));
-            }
-            return StringUtils.replaceEach(sb.toString(), keywordsConfig.getSensitiveWords(), keywordsConfig.getReplaceWords());
         } else {
             return html;
         }
