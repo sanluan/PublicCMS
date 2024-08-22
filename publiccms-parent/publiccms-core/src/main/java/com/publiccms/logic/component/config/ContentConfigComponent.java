@@ -38,6 +38,15 @@ public class ContentConfigComponent implements SiteCache, Config {
      */
     public static final String CONFIG_KEYWORDS = "keywords";
     /**
+     * sensitive words
+     */
+    public static final String CONFIG_SENSITIVE_WORDS = "sensitive_words";
+
+    /**
+     * sensitive words
+     */
+    public static final String CONFIG_DEAFULT_REPLACE_WORDS = "default_replace_words";
+    /**
      * open in window
      */
     public static final String CONFIG_NEWWINDOW = "inwindow";
@@ -50,7 +59,7 @@ public class ContentConfigComponent implements SiteCache, Config {
      */
     public static final int DEFAULT_MAX_COUNT = 10;
 
-    private CacheEntity<Short, KeywordsConfig> cache;
+    private CacheEntity<Short, KeywordsConfig> keywordsConfigCache;
 
     @Resource
     protected ConfigDataComponent configDataComponent;
@@ -60,48 +69,73 @@ public class ContentConfigComponent implements SiteCache, Config {
      * @return keywords config
      */
     public KeywordsConfig getKeywordsConfig(short siteId) {
-        KeywordsConfig keywordsConfig = cache.get(siteId);
+        KeywordsConfig keywordsConfig = keywordsConfigCache.get(siteId);
         if (null == keywordsConfig) {
-            synchronized (cache) {
-                keywordsConfig = cache.get(siteId);
+            synchronized (keywordsConfigCache) {
+                keywordsConfig = keywordsConfigCache.get(siteId);
                 if (null == keywordsConfig) {
                     keywordsConfig = new KeywordsConfig();
                     Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
-                    String value = config.get(CONFIG_KEYWORDS);
-                    boolean blank = ConfigDataComponent.getBoolean(config.get(CONFIG_NEWWINDOW), true);
-                    int max = ConfigDataComponent.getInt(config.get(CONFIG_MAX_COUNT), DEFAULT_MAX_COUNT);
-                    if (CommonUtils.notEmpty(value)) {
-                        String[] values = StringUtils.splitPreserveAllTokens(value, Constants.COMMA);
-                        if (CommonUtils.notEmpty(values) && 0 == values.length % 2) {
-                            int i = 0;
-                            int j = 0;
-                            String[] words = new String[values.length / 2];
-                            String[] wordWithUrls = new String[values.length / 2];
-                            for (String v : values) {
-                                if (i++ % 2 == 0) {
-                                    words[j] = v;
-                                } else {
-                                    try {
-                                        URI url = new URI(v);
-                                        if (blank) {
-                                            wordWithUrls[j] = CommonUtils.joinString("<a href=\"", url.toString(),
-                                                    "\" target=\"_blank\">", words[j], "</a>");
-                                        } else {
-                                            wordWithUrls[j] = CommonUtils.joinString("<a href=\"", url.toString(), "\">",
-                                                    words[j], "</a>");
+                    {
+                        String value = config.get(CONFIG_KEYWORDS);
+                        boolean blank = ConfigDataComponent.getBoolean(config.get(CONFIG_NEWWINDOW), true);
+                        int max = ConfigDataComponent.getInt(config.get(CONFIG_MAX_COUNT), DEFAULT_MAX_COUNT);
+                        if (CommonUtils.notEmpty(value)) {
+                            String[] values = StringUtils.splitPreserveAllTokens(value, Constants.COMMA);
+                            if (CommonUtils.notEmpty(values) && 0 == values.length % 2) {
+                                int i = 0;
+                                int j = 0;
+                                String[] words = new String[values.length / 2];
+                                String[] wordWithUrls = new String[values.length / 2];
+                                for (String v : values) {
+                                    if (i++ % 2 == 0) {
+                                        words[j] = v;
+                                    } else {
+                                        try {
+                                            URI url = new URI(v);
+                                            if (blank) {
+                                                wordWithUrls[j] = CommonUtils.joinString("<a href=\"", url.toString(),
+                                                        "\" target=\"_blank\">", words[j], "</a>");
+                                            } else {
+                                                wordWithUrls[j] = CommonUtils.joinString("<a href=\"", url.toString(), "\">",
+                                                        words[j], "</a>");
+                                            }
+                                        } catch (URISyntaxException e) {
+                                            words[j] = null;
                                         }
-                                    } catch (URISyntaxException e) {
-                                        words[j] = null;
+                                        j++;
                                     }
-                                    j++;
                                 }
+                                keywordsConfig.setMax(max);
+                                keywordsConfig.setWords(words);
+                                keywordsConfig.setWordWithUrls(wordWithUrls);
                             }
-                            keywordsConfig.setMax(max);
-                            keywordsConfig.setWords(words);
-                            keywordsConfig.setWordWithUrls(wordWithUrls);
                         }
                     }
-                    cache.put(siteId, keywordsConfig);
+                    {
+                        String value = config.get(CONFIG_SENSITIVE_WORDS);
+                        String defaultWord = config.get(CONFIG_DEAFULT_REPLACE_WORDS);
+                        if (CommonUtils.notEmpty(value)) {
+                            String[] values = StringUtils.splitPreserveAllTokens(value, Constants.COMMA);
+                            if (CommonUtils.notEmpty(values) && 0 == values.length % 2) {
+                                int i = 0;
+                                int j = 0;
+                                String[] words = new String[values.length / 2];
+                                String[] replaceWords = new String[values.length / 2];
+                                for (String v : values) {
+                                    if (i++ % 2 == 0) {
+                                        words[j] = v;
+                                    } else {
+                                        replaceWords[j] = CommonUtils.empty(v) ? defaultWord : v;
+                                        j++;
+                                    }
+                                }
+                                keywordsConfig.setSensitiveWords(words);
+                                keywordsConfig.setReplaceWords(replaceWords);
+                            }
+                        }
+                    }
+                    keywordsConfigCache.put(siteId, keywordsConfig);
                 }
             }
         }
@@ -131,11 +165,16 @@ public class ContentConfigComponent implements SiteCache, Config {
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(
-                new SysExtendField(CONFIG_KEYWORDS, INPUTTYPE_KEYWORDS, true, getMessage(locale, "page.keywords"), null, null));
+                new SysExtendField(CONFIG_KEYWORDS, INPUTTYPE_KEYWORDS, false, getMessage(locale, "page.keywords"), null, null));
         extendFieldList.add(new SysExtendField(CONFIG_NEWWINDOW, INPUTTYPE_BOOLEAN, true,
                 getMessage(locale, "page.open_in_new_window"), null, Boolean.TRUE.toString()));
         extendFieldList.add(new SysExtendField(CONFIG_MAX_COUNT, INPUTTYPE_NUMBER, true, getMessage(locale, "page.total"), null,
                 String.valueOf(DEFAULT_MAX_COUNT)));
+
+        extendFieldList.add(new SysExtendField(CONFIG_SENSITIVE_WORDS, INPUTTYPE_SENSITIVEWORDS, false,
+                getMessage(locale, "page.sensitivewords"), null, null));
+        extendFieldList.add(new SysExtendField(CONFIG_DEAFULT_REPLACE_WORDS, INPUTTYPE_TEXT, true,
+                getMessage(locale, "page.default_value"), null, "*"));
         return extendFieldList;
     }
 
@@ -148,7 +187,7 @@ public class ContentConfigComponent implements SiteCache, Config {
     @Resource
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        cache = cacheEntityFactory.createCacheEntity(CONFIG_KEYWORDS);
+        keywordsConfigCache = cacheEntityFactory.createCacheEntity(CONFIG_KEYWORDS);
     }
 
     @Override
@@ -158,18 +197,20 @@ public class ContentConfigComponent implements SiteCache, Config {
 
     @Override
     public void clear(short siteId) {
-        cache.remove(siteId);
+        keywordsConfigCache.remove(siteId);
     }
 
     @Override
     public void clear() {
-        cache.clear(false);
+        keywordsConfigCache.clear(false);
     }
 
     public static class KeywordsConfig {
         int max;
         String[] words;
         String[] wordWithUrls;
+        String[] sensitiveWords;
+        String[] replaceWords;
 
         /**
          * @return the max
@@ -199,6 +240,36 @@ public class ContentConfigComponent implements SiteCache, Config {
          */
         public void setWords(String[] words) {
             this.words = words;
+        }
+
+        /**
+         * @return the sensitiveWords
+         */
+        public String[] getSensitiveWords() {
+            return sensitiveWords;
+        }
+
+        /**
+         * @param sensitiveWords
+         *            the sensitiveWords to set
+         */
+        public void setSensitiveWords(String[] sensitiveWords) {
+            this.sensitiveWords = sensitiveWords;
+        }
+
+        /**
+         * @return the replaceWords
+         */
+        public String[] getReplaceWords() {
+            return replaceWords;
+        }
+
+        /**
+         * @param replaceWords
+         *            the replaceWords to set
+         */
+        public void setReplaceWords(String[] replaceWords) {
+            this.replaceWords = replaceWords;
         }
 
         /**

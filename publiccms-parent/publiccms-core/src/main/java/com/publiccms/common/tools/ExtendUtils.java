@@ -74,7 +74,7 @@ public class ExtendUtils {
     private static String replaceEachOnce(final String text, final String[] searchList, final String[] replacementList,
             AtomicInteger counter) {
         if (StringUtils.isEmpty(text) || ArrayUtils.isEmpty(searchList) || ArrayUtils.isEmpty(replacementList)
-                || counter.get() <= 0) {
+                || null != counter && counter.get() <= 0) {
             return text;
         }
 
@@ -116,7 +116,7 @@ public class ExtendUtils {
         }
         increase = Math.min(increase, text.length() / 5);
         final StringBuilder buf = new StringBuilder(text.length() + increase);
-        while (textIndex != -1 && counter.getAndDecrement() > 0) {
+        while (textIndex != -1 && (null == counter || counter.getAndDecrement() > 0)) {
             for (int i = start; i < textIndex; i++) {
                 buf.append(text.charAt(i));
             }
@@ -146,14 +146,36 @@ public class ExtendUtils {
         return buf.toString();
     }
 
+    /**
+     * @param text
+     * @param keywordsConfig
+     * @return
+     */
+    public static String replaceSensitive(String text, KeywordsConfig keywordsConfig) {
+        if (null != keywordsConfig && CommonUtils.notEmpty(text) && CommonUtils.notEmpty(keywordsConfig.getSensitiveWords())
+                && CommonUtils.notEmpty(keywordsConfig.getReplaceWords())) {
+            return StringUtils.replaceEach(text, keywordsConfig.getSensitiveWords(), keywordsConfig.getReplaceWords());
+        } else {
+            return text;
+        }
+    }
+
+    /**
+     * @param html
+     * @param keywordsConfig
+     * @return
+     */
     public static String replaceText(String html, KeywordsConfig keywordsConfig) {
-        if (null != keywordsConfig && CommonUtils.notEmpty(html) && CommonUtils.notEmpty(keywordsConfig.getWords())
-                && CommonUtils.notEmpty(keywordsConfig.getWordWithUrls())) {
+        if (null != keywordsConfig && CommonUtils.notEmpty(html)
+                && (CommonUtils.notEmpty(keywordsConfig.getWords()) && CommonUtils.notEmpty(keywordsConfig.getWordWithUrls())
+                        || CommonUtils.notEmpty(keywordsConfig.getSensitiveWords())
+                                && CommonUtils.notEmpty(keywordsConfig.getReplaceWords()))) {
             Matcher matcher = HTML_PATTERN.matcher(html);
             StringBuilder sb = new StringBuilder();
             int end = 0;
             AtomicInteger counter = new AtomicInteger(keywordsConfig.getMax());
-            String[] replacementList = Arrays.copyOf(keywordsConfig.getWordWithUrls(), keywordsConfig.getWordWithUrls().length);
+            String[] replacementList = null == keywordsConfig.getWordWithUrls() ? null
+                    : Arrays.copyOf(keywordsConfig.getWordWithUrls(), keywordsConfig.getWordWithUrls().length);
             while (matcher.find() && counter.get() > 0) {
                 String temp = matcher.group();
                 sb.append(html.substring(end, matcher.start())).append(">");
@@ -164,7 +186,7 @@ public class ExtendUtils {
             if (end < html.length()) {
                 sb.append(html.substring(end, html.length()));
             }
-            return sb.toString();
+            return StringUtils.replaceEach(sb.toString(), keywordsConfig.getSensitiveWords(), keywordsConfig.getReplaceWords());
         } else {
             return html;
         }

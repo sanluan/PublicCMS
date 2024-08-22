@@ -179,6 +179,10 @@ public interface Config {
     /**
      * 
      */
+    public static final String INPUTTYPE_SENSITIVEWORDS = "sensitivewords";
+    /**
+     * 
+     */
     public static final String INPUTTYPE_CAPTCHA = "captcha";
 
     public static final String[] INPUT_TYPE_EDITORS = { "ckeditor", "tinymce", "editor" };

@@ -35,7 +35,7 @@ public class TextConfigComponent implements Config, SiteCache {
     /**
      * config code
      */
-    public static final String CONFIG_CODE = "text";
+    public static final String CONFIG_CODE = ContentConfigComponent.CONFIG_CODE;
 
     /**
      * config description code
@@ -68,7 +68,7 @@ public class TextConfigComponent implements Config, SiteCache {
      */
     @Override
     public String getCodeDescription(Locale locale) {
-        return getMessage(locale, CONFIG_CODE_DESCRIPTION);
+        return getMessage(locale, "page.content");
     }
 
     /**
