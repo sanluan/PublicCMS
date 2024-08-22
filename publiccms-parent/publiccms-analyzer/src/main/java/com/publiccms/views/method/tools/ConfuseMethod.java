@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Component;
 
 import com.google.typography.font.sfntly.Font;
@@ -23,6 +20,8 @@ import com.publiccms.views.pojo.entities.ConfuseResult;
 import freemarker.core.Environment;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *

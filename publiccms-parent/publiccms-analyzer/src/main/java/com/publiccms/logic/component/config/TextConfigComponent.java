@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Component;
 
 import com.google.typography.font.sfntly.Font;
@@ -23,6 +21,8 @@ import com.publiccms.common.tools.FontUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
+
+import jakarta.annotation.Resource;
 
 /**
  *

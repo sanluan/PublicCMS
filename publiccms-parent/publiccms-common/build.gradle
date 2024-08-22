@@ -20,10 +20,8 @@ dependencies {
     }
     implementation "org.hibernate.orm:hibernate-core:${hibernateVersion}"
     implementation "org.mybatis:mybatis:${mybatisVersion}"
-    
-    implementation ("org.hibernate:hibernate-jcache:${hibernateVersion}") {
-        exclude group:"org.hibernate", module:"hibernate-core"
-    }
+
+    implementation "org.hibernate.orm:hibernate-jcache:${hibernateVersion}"
     implementation ("org.ehcache:ehcache:${ehcacheVersion}") {
         exclude group:"org.glassfish.jaxb", module:"jaxb-runtime"
     }
