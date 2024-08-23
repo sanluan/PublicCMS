@@ -34,7 +34,7 @@ abstract class GlyphMetrics extends SubTable {
     super(data);
   }
   
-  static abstract class Builder<T extends GlyphMetrics> extends SubTable.Builder<T> {
+  abstract static class Builder<T extends GlyphMetrics> extends SubTable.Builder<T> {
     /**
      * Constructor.
      *

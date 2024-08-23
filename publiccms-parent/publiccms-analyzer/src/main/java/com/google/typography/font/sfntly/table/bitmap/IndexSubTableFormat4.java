@@ -202,7 +202,7 @@ public final class IndexSubTableFormat4 extends IndexSubTable {
 
     private void initialize(ReadableFontData data) {
       if (this.offsetPairArray == null) {
-        this.offsetPairArray = new ArrayList<CodeOffsetPairBuilder>();
+        this.offsetPairArray = new ArrayList<>();
       } else {
         this.offsetPairArray.clear();
       }

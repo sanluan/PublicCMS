@@ -146,7 +146,7 @@ public abstract class Glyph extends SubTable {
     return sb.toString();
   }
 
-  // TODO(stuartg): interface? need methods from Composite?
+  // (stuartg): interface? need methods from Composite?
   public abstract static class Contour {
     protected Contour() {
     }

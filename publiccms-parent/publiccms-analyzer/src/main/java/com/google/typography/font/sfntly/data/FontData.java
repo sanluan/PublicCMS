@@ -23,7 +23,7 @@ package com.google.typography.font.sfntly.data;
  */
 public abstract class FontData {
 
-  protected final static int GROWABLE_SIZE = Integer.MAX_VALUE;
+  protected static final int GROWABLE_SIZE = Integer.MAX_VALUE;
 
   /**
    * Note: Enum names intended to match the names used in the OpenType and sfnt

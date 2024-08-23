@@ -73,7 +73,7 @@ public abstract class FontDataTable {
     return this.data.copyTo(data);
   }
 
-  public static abstract class Builder<T extends FontDataTable> {
+  public abstract static class Builder<T extends FontDataTable> {
     private WritableFontData wData;
     private ReadableFontData rData;
     private boolean modelChanged;

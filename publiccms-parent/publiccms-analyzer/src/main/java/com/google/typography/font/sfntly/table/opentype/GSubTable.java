@@ -29,11 +29,11 @@ import java.util.concurrent.atomic.AtomicReference;
 public class GSubTable extends Table {
   private final GsubCommonTable gsub;
   private final AtomicReference<ScriptListTable>
-      scriptListTable = new AtomicReference<ScriptListTable>();
+      scriptListTable = new AtomicReference<>();
   private final AtomicReference<FeatureListTable>
-      featureListTable = new AtomicReference<FeatureListTable>();
+      featureListTable = new AtomicReference<>();
   private final AtomicReference<LookupListTable>
-      lookupListTable = new AtomicReference<LookupListTable>();
+      lookupListTable = new AtomicReference<>();
 
   /**
    * Constructor.
@@ -130,12 +130,12 @@ public class GSubTable extends Table {
 
     @Override
     protected int subDataSizeToSerialize() {
-      return 0; // TODO(cibu): need to implement using gsub
+      return 0; // (cibu): need to implement using gsub
     }
 
     @Override
     protected void subDataSet() {
-      // TODO(cibu): need to implement using gsub
+      // (cibu): need to implement using gsub
     }
 
     @Override

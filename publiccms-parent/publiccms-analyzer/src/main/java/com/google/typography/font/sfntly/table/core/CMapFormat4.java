@@ -269,7 +269,7 @@ public final class CMapFormat4 extends CMap {
   public static class Builder extends CMap.Builder<CMapFormat4> {
     public static class Segment {
       public static List<Builder.Segment> deepCopy(List<Builder.Segment> original) {
-        List<Builder.Segment> list = new ArrayList<Builder.Segment>(original.size());
+        List<Builder.Segment> list = new ArrayList<>(original.size());
         for (Builder.Segment segment : original) {
           list.add(new Segment(segment));
         }
@@ -374,7 +374,7 @@ public final class CMapFormat4 extends CMap {
     }
 
     private void initialize(ReadableFontData data) {
-      this.segments = new ArrayList<Builder.Segment>();
+      this.segments = new ArrayList<>();
       this.glyphIdArray = new ArrayList<>();
 
       if (data == null || data.length() == 0) {

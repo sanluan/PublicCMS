@@ -81,8 +81,8 @@ public class Font {
     /**
      * Ordering of tables for different font types.
      */
-    private final static List<Integer> CFF_TABLE_ORDERING;
-    private final static List<Integer> TRUE_TYPE_TABLE_ORDERING;
+    private static final List<Integer> CFF_TABLE_ORDERING;
+    private static final List<Integer> TRUE_TYPE_TABLE_ORDERING;
     static {
         Integer[] cffArray = new Integer[] { Tag.head, Tag.hhea, Tag.maxp, Tag.OS_2, Tag.name, Tag.cmap, Tag.post, Tag.CFF };
         List<Integer> cffList = new ArrayList<>(cffArray.length);
