@@ -16,10 +16,14 @@ import java.util.Set;
 
 /**
  * 原始dict文件工具类 https://github.com/Kerwin23/smartcn-dict
+ * 
  * @author Kerwin
  *
  */
 public class SmartcnDictUtils {
+    private SmartcnDictUtils() {
+    }
+
     private static final String CHARSET_GB2312 = "GB2312";
     public static final int GB2312_FIRST_CHAR = 1410;
     public static final int GB2312_CHAR_NUM = 87 * 94;
@@ -36,9 +40,9 @@ public class SmartcnDictUtils {
         defaultDelimiterFreqsMap.put("。", 20);
     }
 
-    public static String readCnTerm(String src) {
+    public static String readCnTerm(String src) throws UnsupportedEncodingException {
         if (null != src) {
-            String tmpTerm = src.replaceAll(" ", "");
+            String tmpTerm = src.replace(" ", "");
             int subIndex = -1;
             int len = tmpTerm.length();
             int firstCcid = GB2312_FIRST_CHAR;
@@ -82,7 +86,7 @@ public class SmartcnDictUtils {
      * 删除分词
      * 
      * @param tfsMap
-     * @param skipWordList 
+     * @param skipWordList
      */
     public static void skipWord(Map<String, Map<String, Integer>> tfsMap, List<String> skipWordList) {
         if (null != skipWordList) {
@@ -208,7 +212,7 @@ public class SmartcnDictUtils {
         }
     }
 
-    private static void writeDelimiters(OutputStream oStream, Map<String, Integer> delimiterFreqsMap) throws Exception {
+    private static void writeDelimiters(OutputStream oStream, Map<String, Integer> delimiterFreqsMap) throws IOException {
         int cnt = delimiterFreqsMap.size();
         writeInt(oStream, cnt);
         Set<String> keys = delimiterFreqsMap.keySet();
@@ -223,7 +227,7 @@ public class SmartcnDictUtils {
         }
     }
 
-    private static void writeTFs(OutputStream oStream, Map<String, Integer> tfs) throws Exception {
+    private static void writeTFs(OutputStream oStream, Map<String, Integer> tfs) throws IOException {
         int cnt = tfs.size();
         writeInt(oStream, cnt);
         for (Entry<String, Integer> tf : tfs.entrySet()) {
@@ -237,11 +241,11 @@ public class SmartcnDictUtils {
         }
     }
 
-    private static void writeEmpty(OutputStream oStream) throws Exception {
+    private static void writeEmpty(OutputStream oStream) throws IOException {
         writeInt(oStream, 0);
     }
 
-    private static void writeInt(OutputStream oStream, int i) throws Exception {
+    private static void writeInt(OutputStream oStream, int i) throws IOException {
         byte[] bytes = intToLEBytes(i);
         oStream.write(bytes);
     }
@@ -263,24 +267,19 @@ public class SmartcnDictUtils {
         buffer[0] = (byte) cc1;
         buffer[1] = (byte) cc2;
         try {
-            String cchar = new String(buffer, CHARSET_GB2312);
-            return cchar;
+            return new String(buffer, CHARSET_GB2312);
         } catch (UnsupportedEncodingException e) {
             return "";
         }
     }
 
-    private static short getGB2312Id(char ch) {
-        try {
-            byte[] buffer = Character.toString(ch).getBytes(CHARSET_GB2312);
-            if (buffer.length != 2) {
-                return -1;
-            }
-            int b0 = (buffer[0] & 0x0FF) - 161;
-            int b1 = (buffer[1] & 0x0FF) - 161;
-            return (short) (b0 * 94 + b1);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+    private static short getGB2312Id(char ch) throws UnsupportedEncodingException {
+        byte[] buffer = Character.toString(ch).getBytes(CHARSET_GB2312);
+        if (buffer.length != 2) {
+            return -1;
         }
+        int b0 = (buffer[0] & 0x0FF) - 161;
+        int b1 = (buffer[1] & 0x0FF) - 161;
+        return (short) (b0 * 94 + b1);
     }
 }
