@@ -49,7 +49,7 @@ public class GlyphCoverage {
         CMap cmap = getBestCMap(cmapTable);
         Set<Integer> coverage = new HashSet<>();
         coverage.add(0); // Always include notdef
-        // TODO: doesn't support non-BMP scripts, should use
+        // : doesn't support non-BMP scripts, should use
         // StringCharacterIterator instead
         for (Entry<Character, Character> entry : map.entrySet()) {
             int c = (entry.getKey()) & 0xffff;

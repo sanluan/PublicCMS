@@ -13,7 +13,7 @@ abstract class GsubLookupTable extends LookupTable {
     super(data, base, dataIsCanonical);
   }
 
-  static abstract class Builder<T extends GsubLookupTable> extends LookupTable.Builder {
+  abstract static class Builder<T extends GsubLookupTable> extends LookupTable.Builder {
 
     protected Builder(ReadableFontData data, boolean dataIsCanonical) {
       super(data, dataIsCanonical);

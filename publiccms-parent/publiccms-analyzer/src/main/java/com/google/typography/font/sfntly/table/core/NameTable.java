@@ -33,7 +33,7 @@ import com.google.typography.font.sfntly.data.WritableFontData;
 import com.google.typography.font.sfntly.table.Header;
 import com.google.typography.font.sfntly.table.SubTableContainerTable;
 
-// TODO(stuartg): support format 1 name tables
+// (stuartg): support format 1 name tables
 /**
  * A Name table.
  *
@@ -635,7 +635,7 @@ public final class NameTable extends SubTableContainerTable implements Iterable<
      * @return the set of all name entry records
      */
     public Set<NameEntry> names() {
-        Set<NameEntry> nameSet = new HashSet<NameEntry>(this.nameCount());
+        Set<NameEntry> nameSet = new HashSet<>(this.nameCount());
         for (NameEntry entry : this) {
             nameSet.add(entry);
         }
@@ -1025,7 +1025,7 @@ public final class NameTable extends SubTableContainerTable implements Iterable<
         }
 
         private void initialize(ReadableFontData data) {
-            this.nameEntryMap = new TreeMap<NameEntryId, NameEntryBuilder>();
+            this.nameEntryMap = new TreeMap<>();
 
             if (data != null) {
                 NameTable table = new NameTable(this.header(), data);

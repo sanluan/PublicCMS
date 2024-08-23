@@ -154,8 +154,8 @@ public class WoffWriter {
   }
 
   private List<TableDirectoryEntry> createTableDirectoryEntries(Font font) {
-    List<TableDirectoryEntry> tableDirectoryEntries = new ArrayList<TableDirectoryEntry>();
-    TreeSet<Integer> tags = new TreeSet<Integer>(font.tableMap().keySet());
+    List<TableDirectoryEntry> tableDirectoryEntries = new ArrayList<>();
+    TreeSet<Integer> tags = new TreeSet<>(font.tableMap().keySet());
     tags.remove(Tag.DSIG);
 
     for (int tag : tags) {

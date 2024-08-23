@@ -16,7 +16,7 @@
 
 package com.google.typography.font.sfntly;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Font identification tags used for tables, features, etc.
@@ -79,7 +79,7 @@ public final class Tag {
     public static final int vmtx = Tag.intValue(new byte[] { 'v', 'm', 't', 'x' });
 
     // AAT Tables
-    // TODO(stuartg): some tables may be missing from this list
+    // (stuartg): some tables may be missing from this list
     public static final int bsln = Tag.intValue(new byte[] { 'b', 's', 'l', 'n' });
     public static final int feat = Tag.intValue(new byte[] { 'f', 'e', 'a', 't' });
     public static final int lcar = Tag.intValue(new byte[] { 'l', 'c', 'a', 'r' });
@@ -118,27 +118,11 @@ public final class Tag {
     }
 
     public static String stringValue(int tag) {
-        String s;
-        try {
-            s = new String(Tag.byteValue(tag), "US-ASCII");
-        } catch (UnsupportedEncodingException e) {
-            // should never happen since US-ASCII is a guaranteed character set
-            // but...
-            return "";
-        }
-        return s;
+        return new String(Tag.byteValue(tag), StandardCharsets.US_ASCII);
     }
 
     public static int intValue(String s) {
-        byte[] b = null;
-        try {
-            b = s.substring(0, 4).getBytes("US-ASCII");
-        } catch (UnsupportedEncodingException e) {
-            // should never happen since US-ASCII is a guaranteed character set
-            // but...
-            return 0;
-        }
-        return intValue(b);
+        return intValue(s.substring(0, 4).getBytes(StandardCharsets.US_ASCII));
     }
 
     /**

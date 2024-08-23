@@ -100,7 +100,7 @@ public final class SimpleGlyph extends Glyph {
     }
   }
 
-  // TODO(stuartg): think about replacing double parsing with ArrayList
+  // (stuartg): think about replacing double parsing with ArrayList
   private void parseData(boolean fillArrays) {
     int flag = 0;
     int flagRepeat = 0;

@@ -128,7 +128,7 @@ public abstract class CMap extends SubTable implements Iterable<Integer> {
     return this.cmapId().encodingId();
   }
 
-  // TODO(stuartg): simple implementation until all subclasses define their
+  // (stuartg): simple implementation until all subclasses define their
   // own more efficient version
   protected class CharacterIterator implements Iterator<Integer> {
     private int character = 0;
@@ -337,12 +337,12 @@ public abstract class CMap extends SubTable implements Iterable<Integer> {
       return null;
     }
 
-    // TODO: Instead of a root factory method, the individual subtable
+    // : Instead of a root factory method, the individual subtable
     // builders should get created
     // from static factory methods in each subclass
     static CMap.Builder<? extends CMap> getBuilder(CMapFormat cmapFormat, CMapId cmapId) {
       switch(cmapFormat) {
-        // TODO: builders for other formats, as they're implemented
+        // : builders for other formats, as they're implemented
         case Format0:
           return new CMapFormat0.Builder(null, 0, cmapId);
         case Format4:

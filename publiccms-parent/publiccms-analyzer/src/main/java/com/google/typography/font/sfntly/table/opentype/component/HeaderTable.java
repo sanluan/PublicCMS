@@ -30,7 +30,7 @@ public abstract class HeaderTable extends SubTable {
   public abstract int fieldCount();
 
   public abstract static class Builder<T extends HeaderTable> extends VisibleSubTable.Builder<T> {
-    private Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+    private Map<Integer, Integer> map = new HashMap<>();
     protected boolean dataIsCanonical = false;
 
     protected Builder() {
@@ -93,7 +93,7 @@ public abstract class HeaderTable extends SubTable {
 
     @Override
     public void subDataSet() {
-      map = new HashMap<Integer, Integer>();
+      map = new HashMap<>();
     }
 
     @Override

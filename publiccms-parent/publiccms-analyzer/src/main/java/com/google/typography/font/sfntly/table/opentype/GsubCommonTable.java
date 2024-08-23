@@ -40,13 +40,13 @@ class GsubCommonTable extends LayoutCommonTable {
 
         @Override
         protected int subDataSizeToSerialize() {
-            // TODO(cibu): do real implementation
+            // (cibu): do real implementation
             return 0;
         }
 
         @Override
         protected void subDataSet() {
-            // TODO(cibu): do real implementation
+            // (cibu): do real implementation
         }
     }
 }

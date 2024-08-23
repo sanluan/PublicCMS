@@ -139,7 +139,7 @@ public final class GlyphTable extends SubTableContainerTable {
     }
 
     private void initialize(ReadableFontData data, List<Integer> loca) {
-      this.glyphBuilders = new ArrayList<Glyph.Builder<? extends Glyph>>();
+      this.glyphBuilders = new ArrayList<>();
 
       if (data != null) {
         int locaValue;
@@ -246,7 +246,7 @@ public final class GlyphTable extends SubTableContainerTable {
       if (this.glyphBuilders == null) {
         return false;
       }
-      // TODO(stuartg): check glyphs for ready to build?
+      // (stuartg): check glyphs for ready to build?
       return true;
     }
 

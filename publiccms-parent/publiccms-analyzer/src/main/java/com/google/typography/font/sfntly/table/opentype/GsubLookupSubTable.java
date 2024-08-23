@@ -20,7 +20,7 @@ abstract class GsubLookupSubTable extends LookupSubTable {
   @Override
   public abstract GsubLookupType lookupType();
 
-  static abstract class Builder<T extends GsubLookupSubTable>
+  abstract static class Builder<T extends GsubLookupSubTable>
       extends LookupSubTable.Builder<T> {
 
     protected Builder(ReadableFontData data, boolean dataIsCanonical) {

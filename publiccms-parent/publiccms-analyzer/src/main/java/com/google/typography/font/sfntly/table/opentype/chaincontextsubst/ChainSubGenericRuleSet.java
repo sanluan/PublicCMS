@@ -14,7 +14,7 @@ public abstract class ChainSubGenericRuleSet<T extends ChainSubGenericRule>
     return 0;
   }
 
-  static abstract class Builder<
+  abstract static class Builder<
       T extends ChainSubGenericRuleSet<S>, S extends ChainSubGenericRule>
       extends OffsetRecordTable.Builder<T, S> {
 
