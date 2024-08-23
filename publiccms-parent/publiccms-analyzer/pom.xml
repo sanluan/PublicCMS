@@ -24,10 +24,6 @@
             <version>2.7.0</version>
         </dependency>
         <dependency>
-           <groupId>com.ibm.icu</groupId>
-            <artifactId>icu4j-charset</artifactId>
-        </dependency>
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>

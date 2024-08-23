@@ -121,8 +121,6 @@ subprojects {
         safeSvgVersion = "1.1.7"
         // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
         userAgentUtilsVersion = "1.21"
-        // https://mvnrepository.com/artifact/com.ibm.icu/icu4j
-        icu4jVersion = "75.1"
         // https://mvnrepository.com/artifact/org.jsoup/jsoup
         jsoupVersion = "1.18.1"
         // https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api

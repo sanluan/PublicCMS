@@ -11,6 +11,5 @@ dependencies {
     implementation "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}"
     // https://mvnrepository.com/artifact/org.lionsoul/ip2region
     implementation 'org.lionsoul:ip2region:2.7.0'
-    implementation "com.ibm.icu:icu4j-charset:${icu4jVersion}"
     implementation "javax.servlet:javax.servlet-api:${servletVersion}"
 }

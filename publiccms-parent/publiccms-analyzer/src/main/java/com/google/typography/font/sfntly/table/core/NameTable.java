@@ -16,6 +16,14 @@
 
 package com.google.typography.font.sfntly.table.core;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.TreeMap;
+
 import com.google.typography.font.sfntly.Font.MacintoshEncodingId;
 import com.google.typography.font.sfntly.Font.PlatformId;
 import com.google.typography.font.sfntly.Font.UnicodeEncodingId;
@@ -24,20 +32,6 @@ import com.google.typography.font.sfntly.data.ReadableFontData;
 import com.google.typography.font.sfntly.data.WritableFontData;
 import com.google.typography.font.sfntly.table.Header;
 import com.google.typography.font.sfntly.table.SubTableContainerTable;
-
-import com.ibm.icu.charset.CharsetICU;
-
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.UnsupportedCharsetException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.TreeMap;
 
 // TODO(stuartg): support format 1 name tables
 /**
@@ -593,43 +587,6 @@ public final class NameTable extends SubTableContainerTable implements Iterable<
     }
 
     /**
-     * Get the name as a String for the given name record. If there is no
-     * encoding conversion available for the name record then a best attempt
-     * String will be returned.
-     * 
-     * @param index
-     *            the index of the name record
-     * @return the name
-     */
-    public String name(int index) {
-        return convertFromNameBytes(this.nameAsBytes(index), this.platformId(index), this.encodingId(index));
-    }
-
-    /**
-     * Get the name as a String for the specified name. If there is no entry for
-     * the requested name then <code>null</code> is returned. If there is no
-     * encoding conversion available for the name then a best attempt String
-     * will be returned.
-     * 
-     * @param platformId
-     *            the platform id
-     * @param encodingId
-     *            the encoding id
-     * @param languageId
-     *            the language id
-     * @param nameId
-     *            the name id
-     * @return the name
-     */
-    public String name(int platformId, int encodingId, int languageId, int nameId) {
-        NameEntry entry = this.nameEntry(platformId, encodingId, languageId, nameId);
-        if (entry != null) {
-            return entry.name();
-        }
-        return null;
-    }
-
-    /**
      * Get the name entry record for the given name entry.
      * 
      * @param index
@@ -899,28 +856,6 @@ public final class NameTable extends SubTableContainerTable implements Iterable<
             return this.nameBytes;
         }
 
-        /**
-         * Get the name as a String. If there is no encoding conversion
-         * available for the name bytes then a best attempt String will be
-         * returned.
-         * 
-         * @return the name
-         */
-        public String name() {
-            return NameTable.convertFromNameBytes(this.nameBytes, this.platformId(), this.encodingId());
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("[");
-            sb.append(this.nameEntryId);
-            sb.append(", \"");
-            sb.append(this.name());
-            sb.append("\"]");
-            return sb.toString();
-        }
-
         @Override
         public boolean equals(Object obj) {
             if (!(obj instanceof NameEntry)) {
@@ -972,15 +907,6 @@ public final class NameTable extends SubTableContainerTable implements Iterable<
 
         protected NameEntryBuilder(NameEntry nameEntry) {
             this(nameEntry.getNameEntryId(), nameEntry.nameAsBytes());
-        }
-
-        public void setName(String name) {
-            if (name == null) {
-                this.nameBytes = new byte[0];
-                return;
-            }
-            this.nameBytes = NameTable.convertToNameBytes(name, this.nameEntryId.getPlatformId(),
-                    this.nameEntryId.getEncodingId());
         }
 
         public void setName(byte[] nameBytes) {
@@ -1071,186 +997,6 @@ public final class NameTable extends SubTableContainerTable implements Iterable<
      */
     public Iterator<NameEntry> iterator(NameEntryFilter filter) {
         return new NameEntryIterator(filter);
-    }
-
-    // TODO(stuartg): do this in the encoding enums
-    private static String getEncodingName(int platformId, int encodingId) {
-        String encodingName = null;
-        switch (PlatformId.valueOf(platformId)) {
-        case Unicode:
-            encodingName = "UTF-16BE";
-            break;
-        case Macintosh:
-            switch (MacintoshEncodingId.valueOf(encodingId)) {
-            case Roman:
-                encodingName = "MacRoman";
-                break;
-            case Japanese:
-                encodingName = "Shift_JIS";
-                break;
-            case ChineseTraditional:
-                encodingName = "Big5";
-                break;
-            case Korean:
-                encodingName = "EUC-KR";
-                break;
-            case Arabic:
-                encodingName = "MacArabic";
-                break;
-            case Hebrew:
-                encodingName = "MacHebrew";
-                break;
-            case Greek:
-                encodingName = "MacGreek";
-                break;
-            case Russian:
-                encodingName = "MacCyrillic";
-                break;
-            case RSymbol:
-                encodingName = "MacSymbol";
-                break;
-            case Devanagari:
-                break;
-            case Gurmukhi:
-                break;
-            case Gujarati:
-                break;
-            case Oriya:
-                break;
-            case Bengali:
-                break;
-            case Tamil:
-                break;
-            case Telugu:
-                break;
-            case Kannada:
-                break;
-            case Malayalam:
-                break;
-            case Sinhalese:
-                break;
-            case Burmese:
-                break;
-            case Khmer:
-                break;
-            case Thai:
-                encodingName = "MacThai";
-                break;
-            case Laotian:
-                break;
-            case Georgian:
-                // TODO: ??? is it?
-                encodingName = "MacCyrillic";
-                break;
-            case Armenian:
-                break;
-            case ChineseSimplified:
-                encodingName = "EUC-CN";
-                break;
-            case Tibetan:
-                break;
-            case Mongolian:
-                // TODO: ??? is it?
-                encodingName = "MacCyrillic";
-                break;
-            case Geez:
-                break;
-            case Slavic:
-                // TODO: ??? is it?
-                encodingName = "MacCyrillic";
-                break;
-            case Vietnamese:
-                break;
-            case Sindhi:
-                break;
-            case Uninterpreted:
-                break;
-            case Unknown:
-                break;
-            default:
-                break;
-            }
-            break;
-        case ISO:
-            break;
-        case Windows:
-            switch (WindowsEncodingId.valueOf(encodingId)) {
-            case Symbol:
-                encodingName = "UTF-16BE";
-                break;
-            case UnicodeUCS2:
-                encodingName = "UTF-16BE";
-                break;
-            case ShiftJIS:
-                encodingName = "windows-932";
-                break;
-            case PRC:
-                encodingName = "windows-936";
-                break;
-            case Big5:
-                encodingName = "windows-950";
-                break;
-            case Wansung:
-                encodingName = "windows-949";
-                break;
-            case Johab:
-                encodingName = "ms1361";
-                break;
-            case UnicodeUCS4:
-                encodingName = "UCS-4";
-                break;
-            case Unknown:
-                break;
-            default:
-                break;
-            }
-            break;
-        case Custom:
-            break;
-        default:
-            break;
-        }
-        return encodingName;
-    }
-
-    // TODO: caching of charsets?
-    private static Charset getCharset(int platformId, int encodingId) {
-        String encodingName = NameTable.getEncodingName(platformId, encodingId);
-        if (encodingName == null) {
-            return null;
-        }
-        Charset charset = null;
-        try {
-            charset = CharsetICU.forNameICU(encodingName);
-        } catch (UnsupportedCharsetException e) {
-            return null;
-        }
-        return charset;
-    }
-
-    // TODO(stuartg):
-    // do the conversion by hand to detect conversion failures (i.e. no
-    // character in the encoding)
-    private static byte[] convertToNameBytes(String name, int platformId, int encodingId) {
-        Charset cs = NameTable.getCharset(platformId, encodingId);
-        if (cs == null) {
-            return null;
-        }
-        ByteBuffer bb = cs.encode(name);
-        return bb.array();
-    }
-
-    private static String convertFromNameBytes(byte[] nameBytes, int platformId, int encodingId) {
-        return NameTable.convertFromNameBytes(ByteBuffer.wrap(nameBytes), platformId, encodingId);
-    }
-
-    private static String convertFromNameBytes(ByteBuffer nameBytes, int platformId, int encodingId) {
-        Charset cs = NameTable.getCharset(platformId, encodingId);
-        if (cs == null) {
-            return Integer.toHexString(platformId);
-        }
-        CharBuffer cb = cs.decode(nameBytes);
-        return cb.toString();
     }
 
     public static class Builder extends SubTableContainerTable.Builder<NameTable> {
