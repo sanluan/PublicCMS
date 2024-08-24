@@ -82,7 +82,7 @@ abstract class LayoutCommonTable extends SubTable {
 
     protected abstract LookupListTable handleCreateLookupList(ReadableFontData data, boolean dataIsCanonical);
 
-    abstract static class Builder<T extends LookupTable> extends SubTable.Builder<LayoutCommonTable> {
+    abstract static class Builder extends SubTable.Builder<LayoutCommonTable> {
         private int serializedLength;
         private ScriptListTable.Builder serializedScriptListBuilder;
         private FeatureListTable.Builder serializedFeatureListBuilder;

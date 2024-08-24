@@ -13,7 +13,7 @@ class GsubCommonTable extends LayoutCommonTable {
         return new LookupListTable(data, dataIsCanonical);
     }
 
-    static class Builder extends LayoutCommonTable.Builder<GsubLookupTable> {
+    static class Builder extends LayoutCommonTable.Builder {
 
         protected Builder(ReadableFontData data, boolean dataIsCanonical) {
             super(data, dataIsCanonical);
