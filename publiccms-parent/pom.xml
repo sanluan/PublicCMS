@@ -28,7 +28,7 @@
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
         <!-- 6.0,6.1 for Java 17 -->
-        <version.spring>5.3.37</version.spring>
+        <version.spring>5.3.39</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
         <!-- 3.0,3.1 for Java 17 -->
@@ -69,12 +69,12 @@
         <version.lucene>8.11.2</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <!-- https://github.com/redis/jedis -->
-        <version.jedis>5.1.4</version.jedis>
+        <version.jedis>5.1.5</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
         <!-- https://github.com/brettwooldridge/HikariCP -->
-        <!-- Java 11+ maven artifact: 5.0.1 -->
+        <!-- Java 11+ maven artifact: 5.0,5.1 -->
         <version.hikariCP>4.0.3</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
         <version.mysql>9.0.0</version.mysql>
@@ -483,16 +483,6 @@
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
                 <version>${version.userAgentUtils}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ibm.icu</groupId>
-                <artifactId>icu4j</artifactId>
-                <version>${version.icu4j}</version>
-            </dependency>
-            <dependency>
-               <groupId>com.ibm.icu</groupId>
-                <artifactId>icu4j-charset</artifactId>
-                <version>${version.icu4j}</version>
             </dependency>
             <dependency>
                 <groupId>org.jsoup</groupId>
