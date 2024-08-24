@@ -29,7 +29,7 @@
         <version.spring>6.1.12</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
-        <version.springBoot>3.3.2</version.springBoot>
+        <version.springBoot>3.3.3</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <version.juint>5.11.0</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
@@ -62,7 +62,7 @@
         <version.lucene>9.11.1</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <!-- https://github.com/redis/jedis -->
-        <version.jedis>5.1.4</version.jedis>
+        <version.jedis>5.1.5</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
@@ -481,16 +481,6 @@
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
                 <version>${version.userAgentUtils}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ibm.icu</groupId>
-                <artifactId>icu4j</artifactId>
-                <version>${version.icu4j}</version>
-            </dependency>
-            <dependency>
-               <groupId>com.ibm.icu</groupId>
-                <artifactId>icu4j-charset</artifactId>
-                <version>${version.icu4j}</version>
             </dependency>
             <dependency>
                 <groupId>org.jsoup</groupId>
