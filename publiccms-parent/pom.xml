@@ -44,6 +44,7 @@
         <version.hibernateTools>5.6.15.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
+        <!-- 7.0 for Java 11 -->
         <version.hibernateSearch>6.2.4.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <!-- 6.1,7,8 for jakarta -->

@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.7.14"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.7.18"
     }
 }
 
