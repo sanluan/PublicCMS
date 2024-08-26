@@ -1,5 +1,7 @@
 package com.publiccms.common.base;
 
+import static com.publiccms.common.base.AbstractTemplateDirective.APP_TOKEN;
+
 import java.io.IOException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,19 +27,20 @@ import com.publiccms.logic.service.sys.SysAppService;
 import com.publiccms.logic.service.sys.SysAppTokenService;
 
 import freemarker.template.TemplateException;
+import freemarker.template.TemplateModelException;
 
 /**
  * 
- * AbstractTemplateDirective 自定义模板指令基类
+ * AbstractTaskDirective 自定义任务计划指令基类
  *
  */
 public abstract class AbstractTaskDirective extends BaseTemplateDirective {
     /**
      * @param handler
      * @return site
-     * @throws TemplateException 
+     * @throws TemplateModelException
      */
-    public SysSite getSite(RenderHandler handler) throws TemplateException {
+    public SysSite getSite(RenderHandler handler) throws TemplateModelException {
         return (SysSite) handler.getAttribute(CommonConstants.getAttributeSite());
     }
 
@@ -59,10 +62,14 @@ public abstract class AbstractTaskDirective extends BaseTemplateDirective {
         }
     }
 
-    protected SysApp getApp(RenderHandler handler) throws TemplateException {
-        SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));
-        if (null != appToken && (null == appToken.getExpiryDate() || CommonUtils.getDate().before(appToken.getExpiryDate()))) {
-            SysApp app = appService.getEntity(appToken.getAppId());
+    protected SysApp getApp(RenderHandler handler) throws TemplateModelException {
+        String appToken = (String) handler.getAttribute(APP_TOKEN);
+        if (null == appToken) {
+            appToken = handler.getString(APP_TOKEN);
+        }
+        SysAppToken token = appTokenService.getEntity(appToken);
+        if (null != token && (null == token.getExpiryDate() || CommonUtils.getDate().before(token.getExpiryDate()))) {
+            SysApp app = appService.getEntity(token.getAppId());
             if (app.getSiteId() == getSite(handler).getId()) {
                 return app;
             }

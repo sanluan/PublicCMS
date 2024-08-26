@@ -1,5 +1,9 @@
 package com.publiccms.common.base;
 
+import static com.publiccms.common.base.AbstractTemplateDirective.APP_TOKEN;
+import static com.publiccms.common.base.AbstractTemplateDirective.AUTH_TOKEN;
+import static com.publiccms.common.base.AbstractTemplateDirective.AUTH_USER_ID;
+
 import java.io.IOException;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -62,9 +66,13 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
     }
 
     protected SysApp getApp(RenderHandler handler) throws TemplateModelException {
-        SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));
-        if (null != appToken && (null == appToken.getExpiryDate() || CommonUtils.getDate().before(appToken.getExpiryDate()))) {
-            SysApp app = appService.getEntity(appToken.getAppId());
+        String appToken = (String) handler.getAttribute(APP_TOKEN);
+        if (null == appToken) {
+            appToken = handler.getString(APP_TOKEN);
+        }
+        SysAppToken token = appTokenService.getEntity(appToken);
+        if (null != token && (null == token.getExpiryDate() || CommonUtils.getDate().before(token.getExpiryDate()))) {
+            SysApp app = appService.getEntity(token.getAppId());
             if (app.getSiteId() == getSite(handler).getId()) {
                 return app;
             }
@@ -73,14 +81,21 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
     }
 
     protected SysUser getUser(RenderHandler handler) throws TemplateModelException {
-        String authToken = handler.getString("authToken");
-        Long authUserId = handler.getLong("authUserId");
+        String authToken = (String) handler.getAttribute(AUTH_TOKEN);
+        Long authUserId = (Long) handler.getAttribute(AUTH_USER_ID);
+        if (null == authToken && null == authUserId) {
+            authToken = handler.getString(AUTH_TOKEN);
+            authUserId = handler.getLong(AUTH_USER_ID);
+        }
         if (CommonUtils.notEmpty(authToken) && null != authUserId) {
             SysUserToken sysUserToken = sysUserTokenService.getEntity(authToken);
             if (null != sysUserToken
                     && (null == sysUserToken.getExpiryDate() || CommonUtils.getDate().before(sysUserToken.getExpiryDate()))
                     && authUserId.equals(sysUserToken.getUserId())) {
-                return sysUserService.getEntity(sysUserToken.getUserId());
+                SysUser user = sysUserService.getEntity(sysUserToken.getUserId());
+                if (user.getSiteId() == getSite(handler).getId() && !user.isDisabled()) {
+                    return user;
+                }
             }
         }
         return null;

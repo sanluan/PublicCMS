@@ -3,7 +3,6 @@ package com.publiccms.views.method.tools;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -21,13 +20,11 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.LocaleResolver;
 
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.TemplateModelUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.SafeConfigComponent;
@@ -74,13 +71,11 @@ console.log(data);
 public class GetHtmlMethod extends BaseMethod {
     @Resource
     private SafeConfigComponent safeConfigComponent;
-    @Resource
-    private LocaleResolver localeResolver;
 
     @Override
     public Object execute(HttpServletRequest request, List<TemplateModel> arguments) throws TemplateModelException {
         SysSite site = (SysSite) request.getAttribute("site");
-        return execute(site, localeResolver.resolveLocale(request), arguments);
+        return execute(site, arguments);
     }
 
     @Override
@@ -90,10 +85,10 @@ public class GetHtmlMethod extends BaseMethod {
         if (null != model) {
             site = (SysSite) TemplateModelUtils.converBean(model);
         }
-        return execute(site, Environment.getCurrentEnvironment().getLocale(), arguments);
+        return execute(site, arguments);
     }
 
-    public Object execute(SysSite site, Locale locale, List<TemplateModel> arguments) throws TemplateModelException {
+    public Object execute(SysSite site, List<TemplateModel> arguments) throws TemplateModelException {
         String url = getString(0, arguments);
         Map<?, ?> parameters = getMap(1, arguments);
         String body = getString(1, arguments);
@@ -139,7 +134,7 @@ public class GetHtmlMethod extends BaseMethod {
                     html = e.getMessage();
                 }
             } else {
-                html = LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "verify.custom.url.unsafe");
+                html = "verify.custom.url.unsafe";
             }
         }
         return html;

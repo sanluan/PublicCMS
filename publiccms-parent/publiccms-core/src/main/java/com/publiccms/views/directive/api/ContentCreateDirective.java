@@ -66,9 +66,8 @@ import jakarta.validation.ValidatorFactory;
  * <li><code>categoryId</code>:分类id
  * <li><code>modelId</code>:模型id
  * <li><code>title</code>:标题
- * <li><code>description</code>:标题
- * <li><code>title</code>:标题
- * <li><code>author</code>:标题
+ * <li><code>description</code>:描述
+ * <li><code>author</code>:作者
  * <li><code>editor</code>:编辑
  * <li><code>copied</code>:转载,【true,false】,默认为<code>false</code>
  * <li><code>publishDate</code>:发布日期,默认为当前日期
@@ -99,7 +98,7 @@ import jakarta.validation.ValidatorFactory;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath!}api/contentCheck?categoryId=1&amp;modelId=article&amp;title=title&amp;text=%3Cdiv%3Econtent%3C/div%3E&amp;extendData.field1=value1&amp;extendData.field2=value2&amp;authToken=用户登录授权&amp;authUserId=1&amp;appToken=接口访问授权Token', function(data){
+$.getJSON('${site.dynamicPath!}api/contentCreate?categoryId=1&amp;modelId=article&amp;title=title&amp;text=%3Cdiv%3Econtent%3C/div%3E&amp;extendData.field1=value1&amp;extendData.field2=value2&amp;authToken=用户登录授权&amp;authUserId=1&amp;appToken=接口访问授权Token', function(data){
 console.log(data.result);
 });
 &lt;/script&gt;
@@ -145,154 +144,149 @@ public class ContentCreateDirective extends AbstractAppDirective {
             CmsCategory category = categoryService.getEntity(entity.getCategoryId());
             CmsModel cmsModel = modelComponent.getModel(site, entity.getModelId());
             if (null != category && null != cmsModel && site.getId() == category.getSiteId()) {
-                if (category.isAllowContribute()) {
-                    entity.setId(handler.getLong("id"));
-                    entity.setOnlyUrl(cmsModel.isOnlyUrl());
-                    entity.setHasImages(cmsModel.isHasImages());
-                    entity.setHasFiles(cmsModel.isHasFiles());
-                    entity.setTitle(handler.getString("title"));
-                    entity.setDescription(handler.getString("description"));
-                    entity.setAuthor(handler.getString("author"));
-                    entity.setEditor(handler.getString("editor"));
-                    entity.setCopied(handler.getBoolean("copied", false));
-                    entity.setPublishDate(handler.getDate("publishDate"));
-                    String[] tagNames = handler.getStringArray("tagNames");
-                    Long[] tagIds = handler.getLongArray("tagIds");
-                    if (CommonUtils.notEmpty(tagNames) || CommonUtils.notEmpty(tagIds)) {
-                        List<CmsTag> tagList = new ArrayList<>();
-                        if (null != tagNames) {
-                            for (String name : tagNames) {
-                                CmsTag tag = new CmsTag();
-                                tag.setName(name);
-                                tagList.add(tag);
-                            }
+                entity.setId(handler.getLong("id"));
+                entity.setOnlyUrl(cmsModel.isOnlyUrl());
+                entity.setHasImages(cmsModel.isHasImages());
+                entity.setHasFiles(cmsModel.isHasFiles());
+                entity.setTitle(handler.getString("title"));
+                entity.setDescription(handler.getString("description"));
+                entity.setAuthor(handler.getString("author"));
+                entity.setEditor(handler.getString("editor"));
+                entity.setCopied(handler.getBoolean("copied", false));
+                entity.setPublishDate(handler.getDate("publishDate"));
+                String[] tagNames = handler.getStringArray("tagNames");
+                Long[] tagIds = handler.getLongArray("tagIds");
+                if (CommonUtils.notEmpty(tagNames) || CommonUtils.notEmpty(tagIds)) {
+                    List<CmsTag> tagList = new ArrayList<>();
+                    if (null != tagNames) {
+                        for (String name : tagNames) {
+                            CmsTag tag = new CmsTag();
+                            tag.setName(name);
+                            tagList.add(tag);
                         }
-                        if (null != tagIds) {
-                            for (Long id : tagIds) {
-                                CmsTag tag = new CmsTag();
-                                tag.setId(id);
-                                tagList.add(tag);
-                            }
+                    }
+                    if (null != tagIds) {
+                        for (Long id : tagIds) {
+                            CmsTag tag = new CmsTag();
+                            tag.setId(id);
+                            tagList.add(tag);
                         }
-                        Set<Serializable> tagIdSet = tagService.update(site.getId(), tagList);
-                        entity.setTagIds(collectionToDelimitedString(tagIdSet, Constants.BLANK_SPACE));
-                    } else {
-                        entity.setTagIds(null);
                     }
-                    if (entity.isOnlyUrl()) {
-                        entity.setUrl(handler.getString("url"));
-                    }
+                    Set<Serializable> tagIdSet = tagService.update(site.getId(), tagList);
+                    entity.setTagIds(collectionToDelimitedString(tagIdSet, Constants.BLANK_SPACE));
+                } else {
+                    entity.setTagIds(null);
+                }
+                if (entity.isOnlyUrl()) {
+                    entity.setUrl(handler.getString("url"));
+                }
 
-                    Boolean checked = handler.getBoolean("checked");
-                    List<SysExtendField> categoryExtendList = null;
-                    if (null != category.getExtendId() && null != extendService.getEntity(category.getExtendId())) {
-                        categoryExtendList = extendFieldService.getList(category.getExtendId(), null, null);
-                    }
+                Boolean checked = handler.getBoolean("checked");
+                List<SysExtendField> categoryExtendList = null;
+                if (null != category.getExtendId() && null != extendService.getEntity(category.getExtendId())) {
+                    categoryExtendList = extendFieldService.getList(category.getExtendId(), null, null);
+                }
 
-                    Map<String, String> extendData = handler.getMap("extendData");
-                    CmsContentAttribute attribute = new CmsContentAttribute();
-                    attribute.setSource(handler.getString("source"));
-                    attribute.setSourceUrl(handler.getString("sourceUrl"));
-                    attribute.setText(handler.getString("text"));
-                    attribute.setData(ExtendUtils.getExtendString(extendData, site.getSitePath(), cmsModel.getExtendList(),
-                            categoryExtendList));
-                    CmsContentService.initContent(entity, site, cmsModel, handler.getBoolean("draft"), checked, attribute, false,
-                            CommonUtils.getDate());
-                    String text = HtmlUtils.removeHtmlTag(attribute.getText());
-                    attribute.setWordCount(text.length());
-                    if (CommonUtils.empty(entity.getDescription())) {
-                        entity.setDescription(CommonUtils.keep(text, 300));
-                    }
-                    if (cmsModel.isSearchable()) {
-                        attribute.setSearchText(text);
-                    }
+                Map<String, String> extendData = handler.getMap("extendData");
+                CmsContentAttribute attribute = new CmsContentAttribute();
+                attribute.setSource(handler.getString("source"));
+                attribute.setSourceUrl(handler.getString("sourceUrl"));
+                attribute.setText(handler.getString("text"));
+                attribute.setData(ExtendUtils.getExtendString(extendData, site.getSitePath(), cmsModel.getExtendList(),
+                        categoryExtendList));
+                CmsContentService.initContent(entity, site, cmsModel, handler.getBoolean("draft"), checked, attribute, false,
+                        CommonUtils.getDate());
+                String text = HtmlUtils.removeHtmlTag(attribute.getText());
+                attribute.setWordCount(text.length());
+                if (CommonUtils.empty(entity.getDescription())) {
+                    entity.setDescription(CommonUtils.keep(text, 300));
+                }
+                if (cmsModel.isSearchable()) {
+                    attribute.setSearchText(text);
+                }
 
-                    Set<ConstraintViolation<CmsContent>> set = validatorFactory.getValidator().validate(entity);
-                    if (!set.isEmpty()) {
-                        handler.put(CommonConstants.ERROR, set.stream().map(cv -> cv.getPropertyPath().toString())
-                                .collect(Collectors.joining(Constants.COMMA_DELIMITED)));
-                    } else {
+                Set<ConstraintViolation<CmsContent>> set = validatorFactory.getValidator().validate(entity);
+                if (!set.isEmpty()) {
+                    handler.put(CommonConstants.ERROR, set.stream().map(cv -> cv.getPropertyPath().toString())
+                            .collect(Collectors.joining(Constants.COMMA_DELIMITED)));
+                } else {
+                    if (null != entity.getId()) {
+                        CmsContent oldEntity = service.getEntity(entity.getId());
+                        if (null != oldEntity && site.getId() == oldEntity.getSiteId()) {
+                            entity = service.update(entity.getId(), entity,
+                                    entity.isOnlyUrl() ? CmsContentService.ignoreProperties
+                                            : CmsContentService.ignorePropertiesWithUrl);
+                        }
                         if (null != entity.getId()) {
-                            CmsContent oldEntity = service.getEntity(entity.getId());
-                            if (null != oldEntity && site.getId() == oldEntity.getSiteId()) {
-                                entity = service.update(entity.getId(), entity,
-                                        entity.isOnlyUrl() ? CmsContentService.ignoreProperties
-                                                : CmsContentService.ignorePropertiesWithUrl);
-                            }
-                            if (null != entity.getId()) {
-                                logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(),
-                                        app.getChannel(), "update.content", RequestUtils.getIpAddress(handler.getRequest()),
-                                        CommonUtils.getDate(), JsonUtils.getString(entity)));
-                            }
-                        } else {
-                            if (CommonUtils.notEmpty(cmsModel.getParentId())) {
-                                entity.setParentId(handler.getLong("parentId"));
-                            }
-                            entity.setSiteId(site.getId());
-                            entity.setUserId(user.getId());
-                            service.save(entity);
-                            if (CommonUtils.notEmpty(entity.getParentId())) {
-                                service.updateChilds(entity.getParentId(), 1);
-                            }
                             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
-                                    "save.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(),
+                                    "update.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(),
                                     JsonUtils.getString(entity)));
                         }
-
-                        service.saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, site.getId(),
-                                entity.getId(), user.getId(), cmsModel.getExtendList(), categoryExtendList, extendData);
-
-                        attributeService.updateAttribute(entity.getId(), attribute);
-                        if (entity.isHasImages() || entity.isHasFiles()) {
-                            List<CmsContentFile> files = null;
-                            if (entity.isHasFiles()) {
-                                files = new ArrayList<>();
-                                String[] filepaths = handler.getStringArray("filePaths");
-                                String[] fileDescriptions = handler.getStringArray("fileDescriptions");
-                                if (null != filepaths) {
-                                    int i = 0;
-                                    for (String filepath : filepaths) {
-                                        CmsContentFile e = new CmsContentFile();
-                                        e.setFilePath(filepath);
-                                        if (null != fileDescriptions && fileDescriptions.length > i) {
-                                            e.setDescription(fileDescriptions[i]);
-                                        }
-                                        files.add(e);
-                                        i++;
-                                    }
-                                }
-                            }
-                            List<CmsContentFile> images = null;
-                            if (entity.isHasImages()) {
-                                images = new ArrayList<>();
-                                String[] imagePaths = handler.getStringArray("imagePaths");
-                                String[] imageDescriptions = handler.getStringArray("imageDescriptions");
-                                if (null != imagePaths) {
-                                    int i = 0;
-                                    for (String filepath : imagePaths) {
-                                        CmsContentFile e = new CmsContentFile();
-                                        e.setFilePath(filepath);
-                                        if (null != imageDescriptions && imageDescriptions.length > i) {
-                                            e.setDescription(imageDescriptions[i]);
-                                        }
-                                        files.add(e);
-                                        i++;
-                                    }
-                                }
-                            }
-                            contentFileService.update(entity.getId(), user.getId(), files, images);// 更新保存图集,附件
+                    } else {
+                        if (CommonUtils.notEmpty(cmsModel.getParentId())) {
+                            entity.setParentId(handler.getLong("parentId"));
                         }
-                        if (null != checked && checked) {
-                            service.check(site.getId(), user, new Long[] { entity.getId() });
-                            templateComponent.createContentFile(site, entity, category, categoryModel);
-                            templateComponent.createCategoryFile(site, category, null, null);
+                        entity.setSiteId(site.getId());
+                        entity.setUserId(user.getId());
+                        service.save(entity);
+                        if (CommonUtils.notEmpty(entity.getParentId())) {
+                            service.updateChilds(entity.getParentId(), 1);
                         }
-                        handler.put("contentId", entity.getId());
-                        handler.put("result", "success");
+                        logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
+                                "save.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(),
+                                JsonUtils.getString(entity)));
                     }
-                } else {
-                    handler.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                            RequestContextUtils.getLocale(handler.getRequest()), "verify.custom.contribute"));
+
+                    service.saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, site.getId(), entity.getId(),
+                            user.getId(), cmsModel.getExtendList(), categoryExtendList, extendData);
+
+                    attributeService.updateAttribute(entity.getId(), attribute);
+                    if (entity.isHasImages() || entity.isHasFiles()) {
+                        List<CmsContentFile> files = null;
+                        if (entity.isHasFiles()) {
+                            files = new ArrayList<>();
+                            String[] filepaths = handler.getStringArray("filePaths");
+                            String[] fileDescriptions = handler.getStringArray("fileDescriptions");
+                            if (null != filepaths) {
+                                int i = 0;
+                                for (String filepath : filepaths) {
+                                    CmsContentFile e = new CmsContentFile();
+                                    e.setFilePath(filepath);
+                                    if (null != fileDescriptions && fileDescriptions.length > i) {
+                                        e.setDescription(fileDescriptions[i]);
+                                    }
+                                    files.add(e);
+                                    i++;
+                                }
+                            }
+                        }
+                        List<CmsContentFile> images = null;
+                        if (entity.isHasImages()) {
+                            images = new ArrayList<>();
+                            String[] imagePaths = handler.getStringArray("imagePaths");
+                            String[] imageDescriptions = handler.getStringArray("imageDescriptions");
+                            if (null != imagePaths) {
+                                int i = 0;
+                                for (String filepath : imagePaths) {
+                                    CmsContentFile e = new CmsContentFile();
+                                    e.setFilePath(filepath);
+                                    if (null != imageDescriptions && imageDescriptions.length > i) {
+                                        e.setDescription(imageDescriptions[i]);
+                                    }
+                                    files.add(e);
+                                    i++;
+                                }
+                            }
+                        }
+                        contentFileService.update(entity.getId(), user.getId(), files, images);// 更新保存图集,附件
+                    }
+                    if (null != checked && checked) {
+                        service.check(site.getId(), user, new Long[] { entity.getId() });
+                        templateComponent.createContentFile(site, entity, category, categoryModel);
+                        templateComponent.createCategoryFile(site, category, null, null);
+                    }
+                    handler.put("contentId", entity.getId());
+                    handler.put("result", "success");
                 }
             } else {
                 handler.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
@@ -312,7 +306,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
 
     @Override
     public boolean needAppToken() {
-        return false;
+        return true;
     }
 
 }
