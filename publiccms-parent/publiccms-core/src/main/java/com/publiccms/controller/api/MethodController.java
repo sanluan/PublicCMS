@@ -16,15 +16,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysAppToken;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.DirectiveComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.sys.SysAppService;
@@ -59,23 +63,29 @@ public class MethodController {
      * 接口指令统一分发
      *
      * @param name
+     * @param site 
      * @param appToken
      * @param request
      * @return result
      */
     @RequestMapping("method/{name}")
-    public Object method(@PathVariable String name, String appToken, HttpServletRequest request) {
+    public Object method(@PathVariable String name, @RequestAttribute SysSite site,
+            @RequestHeader(required = false) String appToken, HttpServletRequest request) {
         BaseMethod method = methodMap.get(name);
         if (null != method && method.httpEnabled()) {
             try {
                 if (method.needAppToken()) {
+                    if (null == appToken) {
+                        appToken = request.getParameter(AbstractTemplateDirective.APP_TOKEN);
+                    }
                     SysAppToken token = appTokenService.getEntity(appToken);
                     if (null == token || null != token.getExpiryDate() && CommonUtils.getDate().after(token.getExpiryDate())) {
                         return NEED_APP_TOKEN_MAP;
                     }
                     SysApp app = appService.getEntity(token.getAppId());
-                    if (null == app || CommonUtils.empty(app.getAuthorizedApis()) || !ArrayUtils
-                            .contains(StringUtils.split(app.getAuthorizedApis(), Constants.COMMA), method.getName())) {
+                    if (null == app || app.getSiteId() != site.getId() || CommonUtils.empty(app.getAuthorizedApis())
+                            || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), Constants.COMMA),
+                                    method.getName())) {
                         return NEED_APP_TOKEN_MAP;
                     }
                 }

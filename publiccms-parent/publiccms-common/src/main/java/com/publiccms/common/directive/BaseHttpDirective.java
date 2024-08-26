@@ -10,6 +10,8 @@ import org.springframework.http.converter.HttpMessageConverter;
 
 import com.publiccms.common.handler.HttpParameterHandler;
 
+import freemarker.template.TemplateException;
+
 /**
  * 指令基类
  * 
@@ -23,7 +25,7 @@ public abstract class BaseHttpDirective implements HttpDirective, Directive {
 
     @Override
     public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
-            HttpServletResponse response) throws IOException, Exception {
+            HttpServletResponse response) throws IOException, TemplateException {
         execute(new HttpParameterHandler(httpMessageConverter, mediaType, request, response));
     }
 

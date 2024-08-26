@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 
+import freemarker.template.TemplateException;
+
 /**
  * 
  * HttpServletDirective 接口指令
@@ -20,8 +22,8 @@ public interface HttpDirective {
      * @param request
      * @param response
      * @throws IOException
-     * @throws Exception
+     * @throws TemplateException
      */
     void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
-                 HttpServletResponse response) throws IOException, Exception;
+            HttpServletResponse response) throws IOException, TemplateException;
 }

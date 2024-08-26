@@ -149,6 +149,7 @@ public class AdminConfig implements WebMvcConfigurer {
             if (converter instanceof MappingJackson2HttpMessageConverter) {
                 List<MediaType> list = new ArrayList<>();
                 list.add(MediaType.TEXT_PLAIN);
+                list.add(MediaType.APPLICATION_JSON);
                 ((MappingJackson2HttpMessageConverter) converter).setSupportedMediaTypes(list);
                 SimpleModule module = new SimpleModule();
                 module.addSerializer(Long.class, ToStringSerializer.instance);
