@@ -19,8 +19,8 @@
             <artifactId>HikariCP</artifactId>
         </dependency>
         <dependency>
-            <groupId>eu.bitwalker</groupId>
-            <artifactId>UserAgentUtils</artifactId>
+            <groupId>com.blueconic</groupId>
+            <artifactId>browscap-java</artifactId>
         </dependency>
         <dependency>
             <groupId>com.drewnoakes</groupId>

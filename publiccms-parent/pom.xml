@@ -107,8 +107,8 @@
         <version.jbig2>3.0.4</version.jbig2>
         <!-- https://mvnrepository.com/artifact/com.github.bgalek.security.svg/safe-svg -->
         <version.safeSvg>1.1.7</version.safeSvg>
-        <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
-        <version.userAgentUtils>1.21</version.userAgentUtils>
+        <!-- https://mvnrepository.com/artifact/com.blueconic/browscap-java -->
+        <version.browscap>1.4.4</version.browscap>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
         <version.jsoup>1.18.1</version.jsoup>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
@@ -478,9 +478,9 @@
                 <version>${version.safeSvg}</version>
             </dependency>
             <dependency>
-                <groupId>eu.bitwalker</groupId>
-                <artifactId>UserAgentUtils</artifactId>
-                <version>${version.userAgentUtils}</version>
+                <groupId>com.blueconic</groupId>
+                <artifactId>browscap-java</artifactId>
+                <version>${version.browscap}</version>
             </dependency>
             <dependency>
                 <groupId>org.jsoup</groupId>

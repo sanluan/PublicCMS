@@ -408,6 +408,8 @@ var navTab = {
         if (iOpenIndex >= 0 && !op.focusNewWindow) {
             var $tab = this._getTabs().eq(iOpenIndex);
             var $panel = this._getPanels().eq(iOpenIndex);
+            $tab.find(">a").eq(0).attr("title", op.title).text(op.title);
+            this._getMoreLi().eq(iOpenIndex).find(">a").attr("title",op.title).text(op.title);
             if (op.fresh || $tab.attr("url") != url ) {
                 $tab.attr("url", url);
                 if (op.external || url.isExternalUrl() ) {

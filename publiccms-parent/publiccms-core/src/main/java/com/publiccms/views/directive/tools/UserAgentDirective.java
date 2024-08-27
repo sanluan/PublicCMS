@@ -8,11 +8,14 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Component;
 
+import com.blueconic.browscap.Capabilities;
+import com.blueconic.browscap.ParseException;
+import com.blueconic.browscap.UserAgentParser;
+import com.blueconic.browscap.UserAgentService;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.RequestUtils;
 
-import eu.bitwalker.useragentutils.UserAgent;
 import freemarker.template.TemplateException;
 
 /**
@@ -25,14 +28,12 @@ import freemarker.template.TemplateException;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>object.id</code>:id
  * <li><code>object.ip</code>:客户端ip
  * <li><code>object.browser</code>:浏览器
- * <li><code>object.browserGroup</code>:浏览器分组
  * <li><code>object.browserType</code>:浏览器类型
  * <li><code>object.browserVersion</code>:浏览器版本
  * <li><code>object.operatingSystem</code>:操作系统
- * <li><code>object.operatingSystemGroup</code>:操作系统分组
+ * <li><code>object.operatingSystemVersion</code>:操作系统版本
  * <li><code>object.deviceType</code>:设备类型
  * <li><code>object.userAgent</code>:user agent
  * </ul>
@@ -50,6 +51,14 @@ import freemarker.template.TemplateException;
  */
 @Component
 public class UserAgentDirective extends AbstractTemplateDirective {
+    public static UserAgentParser parser = null;
+
+    public UserAgentDirective() {
+        try {
+            parser = new UserAgentService().loadParser();
+        } catch (IOException | ParseException e) {
+        }
+    }
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
@@ -61,17 +70,17 @@ public class UserAgentDirective extends AbstractTemplateDirective {
                 userAgent = RequestUtils.getUserAgent(request);
             }
         }
-        UserAgent ua = UserAgent.parseUserAgentString(userAgent);
         Map<String, Object> map = new HashMap<>();
-        map.put("id", ua.getId());
-        map.put("ip", RequestUtils.getIpAddress(request));
-        map.put("browser", ua.getBrowser());
-        map.put("browserGroup", ua.getBrowser().getGroup());
-        map.put("browserType", ua.getBrowser().getBrowserType());
-        map.put("browserVersion", ua.getBrowserVersion());
-        map.put("operatingSystem", ua.getOperatingSystem());
-        map.put("operatingSystemGroup", ua.getOperatingSystem().getGroup());
-        map.put("deviceType", ua.getOperatingSystem().getDeviceType());
+        if (null != parser) {
+            Capabilities capabilities = parser.parse(userAgent);
+            map.put("ip", RequestUtils.getIpAddress(request));
+            map.put("browser", capabilities.getBrowser());
+            map.put("browserType", capabilities.getBrowserType());
+            map.put("browserVersion", capabilities.getBrowserMajorVersion());
+            map.put("operatingSystem", capabilities.getPlatform());
+            map.put("operatingSystemVersion", capabilities.getPlatformVersion());
+            map.put("deviceType", capabilities.getDeviceType());
+        }
         map.put("userAgent", userAgent);
         handler.put("object", map).render();
     }
