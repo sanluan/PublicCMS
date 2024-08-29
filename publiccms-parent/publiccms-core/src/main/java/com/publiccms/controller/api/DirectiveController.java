@@ -211,9 +211,9 @@ public class DirectiveController {
                     actionList.add(map);
                     actionMap.put(entry.getKey(), entry.getValue());
                     namespace.add(map);
-                    Collections.sort(namespace, (o1, o2) -> Collator.getInstance().compare(o1.get("name"), o2.get("name")));
                 }
             }
+            Collections.sort(namespace, (o1, o2) -> Collator.getInstance().compare(o1.get("name"), o2.get("name")));
         }
         Collections.sort(actionList, (o1, o2) -> Collator.getInstance().compare(o1.get("name"), o2.get("name")));
     }
