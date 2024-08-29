@@ -47,6 +47,10 @@
             <artifactId>pagehelper</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.github.therapi</groupId>
             <artifactId>therapi-runtime-javadoc</artifactId>
         </dependency>

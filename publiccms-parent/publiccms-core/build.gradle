@@ -19,6 +19,8 @@ dependencies {
     implementation "org.mybatis.dynamic-sql:mybatis-dynamic-sql:${dynamicSqlVersion}"
     implementation "com.github.pagehelper:pagehelper:${pageHelperVersion}"
 
+    implementation "com.sun.mail:jakarta.mail:${mailVersion}"
+
     providedCompile "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
     providedCompile "javax.servlet:javax.servlet-api:${servletVersion}"
 }
