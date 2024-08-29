@@ -17,7 +17,7 @@
                         <td>
                             <input name="${inputName}" value="${k!}" type="hidden"/>
                             <input name="${extend.id.code}_tagName" readonly="readonly" size="30" value="${(v.title)!}" type="text" class="<#if extend.required>required</#if>"/>
-                            <a class="btnLook" href="cmsTag/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_tageName" width="920" height="500" lookupGroup=""><@t.page 'select'/></a>
+                            <a class="btnLook" href="cmsTag/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_tagName" width="920" height="500" lookupGroup=""><@t.page 'select'/></a>
                         </td>
                         <td>
                             <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
