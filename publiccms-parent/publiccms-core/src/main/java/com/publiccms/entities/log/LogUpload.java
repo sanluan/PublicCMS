@@ -39,56 +39,56 @@ public class LogUpload implements java.io.Serializable {
     private short siteId;
     /**
      * user id
-     * <p>
+
      * 用户id
      */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
     /**
      * operate channel
-     * <p>
+
      * 操作渠道
      */
     @GeneratorColumn(title = "渠道", condition = true)
     private String channel;
     /**
      * original name
-     * <p>
+
      * 原文件名
      */
     @GeneratorColumn(title = "原文件名", condition = true, like = true)
     private String originalName;
     /**
      * privatefile
-     * <p>
+
      * 私有文件
      */
     @GeneratorColumn(title = "私有文件", condition = true)
     private boolean privatefile;
     /**
      * file type
-     * <p>
+
      * 文件类型
      */
     @GeneratorColumn(title = "文件类型", condition = true)
     private String fileType;
     /**
      * file size
-     * <p>
+
      * 文件大小
      */
     @GeneratorColumn(title = "文件大小", order = true)
     private long fileSize;
     /**
      * image width
-     * <p>
+
      * 图片宽度
      */
     @GeneratorColumn(title = "宽度")
     private Integer width;
     /**
      * image height
-     * <p>
+
      * 图片高度
      */
     @GeneratorColumn(title = "高度")
@@ -100,14 +100,14 @@ public class LogUpload implements java.io.Serializable {
     private String ip;
     /**
      * upload date
-     * <p>
+
      * 上传日期
      */
     @GeneratorColumn(title = "操作日期", order = true)
     private Date createDate;
     /**
      * file path
-     * <p>
+
      * 文件路径
      */
     @GeneratorColumn(title = "文件路径", condition = true, like = true)

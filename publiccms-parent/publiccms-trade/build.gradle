@@ -11,5 +11,7 @@ dependencies {
     implementation "com.alipay.sdk:alipay-easysdk:2.2.3"
     // https://mvnrepository.com/artifact/com.github.wechatpay-apiv3/wechatpay-apache-httpclient
     implementation "com.github.wechatpay-apiv3:wechatpay-apache-httpclient:0.4.9"
-    runtimeOnly "javax.servlet:javax.servlet-api:${servletVersion}"
+
+    providedCompile "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
+    providedCompile "javax.servlet:javax.servlet-api:${servletVersion}"
 }

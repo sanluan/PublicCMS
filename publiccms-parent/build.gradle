@@ -121,6 +121,8 @@ subprojects {
         safeSvgVersion = "1.1.7"
         // http://mvnrepository.com/artifact/com.blueconic/browscap-java
         browscapVersion = "1.4.4"
+        // https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc
+        therapiJavadocVersion = "0.15.0"
         // https://mvnrepository.com/artifact/org.jsoup/jsoup
         jsoupVersion = "1.18.1"
         // https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api

@@ -52,6 +52,8 @@
                 onclick="process($('#rawJson').val(),$('.code-canvas'))" />
         </p>
         <div class="code-canvas"></div>
+        <div class="doc">
+        </div>
         <p class="description">
             <em>红色字体接口需要使用AppToken才能访问，后台添加应用然后用appKey和appSecret通过自定义接口appToken获取appToken，绿色框体接口需要登录信息authToken，authUserId才能访问,通过普通接口login获取</em>
         </p>
@@ -72,6 +74,7 @@
     var sitePath = '${site.dynamicPath}';
     var apiArray=['api/directive/','api/method/','api/']
     var apisArray=['api/namespaces','api/methods','api/apis'];
+    var apiDoc=new Map();
     var supportShowParametersArray=[true,false,true];
 
     function invoke(){
@@ -117,6 +120,9 @@
         }else if($('input[name=showParameters]').is(':checked')&&$('input[name=showParameters]').is(':visible')){
             $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParameters=true');
         }
+        if(apiDoc.get(action)){
+            $(".doc").html(apiDoc.get(action));
+        }
         return false;
     }
     function init(){
@@ -146,6 +152,7 @@
                         if('true'==data.needUserToken){
                             style+='border:1px solid #0f0;';
                         }
+                        apiDoc.set(data.name,data.doc);
                         $('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+data.name+'\',\''+data.needAppToken+'\',\''+data.needUserToken+'\',\''+data.minParameters+'\');">'+data.name+'</a> ');
                     });
                 } else {
@@ -159,6 +166,7 @@
                             if(directive.needUserToken){
                                 style+='border:1px solid #0f0;';
                             }
+                            apiDoc.set(directive.namespace+'/'+directive.name,directive.doc);
                             $('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+directive.namespace+'/'+directive.name+'\',\''+directive.needAppToken+'\',\''+directive.needUserToken+'\',\''+data.minParameters+'\');">'+directive.name+'</a> ');
                         });
                         $('#interfaes').append('<br/>');

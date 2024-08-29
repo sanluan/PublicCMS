@@ -42,7 +42,7 @@ public class CmsVote implements java.io.Serializable {
     private short siteId;
     /**
      * start date
-     * <p>
+
      * 开始日期
      */
     @GeneratorColumn(title = "开始日期", condition = true, order = true)
@@ -50,7 +50,7 @@ public class CmsVote implements java.io.Serializable {
     private Date startDate;
     /**
      * end date
-     * <p>
+
      * 结束日期
      */
     @GeneratorColumn(title = "结束日期", condition = true, order = true)
@@ -58,14 +58,14 @@ public class CmsVote implements java.io.Serializable {
     private Date endDate;
     /**
      * votes
-     * <p>
+
      * 投票次数
      */
     @GeneratorColumn(title = "投票次数", order = true)
     private int votes;
     /**
      * title
-     * <p>
+
      * 标题
      */
     @GeneratorColumn(title = "标题", condition = true, like = true)
@@ -74,7 +74,7 @@ public class CmsVote implements java.io.Serializable {
     private String title;
     /**
      * description
-     * <p>
+
      * 描述
      */
     @GeneratorColumn(title = "描述")
@@ -83,14 +83,14 @@ public class CmsVote implements java.io.Serializable {
 
     /**
      * allow anonymous
-     * <p>
+
      * 允许匿名
      */
     @GeneratorColumn(title = "允许匿名", condition = true)
     private boolean allowAnonymous;
     /**
      * create date
-     * <p>
+
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)

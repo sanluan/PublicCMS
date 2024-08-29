@@ -5,7 +5,8 @@ configurations {
 }
 
 dependencies {
-    implementation "javax.servlet:javax.servlet-api:${servletVersion}"
+    providedCompile "javax.servlet:javax.servlet-api:${servletVersion}"
+    providedCompile "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
 
     implementation "org.springframework:spring-context-support:${springVersion}"
     implementation "org.springframework:spring-orm:${springVersion}"

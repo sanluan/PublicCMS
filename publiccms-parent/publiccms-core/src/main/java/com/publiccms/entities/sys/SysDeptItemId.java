@@ -18,21 +18,21 @@ public class SysDeptItemId implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     /**
      * dept id
-     * <p>
+
      * 部门id
      */
     @GeneratorColumn(title = "部门", condition = true)
     private int deptId;
     /**
      * item type
-     * <p>
+
      * 项目类型
      */
     @GeneratorColumn(title = "项目类型", condition = true)
     private String itemType;
     /**
      * item id
-     * <p>
+
      * 项目id
      */
     @GeneratorColumn(title = "项目", condition = true)

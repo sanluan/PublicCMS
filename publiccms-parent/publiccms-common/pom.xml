@@ -9,7 +9,6 @@
     <artifactId>publiccms-common</artifactId>
     <name>publiccms-common</name>
     <dependencies>
-        
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>

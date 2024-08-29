@@ -12,11 +12,13 @@ dependencies {
     implementation "com.blueconic:browscap-java:${browscapVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
     implementation "org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}"
-    implementation "javax.servlet:javax.servlet-api:${servletVersion}"
-    
+
     implementation "com.drewnoakes:metadata-extractor:${extractorVersion}"
 
     implementation "org.mybatis:mybatis-spring:${mybatisSpringVersion}"
     implementation "org.mybatis.dynamic-sql:mybatis-dynamic-sql:${dynamicSqlVersion}"
     implementation "com.github.pagehelper:pagehelper:${pageHelperVersion}"
+
+    providedCompile "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
+    providedCompile "javax.servlet:javax.servlet-api:${servletVersion}"
 }
