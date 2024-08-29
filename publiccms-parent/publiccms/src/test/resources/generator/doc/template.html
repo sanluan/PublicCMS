@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<title>PublicCMS 函数指令手册</title>
+<style type="text/css">
+html,body{background-color:#ffffff;color:#353833;font-size:14px;margin:0;height:100%;}
+h1{text-align:center;margin:20px;}
+h3{margin:0;padding:5px;background-color:#4D7A97;color:#fff;}
+a:link, a:visited {text-decoration:none;color:#4A6782;}
+a:hover, a:focus {text-decoration:none;color:#bb7a2a;}
+a:active{text-decoration:none;color:#4A6782;}
+.selected a{color:#000;}
+.container{width:80%;height:100%;margin:0 auto;border-left:1px solid #aaa;}
+.indexContainer{position:absolute;top:0px;overflow:auto;width:200px;float:left;height:100%;}
+.indexContainer ul{margin:0px 10px;padding:0;}
+.indexContainer ul li{list-style:none;padding-top:2px;}
+ul{list-style-type:disc;}
+code{line-height:1.4em;}
+.block{padding:20px;overflow:auto;color:#474747;border-bottom:1px dashed #aaa;}
+.doc{margin-left:200px;height:100%;overflow:auto;}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="indexContainer">
+    <#list namespace as k,v>
+        <h3>指令(命名空间:${k})</h3>
+        <ul>
+            <#list v as k1,v>
+            <li><a href="javascript:void(0)" data-id="${k}-${k1}">${k1}</a></li>
+            </#list>
+        </ul>
+    </#list>
+        <h3>函数</h3>
+        <ul>
+        <#list methodMap as k,v>
+            <li><a href="javascript:void(0)" data-id="method-${k}">${k}</a></li>
+        </#list>
+        </ul>
+    </div>
+    <div class="doc">
+        <h1>PublicCMS 函数指令手册</h1>
+    <#list namespace as k,v>
+        <#list v as k1,v1>
+        <div class="block" data-id="${k}-${k1}">${v1!}</div>
+        </#list>
+    </#list>
+    <#list methodMap as k,v>
+        <div class="block" data-id="method-${k}">${v!}</div>
+    </#list>
+    </div>
+</div>
+<script src="https://www.publiccms.com/assets/js/jquery.min.js"></script>
+<script>
+$('.doc').scroll(function(){
+    var last;
+    $(".doc .block").each(function(){
+        if($(this).offset().top >= $('.doc').offset().top + 20){
+            $(".indexContainer li.selected").removeClass('selected');
+            if(last){
+                $(".indexContainer a[data-id="+last.data('id')+"]").parent().addClass('selected');
+            }else{
+                $(".indexContainer a[data-id="+$(this).data('id')+"]").parent().addClass('selected');
+            }
+            return false;
+        }
+        last=$(this);
+    });
+}).trigger("scroll");
+$(".indexContainer a").click(function(){
+    var hight= $(".doc .block[data-id="+$(this).data('id')+"]").offset().top - $('.doc').offset().top + $('.doc').scrollTop();
+    $('.doc').stop().animate({scrollTop:hight},500);
+});
+</script>
+</body>
+</html>
