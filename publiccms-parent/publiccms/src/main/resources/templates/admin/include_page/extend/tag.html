@@ -6,7 +6,7 @@
         <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>">
             <thead>
                 <tr>
-                    <th width="250"<#if 'customform'!=type> type="lookup" name="${extend.id.code}_tagName" fieldClass="<#if extend.required>required</#if>" size="30" fieldAttrs="{'readonly':'readonly','width':'920','height':'500'}" lookupUrl="cmsTag/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_tageName" lookupGroup="" lookupPk="${inputName}"</#if>><@t.page 'tag'/></th>
+                    <th width="250"<#if 'customform'!=type> type="lookup" name="${extend.id.code}_tagName" fieldClass="<#if extend.required>required</#if>" size="30" fieldAttrs="{'readonly':'readonly','width':'920','height':'500'}" lookupUrl="cmsTag/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_tagName" lookupGroup="" lookupPk="${inputName}"</#if>><@t.page 'tag'/></th>
                     <th width="60"<#if 'customform'!=type> type="del" </#if>><@t.page 'operate'/></th>
                 </tr>
             </thead>
@@ -40,6 +40,6 @@
     <#else>
         <input name="${inputName}" value="${(value)!}" type="hidden"/>
         <input name="${extend.id.code}_tagName" readonly="readonly" size="30" value="${(values.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-        <a class="btnLook" href="cmsTag/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_tageName" lookupGroup="" width="920" height="500"><@t.page 'select'/></a>
+        <a class="btnLook" href="cmsTag/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_tagName" lookupGroup="" width="920" height="500"><@t.page 'select'/></a>
     </#if>
 </#if>
