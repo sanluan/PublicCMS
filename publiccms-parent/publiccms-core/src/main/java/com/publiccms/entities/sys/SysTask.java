@@ -41,7 +41,7 @@ public class SysTask implements java.io.Serializable {
     private short siteId;
     /**
      * name
-     * <p>
+
      * 名称
      */
     @GeneratorColumn(title = "任务名称")
@@ -50,28 +50,28 @@ public class SysTask implements java.io.Serializable {
     private String name;
     /**
      * status(0:ready,1:running,2:paused,3:error)
-     * <p>
+
      * 状态(0:就绪,1:执行中,2:暂停,3:错误)
      */
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
     /**
      * multi-node execution
-     * <p>
+
      * 多节点运行
      */
     @GeneratorColumn(title = "多节点运行")
     private boolean multiNode;
     /**
      * cron expression
-     * <p>
+
      * 计划表达式
      */
     @GeneratorColumn(title = "表达式")
     private String cronExpression;
     /**
      * description
-     * <p>
+
      * 描述
      */
     @GeneratorColumn(title = "描述")
@@ -79,14 +79,14 @@ public class SysTask implements java.io.Serializable {
     private String description;
     /**
      * file path
-     * <p>
+
      * 文件路径
      */
     @GeneratorColumn(title = "文件路径")
     private String filepath;
     /**
      * update date
-     * <p>
+
      * 更新日期
      */
     @GeneratorColumn(title = "更新日期", condition = true)

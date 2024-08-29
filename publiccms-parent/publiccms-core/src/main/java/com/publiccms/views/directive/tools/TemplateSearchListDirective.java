@@ -30,7 +30,7 @@ import freemarker.template.TemplateException;
  * 返回结果
  * <ul>
  * <li><code>list</code>:文件列表
- * {@link com.publiccms.common.tools.CmsFileUtils.FileSearchResult}
+ * {@link com.publiccms.common.tools.CmsFileUtils$FileSearchResult}
  * </ul>
  * 使用示例
  * <p>

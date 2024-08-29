@@ -33,35 +33,35 @@ public class TradeAddress implements java.io.Serializable {
     private short siteId;
     /**
      * user
-     * <p>
+
      * 用户
      */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
     /**
      * address
-     * <p>
+
      * 地址
      */
     @GeneratorColumn(title = "地址")
     private String address;
     /**
      * addressee
-     * <p>
+
      * 收件人
      */
     @GeneratorColumn(title = "收件人")
     private String addressee;
     /**
      * telephone
-     * <p>
+
      * 电话
      */
     @GeneratorColumn(title = "电话")
     private String telephone;
     /**
      * create date
-     * <p>
+
      * 创建日期
      */
     @GeneratorColumn(title = "createDate")

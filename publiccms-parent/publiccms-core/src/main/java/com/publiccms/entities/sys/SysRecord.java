@@ -34,21 +34,21 @@ public class SysRecord implements java.io.Serializable {
     private SysRecordId id;
     /**
      * record data
-     * <p>
+
      * 记录数据
      */
     @GeneratorColumn(title = "值")
     private String data;
     /**
      * create date
-     * <p>
+
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", condition = true, order = true)
     private Date createDate;
     /**
      * update date
-     * <p>
+
      * 更新日期
      */
     @GeneratorColumn(title = "更新日期", order = true)

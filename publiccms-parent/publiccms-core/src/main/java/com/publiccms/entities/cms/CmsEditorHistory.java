@@ -38,7 +38,7 @@ public class CmsEditorHistory implements java.io.Serializable {
     private short siteId;
     /**
      * item type
-     * <p>
+
      * 项目类型
      */
     @GeneratorColumn(title = "项目类型", condition = true)
@@ -47,7 +47,7 @@ public class CmsEditorHistory implements java.io.Serializable {
     private String itemType;
     /**
      * item id
-     * <p>
+
      * 项目id
      */
     @GeneratorColumn(title = "项目id", condition = true)
@@ -56,28 +56,28 @@ public class CmsEditorHistory implements java.io.Serializable {
     private String itemId;
     /**
      * field name
-     * <p>
+
      * 字段名
      */
     @GeneratorColumn(title = "字段名", condition = true)
     private String fieldName;
     /**
      * create date
-     * <p>
+
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
     /**
      * user id
-     * <p>
+
      * 用户
      */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
     /**
      * content text
-     * <p>
+
      * 正文内容
      */
     @GeneratorColumn(title = "内容")

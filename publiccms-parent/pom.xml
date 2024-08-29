@@ -109,6 +109,8 @@
         <version.safeSvg>1.1.7</version.safeSvg>
         <!-- https://mvnrepository.com/artifact/com.blueconic/browscap-java -->
         <version.browscap>1.4.4</version.browscap>
+        <!-- https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc -->
+        <version.therapiJavadoc>0.15.0</version.therapiJavadoc>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
         <version.jsoup>1.18.1</version.jsoup>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
@@ -481,6 +483,17 @@
                 <groupId>com.blueconic</groupId>
                 <artifactId>browscap-java</artifactId>
                 <version>${version.browscap}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.therapi</groupId>
+                <artifactId>therapi-runtime-javadoc-scribe</artifactId>
+                <version>${version.therapiJavadoc}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.therapi</groupId>
+                <artifactId>therapi-runtime-javadoc</artifactId>
+                <version>${version.therapiJavadoc}</version>
             </dependency>
             <dependency>
                 <groupId>org.jsoup</groupId>

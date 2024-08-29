@@ -41,7 +41,7 @@ public class CmsWord implements java.io.Serializable {
     private short siteId;
     /**
      * name
-     * <p>
+
      * 名称
      */
     @GeneratorColumn(title = "名称", condition = true, like = true)
@@ -50,14 +50,14 @@ public class CmsWord implements java.io.Serializable {
     private String name;
     /**
      * search count
-     * <p>
+
      * 搜索次数
      */
     @GeneratorColumn(title = "搜索次数", order = true)
     private int searchCount;
     /**
      * hidden
-     * <p>
+
      * 隐藏
      */
     @GeneratorColumn(title = "隐藏", condition = true)
@@ -69,7 +69,7 @@ public class CmsWord implements java.io.Serializable {
     private String ip;
     /**
      * create date
-     * <p>
+
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", condition = true, order = true)

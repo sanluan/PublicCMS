@@ -41,28 +41,28 @@ public class VisitHistory implements java.io.Serializable {
     private short siteId;
     /**
      * session id
-     * <p>
+
      * 会话id
      */
     @GeneratorColumn(title = "会话", condition = true)
     private String sessionId;
     /**
      * visit date
-     * <p>
+
      * 访问日期
      */
     @GeneratorColumn(title = "访问日期", condition = true)
     private Date visitDate;
     /**
      * visit hour
-     * <p>
+
      * 访问小时
      */
     @GeneratorColumn(title = "访问小时", condition = true)
     private byte visitHour;
     /**
      * visit user
-     * <p>
+
      * 访问用户
      */
     @GeneratorColumn(title = "访问用户", condition = true)
@@ -74,14 +74,14 @@ public class VisitHistory implements java.io.Serializable {
     private String ip;
     /**
      * user agent
-     * <p>
+
      * 浏览器用户标识
      */
     @GeneratorColumn(title = "UserAgent")
     private String userAgent;
     /**
      * title
-     * <p>
+
      * 标题
      */
     @GeneratorColumn(title = "url")
@@ -95,42 +95,42 @@ public class VisitHistory implements java.io.Serializable {
     private String title;
     /**
      * screen width
-     * <p>
+
      * 屏幕宽度
      */
     @GeneratorColumn(title = "屏幕宽度")
     private Integer screenWidth;
     /**
      * screen height
-     * <p>
+
      * 屏幕高度
      */
     @GeneratorColumn(title = "屏幕高度")
     private Integer screenHeight;
     /**
      * referer url
-     * <p>
+
      * 来源地址
      */
     @GeneratorColumn(title = "refererUrl")
     private String refererUrl;
     /**
      * item type
-     * <p>
+
      * 项目类型
      */
     @GeneratorColumn(title = "项目类型")
     private String itemType;
     /**
      * item id
-     * <p>
+
      * 项目id
      */
     @GeneratorColumn(title = "项目ID")
     private String itemId;
     /**
      * create date
-     * <p>
+
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", condition = true, order = true)

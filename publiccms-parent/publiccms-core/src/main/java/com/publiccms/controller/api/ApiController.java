@@ -35,6 +35,7 @@ import com.publiccms.common.handler.HttpParameterHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.JavaDocUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
@@ -311,6 +312,7 @@ public class ApiController {
             map.put("needAppToken", String.valueOf(appDirective.needAppToken()));
             map.put("needUserToken", String.valueOf(appDirective.needUserToken()));
             map.put("supportAdvanced", String.valueOf(false));
+            map.put("doc", JavaDocUtils.getClassComment(appDirective.getClass().getName()));
             appList.add(map);
         }
         Collections.sort(appList, (o1, o2) -> Collator.getInstance().compare(o1.get("name"), o2.get("name")));

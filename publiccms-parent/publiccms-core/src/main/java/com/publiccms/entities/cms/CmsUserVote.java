@@ -34,14 +34,14 @@ public class CmsUserVote implements java.io.Serializable {
     private CmsUserVoteId id;
     /**
      * anonymous
-     * <p>
+
      * 匿名用户
      */
     @GeneratorColumn(title = "匿名用户", condition = true)
     private boolean anonymous;
     /**
      * item id
-     * <p>
+
      * 选项id
      */
     @GeneratorColumn(title = "选项")
@@ -53,7 +53,7 @@ public class CmsUserVote implements java.io.Serializable {
     private String ip;
     /**
      * create date
-     * <p>
+
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)

@@ -41,7 +41,7 @@ public class SysUser implements java.io.Serializable {
     private short siteId;
     /**
      * name
-     * <p>
+
      * 用户名
      */
     @GeneratorColumn(title = "用户名", condition = true, like = true, or = true, name = "name")
@@ -53,14 +53,14 @@ public class SysUser implements java.io.Serializable {
     private String password;
     /**
      * weak password
-     * <p>
+
      * 弱密码
      */
     @GeneratorColumn(title = "弱密码", condition = true)
     private boolean weakPassword;
     /**
      * nickname
-     * <p>
+
      * 昵称
      */
     @GeneratorColumn(title = "用户昵称", condition = true, like = true, or = true, name = "name")
@@ -68,49 +68,49 @@ public class SysUser implements java.io.Serializable {
     private String nickname;
     /**
      * cover
-     * <p>
+
      * 封面图
      */
     @GeneratorColumn(title = "封面图")
     private String cover;
     /**
      * dept id
-     * <p>
+
      * 部门id
      */
     @GeneratorColumn(title = "部门", condition = true)
     private Integer deptId;
     /**
      * content permissions(0:self,1:all,2:dept)
-     * <p>
+
      * 内容权限(0:自己的,1:全部,2:本部门)
      */
     @GeneratorColumn(title = "内容权限")
     private int contentPermissions;
     /**
      * role ids
-     * <p>
+
      * 角色id
      */
     @GeneratorColumn(title = "角色")
     private String roles;
     /**
      * email
-     * <p>
+
      * 邮件地址
      */
     @GeneratorColumn(title = "邮箱", condition = true, like = true, or = true, name = "name")
     private String email;
     /**
      * email checked
-     * <p>
+
      * 已验证邮件
      */
     @GeneratorColumn(title = "已验证邮箱", condition = true)
     private boolean emailChecked;
     /**
      * super user
-     * <p>
+
      * 管理员
      */
     @GeneratorColumn(title = "是否管理员", condition = true)
@@ -118,7 +118,7 @@ public class SysUser implements java.io.Serializable {
 
     /**
      * disabled
-     * <p>
+
      * 已禁用p
      */
     @GeneratorColumn(title = "已禁用", condition = true)
@@ -126,28 +126,28 @@ public class SysUser implements java.io.Serializable {
     private boolean disabled;
     /**
      * last login date
-     * <p>
+
      * 上次登录日期
      */
     @GeneratorColumn(title = "上次登录日期", condition = true, order = true)
     private Date lastLoginDate;
     /**
      * last login ip
-     * <p>
+
      * 上次登录ip
      */
     @GeneratorColumn(title = "上次登录IP")
     private String lastLoginIp;
     /**
      * login count
-     * <p>
+
      * 登录次数
      */
     @GeneratorColumn(title = "登录次数", order = true)
     private int loginCount;
     /**
      * register date
-     * <p>
+
      * 注册日期
      */
     @GeneratorColumn(title = "注册日期", condition = true, order = true)

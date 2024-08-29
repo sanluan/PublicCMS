@@ -1,6 +1,5 @@
 package com.publiccms.controller.api;
 
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,6 +25,7 @@ import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.JavaDocUtils;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysAppToken;
 import com.publiccms.entities.sys.SysSite;
@@ -63,7 +63,7 @@ public class MethodController {
      * 接口指令统一分发
      *
      * @param name
-     * @param site 
+     * @param site
      * @param appToken
      * @param request
      * @return result
@@ -138,16 +138,17 @@ public class MethodController {
         methodMap = directiveComponent.getMethodMap();
         for (Entry<String, BaseMethod> entry : methodMap.entrySet()) {
             if (entry.getValue().httpEnabled()) {
-                Map<String, String> resultMap = new HashMap<>();
-                resultMap.put("name", entry.getKey());
-                resultMap.put("minParameters", String.valueOf(entry.getValue().minParametersNumber()));
-                resultMap.put("needAppToken", String.valueOf(entry.getValue().needAppToken()));
-                resultMap.put("needUserToken", String.valueOf(false));
-                resultMap.put("supportAdvanced", String.valueOf(false));
-                methodList.add(resultMap);
+                Map<String, String> map = new HashMap<>();
+                map.put("name", entry.getKey());
+                map.put("minParameters", String.valueOf(entry.getValue().minParametersNumber()));
+                map.put("doc", JavaDocUtils.getClassComment(entry.getValue().getClass().getName()));
+                map.put("needAppToken", String.valueOf(entry.getValue().needAppToken()));
+                map.put("needUserToken", String.valueOf(false));
+                map.put("supportAdvanced", String.valueOf(false));
+                methodList.add(map);
             }
         }
-        Collections.sort(methodList, (o1, o2) -> Collator.getInstance().compare(o1.get("name"), o2.get("name")));
+        Collections.sort(methodList, (o1, o2) -> o1.get("name").compareTo(o2.get("name")));
     }
 
     private ObjectWrapper getObjectWrapper() {

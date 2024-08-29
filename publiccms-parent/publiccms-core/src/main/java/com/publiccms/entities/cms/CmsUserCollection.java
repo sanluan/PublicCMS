@@ -35,7 +35,7 @@ public class CmsUserCollection implements java.io.Serializable {
     private CmsUserCollectionId id;
     /**
      * create date
-     * <p>
+
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期")

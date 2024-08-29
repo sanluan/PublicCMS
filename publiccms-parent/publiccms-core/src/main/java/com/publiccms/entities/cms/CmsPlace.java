@@ -42,7 +42,7 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
     private short siteId;
     /**
      * place path
-     * <p>
+
      * 推荐位路径
      */
     @GeneratorColumn(title = "路径", condition = true)
@@ -51,35 +51,35 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
     private String path;
     /**
      * user id
-     * <p>
+
      * 创建用户id
      */
     @GeneratorColumn(title = "推荐用户", condition = true)
     private Long userId;
     /**
      * check user id
-     * <p>
+
      * 审核用户id
      */
     @GeneratorColumn(title = "审核用户", condition = true)
     private Long checkUserId;
     /**
      * item type
-     * <p>
+
      * 数据项类型
      */
     @GeneratorColumn(title = "项目类型", condition = true)
     private String itemType;
     /**
      * item id
-     * <p>
+
      * 数据项id
      */
     @GeneratorColumn(title = "项目", condition = true)
     private Long itemId;
     /**
      * title
-     * <p>
+
      * 标题
      */
     @GeneratorColumn(title = "标题")
@@ -88,7 +88,7 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
     private String title;
     /**
      * url
-     * <p>
+
      * 地址
      */
     @GeneratorColumn(title = "地址")
@@ -96,7 +96,7 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
     private String url;
     /**
      * description
-     * <p>
+
      * 描述
      */
     @GeneratorColumn(title = "描述")
@@ -104,7 +104,7 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
     private String description;
     /**
      * cover
-     * <p>
+
      * 封面图
      */
     @GeneratorColumn(title = "封面图")
@@ -112,14 +112,14 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
     private String cover;
     /**
      * create date
-     * <p>
+
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
     /**
      * publish date
-     * <p>
+
      * 发布日期
      */
     @GeneratorColumn(title = "发布日期", condition = true, order = true)
@@ -127,7 +127,7 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
     private Date publishDate;
     /**
      * expiry date
-     * <p>
+
      * 过期日期
      */
     @GeneratorColumn(title = "过期日期", condition = true, order = true)
@@ -135,21 +135,21 @@ public class CmsPlace extends Attribute implements java.io.Serializable {
     private Date expiryDate;
     /**
      * status(0:Draft,1:Published,2:Pending)
-     * <p>
+
      * 状态(0:草稿,1:已发布,2:待审核,3:已下架)
      */
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
     /**
      * clicks
-     * <p>
+
      * 点击数
      */
     @GeneratorColumn(title = "点击数", order = true)
     private int clicks;
     /**
      * max clicks
-     * <p>
+
      * 最大点击数
      */
     @GeneratorColumn(title = "最大点击数")

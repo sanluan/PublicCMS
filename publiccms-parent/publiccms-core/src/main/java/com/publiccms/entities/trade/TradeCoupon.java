@@ -34,7 +34,7 @@ public class TradeCoupon implements java.io.Serializable {
     private short siteId;
     /**
      * name
-     * <p>
+
      * 名称
      */
     @GeneratorColumn(title = "名称")
@@ -43,14 +43,14 @@ public class TradeCoupon implements java.io.Serializable {
     private String name;
     /**
      * category
-     * <p>
+
      * 分类
      */
     @GeneratorColumn(title = "分类", condition = true)
     private Integer categoryId;
     /**
      * content
-     * <p>
+
      * 内容
      */
     @GeneratorColumn(title = "内容", condition = true)

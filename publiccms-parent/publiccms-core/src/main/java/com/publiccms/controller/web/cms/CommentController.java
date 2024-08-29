@@ -66,7 +66,7 @@ public class CommentController {
             "replyUserId", "replies", "scores", "disabled" };
 
     /**
-     * 使用示例
+     * demo 使用示例
      * <p>
      * 
      * <pre>
