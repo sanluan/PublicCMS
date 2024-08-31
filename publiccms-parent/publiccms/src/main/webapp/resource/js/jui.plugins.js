@@ -199,12 +199,12 @@ JUI.regPlugins.push(function($p){
 JUI.regPlugins.push(function($p){
     $("a.view[target=_blank]", $p).each(function(){
         $btn=$(this);
-        $input=$("input[name="+escapeJquery($(this).attr("ref"))+"]",$(this).parents(".unitBox:first"));
+        $input=$("input[name="+$.escapeSelector($(this).attr("ref"))+"]",$(this).parents(".unitBox:first"));
         function control(){
             if($(this).val()){
-                $("a.view[target=_blank][ref="+escapeJquery($(this).attr("name"))+"]").show();
+                $("a.view[target=_blank][ref="+$.escapeSelector($(this).attr("name"))+"]").show();
             }else{
-                $("a.view[target=_blank][ref="+escapeJquery($(this).attr("name"))+"]").hide();
+                $("a.view[target=_blank][ref="+$.escapeSelector($(this).attr("name"))+"]").hide();
             }
         }
         $input.change(control);
@@ -214,7 +214,7 @@ JUI.regPlugins.push(function($p){
             $btn.hide();
         }
         $btn.click(function(){
-            var value=$("input[name="+escapeJquery($(this).attr("ref"))+"]",$(this).parents(".unitBox:first")).val();
+            var value=$("input[name="+$.escapeSelector($(this).attr("ref"))+"]",$(this).parents(".unitBox:first")).val();
             if(value){
                 if(value.isUrl() ){
                     $(this).attr("href",value);

@@ -37,7 +37,7 @@
             var $box = _lookup["$target"].parents(".unitBox").first();
             if(keys){
                 $.each(keys,function(n,key){
-                    $box.find(":input[name="+escapeJquery(_util.lookupPk(key))+"]").each(function() {
+                    $box.find(":input[name="+$.escapeSelector(_util.lookupPk(key))+"]").each(function() {
                         for ( var k in args) {
                             _lookup.suffix=k;
                             suggest(args,k,$(this));
@@ -46,7 +46,7 @@
                 });
             } else {
                 for ( var key in args) {
-                    $box.find(":input[name="+escapeJquery(_util.lookupPk(key))+"]").each(function() {
+                    $box.find(":input[name="+$.escapeSelector(_util.lookupPk(key))+"]").each(function() {
                         suggest(args,key,$(this));
                     });
                 }

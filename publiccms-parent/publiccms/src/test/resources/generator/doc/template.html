@@ -15,7 +15,8 @@ a:active{text-decoration:none;color:#4A6782;}
 .indexContainer ul{margin:0px 10px;padding:0;}
 .indexContainer ul li{list-style:none;padding-top:2px;}
 ul{list-style-type:disc;}
-code{line-height:1.4em;}
+code{line-height:1.4em;color:#d63384;}
+pre{background-color: #efefef;overflow: auto;padding: 10px;}
 .block{padding:20px;overflow:auto;color:#474747;border-bottom:1px dashed #aaa;}
 .doc{margin-left:200px;height:100%;overflow:auto;}
 </style>
@@ -62,15 +63,21 @@ $('.doc').scroll(function(){
             }else{
                 $(".indexContainer a[data-id="+$(this).data('id')+"]").parent().addClass('selected');
             }
+            location.hash = $(".indexContainer li.selected a").data("id").replace(/\?.*$/, "");
             return false;
         }
         last=$(this);
     });
-}).trigger("scroll");
+});
 $(".indexContainer a").click(function(){
     var hight= $(".doc .block[data-id="+$(this).data('id')+"]").offset().top - $('.doc').offset().top + $('.doc').scrollTop();
     $('.doc').stop().animate({scrollTop:hight},500);
 });
+var hash = location.hash.substring(1).replace(/\?.*$/, "");
+if(hash){
+    console.log(hash);
+    $(".indexContainer a[data-id="+$.escapeSelector(hash)+"]").click();
+}
 </script>
 </body>
 </html>

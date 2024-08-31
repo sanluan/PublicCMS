@@ -270,7 +270,7 @@ function moveButton(x,y,width,height,position){
 }
 function diyShowButton(itemType,itemId){
     if(itemType) {
-        var buttons=$("#buttonBox a[data-diy="+escapeJquery(itemType)+"][data-diy-item]");
+        var buttons=$("#buttonBox a[data-diy="+$.escapeSelector(itemType)+"][data-diy-item]");
         if(buttons.length) {
           if(diyButtonTimer){
               clearTimeout(diyButtonTimer);
@@ -294,9 +294,9 @@ function diyShowMenu(itemType,itemId,noborder){
     $(".diy-menu",navTab.getCurrentPanel()).data("itemType",itemType);
     var buttons;
     if(itemId) {
-        buttons=$("#buttonBox a[data-diy="+escapeJquery(itemType)+"][data-diy-id="+escapeJquery(itemId)+"],#buttonBox a[data-diy="+escapeJquery(itemType)+"]:not([data-diy-id],[data-diy-item])");
+        buttons=$("#buttonBox a[data-diy="+$.escapeSelector(itemType)+"][data-diy-id="+$.escapeSelector(itemId)+"],#buttonBox a[data-diy="+$.escapeSelector(itemType)+"]:not([data-diy-id],[data-diy-item])");
     } else {
-        buttons=$("#buttonBox a[data-diy="+escapeJquery(itemType)+"]:not([data-diy-id],[data-diy-item])");
+        buttons=$("#buttonBox a[data-diy="+$.escapeSelector(itemType)+"]:not([data-diy-id],[data-diy-item])");
     }
     if(buttons.length) {
       if(diyMenuTimer){

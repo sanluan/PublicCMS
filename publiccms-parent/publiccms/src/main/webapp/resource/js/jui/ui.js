@@ -39,11 +39,11 @@ function initEnv() {
             $("#navMenu").navMenu();
             var hash = location.hash.skipChar("#").replace(/\?.*$/, "");
             if(hash ) {
-                var $box = $("#menu a[rel="+escapeJquery(hash)+"]").closest(".accordionContent");
+                var $box = $("#menu a[rel="+$.escapeSelector(hash)+"]").closest(".accordionContent");
                 if(!$box.is(":visible")){
                     $box.prev().click();
                 }
-                $("#menu a[rel="+escapeJquery(hash)+"]").click();
+                $("#menu a[rel="+$.escapeSelector(hash)+"]").click();
             }
         }
         $(document).trigger(JUI.eventType.initEnvAfter);

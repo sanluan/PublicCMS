@@ -20,7 +20,7 @@
         });
     };
     var _onchange = function(event) {
-        var $ref = $("select[name=" + escapeJquery(event.data.$this.attr("ref"))+"]");
+        var $ref = $("select[name=" + $.escapeSelector(event.data.$this.attr("ref"))+"]");
         if ($ref.length == 0 ) {
             return false;
         }
@@ -86,7 +86,7 @@
                             var val = $(this).val();
                             if(val){
                                 $("li",optionlist).hide();
-                                $("li a:contains("+escapeJquery(val)+")",optionlist).parent().show();
+                                $("li a:contains("+$.escapeSelector(val)+")",optionlist).parent().show();
                                 $("li a",optionlist).each(function(){
                                     if(-1 < $(this).attr("value").indexOf(val)){
                                         $(this).parent().show();
@@ -155,7 +155,7 @@
                 var value = $this.val();
                 var label = "";
                 if( "undefined" !== typeof value  && value){
-                    label = $("option[value=" + escapeJquery(value) + "]", $this).text();
+                    label = $("option[value=" + $.escapeSelector(value) + "]", $this).text();
                 }else if("" == value){
                     label = $("option[value=\"\"]", $this).text();
                 }
@@ -194,7 +194,7 @@
         comboxVal: function(val){
           return this.each(function(){
             var $box = $(this).parents(".combox .select:first");
-            $("#op_"+$box.attr("id")).find("li a[value=\""+escapeJquery(val)+"\"]").trigger("click");
+            $("#op_"+$box.attr("id")).find("li a[value=\""+$.escapeSelector(val)+"\"]").trigger("click");
           });
         }
     });
