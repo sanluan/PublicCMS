@@ -26,7 +26,7 @@
         function clickTmMenu($input, type) {
             $(setting.tmBox$).find("." + type + " li").each(function() {
                 var $li = $(this);
-                $li.click(function() {
+                $li.on("click", function() {
                     $input.val($li.text());
                 });
             });
@@ -87,7 +87,7 @@
                     dayStr += "<dd class=\"other " + _ctrClass + "\" chMonth=\"1\" day=\"" + t + "\">" + t + "</dd>";
                 }
                 var $days = $(setting.days$).html(dayStr).find("dd");
-                $days.not(".disabled").click(function() {
+                $days.not(".disabled").on("click", function() {
                     var $day = $(this);
                     if (!dp.hasTime() ) {
                         $this.val(dp.formatDate(dp.changeDay($day.attr("day"), $day.attr("chMonth"))));
@@ -124,13 +124,13 @@
                     var $second = $(setting.second$).val(iSecond).attr("step", dp.opts.ssStep).focus(function() {
                         changeTmMenu("ss");
                     });
-                    $hour.add($minute).add($second).click(function() {
+                    $hour.add($minute).add($second).on("click", function() {
                         return false
                     });
                     clickTmMenu($hour, "hh");
                     clickTmMenu($minute, "mm");
                     clickTmMenu($second, "ss");
-                    $(setting.box$).click(function() {
+                    $(setting.box$).on("click", function() {
                         changeTmMenu();
                     });
                     var $inputs = $(setting.tmInputs$);
@@ -140,12 +140,12 @@
                             changeTm($input, 0);
                         });
                     });
-                    $(setting.tmUp$).click(function() {
+                    $(setting.tmUp$).on("click", function() {
                         $inputs.filter(".slt").each(function() {
                             changeTm($(this), 1);
                         });
                     });
-                    $(setting.tmDown$).click(function() {
+                    $(setting.tmDown$).on("click", function() {
                         $inputs.filter(".slt").each(function() {
                             changeTm($(this), -1);
                         });
@@ -165,14 +165,14 @@
                 $(setting.box$).remove();
                 $(document).off("click", null, closeCalendar);
             }
-            $this.click(function(event) {
+            $this.on("click", function(event) {
                 closeCalendar();
                 var dp = new Datepicker($this.val(), opts);
                 var offset = $this.offset();
                 var iTop = offset.top + this.offsetHeight;
                 $($.parseHTML(JUI.frag["calendarFrag"], document, true)).appendTo("body").css({
                     left: offset.left + "px", top: iTop + "px"
-                }).show().click(function(event) {
+                }).show().on("click", function(event) {
                     event.stopPropagation();
                 });
                 var dayNames = "";
@@ -205,14 +205,14 @@
                 if (iTop > iBoxH && iTop > $(window).height() - iBoxH ) {
                     $(setting.box$).css("top", offset.top - iBoxH);
                 }
-                $(setting.close$).click(function() {
+                $(setting.close$).on("click", function() {
                     closeCalendar();
                 });
-                $(setting.clearBut$).click(function() {
+                $(setting.clearBut$).on("click", function() {
                     $this.val("");
                     closeCalendar();
                 });
-                $(setting.okBut$).click(function() {
+                $(setting.okBut$).on("click", function() {
                     var $dd = $(setting.days$).find("dd.slt");
                     if ($dd.hasClass("disabled") ) {
                         return false;
@@ -231,7 +231,7 @@
             });
 
             if($this.next().is(setting.calIcon$)){
-                $this.next().click(function(){
+                $this.next().on("click", function(){
                     $this.trigger("click");
                     return false;
                 });
@@ -247,7 +247,7 @@
         var now = new Date();
         this.opts.minDate = now.formatDateTm(this.opts.minDate);
         this.opts.maxDate = now.formatDateTm(this.opts.maxDate);
-        this.sDate = sDate.trimstr();
+        this.sDate = sDate.trim();
     }
     $.extend(Datepicker.prototype, {
         get: function(name) {

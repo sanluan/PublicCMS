@@ -55,7 +55,7 @@
                 var box = $(this);
                 var selector = $(op.selector, box);
                 allSelectBox.push(box.attr("id"));
-                $(op.selector, box).click(function() {
+                $(op.selector, box).on("click", function() {
                     var options = $("#op_" + box.attr("id"));
                     var optionlist=$("ul",options);
                     if (options.is(":hidden") ) {
@@ -96,13 +96,13 @@
                                 $("li",optionlist).show();
                             }
                             $("li.disabled",optionlist).hide();
-                        }).click(function(){
+                        }).on("click", function(){
                             return false;
                         }).val("");
                         $("li",optionlist).show();
                         $("li.disabled",optionlist).hide();
                         killAllBox(box.attr("id"));
-                        $(document).click(killAllBox);
+                        $(document).on("click", killAllBox);
                     } else {
                         $(document).off("click", null, killAllBox);
                         killAllBox();
@@ -114,7 +114,7 @@
         } ,
         comboxOption: function(selector, box) {
             return this.each(function() {
-                $(">a", this).click(function() {
+                $(">a", this).on("click", function() {
                     var $this = $(this);
                     $this.parent().parent().find(".selected").removeClass("selected");
                     $this.addClass("selected");
@@ -207,7 +207,7 @@
         checkboxCtrl: function(parent) {
             return this.each(function() {
                 var $trigger = $(this);
-                $trigger.click(function() {
+                $trigger.on("click", function() {
                     var group = $trigger.attr("group");
                     if ($trigger.is(":checkbox") ) {
                         var type = $trigger.is(":checked") ? "all": "none";

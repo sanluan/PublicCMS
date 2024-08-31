@@ -36,13 +36,13 @@
                             switchTab(jT, iTabIndex)
                         });
                     } else {
-                        $(this).click(function(event) {
+                        $(this).on("click", function(event) {
                             switchTab(jT, iTabIndex)
                         });
                     }
                     $("a", this).each(function() {
                         if ($(this).hasClass(op.ajaxClass) ) {
-                            $(this).click(function(event) {
+                            $(this).on("click", function(event) {
                                 var jGroup = jGroups.eq(iTabIndex);
                                 if (this.href && !jGroup.attr("loaded") ) {
                                     jGroup.loadUrl(this.href, {}, function() {
@@ -53,7 +53,7 @@
                                 event.preventDefault();
                             });
                         } else if ($(this).hasClass(op.closeClass) ) {
-                            $(this).click(function(event) {
+                            $(this).on("click", function(event) {
                                 jTabs.eq(iTabIndex).remove();
                                 jGroups.eq(iTabIndex).remove();
                                 if (iTabIndex == op.currentIndex ) {
@@ -154,7 +154,7 @@ var alertMsg = {
         var jDoc = $(document);
         for (var i = 0; i < buttons.length; i++) {
             if (buttons[i].call ){
-                jCallButs.eq(i).click(buttons[i].call);
+                jCallButs.eq(i).on("click", buttons[i].call);
             }
             if (buttons[i].keyCode == JUI.keyCode.ENTER ) {
                 jDoc.on("keydown", null, {

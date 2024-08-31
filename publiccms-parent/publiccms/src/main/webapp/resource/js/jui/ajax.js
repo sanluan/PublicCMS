@@ -377,7 +377,7 @@ $.fn.extend({
     ajaxTodo: function() {
         return this.each(function() {
             var $this = $(this);
-            $this.click(function(event) {
+            $this.on("click", function(event) {
                 var url = $this.attr("href").replaceTmById($(event.target).parents(".unitBox").first());
                 JUI.debug(url);
                 if (!url.isFinishedTm() ) {
@@ -406,7 +406,7 @@ $.fn.extend({
         }
         return this.each(function() {
             var $this = $(this);
-            $this.click(function(event) {
+            $this.on("click", function(event) {
                 var title = $this.attr("title");
                 if (title ) {
                     alertMsg.confirm(title, {

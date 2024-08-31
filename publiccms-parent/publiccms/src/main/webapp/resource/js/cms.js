@@ -15,7 +15,7 @@ function addTagType(id,name){
     $("input[name=\"type[].name\"]",navTab.getCurrentPanel()).val("");
 }
 function clickAddTagType(){
-    $(".tagTypes .icon-ok",navTab.getCurrentPanel()).parent().click();
+    $(".tagTypes .icon-ok",navTab.getCurrentPanel()).parent().trigger("click");
 }
 function reIndexTagType(){
     $(".tagsBox span",navTab.getCurrentPanel()).each(function(tagIndex){
@@ -56,7 +56,7 @@ function addTag(typeId, id, name){
     $("input[name=\"tag["+typeId+"].name\"]",navTab.getCurrentPanel()).val("");
 }
 function clickAddTag(){
-    $(".tags .icon-ok",navTab.getCurrentPanel()).parent().click();
+    $(".tags .icon-ok",navTab.getCurrentPanel()).parent().trigger("click");
 }
 function reIndexTag(){
     var tagIndex=0;

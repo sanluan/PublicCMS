@@ -486,7 +486,7 @@ var JUI = {
             return (new RegExp(/^([_]|[a-zA-Z0-9]){6,32}$/).test(this));
         },
         isValidMail: function() {
-            return (new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/).test(this.trimstr()));
+            return (new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/).test(this.trim()));
         },
         isUrl: function() {
             return ( new RegExp(/^([a-zA-z]+:)?\/\/([a-zA-Z0-9\-\.]+)([-\w .\/?%&=:]*)$/).test(this) );

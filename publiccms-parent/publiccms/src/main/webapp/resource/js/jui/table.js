@@ -59,7 +59,7 @@
                         $ftd.addClass(aStyles[i][1]);
                     }
                 }
-                $tr.click(function(){
+                $tr.on("click", function(){
                     tbody.find(">tr.selected").removeClass("selected");
                     $tr.addClass("selected");
                     var sTarget = $tr.attr("target");
@@ -71,12 +71,12 @@
                     }
                 });
                 if ($(".edit", $tr).length) {
-                    $tr.dblclick(function() {
-                        $(".edit", $tr).eq(0).click();
+                    $tr.on( "dblclick", function() {
+                        $(".edit", $tr).eq(0).trigger("click");
                     });
                 } else if ($(".icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).length ) {
-                    $tr.dblclick(function() {
-                        $(".icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).eq(0).parent().click();
+                    $tr.on( "dblclick", function() {
+                        $(".icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).eq(0).parent().trigger("click");
                     });
                 }
             });
@@ -106,10 +106,10 @@
 
                 $(">th", this).each(function(i){
                     var th = this, $th = $(this);
-                    $th.mouseover(function(event){
+                    $th.on("mouseover", function(event){
                         var offset = $.jTableTool.getOffset(th, event).offsetX;
                         if($th.outerWidth() - offset < 5) {
-                            $th.css("cursor", "col-resize").mousedown(function(event){
+                            $th.css("cursor", "col-resize").on("mousedown", function(event){
                                 $(".resizeProxy", $grid).show().css({
                                     left: $.jTableTool.getRight(th)- $(".gridScroller", $grid).scrollLeft(),
                                     top:$.jTableTool.getTop(th),
@@ -273,7 +273,7 @@
 
                 $trs.each(function(index) {
                     var $tr = $(this);
-                    $tr.click(function() {
+                    $tr.on("click", function() {
                         $this.find("tbody>tr.selected").removeClass("selected");
                         $tr.addClass("selected");
                         var sTarget = $tr.attr("target");
@@ -285,12 +285,12 @@
                         }
                     });
                     if ($(".edit", $tr).length) {
-                        $tr.dblclick(function() {
-                            $(".edit", $tr).eq(0).click();
+                        $tr.on( "dblclick", function() {
+                            $(".edit", $tr).eq(0).trigger("click");
                         });
                     } else if ($(".panelBar .icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).length ) {
-                        $tr.dblclick(function() {
-                            $(".panelBar .icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).eq(0).parent().click();
+                        $tr.on( "dblclick", function() {
+                            $(".panelBar .icon-edit", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).eq(0).parent().trigger("click");
                         });
                     }
                 });
@@ -314,7 +314,7 @@
                 targetType: "navTab", rel: "", asc: "asc", desc: "desc" , orderType : "", orderField : ""
             }, options);
             return this.each(function() {
-                var $this = $(this).click(function() {
+                var $this = $(this).on("click", function() {
                     var orderField = $this.attr("orderField");
                     var orderDirection = $this.hasClass(op.asc) ? op.desc: op.asc;
                     dwzPageBreak({

@@ -28,19 +28,19 @@ pre{background-color: #efefef;overflow: auto;padding: 10px;}
         <h3>指令(命名空间:${k})</h3>
         <ul>
             <#list v as k1,v>
-            <li><a href="javascript:void(0)" data-id="${k}-${k1}">${k1}</a></li>
+            <li><a href="#${k}-${k1}">${k1}</a></li>
             </#list>
         </ul>
     </#list>
         <h3>函数</h3>
         <ul>
         <#list methodMap as k,v>
-            <li><a href="javascript:void(0)" data-id="method-${k}">${k}</a></li>
+            <li><a href="#method-${k}">${k}</a></li>
         </#list>
         </ul>
     </div>
     <div class="doc">
-        <h1>PublicCMS 函数指令手册</h1>
+        <h1>PublicCMS 函数指令手册 ${version}</h1>
     <#list namespace as k,v>
         <#list v as k1,v1>
         <div class="block" data-id="${k}-${k1}">${v1!}</div>
@@ -53,30 +53,31 @@ pre{background-color: #efefef;overflow: auto;padding: 10px;}
 </div>
 <script src="https://www.publiccms.com/assets/js/jquery.min.js"></script>
 <script>
-$('.doc').scroll(function(){
+$('.doc').on("scroll", function(){
     var last;
     $(".doc .block").each(function(){
-        if($(this).offset().top >= $('.doc').offset().top + 20){
+        var $this=$(this);
+        if($this.offset().top >= $('.doc').offset().top + 20){
             $(".indexContainer li.selected").removeClass('selected');
             if(last){
-                $(".indexContainer a[data-id="+last.data('id')+"]").parent().addClass('selected');
+                $(".indexContainer a[href=\\#"+last.data('id')+"]").parent().addClass('selected');
             }else{
-                $(".indexContainer a[data-id="+$(this).data('id')+"]").parent().addClass('selected');
+                $(".indexContainer a[href=\\#"+$this.data('id')+"]").parent().addClass('selected');
             }
-            location.hash = $(".indexContainer li.selected a").data("id").replace(/\?.*$/, "");
+            location.hash = $(".indexContainer li.selected a").attr("href").replace("#", "");
             return false;
         }
-        last=$(this);
+        last=$this;
     });
 });
-$(".indexContainer a").click(function(){
-    var hight= $(".doc .block[data-id="+$(this).data('id')+"]").offset().top - $('.doc').offset().top + $('.doc').scrollTop();
-    $('.doc').stop().animate({scrollTop:hight},500);
+$(".indexContainer a").on("click", function(){
+    var $doc=$(".doc");
+    var hight= $(".doc .block[data-id="+$.escapeSelector($(this).attr("href").substring(1))+"]").offset().top - $doc.offset().top + $doc.scrollTop();
+    $doc.stop().animate({scrollTop:hight},500);
 });
 var hash = location.hash.substring(1).replace(/\?.*$/, "");
 if(hash){
-    console.log(hash);
-    $(".indexContainer a[data-id="+$.escapeSelector(hash)+"]").click();
+    $(".indexContainer a[href=\\#"+$.escapeSelector(hash)+"]").trigger("click");
 }
 </script>
 </body>

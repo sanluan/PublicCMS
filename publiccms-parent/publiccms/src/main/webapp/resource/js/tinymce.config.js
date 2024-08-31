@@ -36,7 +36,7 @@
                 var input = document.createElement('input');
                     input.setAttribute('type', 'file');
                     input.setAttribute('accept', filetype);
-                input.click();
+                input.trigger("click");
                 input.onchange = function() {
                     var file = this.files[0];
                     var xhr, formData;
