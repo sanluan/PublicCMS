@@ -32,7 +32,7 @@
                         if (checkFn && "function" === typeof checkFn ) {
                             $("div.ckbox", $this).each(function() {
                                 var ckbox = $(this);
-                                ckbox.click(function() {
+                                ckbox.on("click", function() {
                                     var checked = $(ckbox).hasClass("checked");
                                     var items = [ ];
                                     if (checked ) {
@@ -58,7 +58,7 @@
                             });
                         }
                     }
-                    $("a", $this).click(function(event) {
+                    $("a", $this).on("click", function(event) {
                         $("div." + op.selected, $this).removeClass(op.selected);
                         var parent = $(this).parent().addClass(op.selected);
                         var $li = $(this).parents("li:first"), sTarget = $li.attr("target");
@@ -110,14 +110,14 @@
                     if (tree.length > 0 ) {
                         op.showSub ? tree.show(): tree.hide();
                     }
-                    $(">div>div."+op.options.folderColl+",>div>div."+op.options.folderExp+",>div>a", node).click(function() {
+                    $(">div>div."+op.options.folderColl+",>div>div."+op.options.folderExp+",>div>a", node).on("click", function() {
                         if(node.attr(op.options.async)){
                             $.ajax({
                                 type: "get", url: node.attr(op.options.async), async: false, data: {}, success: function(response){
                                     node.append(response);
                                     tree = $(">ul", node).hide();
                                     initLink(tree);
-                                    $("a", tree).click(function(event) {
+                                    $("a", tree).on("click", function(event) {
                                         $("div." + op.options.selected, op.root).removeClass(op.options.selected);
                                         var parent = $(this).parent().addClass(op.options.selected);
                                         var $li = $(this).parents("li:first"), sTarget = $li.attr("target");
@@ -165,8 +165,8 @@
                     $(">div", node).prepend(( op.ckbox ? "<div class=\"ckbox " + checked + "\"></div>": "" )
                             + ( op.icon ? "<div class=\""+op.options.file+"\"></div>": "<div class=\"node\"></div>" ));
                     if(op.icon ) {
-                        $(">div>div."+op.options.file, node).click(function() {
-                            $(this).next().click();
+                        $(">div>div."+op.options.file, node).on("click", function() {
+                            $(this).next().trigger("click");
                             return false;
                         });
                     }
@@ -176,7 +176,7 @@
                     node._check(op);
                 }
                 if (!$.support.leadingWhitespace ) {
-                    $(">div", node).click(function() {
+                    $(">div", node).on("click", function() {
                         $("a", this).trigger("click");
                         return false;
                     });
@@ -212,7 +212,7 @@
             if (tvalue ) {
                 attrs += "value=\"" + tvalue + "\" ";
             }
-            ckbox.append("<input type=\"checkbox\" style=\"display:none;\" " + attrs + "/>").click(function() {
+            ckbox.append("<input type=\"checkbox\" style=\"display:none;\" " + attrs + "/>").on("click", function() {
                 var cked = ckbox.hasClass("checked");
                 var aClass = cked ? "unchecked": "checked";
                 var rClass = cked ? "checked": "unchecked";

@@ -28,13 +28,13 @@
         $previewElem.empty().append(img);
 
         if ($previewElem.find(".del-icon").length == 0) {
-            $("<a class=\"del-icon\"></a>").appendTo($previewElem).click(function(){
+            $("<a class=\"del-icon\"></a>").appendTo($previewElem).on("click", function(){
                 $previewElem.remove();
                 $uploadWrap.find("input[type=file]").val("");
             });
         }
         if ($previewElem.find(".edit-icon").length == 0 && $uploadWrap.find("input[name=base64File]").length) {
-            $("<a class=\"edit-icon\"></a>").appendTo($previewElem).click(function(){
+            $("<a class=\"edit-icon\"></a>").appendTo($previewElem).on("click", function(){
                 editImg($uploadWrap,img,file.name,function(dataURL,fileName){
                     if(dataURL){
                         img.src=dataURL;
@@ -152,7 +152,7 @@
             $previewElem.empty().append(img);
 
             if ($previewElem.find(".del-icon").length == 0) {
-                $("<a class=\"del-icon\"></a>").appendTo($previewElem).click(function(){
+                $("<a class=\"del-icon\"></a>").appendTo($previewElem).on("click", function(){
                     $previewElem.remove();
                     $uploadWrap.find("input[type=file]").val("");
                 });
@@ -164,7 +164,7 @@
                     $uploadWrap.find("input[name=originalFilename]").val(fileName);
                     $uploadWrap.find("input[type=file]").val("");
                     if ($previewElem.find(".del-icon").length != 0) {
-                        $previewElem.find(".del-icon").click(function(){
+                        $previewElem.find(".del-icon").on("click", function(){
                             $previewElem.remove();
                             $uploadWrap.find("input[name=base64File]").val("");
                             $uploadWrap.find("input[name=originalFilename]").val("");
@@ -200,7 +200,7 @@
 
                 var $delIcon = $uploadWrap.find(".del-icon");
                 if ($delIcon) { // 删除服务器上的图片
-                    $delIcon.click(function(){
+                    $delIcon.on("click", function(){
                         $.ajax({
                             type: "GET",
                             url:$delIcon.attr("href"),

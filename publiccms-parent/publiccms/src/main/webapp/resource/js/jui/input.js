@@ -20,7 +20,7 @@
         });
     };
     var _onchange = function(event) {
-        var $ref = $("select[name=" + escapeJquery(event.data.$this.attr("ref"))+"]");
+        var $ref = $("select[name=" + $.escapeSelector(event.data.$this.attr("ref"))+"]");
         if ($ref.length == 0 ) {
             return false;
         }
@@ -55,7 +55,7 @@
                 var box = $(this);
                 var selector = $(op.selector, box);
                 allSelectBox.push(box.attr("id"));
-                $(op.selector, box).click(function() {
+                $(op.selector, box).on("click", function() {
                     var options = $("#op_" + box.attr("id"));
                     var optionlist=$("ul",options);
                     if (options.is(":hidden") ) {
@@ -86,7 +86,7 @@
                             var val = $(this).val();
                             if(val){
                                 $("li",optionlist).hide();
-                                $("li a:contains("+escapeJquery(val)+")",optionlist).parent().show();
+                                $("li a:contains("+$.escapeSelector(val)+")",optionlist).parent().show();
                                 $("li a",optionlist).each(function(){
                                     if(-1 < $(this).attr("value").indexOf(val)){
                                         $(this).parent().show();
@@ -96,13 +96,13 @@
                                 $("li",optionlist).show();
                             }
                             $("li.disabled",optionlist).hide();
-                        }).click(function(){
+                        }).on("click", function(){
                             return false;
                         }).val("");
                         $("li",optionlist).show();
                         $("li.disabled",optionlist).hide();
                         killAllBox(box.attr("id"));
-                        $(document).click(killAllBox);
+                        $(document).on("click", killAllBox);
                     } else {
                         $(document).off("click", null, killAllBox);
                         killAllBox();
@@ -114,7 +114,7 @@
         } ,
         comboxOption: function(selector, box) {
             return this.each(function() {
-                $(">a", this).click(function() {
+                $(">a", this).on("click", function() {
                     var $this = $(this);
                     $this.parent().parent().find(".selected").removeClass("selected");
                     $this.addClass("selected");
@@ -155,7 +155,7 @@
                 var value = $this.val();
                 var label = "";
                 if( "undefined" !== typeof value  && value){
-                    label = $("option[value=" + escapeJquery(value) + "]", $this).text();
+                    label = $("option[value=" + $.escapeSelector(value) + "]", $this).text();
                 }else if("" == value){
                     label = $("option[value=\"\"]", $this).text();
                 }
@@ -194,7 +194,7 @@
         comboxVal: function(val){
           return this.each(function(){
             var $box = $(this).parents(".combox .select:first");
-            $("#op_"+$box.attr("id")).find("li a[value=\""+escapeJquery(val)+"\"]").trigger("click");
+            $("#op_"+$box.attr("id")).find("li a[value=\""+$.escapeSelector(val)+"\"]").trigger("click");
           });
         }
     });
@@ -207,7 +207,7 @@
         checkboxCtrl: function(parent) {
             return this.each(function() {
                 var $trigger = $(this);
-                $trigger.click(function() {
+                $trigger.on("click", function() {
                     var group = $trigger.attr("group");
                     if ($trigger.is(":checkbox") ) {
                         var type = $trigger.is(":checked") ? "all": "none";

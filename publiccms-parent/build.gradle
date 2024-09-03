@@ -87,7 +87,7 @@ subprojects {
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
         collectionsVersion = "4.4"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-        langVersion = "3.16.0"
+        langVersion = "3.17.0"
         // http://mvnrepository.com/artifact/commons-io/commons-io
         ioVersion = "2.16.1"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-text

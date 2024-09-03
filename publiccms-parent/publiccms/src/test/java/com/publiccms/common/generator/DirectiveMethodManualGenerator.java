@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.directive.Directive;
 import com.publiccms.common.tools.CommonUtils;
@@ -82,6 +83,7 @@ public class DirectiveMethodManualGenerator {
             }
         }
         model.put("methodMap", method);
+        model.put("version", CmsVersion.getVersion());
         try {
             FreeMarkerUtils.generateFileByFile("template.html",
                     CommonUtils.joinString(DOC_PATH, "PublicCMS Directive and Method Manual.html"), config, model, true);

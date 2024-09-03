@@ -128,7 +128,7 @@ var JUI = {
             }
             if (json["fields"]){
                 $.each(json["fields"].split(","),function(index,field){
-                    $("[name="+escapeJquery(field)+"]", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).addClass("error");
+                    $("[name="+$.escapeSelector(field)+"]", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).addClass("error");
                 })
             }
         } else if (json[JUI.keys.statusCode] == JUI.statusCode.timeout ) {
@@ -486,7 +486,7 @@ var JUI = {
             return (new RegExp(/^([_]|[a-zA-Z0-9]){6,32}$/).test(this));
         },
         isValidMail: function() {
-            return (new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/).test(this.trimstr()));
+            return (new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/).test(this.trim()));
         },
         isUrl: function() {
             return ( new RegExp(/^([a-zA-z]+:)?\/\/([a-zA-Z0-9\-\.]+)([-\w .\/?%&=:]*)$/).test(this) );
@@ -507,28 +507,6 @@ var JUI = {
  */
 function html2Escape(sHtml) {
     return Base64.encode(sHtml);
-}
-/**
- * jquery 选择器转义
- * @param srcString
- * @returns safe selector
- */
-function escapeJquery(srcString) {
-    var escapseResult = srcString;
-    var jsSpecialChars = ["\\", "^", "$", "*", "?", ".", "+", "(", ")", "[",
-        "]", "|", "{", "}"];
-    var jquerySpecialChars = ["~", "`", "@", "#", "%", "&", "=", "'", "\"", " ",
-        ":", ";", "<", ">", ",", "/"];
-    for (var i = 0; i < jsSpecialChars.length; i++) {
-        escapseResult = escapseResult.replace(new RegExp("\\"
-                + jsSpecialChars[i], "g"), "\\"
-                + jsSpecialChars[i]);
-    }
-    for (var i = 0; i < jquerySpecialChars.length; i++) {
-        escapseResult = escapseResult.replace(new RegExp(jquerySpecialChars[i],
-                "g"), "\\" + jquerySpecialChars[i]);
-    }
-    return escapseResult;
 }
 
 function unEscapeHtml(str) {

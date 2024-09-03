@@ -207,7 +207,7 @@
     <#if (a.acceptParameters)?has_content>
         <#list a.acceptParameters?split(",") as p>
             <#assign tempDefaultValue=''/>
-            <#if a.parameterTypeMap[p]?has_content && a.parameterTypeMap[p].defaultValue?has_content>
+            <#if (a.parameterTypeMap[p])?has_content && a.parameterTypeMap[p].defaultValue?has_content>
                 <#if 'category'=a.parameterTypeMap[p].type>
                 <@cms.category id=a.parameterTypeMap[p].defaultValue><#assign tempDefaultValue=object.name/></@cms.category>
                 <#elseif 'category.code'=a.parameterTypeMap[p].type>

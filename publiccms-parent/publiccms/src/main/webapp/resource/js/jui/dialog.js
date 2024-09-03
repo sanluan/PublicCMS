@@ -23,7 +23,7 @@
                 jDContent.ajaxUrl({
                     type: "POST", url: url, data: op.data, callback: function(response) {
                         jDContent.find("[layoutH]").layoutH(jDContent);
-                        $(":button.close", dialog).click(function() {
+                        $(":button.close", dialog).on("click", function() {
                             $.pdialog.close(dialog);
                             return false;
                         });
@@ -54,7 +54,7 @@
                     var jDContent = dialog.find(".dialogContent");
                     jDContent.loadUrl(url, {}, function() {
                         jDContent.find("[layoutH]").layoutH(jDContent);
-                        $("button.close").click(function() {
+                        $("button.close").on("click", function() {
                             $.pdialog.close(dialog);
                             return false;
                         });
@@ -76,7 +76,7 @@
                 dialog.find(".dialogHeader").find("h1").text(title);
                 dialog.css("zIndex", ( this._zIndex += 2 ));
                 this._init(dialog, options);
-                dialog.click(function() {
+                dialog.on("click", function() {
                     $.pdialog.switchDialog(dialog);
                 });
                 if (op.resizable ) {
@@ -85,12 +85,12 @@
                 if (op.drawable ) {
                     dialog.dialogDrag();
                 }
-                $("a.close", dialog).click(function() {
+                $("a.close", dialog).on("click", function() {
                     $.pdialog.close(dialog);
                     return false;
                 });
                 if (op.maxable ) {
-                    $("a.maximize", dialog).show().click(function() {
+                    $("a.maximize", dialog).show().on("click", function() {
                         $.pdialog.switchDialog(dialog);
                         $.pdialog.maxsize(dialog);
                         dialog.jresize("destroy").dialogDrag("destroy");
@@ -99,23 +99,23 @@
                 } else {
                     $("a.maximize", dialog).hide();
                 }
-                $("a.restore", dialog).click(function() {
+                $("a.restore", dialog).on("click", function() {
                     $.pdialog.restore(dialog);
                     dialog.jresize().dialogDrag();
                     return false;
                 });
                 if (op.minable ) {
-                    $("a.minimize", dialog).show().click(function() {
+                    $("a.minimize", dialog).show().on("click", function() {
                         $.pdialog.minimize(dialog);
                         return false;
                     });
                 } else {
                     $("a.minimize", dialog).hide();
                 }
-                $("div.dialogHeader a", dialog).mousedown(function() {
+                $("div.dialogHeader a", dialog).on("mousedown", function() {
                     return false;
                 });
-                $("div.dialogHeader", dialog).dblclick(function() {
+                $("div.dialogHeader", dialog).on( "dblclick", function() {
                     if ($("a.restore", dialog).is(":hidden") ) {
                         $("a.maximize", dialog).trigger("click");
                     } else {
@@ -132,7 +132,7 @@
                 var jDContent = $(".dialogContent", dialog);
                 jDContent.loadUrl(url, {}, function() {
                     jDContent.find("[layoutH]").layoutH(jDContent);
-                    $("button.close").click(function() {
+                    $("button.close").on("click", function() {
                         $.pdialog.close(dialog);
                         return false;
                     });
@@ -343,7 +343,7 @@
         }
         return this.each(function() {
             var dialog = $(this);
-            $("div.dialogHeader", dialog).mousedown(function(e) {
+            $("div.dialogHeader", dialog).on("mousedown", function(e) {
                 $.pdialog.switchDialog(dialog);
                 dialog.data("task", true);
                 setTimeout(function() {
@@ -352,7 +352,7 @@
                     }
                 }, 100);
                 return false;
-            }).mouseup(function(e) {
+            }).on("mouseup", function(e) {
                 dialog.data("task", false);
                 return false;
             });
@@ -417,7 +417,7 @@
                 var resizable = $(".resizable");
                 $("div[class^=\"resizable\"]", dialog).each(function() {
                     var bar = this;
-                    $(bar).mousedown(function(event) {
+                    $(bar).on("mousedown", function(event) {
                         $.pdialog.switchDialog(dialog);
                         $.resizeTool.start(resizable, dialog, event, $(bar).attr("tar"));
                         return false;
