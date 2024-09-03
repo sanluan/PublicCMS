@@ -45,7 +45,7 @@ subprojects {
         hibernateToolsVersion = "6.6.0.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "7.2.0.Final"
+        hibernateSearchVersion = "7.2.1.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
         hibernateValidatorVersion = "8.0.1.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
