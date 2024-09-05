@@ -36,26 +36,18 @@ import jakarta.servlet.http.HttpServletRequest;
  * <p>
  * 返回结果
  * <ul>
- * <li><code>ConfuseResult</code>:sha1值
+ * <li><code>ConfuseResult</code>:map{text:加密文本,font:加密字体}
  * </ul>
  * 使用示例
  * 
  * <pre>
- * &lt;#assign result=confuse('&lt;a href="http://www.publiccms.com"&gt;publiccms&lt;/a&gt;',11,true)/&gt;
+ * &lt;#assign result=confuse('天津黑核科技有限公司',11)/&gt;
  * 
  * &lt;style&gt;
  *     &#64;font-face {font-family:confuse;src:url(${result.font});}
  *     #content{font-family:confuse !important;}
  * &lt;/style&gt;
- * &lt;div id="content"&gt;${(result.text?no_esc)!}&lt;/div&gt
- * &lt;script&gt;
- * var elements = document.querySelectorAll('#content > *');
- *   elements.forEach(function(element) {
- *       if(element.style.fontFamily){
- *           element.style.fontFamily='confuse,'+element.style.fontFamily;
- *       }
- *   });
- * &lt;/script&gt;
+ * &lt;div id="content"&gt;${(result.text)!}&lt;/div&gt
  * </pre>
  * 
  * <pre>
@@ -87,10 +79,7 @@ public class ConfuseMethod extends BaseMethod {
         return execute(site, arguments);
     }
 
-    public Object execute(SysSite site, List<TemplateModel> arguments) throws TemplateModelException {
-        String string = getString(0, arguments);
-        Integer size = getInteger(1, arguments);
-        Boolean html = getBoolean(2, arguments);
+    protected ConfuseResult confuse(SysSite site, String string, Integer size, Boolean html) {
         ConfuseResult result = new ConfuseResult();
         result.setText(string);
         if (CommonUtils.notEmpty(string)) {
@@ -115,6 +104,10 @@ public class ConfuseMethod extends BaseMethod {
             }
         }
         return result;
+    }
+
+    public Object execute(SysSite site, List<TemplateModel> arguments) throws TemplateModelException {
+        return confuse(site, getString(0, arguments), getInteger(1, arguments), getBoolean(2, arguments));
     }
 
     @Override
