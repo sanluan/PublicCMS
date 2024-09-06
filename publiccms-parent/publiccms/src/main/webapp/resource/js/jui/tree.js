@@ -22,7 +22,7 @@
                         icon: $this.hasClass("treeFolder"), ckbox: $this.hasClass("treeCheck") , excludeParent:  $this.hasClass("excludeParent"), options: op, level: 0,
                         exp: ( cnum > 1 ? ( first ? op.firstExp: ( last ? op.lastExp: op.exp ) ): op.endExp ),
                         coll: ( cnum > 1 ? ( first ? op.firstColl: ( last ? op.lastColl: op.coll ) ): op.endColl ),
-                        showSub: ( !$this.hasClass("collapse") && ( $this.hasClass("expand") || ( cnum > 1 ? false : true ) ) ),
+                        showSub: ( !$this.hasClass("collapse") && ( $this.hasClass("expand") || $li.hasClass("expand") || ( cnum > 1 ? false : true ) ) ),
                         isLast: ( cnum > 1 ? ( last ? true: false ): true )
                     });
                 });
@@ -162,8 +162,12 @@
                     }
                 } else {
                     node.children().wrap("<div></div>");
-                    $(">div", node).prepend(( op.ckbox ? "<div class=\"ckbox " + checked + "\"></div>": "" )
+                    var $box=$(">div", node).prepend(( op.ckbox ? "<div class=\"ckbox " + checked + "\"></div>": "" )
                             + ( op.icon ? "<div class=\""+op.options.file+"\"></div>": "<div class=\"node\"></div>" ));
+                    if(node.hasClass(op.options.selected) ){
+                        node.removeClass(op.options.selected);
+                        $box.addClass(op.options.selected);
+                    }
                     if(op.icon ) {
                         $(">div>div."+op.options.file, node).on("click", function() {
                             $(this).next().trigger("click");
@@ -175,12 +179,10 @@
                 if (op.ckbox ) {
                     node._check(op);
                 }
-                if (!$.support.leadingWhitespace ) {
-                    $(">div", node).on("click", function() {
-                        $("a", this).trigger("click");
-                        return false;
-                    });
-                }
+                $(">div", node).on("click", function() {
+                    $("a", this).trigger("click");
+                    return false;
+                });
             });
             function addSpace(level, node) {
                 if (level > 0 ) {

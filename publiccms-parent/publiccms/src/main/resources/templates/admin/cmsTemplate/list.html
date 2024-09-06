@@ -11,17 +11,22 @@
         </#if>
         <@sys.user ids=t.userIds><#assign userMap=map!/></@sys.user>
         <#list list as a>
-            <#local path=filepath?has_content?then(filepath+'/','')+a.fileName>
-            <li<#if a.directory> _src="cmsTemplate/list.html?parent=${path}"</#if>>
-                <@tools.metadata path=path>
-                    <a href="cmsTemplate/${a.directory?then('directory','content')}.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox">
-                        <#if !a.directory && lockMap?has_content && lockMap[path]?has_content>
-                            <#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>
-                            <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"></i>
+            <#local currentPath=filepath?has_content?then(filepath+'/','')+a.fileName>
+            <li<#if a.directory><#if (path?has_content && path?starts_with(currentPath+'/'))> class="expand"<#else> _src="cmsTemplate/list.html?parent=${currentPath?url}"</#if><#elseif path?has_content && path=currentPath> class="selected"</#if>>
+                <@tools.metadata path=currentPath>
+                    <a href="cmsTemplate/${a.directory?then('directory','content')}.html?path=${(currentPath?url)!}" target="ajax" rel="cmsTemplateBox">
+                        <#if !a.directory && lockMap?has_content && lockMap[currentPath]?has_content>
+                            <#assign lockUser=(userMap[lockMap[currentPath].userId?string].nickname)!''/>
+                            <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[currentPath].createDate}"></i>
                         </#if>
                         ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                     </a>
                 </@tools.metadata>
+                <#if a.directory && path?has_content && path?starts_with(currentPath+'/')>
+                    <ul>
+                         <@templateList currentPath/>
+                    </ul> 
+                </#if>
             </li>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>

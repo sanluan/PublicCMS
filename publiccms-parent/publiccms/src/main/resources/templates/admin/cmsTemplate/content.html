@@ -5,7 +5,7 @@
             <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
     <@sys.authorized roleIds=admin.roles url='cmsPage/metadata'>
         <@sys.deptItem itemType='page' deptId=admin.deptId!'' itemIds=path>
-            <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}&rel=cmsTemplateBox" target="ajax" rel="cmsTemplateBox"><@t.page 'page.management'/></a></li>
+            <li><a class="button" href="cmsPage/list.html?path=${(path?url)!}" target="navTab" rel="cmsPage/list"><@t.page 'page.management'/></a></li>
         </@sys.deptItem>
     </@sys.authorized>
             <li><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'metadata'/></a></li>

@@ -5,16 +5,21 @@
         </#list>
         <@sys.deptItem itemType='page' deptId=admin.deptId!'' itemIds=t.pages!><#assign deptPageMap=map!/></@sys.deptItem>
         <#list list as a>
-            <#local path=filepath+'/'+a.fileName>
-            <#if (deptPageMap['/include'+path])?has_content&&deptPageMap['/include'+path]>
-                <li<#if a.directory> _src="cmsPlace/list.html?parent=${path}"</#if>>
-                <@tools.placeMetadata path=path>
+            <#local currentPath=filepath+'/'+a.fileName>
+            <#if (deptPageMap['/include'+currentPath])?has_content&&deptPageMap['/include'+currentPath]>
+                <li<#if a.directory><#if (path?has_content && path?starts_with(currentPath+'/'))> class="expand"<#else> _src="cmsPlace/list.html?parent=${currentPath?url}"</#if><#elseif path?has_content && path=currentPath> class="selected"</#if>>
+                <@tools.placeMetadata path=currentPath>
                     <#if a.directory>
                         <a href="javascript:;" onclick="return false;">${a.fileName}</a>
+                        <#if path?has_content && path?starts_with(currentPath+'/')>
+                            <ul>
+                                 <@placeList currentPath/>
+                            </ul> 
+                        </#if>
                     <#elseif (object.size)?has_content && 0 lt object.size && (!(object.metadataExtendList)?has_content)>
-                        <a href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}">${(object.alias)!a.fileName}<#if 0 lt ((object.size)!0)> <@t.page 'place_data'/>(${object.size})</#if></a>
+                        <a href="cmsPlace/dataList.html?path=${currentPath?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}">${(object.alias)!a.fileName}<#if 0 lt ((object.size)!0)> <@t.page 'place_data'/>(${object.size})</#if></a>
                     <#else>
-                        <a href="cmsPlace/metadata.html?path=${path?url}" target="ajax" rel="placeBox">${(object.alias)!a.fileName}<#if 0 lt ((object.size)!0)> (${object.size})</#if></a>
+                        <a href="cmsPlace/metadata.html?path=${currentPath?url}" target="ajax" rel="placeBox">${(object.alias)!a.fileName}<#if 0 lt ((object.size)!0)> (${object.size})</#if></a>
                     </#if>
                 </@tools.placeMetadata>
                 </li>
