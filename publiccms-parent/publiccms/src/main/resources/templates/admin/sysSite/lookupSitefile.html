@@ -3,7 +3,7 @@
     <#if !a.directory>
         <#assign sitefile=getSitefile(a.fileName)/>
         <div class="image-list">
-            <a href="cmsTemplate/viewSitefile.html?name=${a.fileName?url}" target="dialog" rel="sitefile_${a?counter}" width="1000" height="600">
+            <a href="cmsTemplate/viewSitefile.html?name=${a.fileName?url}" target="dialog" rel="sitefile_${a?counter}" width="1200" height="600">
                 <#if (sitefile.cover)?has_content>
                     <img src="${base+adminContextPath}/visitSitefileImage?sitefile=${a.fileName}&imageFile=${sitefile.cover}" alt="${a.fileName}" title="${a.fileName}">
                 <#else>

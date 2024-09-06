@@ -18,7 +18,7 @@
             <li><a href="cmsWebFile/content.html?path=${(path?url)!}" target="navTab" rel="cmsWebFile/content"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'button.create_file'/></a></li>
             <li><a href="cmsWebFile/directory.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-folder-close-alt icon-large"></i><@t.page 'button.create_directory'/></a></li>
             <li><a href="cmsWebFile/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-upload icon-large"></i><@t.page 'button.upload_file'/></a></li>
-            <li><a href="cmsWebFile/uploadIco.html?path=${(path?url)!}" target="dialog" mask="true" width="1000" height="600"><i class="icon-upload icon-large"></i><@t.page 'button.generate_ico'/></a></li>
+            <li><a href="cmsWebFile/uploadIco.html?path=${(path?url)!}" target="dialog" mask="true" width="1200" height="600"><i class="icon-upload icon-large"></i><@t.page 'button.generate_ico'/></a></li>
             <li><a href="cmsWebFile/zip?path=${path?has_content?then(path+'/','')}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.compress_directory'/>" target="ajaxTodo"><i class="icon-upload icon-large"></i><@t.page 'button.compress_current_directory'/></a></li>
             <li><a href="cmsWebFile/delete?_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete_file'/>" target="selectedTodo" rel="paths"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
             <li><a href="cmsFileBackup/list.html?type=file&path=${(path?url)!}" target="navTab" rel="cmsFileBackup/list"><i class="bi bi-recycle"></i><@t.page 'recycle_bin'/></a></li>
