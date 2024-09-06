@@ -44,7 +44,7 @@
         <#if fieldList?seq_contains('url')>
             <dl class="nowrap">
                 <dt>${(metadata.fieldTextMap['url'])}:</dt>
-                <dd><input name="url" type="text"<#if requiredFieldList?seq_contains('url')> class="required"</#if> maxlength="1000" size="60" value="${(a.url)!(contentUrl)!(category.url)!}"/></dd>
+                <dd><input name="url" type="text"<#if requiredFieldList?seq_contains('url')> class="required"</#if> maxlength="1000" size="60" value="${(a.url)!(content.url)!(category.url)!}"/></dd>
             </dl>
         </#if>
             <dl>

@@ -220,7 +220,7 @@
                 options.toHide.filter(":hidden").each(options.complete).end().filter(":visible").animate({height: "hide"}, {
                     step: function(now) {
                         var current = ( hideHeight - now ) * difference;
-                        if (!$.support.leadingWhitespace ) {
+                        if (Math.ceil ) {
                             current = Math.ceil(current);
                         }
                         options.toShow.height(current);

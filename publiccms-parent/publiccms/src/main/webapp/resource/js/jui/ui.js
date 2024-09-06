@@ -3,11 +3,6 @@
  */
 function initEnv() {
     $("body").append(JUI.frag["dwzFrag"]);
-    if (!$.support.leadingWhitespace ) {
-        try {
-            document.execCommand("BackgroundImageCache", false, true);
-        } catch (e) {}
-    }
     $(window).resize(function() {
         initLayout();
         $(this).trigger(JUI.eventType.resizeGrid);
