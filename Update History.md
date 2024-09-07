@@ -1,4 +1,56 @@
-## V4.0.202406.a ; V5.202406.a
+## 202406.e
+
+new feature:
+
+1. quick maintenance message
+1. add new method:confuse,confuseHtml
+1. add sensitive words
+1. get apptoken from header
+1. change useragent parser
+1. add directive and method manual generator
+1. add data dictionary generator
+1. add site import to template upload
+
+bug fixed:
+
+1. vote view page
+1. contribute template error
+1. method http enabled config not effect
+1. category type save in child site
+1. extend string null point error
+1. template search result highlight
+1. open a dialog in a dialog
+1. tag and tag type select
+1. content push to place
+
+## 202406.d
+
+bug fixed:
+1. parent dictionary value with space
+1. api authorize
+1. child category list
+1. demo template escape
+
+## 202406.c
+
+bug fixed:
+1. editor history error
+1. demo data sql
+1. demo data
+1. http map parameter
+1. save template log
+1. page data cache clear
+1. template save
+
+1. update filerobot image editor
+1. remove ckeditor update warning
+
+## 202406.b
+
+bug fixed:
+1. editor content save
+
+## 202406.a
 
 程序功能修改
 
