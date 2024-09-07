@@ -83,7 +83,7 @@ public class DirectiveMethodManualGenerator {
             }
         }
         model.put("methodMap", method);
-        model.put("version", CmsVersion.getVersion());
+        model.put("version", CmsVersion.getVersion().substring(CmsVersion.getVersion().lastIndexOf(".")));
         try {
             FreeMarkerUtils.generateFileByFile("template.html",
                     CommonUtils.joinString(DOC_PATH, "PublicCMS Directive and Method Manual.html"), config, model, true);

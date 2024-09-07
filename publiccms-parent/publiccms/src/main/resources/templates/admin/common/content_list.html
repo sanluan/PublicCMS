@@ -182,7 +182,7 @@
                             </#if>
                             [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
                             ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
-                            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}" width="1000" height="600">${(a.title)!}</a>
+                            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}" width="1200" height="600">${(a.title)!}</a>
                             <#if a.url?has_content><a href="${a.url!}" target="_blank"><i class="icon-external-link"></i></a></#if>
                         </h3>
                         <p>
@@ -207,6 +207,7 @@
                 <td class="center">${a.collections!}</td>
                 <td class="center" title="<@t.page 'create_date'/>:${a.createDate!}">${a.publishDate!}</td>
                 <td class="wrap">
+                    <p>
                     <a href="cmsContent/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsContent/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a>
                     <#if authorizedMap['cmsContent/sortParameters']>
                         <#if dept?has_content>
@@ -216,15 +217,18 @@
                     <#if authorizedMap['cmsContent/add']>
                         <a href="cmsContent/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsContent/add" title="<@t.page 'content.add'/>"><i class="icon-copy"></i><@t.page 'button.copy'/></a>
                     </#if>
+                    </p>
+                    <p>
+                    <#if authorizedMap['cmsContent/push']>
+                        <a href="cmsContent/push.html?contentId=${a.id}" class="btnText blue" width="1200" height="600" target="dialog" mask="true"><@t.page 'button.push'/></a>
+                    </#if>
                     <#if authorizedMap['cmsCategory/lookupBySiteId']>
                         <a href="cmsCategory/lookupBySiteId.html?id=${a.id}&modelId=${a.modelId!}&currentCategoryId=${a.categoryId!}" class="btnText blue" target="dialog" mask="true"><i class="icon-asterisk"></i><@t.page 'button.distribute'/></a>
-                    </#if>
-                    <#if authorizedMap['cmsContent/push']>
-                        <a href="cmsContent/push.html?contentId=${a.id}" class="btnText blue" target="dialog" mask="true"><@t.page 'button.push'/></a>
                     </#if>
                     <#if authorizedMap['cmsContent/changeModelParameters']>
                         <a href="cmsContent/changeModelParameters.html?id=${a.id}&parentId=${(modelMap[a.modelId].parentId?url)!}" class="btnText red" target="dialog" mask="true"><i class="icon-list-alt"></i><@t.page 'content.change_model'/></a>
                     </#if>
+                    </p>
                 </td>
             </tr>
             </#list>
