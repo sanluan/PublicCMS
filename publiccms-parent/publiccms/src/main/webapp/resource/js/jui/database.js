@@ -26,7 +26,7 @@
                     UE.instants[$input.data("id")].setContent(args[key]);
                 }
             } else if($input.hasClass("code")) {
-                JUI.instances[$(this).data("id")].setValue(args[key]);
+                JUI.instances[$input.data("id")].setValue(args[key]);
             } else {
                 $input.val(args[key]).trigger("change");
             }
