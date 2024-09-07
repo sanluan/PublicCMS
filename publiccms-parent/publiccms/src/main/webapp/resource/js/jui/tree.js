@@ -111,34 +111,39 @@
                         op.showSub ? tree.show(): tree.hide();
                     }
                     $(">div>div."+op.options.folderColl+",>div>div."+op.options.folderExp+",>div>a", node).on("click", function() {
+                        var tree=$(">ul", node);
                         if(node.attr(op.options.async)){
-                            $.ajax({
-                                type: "get", url: node.attr(op.options.async), async: false, data: {}, success: function(response){
-                                    node.append(response);
-                                    tree = $(">ul", node).hide();
-                                    initLink(tree);
-                                    $("a", tree).on("click", function(event) {
-                                        $("div." + op.options.selected, op.root).removeClass(op.options.selected);
-                                        var parent = $(this).parent().addClass(op.options.selected);
-                                        var $li = $(this).parents("li:first"), sTarget = $li.attr("target");
-                                        if (sTarget ) {
-                                            if ($("#" + sTarget, op.root).length == 0 ) {
-                                                op.root.prepend("<input id=\"" + sTarget + "\" type=\"hidden\"/>");
+                            var isHidden = tree.is(":hidden");
+                            var treeLength = tree.length;
+                            if(treeLength > 0 && isHidden || 0 == treeLength){
+                                if(treeLength > 0) {
+                                    tree.remove();
+                                    tree=$(">ul", node);
+                                }
+                                $.ajax({
+                                    type: "get", url: node.attr(op.options.async), async: false, data: {}, success: function(response){
+                                        node.append(response);
+                                        tree = $(">ul", node).hide();
+                                        initLink(tree);
+                                        $("a", tree).on("click", function(event) {
+                                            $("div." + op.options.selected, op.root).removeClass(op.options.selected);
+                                            var parent = $(this).parent().addClass(op.options.selected);
+                                            var $li = $(this).parents("li:first"), sTarget = $li.attr("target");
+                                            if (sTarget ) {
+                                                if ($("#" + sTarget, op.root).length == 0 ) {
+                                                    op.root.prepend("<input id=\"" + sTarget + "\" type=\"hidden\"/>");
+                                                }
+                                                $("#" + sTarget, op.root).val($li.attr("rel"));
                                             }
-                                            $("#" + sTarget, op.root).val($li.attr("rel"));
-                                        }
-                                        $(".ckbox", parent).trigger("click");
-                                        event.stopPropagation();
-                                        $(document).trigger("click");
-                                        if (!$(this).attr("target") ) {
-                                            return false;
-                                        }
-                                    });
-                                    node.removeAttr(op.options.async);
-                                },error: JUI.ajaxError
-                            });
-                            if(node.attr(op.options.async) ){
-                                return false;
+                                            $(".ckbox", parent).trigger("click");
+                                            event.stopPropagation();
+                                            $(document).trigger("click");
+                                            if (!$(this).attr("target") ) {
+                                                return false;
+                                            }
+                                        });
+                                    },error: JUI.ajaxError
+                                });
                             }
                         }
                         var $fnode = $(">li:first", tree);
