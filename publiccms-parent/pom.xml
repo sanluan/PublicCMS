@@ -92,9 +92,9 @@
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.17.1</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <version.log4j>2.23.1</version.log4j>
+        <version.log4j>2.24.0</version.log4j>
         <!-- https://mvnrepository.com/artifact/org.jboss.logging/jboss-logging -->
-        <version.jbossLogging>3.6.0.Final</version.jbossLogging>
+        <version.jbossLogging>3.6.1.Final</version.jbossLogging>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
         <version.extractor>2.19.0</version.extractor>
         <!-- https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio -->
