@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<title>PublicCMS 函数指令手册</title>
+<style type="text/css">
+html,body{background-color:#ffffff;color:#353833;font-size:14px;margin:0;height:100%;}
+h1{text-align:center;margin:20px;}
+h3{margin:0;padding:5px;background-color:#4D7A97;color:#fff;}
+a:link, a:visited {text-decoration:none;color:#4A6782;}
+a:hover, a:focus {text-decoration:none;color:#bb7a2a;}
+a:active{text-decoration:none;color:#4A6782;}
+.selected a{color:#000;}
+.container{width:80%;height:100%;margin:0 auto;border-left:1px solid #aaa;}
+.indexContainer{position:absolute;top:0px;overflow:auto;width:200px;float:left;height:100%;}
+.indexContainer ul{margin:0px 10px;padding:0;}
+.indexContainer ul li{list-style:none;padding-top:2px;}
+ul{list-style-type:disc;}
+code{line-height:1.4em;color:#d63384;}
+pre{background-color: #efefef;overflow: auto;padding: 10px;}
+.block{padding:20px;overflow:auto;color:#474747;border-bottom:1px dashed #aaa;}
+.doc{margin-left:200px;height:100%;overflow:auto;}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="indexContainer">
+            <h3>指令(命名空间:api)</h3>
+        <ul>
+            <li><a href="#api-appClient">appClient</a></li>
+            <li><a href="#api-appToken">appToken</a></li>
+            <li><a href="#api-autoLogin">autoLogin</a></li>
+            <li><a href="#api-bindingUser">bindingUser</a></li>
+            <li><a href="#api-clearCache">clearCache</a></li>
+            <li><a href="#api-contentCheck">contentCheck</a></li>
+            <li><a href="#api-contentClick">contentClick</a></li>
+            <li><a href="#api-contentCreate">contentCreate</a></li>
+            <li><a href="#api-login">login</a></li>
+            <li><a href="#api-myContentList">myContentList</a></li>
+            <li><a href="#api-refreshToken">refreshToken</a></li>
+            <li><a href="#api-unBindingUser">unBindingUser</a></li>
+            <li><a href="#api-upload">upload</a></li>
+        </ul>
+        <h3>指令(命名空间:cms)</h3>
+        <ul>
+            <li><a href="#cms-category">category</a></li>
+            <li><a href="#cms-categoryList">categoryList</a></li>
+            <li><a href="#cms-categoryModel">categoryModel</a></li>
+            <li><a href="#cms-categoryModelList">categoryModelList</a></li>
+            <li><a href="#cms-categoryType">categoryType</a></li>
+            <li><a href="#cms-categoryTypeList">categoryTypeList</a></li>
+            <li><a href="#cms-comment">comment</a></li>
+            <li><a href="#cms-commentList">commentList</a></li>
+            <li><a href="#cms-content">content</a></li>
+            <li><a href="#cms-contentFileList">contentFileList</a></li>
+            <li><a href="#cms-contentList">contentList</a></li>
+            <li><a href="#cms-contentProduct">contentProduct</a></li>
+            <li><a href="#cms-contentProductList">contentProductList</a></li>
+            <li><a href="#cms-contentQuoteList">contentQuoteList</a></li>
+            <li><a href="#cms-contentRelatedList">contentRelatedList</a></li>
+            <li><a href="#cms-dictionary">dictionary</a></li>
+            <li><a href="#cms-dictionaryData">dictionaryData</a></li>
+            <li><a href="#cms-dictionaryDataList">dictionaryDataList</a></li>
+            <li><a href="#cms-dictionaryExclude">dictionaryExclude</a></li>
+            <li><a href="#cms-dictionaryExcludeList">dictionaryExcludeList</a></li>
+            <li><a href="#cms-dictionaryExcludeValue">dictionaryExcludeValue</a></li>
+            <li><a href="#cms-dictionaryList">dictionaryList</a></li>
+            <li><a href="#cms-editorHistory">editorHistory</a></li>
+            <li><a href="#cms-editorHistoryList">editorHistoryList</a></li>
+            <li><a href="#cms-facetSearch">facetSearch</a></li>
+            <li><a href="#cms-model">model</a></li>
+            <li><a href="#cms-modelList">modelList</a></li>
+            <li><a href="#cms-place">place</a></li>
+            <li><a href="#cms-placeList">placeList</a></li>
+            <li><a href="#cms-search">search</a></li>
+            <li><a href="#cms-survey">survey</a></li>
+            <li><a href="#cms-surveyList">surveyList</a></li>
+            <li><a href="#cms-surveyQuestion">surveyQuestion</a></li>
+            <li><a href="#cms-surveyQuestionItem">surveyQuestionItem</a></li>
+            <li><a href="#cms-surveyQuestionItemList">surveyQuestionItemList</a></li>
+            <li><a href="#cms-surveyQuestionList">surveyQuestionList</a></li>
+            <li><a href="#cms-tag">tag</a></li>
+            <li><a href="#cms-tagList">tagList</a></li>
+            <li><a href="#cms-tagType">tagType</a></li>
+            <li><a href="#cms-tagTypeList">tagTypeList</a></li>
+            <li><a href="#cms-userCollection">userCollection</a></li>
+            <li><a href="#cms-userCollectionList">userCollectionList</a></li>
+            <li><a href="#cms-userScore">userScore</a></li>
+            <li><a href="#cms-userScoreList">userScoreList</a></li>
+            <li><a href="#cms-userSurvey">userSurvey</a></li>
+            <li><a href="#cms-userSurveyList">userSurveyList</a></li>
+            <li><a href="#cms-userSurveyQuestion">userSurveyQuestion</a></li>
+            <li><a href="#cms-userSurveyQuestionList">userSurveyQuestionList</a></li>
+            <li><a href="#cms-userVote">userVote</a></li>
+            <li><a href="#cms-userVoteList">userVoteList</a></li>
+            <li><a href="#cms-vote">vote</a></li>
+            <li><a href="#cms-voteItem">voteItem</a></li>
+            <li><a href="#cms-voteItemList">voteItemList</a></li>
+            <li><a href="#cms-voteList">voteList</a></li>
+            <li><a href="#cms-word">word</a></li>
+            <li><a href="#cms-wordList">wordList</a></li>
+            <li><a href="#cms-workload">workload</a></li>
+        </ul>
+        <h3>指令(命名空间:log)</h3>
+        <ul>
+            <li><a href="#log-loginList">loginList</a></li>
+            <li><a href="#log-operate">operate</a></li>
+            <li><a href="#log-operateList">operateList</a></li>
+            <li><a href="#log-task">task</a></li>
+            <li><a href="#log-taskList">taskList</a></li>
+            <li><a href="#log-uploadList">uploadList</a></li>
+        </ul>
+        <h3>指令(命名空间:oauth)</h3>
+        <ul>
+            <li><a href="#oauth-list">list</a></li>
+        </ul>
+        <h3>指令(命名空间:sys)</h3>
+        <ul>
+            <li><a href="#sys-app">app</a></li>
+            <li><a href="#sys-appClient">appClient</a></li>
+            <li><a href="#sys-appClientList">appClientList</a></li>
+            <li><a href="#sys-appList">appList</a></li>
+            <li><a href="#sys-appTokenList">appTokenList</a></li>
+            <li><a href="#sys-authorized">authorized</a></li>
+            <li><a href="#sys-clusterList">clusterList</a></li>
+            <li><a href="#sys-config">config</a></li>
+            <li><a href="#sys-configData">configData</a></li>
+            <li><a href="#sys-configFieldList">configFieldList</a></li>
+            <li><a href="#sys-configList">configList</a></li>
+            <li><a href="#sys-dept">dept</a></li>
+            <li><a href="#sys-deptItem">deptItem</a></li>
+            <li><a href="#sys-deptItemList">deptItemList</a></li>
+            <li><a href="#sys-deptList">deptList</a></li>
+            <li><a href="#sys-domain">domain</a></li>
+            <li><a href="#sys-domainList">domainList</a></li>
+            <li><a href="#sys-extendFieldList">extendFieldList</a></li>
+            <li><a href="#sys-lock">lock</a></li>
+            <li><a href="#sys-module">module</a></li>
+            <li><a href="#sys-moduleLang">moduleLang</a></li>
+            <li><a href="#sys-moduleList">moduleList</a></li>
+            <li><a href="#sys-record">record</a></li>
+            <li><a href="#sys-recordList">recordList</a></li>
+            <li><a href="#sys-role">role</a></li>
+            <li><a href="#sys-roleList">roleList</a></li>
+            <li><a href="#sys-roleModule">roleModule</a></li>
+            <li><a href="#sys-roleModuleList">roleModuleList</a></li>
+            <li><a href="#sys-roleUserList">roleUserList</a></li>
+            <li><a href="#sys-site">site</a></li>
+            <li><a href="#sys-siteList">siteList</a></li>
+            <li><a href="#sys-task">task</a></li>
+            <li><a href="#sys-taskList">taskList</a></li>
+            <li><a href="#sys-user">user</a></li>
+            <li><a href="#sys-userList">userList</a></li>
+            <li><a href="#sys-userTokenList">userTokenList</a></li>
+        </ul>
+        <h3>指令(命名空间:task)</h3>
+        <ul>
+            <li><a href="#task-clearLog">clearLog</a></li>
+            <li><a href="#task-indexContent">indexContent</a></li>
+            <li><a href="#task-publishCategory">publishCategory</a></li>
+            <li><a href="#task-publishContent">publishContent</a></li>
+            <li><a href="#task-publishPage">publishPage</a></li>
+            <li><a href="#task-publishPlace">publishPlace</a></li>
+        </ul>
+        <h3>指令(命名空间:tools)</h3>
+        <ul>
+            <li><a href="#tools-createCategoryFile">createCategoryFile</a></li>
+            <li><a href="#tools-createContentFile">createContentFile</a></li>
+            <li><a href="#tools-createLock">createLock</a></li>
+            <li><a href="#tools-createTemplateFile">createTemplateFile</a></li>
+            <li><a href="#tools-csrfToken">csrfToken</a></li>
+            <li><a href="#tools-disk">disk</a></li>
+            <li><a href="#tools-diyMetadata">diyMetadata</a></li>
+            <li><a href="#tools-diyMetadataList">diyMetadataList</a></li>
+            <li><a href="#tools-diyRegionData">diyRegionData</a></li>
+            <li><a href="#tools-exception">exception</a></li>
+            <li><a href="#tools-executeScript">executeScript</a></li>
+            <li><a href="#tools-fileBackupContent">fileBackupContent</a></li>
+            <li><a href="#tools-fileBackupList">fileBackupList</a></li>
+            <li><a href="#tools-fileContent">fileContent</a></li>
+            <li><a href="#tools-fileExist">fileExist</a></li>
+            <li><a href="#tools-fileHistoryContent">fileHistoryContent</a></li>
+            <li><a href="#tools-fileHistoryList">fileHistoryList</a></li>
+            <li><a href="#tools-fileList">fileList</a></li>
+            <li><a href="#tools-includeLayout">includeLayout</a></li>
+            <li><a href="#tools-includePlace">includePlace</a></li>
+            <li><a href="#tools-includeRegion">includeRegion</a></li>
+            <li><a href="#tools-licenseVerify">licenseVerify</a></li>
+            <li><a href="#tools-masterSite">masterSite</a></li>
+            <li><a href="#tools-memory">memory</a></li>
+            <li><a href="#tools-metadata">metadata</a></li>
+            <li><a href="#tools-placeMetadata">placeMetadata</a></li>
+            <li><a href="#tools-sendEmail">sendEmail</a></li>
+            <li><a href="#tools-systemProperties">systemProperties</a></li>
+            <li><a href="#tools-templatePlaceList">templatePlaceList</a></li>
+            <li><a href="#tools-templateRegionList">templateRegionList</a></li>
+            <li><a href="#tools-templateResult">templateResult</a></li>
+            <li><a href="#tools-templateSearchList">templateSearchList</a></li>
+            <li><a href="#tools-thumb">thumb</a></li>
+            <li><a href="#tools-userAgent">userAgent</a></li>
+            <li><a href="#tools-version">version</a></li>
+        </ul>
+        <h3>指令(命名空间:trade)</h3>
+        <ul>
+            <li><a href="#trade-account">account</a></li>
+            <li><a href="#trade-accountHistory">accountHistory</a></li>
+            <li><a href="#trade-accountHistoryList">accountHistoryList</a></li>
+            <li><a href="#trade-accountList">accountList</a></li>
+            <li><a href="#trade-address">address</a></li>
+            <li><a href="#trade-addressList">addressList</a></li>
+            <li><a href="#trade-order">order</a></li>
+            <li><a href="#trade-orderHistory">orderHistory</a></li>
+            <li><a href="#trade-orderHistoryList">orderHistoryList</a></li>
+            <li><a href="#trade-orderList">orderList</a></li>
+            <li><a href="#trade-orderProduct">orderProduct</a></li>
+            <li><a href="#trade-orderProductList">orderProductList</a></li>
+            <li><a href="#trade-payment">payment</a></li>
+            <li><a href="#trade-paymentHistory">paymentHistory</a></li>
+            <li><a href="#trade-paymentHistoryList">paymentHistoryList</a></li>
+            <li><a href="#trade-paymentList">paymentList</a></li>
+            <li><a href="#trade-refund">refund</a></li>
+            <li><a href="#trade-refundList">refundList</a></li>
+        </ul>
+        <h3>指令(命名空间:visit)</h3>
+        <ul>
+            <li><a href="#visit-day">day</a></li>
+            <li><a href="#visit-dayList">dayList</a></li>
+            <li><a href="#visit-history">history</a></li>
+            <li><a href="#visit-historyList">historyList</a></li>
+            <li><a href="#visit-item">item</a></li>
+            <li><a href="#visit-itemList">itemList</a></li>
+            <li><a href="#visit-session">session</a></li>
+            <li><a href="#visit-sessionList">sessionList</a></li>
+            <li><a href="#visit-url">url</a></li>
+            <li><a href="#visit-urlList">urlList</a></li>
+        </ul>
+        <h3>函数</h3>
+        <ul>
+            <li><a href="#method-confuse">confuse</a></li>
+            <li><a href="#method-confuseHtml">confuseHtml</a></li>
+            <li><a href="#method-getAbsoluteUrl">getAbsoluteUrl</a></li>
+            <li><a href="#method-getCategoryAttribute">getCategoryAttribute</a></li>
+            <li><a href="#method-getCategoryAttributes">getCategoryAttributes</a></li>
+            <li><a href="#method-getContentAttribute">getContentAttribute</a></li>
+            <li><a href="#method-getContentAttributes">getContentAttributes</a></li>
+            <li><a href="#method-getContentPage">getContentPage</a></li>
+            <li><a href="#method-getDate">getDate</a></li>
+            <li><a href="#method-getDict">getDict</a></li>
+            <li><a href="#method-getDictEnable">getDictEnable</a></li>
+            <li><a href="#method-getFileUploadPrefix">getFileUploadPrefix</a></li>
+            <li><a href="#method-getFontList">getFontList</a></li>
+            <li><a href="#method-getHash">getHash</a></li>
+            <li><a href="#method-getHtml">getHtml</a></li>
+            <li><a href="#method-getIpRegion">getIpRegion</a></li>
+            <li><a href="#method-getIpv4Number">getIpv4Number</a></li>
+            <li><a href="#method-getIpv6Number">getIpv6Number</a></li>
+            <li><a href="#method-getKeywords">getKeywords</a></li>
+            <li><a href="#method-getLayoutStyle">getLayoutStyle</a></li>
+            <li><a href="#method-getLicense">getLicense</a></li>
+            <li><a href="#method-getLicenseData">getLicenseData</a></li>
+            <li><a href="#method-getMd5">getMd5</a></li>
+            <li><a href="#method-getPage">getPage</a></li>
+            <li><a href="#method-getParameterTypeList">getParameterTypeList</a></li>
+            <li><a href="#method-getPlaceAttribute">getPlaceAttribute</a></li>
+            <li><a href="#method-getPlaceAttributes">getPlaceAttributes</a></li>
+            <li><a href="#method-getPrivateUrl">getPrivateUrl</a></li>
+            <li><a href="#method-getRandom">getRandom</a></li>
+            <li><a href="#method-getSha1">getSha1</a></li>
+            <li><a href="#method-getSha2">getSha2</a></li>
+            <li><a href="#method-getSha256">getSha256</a></li>
+            <li><a href="#method-getSha512">getSha512</a></li>
+            <li><a href="#method-getSitefile">getSitefile</a></li>
+            <li><a href="#method-getSkipWord">getSkipWord</a></li>
+            <li><a href="#method-getSleep">getSleep</a></li>
+            <li><a href="#method-getTemplateResult">getTemplateResult</a></li>
+            <li><a href="#method-getTextFromHtml">getTextFromHtml</a></li>
+            <li><a href="#method-getUUID">getUUID</a></li>
+            <li><a href="#method-getUrl">getUrl</a></li>
+            <li><a href="#method-getXml">getXml</a></li>
+        </ul>
+    </div>
+    <div class="doc">
+        <h1>PublicCMS 函数指令手册 202406</h1>
+        <div class="block" data-id="api-appClient"></div>
+        <div class="block" data-id="api-appToken"></div>
+        <div class="block" data-id="api-autoLogin"></div>
+        <div class="block" data-id="api-bindingUser"></div>
+        <div class="block" data-id="api-clearCache"></div>
+        <div class="block" data-id="api-contentCheck"></div>
+        <div class="block" data-id="api-contentClick"></div>
+        <div class="block" data-id="api-contentCreate"></div>
+        <div class="block" data-id="api-login"></div>
+        <div class="block" data-id="api-myContentList"></div>
+        <div class="block" data-id="api-refreshToken"></div>
+        <div class="block" data-id="api-unBindingUser"></div>
+        <div class="block" data-id="api-upload"></div>
+        <div class="block" data-id="cms-category"></div>
+        <div class="block" data-id="cms-categoryList"></div>
+        <div class="block" data-id="cms-categoryModel"></div>
+        <div class="block" data-id="cms-categoryModelList"></div>
+        <div class="block" data-id="cms-categoryType"></div>
+        <div class="block" data-id="cms-categoryTypeList"></div>
+        <div class="block" data-id="cms-comment"></div>
+        <div class="block" data-id="cms-commentList"></div>
+        <div class="block" data-id="cms-content"></div>
+        <div class="block" data-id="cms-contentFileList"></div>
+        <div class="block" data-id="cms-contentList"></div>
+        <div class="block" data-id="cms-contentProduct"></div>
+        <div class="block" data-id="cms-contentProductList"></div>
+        <div class="block" data-id="cms-contentQuoteList"></div>
+        <div class="block" data-id="cms-contentRelatedList"></div>
+        <div class="block" data-id="cms-dictionary"></div>
+        <div class="block" data-id="cms-dictionaryData"></div>
+        <div class="block" data-id="cms-dictionaryDataList"></div>
+        <div class="block" data-id="cms-dictionaryExclude"></div>
+        <div class="block" data-id="cms-dictionaryExcludeList"></div>
+        <div class="block" data-id="cms-dictionaryExcludeValue"></div>
+        <div class="block" data-id="cms-dictionaryList"></div>
+        <div class="block" data-id="cms-editorHistory"></div>
+        <div class="block" data-id="cms-editorHistoryList"></div>
+        <div class="block" data-id="cms-facetSearch"></div>
+        <div class="block" data-id="cms-model"></div>
+        <div class="block" data-id="cms-modelList"></div>
+        <div class="block" data-id="cms-place"></div>
+        <div class="block" data-id="cms-placeList"></div>
+        <div class="block" data-id="cms-search"></div>
+        <div class="block" data-id="cms-survey"></div>
+        <div class="block" data-id="cms-surveyList"></div>
+        <div class="block" data-id="cms-surveyQuestion"></div>
+        <div class="block" data-id="cms-surveyQuestionItem"></div>
+        <div class="block" data-id="cms-surveyQuestionItemList"></div>
+        <div class="block" data-id="cms-surveyQuestionList"></div>
+        <div class="block" data-id="cms-tag"></div>
+        <div class="block" data-id="cms-tagList"></div>
+        <div class="block" data-id="cms-tagType"></div>
+        <div class="block" data-id="cms-tagTypeList"></div>
+        <div class="block" data-id="cms-userCollection"></div>
+        <div class="block" data-id="cms-userCollectionList"></div>
+        <div class="block" data-id="cms-userScore"></div>
+        <div class="block" data-id="cms-userScoreList"></div>
+        <div class="block" data-id="cms-userSurvey"></div>
+        <div class="block" data-id="cms-userSurveyList"></div>
+        <div class="block" data-id="cms-userSurveyQuestion"></div>
+        <div class="block" data-id="cms-userSurveyQuestionList"></div>
+        <div class="block" data-id="cms-userVote"></div>
+        <div class="block" data-id="cms-userVoteList"></div>
+        <div class="block" data-id="cms-vote"></div>
+        <div class="block" data-id="cms-voteItem"></div>
+        <div class="block" data-id="cms-voteItemList"></div>
+        <div class="block" data-id="cms-voteList"></div>
+        <div class="block" data-id="cms-word"></div>
+        <div class="block" data-id="cms-wordList"></div>
+        <div class="block" data-id="cms-workload"></div>
+        <div class="block" data-id="log-loginList"></div>
+        <div class="block" data-id="log-operate"></div>
+        <div class="block" data-id="log-operateList"></div>
+        <div class="block" data-id="log-task"></div>
+        <div class="block" data-id="log-taskList"></div>
+        <div class="block" data-id="log-uploadList"></div>
+        <div class="block" data-id="oauth-list"></div>
+        <div class="block" data-id="sys-app"></div>
+        <div class="block" data-id="sys-appClient"></div>
+        <div class="block" data-id="sys-appClientList"></div>
+        <div class="block" data-id="sys-appList"></div>
+        <div class="block" data-id="sys-appTokenList"></div>
+        <div class="block" data-id="sys-authorized"></div>
+        <div class="block" data-id="sys-clusterList"></div>
+        <div class="block" data-id="sys-config"></div>
+        <div class="block" data-id="sys-configData"></div>
+        <div class="block" data-id="sys-configFieldList"></div>
+        <div class="block" data-id="sys-configList"></div>
+        <div class="block" data-id="sys-dept"></div>
+        <div class="block" data-id="sys-deptItem"></div>
+        <div class="block" data-id="sys-deptItemList"></div>
+        <div class="block" data-id="sys-deptList"></div>
+        <div class="block" data-id="sys-domain"></div>
+        <div class="block" data-id="sys-domainList"></div>
+        <div class="block" data-id="sys-extendFieldList"></div>
+        <div class="block" data-id="sys-lock"></div>
+        <div class="block" data-id="sys-module"></div>
+        <div class="block" data-id="sys-moduleLang"></div>
+        <div class="block" data-id="sys-moduleList"></div>
+        <div class="block" data-id="sys-record"></div>
+        <div class="block" data-id="sys-recordList"></div>
+        <div class="block" data-id="sys-role"></div>
+        <div class="block" data-id="sys-roleList"></div>
+        <div class="block" data-id="sys-roleModule"></div>
+        <div class="block" data-id="sys-roleModuleList"></div>
+        <div class="block" data-id="sys-roleUserList"></div>
+        <div class="block" data-id="sys-site"></div>
+        <div class="block" data-id="sys-siteList"></div>
+        <div class="block" data-id="sys-task"></div>
+        <div class="block" data-id="sys-taskList"></div>
+        <div class="block" data-id="sys-user"></div>
+        <div class="block" data-id="sys-userList"></div>
+        <div class="block" data-id="sys-userTokenList"></div>
+        <div class="block" data-id="task-clearLog"></div>
+        <div class="block" data-id="task-indexContent"></div>
+        <div class="block" data-id="task-publishCategory"></div>
+        <div class="block" data-id="task-publishContent"></div>
+        <div class="block" data-id="task-publishPage"></div>
+        <div class="block" data-id="task-publishPlace"></div>
+        <div class="block" data-id="tools-createCategoryFile"></div>
+        <div class="block" data-id="tools-createContentFile"></div>
+        <div class="block" data-id="tools-createLock"></div>
+        <div class="block" data-id="tools-createTemplateFile"></div>
+        <div class="block" data-id="tools-csrfToken"></div>
+        <div class="block" data-id="tools-disk"></div>
+        <div class="block" data-id="tools-diyMetadata"></div>
+        <div class="block" data-id="tools-diyMetadataList"></div>
+        <div class="block" data-id="tools-diyRegionData"></div>
+        <div class="block" data-id="tools-exception"></div>
+        <div class="block" data-id="tools-executeScript"></div>
+        <div class="block" data-id="tools-fileBackupContent"></div>
+        <div class="block" data-id="tools-fileBackupList"></div>
+        <div class="block" data-id="tools-fileContent"></div>
+        <div class="block" data-id="tools-fileExist"></div>
+        <div class="block" data-id="tools-fileHistoryContent"></div>
+        <div class="block" data-id="tools-fileHistoryList"></div>
+        <div class="block" data-id="tools-fileList"></div>
+        <div class="block" data-id="tools-includeLayout"></div>
+        <div class="block" data-id="tools-includePlace"></div>
+        <div class="block" data-id="tools-includeRegion"></div>
+        <div class="block" data-id="tools-licenseVerify"></div>
+        <div class="block" data-id="tools-masterSite"></div>
+        <div class="block" data-id="tools-memory"></div>
+        <div class="block" data-id="tools-metadata"></div>
+        <div class="block" data-id="tools-placeMetadata"></div>
+        <div class="block" data-id="tools-sendEmail"></div>
+        <div class="block" data-id="tools-systemProperties"></div>
+        <div class="block" data-id="tools-templatePlaceList"></div>
+        <div class="block" data-id="tools-templateRegionList"></div>
+        <div class="block" data-id="tools-templateResult"></div>
+        <div class="block" data-id="tools-templateSearchList"></div>
+        <div class="block" data-id="tools-thumb"></div>
+        <div class="block" data-id="tools-userAgent"></div>
+        <div class="block" data-id="tools-version"></div>
+        <div class="block" data-id="trade-account"></div>
+        <div class="block" data-id="trade-accountHistory"></div>
+        <div class="block" data-id="trade-accountHistoryList"></div>
+        <div class="block" data-id="trade-accountList"></div>
+        <div class="block" data-id="trade-address"></div>
+        <div class="block" data-id="trade-addressList"></div>
+        <div class="block" data-id="trade-order"></div>
+        <div class="block" data-id="trade-orderHistory"></div>
+        <div class="block" data-id="trade-orderHistoryList"></div>
+        <div class="block" data-id="trade-orderList"></div>
+        <div class="block" data-id="trade-orderProduct"></div>
+        <div class="block" data-id="trade-orderProductList"></div>
+        <div class="block" data-id="trade-payment"></div>
+        <div class="block" data-id="trade-paymentHistory"></div>
+        <div class="block" data-id="trade-paymentHistoryList"></div>
+        <div class="block" data-id="trade-paymentList"></div>
+        <div class="block" data-id="trade-refund"></div>
+        <div class="block" data-id="trade-refundList"></div>
+        <div class="block" data-id="visit-day"></div>
+        <div class="block" data-id="visit-dayList"></div>
+        <div class="block" data-id="visit-history"></div>
+        <div class="block" data-id="visit-historyList"></div>
+        <div class="block" data-id="visit-item"></div>
+        <div class="block" data-id="visit-itemList"></div>
+        <div class="block" data-id="visit-session"></div>
+        <div class="block" data-id="visit-sessionList"></div>
+        <div class="block" data-id="visit-url"></div>
+        <div class="block" data-id="visit-urlList"></div>
+        <div class="block" data-id="method-confuse"></div>
+        <div class="block" data-id="method-confuseHtml"></div>
+        <div class="block" data-id="method-getAbsoluteUrl"></div>
+        <div class="block" data-id="method-getCategoryAttribute"></div>
+        <div class="block" data-id="method-getCategoryAttributes"></div>
+        <div class="block" data-id="method-getContentAttribute"></div>
+        <div class="block" data-id="method-getContentAttributes"></div>
+        <div class="block" data-id="method-getContentPage"></div>
+        <div class="block" data-id="method-getDate"></div>
+        <div class="block" data-id="method-getDict"></div>
+        <div class="block" data-id="method-getDictEnable"></div>
+        <div class="block" data-id="method-getFileUploadPrefix"></div>
+        <div class="block" data-id="method-getFontList"></div>
+        <div class="block" data-id="method-getHash"></div>
+        <div class="block" data-id="method-getHtml"></div>
+        <div class="block" data-id="method-getIpRegion"></div>
+        <div class="block" data-id="method-getIpv4Number"></div>
+        <div class="block" data-id="method-getIpv6Number"></div>
+        <div class="block" data-id="method-getKeywords"></div>
+        <div class="block" data-id="method-getLayoutStyle"></div>
+        <div class="block" data-id="method-getLicense"></div>
+        <div class="block" data-id="method-getLicenseData"></div>
+        <div class="block" data-id="method-getMd5"></div>
+        <div class="block" data-id="method-getPage"></div>
+        <div class="block" data-id="method-getParameterTypeList"></div>
+        <div class="block" data-id="method-getPlaceAttribute"></div>
+        <div class="block" data-id="method-getPlaceAttributes"></div>
+        <div class="block" data-id="method-getPrivateUrl"></div>
+        <div class="block" data-id="method-getRandom"></div>
+        <div class="block" data-id="method-getSha1"></div>
+        <div class="block" data-id="method-getSha2"></div>
+        <div class="block" data-id="method-getSha256"></div>
+        <div class="block" data-id="method-getSha512"></div>
+        <div class="block" data-id="method-getSitefile"></div>
+        <div class="block" data-id="method-getSkipWord"></div>
+        <div class="block" data-id="method-getSleep"></div>
+        <div class="block" data-id="method-getTemplateResult"></div>
+        <div class="block" data-id="method-getTextFromHtml"></div>
+        <div class="block" data-id="method-getUUID"></div>
+        <div class="block" data-id="method-getUrl"></div>
+        <div class="block" data-id="method-getXml"></div>
+    </div>
+</div>
+<script src="https://www.publiccms.com/assets/js/jquery.min.js"></script>
+<script>
+$('.doc').on("scroll", function(){
+    var last;
+    $(".doc .block").each(function(){
+        var $this=$(this);
+        if($this.offset().top >= $('.doc').offset().top + 20){
+            $(".indexContainer li.selected").removeClass('selected');
+            if(last){
+                $(".indexContainer a[href=\\#"+last.data('id')+"]").parent().addClass('selected');
+            }else{
+                $(".indexContainer a[href=\\#"+$this.data('id')+"]").parent().addClass('selected');
+            }
+            location.hash = $(".indexContainer li.selected a").attr("href").replace("#", "");
+            return false;
+        }
+        last=$this;
+    });
+});
+$(".indexContainer a").on("click", function(){
+    var $doc=$(".doc");
+    var hight= $(".doc .block[data-id="+$.escapeSelector($(this).attr("href").substring(1))+"]").offset().top - $doc.offset().top + $doc.scrollTop();
+    $doc.stop().animate({scrollTop:hight},500);
+});
+var hash = location.hash.substring(1).replace(/\?.*$/, "");
+if(hash){
+    $(".indexContainer a[href=\\#"+$.escapeSelector(hash)+"]").trigger("click");
+}
+</script>
+</body>
+</html>

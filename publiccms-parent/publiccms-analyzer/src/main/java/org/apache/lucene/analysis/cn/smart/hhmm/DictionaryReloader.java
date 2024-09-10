@@ -12,6 +12,9 @@ import com.publiccms.common.tools.CommonUtils;
  *
  */
 public class DictionaryReloader {
+    private DictionaryReloader() {
+    }
+
     public static final String DICT_COREDICT = "/coredict.dct";
     public static final String DICT_BIGRAMDICT = "/bigramdict.dct";
     public static final String MEM_COREDICT = "/coredict.mem";
@@ -20,7 +23,7 @@ public class DictionaryReloader {
     /**
      * @param dctroot
      */
-    public synchronized static void reload(String dctroot) {
+    public static synchronized void reload(String dctroot) {
         if (new File(CommonUtils.joinString(dctroot, DICT_COREDICT)).exists()
                 || new File(CommonUtils.joinString(dctroot, MEM_COREDICT)).exists()) {
             WordDictionary dict = WordDictionary.getInstance();

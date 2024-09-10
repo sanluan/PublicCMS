@@ -5,7 +5,8 @@ configurations {
 }
 
 dependencies {
-    implementation "javax.servlet:javax.servlet-api:${servletVersion}"
+    providedCompile "javax.servlet:javax.servlet-api:${servletVersion}"
+    providedCompile "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
 
     implementation "org.springframework:spring-context-support:${springVersion}"
     implementation "org.springframework:spring-orm:${springVersion}"
@@ -62,7 +63,6 @@ dependencies {
     implementation "com.github.bgalek.security.svg:safe-svg:${safeSvgVersion}"
     implementation "org.jsoup:jsoup:${jsoupVersion}"
 
-    implementation "com.sun.mail:jakarta.mail:${mailVersion}"
     implementation "org.glassfish.jaxb:jaxb-runtime:${jaxbVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
     implementation "javax.transaction:jta:${jtaVersion}"

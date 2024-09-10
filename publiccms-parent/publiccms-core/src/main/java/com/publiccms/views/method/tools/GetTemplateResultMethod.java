@@ -1,5 +1,6 @@
 package com.publiccms.views.method.tools;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +8,6 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 
@@ -54,8 +54,8 @@ public class GetTemplateResultMethod extends BaseMethod {
      */
     public GetTemplateResultMethod() {
         configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        configuration.setDefaultEncoding(Constants.DEFAULT_CHARSET_NAME);
-        configuration.setURLEscapingCharset(Constants.DEFAULT_CHARSET_NAME);
+        configuration.setDefaultEncoding(StandardCharsets.UTF_8.name());
+        configuration.setURLEscapingCharset(StandardCharsets.UTF_8.name());
         configuration.setTemplateUpdateDelayMilliseconds(0);
         configuration.setAPIBuiltinEnabled(false);
         configuration.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);

@@ -3,11 +3,6 @@
  */
 function initEnv() {
     $("body").append(JUI.frag["dwzFrag"]);
-    if (!$.support.leadingWhitespace ) {
-        try {
-            document.execCommand("BackgroundImageCache", false, true);
-        } catch (e) {}
-    }
     $(window).resize(function() {
         initLayout();
         $(this).trigger(JUI.eventType.resizeGrid);
@@ -20,7 +15,7 @@ function initEnv() {
     }).on("ajaxStop",function() {
         ajaxbg.hide();
     });
-    $("#progressBar").click(function(){
+    $("#progressBar").on("click", function(){
         ajaxbg.hide();
     });
     $("#leftside").jBar({
@@ -39,11 +34,11 @@ function initEnv() {
             $("#navMenu").navMenu();
             var hash = location.hash.skipChar("#").replace(/\?.*$/, "");
             if(hash ) {
-                var $box = $("#menu a[rel="+escapeJquery(hash)+"]").closest(".accordionContent");
+                var $box = $("#menu a[rel="+$.escapeSelector(hash)+"]").closest(".accordionContent");
                 if(!$box.is(":visible")){
-                    $box.prev().click();
+                    $box.prev().trigger("click");
                 }
-                $("#menu a[rel="+escapeJquery(hash)+"]").click();
+                $("#menu a[rel="+$.escapeSelector(hash)+"]").trigger("click");
             }
         }
         $(document).trigger(JUI.eventType.initEnvAfter);
@@ -185,7 +180,7 @@ function initUI(_box) {
 function initLink($p) {
     // navTab
     $("a[target=navTab]", $p).each(function() {
-        $(this).click(function(event) {
+        $(this).on("click", function(event) {
             var $this = $(this);
             var title = $this.attr("title") || $this.text();
             if(title){
@@ -210,7 +205,7 @@ function initLink($p) {
 
     // dialogs
     $("a[target=dialog]", $p).each(function() {
-        $(this).click(function(event) {
+        $(this).on("click", function(event) {
             var $this = $(this);
             var title = $this.attr("title") || $this.text();
             var rel = $this.attr("rel") || "_blank";
@@ -244,7 +239,7 @@ function initLink($p) {
         });
     });
     $("a[target=ajax]", $p).each(function() {
-        $(this).click(function() {
+        $(this).on("click", function() {
             var $this = $(this);
             var rel = $this.attr("rel");
             if (rel ) {
@@ -299,7 +294,7 @@ function initLink($p) {
                     $this.addClass("selected");
                     $(".theme").prop("class","theme "+themeName);
                 }
-                $this.addClass(themeName).click(function() {
+                $this.addClass(themeName).on("click", function() {
                     setTheme(themeName);
                 });
             });

@@ -29,17 +29,17 @@ var navTab = {
         this._nextBut = this.componentBox.find("." + this._op.nextClass);
         this._moreBut = this.componentBox.find(this._op.stMore);
         this._moreBox = this.componentBox.find(this._op.stMoreLi);
-        this._prevBut.click(function(event) {
+        this._prevBut.on("click", function(event) {
             $this._scrollPrev()
         });
-        this._nextBut.click(function(event) {
+        this._nextBut.on("click", function(event) {
             $this._scrollNext()
         });
-        this._moreBut.click(function() {
+        this._moreBut.on("click", function() {
             $this._moreBox.show();
             return false;
         });
-        $(document).click(function() {
+        $(document).on("click", function() {
             $this._moreBox.hide()
         });
         this._contextmenu(this._tabBox);
@@ -50,15 +50,15 @@ var navTab = {
     _init: function() {
         var $this = this;
         this._getTabs().each(function(iTabIndex) {
-            $(this).off("click").click(function(event) {
+            $(this).off("click").on("click", function(event) {
                 $this._switchTab(iTabIndex);
             });
-            $(this).find(navTab._op.close$).off("click").click(function() {
+            $(this).find(navTab._op.close$).off("click").on("click", function() {
                 $this._closeTab(iTabIndex);
             });
         });
         this._getMoreLi().each(function(iTabIndex) {
-            $(this).find(">a").off("click").click(function(event) {
+            $(this).find(">a").off("click").on("click", function(event) {
                 $this._switchTab(iTabIndex);
             });
         });
@@ -304,7 +304,7 @@ var navTab = {
     } ,
     _loadUrlCallback: function($panel) {
         $panel.find("[layoutH]").layoutH();
-        $panel.find(":button.close").click(function() {
+        $panel.find(":button.close").on("click", function() {
             navTab.closeCurrentTab();
         });
     } ,
@@ -408,6 +408,8 @@ var navTab = {
         if (iOpenIndex >= 0 && !op.focusNewWindow) {
             var $tab = this._getTabs().eq(iOpenIndex);
             var $panel = this._getPanels().eq(iOpenIndex);
+            $tab.find(">a").eq(0).attr("title", op.title).text(op.title);
+            this._getMoreLi().eq(iOpenIndex).find(">a").attr("title",op.title).text(op.title);
             if (op.fresh || $tab.attr("url") != url ) {
                 $tab.attr("url", url);
                 if (op.external || url.isExternalUrl() ) {

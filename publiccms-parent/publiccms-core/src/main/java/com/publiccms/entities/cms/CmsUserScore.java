@@ -34,7 +34,7 @@ public class CmsUserScore implements java.io.Serializable {
     private CmsUserScoreId id;
     /**
      * score
-     * <p>
+
      * 分数
      */
     @GeneratorColumn(title = "分数", order = true)
@@ -46,7 +46,7 @@ public class CmsUserScore implements java.io.Serializable {
     private String ip;
     /**
      * create date
-     * <p>
+
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期")

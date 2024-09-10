@@ -2,6 +2,7 @@ package com.publiccms.logic.component.site;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -225,7 +226,7 @@ public class EmailComponent implements SiteCache, Config {
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_FROMADDRESS))) {
             JavaMailSender mailSender = getMailSender(siteId, config);
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, Constants.DEFAULT_CHARSET_NAME);
+            MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, StandardCharsets.UTF_8.name());
             messageHelper.setTo(toAddress);
             if (CommonUtils.notEmpty(cc)) {
                 messageHelper.setCc(cc);
@@ -278,7 +279,7 @@ public class EmailComponent implements SiteCache, Config {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new SysExtendField(CONFIG_DEFAULTENCODING, INPUTTYPE_TEXT, true,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_DEFAULTENCODING)),
-                null, Constants.DEFAULT_CHARSET_NAME));
+                null, StandardCharsets.UTF_8.name()));
         extendFieldList.add(new SysExtendField(CONFIG_HOST, INPUTTYPE_TEXT, true,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_HOST)), null,
                 null));

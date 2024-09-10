@@ -1,5 +1,6 @@
 package com.publiccms.common.generator;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import javax.crypto.Cipher;
@@ -7,7 +8,6 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.VerificationUtils;
 
@@ -57,12 +57,12 @@ public class PassowrdGenerator {
 
     public static byte[] encrypt(String input, String key) {
         try {
-            byte[] sha1Key = VerificationUtils.sha1Encode(key).getBytes(Constants.DEFAULT_CHARSET);
+            byte[] sha1Key = VerificationUtils.sha1Encode(key).getBytes(StandardCharsets.UTF_8);
             DESedeKeySpec dks = new DESedeKeySpec(sha1Key);
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
             Cipher cipher = Cipher.getInstance("DESede");
             cipher.init(Cipher.ENCRYPT_MODE, keyFactory.generateSecret(dks));
-            return cipher.doFinal(input.getBytes(Constants.DEFAULT_CHARSET));
+            return cipher.doFinal(input.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             return null;
         }

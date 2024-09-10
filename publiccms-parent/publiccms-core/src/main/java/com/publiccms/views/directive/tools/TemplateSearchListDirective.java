@@ -3,6 +3,7 @@ package com.publiccms.views.directive.tools;
 // Generated 2015-5-10 17:54:56 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -30,21 +31,21 @@ import freemarker.template.TemplateException;
  * 返回结果
  * <ul>
  * <li><code>list</code>:文件列表
- * {@link com.publiccms.common.tools.CmsFileUtils.FileSearchResult}
+ * {@link com.publiccms.common.tools.CmsFileUtils$FileSearchResult}
  * </ul>
  * 使用示例
  * <p>
  * &lt;@tools.templateSearchList path='/' word='script'&gt;&lt;#list list as
  * a&gt;${a.path}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.templateSearchList&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/templateSearchList?path=/&amp;word=script&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/templateSearchList?path=/&amp;word=script&amp;appToken=接口访问授权Token', function(data){
    console.log(data);
  });
  &lt;/script&gt;
  * </pre>
- * 
+ *
  */
 @Component
 public class TemplateSearchListDirective extends AbstractTemplateDirective {
@@ -56,13 +57,16 @@ public class TemplateSearchListDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(word) ) {
             List<FileSearchResult> list = CmsFileUtils
                     .searchFileList(siteComponent.getTemplateFilePath(getSite(handler).getId(), path), path, word);
+
+            String safeWord = HtmlUtils.htmlEscape(word, StandardCharsets.UTF_8.name());
             StringBuilder sb = new StringBuilder("<b>");
-            sb.append(HtmlUtils.htmlEscape(word, Constants.DEFAULT_CHARSET_NAME)).append("</b>");
+            sb.append(safeWord).append("</b>");
             String resultWord = sb.toString();
+
             list.forEach(file -> {
                 for (int i = 0; i < file.getMatchList().size(); i++) {
-                    String safeLine = HtmlUtils.htmlEscape(file.getMatchList().get(i), Constants.DEFAULT_CHARSET_NAME);
-                    file.getMatchList().set(i, StringUtils.replace(safeLine, word, resultWord));
+                    String safeLine = HtmlUtils.htmlEscape(file.getMatchList().get(i), StandardCharsets.UTF_8.name());
+                    file.getMatchList().set(i, StringUtils.replace(safeLine, safeWord, resultWord));
                 }
             });
             handler.put("list", list).render();

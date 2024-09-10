@@ -39,7 +39,7 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
     private short siteId;
     /**
      * name
-     * <p>
+
      * 名称
      */
     @GeneratorColumn(title = "名称")
@@ -48,35 +48,35 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
     private String name;
     /**
      * parent id
-     * <p>
+
      * 父id
      */
     @GeneratorColumn(title = "父分类", condition = true)
     private Integer parentId;
     /**
      * type id
-     * <p>
+
      * 分类类型id
      */
     @GeneratorColumn(title = "分类类型", condition = true)
     private String typeId;
     /**
      * child ids
-     * <p>
+
      * 子分类id
      */
     @GeneratorColumn(title = "子分类")
     private String childIds;
     /**
      * tag type ids
-     * <p>
+
      * 标签类型id
      */
     @GeneratorColumn(title = "标签")
     private String tagTypeIds;
     /**
      * code
-     * <p>
+
      * 编码
      */
     @GeneratorColumn(title = "编码")
@@ -86,7 +86,7 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
 
     /**
      * custom path
-     * <p>
+
      * 自定义访问路径
      */
     private boolean customPath;
@@ -96,21 +96,21 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
     private String path;
     /**
      * extend link
-     * <p>
+
      * 外链
      */
     @GeneratorColumn(title = "外链")
     private boolean onlyUrl;
     /**
      * has static file
-     * <p>
+
      * 有静态化文件
      */
     @GeneratorColumn(title = "有静态化")
     private boolean hasStatic;
     /**
      * url
-     * <p>
+
      * 链接地址
      */
     @GeneratorColumn(title = "地址")
@@ -118,7 +118,7 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
     private String url;
     /**
      * custom content path
-     * <p>
+
      * 自定义内容访问路径
      */
     private boolean customContentPath;
@@ -126,35 +126,35 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
     private String contentPath;
     /**
      * contain child content
-     * <p>
+
      * 包含子分类内容
      */
     @GeneratorColumn(title = "包含子分类内容")
     private boolean containChild;
     /**
      * content page size
-     * <p>
+
      * 内容分页大小
      */
     @GeneratorColumn(title = "每页数据")
     private Integer pageSize;
     /**
      * allow contribute
-     * <p>
+
      * 允许投稿
      */
     @GeneratorColumn(title = "允许投稿", condition = true)
     private boolean allowContribute;
     /**
      * sort
-     * <p>
+
      * 排序
      */
     @GeneratorColumn(title = "排序")
     private int sort;
     /**
      * hidden
-     * <p>
+
      * 前台隐藏
      */
     @GeneratorColumn(title = "是否隐藏", condition = true)
@@ -164,7 +164,7 @@ public class CmsCategory extends Attribute implements java.io.Serializable {
     private boolean disabled;
     /**
      * workflow
-     * <p>
+
      * 工作流
      */
     @GeneratorColumn(title = "工作流")

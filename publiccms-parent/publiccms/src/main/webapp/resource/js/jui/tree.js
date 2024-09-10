@@ -22,7 +22,7 @@
                         icon: $this.hasClass("treeFolder"), ckbox: $this.hasClass("treeCheck") , excludeParent:  $this.hasClass("excludeParent"), options: op, level: 0,
                         exp: ( cnum > 1 ? ( first ? op.firstExp: ( last ? op.lastExp: op.exp ) ): op.endExp ),
                         coll: ( cnum > 1 ? ( first ? op.firstColl: ( last ? op.lastColl: op.coll ) ): op.endColl ),
-                        showSub: ( !$this.hasClass("collapse") && ( $this.hasClass("expand") || ( cnum > 1 ? false : true ) ) ),
+                        showSub: ( !$this.hasClass("collapse") && ( $this.hasClass("expand") || $li.hasClass("expand") || ( cnum > 1 ? false : true ) ) ),
                         isLast: ( cnum > 1 ? ( last ? true: false ): true )
                     });
                 });
@@ -32,7 +32,7 @@
                         if (checkFn && "function" === typeof checkFn ) {
                             $("div.ckbox", $this).each(function() {
                                 var ckbox = $(this);
-                                ckbox.click(function() {
+                                ckbox.on("click", function() {
                                     var checked = $(ckbox).hasClass("checked");
                                     var items = [ ];
                                     if (checked ) {
@@ -58,7 +58,7 @@
                             });
                         }
                     }
-                    $("a", $this).click(function(event) {
+                    $("a", $this).on("click", function(event) {
                         $("div." + op.selected, $this).removeClass(op.selected);
                         var parent = $(this).parent().addClass(op.selected);
                         var $li = $(this).parents("li:first"), sTarget = $li.attr("target");
@@ -110,35 +110,40 @@
                     if (tree.length > 0 ) {
                         op.showSub ? tree.show(): tree.hide();
                     }
-                    $(">div>div."+op.options.folderColl+",>div>div."+op.options.folderExp+",>div>a", node).click(function() {
+                    $(">div>div."+op.options.folderColl+",>div>div."+op.options.folderExp+",>div>a", node).on("click", function() {
+                        var tree=$(">ul", node);
                         if(node.attr(op.options.async)){
-                            $.ajax({
-                                type: "get", url: node.attr(op.options.async), async: false, data: {}, success: function(response){
-                                    node.append(response);
-                                    tree = $(">ul", node).hide();
-                                    initLink(tree);
-                                    $("a", tree).click(function(event) {
-                                        $("div." + op.options.selected, op.root).removeClass(op.options.selected);
-                                        var parent = $(this).parent().addClass(op.options.selected);
-                                        var $li = $(this).parents("li:first"), sTarget = $li.attr("target");
-                                        if (sTarget ) {
-                                            if ($("#" + sTarget, op.root).length == 0 ) {
-                                                op.root.prepend("<input id=\"" + sTarget + "\" type=\"hidden\"/>");
+                            var isHidden = tree.is(":hidden");
+                            var treeLength = tree.length;
+                            if(treeLength > 0 && isHidden || 0 == treeLength){
+                                if(treeLength > 0) {
+                                    tree.remove();
+                                    tree=$(">ul", node);
+                                }
+                                $.ajax({
+                                    type: "get", url: node.attr(op.options.async), async: false, data: {}, success: function(response){
+                                        node.append(response);
+                                        tree = $(">ul", node).hide();
+                                        initLink(tree);
+                                        $("a", tree).on("click", function(event) {
+                                            $("div." + op.options.selected, op.root).removeClass(op.options.selected);
+                                            var parent = $(this).parent().addClass(op.options.selected);
+                                            var $li = $(this).parents("li:first"), sTarget = $li.attr("target");
+                                            if (sTarget ) {
+                                                if ($("#" + sTarget, op.root).length == 0 ) {
+                                                    op.root.prepend("<input id=\"" + sTarget + "\" type=\"hidden\"/>");
+                                                }
+                                                $("#" + sTarget, op.root).val($li.attr("rel"));
                                             }
-                                            $("#" + sTarget, op.root).val($li.attr("rel"));
-                                        }
-                                        $(".ckbox", parent).trigger("click");
-                                        event.stopPropagation();
-                                        $(document).trigger("click");
-                                        if (!$(this).attr("target") ) {
-                                            return false;
-                                        }
-                                    });
-                                    node.removeAttr(op.options.async);
-                                },error: JUI.ajaxError
-                            });
-                            if(node.attr(op.options.async) ){
-                                return false;
+                                            $(".ckbox", parent).trigger("click");
+                                            event.stopPropagation();
+                                            $(document).trigger("click");
+                                            if (!$(this).attr("target") ) {
+                                                return false;
+                                            }
+                                        });
+                                    },error: JUI.ajaxError
+                                });
                             }
                         }
                         var $fnode = $(">li:first", tree);
@@ -162,11 +167,15 @@
                     }
                 } else {
                     node.children().wrap("<div></div>");
-                    $(">div", node).prepend(( op.ckbox ? "<div class=\"ckbox " + checked + "\"></div>": "" )
+                    var $box=$(">div", node).prepend(( op.ckbox ? "<div class=\"ckbox " + checked + "\"></div>": "" )
                             + ( op.icon ? "<div class=\""+op.options.file+"\"></div>": "<div class=\"node\"></div>" ));
+                    if(node.hasClass(op.options.selected) ){
+                        node.removeClass(op.options.selected);
+                        $box.addClass(op.options.selected);
+                    }
                     if(op.icon ) {
-                        $(">div>div."+op.options.file, node).click(function() {
-                            $(this).next().click();
+                        $(">div>div."+op.options.file, node).on("click", function() {
+                            $(this).next().trigger("click");
                             return false;
                         });
                     }
@@ -175,12 +184,10 @@
                 if (op.ckbox ) {
                     node._check(op);
                 }
-                if (!$.support.leadingWhitespace ) {
-                    $(">div", node).click(function() {
-                        $("a", this).trigger("click");
-                        return false;
-                    });
-                }
+                $(">div", node).on("click", function() {
+                    $("a", this).trigger("click");
+                    return false;
+                });
             });
             function addSpace(level, node) {
                 if (level > 0 ) {
@@ -212,7 +219,7 @@
             if (tvalue ) {
                 attrs += "value=\"" + tvalue + "\" ";
             }
-            ckbox.append("<input type=\"checkbox\" style=\"display:none;\" " + attrs + "/>").click(function() {
+            ckbox.append("<input type=\"checkbox\" style=\"display:none;\" " + attrs + "/>").on("click", function() {
                 var cked = ckbox.hasClass("checked");
                 var aClass = cked ? "unchecked": "checked";
                 var rClass = cked ? "checked": "unchecked";

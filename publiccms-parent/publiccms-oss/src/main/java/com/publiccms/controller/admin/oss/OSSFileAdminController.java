@@ -1,5 +1,6 @@
 package com.publiccms.controller.admin.oss;
 
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.text.DateFormat;
 import java.time.Instant;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
@@ -102,7 +102,7 @@ public class OSSFileAdminController {
         policyConds.addConditionItem(PolicyConditions.COND_X_OSS_ALGORITHM, algorithm);
         policyConds.addConditionItem(PolicyConditions.COND_X_OSS_DATE, dateStamp);
         String policy = OSSUtils.generatePostPolicy(Instant.ofEpochMilli(now.getTime() + 30 * 60 * 1000), policyConds);
-        String encodedPolicy = VerificationUtils.base64Encode(policy.getBytes(Constants.DEFAULT_CHARSET));
+        String encodedPolicy = VerificationUtils.base64Encode(policy.getBytes(StandardCharsets.UTF_8));
         try {
             byte[] signkey = OSSUtils.newSigningKey(config.get(OSSComponent.CONFIG_ACCESSKEYSECRET), date,
                     config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_REGION : OSSComponent.CONFIG_REGION));

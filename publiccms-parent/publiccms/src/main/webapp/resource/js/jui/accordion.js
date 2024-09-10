@@ -220,7 +220,7 @@
                 options.toHide.filter(":hidden").each(options.complete).end().filter(":visible").animate({height: "hide"}, {
                     step: function(now) {
                         var current = ( hideHeight - now ) * difference;
-                        if (!$.support.leadingWhitespace ) {
+                        if (Math.ceil ) {
                             current = Math.ceil(current);
                         }
                         options.toShow.height(current);
@@ -251,7 +251,7 @@
     $.fn.navMenu = function() {
         return this.each(function() {
             var $box = $(this);
-            $box.find("li>a").click(function() {
+            $box.find("li>a").on("click", function() {
                 var $a = $(this);
                 if(!$a.is("[href^=javascript]")){
                     $("#sidebar #menu").ajaxUrl({
@@ -342,7 +342,7 @@
         return this.each(function() {
             var jbar = this;
             var bar = $(op.sideBar, jbar);
-            $(op.toggleBut).click(function() {
+            $(op.toggleBut).on("click", function() {
                 if($(op.splitBar).is(":visible")){
                     $(op.toggleBut).addClass(op.iconClass);
                     $(op.splitBar).hide();
@@ -376,7 +376,7 @@
                 }
                 return false;
             });
-            $(op.splitBar).mousedown(function(event) {
+            $(op.splitBar).on("mousedown", function(event) {
                 $(op.splitBar2).each(function() {
                     var spbar2 = $(this);
                     setTimeout(function() {

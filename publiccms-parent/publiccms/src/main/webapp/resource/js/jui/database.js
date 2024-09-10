@@ -26,7 +26,7 @@
                     UE.instants[$input.data("id")].setContent(args[key]);
                 }
             } else if($input.hasClass("code")) {
-                JUI.instances[$(this).data("id")].setValue(args[key]);
+                JUI.instances[$input.data("id")].setValue(args[key]);
             } else {
                 $input.val(args[key]).trigger("change");
             }
@@ -37,7 +37,7 @@
             var $box = _lookup["$target"].parents(".unitBox").first();
             if(keys){
                 $.each(keys,function(n,key){
-                    $box.find(":input[name="+escapeJquery(_util.lookupPk(key))+"]").each(function() {
+                    $box.find(":input[name="+$.escapeSelector(_util.lookupPk(key))+"]").each(function() {
                         for ( var k in args) {
                             _lookup.suffix=k;
                             suggest(args,k,$(this));
@@ -46,7 +46,7 @@
                 });
             } else {
                 for ( var key in args) {
-                    $box.find(":input[name="+escapeJquery(_util.lookupPk(key))+"]").each(function() {
+                    $box.find(":input[name="+$.escapeSelector(_util.lookupPk(key))+"]").each(function() {
                         suggest(args,key,$(this));
                     });
                 }
@@ -78,7 +78,7 @@
                     });
                 } else {
                     for ( var row in args) {
-                        _lookup.nextButton.click();
+                        _lookup.nextButton.trigger("click");
                         if (args[row][JUI.keys.statusCode] == JUI.statusCode.error ) {
                             if (args[row][JUI.keys.message] ) {
                                 alertMsg.error(args[row][JUI.keys.message]);
@@ -101,7 +101,7 @@
                     mask: true, width: $this.attr("width") || 820, height: $this.attr("height") || 500, maxable: eval($this.attr("maxable") || "true") ,
                     resizable: eval($this.attr("resizable") || "true")
                 };
-                $this.click(function(event) {
+                $this.on("click", function(event) {
                     _lookup = $.extend(_lookup, {
                         currentGroup: $this.attr("lookupGroup") || "", suffix: $this.attr("suffix") || "", $target: $this, pk: $this.attr("lookupPk") || ""
                     });
@@ -118,7 +118,7 @@
         multLookup: function() {
             return this.each(function() {
                 var $this = $(this), args = {};
-                $this.click(function(event) {
+                $this.on("click", function(event) {
                     var $unitBox = $this.parents(".unitBox").first();
                     $unitBox.find("[name=\"" + $this.attr("multLookup") + "\"]").filter(":checked").each(function() {
                         var _args = JUI.jsonEval($(this).val());
@@ -198,10 +198,10 @@
                                 html += "<li lookupAttrs=\"" + liAttr + "\">" + liLabel + "</li>";
                             });
                             var $lis = $suggest.html("<ul>" + html + "</ul>").find("li");
-                            $lis.click(function() {
+                            $lis.on("click", function() {
                                 _select($(this),callbackFields);
                                 if($input.next().hasClass("suggestButton")){
-                                    $input.next().click();
+                                    $input.next().trigger("click");
                                 }
                             });
                             if ($lis.length == 0 ) {
@@ -235,7 +235,7 @@
                     selectedIndex = -1;
                     $(document).off("click", null, _close);
                 }
-                $input.focus(_show).click(false).keyup(function(event) {
+                $input.focus(_show).on("click", false).keyup(function(event) {
                     var $items = $(op.suggest$).find("li");
                     switch (event.keyCode) {
                         case JUI.keyCode.ESC:
@@ -289,7 +289,7 @@
                     };
                     fields.push(field);
                 });
-                $tbody.find("a.btnDel").click(function() {
+                $tbody.find("a.btnDel").on("click", function() {
                     var $btnDel = $(this);
                     if ($btnDel.is("[href^=javascript]") ) {
                         $btnDel.parents("tr").first().remove();
@@ -321,7 +321,7 @@
                     var batchUrl = $table.attr("batchUrl");
                     if(batchUrl){
                         var $batchButton = $("<label><a class=\"button\" lookupGroup=\"\" href=\""+batchUrl+"\" width=\"1000\" height=\"600\" >"+batchButtonTxt+"</a></label>").initUI().appendTo($caption).find("a");
-                        $batchButton.click(function(){
+                        $batchButton.on("click", function(){
                             _lookup = $.extend(_lookup, {
                                 nextButton : $addBut
                             });
@@ -331,7 +331,7 @@
                     }
 
                     var trTm = "";
-                    $addBut.click(function() {
+                    $addBut.on("click", function() {
                         if (!trTm ) {
                             trTm = trHtml(fields);
                         }
@@ -343,12 +343,12 @@
                         }
                         for (var i = 0; i < rowNum; i++) {
                             var $tr = $($.parseHTML(trTm, document, true));
-                            $tr.appendTo($tbody).initUI().find("a.btnDel").click(function() {
+                            $tr.appendTo($tbody).initUI().find("a.btnDel").on("click", function() {
                                 $(this).parents("tr").first().remove();
                                 initSuffix($tbody);
                                 return false;
                             });
-                            $tr.click(function(){
+                            $tr.on("click", function(){
                                 $tbody.find(">tr.selected").removeClass("selected");
                                 $tr.addClass("selected");
                             });
@@ -484,7 +484,7 @@
                 var $this = $(this);
                 var selectedIds = $this.attr("rel") || "ids";
                 var postType = $this.attr("postType") || "map";
-                $this.click(function() {
+                $this.on("click", function() {
                     var targetType = $this.attr("targetType");
                     var ids = _getIds(selectedIds, targetType);
                     if (!ids ) {

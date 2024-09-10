@@ -37,42 +37,42 @@ public class CmsComment implements java.io.Serializable {
     private short siteId;
     /**
      * user id
-     * <p>
+
      * 发布用户id
      */
     @GeneratorColumn(title = "发布用户", condition = true)
     private long userId;
     /**
      * reply comment id
-     * <p>
+
      * 回复评论id
      */
     @GeneratorColumn(title = "回复评论", condition = true)
     private Long replyId;
     /**
      * reply user id
-     * <p>
+
      * 回复用户id
      */
     @GeneratorColumn(title = "回复用户", condition = true)
     private Long replyUserId;
     /**
      * replies
-     * <p>
+
      * 回复数
      */
     @GeneratorColumn(title = "回复数")
     private int replies;
     /**
      * scores
-     * <p>
+
      * 分数
      */
     @GeneratorColumn(title = "分数", order = true)
     private int scores;
     /**
      * content id
-     * <p>
+
      * 内容id
      */
     @GeneratorColumn(title = "内容", condition = true)
@@ -84,35 +84,35 @@ public class CmsComment implements java.io.Serializable {
     private String ip;
     /**
      * check user
-     * <p>
+
      * 审核用户
      */
     @GeneratorColumn(title = "审核用户", condition = true)
     private Long checkUserId;
     /**
      * check date
-     * <p>
+
      * 审核日期
      */
     @GeneratorColumn(title = "审核日期", order = true)
     private Date checkDate;
     /**
      * update date
-     * <p>
+
      * 更新日期
      */
     @GeneratorColumn(title = "更新日期", order = true)
     private Date updateDate;
     /**
      * create date
-     * <p>
+
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
     /**
      * status(1:Published,2:Pending)
-     * <p>
+
      * 状态(1:已审核,2:待审核)
      */
     @GeneratorColumn(title = "状态", condition = true)

@@ -1,5 +1,6 @@
 package com.publiccms.logic.component.paymentgateway;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -173,7 +174,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
                                     .getBody();
                         }
 
-                        response.setContentType(CommonUtils.joinString("text/html;charset=", Constants.DEFAULT_CHARSET_NAME));
+                        response.setContentType(CommonUtils.joinString("text/html;charset=", StandardCharsets.UTF_8.name()));
                         response.getWriter().write(
                                 "<html><head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></head><body>");
                         response.getWriter().write(form);

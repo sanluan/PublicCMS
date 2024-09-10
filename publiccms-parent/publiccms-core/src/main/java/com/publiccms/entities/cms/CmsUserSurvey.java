@@ -40,14 +40,14 @@ public class CmsUserSurvey implements java.io.Serializable {
     private short siteId;
     /**
      * anonymous
-     * <p>
+
      * 匿名用户
      */
     @GeneratorColumn(title = "匿名用户", condition = true)
     private boolean anonymous;
     /**
      * score
-     * <p>
+
      * 分数
      */
     @GeneratorColumn(title = "分数", order = true)
@@ -59,7 +59,7 @@ public class CmsUserSurvey implements java.io.Serializable {
     private String ip;
     /**
      * create date
-     * <p>
+
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)

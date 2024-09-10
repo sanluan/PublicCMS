@@ -36,20 +36,20 @@ public class CmsCategoryModel implements java.io.Serializable {
     private short siteId;
     /**
      * custom content path
-     * <p>
+
      * 自定义内容访问路径
      */
     private boolean customContentPath;
     /**
      * template path
-     * <p>
+
      * 模板路径
      */
     @GeneratorColumn(title = "模板路径")
     private String templatePath;
     /**
      * content path
-     * <p>
+
      * 内容路径
      */
     @GeneratorColumn(title = "内容路径")

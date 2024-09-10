@@ -1,5 +1,6 @@
 package com.publiccms.common.tools;
 
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -220,7 +221,7 @@ public class VerificationUtils {
         return encode(input, "SHA-256");
     }
 
-    private static byte[] iv = "1245656789012334".getBytes(Constants.DEFAULT_CHARSET);
+    private static byte[] iv = "1245656789012334".getBytes(StandardCharsets.UTF_8);
 
     /**
      * AES加密
@@ -231,7 +232,7 @@ public class VerificationUtils {
      */
     public static byte[] encryptAES(String input, String key) {
         try {
-            byte[] keybyte = CommonUtils.keep(key, 16, null).getBytes(Constants.DEFAULT_CHARSET);
+            byte[] keybyte = CommonUtils.keep(key, 16, null).getBytes(StandardCharsets.UTF_8);
             if (keybyte.length < 16) {
                 int lenght = keybyte.length;
                 keybyte = Arrays.copyOf(keybyte, 16);
@@ -240,7 +241,7 @@ public class VerificationUtils {
             SecretKeySpec secretKeySpec = new SecretKeySpec(keybyte, "AES");
             Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, new GCMParameterSpec(128, iv));
-            return cipher.doFinal(input.getBytes(Constants.DEFAULT_CHARSET));
+            return cipher.doFinal(input.getBytes(StandardCharsets.UTF_8));
         } catch (GeneralSecurityException e) {
             return Constants.EMPTY_BYTE_ARRAY;
         }
@@ -256,7 +257,7 @@ public class VerificationUtils {
      */
     public static String decryptAES(byte[] input, String key) {
         try {
-            byte[] keybyte = CommonUtils.keep(key, 16, null).getBytes(Constants.DEFAULT_CHARSET);
+            byte[] keybyte = CommonUtils.keep(key, 16, null).getBytes(StandardCharsets.UTF_8);
             if (keybyte.length < 16) {
                 int lenght = keybyte.length;
                 keybyte = Arrays.copyOf(keybyte, 16);
@@ -266,7 +267,7 @@ public class VerificationUtils {
             Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
             cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, new GCMParameterSpec(128, iv));
             byte[] ciphertext = cipher.doFinal(input);
-            return new String(ciphertext, Constants.DEFAULT_CHARSET);
+            return new String(ciphertext, StandardCharsets.UTF_8);
         } catch (GeneralSecurityException e) {
             return Constants.BLANK;
         }
@@ -284,14 +285,14 @@ public class VerificationUtils {
     @Deprecated
     public static String decrypt3DES(byte[] input, String key) {
         try {
-            byte[] sha1Key = sha1Encode(key).getBytes(Constants.DEFAULT_CHARSET);
+            byte[] sha1Key = sha1Encode(key).getBytes(StandardCharsets.UTF_8);
             DESedeKeySpec dks = new DESedeKeySpec(sha1Key);
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
             SecretKey sKey = keyFactory.generateSecret(dks);
             Cipher cipher = Cipher.getInstance("DESede");
             cipher.init(Cipher.DECRYPT_MODE, sKey);
             byte[] ciphertext = cipher.doFinal(input);
-            return new String(ciphertext, Constants.DEFAULT_CHARSET);
+            return new String(ciphertext, StandardCharsets.UTF_8);
         } catch (GeneralSecurityException e) {
             return Constants.BLANK;
         }

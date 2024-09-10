@@ -2,6 +2,7 @@ package com.publiccms.controller.admin.sys;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.Date;
@@ -75,7 +76,7 @@ public class TaskTemplateAdminController {
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), path);
-                content = new String(VerificationUtils.base64Decode(content), Constants.DEFAULT_CHARSET);
+                content = new String(VerificationUtils.base64Decode(content), StandardCharsets.UTF_8);
                 if (CmsFileUtils.createFile(filepath, content)) {
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
@@ -158,7 +159,7 @@ public class TaskTemplateAdminController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.attachment()
                 .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-tasktemplate.zip"),
-                        Constants.DEFAULT_CHARSET)
+                        StandardCharsets.UTF_8)
                 .build());
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override

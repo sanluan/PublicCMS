@@ -57,6 +57,11 @@ public class SafeConfigComponent implements Config {
     public static final String CONFIG_ALLOW_FILES = "allow_files";
 
     /**
+     * allow access urls
+     */
+    public static final String CONFIG_ALLOW_URLS = "allow_urls";
+
+    /**
      * allow return urls
      */
     public static final String CONFIG_RETURN_URL = "return_url";
@@ -189,6 +194,15 @@ public class SafeConfigComponent implements Config {
         return StringUtils.split(value, Constants.COMMA);
     }
 
+    public String[] getAllowUrls(SysSite site) {
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), CONFIG_CODE);
+        String value = config.get(CONFIG_ALLOW_URLS);
+        if (CommonUtils.empty(value)) {
+            return new String[] { site.getDynamicPath() };
+        }
+        return StringUtils.split(value, Constants.COMMA);
+    }
+
     private static boolean unSafe(String url, SysSite site, String contextPath) {
         String fixedUrl = url.substring(url.indexOf("://") + 1);
         return !(url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
@@ -225,6 +239,9 @@ public class SafeConfigComponent implements Config {
         extendFieldList.add(new SysExtendField(CONFIG_ALLOW_FILES, INPUTTYPE_TEXTAREA, false,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALLOW_FILES)), null,
                 StringUtils.join(CmsFileUtils.ALLOW_FILES, Constants.COMMA)));
+        extendFieldList.add(new SysExtendField(CONFIG_ALLOW_URLS, INPUTTYPE_TEXTAREA, false,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_ALLOW_URLS)), null,
+                site.getDynamicPath()));
         return extendFieldList;
     }
 

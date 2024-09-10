@@ -23,7 +23,7 @@
                 jDContent.ajaxUrl({
                     type: "POST", url: url, data: op.data, callback: function(response) {
                         jDContent.find("[layoutH]").layoutH(jDContent);
-                        $(":button.close", dialog).click(function() {
+                        $(":button.close", dialog).on("click", function() {
                             $.pdialog.close(dialog);
                             return false;
                         });
@@ -36,25 +36,25 @@
         } ,
         // 打开一个层
         open: function(url, dlgid, title, options) {
-            var op = $.extend({}, $.pdialog._op, options);
+            var op = $.extend({}, this._op, options);
             var dialog = $("body").data(dlgid);
             // 重复打开一个层
             if (dialog && !op.focusNewWindow) {
+                dialog.find(".dialogHeader").find("h1").text(title);
                 if (dialog.is(":hidden") ) {
                     dialog.show();
                 }
                 if (op.max ) {
-                    $.pdialog.maxsize(dialog);
+                    this.maxsize(dialog);
                     dialog.jresize("destroy").dialogDrag("destroy");
                 }
                 if (op.fresh || url != dialog.data("url") ) {
                     dialog.data("url", url);
-                    dialog.find(".dialogHeader").find("h1").text(title);
                     this.switchDialog(dialog);
                     var jDContent = dialog.find(".dialogContent");
                     jDContent.loadUrl(url, {}, function() {
                         jDContent.find("[layoutH]").layoutH(jDContent);
-                        $("button.close").click(function() {
+                        $("button.close").on("click", function() {
                             $.pdialog.close(dialog);
                             return false;
                         });
@@ -65,7 +65,6 @@
                   dlgid += Math.round(Math.random() * 10000000);
                 }
                 dialog = $($.parseHTML(JUI.frag["dialogFrag"], document, true)).appendTo($("body"));
-                dialog = $(dialog);
                 dialog.data("id", dlgid);
                 dialog.data("url", url);
                 if (options.close ) {
@@ -75,9 +74,9 @@
                     dialog.data("param", options.param);
                 }
                 dialog.find(".dialogHeader").find("h1").text(title);
-                dialog.css("zIndex", ( $.pdialog._zIndex += 2 ));
-                $.pdialog._init(dialog, options);
-                dialog.click(function() {
+                dialog.css("zIndex", ( this._zIndex += 2 ));
+                this._init(dialog, options);
+                dialog.on("click", function() {
                     $.pdialog.switchDialog(dialog);
                 });
                 if (op.resizable ) {
@@ -86,12 +85,12 @@
                 if (op.drawable ) {
                     dialog.dialogDrag();
                 }
-                $("a.close", dialog).click(function(event) {
+                $("a.close", dialog).on("click", function() {
                     $.pdialog.close(dialog);
                     return false;
                 });
                 if (op.maxable ) {
-                    $("a.maximize", dialog).show().click(function(event) {
+                    $("a.maximize", dialog).show().on("click", function() {
                         $.pdialog.switchDialog(dialog);
                         $.pdialog.maxsize(dialog);
                         dialog.jresize("destroy").dialogDrag("destroy");
@@ -100,23 +99,23 @@
                 } else {
                     $("a.maximize", dialog).hide();
                 }
-                $("a.restore", dialog).click(function(event) {
+                $("a.restore", dialog).on("click", function() {
                     $.pdialog.restore(dialog);
                     dialog.jresize().dialogDrag();
                     return false;
                 });
                 if (op.minable ) {
-                    $("a.minimize", dialog).show().click(function(event) {
+                    $("a.minimize", dialog).show().on("click", function() {
                         $.pdialog.minimize(dialog);
                         return false;
                     });
                 } else {
                     $("a.minimize", dialog).hide();
                 }
-                $("div.dialogHeader a", dialog).mousedown(function() {
+                $("div.dialogHeader a", dialog).on("mousedown", function() {
                     return false;
                 });
-                $("div.dialogHeader", dialog).dblclick(function() {
+                $("div.dialogHeader", dialog).on( "dblclick", function() {
                     if ($("a.restore", dialog).is(":hidden") ) {
                         $("a.maximize", dialog).trigger("click");
                     } else {
@@ -124,23 +123,22 @@
                     }
                 });
                 if (op.max ) {
-                    $.pdialog.maxsize(dialog);
+                    this.maxsize(dialog);
                     dialog.jresize("destroy").dialogDrag("destroy");
                 }
                 $("body").data(dlgid, dialog);
-                $.pdialog._current = dialog;
+                this._current = dialog;
                 // load data
                 var jDContent = $(".dialogContent", dialog);
                 jDContent.loadUrl(url, {}, function() {
                     jDContent.find("[layoutH]").layoutH(jDContent);
-                    $("button.close").click(function() {
+                    $("button.close").on("click", function() {
                         $.pdialog.close(dialog);
                         return false;
                     });
                 });
             }
             if (op.mask ) {
-                dialog.css("zIndex", 1000);
                 $("a.minimize", dialog).hide();
                 dialog.data("mask", true);
                 $("#dialogBackground").show();
@@ -159,11 +157,11 @@
          */
         switchDialog: function(dialog) {
             var index = dialog.css("zIndex");
-            if ($.pdialog._current ) {
-                var cindex = $($.pdialog._current).css("zIndex");
-                $.pdialog._current.css("zIndex", index);
+            if (this._current ) {
+                var cindex = this._current.css("zIndex");
+                this._current.css("zIndex", index);
                 dialog.css("zIndex", cindex);
-                $.pdialog._current = dialog;
+                this._current = dialog;
             }
             $.taskBar.switchTask(dialog.data("id"));
         } ,
@@ -263,14 +261,20 @@
             $("body").removeData(dialog.data("id"));
             dialog.trigger(JUI.eventType.pageClear).remove();
             this._current = null;
+            var maxIndex=0;
+            $("div[class=dialog]").each(function(){
+                var $this=$(this);
+                if(parseInt($this.css("zIndex")) > maxIndex){
+                    maxIndex=parseInt($this.css("zIndex"));
+                    $.pdialog._current=$this;
+                }
+            });
         },
         closeCurrent: function() {
-            if($.pdialog._current){
-                this.close($.pdialog._current);
-            }
+            this.close(this._current);
         },
         checkTimeout: function() {
-            var $conetnt = $(".dialogContent", $.pdialog._current);
+            var $conetnt = $(".dialogContent", this._current);
             var json = JUI.jsonEval($conetnt.html());
             if (json && json[JUI.keys.statusCode] == JUI.statusCode.timeout ) {
                 this.closeCurrent();
@@ -287,7 +291,7 @@
             dialog.css({
                 top: "0px", left: "0px", width: iContentW + "px", height: iContentH + "px"
             });
-            $.pdialog._resizeContent(dialog,iContentW,iContentH);
+            this._resizeContent(dialog,iContentW,iContentH);
         },
         restore: function(dialog) {
             var original = dialog.data("original");
@@ -296,7 +300,7 @@
             dialog.css({
                 top: original.top, left: original.left, width: dwidth, height: dheight
             });
-            $.pdialog._resizeContent(dialog,dwidth,dheight);
+            this._resizeContent(dialog,dwidth,dheight);
             $("a.maximize", dialog).show();
             $("a.restore", dialog).hide();
         },
@@ -339,7 +343,7 @@
         }
         return this.each(function() {
             var dialog = $(this);
-            $("div.dialogHeader", dialog).mousedown(function(e) {
+            $("div.dialogHeader", dialog).on("mousedown", function(e) {
                 $.pdialog.switchDialog(dialog);
                 dialog.data("task", true);
                 setTimeout(function() {
@@ -348,7 +352,7 @@
                     }
                 }, 100);
                 return false;
-            }).mouseup(function(e) {
+            }).on("mouseup", function(e) {
                 dialog.data("task", false);
                 return false;
             });
@@ -413,7 +417,7 @@
                 var resizable = $(".resizable");
                 $("div[class^=\"resizable\"]", dialog).each(function() {
                     var bar = this;
-                    $(bar).mousedown(function(event) {
+                    $(bar).on("mousedown", function(event) {
                         $.pdialog.switchDialog(dialog);
                         $.resizeTool.start(resizable, dialog, event, $(bar).attr("tar"));
                         return false;

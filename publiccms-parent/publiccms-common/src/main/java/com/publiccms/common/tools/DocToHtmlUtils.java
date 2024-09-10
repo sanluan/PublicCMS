@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -50,7 +51,6 @@ import org.fit.pdfdom.resource.HtmlResourceHandler;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.document.CustomPDFDomTree;
 import com.publiccms.common.document.CustomXHTMLConverter;
 
@@ -189,7 +189,7 @@ public class DocToHtmlUtils {
         tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
         Transformer serializer = tf.newTransformer();
-        serializer.setOutputProperty(OutputKeys.ENCODING, Constants.DEFAULT_CHARSET_NAME);
+        serializer.setOutputProperty(OutputKeys.ENCODING, StandardCharsets.UTF_8.name());
         serializer.setOutputProperty(OutputKeys.METHOD, "html");
         serializer.transform(domSource, streamResult);
         String html = new String(out.toByteArray());

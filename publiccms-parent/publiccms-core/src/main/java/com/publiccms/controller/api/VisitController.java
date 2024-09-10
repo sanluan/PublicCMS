@@ -41,7 +41,7 @@ public class VisitController {
      */
     @RequestMapping("record")
     @ResponseBody
-    public void record(@RequestAttribute SysSite site, String sessionId, String url, String title, Integer screenw,
+    public void recordData(@RequestAttribute SysSite site, String sessionId, String url, String title, Integer screenw,
             Integer screenh, @RequestHeader(value = "User-Agent", required = false) String userAgent, String referer,
             String itemType, String itemId, HttpServletRequest request) {
         Calendar now = Calendar.getInstance();

@@ -43,21 +43,21 @@ public class CmsSurvey implements java.io.Serializable {
     private short siteId;
     /**
      * user id
-     * <p>
+
      * 发布用户id
      */
     @GeneratorColumn(title = "发布用户", condition = true)
     private long userId;
     /**
      * survey type(survey,exam)
-     * <p>
+
      * 问卷类型(survey:问卷,exam:考试)
      */
     @GeneratorColumn(title = "问卷类型", condition = true)
     private String surveyType;
     /**
      * title
-     * <p>
+
      * 标题
      */
     @GeneratorColumn(title = "标题", condition = true, like = true)
@@ -66,7 +66,7 @@ public class CmsSurvey implements java.io.Serializable {
     private String title;
     /**
      * description
-     * <p>
+
      * 描述
      */
     @GeneratorColumn(title = "描述")
@@ -74,14 +74,14 @@ public class CmsSurvey implements java.io.Serializable {
     private String description;
     /**
      * votes
-     * <p>
+
      * 投票次数
      */
     @GeneratorColumn(title = "投票次数", order = true)
     private int votes;
     /**
      * start date
-     * <p>
+
      * 开始日期
      */
     @GeneratorColumn(title = "开始日期", condition = true, order = true)
@@ -89,7 +89,7 @@ public class CmsSurvey implements java.io.Serializable {
     private Date startDate;
     /**
      * end date
-     * <p>
+
      * 结束日期
      */
     @GeneratorColumn(title = "结束日期", condition = true, order = true)
@@ -97,14 +97,14 @@ public class CmsSurvey implements java.io.Serializable {
     private Date endDate;
     /**
      * allow anonymous
-     * <p>
+
      * 允许匿名
      */
     @GeneratorColumn(title = "允许匿名", condition = true)
     private boolean allowAnonymous;
     /**
      * create date
-     * <p>
+
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)

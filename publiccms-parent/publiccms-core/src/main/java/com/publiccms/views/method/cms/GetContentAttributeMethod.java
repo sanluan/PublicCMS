@@ -72,7 +72,7 @@ public class GetContentAttributeMethod extends BaseMethod {
 
     public Object execute(SysSite site, List<TemplateModel> arguments) throws TemplateModelException {
         Long id = getLong(0, arguments);
-        Boolean replaceKeywords = getBoolean(0, arguments);
+        Boolean replaceKeywords = getBoolean(1, arguments);
         if (CommonUtils.notEmpty(id) && null != site) {
             return ExtendUtils.getAttributeMap(service.getEntity(id),
                     null == replaceKeywords || Boolean.TRUE.equals(replaceKeywords)

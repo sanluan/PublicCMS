@@ -37,42 +37,42 @@ public class CmsContentRelated implements java.io.Serializable {
     private Long id;
     /**
      * content id
-     * <p>
+
      * 内容id
      */
     @GeneratorColumn(title = "内容", condition = true)
     private long contentId;
     /**
      * relation type
-     * <p>
+
      * 关系类型
      */
     @GeneratorColumn(title = "关系类型", condition = true)
     private String relationType;
     /**
      * relation
-     * <p>
+
      * 关系
      */
     @GeneratorColumn(title = "关系", condition = true)
     private String relation;
     /**
      * related content id
-     * <p>
+
      * 推进内容id
      */
     @GeneratorColumn(title = "推荐内容", condition = true)
     private Long relatedContentId;
     /**
      * related user id
-     * <p>
+
      * 推进用户id
      */
     @GeneratorColumn(title = "推荐用户", condition = true)
     private long userId;
     /**
      * url
-     * <p>
+
      * 链接地址
      */
     @GeneratorColumn(title = "推荐地址")
@@ -80,7 +80,7 @@ public class CmsContentRelated implements java.io.Serializable {
     private String url;
     /**
      * title
-     * <p>
+
      * 标题
      */
     @GeneratorColumn(title = "推荐标题")
@@ -89,7 +89,7 @@ public class CmsContentRelated implements java.io.Serializable {
     private String title;
     /**
      * description
-     * <p>
+
      * 描述
      */
     @GeneratorColumn(title = "推荐描述")
@@ -97,7 +97,7 @@ public class CmsContentRelated implements java.io.Serializable {
     private String description;
     /**
      * sort
-     * <p>
+
      * 排序
      */
     @GeneratorColumn(title = "排序")

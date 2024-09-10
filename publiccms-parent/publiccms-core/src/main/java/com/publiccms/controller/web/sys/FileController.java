@@ -2,6 +2,7 @@ package com.publiccms.controller.web.sys;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -22,12 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -173,7 +173,7 @@ public class FileController {
                 HttpHeaders headers = new HttpHeaders();
                 if (CommonUtils.notEmpty(filename)) {
                     headers.setContentDisposition(
-                            ContentDisposition.attachment().filename(filename, Constants.DEFAULT_CHARSET).build());
+                            ContentDisposition.attachment().filename(filename, StandardCharsets.UTF_8).build());
                 }
                 String sendfile = request.getHeader(CmsFileUtils.HEADERS_SEND_CTRL);
                 if (CmsFileUtils.HEADERS_SEND_NGINX.equalsIgnoreCase(sendfile)) {

@@ -8,5 +8,6 @@ dependencies {
     implementation project(path:':publiccms-core', configuration: 'instrumentedJars')
     implementation project(':publiccms-core')
 
-    runtimeOnly "javax.servlet:javax.servlet-api:${servletVersion}"
+    providedCompile "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
+    providedCompile "javax.servlet:javax.servlet-api:${servletVersion}"
 }

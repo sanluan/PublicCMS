@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.7.14"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.7.18"
     }
 }
 
@@ -23,7 +23,7 @@ subprojects {
     apply plugin: "eclipse-wtp"
 
     group = "com.publiccms"
-    version = "V4.0.202406.d"
+    version = "V4.0.202406.e"
 
     test.enabled = false
 
@@ -34,7 +34,7 @@ subprojects {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
         // 6.0,6.1 for Java 17
-        springVersion = "5.3.37"
+        springVersion = "5.3.39"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
         // 3.0,3.1 for Java 17
@@ -74,12 +74,12 @@ subprojects {
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "8.11.2"
         // http://mvnrepository.com/artifact/redis.clients/jedis
-        jedisVersion = "5.1.4"
+        jedisVersion = "5.1.5"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         quartzVersion = "2.3.2"
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
         // https://github.com/brettwooldridge/HikariCP
-        // Java 11+ maven artifact: 5.0.1
+        // Java 11+ maven artifact: 5.0,5.1
         hikariCPVersion = "4.0.3"
         // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
         mysqlVersion = "9.0.0"
@@ -96,13 +96,13 @@ subprojects {
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
         collectionsVersion = "4.4"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-        langVersion = "3.16.0"
+        langVersion = "3.17.0"
         // http://mvnrepository.com/artifact/commons-io/commons-io
         ioVersion = "2.16.1"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-text
         textVersion = "1.12.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
-        compressVersion = "1.27.0"
+        compressVersion = "1.27.1"
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
         codecVersion = "1.17.1"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
@@ -119,8 +119,10 @@ subprojects {
         jbig2Version = "3.0.4"
         // https://mvnrepository.com/artifact/com.github.bgalek.security.svg/safe-svg
         safeSvgVersion = "1.1.7"
-        // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
-        userAgentUtilsVersion = "1.21"
+        // http://mvnrepository.com/artifact/com.blueconic/browscap-java
+        browscapVersion = "1.4.4"
+        // https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc
+        therapiJavadocVersion = "0.15.0"
         // https://mvnrepository.com/artifact/org.jsoup/jsoup
         jsoupVersion = "1.18.1"
         // https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api

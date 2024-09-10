@@ -1,6 +1,7 @@
 package com.publiccms.common.tools;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -74,7 +75,7 @@ public class ExtendUtils {
     private static String replaceEachOnce(final String text, final String[] searchList, final String[] replacementList,
             AtomicInteger counter) {
         if (StringUtils.isEmpty(text) || ArrayUtils.isEmpty(searchList) || ArrayUtils.isEmpty(replacementList)
-                || counter.get() <= 0) {
+                || null != counter && counter.get() <= 0) {
             return text;
         }
 
@@ -92,7 +93,7 @@ public class ExtendUtils {
             if (noMoreMatchesForReplIndex[i] || searchList[i] == null || searchList[i].isEmpty() || replacementList[i] == null) {
                 continue;
             }
-            tempIndex = text.indexOf(searchList[i]);
+            tempIndex = StringUtils.indexOfIgnoreCase(text, searchList[i]);
             if (tempIndex == -1) {
                 noMoreMatchesForReplIndex[i] = true;
             } else if (textIndex == -1 || tempIndex < textIndex) {
@@ -116,7 +117,7 @@ public class ExtendUtils {
         }
         increase = Math.min(increase, text.length() / 5);
         final StringBuilder buf = new StringBuilder(text.length() + increase);
-        while (textIndex != -1 && counter.getAndDecrement() > 0) {
+        while (textIndex != -1 && (null == counter || counter.getAndDecrement() > 0)) {
             for (int i = start; i < textIndex; i++) {
                 buf.append(text.charAt(i));
             }
@@ -130,7 +131,7 @@ public class ExtendUtils {
                         || replacementList[i] == null) {
                     continue;
                 }
-                tempIndex = text.indexOf(searchList[i], start);
+                tempIndex = StringUtils.indexOfIgnoreCase(text, searchList[i], start);
                 if (tempIndex == -1) {
                     noMoreMatchesForReplIndex[i] = true;
                 } else if (textIndex == -1 || tempIndex < textIndex) {
@@ -146,25 +147,48 @@ public class ExtendUtils {
         return buf.toString();
     }
 
+    /**
+     * @param text
+     * @param keywordsConfig
+     * @return
+     */
+    public static String replaceSensitive(String text, KeywordsConfig keywordsConfig) {
+        if (null != keywordsConfig && CommonUtils.notEmpty(text) && CommonUtils.notEmpty(keywordsConfig.getSensitiveWords())
+                && CommonUtils.notEmpty(keywordsConfig.getReplaceWords())) {
+            return StringUtils.replaceEach(text, keywordsConfig.getSensitiveWords(), keywordsConfig.getReplaceWords());
+        } else {
+            return text;
+        }
+    }
+
+    /**
+     * @param html
+     * @param keywordsConfig
+     * @return
+     */
     public static String replaceText(String html, KeywordsConfig keywordsConfig) {
-        if (null != keywordsConfig && CommonUtils.notEmpty(html) && CommonUtils.notEmpty(keywordsConfig.getWords())
-                && CommonUtils.notEmpty(keywordsConfig.getWordWithUrls())) {
-            Matcher matcher = HTML_PATTERN.matcher(html);
-            StringBuilder sb = new StringBuilder();
-            int end = 0;
-            AtomicInteger counter = new AtomicInteger(keywordsConfig.getMax());
-            String[] replacementList = Arrays.copyOf(keywordsConfig.getWordWithUrls(), keywordsConfig.getWordWithUrls().length);
-            while (matcher.find() && counter.get() > 0) {
-                String temp = matcher.group();
-                sb.append(html.substring(end, matcher.start())).append(">");
-                sb.append(replaceEachOnce(matcher.group(1), keywordsConfig.getWords(), replacementList, counter));
-                sb.append(temp.substring(temp.length() - 3, temp.length()));
-                end = matcher.end();
+        if (null != keywordsConfig && CommonUtils.notEmpty(html)) {
+            if (CommonUtils.notEmpty(keywordsConfig.getWords()) && CommonUtils.notEmpty(keywordsConfig.getWordWithUrls())) {
+                Matcher matcher = HTML_PATTERN.matcher(html);
+                StringBuilder sb = new StringBuilder();
+                int end = 0;
+                AtomicInteger counter = new AtomicInteger(keywordsConfig.getMax());
+                String[] replacementList = null == keywordsConfig.getWordWithUrls() ? null
+                        : Arrays.copyOf(keywordsConfig.getWordWithUrls(), keywordsConfig.getWordWithUrls().length);
+                while (matcher.find() && counter.get() > 0) {
+                    String temp = matcher.group();
+                    sb.append(html.substring(end, matcher.start())).append(">");
+                    sb.append(replaceEachOnce(matcher.group(1), keywordsConfig.getWords(), replacementList, counter));
+                    sb.append(temp.substring(temp.length() - 3, temp.length()));
+                    end = matcher.end();
+                }
+                if (end < html.length()) {
+                    sb.append(html.substring(end, html.length()));
+                }
+                return replaceSensitive(sb.toString(), keywordsConfig);
+            } else {
+                return replaceSensitive(html, keywordsConfig);
             }
-            if (end < html.length()) {
-                sb.append(html.substring(end, html.length()));
-            }
-            return sb.toString();
         } else {
             return html;
         }
@@ -243,7 +267,7 @@ public class ExtendUtils {
                 } else if (null != extend.getMaxlength()) {
                     if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extend.getInputType())) {
                         value = HtmlUtils.cleanUnsafeHtml(
-                                HtmlUtils.keep(new String(VerificationUtils.base64Decode(value), Constants.DEFAULT_CHARSET),
+                                HtmlUtils.keep(new String(VerificationUtils.base64Decode(value), StandardCharsets.UTF_8),
                                         extend.getMaxlength()),
                                 sitePath);
                     } else {
@@ -253,7 +277,7 @@ public class ExtendUtils {
                 } else {
                     if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extend.getInputType())) {
                         value = HtmlUtils.cleanUnsafeHtml(
-                                new String(VerificationUtils.base64Decode(value), Constants.DEFAULT_CHARSET), sitePath);
+                                new String(VerificationUtils.base64Decode(value), StandardCharsets.UTF_8), sitePath);
                         map.put(extend.getId().getCode(), value);
                     }
                 }

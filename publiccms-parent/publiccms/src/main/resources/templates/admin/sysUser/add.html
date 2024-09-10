@@ -1,4 +1,4 @@
-<@sys.user id=id absoluteURL=false>
+<@sys.user id=id absoluteURL=false replaceSensitive=false>
     <#assign
         a=object
         deptId=(a.deptId)!''
@@ -33,7 +33,7 @@
                     <span class="info"><@t.page 'user.dept.description'/></span>
                 </dd>
             </dl>
-            <dl class="nowrap">
+            <dl class="nowrap superuser hide">
                 <dt><@t.page 'user.content_permissions'/>:</dt>
                 <dd>
                     <select class="combox required" name="contentPermissions">

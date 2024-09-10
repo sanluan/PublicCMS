@@ -21,14 +21,14 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <version.publiccms>V4.0.202406.d</version.publiccms>
+        <version.publiccms>V4.0.202406.e</version.publiccms>
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
         <!-- 5,6 for jakarta -->
         <version.servlet>4.0.1</version.servlet>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
         <!-- 6.0,6.1 for Java 17 -->
-        <version.spring>5.3.37</version.spring>
+        <version.spring>5.3.39</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
         <!-- 3.0,3.1 for Java 17 -->
@@ -44,6 +44,7 @@
         <version.hibernateTools>5.6.15.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
+        <!-- 7.0 for Java 11 -->
         <version.hibernateSearch>6.2.4.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <!-- 6.1,7,8 for jakarta -->
@@ -69,12 +70,12 @@
         <version.lucene>8.11.2</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <!-- https://github.com/redis/jedis -->
-        <version.jedis>5.1.4</version.jedis>
+        <version.jedis>5.1.5</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
         <!-- https://github.com/brettwooldridge/HikariCP -->
-        <!-- Java 11+ maven artifact: 5.0.1 -->
+        <!-- Java 11+ maven artifact: 5.0,5.1 -->
         <version.hikariCP>4.0.3</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
         <version.mysql>9.0.0</version.mysql>
@@ -91,13 +92,13 @@
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
         <version.collections>4.4</version.collections>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-        <version.lang>3.16.0</version.lang>
+        <version.lang>3.17.0</version.lang>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <version.io>2.16.1</version.io>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <version.text>1.12.0</version.text>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
-        <version.compress>1.27.0</version.compress>
+        <version.compress>1.27.1</version.compress>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.17.1</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
@@ -114,8 +115,10 @@
         <version.jbig2>3.0.4</version.jbig2>
         <!-- https://mvnrepository.com/artifact/com.github.bgalek.security.svg/safe-svg -->
         <version.safeSvg>1.1.7</version.safeSvg>
-        <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
-        <version.userAgentUtils>1.21</version.userAgentUtils>
+        <!-- https://mvnrepository.com/artifact/com.blueconic/browscap-java -->
+        <version.browscap>1.4.4</version.browscap>
+        <!-- https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc -->
+        <version.therapiJavadoc>0.15.0</version.therapiJavadoc>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
         <version.jsoup>1.18.1</version.jsoup>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
@@ -480,9 +483,20 @@
                 <version>${version.safeSvg}</version>
             </dependency>
             <dependency>
-                <groupId>eu.bitwalker</groupId>
-                <artifactId>UserAgentUtils</artifactId>
-                <version>${version.userAgentUtils}</version>
+                <groupId>com.blueconic</groupId>
+                <artifactId>browscap-java</artifactId>
+                <version>${version.browscap}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.therapi</groupId>
+                <artifactId>therapi-runtime-javadoc-scribe</artifactId>
+                <version>${version.therapiJavadoc}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.therapi</groupId>
+                <artifactId>therapi-runtime-javadoc</artifactId>
+                <version>${version.therapiJavadoc}</version>
             </dependency>
             <dependency>
                 <groupId>org.jsoup</groupId>
@@ -531,12 +545,15 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${version.springBoot}</version>
+                <configuration>
+                  <skip>true</skip>
+                </configuration>
             </plugin>
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.5.0</version>
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
@@ -545,7 +562,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <version>3.13.0</version>
                 <configuration>
                     <compilerArgs>
                         <arg>-parameters</arg>
@@ -553,6 +570,15 @@
                     <compilerArguments>
                         <extdirs>src\main\webapp\WEB-INF\lib</extdirs>
                     </compilerArguments>
+                </configuration>
+            </plugin>
+            <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.17.1</version>
+                <configuration>
+                    <ignoredVersions>.+-rc\d,.+-M\d,.+-beta\d,.+\.Beta\d,.+-alpha\d,.+\.Alpha\d</ignoredVersions>
                 </configuration>
             </plugin>
             <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-war-plugin -->

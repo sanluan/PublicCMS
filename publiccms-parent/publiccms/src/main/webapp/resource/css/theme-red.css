@@ -17,7 +17,8 @@ header .nav>li>ul a,header .nav>li>ul a:hover{color:#8f0006;}
 #sidebar_s{background-color:#FA5151;}
 .tabsPage{background-color:#edf1f5;}
 .accordion .accordionHeader{background-color:#b52e31;}
-.accordion .accordionHeader h2.collapsable,.accordion .accordionHeader a h2.collapsable,.accordion .accordionContent h2{background-color:#FA5151;color:#fff;}
+.accordion .accordionHeader h2.collapsable,.accordion .accordionHeader a h2.collapsable,
+.accordion .accordionContent h2{background-color:#FA5151;color:#fff;}
 .accordion .accordionContent{background-color:#FAE1E1;}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC;}
 
@@ -29,11 +30,11 @@ header .nav>li>ul a,header .nav>li>ul a:hover{color:#8f0006;}
 .tabsPage .tabsPageHeader{background-color:#e7ecf0;}
 .tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight{color:#333;}
 .tabsPage .tabsPageHeader li a{background-color:#fff;color:#333333;}
-.tabsPage .tabsPageHeader li.selected a,.tabsPage .tabsPageHeader li:hover a{background-color:#FA5151;color:#fff;}
+.tabsPage .tabsPageHeader li.selected a,.tabsPage .tabsPageHeader li:hover a,
+.tabsPage .tabsMoreList li a:hover,.tabsPage .tabsMoreList li.selected a{background-color:#FA5151;color:#fff;}
 .tabsPage .tabsPageHeader li.selected a.close,.tabsPage .tabsPageHeader li:hover a.close{background-color:#fff;color:#8f0006;}
 .tabsPage .tabsMoreList{background-color:#fff;border-color:#dde2ec;}
 .tabsPage .tabsMoreList li a{color:#333;}
-.tabsPage .tabsMoreList li a:hover,.tabsPage .tabsMoreList li.selected a{background-color:#D8403D;color:#fff;}
 
 .page{background-color:#e7ecf0;}
 

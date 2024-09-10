@@ -1,5 +1,6 @@
 package config.initializer;
 
+import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 
 import javax.servlet.DispatcherType;
@@ -16,7 +17,6 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.HttpRequestHandlerServlet;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 
 /**
@@ -62,7 +62,7 @@ public class ResourceInitializer implements WebApplicationInitializer {
 
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+        characterEncodingFilter.setEncoding(StandardCharsets.UTF_8.name());
         characterEncodingFilter.setForceEncoding(true);
         return new Filter[] { characterEncodingFilter };
     }

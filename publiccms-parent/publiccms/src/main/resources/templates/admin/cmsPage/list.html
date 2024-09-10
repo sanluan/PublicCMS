@@ -13,22 +13,27 @@
         <@sys.deptItem itemType='page' deptId=admin.deptId!'' itemIds=t.pages!><#assign deptPageMap=map!/></@sys.deptItem>
         <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
         <#list list as a>
-            <#local path=filepath?has_content?then(filepath+'/','')+a.fileName>
-            <#if (deptPageMap[path])?has_content&&deptPageMap[path]>
-                <li<#if a.directory> _src="cmsPage/list.html?parent=${path}"</#if>>
-                <#if a.directory>
-                    <a href="javascript:;" onclick="return false;">${a.fileName}</a>
-                <#else>
-                    <a href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="pageBox">
-                        <@tools.metadata path=path>
-                           <#if lockMap?has_content && lockMap[path]?has_content>
-                              <#assign lockUser=(userMap[lockMap[path].userId?string].nickname)!''/>
-                              <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"></i>
-                           </#if>
-                           ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
-                        </@tools.metadata>
-                    </a>
-                </#if>
+            <#local currentPath=filepath?has_content?then(filepath+'/','')+a.fileName>
+            <#if (deptPageMap[currentPath])?has_content&&deptPageMap[currentPath]>
+                <li<#if a.directory><#if (path?has_content && path?starts_with(currentPath+'/'))> class="expand"<#else> _src="cmsPage/list.html?parent=${currentPath?url}"</#if><#elseif path?has_content && path=currentPath> class="selected"</#if>>
+                    <#if a.directory>
+                        <a href="javascript:;" onclick="return false;">${a.fileName}</a>
+                        <#if path?has_content && path?starts_with(currentPath+'/')>
+                            <ul>
+                                 <@pageList currentPath/>
+                            </ul> 
+                        </#if>
+                    <#else>
+                        <a href="cmsPage/metadata.html?path=${(currentPath?url)!}" target="ajax" rel="pageBox">
+                            <@tools.metadata path=currentPath>
+                               <#if lockMap?has_content && lockMap[currentPath]?has_content>
+                                  <#assign lockUser=(userMap[lockMap[currentPath].userId?string].nickname)!''/>
+                                  <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[currentPath].createDate}"></i>
+                               </#if>
+                               ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
+                            </@tools.metadata>
+                        </a>
+                    </#if>
                 </li>
             </#if>
         <#else>

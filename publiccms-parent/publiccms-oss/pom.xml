@@ -19,7 +19,12 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>s3</artifactId>
-            <version>2.27.5</version>
+            <version>2.27.19</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.therapi</groupId>
+            <artifactId>therapi-runtime-javadoc-scribe</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>

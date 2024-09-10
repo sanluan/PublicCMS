@@ -107,7 +107,7 @@
                         <h3>
                             [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
                             ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
-                            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" width="1000" height="600" rel="viewContent${a.id}">${(a.title?no_esc)!}</a>
+                            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" width="1200" height="600" rel="viewContent${a.id}">${(a.title?no_esc)!}</a>
                         </h3>
                         <p>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>

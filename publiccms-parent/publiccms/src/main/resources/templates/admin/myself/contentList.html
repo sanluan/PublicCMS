@@ -106,7 +106,7 @@
                         <h3>
                             [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
                             ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
-                            <a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" width="1000" height="600" rel="viewContent${contentId}">${(a.title)!}</a>
+                            <a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" width="1200" height="600" rel="viewContent${contentId}">${(a.title)!}</a>
                         </h3>
                         <p>
                             <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
@@ -136,7 +136,7 @@
                     </#if>
                     <#if authorizedMap['cmsContent/push']>
                         <#if 1==a.status>
-                            <a href="cmsContent/push.html?contentId=${contentId}" class="btnText green" target="dialog" mask="true"><@t.page 'button.push'/></a>
+                            <a href="cmsContent/push.html?contentId=${contentId}" class="btnText green" width="1200" height="600" target="dialog" mask="true"><@t.page 'button.push'/></a>
                         </#if>
                     </#if>
                 </td>

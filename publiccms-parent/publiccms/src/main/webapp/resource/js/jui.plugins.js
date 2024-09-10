@@ -1,5 +1,5 @@
 JUI.regPlugins.push(function($p){
-    $(".searchBar .searchContent", $p).click(function(event){
+    $(".searchBar .searchContent", $p).on("click", function(event){
         if($(event.target).is("ul")||$(event.target).is("li")){
             $content = $(this).closest(".pageHeader").next().find("[layouth]");
             var height = $(this).height();
@@ -199,12 +199,12 @@ JUI.regPlugins.push(function($p){
 JUI.regPlugins.push(function($p){
     $("a.view[target=_blank]", $p).each(function(){
         $btn=$(this);
-        $input=$("input[name="+escapeJquery($(this).attr("ref"))+"]",$(this).parents(".unitBox:first"));
+        $input=$("input[name="+$.escapeSelector($(this).attr("ref"))+"]",$(this).parents(".unitBox:first"));
         function control(){
             if($(this).val()){
-                $("a.view[target=_blank][ref="+escapeJquery($(this).attr("name"))+"]").show();
+                $("a.view[target=_blank][ref="+$.escapeSelector($(this).attr("name"))+"]").show();
             }else{
-                $("a.view[target=_blank][ref="+escapeJquery($(this).attr("name"))+"]").hide();
+                $("a.view[target=_blank][ref="+$.escapeSelector($(this).attr("name"))+"]").hide();
             }
         }
         $input.change(control);
@@ -213,8 +213,8 @@ JUI.regPlugins.push(function($p){
         }else{
             $btn.hide();
         }
-        $btn.click(function(){
-            var value=$("input[name="+escapeJquery($(this).attr("ref"))+"]",$(this).parents(".unitBox:first")).val();
+        $btn.on("click", function(){
+            var value=$("input[name="+$.escapeSelector($(this).attr("ref"))+"]",$(this).parents(".unitBox:first")).val();
             if(value){
                 if(value.isUrl() ){
                     $(this).attr("href",value);
@@ -254,7 +254,7 @@ JUI.regPlugins.push(function($p){
                         $.each(json, function(i) {
                             $combox.find("li a[value="+json[i]+"]").parent().addClass("disabled").hide();
                             if($combox.find("li a[value="+json[i]+"]").hasClass("selected")){
-                                $combox.find("li:visible:eq(0) a").click();
+                                $combox.find("li:visible").eq(0).find(a).trigger("click");
                             }
                         });
                     });
@@ -265,7 +265,7 @@ JUI.regPlugins.push(function($p){
                         $.each(json, function(i) {
                             $tree.find("li a[tvalue="+json[i]+"]").parent().parent().addClass("disabled").hide();
                             if($tree.find("li a[tvalue="+json[i]+"]").parent().find("[type=checkbox]").is(":checked")){
-                                $tree.find("li a[tvalue="+json[i]+"]").click();
+                                $tree.find("li a[tvalue="+json[i]+"]").trigger("click");
                             }
                         });
                     });
@@ -277,7 +277,7 @@ JUI.regPlugins.push(function($p){
                             if($checkbox.val()==json[i]){
                                 $checkbox.parent().hide();
                                 if($checkbox.is(":checked")){
-                                    $checkbox.click();
+                                    $checkbox.trigger("click");
                                 }
                             }
                         });
@@ -447,7 +447,7 @@ $(document).keydown(function(e){
     } else if(e.keyCode == JUI.keyCode.CHAR_S && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
         var formSubmit=$("form",!$.pdialog.getCurrent() ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).not(".pagerForm").find("[type=submit]:eq(0)");
         if(formSubmit.length){
-          formSubmit.click();
+          formSubmit.trigger("click");
           e.preventDefault();
         }
     }

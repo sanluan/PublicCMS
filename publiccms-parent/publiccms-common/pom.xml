@@ -9,7 +9,6 @@
     <artifactId>publiccms-common</artifactId>
     <name>publiccms-common</name>
     <dependencies>
-        
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
@@ -159,10 +158,6 @@
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>jakarta.mail</artifactId>
         </dependency>
         <dependency>
             <groupId>jakarta.annotation</groupId>

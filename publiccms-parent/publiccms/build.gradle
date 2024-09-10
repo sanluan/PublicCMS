@@ -31,6 +31,8 @@ dependencies {
     testImplementation ("org.hibernate:hibernate-tools:${hibernateToolsVersion}") {
         exclude group:"org.eclipse.jdt", module: 'org.eclipse.jdt.core'
     }
+    // https://mvnrepository.com/artifact/cn.smallbun.screw/screw-core
+    testImplementation "cn.smallbun.screw:screw-core:1.0.5"
 
     providedCompile "org.mybatis.generator:mybatis-generator-core:${mybatisGenerator}"
     providedCompile "javax.servlet:javax.servlet-api:${servletVersion}"

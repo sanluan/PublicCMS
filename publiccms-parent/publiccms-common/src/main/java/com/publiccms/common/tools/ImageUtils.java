@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class ImageUtils {
      * @return base64 encoded picture
      * @throws IOException
      */
-    public static String getImageData(int width, int height, String text) throws IOException {
+    public static String generateImageData(int width, int height, String text) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         drawImage(width, height, text, byteArrayOutputStream);
         byteArrayOutputStream.close();
@@ -221,7 +222,7 @@ public class ImageUtils {
         SvgSecurityValidator svgSecurityValidator = SvgSecurityValidator.builder().withAdditionalElements(safeElementsList)
                 .withAdditionalAttributes(safeAttributesList).build();
         ValidationResult validation;
-        validation = svgSecurityValidator.validate(FileUtils.readFileToString(imageFile, Constants.DEFAULT_CHARSET));
+        validation = svgSecurityValidator.validate(FileUtils.readFileToString(imageFile, StandardCharsets.UTF_8));
         if (validation.hasViolations()) {
             log.error("unsafe svg file:");
             log.error(imageFile.getAbsolutePath());

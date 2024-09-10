@@ -1,11 +1,16 @@
 package com.publiccms.views.method.tools;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -21,9 +26,14 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.TemplateModelUtils;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SafeConfigComponent;
 
+import freemarker.core.Environment;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
@@ -61,55 +71,75 @@ console.log(data);
  */
 @Component
 public class GetHtmlMethod extends BaseMethod {
+    @Resource
+    private SafeConfigComponent safeConfigComponent;
+
+    @Override
+    public Object execute(HttpServletRequest request, List<TemplateModel> arguments) throws TemplateModelException {
+        SysSite site = (SysSite) request.getAttribute("site");
+        return execute(site, arguments);
+    }
 
     @Override
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
+        TemplateModel model = Environment.getCurrentEnvironment().getGlobalVariable(CommonConstants.getAttributeSite());
+        SysSite site = null;
+        if (null != model) {
+            site = (SysSite) TemplateModelUtils.converBean(model);
+        }
+        return execute(site, arguments);
+    }
+
+    public Object execute(SysSite site, List<TemplateModel> arguments) throws TemplateModelException {
         String url = getString(0, arguments);
         Map<?, ?> parameters = getMap(1, arguments);
         String body = getString(1, arguments);
         Map<?, ?> headers = getMap(2, arguments);
         String html = null;
         if (CommonUtils.notEmpty(url)) {
-            try (CloseableHttpClient httpclient = HttpClients.custom()
-                    .setDefaultRequestConfig(Constants.defaultRequestConfig).build()) {
-                HttpUriRequest request;
-                if (!parameters.isEmpty() || CommonUtils.notEmpty(body)) {
-                    HttpPost httppost = new HttpPost(url);
-                    if (!parameters.isEmpty()) {
-                        List<NameValuePair> nvps = new ArrayList<>();
-                        Iterator<?> it = parameters.keySet().iterator();
-                        while (it.hasNext()) {
-                            String key = (String) it.next();
-                            Object value = parameters.get(key);
-                            nvps.add(new BasicNameValuePair(key, null == value ? null : value.toString()));
+            if (StringUtils.startsWithAny(url, safeConfigComponent.getAllowUrls(site))) {
+                try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(Constants.defaultRequestConfig)
+                        .build()) {
+                    HttpUriRequest request;
+                    if (!parameters.isEmpty() || CommonUtils.notEmpty(body)) {
+                        HttpPost httppost = new HttpPost(url);
+                        if (!parameters.isEmpty()) {
+                            List<NameValuePair> nvps = new ArrayList<>();
+                            Iterator<?> it = parameters.keySet().iterator();
+                            while (it.hasNext()) {
+                                String key = (String) it.next();
+                                Object value = parameters.get(key);
+                                nvps.add(new BasicNameValuePair(key, null == value ? null : value.toString()));
+                            }
+                            httppost.setEntity(new UrlEncodedFormEntity(nvps, StandardCharsets.UTF_8));
+                        } else {
+                            httppost.setEntity(new StringEntity(body, StandardCharsets.UTF_8));
                         }
-                        httppost.setEntity(new UrlEncodedFormEntity(nvps, Constants.DEFAULT_CHARSET));
+                        request = httppost;
                     } else {
-                        httppost.setEntity(new StringEntity(body, Constants.DEFAULT_CHARSET));
+                        request = new HttpGet(url);
                     }
-                    request = httppost;
-                } else {
-                    request = new HttpGet(url);
-                }
-                if (!headers.isEmpty()) {
-                    for (Entry<?, ?> entry : headers.entrySet()) {
-                        request.addHeader((String) entry.getKey(), (String) entry.getValue());
+                    if (!headers.isEmpty()) {
+                        for (Entry<?, ?> entry : headers.entrySet()) {
+                            request.addHeader((String) entry.getKey(), (String) entry.getValue());
+                        }
                     }
-                }
-                try (CloseableHttpResponse response = httpclient.execute(request)) {
-                    HttpEntity entity = response.getEntity();
-                    if (null != entity) {
-                        html = EntityUtils.toString(entity, Constants.DEFAULT_CHARSET);
-                        EntityUtils.consume(entity);
+                    try (CloseableHttpResponse response = httpclient.execute(request)) {
+                        HttpEntity entity = response.getEntity();
+                        if (null != entity) {
+                            html = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+                            EntityUtils.consume(entity);
+                        }
                     }
+                } catch (Exception e) {
+                    log.error(e.getMessage());
+                    html = e.getMessage();
                 }
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                return null;
+            } else {
+                html = "verify.custom.url.unsafe";
             }
-            return html;
         }
-        return null;
+        return html;
     }
 
     @Override
