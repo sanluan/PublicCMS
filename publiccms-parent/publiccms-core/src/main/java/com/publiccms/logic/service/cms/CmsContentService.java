@@ -233,7 +233,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         }
         if (null != attribute.getText() && base64) {
             attribute.setText(HtmlUtils.cleanUnsafeHtml(
-                    new String(VerificationUtils.base64Decode(attribute.getText()), Constants.DEFAULT_CHARSET),
+                    new String(VerificationUtils.base64Decode(attribute.getText()), StandardCharsets.UTF_8),
                     site.getSitePath()));
         }
     }
