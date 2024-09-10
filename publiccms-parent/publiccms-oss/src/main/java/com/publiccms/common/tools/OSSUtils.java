@@ -1,12 +1,11 @@
 package com.publiccms.common.tools;
 
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.time.Instant;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-
-import com.publiccms.common.constants.Constants;
 
 import software.amazon.awssdk.auth.signer.internal.SignerConstant;
 import software.amazon.awssdk.auth.signer.internal.SigningAlgorithm;
@@ -25,11 +24,11 @@ public class OSSUtils {
     }
 
     public static byte[] computeSignature(String stringToSign, byte[] signingKey) throws InvalidKeyException {
-        return sign(stringToSign.getBytes(Constants.DEFAULT_CHARSET), signingKey, SigningAlgorithm.HmacSHA256);
+        return sign(stringToSign.getBytes(StandardCharsets.UTF_8), signingKey, SigningAlgorithm.HmacSHA256);
     }
 
     public static byte[] newSigningKey(String secretAccessKey, String dateStamp, String regionName) throws InvalidKeyException {
-        byte[] kSecret = CommonUtils.joinString("AWS4", secretAccessKey).getBytes(Constants.DEFAULT_CHARSET);
+        byte[] kSecret = CommonUtils.joinString("AWS4", secretAccessKey).getBytes(StandardCharsets.UTF_8);
         byte[] kDate = sign(dateStamp, kSecret, SigningAlgorithm.HmacSHA256);
         byte[] kRegion = sign(regionName, kDate, SigningAlgorithm.HmacSHA256);
         byte[] kService = sign("s3", kRegion, SigningAlgorithm.HmacSHA256);
@@ -37,7 +36,7 @@ public class OSSUtils {
     }
 
     private static byte[] sign(String stringData, byte[] key, SigningAlgorithm algorithm) throws InvalidKeyException {
-        byte[] data = stringData.getBytes(Constants.DEFAULT_CHARSET);
+        byte[] data = stringData.getBytes(StandardCharsets.UTF_8);
         return sign(data, key, algorithm);
     }
 

@@ -1,11 +1,10 @@
 package com.publiccms.common.generator;
 
-import static com.publiccms.common.constants.Constants.DEFAULT_CHARSET_NAME;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -234,23 +233,19 @@ public class SourceGenerator {
         model.put("conditionList", conditionMap.values());
 
         String daoPath = CommonUtils.joinString(JAVA_BASE_PATH, basePackage.replace(Constants.DOT, Constants.SEPARATOR),
-                Constants.SEPARATOR, daoPack.replace(Constants.DOT, Constants.SEPARATOR),
-                Constants.SEPARATOR);
+                Constants.SEPARATOR, daoPack.replace(Constants.DOT, Constants.SEPARATOR), Constants.SEPARATOR);
         String servicePath = CommonUtils.joinString(JAVA_BASE_PATH, basePackage.replace(Constants.DOT, Constants.SEPARATOR),
-                Constants.SEPARATOR, servicePack.replace(Constants.DOT, Constants.SEPARATOR),
-                Constants.SEPARATOR);
-        String directivePath = CommonUtils.joinString(JAVA_BASE_PATH,
-                basePackage.replace(Constants.DOT, Constants.SEPARATOR), Constants.SEPARATOR,
-                directivePack.replace(Constants.DOT, Constants.SEPARATOR), Constants.SEPARATOR);
-        String controllerPath = CommonUtils.joinString(JAVA_BASE_PATH,
-                basePackage.replace(Constants.DOT, Constants.SEPARATOR), Constants.SEPARATOR,
-                controllerPack.replace(Constants.DOT, Constants.SEPARATOR), Constants.SEPARATOR);
+                Constants.SEPARATOR, servicePack.replace(Constants.DOT, Constants.SEPARATOR), Constants.SEPARATOR);
+        String directivePath = CommonUtils.joinString(JAVA_BASE_PATH, basePackage.replace(Constants.DOT, Constants.SEPARATOR),
+                Constants.SEPARATOR, directivePack.replace(Constants.DOT, Constants.SEPARATOR), Constants.SEPARATOR);
+        String controllerPath = CommonUtils.joinString(JAVA_BASE_PATH, basePackage.replace(Constants.DOT, Constants.SEPARATOR),
+                Constants.SEPARATOR, controllerPack.replace(Constants.DOT, Constants.SEPARATOR), Constants.SEPARATOR);
 
         try {
             FreeMarkerUtils.generateFileByFile("java/dao.ftl", CommonUtils.joinString(daoPath, name, DAO_SUFFIX, ".java"), config,
                     model, overwrite);
-            FreeMarkerUtils.generateFileByFile("java/service.ftl", CommonUtils.joinString(servicePath, name, SERVICE_SUFFIX, ".java"),
-                    config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("java/service.ftl",
+                    CommonUtils.joinString(servicePath, name, SERVICE_SUFFIX, ".java"), config, model, overwrite);
             FreeMarkerUtils.generateFileByFile("java/directive.ftl",
                     CommonUtils.joinString(directivePath, name, DIRECTIVE_SUFFIX, ".java"), config, model, overwrite);
             FreeMarkerUtils.generateFileByFile("java/directiveList.ftl",
@@ -258,9 +253,11 @@ public class SourceGenerator {
             FreeMarkerUtils.generateFileByFile("java/controller.ftl",
                     CommonUtils.joinString(controllerPath, name, CONTROLLER_SUFFIX, ".java"), config, model, overwrite);
             FreeMarkerUtils.generateFileByFile("html/list.ftl",
-                    CommonUtils.joinString(TEMPLATE_BASE_PATH, StringUtils.uncapitalize(name), "/list.html"), config, model, overwrite);
+                    CommonUtils.joinString(TEMPLATE_BASE_PATH, StringUtils.uncapitalize(name), "/list.html"), config, model,
+                    overwrite);
             FreeMarkerUtils.generateFileByFile("html/add.ftl",
-                    CommonUtils.joinString(TEMPLATE_BASE_PATH, StringUtils.uncapitalize(name), "/add.html"), config, model, overwrite);
+                    CommonUtils.joinString(TEMPLATE_BASE_PATH, StringUtils.uncapitalize(name), "/add.html"), config, model,
+                    overwrite);
             FreeMarkerUtils.generateFileByFile("html/doc.ftl", CommonUtils.joinString(WEB_BASE_PATH, "doc.txt"), config, model,
                     overwrite, true);
             FreeMarkerUtils.generateFileByFile("html/language.ftl", CommonUtils.joinString(WEB_BASE_PATH, "language/operate.txt"),
@@ -282,7 +279,7 @@ public class SourceGenerator {
     public SourceGenerator() throws IOException {
         config = new freemarker.template.Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         config.setDirectoryForTemplateLoading(new File("src/test/resources/generator/"));
-        config.setDefaultEncoding(DEFAULT_CHARSET_NAME);
+        config.setDefaultEncoding(StandardCharsets.UTF_8.name());
     }
 
 }

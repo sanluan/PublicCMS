@@ -3,6 +3,7 @@ package com.publiccms.views.method.tools;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,11 +58,11 @@ public class GetSitefileMethod extends BaseMethod {
         if (!arguments.isEmpty()) {
             String filepath = getString(0, arguments);
             File dest = new File(siteComponent.getSiteFilePath(filepath));
-            try (ZipFile zipFile = ZipFile.builder().setFile(dest).setCharset(Constants.DEFAULT_CHARSET).get()) {
+            try (ZipFile zipFile = ZipFile.builder().setFile(dest).setCharset(StandardCharsets.UTF_8).get()) {
                 ZipArchiveEntry entry = zipFile.getEntry("description.json");
                 if (null != entry) {
                     try (InputStream inputStream = zipFile.getInputStream(entry);) {
-                        String content = IOUtils.toString(inputStream, Constants.DEFAULT_CHARSET);
+                        String content = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
                         return Constants.objectMapper.readValue(content,
                                 Constants.objectMapper.getTypeFactory().constructType(Sitefile.class));
                     }

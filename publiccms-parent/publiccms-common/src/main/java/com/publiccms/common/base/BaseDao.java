@@ -3,6 +3,7 @@ package com.publiccms.common.base;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -40,7 +41,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.util.HtmlUtils;
 
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
@@ -546,7 +546,7 @@ public abstract class BaseDao<E> {
                                 Object fieldValue = ReflectionUtils.invokeMethod(propertyDescriptor.getReadMethod(), e);
                                 if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
                                     ReflectionUtils.invokeMethod(propertyDescriptor.getWriteMethod(), e,
-                                            HtmlUtils.htmlEscape(String.valueOf(fieldValue), Constants.DEFAULT_CHARSET_NAME));
+                                            HtmlUtils.htmlEscape(String.valueOf(fieldValue), StandardCharsets.UTF_8.name()));
                                 }
                             }
                         } catch (Exception ignore) {
@@ -578,7 +578,7 @@ public abstract class BaseDao<E> {
                                 Object fieldValue = ReflectionUtils.invokeMethod(propertyDescriptor.getReadMethod(), e);
                                 if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
                                     String safeValue = HtmlUtils.htmlEscape(String.valueOf(fieldValue),
-                                            Constants.DEFAULT_CHARSET_NAME);
+                                            StandardCharsets.UTF_8.name());
                                     String hightLightFieldValue = highlighter.getBestFragment(analyzer, fieldName, safeValue);
                                     if (CommonUtils.notEmpty(hightLightFieldValue)) {
                                         ReflectionUtils.invokeMethod(propertyDescriptor.getWriteMethod(), e,

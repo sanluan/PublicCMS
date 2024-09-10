@@ -1,6 +1,7 @@
 package com.publiccms.common.tools;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -266,7 +267,7 @@ public class ExtendUtils {
                 } else if (null != extend.getMaxlength()) {
                     if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extend.getInputType())) {
                         value = HtmlUtils.cleanUnsafeHtml(
-                                HtmlUtils.keep(new String(VerificationUtils.base64Decode(value), Constants.DEFAULT_CHARSET),
+                                HtmlUtils.keep(new String(VerificationUtils.base64Decode(value), StandardCharsets.UTF_8),
                                         extend.getMaxlength()),
                                 sitePath);
                     } else {
@@ -276,7 +277,7 @@ public class ExtendUtils {
                 } else {
                     if (ArrayUtils.contains(Config.INPUT_TYPE_EDITORS, extend.getInputType())) {
                         value = HtmlUtils.cleanUnsafeHtml(
-                                new String(VerificationUtils.base64Decode(value), Constants.DEFAULT_CHARSET), sitePath);
+                                new String(VerificationUtils.base64Decode(value), StandardCharsets.UTF_8), sitePath);
                         map.put(extend.getId().getCode(), value);
                     }
                 }

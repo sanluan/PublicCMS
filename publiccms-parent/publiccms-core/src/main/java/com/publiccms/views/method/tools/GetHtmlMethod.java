@@ -1,5 +1,6 @@
 package com.publiccms.views.method.tools;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -110,9 +111,9 @@ public class GetHtmlMethod extends BaseMethod {
                                 Object value = parameters.get(key);
                                 nvps.add(new BasicNameValuePair(key, null == value ? null : value.toString()));
                             }
-                            httppost.setEntity(new UrlEncodedFormEntity(nvps, Constants.DEFAULT_CHARSET));
+                            httppost.setEntity(new UrlEncodedFormEntity(nvps, StandardCharsets.UTF_8));
                         } else {
-                            httppost.setEntity(new StringEntity(body, Constants.DEFAULT_CHARSET));
+                            httppost.setEntity(new StringEntity(body, StandardCharsets.UTF_8));
                         }
                         request = httppost;
                     } else {
@@ -126,7 +127,7 @@ public class GetHtmlMethod extends BaseMethod {
                     try (CloseableHttpResponse response = httpclient.execute(request)) {
                         HttpEntity entity = response.getEntity();
                         if (null != entity) {
-                            html = EntityUtils.toString(entity, Constants.DEFAULT_CHARSET);
+                            html = EntityUtils.toString(entity, StandardCharsets.UTF_8);
                             EntityUtils.consume(entity);
                         }
                     }

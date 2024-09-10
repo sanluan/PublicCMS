@@ -4,6 +4,7 @@ import static org.springframework.util.StringUtils.collectionToDelimitedString;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -232,7 +233,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         }
         if (null != attribute.getText() && base64) {
             attribute.setText(HtmlUtils.cleanUnsafeHtml(
-                    new String(VerificationUtils.base64Decode(attribute.getText()), Constants.DEFAULT_CHARSET),
+                    new String(VerificationUtils.base64Decode(attribute.getText()), StandardCharsets.UTF_8),
                     site.getSitePath()));
         }
     }

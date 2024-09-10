@@ -2,6 +2,7 @@ package com.publiccms.test.logic;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +42,7 @@ class CommentImportTest {
     @Test
     void importTest() throws IOException, ParseException {
         File file = new File("D:\\Users\\kerneler\\Desktop\\b28141a5-8e9c-4f4f-aacc-9864c6bce235_16.json");
-        String content = FileUtils.readFileToString(file, Constants.DEFAULT_CHARSET);
+        String content = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
         Map<String, Object> a = Constants.objectMapper.readValue(content,
                 Constants.objectMapper.getTypeFactory().constructMapType(HashMap.class, String.class, Object.class));
         @SuppressWarnings("unchecked")

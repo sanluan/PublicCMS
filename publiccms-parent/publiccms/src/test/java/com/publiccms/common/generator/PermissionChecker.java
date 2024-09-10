@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,7 +21,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 
 /**
@@ -75,7 +75,7 @@ public class PermissionChecker {
 
     private static void scanPageFile(Path parentPath, Path filePath, Pattern[] patterns, Set<String> pageUrlSet)
             throws IOException {
-        String pageFile = FileUtils.readFileToString(filePath.toFile(), Constants.DEFAULT_CHARSET);
+        String pageFile = FileUtils.readFileToString(filePath.toFile(), StandardCharsets.UTF_8);
         String url = parentPath.relativize(filePath).toString();
         addPageUrl(url, pageUrlSet);
         addUrlInPage(pageFile, patterns, pageUrlSet);
@@ -104,7 +104,7 @@ public class PermissionChecker {
 
     private static void getAuthorizedUrl(String filePath, String start, String end, Set<String> authorizedUrlSet)
             throws IOException {
-        String sql = FileUtils.readFileToString(new File(filePath), Constants.DEFAULT_CHARSET);
+        String sql = FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
         if (null != sql) {
             int index = sql.indexOf(start);
             int endindex = sql.indexOf(end);

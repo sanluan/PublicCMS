@@ -2,7 +2,7 @@ package com.publiccms.common.tools;
 
 import java.io.CharArrayWriter;
 import java.io.File;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.BitSet;
 import java.util.Calendar;
 import java.util.Collection;
@@ -89,7 +89,6 @@ public class CommonUtils {
     }
 
     public static String encodeURI(String s) {
-        Charset charset = Constants.DEFAULT_CHARSET;
         boolean needToChange = false;
         StringBuilder out = new StringBuilder(s.length());
         CharArrayWriter charArrayWriter = new CharArrayWriter();
@@ -118,7 +117,7 @@ public class CommonUtils {
 
                 charArrayWriter.flush();
                 String str = new String(charArrayWriter.toCharArray());
-                byte[] ba = str.getBytes(charset);
+                byte[] ba = str.getBytes(StandardCharsets.UTF_8);
                 for (int j = 0; j < ba.length; j++) {
                     out.append('%');
                     char ch = Character.forDigit((ba[j] >> 4) & 0xF, 16);

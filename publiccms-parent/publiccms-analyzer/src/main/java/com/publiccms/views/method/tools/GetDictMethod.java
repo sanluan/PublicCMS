@@ -2,6 +2,7 @@ package com.publiccms.views.method.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,7 +11,6 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.AnalyzerDictUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -50,7 +50,7 @@ public class GetDictMethod extends BaseMethod {
         File dictFile = new File(
                 CommonUtils.joinString(siteComponent.getRootPath(), AnalyzerDictUtils.DIR_DICT, AnalyzerDictUtils.TXT_DICT));
         try {
-            return FileUtils.readFileToString(dictFile, Constants.DEFAULT_CHARSET);
+            return FileUtils.readFileToString(dictFile, StandardCharsets.UTF_8);
         } catch (IOException e) {
         }
         return null;

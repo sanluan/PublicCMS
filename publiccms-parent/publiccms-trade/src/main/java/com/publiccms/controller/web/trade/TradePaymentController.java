@@ -1,6 +1,7 @@
 package com.publiccms.controller.web.trade;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -188,11 +189,11 @@ public class TradePaymentController {
         resultMap.put("code", "FAIL");
         resultMap.put("message", "error");
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(WechatGatewayComponent.CONFIG_KEY))) {
-            byte[] apiV3Key = config.get(WechatGatewayComponent.CONFIG_KEY).getBytes(Constants.DEFAULT_CHARSET);
+            byte[] apiV3Key = config.get(WechatGatewayComponent.CONFIG_KEY).getBytes(StandardCharsets.UTF_8);
             Verifier verifier = wechatGatewayComponent.getVerifier(config, apiV3Key);
             try {
                 String joinString = CommonUtils.joinString(timestamp, "\n", nonce, "\n", body, "\n");
-                if (verifier.verify(serial, joinString.getBytes(Constants.DEFAULT_CHARSET), signature)) {
+                if (verifier.verify(serial, joinString.getBytes(StandardCharsets.UTF_8), signature)) {
                     Map<String, Object> result = Constants.objectMapper.readValue(body, Constants.objectMapper.getTypeFactory()
                             .constructMapType(HashMap.class, String.class, Object.class));
                     @SuppressWarnings("unchecked")
@@ -200,8 +201,8 @@ public class TradePaymentController {
                     if (null != resource) {
                         AesUtil decryptor = new AesUtil(apiV3Key);
                         String decodeResult = decryptor.decryptToString(
-                                resource.get("associated_data").replace("\"", "").getBytes(Constants.DEFAULT_CHARSET),
-                                resource.get("nonce").replace("\"", "").getBytes(Constants.DEFAULT_CHARSET),
+                                resource.get("associated_data").replace("\"", "").getBytes(StandardCharsets.UTF_8),
+                                resource.get("nonce").replace("\"", "").getBytes(StandardCharsets.UTF_8),
                                 resource.get("ciphertext"));
                         Map<String, Object> data = Constants.objectMapper.readValue(decodeResult, Constants.objectMapper
                                 .getTypeFactory().constructMapType(HashMap.class, String.class, Object.class));

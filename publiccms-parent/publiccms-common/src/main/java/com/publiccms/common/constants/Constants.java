@@ -1,7 +1,5 @@
 package com.publiccms.common.constants;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Random;
 import java.util.function.BinaryOperator;
@@ -36,18 +34,6 @@ public abstract class Constants {
      * Random
      */
     public static final Random random = new SecureRandom();
-    /**
-     * 默认字符编码名称
-     * 
-     * Default CharSet Name
-     */
-    public static final String DEFAULT_CHARSET_NAME = StandardCharsets.UTF_8.name();
-    /**
-     * 默认字符编码
-     * 
-     * Default CharSet
-     */
-    public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     /**
      * 间隔符
      * 

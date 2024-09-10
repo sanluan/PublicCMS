@@ -1,9 +1,8 @@
 package com.publiccms.common.generator;
 
-import static com.publiccms.common.constants.Constants.DEFAULT_CHARSET_NAME;
-
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -83,7 +82,7 @@ public class DirectiveMethodManualGenerator {
             }
         }
         model.put("methodMap", method);
-        model.put("version", CmsVersion.getVersion().substring(CmsVersion.getVersion().lastIndexOf(".")));
+        model.put("version", CmsVersion.getVersion().substring(CmsVersion.getVersion().lastIndexOf(".") + 1));
         try {
             FreeMarkerUtils.generateFileByFile("template.html",
                     CommonUtils.joinString(DOC_PATH, "PublicCMS Directive and Method Manual.html"), config, model, true);
@@ -119,7 +118,7 @@ public class DirectiveMethodManualGenerator {
     public DirectiveMethodManualGenerator() throws IOException {
         config = new freemarker.template.Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         config.setDirectoryForTemplateLoading(new File("src/test/resources/generator/doc/"));
-        config.setDefaultEncoding(DEFAULT_CHARSET_NAME);
+        config.setDefaultEncoding(StandardCharsets.UTF_8.name());
     }
 
 }
