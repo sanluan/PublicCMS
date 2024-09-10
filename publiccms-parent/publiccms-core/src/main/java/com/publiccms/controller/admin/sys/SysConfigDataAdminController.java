@@ -2,6 +2,7 @@ package com.publiccms.controller.admin.sys;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
@@ -191,7 +191,7 @@ public class SysConfigDataAdminController {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentDisposition(ContentDisposition.attachment()
                         .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-config.zip"),
-                                Constants.DEFAULT_CHARSET)
+                                StandardCharsets.UTF_8)
                         .build());
                 StreamingResponseBody body = new StreamingResponseBody() {
                     @Override

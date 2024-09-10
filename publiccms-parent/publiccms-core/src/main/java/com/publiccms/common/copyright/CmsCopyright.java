@@ -2,6 +2,7 @@ package com.publiccms.common.copyright;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -37,7 +38,7 @@ public class CmsCopyright implements Copyright {
             File licenseFile = new File(licenseFilePath);
             if (null == license || lastModify != licenseFile.lastModified()) {
                 try {
-                    String licenseText = FileUtils.readFileToString(licenseFile, Constants.DEFAULT_CHARSET_NAME);
+                    String licenseText = FileUtils.readFileToString(licenseFile, StandardCharsets.UTF_8.name());
                     license = LicenseUtils.readLicense(licenseText);
                     lastModify = licenseFile.lastModified();
                 } catch (IOException e) {

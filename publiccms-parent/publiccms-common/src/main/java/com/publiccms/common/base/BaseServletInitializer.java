@@ -1,5 +1,7 @@
 package com.publiccms.common.base;
 
+import java.nio.charset.StandardCharsets;
+
 import jakarta.servlet.Filter;
 
 import org.springframework.util.ObjectUtils;
@@ -9,7 +11,6 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.servlet.CommonDispatcherServlet;
 
 /**
@@ -42,7 +43,7 @@ public abstract class BaseServletInitializer extends AbstractDispatcherServletIn
     @Override
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+        characterEncodingFilter.setEncoding(StandardCharsets.UTF_8.name());
         characterEncodingFilter.setForceEncoding(true);
         return new Filter[] { characterEncodingFilter };
     }

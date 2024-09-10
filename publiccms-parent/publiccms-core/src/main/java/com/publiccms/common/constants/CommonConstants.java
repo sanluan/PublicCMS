@@ -1,5 +1,7 @@
 package com.publiccms.common.constants;
 
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 
@@ -89,7 +91,7 @@ public class CommonConstants {
     /**
      * json类型
      */
-    public static final MediaType jsonMediaType = new MediaType("application", "json", Constants.DEFAULT_CHARSET);
+    public static final MediaType jsonMediaType = new MediaType("application", "json", StandardCharsets.UTF_8);
 
     /**
      * @return default page

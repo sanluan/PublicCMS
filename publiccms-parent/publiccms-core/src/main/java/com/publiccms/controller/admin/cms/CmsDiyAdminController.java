@@ -1,5 +1,7 @@
 package com.publiccms.controller.admin.cms;
 
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -8,7 +10,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -96,7 +97,7 @@ public class CmsDiyAdminController {
     @Csrf
     public String saveLayout(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute CmsLayout entity,
             HttpServletRequest request) {
-        entity.setTemplate(new String(VerificationUtils.base64Decode(entity.getTemplate()), Constants.DEFAULT_CHARSET));
+        entity.setTemplate(new String(VerificationUtils.base64Decode(entity.getTemplate()), StandardCharsets.UTF_8));
         diyComponent.updateLayout(site, entity);
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                 "save.layout", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));

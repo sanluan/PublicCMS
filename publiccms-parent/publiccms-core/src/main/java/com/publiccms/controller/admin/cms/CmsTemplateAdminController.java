@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.Comparator;
@@ -123,7 +124,7 @@ public class CmsTemplateAdminController {
                 }
                 metadataComponent.updateTemplateMetadata(filepath, metadata);
                 if (CmsFileUtils.createFile(filepath,
-                        new String(VerificationUtils.base64Decode(content), Constants.DEFAULT_CHARSET))) {
+                        new String(VerificationUtils.base64Decode(content), StandardCharsets.UTF_8))) {
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     "save.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
@@ -165,7 +166,7 @@ public class CmsTemplateAdminController {
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
                 String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(), path, true);
                 CmsFileUtils.updateFile(filepath, historyFilePath,
-                        new String(VerificationUtils.base64Decode(content), Constants.DEFAULT_CHARSET));
+                        new String(VerificationUtils.base64Decode(content), StandardCharsets.UTF_8));
                 logOperateService
                         .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 "update.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
@@ -222,7 +223,7 @@ public class CmsTemplateAdminController {
                 }
                 metadataComponent.updatePlaceMetadata(filepath, metadata);
                 if (CmsFileUtils.createFile(filepath,
-                        new String(VerificationUtils.base64Decode(content), Constants.DEFAULT_CHARSET))) {
+                        new String(VerificationUtils.base64Decode(content), StandardCharsets.UTF_8))) {
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     "save.place.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
@@ -264,7 +265,7 @@ public class CmsTemplateAdminController {
                 String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
                 String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(), placePath, true);
                 CmsFileUtils.updateFile(filepath, historyFilePath,
-                        new String(VerificationUtils.base64Decode(content), Constants.DEFAULT_CHARSET));
+                        new String(VerificationUtils.base64Decode(content), StandardCharsets.UTF_8));
                 logOperateService
                         .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 "update.place.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
@@ -395,7 +396,7 @@ public class CmsTemplateAdminController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentDisposition(ContentDisposition.attachment()
                 .filename(CommonUtils.joinString(site.getName(), dateFormat.format(new Date()), "-template.zip"),
-                        Constants.DEFAULT_CHARSET)
+                        StandardCharsets.UTF_8)
                 .build());
         StreamingResponseBody body = new StreamingResponseBody() {
             @Override
@@ -433,7 +434,7 @@ public class CmsTemplateAdminController {
                 StreamingResponseBody body = new StreamingResponseBody() {
                     @Override
                     public void writeTo(OutputStream outputStream) throws IOException {
-                        try (ZipFile zipFile = ZipFile.builder().setFile(file).setCharset(Constants.DEFAULT_CHARSET).get()) {
+                        try (ZipFile zipFile = ZipFile.builder().setFile(file).setCharset(StandardCharsets.UTF_8).get()) {
                             ZipArchiveEntry entry = zipFile.getEntry(imageFile);
                             if (null != entry) {
                                 try (InputStream inputStream = zipFile.getInputStream(entry);) {

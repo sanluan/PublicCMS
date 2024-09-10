@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,8 +15,6 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.publiccms.common.constants.Constants;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -82,7 +81,7 @@ public class FreeMarkerUtils {
             try (OutputStream outputStream = append
                     ? Files.newOutputStream(Paths.get(destFilePath), StandardOpenOption.APPEND, StandardOpenOption.CREATE)
                     : Files.newOutputStream(Paths.get(destFilePath))) {
-                Writer out = new OutputStreamWriter(outputStream, Constants.DEFAULT_CHARSET);
+                Writer out = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
                 t.process(model, out);
                 log.info(CommonUtils.joinString(destFilePath, " saved!"));
             }

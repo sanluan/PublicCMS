@@ -3,6 +3,7 @@ package com.publiccms.logic.component.paymentgateway;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.PrivateKey;
 import java.util.ArrayList;
@@ -134,7 +135,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
             verifier = certificatesManager.getVerifier(config.get(CONFIG_MCHID));
         } catch (NotFoundException e) {
             if (null == merchantPrivateKey) {
-                byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(Constants.DEFAULT_CHARSET);
+                byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(StandardCharsets.UTF_8);
                 merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
             }
             try {
@@ -173,8 +174,8 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
             Map<String, String> config = configDataComponent.getConfigData(site.getId(), CONFIG_CODE);
             if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_KEY))) {
                 try {
-                    byte[] apiV3Key = config.get(CONFIG_KEY).getBytes(Constants.DEFAULT_CHARSET);
-                    byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(Constants.DEFAULT_CHARSET);
+                    byte[] apiV3Key = config.get(CONFIG_KEY).getBytes(StandardCharsets.UTF_8);
+                    byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(StandardCharsets.UTF_8);
                     PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
 
                     Verifier verifier = getVerifier(config, apiV3Key, merchantPrivateKey);
@@ -206,13 +207,13 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                         sceneMap.put("payer_client_ip", payment.getIp());
                         requestMap.put("scene_info", sceneMap);
                         String requestBody = JsonUtils.getString(requestMap);
-                        httpPost.setEntity(new StringEntity(requestBody, Constants.DEFAULT_CHARSET));
+                        httpPost.setEntity(new StringEntity(requestBody, StandardCharsets.UTF_8));
                         log.info(CommonUtils.joinString("pay request: ", requestBody));
                         CloseableHttpResponse res = httpClient.execute(httpPost);
                         HttpEntity entity = res.getEntity();
                         log.info(CommonUtils.joinString("pay response status: ", res.getStatusLine().getStatusCode()));
                         if (null != entity) {
-                            String bodyAsString = EntityUtils.toString(entity, Constants.DEFAULT_CHARSET);
+                            String bodyAsString = EntityUtils.toString(entity, StandardCharsets.UTF_8);
                             log.info(CommonUtils.joinString("pay response: ", bodyAsString));
                             if (200 == res.getStatusLine().getStatusCode()) {
                                 Map<String, String> result = Constants.objectMapper.readValue(bodyAsString, Constants.objectMapper
@@ -252,8 +253,8 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
         if (null != payment && CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_KEY))
                 && service.refunded(siteId, payment.getId())) {
             try {
-                byte[] apiV3Key = config.get(CONFIG_KEY).getBytes(Constants.DEFAULT_CHARSET);
-                byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(Constants.DEFAULT_CHARSET);
+                byte[] apiV3Key = config.get(CONFIG_KEY).getBytes(StandardCharsets.UTF_8);
+                byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(StandardCharsets.UTF_8);
                 PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
 
                 Verifier verifier = getVerifier(config, apiV3Key, merchantPrivateKey);
@@ -276,13 +277,13 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     amountMap.put("currency", "CNY");
                     requestMap.put("amount", amountMap);
                     String requestBody = JsonUtils.getString(requestMap);
-                    httpPost.setEntity(new StringEntity(requestBody, Constants.DEFAULT_CHARSET));
+                    httpPost.setEntity(new StringEntity(requestBody, StandardCharsets.UTF_8));
                     log.info(CommonUtils.joinString("refund request: ", requestBody));
                     CloseableHttpResponse res = httpClient.execute(httpPost);
                     HttpEntity entity = res.getEntity();
                     log.info(CommonUtils.joinString("refund response status: ", res.getStatusLine().getStatusCode()));
                     if (null != entity) {
-                        String bodyAsString = EntityUtils.toString(entity, Constants.DEFAULT_CHARSET);
+                        String bodyAsString = EntityUtils.toString(entity, StandardCharsets.UTF_8);
                         log.info(CommonUtils.joinString("refund response: ", bodyAsString));
                         TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
                                 TradePaymentHistoryService.OPERATE_REFUND_RESPONSE, bodyAsString);

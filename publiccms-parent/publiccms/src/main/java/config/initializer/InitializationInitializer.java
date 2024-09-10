@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Authenticator;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import jakarta.annotation.Priority;
@@ -21,7 +22,6 @@ import org.springframework.web.util.IntrospectorCleanupListener;
 
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.handler.UsernamePasswordAuthenticator;
 import com.publiccms.common.servlet.InstallHttpRequestHandler;
@@ -56,13 +56,13 @@ public class InitializationInitializer implements WebApplicationInitializer {
             }
             File file = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.INSTALL_LOCK_FILENAME));
             if (file.exists()) {
-                String version = FileUtils.readFileToString(file, Constants.DEFAULT_CHARSET_NAME);
+                String version = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
                 if (CmsVersion.getVersion().equals(version)
                         || version.contains(".") && CmsVersion.getVersion().substring(CmsVersion.getVersion().lastIndexOf("."))
                                 .equals(version.substring(version.lastIndexOf(".")))) {
                     if (!CmsVersion.getVersion().equals(version)) {
                         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-                            outputStream.write(CmsVersion.getVersion().getBytes(Constants.DEFAULT_CHARSET));
+                            outputStream.write(CmsVersion.getVersion().getBytes(StandardCharsets.UTF_8));
                         }
                     }
                     CmsVersion.setInitialized(true);

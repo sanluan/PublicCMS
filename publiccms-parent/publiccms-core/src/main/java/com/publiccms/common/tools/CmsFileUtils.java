@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -180,7 +181,7 @@ public class CmsFileUtils {
                 if (CommonUtils.notEmpty(result.getPath()) && null != result.getIndexs()) {
                     File file = Paths.get(dirPath, CmsFileUtils.getSafeFileName(result.getPath())).toFile();
                     try {
-                        List<String> list = FileUtils.readLines(file, Constants.DEFAULT_CHARSET_NAME);
+                        List<String> list = FileUtils.readLines(file, StandardCharsets.UTF_8);
                         int i = 0;
                         int j = 0;
                         int n = 0;
@@ -194,7 +195,7 @@ public class CmsFileUtils {
                             }
                             i++;
                         }
-                        FileUtils.writeLines(file, Constants.DEFAULT_CHARSET_NAME, list);
+                        FileUtils.writeLines(file, StandardCharsets.UTF_8.name(), list);
                     } catch (IOException e) {
                     }
                 }
@@ -226,7 +227,7 @@ public class CmsFileUtils {
                         }
                     } else if (!fileName.endsWith(".data")) {
                         List<String> matchList = new ArrayList<>();
-                        List<String> list = FileUtils.readLines(entry.toFile(), Constants.DEFAULT_CHARSET_NAME);
+                        List<String> list = FileUtils.readLines(entry.toFile(), StandardCharsets.UTF_8.name());
                         for (String line : list) {
                             if (line.contains(word)) {
                                 matchList.add(line);
@@ -419,7 +420,7 @@ public class CmsFileUtils {
     public static boolean createFile(String filepath, String content) throws IOException {
         File file = new File(filepath);
         if (CommonUtils.empty(file)) {
-            FileUtils.writeStringToFile(file, content, Constants.DEFAULT_CHARSET_NAME);
+            FileUtils.writeStringToFile(file, content, StandardCharsets.UTF_8.name());
             return true;
         }
         return false;
@@ -497,7 +498,7 @@ public class CmsFileUtils {
             }
             FileUtils.copyFile(file, history);
             try (FileOutputStream outputStream = new FileOutputStream(file)) {
-                outputStream.write(content.getBytes(Constants.DEFAULT_CHARSET));
+                outputStream.write(content.getBytes(StandardCharsets.UTF_8));
             }
             return true;
         }
@@ -558,7 +559,7 @@ public class CmsFileUtils {
         File file = new File(filepath);
         try {
             if (file.isFile()) {
-                return FileUtils.readFileToString(file, Constants.DEFAULT_CHARSET_NAME);
+                return FileUtils.readFileToString(file, StandardCharsets.UTF_8.name());
             }
         } catch (IOException e) {
             return null;
@@ -686,7 +687,7 @@ public class CmsFileUtils {
         FileUtils.writeByteArrayToFile(dest, data);
         if (CommonUtils.notEmpty(originalName) && CommonUtils.notEmpty(metadataPath)) {
             try {
-                FileUtils.writeStringToFile(new File(metadataPath), originalName, Constants.DEFAULT_CHARSET_NAME);
+                FileUtils.writeStringToFile(new File(metadataPath), originalName, StandardCharsets.UTF_8.name());
             } catch (IOException e) {
             }
         }

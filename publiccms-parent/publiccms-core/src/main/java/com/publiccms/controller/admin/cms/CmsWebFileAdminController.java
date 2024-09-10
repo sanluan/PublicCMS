@@ -3,6 +3,7 @@ package com.publiccms.controller.admin.cms;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -77,7 +78,7 @@ public class CmsWebFileAdminController {
                 String suffix = CmsFileUtils.getSuffix(path);
                 if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
                     String filepath = siteComponent.getWebFilePath(site.getId(), path);
-                    content = new String(VerificationUtils.base64Decode(content), Constants.DEFAULT_CHARSET);
+                    content = new String(VerificationUtils.base64Decode(content), StandardCharsets.UTF_8);
                     if (CmsFileUtils.createFile(filepath, content)) {
                         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                                 LogLoginService.CHANNEL_WEB_MANAGER, "save.web.webfile", RequestUtils.getIpAddress(request),

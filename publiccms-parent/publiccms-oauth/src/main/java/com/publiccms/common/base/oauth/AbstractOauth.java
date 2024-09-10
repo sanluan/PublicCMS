@@ -1,6 +1,7 @@
 package com.publiccms.common.base.oauth;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -111,7 +112,7 @@ public abstract class AbstractOauth implements Config, OauthGateway {
         try (CloseableHttpResponse response = httpclient.execute(request)) {
             HttpEntity entity = response.getEntity();
             if (null != entity) {
-                html = EntityUtils.toString(entity, Constants.DEFAULT_CHARSET);
+                html = EntityUtils.toString(entity, StandardCharsets.UTF_8);
                 EntityUtils.consume(entity);
             }
         }
@@ -125,11 +126,11 @@ public abstract class AbstractOauth implements Config, OauthGateway {
         for (Entry<String, String> entry : parameters.entrySet()) {
             nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
         }
-        request.setEntity(new UrlEncodedFormEntity(nvps, Constants.DEFAULT_CHARSET));
+        request.setEntity(new UrlEncodedFormEntity(nvps, StandardCharsets.UTF_8));
         try (CloseableHttpResponse response = httpclient.execute(request)) {
             HttpEntity entity = response.getEntity();
             if (null != entity) {
-                html = EntityUtils.toString(entity, Constants.DEFAULT_CHARSET);
+                html = EntityUtils.toString(entity, StandardCharsets.UTF_8);
                 EntityUtils.consume(entity);
             }
         }

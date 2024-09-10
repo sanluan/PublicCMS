@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +16,6 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.copyright.License;
 
 public class LicenseUtils {
@@ -61,7 +61,7 @@ public class LicenseUtils {
     public static License readLicense(byte[] licenseData) {
         License license = new License();
         if (null != licenseData) {
-            String licenseText = new String(licenseData, Constants.DEFAULT_CHARSET);
+            String licenseText = new String(licenseData, StandardCharsets.UTF_8);
             String[] licenseItem = StringUtils.split(licenseText, ";");
             for (String item : licenseItem) {
                 String[] values = StringUtils.split(item, "=", 2);
@@ -113,6 +113,6 @@ public class LicenseUtils {
                 }
             }
         }
-        return sb.toString().getBytes(Constants.DEFAULT_CHARSET);
+        return sb.toString().getBytes(StandardCharsets.UTF_8);
     }
 }

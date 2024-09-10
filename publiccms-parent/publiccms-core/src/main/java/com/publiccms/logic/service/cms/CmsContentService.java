@@ -4,6 +4,7 @@ import static org.springframework.util.StringUtils.collectionToDelimitedString;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

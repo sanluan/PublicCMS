@@ -24,7 +24,7 @@ import freemarker.template.TemplateModelException;
  * <li><code>ConfuseResult</code>:map{text:加密文本,font:加密字体}
  * </ul>
  * 使用示例
- * 
+ * 需要在 系统->站点配置->content->混淆原始字体文件 上传原始字体文件
  * <pre>
  * &lt;#assign result=confuseHtml('&lt;a href="http://www.publiccms.com"&gt;publiccms&lt;/a&gt;',11)/&gt;
  * 

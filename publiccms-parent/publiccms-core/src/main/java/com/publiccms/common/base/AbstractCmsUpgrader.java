@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -249,7 +250,7 @@ public abstract class AbstractCmsUpgrader {
         try (InputStream inputStream = getClass()
                 .getResourceAsStream(CommonUtils.joinString("/initialization/sql/", fromVersion, "-", toVersion, ".sql"))) {
             if (null != inputStream) {
-                runner.runScript(new InputStreamReader(inputStream, Constants.DEFAULT_CHARSET));
+                runner.runScript(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             }
         }
         version = toVersion;

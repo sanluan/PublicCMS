@@ -3,6 +3,7 @@ package com.publiccms.logic.component.exchange;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +76,7 @@ public class SiteExchangeComponent {
                 try {
                     File dest = File.createTempFile("temp_import_", suffix);
                     file.transferTo(dest);
-                    try (ZipFile zipFile = ZipFile.builder().setFile(dest).setCharset(Constants.DEFAULT_CHARSET).get()) {
+                    try (ZipFile zipFile = ZipFile.builder().setFile(dest).setCharset(StandardCharsets.UTF_8).get()) {
                         exchangeComponent.importData(site, userId, overwrite, zipFile);
                     }
                     Files.delete(dest.toPath());
@@ -191,7 +192,7 @@ public class SiteExchangeComponent {
     }
 
     private void importDate(SysSite site, long userId, boolean overwrite, File file) throws IOException {
-        try (ZipFile zipFile = ZipFile.builder().setFile(file).setCharset(Constants.DEFAULT_CHARSET).get()) {
+        try (ZipFile zipFile = ZipFile.builder().setFile(file).setCharset(StandardCharsets.UTF_8).get()) {
             {
                 String filepath = siteComponent.getTemplateFilePath(site.getId(), Constants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "template", filepath, overwrite, (f, e) -> {

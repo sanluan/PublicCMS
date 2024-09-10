@@ -1,7 +1,5 @@
 package com.publiccms.common.servlet;
 
-import static com.publiccms.common.constants.Constants.DEFAULT_CHARSET_NAME;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -30,7 +29,6 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import com.publiccms.common.base.AbstractCmsUpgrader;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.tools.CommonUtils;
@@ -91,7 +89,7 @@ public class InstallServlet extends HttpServlet {
         this.cmsUpgrader = new CmsUpgrader();
         this.freemarkerConfiguration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         freemarkerConfiguration.setClassForTemplateLoading(getClass(), "/initialization/template/");
-        freemarkerConfiguration.setDefaultEncoding(DEFAULT_CHARSET_NAME);
+        freemarkerConfiguration.setDefaultEncoding(StandardCharsets.UTF_8.name());
         freemarkerConfiguration.setNumberFormat("#");
     }
 
@@ -171,7 +169,7 @@ public class InstallServlet extends HttpServlet {
         CmsDataSource.initDefaultDataSource();
         File file = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.INSTALL_LOCK_FILENAME));
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            outputStream.write(CmsVersion.getVersion().getBytes(Constants.DEFAULT_CHARSET));
+            outputStream.write(CmsVersion.getVersion().getBytes(StandardCharsets.UTF_8));
         }
         log.info(CommonUtils.joinString("PublicCMS ", CmsVersion.getVersion(), " started!"));
     }
@@ -267,7 +265,7 @@ public class InstallServlet extends HttpServlet {
         runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
         try (InputStream inputStream = InstallServlet.class.getResourceAsStream("/initialization/sql/init.sql")) {
-            runner.runScript(new InputStreamReader(inputStream, Constants.DEFAULT_CHARSET));
+            runner.runScript(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         }
         cmsUpgrader.setPassword(connection, username, password);
         cmsUpgrader.setSiteUrl(connection, siteurl);
@@ -275,7 +273,7 @@ public class InstallServlet extends HttpServlet {
             File file = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, "/publiccms.sql"));
             if (file.exists()) {
                 try (InputStream simpleInputStream = new FileInputStream(file)) {
-                    runner.runScript(new InputStreamReader(simpleInputStream, Constants.DEFAULT_CHARSET));
+                    runner.runScript(new InputStreamReader(simpleInputStream, StandardCharsets.UTF_8));
                 }
             }
         }
@@ -327,7 +325,7 @@ public class InstallServlet extends HttpServlet {
             try {
                 Template template = freemarkerConfiguration
                         .getTemplate(null == step ? "index.html" : CommonUtils.joinString(step, ".html"), locale);
-                response.setCharacterEncoding(DEFAULT_CHARSET_NAME);
+                response.setCharacterEncoding(StandardCharsets.UTF_8.name());
                 response.setContentType("text/html");
                 template.process(model, response.getWriter());
             } catch (TemplateException | IOException e) {

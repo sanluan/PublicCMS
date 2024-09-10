@@ -2,6 +2,7 @@ package com.publiccms.controller.admin.sys;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.AnalyzerDictUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -70,17 +70,17 @@ public class DictAdminController {
         try {
             String dictDir = CommonUtils.joinString(siteComponent.getRootPath(), AnalyzerDictUtils.DIR_DICT);
             File dictFile = new File(CommonUtils.joinString(dictDir, AnalyzerDictUtils.TXT_DICT));
-            FileUtils.writeStringToFile(dictFile, dict, Constants.DEFAULT_CHARSET);
+            FileUtils.writeStringToFile(dictFile, dict, StandardCharsets.UTF_8);
             Map<String, Integer> wordMap = new HashMap<>();
-            for (String word : FileUtils.readLines(dictFile, Constants.DEFAULT_CHARSET)) {
+            for (String word : FileUtils.readLines(dictFile, StandardCharsets.UTF_8)) {
                 if (!word.startsWith("#")) {
                     wordMap.put(word, 10);
                 }
             }
             File skipWordFile = new File(CommonUtils.joinString(dictDir, AnalyzerDictUtils.TXT_SKIPWORD));
-            FileUtils.writeStringToFile(skipWordFile, skipWord, Constants.DEFAULT_CHARSET);
+            FileUtils.writeStringToFile(skipWordFile, skipWord, StandardCharsets.UTF_8);
             List<String> skipWordList = new ArrayList<>();
-            for (String word : FileUtils.readLines(skipWordFile, Constants.DEFAULT_CHARSET)) {
+            for (String word : FileUtils.readLines(skipWordFile, StandardCharsets.UTF_8)) {
                 if (!word.startsWith("#")) {
                     skipWordList.add(word);
                 }
