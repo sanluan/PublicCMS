@@ -106,7 +106,7 @@ subprojects {
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
         codecVersion = "1.17.1"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-        log4jVersion = "2.23.1"
+        log4jVersion = "2.24.0"
         // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
         extractorVersion = "2.19.0"
         // https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio
