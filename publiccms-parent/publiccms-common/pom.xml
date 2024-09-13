@@ -15,6 +15,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.github.therapi</groupId>
+            <artifactId>therapi-runtime-javadoc-scribe</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
         </dependency>

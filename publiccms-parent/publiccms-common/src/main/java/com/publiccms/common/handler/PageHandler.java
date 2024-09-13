@@ -27,37 +27,31 @@ public class PageHandler implements java.io.Serializable {
 
     /**
      * total count
-     * <p>
      * 总数量
      */
     private int totalCount;
     /**
      * page size
-     * <p>
      * 每页数量
      */
     private int pageSize;
     /**
      * first result offset
-     * <p>
      * 当前开始位置
      */
     private Integer firstResult;
     /**
      * current page index
-     * <p>
      * 当前页面
      */
     private int pageIndex;
     /**
      * total page
-     * <p>
      * 总页数
      */
     private int totalPage;
     /**
      * result list
-     * <p>
      * 结果列表
      */
     private List<?> list;
