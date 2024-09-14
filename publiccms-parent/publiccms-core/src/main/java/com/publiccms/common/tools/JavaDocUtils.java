@@ -36,36 +36,46 @@ public class JavaDocUtils {
     }
 
     public static Map<String, String> getFieldsJavadoc(String fullyQualifiedClassName) {
-        ClassJavadoc classDoc = RuntimeJavadoc.getJavadoc(fullyQualifiedClassName);
-        if (classDoc.isEmpty()) {
+        try {
+            JavaDocUtils.class.getClassLoader().loadClass(fullyQualifiedClassName);
+            ClassJavadoc classDoc = RuntimeJavadoc.getJavadoc(fullyQualifiedClassName);
+            if (classDoc.isEmpty()) {
+                return Collections.emptyMap();
+            }
+            Map<String, String> map = new LinkedHashMap<>();
+            for (FieldJavadoc field : classDoc.getFields()) {
+                map.put(field.getName(), format(field.getComment()));
+            }
+            return map;
+        } catch (ClassNotFoundException e) {
             return Collections.emptyMap();
         }
-        Map<String, String> map = new LinkedHashMap<>();
-        for (FieldJavadoc field : classDoc.getFields()) {
-            map.put(field.getName(), format(field.getComment()));
-        }
-        return map;
     }
 
     public static Map<String, String> getMethodJavadoc(String fullyQualifiedClassName) {
-        ClassJavadoc classDoc = RuntimeJavadoc.getJavadoc(fullyQualifiedClassName);
-        if (classDoc.isEmpty()) {
+        try {
+            JavaDocUtils.class.getClassLoader().loadClass(fullyQualifiedClassName);
+            ClassJavadoc classDoc = RuntimeJavadoc.getJavadoc(fullyQualifiedClassName);
+            if (classDoc.isEmpty()) {
+                return Collections.emptyMap();
+            }
+
+            Map<String, String> map = new LinkedHashMap<>();
+            for (MethodJavadoc method : classDoc.getMethods()) {
+                StringBuilder sb = new StringBuilder(format(method.getComment()));
+                for (ParamJavadoc paramDoc : method.getParams()) {
+                    sb.append("<code>").append(paramDoc.getName()).append("</code> : ").append(format(paramDoc.getComment()))
+                            .append("\n");
+                }
+                if (!method.isConstructor()) {
+                    sb.append("return : ").append(format(method.getReturns())).append("\n");
+                }
+                map.put(method.getName(), sb.toString());
+            }
+            return map;
+        } catch (ClassNotFoundException e) {
             return Collections.emptyMap();
         }
-
-        Map<String, String> map = new LinkedHashMap<>();
-        for (MethodJavadoc method : classDoc.getMethods()) {
-            StringBuilder sb = new StringBuilder(format(method.getComment()));
-            for (ParamJavadoc paramDoc : method.getParams()) {
-                sb.append("<code>").append(paramDoc.getName()).append("</code> : ").append(format(paramDoc.getComment()))
-                        .append("\n");
-            }
-            if (!method.isConstructor()) {
-                sb.append("return : ").append(format(method.getReturns())).append("\n");
-            }
-            map.put(method.getName(), sb.toString());
-        }
-        return map;
     }
 
     public static String format(Comment comment) {
