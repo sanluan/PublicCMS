@@ -23,28 +23,28 @@ subprojects {
     apply plugin: "eclipse-wtp"
 
     group = 'com.publiccms'
-    version = 'V4.0.202107.f'
+    version = 'V2021.a'
     
     test.enabled = false
     
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // http://projects.spring.io/spring-framework/
-        springVersion = "5.3.8"
+        springVersion = "5.3.27"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://projects.spring.io/spring-boot/
-        springBootVersion = "2.5.2"
+        springBootVersion = "2.5.15"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-        jacksonVersion = "2.12.4"
+        jacksonVersion = "2.15.4"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "5.4.32.Final"
+        hibernateVersion = "5.4.33.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-search
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "6.0.5.Final"
+        hibernateSearchVersion = "6.0.11.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
         ehcacheVersion = "3.9.4"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker

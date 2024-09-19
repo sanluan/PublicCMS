@@ -33,9 +33,9 @@ public class GetXmlMethod extends BaseMethod {
         if (CommonUtils.notEmpty(str)) {
             if (uninitialized) {
                 try {
-                    DocumentBuilderFactory dbf = NodeModel.getDocumentBuilderFactory();
+                	DocumentBuilderFactory dbf = NodeModel.getDocumentBuilderFactory();
                     dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-                    dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
+                    dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
                     dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
                     dbf.setXIncludeAware(false);
                     dbf.setExpandEntityReferences(false);

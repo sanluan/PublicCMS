@@ -108,18 +108,6 @@
         </li>
     </#list>
     </ul>
-<@_version>
-    <#if authorizationEdition>
-        <a href="common/license.html" target="dialog" mask="true"><@t.page 'license'/>: ${getLicense().authorization!}</a>
-    <#else>
-        <@t.page 'license.no'/>
-        <@_masterSite>
-            <@_sysAuthorized roleIds=admin.roles url='sysSite/uploadLicense'>
-        <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense" icon="<i class='icon-archive icon-large'></i>" title="<@t.menu 'license'/>"><@t.page 'license.upgrade'/></a>
-            </@_sysAuthorized>
-        </@_masterSite>
-    </#if>
-</@_version>
     Copyright &copy; ${.now?string('yyyy')}
     <ul class="themeList" id="themeList">
         <li theme="toptry"><div></div></li>

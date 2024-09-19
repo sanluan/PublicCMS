@@ -24,10 +24,6 @@ public class CommonConstants extends Constants{
      * 安装锁
      */
     public static final String INSTALL_LOCK_FILENAME = "/install.lock";
-    /**
-     * 授权文件
-     */
-    public static final String LICENSE_FILENAME = "/license.dat";
     
     /**
      * 配置文件
@@ -38,11 +34,6 @@ public class CommonConstants extends Constants{
      * 加密密钥
      */
     public static final String ENCRYPT_KEY = "publiccms";
-    
-    /**
-     * 公钥
-     */
-    public static final String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC/ZHiLKHR70/tuoE9TsWhcKuoAgHWIOWrt+kAl1cZotjqsZwR/55PkYkz0SLZMOhXRjY1ii5Y0SDceLG0GsdRQBSvrGb2pPCDPsWM+LuG7BM8Dr8gnHKK1CROVEHJ6wR2RYsD2UIZLRp/HIzTc5B922X9oFibIyZJphFqpZngYtwIDAQAB";
     
     /**
      * 首页模板
