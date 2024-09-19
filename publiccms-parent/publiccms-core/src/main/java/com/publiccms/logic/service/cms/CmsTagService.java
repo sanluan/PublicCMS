@@ -27,6 +27,7 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
 @Service
 @Transactional
 public class CmsTagService extends BaseService<CmsTag> {
+    @Resource
     private CmsTagTypeService tagTypeService;
 
     /**
