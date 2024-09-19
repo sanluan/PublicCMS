@@ -69,7 +69,7 @@ public class CmsTagDao extends BaseDao<CmsTag> {
      * @return results count
      */
     public int getCount(Short siteId, Integer typeId) {
-        QueryHandler queryHandler = getQueryHandler("from CmsTag bean");
+        QueryHandler queryHandler = getQueryHandler("select count(*) from CmsTag bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }

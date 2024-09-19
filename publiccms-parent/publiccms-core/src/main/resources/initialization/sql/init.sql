@@ -975,7 +975,7 @@ INSERT INTO `sys_module` VALUES ('place_form', 'placeTemplate/form', NULL, NULL,
 INSERT INTO `sys_module` VALUES ('place_list', 'cmsPlace/list', NULL, 'icon-list-alt', 'page', 1, 2);
 INSERT INTO `sys_module` VALUES ('place_publish', 'cmsPlace/metadata', 'cmsTemplate/publishPlace', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_refresh', NULL, 'cmsPlace/refresh', NULL, 'place_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('place_template_content', 'placeTemplate/content', 'cmsTemplate/help,cmsTemplate/savePlace,cmsTemplate/chipLookup,cmsWebFile/lookup', NULL, 'place_template_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('place_template_content', 'placeTemplate/content', 'cmsTemplate/help,cmsTemplate/savePlace,cmsWebFile/lookup', NULL, 'place_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_help', 'cmsTemplate/help', NULL, NULL, 'place_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_list', 'placeTemplate/list', 'placeTemplate/directory', 'icon-list-alt', 'file', 1, 2);
 INSERT INTO `sys_module` VALUES ('place_template_metadata', 'placeTemplate/metadata', 'cmsTemplate/savePlaceMetaData,cmsTemplate/deletePlace,cmsTemplate/createDirectory', NULL, 'place_template_list', 0, 0);
@@ -1032,7 +1032,7 @@ INSERT INTO `sys_module` VALUES ('task_template_delete', NULL, 'taskTemplate/del
 INSERT INTO `sys_module` VALUES ('task_template_fragment', 'taskTemplate/chipLookup', NULL, NULL, 'task_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('task_template_help', 'cmsTemplate/help', NULL, NULL, 'task_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('task_template_list', 'taskTemplate/list', NULL, 'icon-time', 'file', 1, 4);
-INSERT INTO `sys_module` VALUES ('template_content', 'cmsTemplate/content', 'cmsTemplate/save,cmsTemplate/saveMetaData,cmsTemplate/chipLookup,cmsWebFile/lookup,cmsTemplate/help', NULL, 'template_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('template_content', 'cmsTemplate/content', 'cmsTemplate/save,cmsTemplate/saveMetaData,cmsWebFile/lookup,cmsTemplate/help', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_content-type', 'cmsTemplate/contentTypeLookup', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_export', 'cmsTemplate/export', 'cmsTemplate/export', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_delete', NULL, 'cmsTemplate/delete', NULL, 'template_list', 0, 0);
