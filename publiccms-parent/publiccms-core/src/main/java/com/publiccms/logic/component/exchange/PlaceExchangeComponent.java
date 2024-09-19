@@ -117,7 +117,7 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
                         if (CommonUtils.notEmpty(placeData.getCategoryCode())) {
                             CmsCategory category = categoryService.getEntityByCode(site.getId(), placeData.getCategoryCode());
                             if (null != category) {
-                                entity.setItemId(entity.getId());
+                                entity.setItemId(category.getId().longValue());
                                 service.save(entity);
                             }
                         }
