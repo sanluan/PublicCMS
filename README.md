@@ -20,13 +20,13 @@ https://github.com/sanluan/PublicCMS
 
 ## Participate in development
 
-Switch to the develop,V5-develop branch and the free version to the V2019 branch
+Switch to the develop,V5-develop branch and the free version to the V2021 branch
 ![](doc/images/commits.jpg)
 
 ## Licensing agreement
 
 * Version :V4.0,V5 Free for individuals and paid for enterprises: See LICENSE for details
-* Version :V1.0,V2016,V2017,V2019 Completely free license agreement :MIT
+* Version :V1.0,V2016,V2017,V2019,V2021 Completely free license agreement :MIT
 
 ## Environmental requirements
 
