@@ -222,10 +222,10 @@ table.itemDetail caption label{padding-left:0px;}
 #taskbar .close{display:block;overflow:hidden;padding:0;position:absolute;width:auto;height:auto;top:50%;margin-top:-8px;right:8px;text-indent:0;}
 
 /* ProgressBar */
-#progressBar{display:block;width:28px;height:28px;font-size:28px;position:absolute;top:50%;left:50%;margin-left:-14px;margin-top:-14px;z-index:2001;}
-#background{display:block;width:100%;height:100%;opacity:0.4;filter:alpha(opacity=40);background:#FFF;position:absolute;top:0;left:0;z-index:2000;}
-.alertBackground{display:none;width:100%;height:100%;opacity:0.4;background:rgba(0,0,0,.3);position:absolute;top:0;left:0;z-index:1010;}
-.dialogBackground{display:none;width:100%;height:100%;opacity:0.4;background:rgba(0,0,0,.3);position:absolute;top:0;left:0;z-index:41;}
+#progressBar{display:block;width:28px;height:28px;font-size:28px;position:absolute;top:50%;left:50%;margin-left:-14px;margin-top:-14px;z-index:3001;}
+#background{display:block;width:100%;height:100%;opacity:0.4;filter:alpha(opacity=40);background:#FFF;position:absolute;top:0;left:0;z-index:3000;}
+.alertBackground{display:none;width:100%;height:100%;opacity:0.4;background:rgba(0,0,0,.3);position:absolute;top:0;left:0;z-index:2010;}
+.dialogBackground{display:none;width:100%;height:100%;opacity:0.4;background:rgba(0,0,0,.3);position:absolute;top:0;left:0;z-index:1001;}
 /* ----------------------------------------------------------------- Form */
 /* TextInput */
 .textInput, input.focus, input.required, input.error, input.readonly, input.disabled,
@@ -346,7 +346,7 @@ h3.contentTitle{font-size:16px;border-bottom:solid 1px #CCC;clear:both;}
 #contextmenu li.disabled{cursor:not-allowed;}
 
 /* suggest */
-#suggest{position:absolute;z-index:2000;left:0;top:0;}
+#suggest{position:absolute;z-index:3000;left:0;top:0;}
 #suggest ul{list-style:none;padding:1px;margin:0;background-color:#fff;border:1px solid #999;width:150px;}
 #suggest li{display:block;color:#000;padding:3px;margin:0;border:1px solid #fff;background-color:transparent;text-align:left;cursor:default;}
 #suggest li.selected{border:1px solid #0a246a;background-color:#b6bdd2;}
@@ -364,7 +364,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 #printBox{display:none;}
 
 /* Alert */
-.alert{overflow:hidden;z-index:1011;display:block;width:300px;margin-left:-150px;position:absolute;top:0;left:50%;box-shadow:0 0 18px rgba(157,159,168,.35);}
+.alert{overflow:hidden;z-index:2011;display:block;width:300px;margin-left:-150px;position:absolute;top:0;left:50%;box-shadow:0 0 18px rgba(157,159,168,.35);}
 .alert .alertContent{display:block;overflow:hidden;padding-bottom:20px;}
 .alert .alertInner{display:block;text-align:left;}
 .alert .alertInner .msg{font-size:14px;margin:20px 10px 20px 25px;max-height:200px;overflow:auto;line-height:1.3em;}
@@ -379,7 +379,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .alert .toolBar .button, .alert .toolBar .buttonActive{margin-left:5px;}
 
 /* Dialog */
-.dialog{display:block;text-align:left;position:absolute;z-index:42;-moz-box-shadow:0px 0px 18px rgba(157,159,168,.55);box-shadow:0px 0px 18px rgba(157,159,168,.55);-ms-box-shadow:0px 0px 18px rgba(157,159,168,.55);-o-box-shadow:0px 0px 18px rgba(157,159,168,.55);-webkit-box-shadow:0px 0px 18px rgba(157,159,168,.55);}
+.dialog{display:block;text-align:left;position:absolute;z-index:1002;-moz-box-shadow:0px 0px 18px rgba(157,159,168,.55);box-shadow:0px 0px 18px rgba(157,159,168,.55);-ms-box-shadow:0px 0px 18px rgba(157,159,168,.55);-o-box-shadow:0px 0px 18px rgba(157,159,168,.55);-webkit-box-shadow:0px 0px 18px rgba(157,159,168,.55);}
 .dialog .dialogHeader{padding-left:5px;position:relative;cursor:move;}
 .dialog .dialogHeader, .dialog .dialogHeader_c{display:block;overflow:hidden;height:40px;}
 .dialog .dialogHeader .close, .dialog .dialogHeader .maximize, .dialog .dialogHeader .restore, .dialog .dialogHeader .minimize{font-family:iconfont;font-size:22px;display:block;overflow:hidden;width:22px;height:22px;position:absolute;top:10px;text-indent:0;}
