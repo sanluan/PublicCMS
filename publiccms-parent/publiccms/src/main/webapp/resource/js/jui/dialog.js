@@ -9,7 +9,7 @@
             fresh: true
         } ,
         _current: null ,
-        _zIndex: 42 ,
+        _zIndex: 1002 ,
         getCurrent: function() {
             return this._current;
         } ,

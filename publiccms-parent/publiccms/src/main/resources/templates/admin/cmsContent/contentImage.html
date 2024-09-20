@@ -22,7 +22,7 @@ if(images.length ) {
                 coverPath=coverPath.substring(sitepath.length);
             }
             var imageList = $("<div class=\"image-list\"></div>").appendTo($(".imagelist",$.pdialog.getCurrent()));
-            var link = $("<a href=\"javascript:;\" onclick=\"$.bringBack({'cover':'"+escapeJquery(coverPath)+"'});return false;\"></a>").appendTo(imageList);
+            var link = $("<a href=\"javascript:;\" onclick=\"$.bringBack({'cover':'"+$.escapeSelector(coverPath)+"'});return false;\"></a>").appendTo(imageList);
             var img = $("<img>").appendTo(link);
             img.attr("src",imagePath);
             img.attr("alt",image.attr("alt"));
