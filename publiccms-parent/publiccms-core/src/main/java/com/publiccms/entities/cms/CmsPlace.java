@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
-import com.publiccms.views.pojo.entities.Attribute;
+import com.publiccms.views.pojo.entities.EntityAttribute;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,7 +26,7 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 @Table(name = "cms_place")
 @DynamicUpdate
-public class CmsPlace extends Attribute implements java.io.Serializable {
+public class CmsPlace extends EntityAttribute implements java.io.Serializable {
 
     /**
      * 

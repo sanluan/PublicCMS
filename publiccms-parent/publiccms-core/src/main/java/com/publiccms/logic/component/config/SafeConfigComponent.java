@@ -50,6 +50,10 @@ public class SafeConfigComponent implements Config {
      * captcha
      */
     public static final String CONFIG_CAPTCHA = "captcha";
+    /**
+     * otp login
+     */
+    public static final String CONFIG_OPT_LOGIN = "enable_otp_login";
 
     /**
      * allow upload files
@@ -145,6 +149,11 @@ public class SafeConfigComponent implements Config {
                 && ArrayUtils.contains(StringUtils.split(enableCaptcha, Constants.COMMA), module);
     }
 
+    public boolean enableOtpLogin(short siteId) {
+        Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
+        return ConfigDataComponent.getBoolean(config.get(CONFIG_OPT_LOGIN), false);
+    }
+
     public String getSignKey(short siteId) {
         Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
         String signKey = config.get(CONFIG_PRIVATEFILE_KEY);
@@ -230,6 +239,12 @@ public class SafeConfigComponent implements Config {
         extendFieldList.add(new SysExtendField(CONFIG_CAPTCHA, INPUTTYPE_CAPTCHA, false,
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_CAPTCHA)),
                 getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_CAPTCHA,
+                        CONFIG_CODE_DESCRIPTION_SUFFIX)),
+                null));
+
+        extendFieldList.add(new SysExtendField(CONFIG_OPT_LOGIN, INPUTTYPE_BOOLEAN, false,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_OPT_LOGIN)),
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_OPT_LOGIN,
                         CONFIG_CODE_DESCRIPTION_SUFFIX)),
                 null));
 

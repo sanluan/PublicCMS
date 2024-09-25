@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
-import com.publiccms.views.pojo.entities.Attribute;
+import com.publiccms.views.pojo.entities.EntityAttribute;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +22,7 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "cms_category", uniqueConstraints = @UniqueConstraint(columnNames = { "site_id", "code" }))
 @DynamicUpdate
-public class CmsCategory extends Attribute implements java.io.Serializable {
+public class CmsCategory extends EntityAttribute implements java.io.Serializable {
 
     /**
      * 

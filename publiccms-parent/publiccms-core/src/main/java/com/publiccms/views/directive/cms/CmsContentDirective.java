@@ -73,8 +73,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         boolean absoluteId = handler.getBoolean("absoluteId", true);
-        boolean containsAttribute = handler.getBoolean("containsAttribute", false);
-        containsAttribute = handler.inHttp() ? getAdvanced(handler) && containsAttribute : containsAttribute;
+        boolean containsAttribute = handler.getBoolean("containsAttribute", false) && (!handler.inHttp() || getAdvanced(handler));
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
             CmsContent entity = service.getEntity(id);
@@ -101,40 +100,26 @@ public class CmsContentDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
-                Consumer<CmsContent> consumer;
-                if (containsAttribute) {
-                    List<CmsContentAttribute> attributeList = attributeService.getEntitys(ids);
-                    KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
-                    Map<Long, CmsContentAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getContentId());
-                    consumer = e -> {
-                        ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
-                        if (null != statistics) {
-                            e.setClicks(e.getClicks() + statistics.getClicks());
-                        }
-                        if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
-                            e.setId(e.getQuoteContentId());
-                        }
-                        if (absoluteURL) {
-                            CmsUrlUtils.initContentUrl(site, e);
-                            fileUploadComponent.initContentCover(site, e);
-                        }
+                KeywordsConfig config = containsAttribute ? contentConfigComponent.getKeywordsConfig(site.getId()) : null;
+                Map<Long, CmsContentAttribute> attributeMap = containsAttribute
+                        ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getContentId())
+                        : null;
+                Consumer<CmsContent> consumer = e -> {
+                    ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                    if (null != statistics) {
+                        e.setClicks(e.getClicks() + statistics.getClicks());
+                    }
+                    if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
+                        e.setId(e.getQuoteContentId());
+                    }
+                    if (absoluteURL) {
+                        CmsUrlUtils.initContentUrl(site, e);
+                        fileUploadComponent.initContentCover(site, e);
+                    }
+                    if (containsAttribute) {
                         e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()), config));
-                    };
-                } else {
-                    consumer = e -> {
-                        ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
-                        if (null != statistics) {
-                            e.setClicks(e.getClicks() + statistics.getClicks());
-                        }
-                        if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
-                            e.setId(e.getQuoteContentId());
-                        }
-                        if (absoluteURL) {
-                            CmsUrlUtils.initContentUrl(site, e);
-                            fileUploadComponent.initContentCover(site, e);
-                        }
-                    };
-                }
+                    }
+                };
                 Map<String, CmsContent> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();

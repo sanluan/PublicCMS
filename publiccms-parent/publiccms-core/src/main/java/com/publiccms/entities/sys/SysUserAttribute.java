@@ -24,14 +24,9 @@ public class SysUserAttribute implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "用户")
     private long userId;
-    @GeneratorColumn(title = "全文索引文本")
+    @GeneratorColumn(title = "设置数据")
     @JsonIgnore
-    private String searchText;
-    @GeneratorColumn(title = "数据字典值")
-    @JsonIgnore
-    private String dictionaryValues;
-    @GeneratorColumn(title = "扩展文本字段")
-    private String extendsFields;
+    private String settings;
     @GeneratorColumn(title = "扩展数据")
     private String data;
 
@@ -57,31 +52,14 @@ public class SysUserAttribute implements java.io.Serializable {
         this.userId = userId;
     }
 
-    @Column(name = "search_text")
-    public String getSearchText() {
-        return this.searchText;
+
+    @Column(name = "settings")
+    public String getSettings() {
+        return this.settings;
     }
 
-    public void setSearchText(String searchText) {
-        this.searchText = searchText;
-    }
-
-    @Column(name = "dictionary_values", length = 65535)
-    public String getDictionaryValues() {
-        return this.dictionaryValues;
-    }
-
-    public void setDictionaryValues(String dictionaryValues) {
-        this.dictionaryValues = dictionaryValues;
-    }
-
-    @Column(name = "extends_fields", length = 65535)
-    public String getExtendsFields() {
-        return this.extendsFields;
-    }
-
-    public void setExtendsFields(String extendsFields) {
-        this.extendsFields = extendsFields;
+    public void setSettings(String settings) {
+        this.settings = settings;
     }
 
     @Column(name = "data")

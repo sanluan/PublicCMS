@@ -23,6 +23,7 @@ import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.ImageUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.UserPasswordUtils;
@@ -31,6 +32,7 @@ import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.entities.sys.SysUserAttribute;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.config.ConfigDataComponent;
@@ -40,6 +42,7 @@ import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.logic.service.sys.SysUserAttributeService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
@@ -60,6 +63,8 @@ public class LoginAdminController {
     protected LogOperateService logOperateService;
     @Resource
     private SysUserService service;
+    @Resource
+    private SysUserAttributeService attributeService;
     @Resource
     private SysUserTokenService sysUserTokenService;
     @Resource
@@ -126,7 +131,7 @@ public class LoginAdminController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), username, null, ip, LogLoginService.CHANNEL_WEB_MANAGER, false,
                     CommonUtils.getDate(), password));
-            return "login";
+            return "redirect:login";
         }
         locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
         if (ControllerUtils.errorCustom("locked.user", locked, model)
@@ -140,7 +145,7 @@ public class LoginAdminController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB_MANAGER, false,
                     CommonUtils.getDate(), password));
-            return "login";
+            return "redirect:login";
         }
 
         lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
@@ -149,24 +154,35 @@ public class LoginAdminController {
             service.updatePassword(user.getId(),
                     UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
         }
-        service.updateLoginStatus(user.getId(), ip);
-        String authToken = UUID.randomUUID().toString();
-        Date now = CommonUtils.getDate();
-        Map<String, String> safeConfig = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
-        int expiryMinutes = ConfigDataComponent.getInt(safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
-                SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
-        addLoginStatus(user, authToken, request, response, expiryMinutes);
+        SysUserAttribute attribute = attributeService.getEntity(user.getId());
+        Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
+        if (safeConfigComponent.enableOtpLogin(site.getId())
+                || CommonUtils.notEmpty(map.get(SysUserAttributeService.OPTSECRET_SETTINGS_CODE))) {
+            ControllerUtils.setOtpAdminToSession(request.getSession(), user);
+            logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
+                    CommonUtils.getDate(), null));
+            model.addAttribute("returnUrl", returnUrl);
+            return "redirect:otp/login";
+        } else {
+            service.updateLoginStatus(user.getId(), ip);
+            String authToken = UUID.randomUUID().toString();
+            Date now = CommonUtils.getDate();
+            Map<String, String> safeConfig = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+            int expiryMinutes = ConfigDataComponent.getInt(safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
+                    SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
+            addLoginStatus(user, authToken, request, response, expiryMinutes);
 
-        sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, now,
-                DateUtils.addMinutes(now, expiryMinutes), ip));
-        logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
-                CommonUtils.getDate(), null));
-        Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
-        String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
-        if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
-            returnUrl = CommonConstants.getDefaultPage();
+            sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    now, DateUtils.addMinutes(now, expiryMinutes), ip));
+            logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
+                    CommonUtils.getDate(), null));
+            Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
+            String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
+            if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
+                returnUrl = CommonConstants.getDefaultPage();
+            }
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
-        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     public static void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response,
@@ -239,14 +255,14 @@ public class LoginAdminController {
     }
 
     /**
+     * @param admin
      * @param userId
      * @param request
      * @param response
      * @return view name
      */
     @GetMapping(value = "logout")
-    public String logout(Long userId, HttpServletRequest request, HttpServletResponse response) {
-        SysUser admin = ControllerUtils.getAdminFromSession(request.getSession());
+    public String logout(@SessionAttribute SysUser admin, Long userId, HttpServletRequest request, HttpServletResponse response) {
         if (null != userId && null != admin && userId.equals(admin.getId())) {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesAdmin());
             if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {

@@ -595,6 +595,23 @@ public class ControllerUtils {
     }
 
     /**
+     * @param session
+     * @param user
+     */
+    public static void setOtpAdminToSession(HttpSession session, SysUser user) {
+        session.setAttribute(CommonConstants.getOtpSessionAdmin(), user);
+    }
+
+    /**
+     * @param contextPath
+     * @param scheme
+     * @param session
+     * @param response
+     */
+    public static void clearOptAdminToSession(HttpSession session) {
+        session.removeAttribute(CommonConstants.getSessionAdmin());
+    }
+    /**
      * @param contextPath
      * @param scheme
      * @param session

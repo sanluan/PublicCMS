@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="<@t.page 'html_lang'/>">
+<head>
+    <meta charset="UTF-8">
+    <title>${site.name} - <@t.page 'management_system'/> - <@t.page 'login_page'/></title>
+    <link rel="stylesheet" href="${base}/resource/css/login.css">
+    <link rel="stylesheet" href="${base}/resource/fonts/iconfont/iconfont.css">
+</head>
+<body>
+<div class="login_body">
+    <div class="login_body_left"><img src="<#if siteAttribute.square_logo?has_content>${getUrl(siteAttribute.square_logo)}<#else>${base}/resource/square_logo.png</#if>" alt="${site.name}"/></div>
+    <div class="login_form clearfix">
+        <form action="${base+adminContextPath}/otp/doLogin" method="post">
+            <p class="logo">
+                ${site.name}
+            </p>
+            <p>
+                <@t.page 'login.2fa'/>
+            </p>
+            <p>
+                <i class="iconfont iconfont-key"></i>
+                <input type="code" name="code" minlength="6" maxlength="6" placeholder="<@t.page 'login.otpcode'/>" title="<@t.page 'login.otpcode'/>"/>
+            </p>
+            <p>
+                <input type="submit" value="<@t.page 'login'/>"/>
+                <input type="hidden" name="returnUrl" value="${(returnUrl!)}"/>
+            </p>
+        </form>
+    </div>
+</div>
+<script>
+document.getElementsByTagName('input')[0].focus();
+</script>
+</body>
+</html>

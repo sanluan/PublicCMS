@@ -134,6 +134,13 @@ public class CommonConstants {
     public static final String getSessionAdmin() {
         return "admin";
     }
+    
+    /**
+     * @return otp session admin key
+     */
+    public static final String getOtpSessionAdmin() {
+        return "otpadmin";
+    }
 
     /**
      * @return cookies user key
