@@ -1,0 +1,103 @@
+<@cms.contentList advanced=true status=1 endPublishDate=endPublishDate categoryId=categoryId modelId=modelIds parentId=parentId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
+        <input type="hidden" name="categoryId" value="${categoryId!}"/>
+        <input type="hidden" name="userId" value="${userId!}"/>
+        <input type="hidden" name="parentId" value="${parentId!}"/>
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'model'/>:</label>
+                    <#include "../include_page/modelId.html"/>
+                </li>
+                <li>
+                    <label><@t.page 'publish_date'/>:</label>
+                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startPublishDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endPublishDate!}" />
+                </li>
+                <li>
+                    <label><@t.page 'title'/>:</label>
+                    <input type="text" size="40" name="title" value="${title!}" />
+                </li>
+            </ul>
+            <div class="subBar">
+                    <ul>
+                        <li>
+                            <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                        </li>
+                    </ul>
+                </div>
+        </div>
+    </form>
+</div>
+<div>
+    <table class="table" width="100%" layoutH targetType="dialog" rel="push_content_list">
+        <thead>
+            <tr>
+                <th><@t.page 'use'/></th>
+                <th><@t.page 'title'/></th>
+                <th><@t.page 'content.promulgator'/></th>
+                <th><@t.page 'category'/></th>
+                <th><@t.page 'model'/></th>
+                <th width="30" orderField="comments" class="<#if orderField?has_content&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
+                <th width="30" orderField="clicks" class="<#if orderField?has_content&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
+                <th width="70" orderField="publishDate" class="<#if orderField?has_content&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
+                <th width="70"><@t.page 'create_date'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+                <@t.merge 'userIds' a.userId!/>
+                <@t.merge 'userIds' a.checkUserId!/>
+                <@t.merge 'categoryIds' a.categoryId!/>
+                <@t.merge 'modelIds' a.modelId!/>
+            </#list>
+
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+            <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
+            <@cms.model ids=t.modelIds!><#assign modelMap=map!/></@cms.model>
+
+            <#list page.list as a>
+            <tr>
+                <td>
+                    <a href="cmsContent/push_to_relation.html?contentId=${a.id}&relatedContentId=${contentId!}" target="dialog" mask="true" title="<@t.page 'relation'/>"><@t.page 'button.push'/></a>
+                </td>
+                <td>
+                    <p>
+                        <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">
+                            ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}${a.title!}
+                        </a>
+                    </p>
+                    <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
+                        <p>
+                            <a href="cmsContent/push_content_list.html?contentId=${contentId!}&parentId=${a.id}&categoryId=${a.categoryId}" target="ajax" rel="push_content_list"><@t.page 'content.child_management'/></a>
+                        </p>
+                    </#if>
+                </td>
+                <td>
+                    <a href="cmsContent/push_content_list.html?contentId=${contentId!}&categoryId=${categoryId!}&userId=${a.userId}" target="ajax" rel="push_content_list">
+                        ${(userMap[a.userId?string].nickname)!}
+                    </a>
+                </td>
+                <td>
+                    ${(categoryMap[a.categoryId?string].name)!}
+                </td>
+                <td>
+                    <a href="cmsContent/push_content_list.html?contentId=${contentId!}&categoryId=${categoryId!}&modelId=${a.modelId}" target="ajax" rel="push_content_list">
+                        ${(modelMap[a.modelId].name)!}
+                    </a>
+                </td>
+                <td>${a.comments!}</td>
+                <td>${a.clicks!}</td>
+                <td>${a.publishDate!}</td>
+                <td>${a.createDate!}<#if a.updateDate?has_content>/${a.updateDate}</#if></td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#assign rel='push_content_list'/>
+    <#include "../include_page/pageDialog.html"/>
+</div>
+</@cms.contentList>

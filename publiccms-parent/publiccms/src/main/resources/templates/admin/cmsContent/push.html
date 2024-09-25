@@ -4,6 +4,7 @@
 <@cms.contentRelatedList relatedContentId=contentId>
         <p>
             <label><@t.page 'content'/>:</label><label><@t.page 'total_count' page.totalCount/></label>
+            <a class="button" href="cmsContent/push_content.html?contentId=${contentId}" target="dialog" mask="true"><@t.page 'button.push'/></a>
         </p>
         <p>
     <#list page.list as a>
