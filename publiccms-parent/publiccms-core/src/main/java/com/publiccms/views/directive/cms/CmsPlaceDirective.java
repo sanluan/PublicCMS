@@ -77,33 +77,22 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsPlace> entityList = service.getEntitys(ids);
-                Consumer<CmsPlace> consumer;
-                if (containsAttribute) {
-                    List<CmsPlaceAttribute> attributeList = attributeService.getEntitys(ids);
-                    Map<Long, CmsPlaceAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getPlaceId());
-                    consumer = e -> {
-                        Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
-                        if (null != clicks) {
-                            e.setClicks(e.getClicks() + clicks);
-                        }
-                        if (absoluteURL) {
-                            CmsUrlUtils.initPlaceUrl(site, e);
-                            fileUploadComponent.initPlaceCover(site, e);
-                        }
+                Map<Long, CmsPlaceAttribute> attributeMap = containsAttribute
+                        ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getPlaceId())
+                        : null;
+                Consumer<CmsPlace> consumer = e -> {
+                    Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
+                    if (null != clicks) {
+                        e.setClicks(e.getClicks() + clicks);
+                    }
+                    if (absoluteURL) {
+                        CmsUrlUtils.initPlaceUrl(site, e);
+                        fileUploadComponent.initPlaceCover(site, e);
+                    }
+                    if (containsAttribute) {
                         e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
-                    };
-                } else {
-                    consumer = e -> {
-                        Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
-                        if (null != clicks) {
-                            e.setClicks(e.getClicks() + clicks);
-                        }
-                        if (absoluteURL) {
-                            CmsUrlUtils.initPlaceUrl(site, e);
-                            fileUploadComponent.initPlaceCover(site, e);
-                        }
-                    };
-                }
+                    }
+                };
                 Map<String, CmsPlace> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();

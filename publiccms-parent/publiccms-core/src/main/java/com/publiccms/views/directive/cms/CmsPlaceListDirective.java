@@ -78,16 +78,16 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         SysSite site = getSite(handler);
         Date endPublishDate = handler.getDate("endPublishDate");
-        Date expiryDate = null;
         String path = handler.getString("path");
-        Boolean disabled = false;
-        boolean containsAttribute = handler.getBoolean("containsAttribute", false);
+        boolean advanced = getAdvanced(handler);
+        boolean containsAttribute = handler.getBoolean("containsAttribute", false) && (!handler.inHttp() || advanced);
         Integer[] status;
-        if (getAdvanced(handler)) {
+        Date expiryDate = null;
+        boolean disabled = false;
+        if (advanced) {
             status = handler.getIntegerArray("status");
             disabled = handler.getBoolean("disabled", false);
         } else {
-            containsAttribute = !handler.inHttp();
             status = CmsPlaceService.STATUS_NORMAL_ARRAY;
             Date now = CommonUtils.getMinuteDate();
             if (null == endPublishDate || endPublishDate.after(now)) {
@@ -106,34 +106,23 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
         List<CmsPlace> list = (List<CmsPlace>) page.getList();
         if (null != list) {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
-            Consumer<CmsPlace> consumer = null;
-            if (containsAttribute) {
-                Long[] ids = list.stream().map(CmsPlace::getId).toArray(Long[]::new);
-                List<CmsPlaceAttribute> attributeList = attributeService.getEntitys(ids);
-                Map<Long, CmsPlaceAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getPlaceId());
-                consumer = e -> {
-                    Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
-                    if (null != clicks) {
-                        e.setClicks(e.getClicks() + clicks);
-                    }
-                    if (absoluteURL) {
-                        CmsUrlUtils.initPlaceUrl(site, e);
-                        fileUploadComponent.initPlaceCover(site, e);
-                    }
+            Long[] ids = list.stream().map(CmsPlace::getId).toArray(Long[]::new);
+            Map<Long, CmsPlaceAttribute> attributeMap = containsAttribute
+                    ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getPlaceId())
+                    : null;
+            Consumer<CmsPlace> consumer = e -> {
+                Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
+                if (null != clicks) {
+                    e.setClicks(e.getClicks() + clicks);
+                }
+                if (absoluteURL) {
+                    CmsUrlUtils.initPlaceUrl(site, e);
+                    fileUploadComponent.initPlaceCover(site, e);
+                }
+                if (containsAttribute) {
                     e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
-                };
-            } else {
-                consumer = e -> {
-                    Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
-                    if (null != clicks) {
-                        e.setClicks(e.getClicks() + clicks);
-                    }
-                    if (absoluteURL) {
-                        CmsUrlUtils.initPlaceUrl(site, e);
-                        fileUploadComponent.initPlaceCover(site, e);
-                    }
-                };
-            }
+                }
+            };
             list.forEach(consumer);
         }
         handler.put("page", page).render();

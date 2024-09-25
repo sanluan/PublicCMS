@@ -2,7 +2,7 @@ package com.publiccms.views.pojo.entities;
 
 import java.util.Map;
 
-public class Attribute implements java.io.Serializable {
+public class EntityAttribute implements java.io.Serializable {
 
     /**
      * 

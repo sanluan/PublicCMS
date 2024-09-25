@@ -71,12 +71,12 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         CmsCategoryQuery queryEntity = new CmsCategoryQuery();
         queryEntity.setQueryAll(handler.getBoolean("queryAll"));
-        boolean containsAttribute = handler.getBoolean("containsAttribute", false);
-        if (getAdvanced(handler)) {
+        boolean advanced = getAdvanced(handler);
+        boolean containsAttribute = handler.getBoolean("containsAttribute", false) && (!handler.inHttp() || advanced);
+        if (advanced) {
             queryEntity.setDisabled(handler.getBoolean("disabled", false));
             queryEntity.setHidden(handler.getBoolean("hidden"));
         } else {
-            containsAttribute = !handler.inHttp();
             queryEntity.setDisabled(false);
             queryEntity.setHidden(false);
         }
@@ -89,24 +89,24 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
                 handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) page.getList();
-        if (null != list && handler.getBoolean("absoluteURL", true)) {
-            Consumer<CmsCategory> consumer = null;
-            if (containsAttribute) {
-                Integer[] ids = list.stream().map(CmsCategory::getId).toArray(Integer[]::new);
-                List<CmsCategoryAttribute> attributeList = attributeService.getEntitys(ids);
-                Map<Integer, CmsCategoryAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getCategoryId());
-                consumer = e -> {
+        if (null != list) {
+            boolean absoluteURL = handler.getBoolean("absoluteURL", true);
+            Integer[] ids = list.stream().map(CmsCategory::getId).toArray(Integer[]::new);
+            Map<Integer, CmsCategoryAttribute> attributeMap = containsAttribute
+                    ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getCategoryId())
+                    : null;
+            Consumer<CmsCategory> consumer = e -> {
+                if (absoluteURL) {
                     CmsUrlUtils.initCategoryUrl(site, e);
+                }
+                if (containsAttribute) {
                     e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
-                };
-            } else {
-                consumer = e -> {
-                    CmsUrlUtils.initCategoryUrl(site, e);
-                };
-            }
+                }
+            };
             list.forEach(consumer);
         }
         handler.put("page", page).render();
+
     }
 
     @Override
