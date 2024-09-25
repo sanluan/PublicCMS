@@ -86,7 +86,7 @@ function processObject(obj, indent, addComma, isArray, isPropertyContent) {
         html += formatLiteral("undefined", "", comma, indent, isArray, "code-null");
     } else {
         html += formatLiteral(obj.toString().split("\\").join("\\\\")
-                .split('"').join('\\"'), "\"", comma, indent, isArray, "code-string");
+                .split('"').join('\\"').replace(/\n/g,"\\n").replace(/\t/g,"\\t"), "\"", comma, indent, isArray, "code-string");
     }
     return html;
 

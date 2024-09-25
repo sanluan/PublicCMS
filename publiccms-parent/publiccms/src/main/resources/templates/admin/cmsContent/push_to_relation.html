@@ -1,0 +1,22 @@
+<@cms.content id=contentId><#assign content=object/></@cms.content>
+<@cms.model id=content.modelId><#assign model=object/></@cms.model>
+<div class="pageFormContent">
+    <ul class="tree treeFolder" layoutH>
+<#if (model.relatedList)?has_content>
+    <#list model.relatedList as a>
+        <@t.merge 'dictionaryIds' a.dictionaryId!/>
+    </#list>
+    <@cms.dictionary ids=t.dictionaryIds!><#assign dictionaryMap=map!/></@cms.dictionary>
+    <#list model.relatedList as a>
+        <li><a href="cmsContent/push_to_content.html?contentId=${contentId!}&relatedContentId=${relatedContentId!}&relationType=${a.dictionaryId!}" target="dialog" mask="true">${(dictionaryMap[a.dictionaryId].name)!t.pageMessage('default_value')}</a></li>
+    </#list>
+<#else>
+        <li><a><@t.page 'empty_directory'/></a></li>
+</#if>
+    </ul>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>
