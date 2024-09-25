@@ -99,21 +99,21 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
     protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
-    
+
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         CmsContentQuery queryEntity = new CmsContentQuery();
         SysSite site = getSite(handler);
         queryEntity.setSiteId(site.getId());
         queryEntity.setEndPublishDate(handler.getDate("endPublishDate"));
-        boolean containsAttribute = handler.getBoolean("containsAttribute", false);
-        if (getAdvanced(handler)) {
+        boolean advanced = getAdvanced(handler);
+        boolean containsAttribute = handler.getBoolean("containsAttribute", false) && (!handler.inHttp() || advanced);
+        if (advanced) {
             queryEntity.setStatus(handler.getIntegerArray("status"));
             queryEntity.setDisabled(handler.getBoolean("disabled", false));
             queryEntity.setEmptyParent(handler.getBoolean("emptyParent"));
             queryEntity.setTitle(handler.getString("title"));
         } else {
-            containsAttribute = !handler.inHttp();
             queryEntity.setStatus(CmsContentService.STATUS_NORMAL_ARRAY);
             queryEntity.setDisabled(false);
             queryEntity.setEmptyParent(true);
@@ -143,42 +143,27 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         if (null != list) {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             boolean absoluteId = handler.getBoolean("absoluteId", true);
-            Consumer<CmsContent> consumer = null;
-            if (containsAttribute) {
-                Long[] ids = list.stream().map(CmsContent::getId).toArray(Long[]::new);
-                List<CmsContentAttribute> attributeList = attributeService.getEntitys(ids);
-                KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
-                Map<Object, CmsContentAttribute> attributeMap = CommonUtils.listToMap(attributeList, k -> k.getContentId());
-                consumer = e -> {
-                    ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
-                    if (null != statistics) {
-                        e.setClicks(e.getClicks() + statistics.getClicks());
-                    }
-                    if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
-                        e.setId(e.getQuoteContentId());
-                    }
-                    if (absoluteURL) {
-                        CmsUrlUtils.initContentUrl(site, e);
-                        fileUploadComponent.initContentCover(site, e);
-                    }
-                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()),
-                            config));
-                };
-            } else {
-                consumer = e -> {
-                    ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
-                    if (null != statistics) {
-                        e.setClicks(e.getClicks() + statistics.getClicks());
-                    }
-                    if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
-                        e.setId(e.getQuoteContentId());
-                    }
-                    if (absoluteURL) {
-                        CmsUrlUtils.initContentUrl(site, e);
-                        fileUploadComponent.initContentCover(site, e);
-                    }
-                };
-            }
+            Long[] ids = list.stream().map(CmsContent::getId).toArray(Long[]::new);
+            KeywordsConfig config = containsAttribute ? contentConfigComponent.getKeywordsConfig(site.getId()) : null;
+            Map<Object, CmsContentAttribute> attributeMap = containsAttribute
+                    ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getContentId())
+                    : null;
+            Consumer<CmsContent> consumer = e -> {
+                ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                if (null != statistics) {
+                    e.setClicks(e.getClicks() + statistics.getClicks());
+                }
+                if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
+                    e.setId(e.getQuoteContentId());
+                }
+                if (absoluteURL) {
+                    CmsUrlUtils.initContentUrl(site, e);
+                    fileUploadComponent.initContentCover(site, e);
+                }
+                if (containsAttribute) {
+                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()), config));
+                }
+            };
             list.forEach(consumer);
         }
         handler.put("page", page).render();
