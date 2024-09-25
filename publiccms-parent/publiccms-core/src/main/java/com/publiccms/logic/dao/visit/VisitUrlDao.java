@@ -54,9 +54,7 @@ public class VisitUrlDao extends BaseDao<VisitUrl> {
     public int delete(Date begintime) {
         if (null != begintime) {
             QueryHandler queryHandler = getQueryHandler("delete from VisitUrl bean");
-            if (null != begintime) {
-                queryHandler.condition("bean.id.visitDate <= :visitDate").setParameter("visitDate", begintime);
-            }
+            queryHandler.condition("bean.id.visitDate <= :visitDate").setParameter("visitDate", begintime);
             return delete(queryHandler);
         }
         return 0;
