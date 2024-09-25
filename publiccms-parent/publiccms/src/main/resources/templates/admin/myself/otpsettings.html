@@ -1,0 +1,41 @@
+<form action="otpSetting/bind?callbackType=closeCurrent&navTabId=myself/profile" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <div class="formBar card">
+        <ul>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt><@t.page 'qrcode'/>:</dt>
+                <dd>
+                    <div class="qrcode"></div>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'login.otpsecret'/>:</dt>
+                <dd><input name="secret" type="text" readonly="readonly" size="45"/></dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'login.otpcode'/>:</dt>
+                <dd><input type="text" name="code" class="digits" minlength="6" maxlength="6" size="6"/></dd>
+            </dl>
+        </div>
+    </div>
+</form>
+<script src="${base}/resource/plugins/jquery/jquery.qrcode.min.js"></script>
+<script>
+$.getJSON("otpSetting/getRegisterURI",function(data){
+    if(data.bindURI){
+        $('.qrcode',$.pdialog.getCurrent()).qrcode({width: 250, height: 250, text: data.bindURI});
+    } else if(data.error){
+        $('.qrcode',$.pdialog.getCurrent()).text(data.error);
+    }
+    if(data.secret){
+        $('input[name=secret]',$.pdialog.getCurrent()).val(data.secret);
+    }
+    
+})
+</script>

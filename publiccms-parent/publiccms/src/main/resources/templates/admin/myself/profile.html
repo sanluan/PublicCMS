@@ -26,6 +26,29 @@
                 <dt><@t.page 'email'/>:</dt>
                 <dd><input name="email" type="text" size="30" maxlength="50" value="${(admin.email)!}"/></dd>
             </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'login.2fa'/>:</dt>
+                <dd>
+                    <a class="button bindbtn unbind" href="otpSetting/unbind?_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo" callback="${(target?has_content&&'dialog'=target)?then('$.pdialog.closeCurrent()','navTab.reloadFlag(\'myself/profile\')')}"><@t.page 'button.unbind'/></a>
+                    <a class="button bindbtn bind" href="myself/otpsettings.html" target="dialog" mask="true"><@t.page 'button.bind'/></a>
+                </dd>
+            </dl>
         </div>
     </div>
 </form>
+<script>
+$.ajax({
+    url:'otpSetting/check',
+    type: 'POST',
+    dataType: "json",
+    async: false,
+    success: function (result) {
+        $('.bindbtn', ${(target?has_content&&'dialog'=target)?then('$.pdialog.getCurrent()','navTab.getCurrentPanel()')}).hide();
+        if(result){
+            $('.bind', ${(target?has_content&&'dialog'=target)?then('$.pdialog.getCurrent()','navTab.getCurrentPanel()')}).show();
+        } else {
+            $('.unbind', ${(target?has_content&&'dialog'=target)?then('$.pdialog.getCurrent()','navTab.getCurrentPanel()')}).show();
+        }
+    }
+});
+</script>

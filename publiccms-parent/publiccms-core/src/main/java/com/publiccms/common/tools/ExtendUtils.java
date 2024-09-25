@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,6 +26,7 @@ import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysExtendField;
+import com.publiccms.entities.sys.SysUserAttribute;
 import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 
 /**
@@ -40,7 +44,7 @@ public class ExtendUtils {
      * @param attribute
      * @return extent map
      */
-    public static Map<String, String> getAttributeMap(CmsCategoryAttribute attribute) {
+    public static Map<String, String> getAttributeMap(@Nullable CmsCategoryAttribute attribute) {
         if (null == attribute) {
             return Collections.emptyMap();
         } else {
@@ -57,7 +61,8 @@ public class ExtendUtils {
      * @param keywordsConfig
      * @return extent map
      */
-    public static Map<String, String> getAttributeMap(CmsContentAttribute attribute, KeywordsConfig keywordsConfig) {
+    public static Map<String, String> getAttributeMap(@Nullable CmsContentAttribute attribute,
+            @Nullable KeywordsConfig keywordsConfig) {
         if (null == attribute) {
             return Collections.emptyMap();
         } else {
@@ -152,7 +157,7 @@ public class ExtendUtils {
      * @param keywordsConfig
      * @return
      */
-    public static String replaceSensitive(String text, KeywordsConfig keywordsConfig) {
+    public static String replaceSensitive(@Nullable String text, @Nullable KeywordsConfig keywordsConfig) {
         if (null != keywordsConfig && CommonUtils.notEmpty(text) && CommonUtils.notEmpty(keywordsConfig.getSensitiveWords())
                 && CommonUtils.notEmpty(keywordsConfig.getReplaceWords())) {
             return StringUtils.replaceEach(text, keywordsConfig.getSensitiveWords(), keywordsConfig.getReplaceWords());
@@ -166,7 +171,7 @@ public class ExtendUtils {
      * @param keywordsConfig
      * @return
      */
-    public static String replaceText(String html, KeywordsConfig keywordsConfig) {
+    public static String replaceText(@Nullable String html, @Nullable KeywordsConfig keywordsConfig) {
         if (null != keywordsConfig && CommonUtils.notEmpty(html)) {
             if (CommonUtils.notEmpty(keywordsConfig.getWords()) && CommonUtils.notEmpty(keywordsConfig.getWordWithUrls())) {
                 Matcher matcher = HTML_PATTERN.matcher(html);
@@ -198,7 +203,7 @@ public class ExtendUtils {
      * @param attribute
      * @return extent map
      */
-    public static Map<String, String> getAttributeMap(CmsPlaceAttribute attribute) {
+    public static Map<String, String> getAttributeMap(@Nullable CmsPlaceAttribute attribute) {
         if (null == attribute) {
             return Collections.emptyMap();
         } else {
@@ -207,10 +212,34 @@ public class ExtendUtils {
     }
 
     /**
+     * @param attribute
+     * @return extent map
+     */
+    public static Map<String, String> getAttributeMap(@Nullable SysUserAttribute attribute) {
+        if (null == attribute) {
+            return Collections.emptyMap();
+        } else {
+            return getExtendMap(attribute.getData());
+        }
+    }
+
+    /**
+     * @param attribute
+     * @return extent map
+     */
+    public static Map<String, String> getSettingsMap(@Nullable SysUserAttribute attribute) {
+        if (null == attribute) {
+            return new HashMap<>();
+        } else {
+            return getExtendMap(attribute.getSettings());
+        }
+    }
+
+    /**
      * @param data
      * @return extent map
      */
-    public static Map<String, String> getExtendMap(String data) {
+    public static Map<String, String> getExtendMap(@Nullable String data) {
         if (CommonUtils.notEmpty(data)) {
             try {
                 return Constants.objectMapper.readValue(data, Constants.objectMapper.getTypeFactory()
@@ -229,7 +258,7 @@ public class ExtendUtils {
      * @return extend string
      */
     @SafeVarargs
-    public static String getExtendString(Map<String, String> map, String sitePath,
+    public static String getExtendString(Map<String, String> map, @Nullable String sitePath,
             List<SysExtendField>... extendFieldListArrays) {
         return getExtendString(map, sitePath, null, extendFieldListArrays);
     }
@@ -241,7 +270,8 @@ public class ExtendUtils {
      * @param searchableConsumer
      * @param extendFieldList
      */
-    public static void decodeField(Map<String, String> map, String sitePath, List<SysExtendField> extendFieldList) {
+    public static void decodeField(Map<String, String> map, @Nullable String sitePath,
+            @Nullable List<SysExtendField> extendFieldList) {
         Set<String> notSafeKeys = new HashSet<>();
         notSafeKeys.addAll(map.keySet());
         decodeField(map, sitePath, notSafeKeys, null, extendFieldList);
@@ -296,8 +326,9 @@ public class ExtendUtils {
      * @return extend string
      */
     @SafeVarargs
-    public static String getExtendString(Map<String, String> map, String sitePath,
-            BiConsumer<SysExtendField, String> searchableConsumer, List<SysExtendField>... extendFieldListArrays) {
+    public static String getExtendString(@Nullable Map<String, String> map, @Nullable String sitePath,
+            @Nullable BiConsumer<SysExtendField, String> searchableConsumer,
+            @Nullable List<SysExtendField>... extendFieldListArrays) {
         if (CommonUtils.notEmpty(extendFieldListArrays) && null != map) {
             Set<String> notSafeKeys = new HashSet<>();
             notSafeKeys.addAll(map.keySet());
@@ -309,6 +340,17 @@ public class ExtendUtils {
                     map.remove(key);
                 }
             }
+            try {
+                return Constants.objectMapper.writeValueAsString(map);
+            } catch (IOException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+    
+    public static String getExtendString(@Nullable Map<String, String> map) {
+        if (null != map) {
             try {
                 return Constants.objectMapper.writeValueAsString(map);
             } catch (IOException e) {

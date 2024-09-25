@@ -16,9 +16,11 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.entities.sys.SysUserAttribute;
 import com.publiccms.logic.component.config.ContentConfigComponent;
 import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.site.FileUploadComponent;
+import com.publiccms.logic.service.sys.SysUserAttributeService;
 import com.publiccms.logic.service.sys.SysUserService;
 
 import freemarker.template.TemplateException;
@@ -61,6 +63,7 @@ public class SysUserDirective extends AbstractTemplateDirective {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         boolean replaceSensitive = handler.getBoolean("replaceSensitive", true);
+        boolean containsAttribute = handler.getBoolean("containsAttribute", true);
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
             SysUser entity = service.getEntity(id);
@@ -73,6 +76,9 @@ public class SysUserDirective extends AbstractTemplateDirective {
                     entity.setNickname(ExtendUtils.replaceSensitive(entity.getNickname(), config));
                 }
                 entity.setPassword(null);
+                if (containsAttribute) {
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(id)));
+                }
                 handler.put("object", entity).render();
             }
         } else {
@@ -80,12 +86,18 @@ public class SysUserDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<SysUser> entityList = service.getEntitys(ids);
                 KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
+                Map<Long, SysUserAttribute> attributeMap = containsAttribute
+                        ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getUserId())
+                        : null;
                 Consumer<SysUser> consumer = e -> {
                     if (absoluteURL) {
                         e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover()));
                     }
                     if (replaceSensitive) {
                         e.setNickname(ExtendUtils.replaceSensitive(e.getNickname(), config));
+                    }
+                    if (containsAttribute) {
+                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
                     }
                 };
 
@@ -103,6 +115,8 @@ public class SysUserDirective extends AbstractTemplateDirective {
 
     @Resource
     private SysUserService service;
+    @Resource
+    private SysUserAttributeService attributeService;
     @Resource
     protected FileUploadComponent fileUploadComponent;
 
