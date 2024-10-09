@@ -16,7 +16,7 @@
     <#list list as a>
         <li>
             <#if categoryMap[a.id.categoryId?string]?has_content>
-                <a href="cmsModel/template.html?modelId=${modelId!}&categoryId=${a.id.categoryId}" class="exclude-translate" target="dialog" rel="categoryList" width="1200" height="580" title="<@t.page 'template'/>"><@bread categoryMap[a.id.categoryId?string]/> ${categoryMap[a.id.categoryId?string].name} <#if categoryMap[a.id.categoryId?string].extendId?has_content><@t.page 'content.extend_field'/></#if></a>
+                <a href="cmsModel/template.html?modelId=${modelId!}&categoryId=${a.id.categoryId}" class="exclude-translate" target="dialog" rel="categoryList" width="1200" height="580" title="<@t.page 'template.example'/>"><@bread categoryMap[a.id.categoryId?string]/> ${categoryMap[a.id.categoryId?string].name} <#if categoryMap[a.id.categoryId?string].extendId?has_content><@t.page 'content.extend_field'/></#if></a>
             </#if>
         </li>
     </#list>

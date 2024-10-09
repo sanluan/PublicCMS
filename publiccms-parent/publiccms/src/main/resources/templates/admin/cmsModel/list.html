@@ -74,7 +74,7 @@
                 <td>${a.hasProducts?then(t.pageMessage('yes'),'')}</td>
                 <td class="wrap">
                     <a href="cmsModel/add.html?id=${a.id?url}" class="edit btnText blue" target="navTab" rel="cmsModel/edit"><i class="icon-edit"></i><@t.page 'model.edit'/></a>
-                    <a href="cmsModel/categoryList.html?modelId=${a.id?url}" class="btnText" target="dialog" mask="true"><i class="icon-code"></i><@t.page 'template'/></a>
+                    <a href="cmsModel/categoryList.html?modelId=${a.id?url}" class="btnText" target="dialog" mask="true"><i class="icon-code"></i><@t.page 'template.example'/></a>
                     <@sys.authorized roleIds=admin.roles url='cmsModel/rebuildSearchText'>
                         <a href="cmsModel/rebuildSearchText?id=${a.id?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh"></i><@t.page 'button.rebuild_search_text'/></a>
                     </@sys.authorized>
