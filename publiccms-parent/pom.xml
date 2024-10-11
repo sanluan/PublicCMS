@@ -28,7 +28,7 @@
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
         <!-- 6.0,6.1 for Java 17 -->
-        <version.spring>5.3.39</version.spring>
+        <version.spring>6.1.13</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
         <!-- 3.0,3.1 for Java 17 -->
