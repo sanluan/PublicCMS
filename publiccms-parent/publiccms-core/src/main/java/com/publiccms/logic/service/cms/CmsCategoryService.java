@@ -104,6 +104,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
             }
         }
         Integer[] tagTypeIds = tagTypeService.update(siteId, categoryParameters.getTagTypes());
+        entity = getEntity(entity.getId());
         entity.setTagTypeIds(arrayToCommaDelimitedString(tagTypeIds));
         if (CommonUtils.notEmpty(categoryParameters.getContentExtends()) || null != entity.getExtendId()) {
             if (null == extendService.getEntity(entity.getExtendId())) {
