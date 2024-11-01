@@ -94,7 +94,9 @@ public class OSSFileAdminController {
         dateformat.setTimeZone(TimeZone.getTimeZone(ZoneId.of("UTC")));
         Date now = new Date();
         String date = dateformat.format(now);
-        String dateStamp = CommonUtils.joinString(date, "T000000Z");
+        DateFormat dateStampformat = DateFormatUtils.getDateFormat("yyyyMMdd'T'HHmmss'Z'");
+        dateStampformat.setTimeZone(TimeZone.getTimeZone(ZoneId.of("UTC")));
+        String dateStamp = dateStampformat.format(now);
         String credential = CommonUtils.joinString(config.get(OSSComponent.CONFIG_ACCESSKEYID), "/", date, "/",
                 config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_REGION : OSSComponent.CONFIG_REGION), "/s3/aws4_request");
         policyConds.addConditionItem(PolicyConditions.COND_X_OSS_CREDENTIAL, credential);
