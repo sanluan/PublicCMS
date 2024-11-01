@@ -110,10 +110,8 @@
                 <td>${a.id!}</td>
                 <td>
                     <span class="exclude-translate">${a.code!}</span>
-                    <#if a.childIds?has_content>
-                        <br/>
-                        <a href="common/category_list.html?parentId=${a.id}" target="ajax" rel="categoryBox"><@t.page 'category.child_management'/></a>
-                    </#if>
+                    <br/>
+                    <a href="common/category_list.html?parentId=${a.id}" target="ajax" rel="categoryBox"><@t.page 'category.child_management'/></a>
                 </td>
                 <td>
                     <#if lockMap?has_content && lockMap[a.id?string]?has_content>
