@@ -47,6 +47,8 @@ public class HtmlUtils {
                     "width")
             .addAttributes("source", "media", "sizes", "src", "srcset", "type")
             .addAttributes("table", "align", "border", "cellspacing", "cellpadding")
+            .addAttributes("td", "align","valign")
+            .addAttributes("th", "align","valign")
             .addAttributes("track", "default", "kind", "label", "src", "srclang").addProtocols("a", "href", "#")
             .addProtocols("img", "src", "data").addProtocols("iframe", "src", "http", "https").preserveRelativeLinks(true);
 
