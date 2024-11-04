@@ -258,7 +258,7 @@ CREATE TABLE `cms_dictionary_exclude` (
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `exclude_dictionary_id` varchar(20) NOT NULL COMMENT '排除的数据字典',
   PRIMARY KEY (`dictionary_id`, `site_id`, `exclude_dictionary_id`),
-  KEY `cms_dictionary_parent_value` (`dictionary_id`, `site_id`)
+  KEY `cms_dictionary_exclude_dictionary_id` (`dictionary_id`, `site_id`)
 ) COMMENT='字典数据排除规则';
 -- ----------------------------
 -- Table structure for cms_dictionary_exclude_value
@@ -271,7 +271,7 @@ CREATE TABLE `cms_dictionary_exclude_value` (
   `value` varchar(50) NOT NULL COMMENT '值',
   `exclude_values` text default NULL COMMENT '排除的值',
   PRIMARY KEY (`dictionary_id`, `site_id`, `exclude_dictionary_id`, `value`),
-  KEY `cms_dictionary_parent_value` (`dictionary_id`, `site_id`)
+  KEY `cms_dictionary_exclude_value_dictionary_id` (`dictionary_id`, `site_id`)
 )COMMENT='字典数据排除规则值';
 -- ----------------------------
 -- Table structure for cms_editor_history
@@ -2172,7 +2172,7 @@ CREATE TABLE `visit_item` (
   `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
   `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
   PRIMARY KEY (`site_id`, `visit_date`, `item_type`, `item_id`),
-  KEY `visit_item_session_id` (`site_id`, `visit_date`, `item_type`, `item_id`, `pv`)
+  KEY `visit_item_visit_date` (`site_id`, `visit_date`, `item_type`, `item_id`, `pv`)
 ) COMMENT='项目访问汇总';
 
 -- ----------------------------
