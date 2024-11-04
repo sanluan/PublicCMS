@@ -195,7 +195,7 @@
                                     }
                                     liAttr += "'" + key + "':'" + this[key] + "'";
                                 }
-                                html += "<li lookupAttrs=\"" + liAttr + "\">" + liLabel + "</li>";
+                                html += "<li lookupAttrs=\"" + escapeHtml(liAttr) + "\">" + escapeHtml(liLabel) + "</li>";
                             });
                             var $lis = $suggest.html("<ul>" + html + "</ul>").find("li");
                             $lis.on("click", function() {

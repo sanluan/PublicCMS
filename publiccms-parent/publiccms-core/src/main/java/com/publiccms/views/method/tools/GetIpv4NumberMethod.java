@@ -44,7 +44,7 @@ public class GetIpv4NumberMethod extends BaseMethod {
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String string = getString(0, arguments);
         if (CommonUtils.notEmpty(string)) {
-            return String.valueOf(IpUtils.getIpv4Number(string));
+            return IpUtils.getIpv4Number(string);
         }
         return null;
     }
