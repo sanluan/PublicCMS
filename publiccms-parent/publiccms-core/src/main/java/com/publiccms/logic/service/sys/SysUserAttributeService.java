@@ -21,6 +21,7 @@ public class SysUserAttributeService extends BaseService<SysUserAttribute> {
 
     protected static final String[] ignoreProperties = new String[] { "userId" };
     public static final String OPTSECRET_SETTINGS_CODE = "otpsecret";
+    public static final String SETTINGS_CODE_WEBAUTHN = "webauthn";
 
     @Override
     public List<SysUserAttribute> getEntitys(Serializable[] ids) {
