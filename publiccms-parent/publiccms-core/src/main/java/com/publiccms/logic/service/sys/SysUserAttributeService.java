@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -19,7 +20,6 @@ import com.publiccms.entities.sys.SysUserAttribute;
 @Transactional
 public class SysUserAttributeService extends BaseService<SysUserAttribute> {
 
-    protected static final String[] ignoreProperties = new String[] { "userId" };
     public static final String OPTSECRET_SETTINGS_CODE = "otpsecret";
     public static final String SETTINGS_CODE_WEBAUTHN = "webauthn";
 
@@ -32,6 +32,7 @@ public class SysUserAttributeService extends BaseService<SysUserAttribute> {
      * @param userId
      * @param settings
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateSettings(Long userId, String settings) {
         SysUserAttribute attribute = getEntity(userId);
         if (null != attribute) {
@@ -46,19 +47,18 @@ public class SysUserAttributeService extends BaseService<SysUserAttribute> {
 
     /**
      * @param userId
-     * @param entity
+     * @param data 
      */
-    public void updateAttribute(Long userId, SysUserAttribute entity) {
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void updateAttribute(Long userId, String data) {
         SysUserAttribute attribute = getEntity(userId);
         if (null != attribute) {
-            if (null != entity) {
-                update(attribute.getUserId(), entity, ignoreProperties);
-            } else {
-                delete(attribute.getUserId());
-            }
-        } else if (null != entity) {
-            entity.setUserId(userId);
-            save(entity);
+            attribute.setData(data);
+        } else if (CommonUtils.notEmpty(data)) {
+            attribute = new SysUserAttribute();
+            attribute.setUserId(userId);
+            attribute.setSettings(data);
+            save(attribute);
         }
     }
 }
