@@ -46,6 +46,7 @@
             </@sys.configData>
             <p>
                 <label><input type="checkbox" name="secureLogin" checked="checked"/><@t.page 'secure_login'/></label>
+                <input type="button" id="btn-finger-login" value="<@t.page 'login'/>"/>
                 <input type="submit" value="<@t.page 'login'/>"/>
                 <input type="hidden" name="returnUrl" value="${(returnUrl!)}"/>
                 <input type="hidden" name="encoding"/>
@@ -70,6 +71,7 @@
     </div>
 </div>
 <script src="${base}/resource/plugins/encrypt/sha512.min.js"></script>
+<script src="${base}/resource/plugins/webauthn/webauthn-simple-app.js"></script>
 <script>
 if(document.getElementsByTagName('input')[0].value){
     document.getElementsByTagName('input')[1].focus();
@@ -85,6 +87,19 @@ function encode(){
 function change(obj){
     location.href=location.href+(0<location.href.indexOf('?')?'&':'?')+'currentSiteId='+obj.options[obj.options.selectedIndex].value;
 }
+function fingerLogin(){
+    new WebAuthnApp({
+        username : $('input[name=username]').val(),
+        loginChallengeEndpoint : "${base+adminContextPath}/webauthn/assertion/options",
+        loginResponseEndpoint : "${base+adminContextPath}/webauthn/assertion/result"
+    }).login();
+}
+$(document).on("webauthn-login-success", () => {
+    window.location = "${base+adminContextPath}/webauthn/assertion/login?returnUrl="+$("input[name=returnUrl]").val();
+});
+$(document).on("webauthn-login-error", (err) => {
+    $(".error_msg").text(err.message);
+});
 </script>
 </body>
 </html>
