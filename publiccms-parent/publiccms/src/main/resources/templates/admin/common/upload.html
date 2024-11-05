@@ -9,15 +9,13 @@
     <div class="pageFormContent layoutBox" layoutH>
         <div class="tabs">
             <div class="tabsHeader">
-                <div class="tabsHeaderContent">
-                    <ul>
-                        <li><a href="javascript:;" class="tabImageBtn" onclick="$('button[type=submit]',$.pdialog.getCurrent()).show();return false;"><@t.page 'file'/></a></li>
-                        <li><a href="javascript:;" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'upload.log'/></a></li>
-                        <#if !privatefile?has_content || "false"=privatefile>
-                            <li><a href="common/file_list.html?field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" class="j-ajax" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'webfile'/></a></li>
-                        </#if>
-                    </ul>
-                </div>
+                <ul>
+                    <li><a href="javascript:;" class="tabImageBtn" onclick="$('button[type=submit]',$.pdialog.getCurrent()).show();return false;"><@t.page 'file'/></a></li>
+                    <li><a href="javascript:;" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'upload.log'/></a></li>
+                    <#if !privatefile?has_content || "false"=privatefile>
+                        <li><a href="common/file_list.html?field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" class="j-ajax" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'webfile'/></a></li>
+                    </#if>
+                </ul>
             </div>
             <div class="tabsContent unitBox">
                 <div class="pageContent">

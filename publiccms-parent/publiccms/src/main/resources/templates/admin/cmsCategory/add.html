@@ -60,14 +60,12 @@
     </div>
     <div class="tabs card">
         <div class="tabsHeader">
-            <div class="tabsHeaderContent">
-                <ul>
-                    <li><a href="javascript:;" onclick="return false;"><@t.page 'base_info'/></a></li>
-                    <li class="onlyUrl seo"><a href="javascript:;" onclick="return false;"><@t.page 'seo'/></a></li>
-                    <li class="categoryModelControl"><a href="javascript:;" onclick="return false;"><@t.page 'category.model'/></a></li>
-                    <li class="categoryModelContent"><a href="javascript:;" onclick="return false;"><@t.page 'content.extend_field'/></a></li>
-                </ul>
-            </div>
+            <ul>
+                <li><a href="javascript:;" onclick="return false;"><@t.page 'base_info'/></a></li>
+                <li class="onlyUrl seo"><a href="javascript:;" onclick="return false;"><@t.page 'seo'/></a></li>
+                <li class="categoryModelControl"><a href="javascript:;" onclick="return false;"><@t.page 'category.model'/></a></li>
+                <li class="categoryModelContent"><a href="javascript:;" onclick="return false;"><@t.page 'content.extend_field'/></a></li>
+            </ul>
         </div>
         <div class="tabsContent unitBox">
             <div class="pageFormContent" layoutH>
@@ -312,9 +310,9 @@ $('input[name$=\\.categoryModel\\.customContentPath]',navTab.getCurrentPanel()).
 checkCategoryModel();
 <#if showTab?has_content>
     <#if 'model'=showTab>
-    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.categoryModelControl').index('.tabsHeaderContent ul li'));
+    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.categoryModelControl').index('.tabsHeader ul li'));
     <#elseif 'seo'=showTab>
-    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.seo').index('.tabsHeaderContent ul li'));
+    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.seo').index('.tabsHeader ul li'));
     </#if>
 </#if>
 </script>

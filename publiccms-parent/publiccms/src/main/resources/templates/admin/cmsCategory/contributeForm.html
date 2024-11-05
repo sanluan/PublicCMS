@@ -2,17 +2,15 @@
     <div class="tabs">
         <@cms.categoryModelList categoryId=categoryId>
         <div class="tabsHeader">
-            <div class="tabsHeaderContent">
-                <#list list as a>
-                    <@t.merge 'modelIds' a.id.modelId!/>
-                </#list>
-                <@cms.model ids=t.modelIds!><#assign modelMap=map!/></@cms.model>
-                <ul>
-                <#list list as a>
-                    <li><a href="cmsTemplate/contentForm.html?categoryId=${a.id.categoryId}&modelId=${a.id.modelId}" class="j-ajax" onclick="return false;">${(modelMap[a.id.modelId].name)!}</a></li>
-                </#list>
-                </ul>
-            </div>
+            <#list list as a>
+                <@t.merge 'modelIds' a.id.modelId!/>
+            </#list>
+            <@cms.model ids=t.modelIds!><#assign modelMap=map!/></@cms.model>
+            <ul>
+            <#list list as a>
+                <li><a href="cmsTemplate/contentForm.html?categoryId=${a.id.categoryId}&modelId=${a.id.modelId}" class="j-ajax" onclick="return false;">${(modelMap[a.id.modelId].name)!}</a></li>
+            </#list>
+            </ul>
         </div>
         <div class="tabsContent unitBox">
             <#list list as a>
