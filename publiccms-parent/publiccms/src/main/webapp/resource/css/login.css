@@ -21,6 +21,7 @@ body:before{content:"";height:100%;right:0;left:50%;position:absolute;background
 .login_form p>i{position:absolute;left:11px;color:#afc2da;line-height:38px;font-size:20px;}
 .login_form input[type=submit]{color:#FFF;height:40px;width:auto;background:#667ea7;border:none;padding:0 20px;float:right;}
 .login_form input[type=submit]:hover{background:#5478b5;}
+.login_form a.btn-finger-login{display:inline-block;overflow: hidden;position:absolute;right:4px;top:4px;text-indent:-100px;width:30px;height:30px;background-image:url(../images/finger-icon.png);background-repeat:no-repeat;background-size:cover;}
 .login_form input:focus{outline:0;border-color:#667ea7;}
 .login_form>p{position:absolute;top:20px;right:20px;margin:0;}
 .login_form>p a{color:#979ea9;text-decoration:none;font-size:14px;position:relative;padding-right:10px;}

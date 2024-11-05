@@ -34,6 +34,19 @@ public class RequestUtils {
     }
 
     /**
+     * @param request
+     * @return origin
+     */
+    public static String getOrigin(HttpServletRequest request) {
+        if (443 == request.getServerPort() && "https".equalsIgnoreCase(request.getScheme())
+                || 80 == request.getServerPort() && "http".equalsIgnoreCase(request.getScheme())) {
+            return CommonUtils.joinString(request.getScheme(), "://", request.getServerName());
+        } else {
+            return CommonUtils.joinString(request.getScheme(), "://", request.getServerName(), ":", request.getServerPort());
+        }
+    }
+
+    /**
      * 获取转码路径
      * 
      * @param path
