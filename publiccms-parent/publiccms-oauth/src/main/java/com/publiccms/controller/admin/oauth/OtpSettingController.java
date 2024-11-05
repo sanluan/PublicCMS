@@ -52,7 +52,7 @@ public class OtpSettingController {
         SysUserAttribute attribute = attributeService.getEntity(admin.getId());
         Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
         map.remove(SysUserAttributeService.OPTSECRET_SETTINGS_CODE);
-        attributeService.updateSettings(admin.getId(), ExtendUtils.getExtendString(map, null));
+        attributeService.updateSettings(admin.getId(), ExtendUtils.getExtendString(map));
         return CommonConstants.TEMPLATE_DONE;
     }
 
