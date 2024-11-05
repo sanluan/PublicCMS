@@ -92,10 +92,10 @@ table.list th.asc:before,table.list th.desc:before,table.list th.order:before{co
 table.nowrap tbody tr {border-color:#ededed;}
 
 .tabs .tabsHeader{background-color:#fff;}
-.tabs .tabsHeaderContent>ul li a{color:#989eab;}
+.tabs .tabsHeader ul{border-color:#dde2ec;box-sizing:border-box;}
+.tabs .tabsHeader ul li a{color:#989eab;}
 .tabs .tabsHeader li.selected:before{background-color:#516485;}
 .tabs .tabsHeader li.selected a{color:#31353e;}
-.tabs .tabsHeader ul{border-color:#dde2ec;box-sizing:border-box;}
 a.btnLook:before{color:#333;}
 footer{background-color:#131a23;color:#b5c3db;}
 footer a{color:#4d84ff;}

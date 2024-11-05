@@ -346,7 +346,7 @@ public class LoginController {
      * @param model
      * @return 用户是否禁用
      */
-    public boolean verifyNotEnablie(SysUser user, RedirectAttributes model) {
+    public static boolean verifyNotEnablie(SysUser user, RedirectAttributes model) {
         if (user.isDisabled()) {
             model.addAttribute(CommonConstants.ERROR, "verify.user.notEnablie");
             return true;

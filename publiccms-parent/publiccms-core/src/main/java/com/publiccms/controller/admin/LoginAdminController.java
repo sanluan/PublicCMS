@@ -305,7 +305,7 @@ public class LoginAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    protected boolean verifyNotAdmin(SysUser user, ModelMap model) {
+    public static boolean verifyNotAdmin(SysUser user, ModelMap model) {
         if (!user.isDisabled() && !user.isSuperuser()) {
             model.addAttribute(CommonConstants.ERROR, "verify.user.notAdmin");
             return true;
@@ -313,7 +313,7 @@ public class LoginAdminController {
         return false;
     }
 
-    protected boolean verifyNotEnablie(SysUser user, ModelMap model) {
+    public static boolean verifyNotEnablie(SysUser user, ModelMap model) {
         if (user.isDisabled()) {
             model.addAttribute(CommonConstants.ERROR, "verify.user.notEnablie");
             return true;

@@ -12,16 +12,30 @@
 </@tools.disk>
 <div class="pageFormContent" layoutH>
     <dl class="nowrap">
-        <dt><@t.page 'site'/>:</dt>
-        <dd>
-            ${(a.name)!}
-            <span class="info"><@t.page 'server_config.nginx_description'/></span>
+        <dt><@t.page 'server_config.tomcat'/>:</dt>
+        <dd><textarea class="code" mode="xml">
+        &lt;!-- this valve replaces the apparent client remote IP address and hostname and scheme for the request --&gt;
+        &lt;Valve className="org.apache.catalina.valves.RemoteIpValve" protocolHeader="X-Forwarded-Proto" portHeader="X-Forwarded-Port"/&gt;</textarea>
+            <span class="info"><@t.page 'server_config.tomcat_description'/></span>
         </dd>
     </dl>
     <dl class="nowrap">
-        <dt><@t.page 'server_config.nginx'/>:</dt>
+        <dt><@t.page 'site'/>:</dt>
         <dd>
-            <textarea class="code" mode="nginx">
+            ${(a.name)!}
+            <span class="info"><@t.page 'server_config.description'/></span>
+        </dd>
+    </dl>
+    <div class="tabs">
+        <div class="tabsHeader">
+            <ul>
+                <li><a href="javascript:;" onclick="return false;"><@t.page 'server_config.nginx'/></a></li>
+                <li><a href="sysSite/configTemplateApache.html?siteId=${siteId}" class="j-ajax" onclick="return false;"><@t.page 'server_config.apache'/></a></li>
+            </ul>
+        </div>
+       <div class="tabsContent">
+            <div class="unitBox">
+                <textarea class="code" mode="nginx">
 #<@t.page 'server_config.nginx_common_description'/>
 upstream cms {
     #<@t.page 'server_config.upstream'/>
@@ -140,157 +154,11 @@ server {
     error_page 500 502 503 504 /error/500.html;
 }
 </#if></textarea>
-            <span class="info"><@t.page 'server_config.nginx_config_description'/></span>
-        </dd>
-    </dl>
-    <dl class="nowrap">
-        <dt><@t.page 'server_config.apache'/>:</dt>
-        <dd>
-            <textarea class="code" mode="xml">
-#<@t.page 'server_config.apache_common_description'/>
-<ifModule !proxy_module>
-LoadModule proxy_module modules/mod_proxy.so
-</ifModule>
-<ifModule !proxy_balancer_module>
-LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
-</ifModule>
-<ifModule !headers_module>
-LoadModule headers_module modules/mod_headers.so
-</ifModule>
-<#if dynamicLocation=siteLocation>
-<ifModule !rewrite_module>
-LoadModule rewrite_module modules/mod_rewrite.so
-</ifModule>
-</#if>
-# https://tn123.org/mod_xsendfile/
-<ifModule !xsendfile_module>
-LoadModule xsendfile_module modules/mod_xsendfile.so
-</ifModule>
-<ifModule xsendfile_module>
-    XSendFile on
-    XSendFilePath ${realRootPath}/web/private/
-</ifModule>
-
-ProxyRequests off
-ProxyPreserveHost On
-<Proxy "balancer://cmsproxy">
-    BalancerMember "http://localhost:8080" loadfactor=1
-    ProxySet stickysession=JSESSIONID
-</Proxy>
-
-#${a.name} <@t.page 'server_config.site'/>
-<Directory "${realRootPath}/web/site_${siteId}/">
-    AllowOverride None
-    Options FollowSymLinks Includes
-    Require all granted
-</Directory>
-
-<VirtualHost *:${dynamicPort?has_content?then(dynamicPort,80)}>
-    ServerName ${dynamicPath}
-<@sys.domainList advanced=true siteId=siteId>
-  <#if page.totalCount gt 0>
-    ServerAlias <#list page.list as d><#if d.name!=dynamicPath&&d.name!=sitePath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#sep> </#list>
-  </#if>
-</@sys.domainList>
-
-#SSLEngine On
-#SSLCertificateFile "conf/xxx.crt"
-#SSLCertificateKeyFile "conf/xxx.key"
-
-  <#if a.useSsi>
-    alias /include/ "${realRootPath}/web/site_${siteId}/include/"
-    AddType text/html .html .shtml
-    AddOutputFilter INCLUDES .html .shtml
-  </#if>
-
-    RequestHeader set Sendfile X-Sendfile
-
-    ProxyPass ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} balancer://cmsproxy${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
-    ProxyPassReverse ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} balancer://cmsproxy${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
-
-    <#if multipleDomain?has_content>
-        <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
-            <#list page.list as a>
-                <#if a.directory?has_content>
-    Alias ${siteLocation?has_content?then('/'+siteLocation,'/')}${a.directory}/ "${realRootPath}/web/site_${a.id}/webfile/"
-                    <#if dynamicLocation=siteLocation>
-    RewriteEngine On
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^/(.*)$ balancer://cmsproxy/%{REQUEST_URI} [P,L]
-                    </#if>
-                </#if>
-            </#list>
-        </@sys.siteList>
-    </#if>
-
-    <#if dynamicPath=sitePath&&dynamicPort=sitePort>
-    #${a.name} <@t.page 'server_config.static'/>
-    Alias "/${siteLocation}" "${realRootPath}/web/site_${siteId}/"
-         <#if dynamicLocation=siteLocation>
-    RewriteEngine On
-    RewriteCond %{DOCUMENT_ROOT} %{REQUEST_FILENAME} !-d
-    RewriteCond %{DOCUMENT_ROOT} %{REQUEST_FILENAME} !-f
-    RewriteRule ^/(.*)$ balancer://cmsproxy/%{REQUEST_URI} [P,L]
-        </#if>
-    </#if>
-
-    ErrorDocument 403 /error/403.html
-    ErrorDocument 404 /error/404.html
-    ErrorDocument 500 /error/500.html
-    ErrorDocument 502 /error/500.html
-    ErrorDocument 503 /error/500.html
-    ErrorDocument 504 /error/500.html
-</VirtualHost>
-
-<#if dynamicPath!=sitePath||dynamicPort!=sitePort>
-#${a.name} <@t.page 'server_config.static'/>
-<VirtualHost *:${sitePort?has_content?then(sitePort,80)}>
-    ServerName ${sitePath}
-    <#if a.useSsi>
-        <#if siteLocation?has_content>
-    alias /include/ "${realRootPath}/web/site_${siteId}/include/"
-    AddType text/html .html .shtml
-    AddOutputFilter INCLUDES .html .shtml
-        </#if>
-    </#if>
-    <#if multipleDomain?has_content>
-        <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
-            <#list page.list as a>
-                <#if a.directory?has_content>
-    #${a.name} <@t.page 'server_config.static'/>
-    alias ${siteLocation?has_content?then('/'+siteLocation,'/')}${a.directory}/ "${realRootPath}/web/site_${a.id}/"
-                </#if>
-            </#list>
-        </@sys.siteList>
-    </#if>
-    <#if siteLocation?has_content>
-    Alias "/${siteLocation}/" "${realRootPath}/web/site_${siteId}/"
-    <#else>
-    DocumentRoot "${realRootPath}/web/site_${siteId}/"
-    </#if>
-    <IfModule headers_module>
-        Header set Access-Control-Allow-Origin "*"
-    </IfModule>
-    ErrorDocument 403 /error/403.html
-    ErrorDocument 404 /error/404.html
-    ErrorDocument 500 /error/500.html
-    ErrorDocument 502 /error/500.html
-    ErrorDocument 503 /error/500.html
-    ErrorDocument 504 /error/500.html
-</VirtualHost>
-</#if>
-</textarea>
-        </dd>
-    </dl>
-    <dl class="nowrap">
-        <dt><@t.page 'server_config.tomcat'/>:</dt>
-        <dd><textarea class="code" mode="xml">
-        &lt;!-- this valve replaces the apparent client remote IP address and hostname and scheme for the request --&gt;
-        &lt;Valve className="org.apache.catalina.valves.RemoteIpValve" protocolHeader="X-Forwarded-Proto" portHeader="X-Forwarded-Port"/&gt;</textarea>
-            <span class="info"><@t.page 'server_config.tomcat_description'/></span>
-        </dd>
-    </dl>
+                <span class="info"><@t.page 'server_config.nginx_config_description'/></span>
+            </div>
+            <div class="unitBox">loading</div>
+        </div>
+    </div>
 </div>
 <div class="formBar card">
     <ul>

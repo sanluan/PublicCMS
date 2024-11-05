@@ -115,8 +115,6 @@ header .navbar-toggler.side-right{background-image:url(../images/side-right.png)
 
 /* Tabs */
 .tabs .tabsHeader{border-radius:5px;display:block;overflow:hidden;height:35px;padding-left:5px;}
-.tabs .tabsHeaderContent{display:block;overflow:hidden;height:100%;}
-.tabs .tabsHeaderContent>ul li a{line-height:34px;}
 .tabs .tabsHeader ul{display:block;height:100%;border-bottom-width:1px;border-bottom-style:solid;box-sizing:border-box;}
 .tabs .tabsHeader li{float:left;display:block;height:100%;margin-right:2px;line-height:34px;}
 .tabs .tabsHeader li a{float:left;display:block;height:100%;padding:0 15px;line-height:34px;}

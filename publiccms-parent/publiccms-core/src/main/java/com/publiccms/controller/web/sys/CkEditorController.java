@@ -58,7 +58,7 @@ public class CkEditorController extends AbstractCkEditorController {
                 LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null), messageMap)) {
             Map<String, Object> result = new HashMap<>();
             result.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                    request.getLocale(), (String) messageMap.get(CommonConstants.ERROR)));
+                    localeResolver.resolveLocale(request), (String) messageMap.get(CommonConstants.ERROR)));
             result.put(CommonConstants.ERROR, messageMap);
             return result;
         }
