@@ -6,6 +6,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
@@ -45,6 +47,8 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserAttributeService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
+import com.publiccms.views.pojo.oauth.WebauthnCreateOption;
+import com.publiccms.views.pojo.oauth.WebauthnLoginOption;
 import com.webauthn4j.WebAuthnManager;
 import com.webauthn4j.credential.CredentialRecord;
 import com.webauthn4j.credential.CredentialRecordImpl;
@@ -53,15 +57,14 @@ import com.webauthn4j.data.AuthenticationData;
 import com.webauthn4j.data.AuthenticationParameters;
 import com.webauthn4j.data.AuthenticatorAttachment;
 import com.webauthn4j.data.AuthenticatorSelectionCriteria;
-import com.webauthn4j.data.PublicKeyCredentialCreationOptions;
 import com.webauthn4j.data.PublicKeyCredentialDescriptor;
 import com.webauthn4j.data.PublicKeyCredentialParameters;
-import com.webauthn4j.data.PublicKeyCredentialRequestOptions;
 import com.webauthn4j.data.PublicKeyCredentialRpEntity;
 import com.webauthn4j.data.PublicKeyCredentialType;
 import com.webauthn4j.data.PublicKeyCredentialUserEntity;
 import com.webauthn4j.data.RegistrationData;
 import com.webauthn4j.data.RegistrationParameters;
+import com.webauthn4j.data.ResidentKeyRequirement;
 import com.webauthn4j.data.UserVerificationRequirement;
 import com.webauthn4j.data.attestation.authenticator.AttestedCredentialData;
 import com.webauthn4j.data.attestation.statement.COSEAlgorithmIdentifier;
@@ -116,21 +119,42 @@ public class WebAuthnController {
     }
 
     @PostMapping("attestation/options")
-    public PublicKeyCredentialCreationOptions registerOptions(@SessionAttribute SysUser admin, HttpServletRequest request) {
+    @ResponseBody
+    public WebauthnCreateOption registerOptions(@SessionAttribute SysUser admin, HttpServletRequest request) {
         PublicKeyCredentialRpEntity rpEntity = new PublicKeyCredentialRpEntity(request.getServerName(), request.getServerName());
         PublicKeyCredentialUserEntity userEntity = new PublicKeyCredentialUserEntity(admin.getName().getBytes(), admin.getName(),
                 admin.getName());
         UserVerificationRequirement userVerificationRequirement = UserVerificationRequirement.PREFERRED;
         AuthenticatorSelectionCriteria authenticatorSelectionCriteria = new AuthenticatorSelectionCriteria(
-                AuthenticatorAttachment.PLATFORM, true, userVerificationRequirement);
+                AuthenticatorAttachment.PLATFORM, true, ResidentKeyRequirement.PREFERRED, userVerificationRequirement);
         List<PublicKeyCredentialDescriptor> excludeCredentials = null;
 
-        return new PublicKeyCredentialCreationOptions(rpEntity, userEntity, new DefaultChallenge(admin.getName().getBytes()),
-                pubKeyCredParams, timeout, excludeCredentials, authenticatorSelectionCriteria,
-                AttestationConveyancePreference.NONE, null);
+        return new WebauthnCreateOption(rpEntity, userEntity, new DefaultChallenge(admin.getName().getBytes()), pubKeyCredParams,
+                timeout, excludeCredentials, authenticatorSelectionCriteria, AttestationConveyancePreference.NONE, null);
     }
 
-    @PostMapping("attestation/delete")
+    @GetMapping("getCredentials")
+    @ResponseBody
+    public Map<String, Object> getCredentials(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
+            HttpServletRequest request) {
+        SysUserAttribute attribute = attributeService.getEntity(admin.getId());
+        Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
+        String webauthnSettings = map.get(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN);
+        Map<String, Object> result = new HashMap<>();
+        if (CommonUtils.notEmpty(webauthnSettings)) {
+            try {
+                Map<String, CredentialRecord> webauthnMap = Constants.objectMapper.readValue(webauthnSettings,
+                        Constants.objectMapper.getTypeFactory().constructMapType(HashMap.class, String.class,
+                                CredentialRecord.class));
+                result.put("credentials", webauthnMap.keySet());
+            } catch (JsonProcessingException e) {
+            }
+        }
+        return result;
+    }
+
+    @PostMapping("deleteCredential")
+    @ResponseBody
     public Map<String, Object> deleteCredential(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
             String credentialId, HttpServletRequest request) {
         SysUserAttribute attribute = attributeService.getEntity(admin.getId());
@@ -142,22 +166,23 @@ public class WebAuthnController {
                 webauthnMap = Constants.objectMapper.readValue(webauthnSettings, Constants.objectMapper.getTypeFactory()
                         .constructMapType(HashMap.class, String.class, CredentialRecord.class));
             } catch (JsonProcessingException e) {
-                webauthnMap = new HashMap<>();
+                webauthnMap = new LinkedHashMap<>();
             }
         } else {
-            webauthnMap = new HashMap<>();
+            webauthnMap = new LinkedHashMap<>();
         }
         webauthnMap.remove(credentialId);
         map.put(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN, JsonUtils.getString(webauthnMap));
-        attributeService.updateSettings(admin.getId(), ExtendUtils.getExtendString(map, null));
+        attributeService.updateSettings(admin.getId(), ExtendUtils.getExtendString(map));
         return Collections.singletonMap("result", true);
     }
 
     @PostMapping("attestation/result")
+    @ResponseBody
     public Map<String, String> registerCredential(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
             @RequestBody String registrationResponseJSON, HttpServletRequest request) {
         Challenge challenge = new DefaultChallenge(admin.getName().getBytes());
-        Origin origin = new Origin(request.getServerName());
+        Origin origin = new Origin(RequestUtils.getOrigin(request));
         byte[] tokenBindingId = null;
         RegistrationData registrationData = webAuthnManager.parseRegistrationResponseJSON(registrationResponseJSON);
         ServerProperty serverProperty = new ServerProperty(origin, request.getServerName(), challenge, tokenBindingId);
@@ -165,6 +190,9 @@ public class WebAuthnController {
         boolean userPresenceRequired = true;
         RegistrationParameters registrationParameters = new RegistrationParameters(serverProperty, pubKeyCredParams,
                 userVerificationRequired, userPresenceRequired);
+        Map<String, String> result = new HashMap<>();
+        result.put("status", "ok");
+        result.put("errorMessage", "");
         try {
             webAuthnManager.verify(registrationData, registrationParameters);
             CredentialRecord credentialRecord = new CredentialRecordImpl(registrationData.getAttestationObject(),
@@ -179,19 +207,18 @@ public class WebAuthnController {
                     webauthnMap = Constants.objectMapper.readValue(webauthnSettings, Constants.objectMapper.getTypeFactory()
                             .constructMapType(HashMap.class, String.class, CredentialRecord.class));
                 } catch (JsonProcessingException e) {
-                    webauthnMap = new HashMap<>();
+                    webauthnMap = new LinkedHashMap<>();
                 }
             } else {
-                webauthnMap = new HashMap<>();
+                webauthnMap = new LinkedHashMap<>();
             }
             @SuppressWarnings("deprecation")
             AttestedCredentialData attestedCredentialData = credentialRecord.getAttestedCredentialData();
             webauthnMap.put(Base64.getUrlEncoder().encodeToString(attestedCredentialData.getCredentialId()), credentialRecord);
             map.put(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN, JsonUtils.getString(webauthnMap));
-            attributeService.updateSettings(admin.getId(), ExtendUtils.getExtendString(map, null));
-            return Collections.singletonMap("status", "ok");
+            attributeService.updateSettings(admin.getId(), ExtendUtils.getExtendString(map));
+            return result;
         } catch (ValidationException e) {
-            Map<String, String> result = new HashMap<>();
             result.put("status", "failed");
             result.put("errorMessage", e.getMessage());
             return result;
@@ -199,19 +226,23 @@ public class WebAuthnController {
     }
 
     @RequestMapping("assertion/options")
-    public PublicKeyCredentialRequestOptions loginOptions(String username, HttpServletRequest request, HttpSession session) {
+    @ResponseBody
+    public WebauthnLoginOption loginOptions(@RequestBody Map<String, String> body, HttpServletRequest request,
+            HttpSession session) {
+        String username = body.get("username");
         List<PublicKeyCredentialDescriptor> allowCredentials = null;
         AuthenticationExtensionsClientInputs<AuthenticationExtensionClientInput> extensions = null;
-        session.setAttribute("webauthnuser", username);
-        return new PublicKeyCredentialRequestOptions(new DefaultChallenge(username.getBytes()), timeout, request.getServerName(),
+        session.setAttribute("webauthnuser", body);
+        return new WebauthnLoginOption(new DefaultChallenge(username.getBytes()), timeout, request.getServerName(),
                 allowCredentials, UserVerificationRequirement.PREFERRED, extensions);
     }
 
     @PostMapping("assertion/result")
+    @ResponseBody
     public Map<String, String> loginResult(@RequestAttribute SysSite site, @RequestBody String authenticationResponseJSON,
             @SessionAttribute String webauthnuser, HttpServletRequest request, HttpServletResponse response,
             HttpSession session) {
-        Origin origin = new Origin(request.getServerName());
+        Origin origin = new Origin(RequestUtils.getOrigin(request));
         byte[] tokenBindingId = null;
         AuthenticationData authenticationData = webAuthnManager.parseAuthenticationResponseJSON(authenticationResponseJSON);
         ServerProperty serverProperty = new ServerProperty(origin, request.getServerName(),
@@ -223,7 +254,7 @@ public class WebAuthnController {
         Map<String, String> result = new HashMap<>();
         result.put("status", "failed");
         result.put("errorMessage", LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                localeResolver.resolveLocale(request), "verify.custom.password"));
+                localeResolver.resolveLocale(request), "verify.custom.fingerprint"));
         String ip = RequestUtils.getIpAddress(request);
         ModelMap model = new ModelMap();
         boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null);
@@ -275,7 +306,9 @@ public class WebAuthnController {
                         logLoginService.save(new LogLogin(site.getId(), webauthnuser, user.getId(), ip,
                                 LogLoginService.CHANNEL_WEB_MANAGER, false, CommonUtils.getDate(), "fingerprint"));
                         session.removeAttribute("webauthnuser");
-                        return Collections.singletonMap("status", "ok");
+                        result.put("status", "ok");
+                        result.put("errorMessage", "");
+                        return result;
                     }
                 } catch (JsonProcessingException | VerificationException e) {
                     result.put("errorMessage", e.getMessage());
@@ -285,12 +318,12 @@ public class WebAuthnController {
         return result;
     }
 
-    @GetMapping("assertion/login")
+    @GetMapping("login")
     public String login(@RequestAttribute SysSite site, @RequestBody String returnUrl, HttpServletRequest request) {
         Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
         String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
         if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
-            returnUrl = CommonConstants.getDefaultPage();
+            returnUrl = CommonUtils.joinString("../", CommonConstants.getDefaultPage());
         }
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }

@@ -29,7 +29,8 @@
             </p>
             <p>
                 <i class="iconfont iconfont-user"></i>
-                <input type="text" name="username" required="required" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>" value="${(user.name)!}"/>
+                <input type="text" name="username" required="required" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>" value="${(admin.name)!}"/>
+                <a class="btn-finger-login" href="javascript:void(0)"><@t.page 'login.fingerprint'/></a>
             </p>
             <p>
                 <i class="iconfont iconfont-key"></i>
@@ -46,7 +47,6 @@
             </@sys.configData>
             <p>
                 <label><input type="checkbox" name="secureLogin" checked="checked"/><@t.page 'secure_login'/></label>
-                <input type="button" id="btn-finger-login" value="<@t.page 'login'/>"/>
                 <input type="submit" value="<@t.page 'login'/>"/>
                 <input type="hidden" name="returnUrl" value="${(returnUrl!)}"/>
                 <input type="hidden" name="encoding"/>
@@ -88,18 +88,27 @@ function encode(){
 function change(obj){
     location.href=location.href+(0<location.href.indexOf('?')?'&':'?')+'currentSiteId='+obj.options[obj.options.selectedIndex].value;
 }
-function fingerLogin(){
-    new WebAuthnApp({
-        username : $('input[name=username]').val(),
-        loginChallengeEndpoint : "${base+adminContextPath}/webauthn/assertion/options",
-        loginResponseEndpoint : "${base+adminContextPath}/webauthn/assertion/result"
-    }).login();
-}
 $(document).on("webauthn-login-success", () => {
     window.location = "${base+adminContextPath}/webauthn/assertion/login?returnUrl="+$("input[name=returnUrl]").val();
 });
+$(document).on("webauthn-not-supported", () => {
+    $(".btn-finger-login").hide();
+});
 $(document).on("webauthn-login-error", (err) => {
     $(".error_msg").text(err.message);
+});
+var webAuthnApp=new WebAuthnApp({
+    loginChallengeEndpoint : "${base+adminContextPath}/webauthn/assertion/options",
+    loginResponseEndpoint : "${base+adminContextPath}/webauthn/assertion/result"
+});
+$(".btn-finger-login").on("click",function(){
+    if($('input[name=username]').val()){
+    	webAuthnApp.username = $("input[name=username]").val();
+        webAuthnApp.login();
+    } else {
+        $('input[name=username]')[0].reportValidity();
+        $(".error_msg").text("<@t.message 'verify.notEmpty.username'/>'");
+    }
 });
 </script>
 </body>

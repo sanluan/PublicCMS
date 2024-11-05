@@ -305,41 +305,51 @@
             checkType(this, "rp", Object);
             checkFormat(this.rp, "name", "non-empty-string");
             checkOptionalFormat(this.rp, "id", "non-empty-string");
-            checkOptionalFormat(this.rp, "icon", "non-empty-string");
 
             checkType(this, "user", Object);
             checkFormat(this.user, "name", "non-empty-string");
             checkFormat(this.user, "id", "base64url");
             checkFormat(this.user, "displayName", "non-empty-string");
-            checkOptionalFormat(this.user, "icon", "non-empty-string");
 
-            checkFormat(this, "challenge", "base64url");
+            checkType(this, "challenge", Object);
+            checkFormat(this.challenge, "value", "base64url");
             checkType(this, "pubKeyCredParams", Array);
             this.pubKeyCredParams.forEach((cred) => {
-                checkType(cred, "alg", "number");
+                checkType(cred, "alg", "string");
                 checkTrue(cred.type === "public-key", "credential type must be 'public-key'");
             });
-            checkOptionalFormat(this, "timeout", "positive-integer");
-            checkOptionalType(this, "excludeCredentials", Array);
-            if (this.excludeCredentials) checkCredentialDescriptorList(this.excludeCredentials);
+            checkOptionalFormat(this, "timeout", "non-empty-string");
+            if (this.excludeCredentials) {
+                checkOptionalType(this, "excludeCredentials", Array);
+                checkCredentialDescriptorList(this.excludeCredentials);
+            }
 
             checkAuthenticatorSelection(this);
             checkAttestation(this);
-
-            checkOptionalType(this, "extensions", Object);
+            if (this.extensions) {
+                checkOptionalType(this, "extensions", Object);
+            }
         }
 
         decodeBinaryProperties() {
             if (this.user && this.user.id) {
                 this.user.id = coerceToArrayBuffer(this.user.id, "user.id");
             }
-
-            this.challenge = coerceToArrayBuffer(this.challenge, "challenge");
-
+            if(typeof this.timeout == "string"){
+                this.timeout=parseInt(this.timeout);
+            }
+            this.challenge = coerceToArrayBuffer(this.challenge.value, "challenge");
+            this.pubKeyCredParams.forEach((cred) => {
+                if(typeof cred.alg == "string"){
+                    cred.alg=parseInt(cred.alg);
+                }
+            });
             if (this.excludeCredentials) {
                 this.excludeCredentials.forEach((cred, idx) => {
                     cred.id = coerceToArrayBuffer(cred.id, "excludeCredentials[" + idx + "].id");
                 });
+            }else{
+                this.excludeCredentials=[];
             }
         }
 
@@ -348,7 +358,7 @@
                 this.user.id = coerceToBase64Url(this.user.id, "user.id");
             }
 
-            this.challenge = coerceToBase64Url(this.challenge, "challenge");
+            this.challenge = coerceToBase64Url(this.challenge.value, "challenge");
 
             if (this.excludeCredentials) {
                 this.excludeCredentials.forEach((cred, idx) => {
@@ -581,26 +591,34 @@
 
         validate() {
             super.validate();
-            checkFormat(this, "challenge", "base64url");
-            checkOptionalFormat(this, "timeout", "positive-integer");
+            checkType(this, "challenge", Object);
+            checkFormat(this.challenge, "value", "base64url");
+            checkOptionalFormat(this, "timeout", "non-empty-string");
             checkOptionalFormat(this, "rpId", "non-empty-string");
-            checkOptionalType(this, "allowCredentials", Array);
-            if (this.allowCredentials) checkCredentialDescriptorList(this.allowCredentials);
+            if (this.allowCredentials) {
+                checkOptionalType(this, "allowCredentials", Array);
+                checkCredentialDescriptorList(this.allowCredentials);
+            }
             if (this.userVerification) checkUserVerification(this.userVerification);
-            checkOptionalType(this, "extensions", Object);
+            if (this.extensions) checkOptionalType(this, "extensions", Object);
         }
 
         decodeBinaryProperties() {
-            this.challenge = coerceToArrayBuffer(this.challenge, "challenge");
+            this.challenge = coerceToArrayBuffer(this.challenge.value, "challenge");
+            if(typeof this.timeout == "string"){
+                this.timeout=parseInt(this.timeout);
+            }
             if (this.allowCredentials) {
                 this.allowCredentials.forEach((cred) => {
                     cred.id = coerceToArrayBuffer(cred.id, "cred.id");
                 });
+            }else{
+                this.allowCredentials=[];
             }
         }
 
         encodeBinaryProperties() {
-            this.challenge = coerceToBase64Url(this.challenge, "challenge");
+            this.challenge = coerceToBase64Url(this.challenge.value, "challenge");
             if (this.allowCredentials) {
                 this.allowCredentials.forEach((cred, idx) => {
                     cred.id = coerceToBase64Url(cred.id, "allowCredentials[" + idx + "].id");

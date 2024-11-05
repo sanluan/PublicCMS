@@ -33,9 +33,21 @@
                     <a class="button bindbtn bind" href="myself/otpsettings.html" target="dialog" mask="true"><@t.page 'button.bind'/></a>
                 </dd>
             </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'login.fingerprint'/>:</dt>
+                <dd>
+                    <div class="image-list">
+                        <a href="javascript:void(0)" class="addfingerprint">
+                            <i class="thumb bi bi-plus-circle-dotted"></i>
+                            <p><@t.page 'button.add'/></p>
+                        </a>
+                    </div>
+                </dd>
+            </dl>
         </div>
     </div>
 </form>
+<script src="${base}/resource/plugins/webauthn/webauthn-simple-app.js"></script>
 <script>
 $.ajax({
     url:'otpSetting/check',
@@ -51,4 +63,44 @@ $.ajax({
         }
     }
 });
+function hideFingerprint(){
+    $(".addfingerprint", ${(target?has_content&&'dialog'=target)?then('$.pdialog.getCurrent()','navTab.getCurrentPanel()')}).parent().hide();
+}
+var btnAddFingerprint=$('.addfingerprint', ${(target?has_content&&'dialog'=target)?then('$.pdialog.getCurrent()','navTab.getCurrentPanel()')}).on("click",function(){
+    window.webAuthnApp.register();
+    return false;
+});
+function loadFingerprint(){
+	btnAddFingerprint.parent().prevAll().remove();
+    $.ajax({
+        url:'webauthn/getCredentials',
+        type: 'GET',
+        dataType: "json",
+        async: false,
+        success: function (result) {
+            if(result&&result.credentials){
+                $.each(result.credentials,function(i,value){
+                    $("<div class=\"image-list\"><i class=\"thumb bi bi-fingerprint\"></i><p><a href=\"webauthn/deleteCredential?credentialId="+value+"\" target=\"ajaxTodo\" callback=\"${(target?has_content&&'dialog'=target)?then('$.pdialog.closeCurrent()','navTab.reloadFlag(\'myself/profile\')')}\"><@t.page 'button.delete'/></a></p></div>").insertBefore(btnAddFingerprint.parent()).initLink();
+                });
+            }
+        }
+    });
+}
+if(!window.webAuthnApp){
+    $(document).on("webauthn-register-success", () => {
+        loadFingerprint();
+    });
+    $(document).on("webauthn-register-error", (err) => {
+        alertMsg.error(err.message);
+    });
+    $(document).on("webauthn-not-supported", (err) => {
+    	hideFingerprint();
+    });
+    window.webAuthnApp=new WebAuthnApp({
+        username : "${admin.name}",
+        registerChallengeEndpoint : "${base+adminContextPath}/webauthn/attestation/options",
+        registerResponseEndpoint : "${base+adminContextPath}/webauthn/attestation/result"
+    });
+}
+loadFingerprint();
 </script>
