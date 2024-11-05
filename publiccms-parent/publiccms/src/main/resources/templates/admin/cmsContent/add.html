@@ -37,25 +37,23 @@
     <div class="tabs card">
         <#if model?has_content>
         <div class="tabsHeader">
-            <div class="tabsHeaderContent">
-                <ul>
-                    <li><a href="javascript:;" onclick="return false;"><@t.page 'base_info'/></a></li>
-                <#if model.hasImages>
-                    <li><a href="javascript:;" onclick="return false;"><@t.page 'image_list'/></a></li>
-                </#if>
-                <#if model.hasFiles>
-                    <li><a href="javascript:;" onclick="return false;"><@t.page 'attach_list'/></a></li>
-                </#if>
-                <#if model.hasProducts>
-                    <li><a href="javascript:;" onclick="return false;"><@t.page 'product_list'/></a></li>
-                </#if>
-                <#if (model.relatedList)?has_content>
-                    <#list model.relatedList as a>
-                        <li><a href="javascript:;" onclick="return false;"><@t.page 'recommend_info'/><#if a.dictionaryId?has_content><@cms.dictionary id=a.dictionaryId>:${object.name}</@cms.dictionary></#if></a></li>
-                    </#list>
-                </#if>
-                </ul>
-            </div>
+            <ul>
+                <li><a href="javascript:;" onclick="return false;"><@t.page 'base_info'/></a></li>
+            <#if model.hasImages>
+                <li><a href="javascript:;" onclick="return false;"><@t.page 'image_list'/></a></li>
+            </#if>
+            <#if model.hasFiles>
+                <li><a href="javascript:;" onclick="return false;"><@t.page 'attach_list'/></a></li>
+            </#if>
+            <#if model.hasProducts>
+                <li><a href="javascript:;" onclick="return false;"><@t.page 'product_list'/></a></li>
+            </#if>
+            <#if (model.relatedList)?has_content>
+                <#list model.relatedList as a>
+                    <li><a href="javascript:;" onclick="return false;"><@t.page 'recommend_info'/><#if a.dictionaryId?has_content><@cms.dictionary id=a.dictionaryId>:${object.name}</@cms.dictionary></#if></a></li>
+                </#list>
+            </#if>
+            </ul>
         </div>
         <div class="tabsContent unitBox">
             <div class="pageFormContent" layoutH>

@@ -8,3 +8,13 @@ CREATE TABLE `sys_user_attribute` (
   `data` longtext COMMENT '数据JSON',
   PRIMARY KEY  (`user_id`)
 ) COMMENT='用户扩展';
+-- 2024-11-04 --
+ALTER TABLE `cms_dictionary_exclude`
+    DROP INDEX `cms_dictionary_parent_value`,
+    ADD INDEX `cms_dictionary_exclude_dictionary_id` (`dictionary_id`, `site_id`);
+ALTER TABLE `cms_dictionary_exclude_value`
+    DROP INDEX `cms_dictionary_parent_value`,
+    ADD INDEX `cms_dictionary_exclude_value_dictionary_id` (`dictionary_id`, `site_id`);
+ALTER TABLE `visit_item`
+    DROP INDEX `visit_item_session_id`,
+    ADD INDEX `visit_item_visit_date` (`site_id`, `visit_date`, `item_type`, `item_id`, `pv`);

@@ -11,20 +11,17 @@
          */
         tabs: function(options) {
             var op = $.extend({
-                reverse: false, eventType: "click", currentIndex: 0, stTabHeader: "> .tabsHeader", stTab: ">.tabsHeaderContent>ul", stTabPanel: "> .tabsContent" ,
-                ajaxClass: "j-ajax", closeClass: "close", prevClass: "tabsLeft", nextClass: "tabsRight"
+                reverse: false, eventType: "click", currentIndex: 0, stTabs: "> .tabsHeader li", stTabPanel: "> .tabsContent" ,
+                ajaxClass: "j-ajax", closeClass: "close"
             }, options);
             return this.each(function() {
                 initTab($(this));
             });
             function initTab(jT) {
                 var jSelector = jT.add($("> *", jT));
-                var jTabHeader = $(op.stTabHeader, jSelector);
-                var jTabs = $(op.stTab + " li", jTabHeader);
+                var jTabs = $(op.stTabs, jSelector);
                 var jGroups = $(op.stTabPanel + " > *", jSelector);
                 jTabs.off().find("a").off();
-                jTabHeader.find("." + op.prevClass).off();
-                jTabHeader.find("." + op.nextClass).off();
                 jTabs.each(function(iTabIndex) {
                     if (op.currentIndex == iTabIndex ) {
                         $(this).addClass("selected");
@@ -71,8 +68,7 @@
             }
             function switchTab(jT, iTabIndex) {
                 var jSelector = jT.add($("> *", jT));
-                var jTabHeader = $(op.stTabHeader, jSelector);
-                var jTabs = $(op.stTab + " li", jTabHeader);
+                var jTabs = $(op.stTabs, jSelector);
                 var jGroups = $(op.stTabPanel + " > *", jSelector);
                 var jTab = jTabs.eq(iTabIndex);
                 var jGroup = jGroups.eq(iTabIndex);

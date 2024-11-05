@@ -29,7 +29,7 @@
             </p>
             <p>
                 <i class="iconfont iconfont-user"></i>
-                <input type="text" name="username" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>" value="${(user.name)!}"/>
+                <input type="text" name="username" required="required" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>" value="${(user.name)!}"/>
             </p>
             <p>
                 <i class="iconfont iconfont-key"></i>
@@ -70,18 +70,19 @@
         </p>
     </div>
 </div>
+<script src="${base}/resource/plugins/jquery/jquery.min.js"></script>
 <script src="${base}/resource/plugins/encrypt/sha512.min.js"></script>
 <script src="${base}/resource/plugins/webauthn/webauthn-simple-app.js"></script>
 <script>
-if(document.getElementsByTagName('input')[0].value){
-    document.getElementsByTagName('input')[1].focus();
+if($('input[name=username]').val()){
+    $('input[name=password]').focus();
 }else{
-    document.getElementsByTagName('input')[0].focus();
+    $('input[name=username]').focus();
 }
 function encode(){
-    if(document.getElementsByName('secureLogin')[0].checked){
-        document.getElementsByName('password')[0].value = sha512(document.getElementsByName('password')[0].value);
-        document.getElementsByName('encoding')[0].value = 'sha512';
+    if($('input[name=secureLogin').is(':checked') ){
+        $('input[name=password]').val(sha512($('input[name=password]').val()));
+        $('input[name=encoding]').val('sha512');
     }
 }
 function change(obj){

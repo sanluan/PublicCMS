@@ -31,7 +31,9 @@
                 <a href="${getUrl(value)!}" target="_blank">${(value)!}</a>
             <#else>
         <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
-                <#if 'customform'!=type>
+                <#if 'customform'=type>
+                <input type="file" target="${inputName}"/>
+                <#else>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}" lookupGroup="" width="1000" height="600"><@t.page 'attach'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                 </#if>
@@ -42,7 +44,9 @@
                 <a href="${getPrivateUrl(value)!}" target="_blank">${(value)!}</a>
             <#else>
         <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
-                <#if 'customform'!=type>
+                <#if 'customform'=type>
+                    <input type="file" target="${inputName}" data-private="true"/>
+                <#else>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&privatefile=true" lookupGroup="" width="1000" height="600"><@t.page 'attach'/></a>
                 </#if>
             </#if>
@@ -54,7 +58,9 @@
                 ${(value)!}
             <#else>
         <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
-                <#if 'customform'!=type>
+                <#if 'customform'=type>
+                    <input type="file" target="${inputName}"/>
+                <#else>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                     <#if (extend.width)?has_content && (extend.height)?has_content><span class="info">${extend.width!}*${extend.height!}</span></#if>
@@ -72,7 +78,9 @@
                 ${(value)!}
             <#else>
         <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
-                <#if 'customform'!=type>
+                <#if 'customform'=type>
+                    <input type="file" target="${inputName}" data-private="true"/>
+                <#else>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}&privatefile=true" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
                     <#if (extend.width)?has_content && (extend.height)?has_content><span class="info">${extend.width!}*${extend.height!}</span></#if>
                 </#if>
@@ -85,7 +93,9 @@
                 ${(value)!}
             <#else>
         <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
-                <#if 'customform'!=type>
+                <#if 'customform'=type>
+                    <input type="file" target="${inputName}"/>
+                <#else>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=video" lookupGroup="" width="1000" height="600"><@t.page 'video'/></a>
                     <a class="view icon-eye-open" ref="${inputName}" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                 </#if>
@@ -98,7 +108,9 @@
                 ${(value)!}
             <#else>
         <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
-                <#if 'customform'!=type>
+                <#if 'customform'=type>
+                    <input type="file" target="${inputName}" data-private="true"/>
+                <#else>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=video&privatefile=true" lookupGroup="" width="1000" height="600"><@t.page 'video'/></a>
                 </#if>
             </#if>

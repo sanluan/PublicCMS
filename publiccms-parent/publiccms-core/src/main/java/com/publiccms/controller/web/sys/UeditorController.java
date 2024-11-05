@@ -100,7 +100,7 @@ public class UeditorController extends AbstractUeditorController {
         if (ControllerUtils.errorCustom("locked.user", locked, messageMap) || ControllerUtils.errorCustom("locked.size",
                 lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null),
                 messageMap)) {
-            return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+            return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                     (String) messageMap.get(CommonConstants.ERROR)));
         }
         if (null != file) {
@@ -130,7 +130,7 @@ public class UeditorController extends AbstractUeditorController {
         if (ControllerUtils.errorCustom("locked.user", locked, messageMap) || ControllerUtils.errorCustom("locked.size",
                 lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null),
                 messageMap)) {
-            return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+            return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                     (String) messageMap.get(CommonConstants.ERROR)));
         }
         if (CommonUtils.notEmpty(file)) {
@@ -158,7 +158,7 @@ public class UeditorController extends AbstractUeditorController {
             }
         } else {
             return getResultMap(false,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
         }
 
     }

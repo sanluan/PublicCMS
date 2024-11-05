@@ -79,6 +79,36 @@ if(editors.length){
         }
     });
 }
+var files = document.querySelectorAll("form[name=contribute] input[type=file]");
+if(files.length){
+    files.forEach(f => {
+        f.onchange  = function() {
+            var file = this.files[0];
+            var formData = new FormData();
+            formData.append('file', file, file.name );
+            formData.append('_csrf', '<@tools.csrfToken/>' );
+            if("true"==file.getAttribute("data-private")){
+                formData.append('privatefile', "true");
+            }
+            fetch("${site.dynamicPath}file/doUpload", {
+                method: this.method,
+                body: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success){
+                    document.querySelector(file.getAttribute("target")).value=data.fileName;
+                }else{
+                    alert(data.error);
+                }
+            })
+            .catch(error => alert(error));
+          });
+    });
+}
 </script>
 </#noparse>
 <#if a.adminIds?has_content>
