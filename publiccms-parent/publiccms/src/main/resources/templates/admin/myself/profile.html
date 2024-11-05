@@ -80,7 +80,7 @@ function loadFingerprint(){
         success: function (result) {
             if(result&&result.credentials){
                 $.each(result.credentials,function(i,value){
-                    $("<div class=\"image-list\"><i class=\"thumb bi bi-fingerprint\"></i><p><a href=\"webauthn/deleteCredential?credentialId="+value+"\" target=\"ajaxTodo\" callback=\"${(target?has_content&&'dialog'=target)?then('$.pdialog.closeCurrent()','navTab.reloadFlag(\'myself/profile\')')}\"><@t.page 'button.delete'/></a></p></div>").insertBefore(btnAddFingerprint.parent()).initLink();
+                	initLink($("<div class=\"image-list\"><i class=\"thumb bi bi-fingerprint\"></i><p><a href=\"webauthn/deleteCredential?credentialId="+encodeURIComponent(value)+"\" target=\"ajaxTodo\" callback=\"${(target?has_content&&'dialog'=target)?then('$.pdialog.closeCurrent()','navTab.reloadFlag(\'myself/profile\')')}\"><@t.page 'button.delete'/></a></p></div>").insertBefore(btnAddFingerprint.parent()));
                 });
             }
         }
