@@ -57,7 +57,7 @@ public class CkEditorController extends AbstractCkEditorController {
                 lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE, String.valueOf(user.getId()), null),
                 messageMap)) {
             Map<String, Object> result = new HashMap<>();
-            result.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+            result.put(CommonConstants.ERROR, LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
                     (String) messageMap.get(CommonConstants.ERROR)));
             result.put(CommonConstants.ERROR, messageMap);
             return result;
