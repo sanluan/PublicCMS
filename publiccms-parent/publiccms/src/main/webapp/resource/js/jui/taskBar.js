@@ -216,7 +216,7 @@
             var task = $("#" + id, this._taskList);
             if (!task[0] ) {
                 var taskFrag = "<li id=\"#taskid#\"><div class=\"taskbutton\">#title#</div><div class=\"close\"><i class=\"icon-remove\"></i></div></li>";
-                this._taskList.append(taskFrag.replace("#taskid#", id).replace("#title#", title));
+                this._taskList.append(taskFrag.replace("#taskid#", id).replace("#title#", escapeHtml(title)));
                 task = $("#" + id, this._taskList);
                 task.jTask();
             } else {
