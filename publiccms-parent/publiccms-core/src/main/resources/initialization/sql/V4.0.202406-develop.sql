@@ -18,3 +18,5 @@ ALTER TABLE `cms_dictionary_exclude_value`
 ALTER TABLE `visit_item`
     DROP INDEX `visit_item_session_id`,
     ADD INDEX `visit_item_visit_date` (`site_id`, `visit_date`, `item_type`, `item_id`, `pv`);
+-- 2024-11-07 --
+UPDATE `sys_module` SET parent_id = 'vote_list' WHERE parent_id = 'content_vote';
