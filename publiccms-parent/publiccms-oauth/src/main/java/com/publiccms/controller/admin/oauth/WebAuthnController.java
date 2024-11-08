@@ -112,6 +112,8 @@ public class WebAuthnController {
         pubKeyCredParams
                 .add(new PublicKeyCredentialParameters(PublicKeyCredentialType.PUBLIC_KEY, COSEAlgorithmIdentifier.ES512));
         pubKeyCredParams
+                .add(new PublicKeyCredentialParameters(PublicKeyCredentialType.PUBLIC_KEY, COSEAlgorithmIdentifier.EdDSA));
+        pubKeyCredParams
                 .add(new PublicKeyCredentialParameters(PublicKeyCredentialType.PUBLIC_KEY, COSEAlgorithmIdentifier.RS256));
         pubKeyCredParams
                 .add(new PublicKeyCredentialParameters(PublicKeyCredentialType.PUBLIC_KEY, COSEAlgorithmIdentifier.RS384));
@@ -158,17 +160,19 @@ public class WebAuthnController {
             SysUserAttribute attribute = attributeService.getEntity(admin.getId());
             Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
             String webauthnSettings = map.get(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN);
-            Map<String, CredentialRecordData> webauthnMap = null;
+            Map<String, CredentialRecordData> credentialRecordMap = null;
             if (CommonUtils.notEmpty(webauthnSettings)) {
-                webauthnMap = objectConverter.getJsonConverter().readValue(webauthnSettings, typeReference);
+                credentialRecordMap = objectConverter.getJsonConverter().readValue(webauthnSettings, typeReference);
             } else {
-                webauthnMap = new LinkedHashMap<>();
+                credentialRecordMap = new LinkedHashMap<>();
             }
             @SuppressWarnings("deprecation")
             AttestedCredentialData attestedCredentialData = credentialRecord.toRecord(objectConverter)
                     .getAttestedCredentialData();
-            webauthnMap.put(Base64.getUrlEncoder().encodeToString(attestedCredentialData.getCredentialId()), credentialRecord);
-            map.put(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN, objectConverter.getJsonConverter().writeValueAsString(webauthnMap));
+            credentialRecordMap.put(Base64.getUrlEncoder().encodeToString(attestedCredentialData.getCredentialId()),
+                    credentialRecord);
+            map.put(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN,
+                    objectConverter.getJsonConverter().writeValueAsString(credentialRecordMap));
             attributeService.updateSettings(admin.getId(), ExtendUtils.getExtendString(map));
             return result;
         } catch (ValidationException e) {
@@ -245,6 +249,7 @@ public class WebAuthnController {
                                 credentialRecord.toRecord(objectConverter), allowCredentials, userVerificationRequired,
                                 userPresenceRequired);
                         webAuthnManager.verify(authenticationData, authenticationParameters);
+
                         service.updateLoginStatus(user.getId(), ip);
                         String authToken = UUID.randomUUID().toString();
                         Date now = CommonUtils.getDate();
@@ -259,6 +264,16 @@ public class WebAuthnController {
                         logLoginService.save(new LogLogin(site.getId(), webauthnuser, user.getId(), ip,
                                 LogLoginService.CHANNEL_WEB_MANAGER, false, CommonUtils.getDate(), "fingerprint"));
                         session.removeAttribute("webauthnuser");
+
+                        if (0 < authenticationData.getAuthenticatorData().getSignCount() || 0 < credentialRecord.getCounter()) {
+                            credentialRecord.setCounter(authenticationData.getAuthenticatorData().getSignCount());
+                            credentialRecordMap.put(Base64.getUrlEncoder().encodeToString(authenticationData.getCredentialId()),
+                                    credentialRecord);
+                            map.put(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN,
+                                    objectConverter.getJsonConverter().writeValueAsString(credentialRecordMap));
+                            attributeService.updateSettings(user.getId(), ExtendUtils.getExtendString(map));
+                        }
+
                         result.put("status", "ok");
                         result.put("errorMessage", "");
                         return result;
@@ -301,7 +316,8 @@ public class WebAuthnController {
             webauthnMap = new LinkedHashMap<>();
         }
         webauthnMap.remove(credentialId);
-        map.put(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN, objectConverter.getJsonConverter().writeValueAsString(webauthnMap));
+        map.put(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN,
+                objectConverter.getJsonConverter().writeValueAsString(webauthnMap));
         attributeService.updateSettings(admin.getId(), ExtendUtils.getExtendString(map));
         return Collections.singletonMap("result", true);
     }
