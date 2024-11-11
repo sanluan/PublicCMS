@@ -42,9 +42,7 @@ public abstract class Subsetter {
     protected final Font font;
     protected final Map<Character, Character> map;
 
-    // TODO(stuartg): add SmartFontBuilder
     // private SmartFontBuilder fontBuilder;
-    // TODO(stuartg): can TableSubsetter become TableProcessor?
     protected Set<TableSubsetter> tableSubsetters;
 
     // settings from user

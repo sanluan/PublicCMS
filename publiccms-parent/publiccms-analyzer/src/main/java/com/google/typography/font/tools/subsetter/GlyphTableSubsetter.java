@@ -71,7 +71,6 @@ public class GlyphTableSubsetter extends TableSubsetterImpl {
 
     List<Glyph.Builder<? extends Glyph>> glyphBuilders = glyphTableBuilder.glyphBuilders();
     for (int oldGlyphId : permutationTable) {
-      // TODO(stuartg): add subsetting individual glyph data - remove hints etc.
 
       int oldOffset = locaTable.glyphOffset(oldGlyphId);
       int oldLength = locaTable.glyphLength(oldGlyphId);

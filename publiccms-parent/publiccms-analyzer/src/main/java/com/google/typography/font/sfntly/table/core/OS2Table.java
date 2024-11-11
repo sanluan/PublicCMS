@@ -316,12 +316,10 @@ public final class OS2Table extends Table {
     return this.data.readShort(Offset.yStrikeoutPosition.offset);
   }
 
-  // TODO(stuartg): IBM family enum?
   public int sFamilyClass() {
     return this.data.readShort(Offset.sFamilyClass.offset);
   }
 
-  // TODO(stuartg): panose class? individual getters for the panose values?
   public byte[] panose() {
     byte[] panose = new byte[10];
     this.data.readBytes(Offset.panose.offset, panose, 0, panose.length);

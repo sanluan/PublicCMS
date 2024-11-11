@@ -101,7 +101,6 @@ public class EbscTable extends Table {
     }
   }
 
-  // TODO(stuartg): currently the builder just builds from initial data
   // - need to make fully working but few if any examples to test with
   public static class Builder extends Table.Builder<EbscTable> {
     /**

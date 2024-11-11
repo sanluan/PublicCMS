@@ -62,12 +62,10 @@ public final class BitmapSizeTable extends SubTable {
     return this.data.readULongAsInt(Offset.bitmapSizeTable_colorRef.offset);
   }
 
-  // TODO(stuartg): implement later
   public void /* SBitLineMetrics */hori() {
     // NOP
   }
 
-  // TODO(stuartg): implement later
   public void /* SBitLineMetrics */vert() {
     // NOP
   }
@@ -294,12 +292,10 @@ public final class BitmapSizeTable extends SubTable {
       return this.internalReadData().readULongAsInt(Offset.bitmapSizeTable_colorRef.offset);
     }
 
-    // TODO(stuartg): implement later
     public void /* SBitLineMetrics */hori() {
       // NOP
     }
 
-    // TODO(stuartg): implement later
     public void /* SBitLineMetrics */vert() {
       // NOP
     }

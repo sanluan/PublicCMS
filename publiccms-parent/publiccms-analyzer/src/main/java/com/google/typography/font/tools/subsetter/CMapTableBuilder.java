@@ -89,7 +89,6 @@ public class CMapTableBuilder {
     }
   }
 
-  // TODO(raph): This currently uses a simplistic algorithm to compute segments.
   // The segments computed are the longest contiguous segments that actually map
   // glyph ids. A smarter approach would leave "holes", or short runs of glyphs
   // mapped to notdef, to reduce the number of segments.

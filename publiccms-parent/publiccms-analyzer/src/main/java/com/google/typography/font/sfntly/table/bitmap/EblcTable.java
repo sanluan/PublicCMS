@@ -203,7 +203,7 @@ public class EblcTable extends SubTableContainerTable {
   }
 
   public static final class Builder extends SubTableContainerTable.Builder<EblcTable> {
-    private final int version = 0x00020000; // TODO(user) constant/enum
+    private final int version = 0x00020000;
     private List<BitmapSizeTable.Builder> sizeTableBuilders;
 
     /**

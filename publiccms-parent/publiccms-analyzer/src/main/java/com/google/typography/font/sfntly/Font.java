@@ -703,7 +703,6 @@ public class Font {
         public Table.Builder<? extends Table> newTableBuilder(int tag, ReadableFontData srcData) {
             WritableFontData data;
             data = WritableFontData.createWritableFontData(srcData.length());
-            // TODO(stuartg): take over original data instead?
             srcData.copyTo(data);
 
             Header header = new Header(tag, data.length());
@@ -880,7 +879,6 @@ public class Font {
                 logger.finest("\t\tStream Position = " + Integer.toHexString((int) is.position()));
                 // don't close this or the whole stream is gone
                 FontInputStream tableIS = new FontInputStream(is, tableHeader.length());
-                // TODO(stuartg): start tracking bad tables and other errors
                 WritableFontData data = WritableFontData.createWritableFontData(tableHeader.length());
                 data.copyFrom(tableIS, tableHeader.length());
                 tableData.put(tableHeader, data);

@@ -94,7 +94,6 @@ public class MtxFontBuilder {
     }
     // Note: we use raw byte[] array for building the final font, because the WritableFontData
     // implementation currently has performance issues with unnecessary copying.
-    // TODO(raph): Either refactor this code to use the sfntly font builder, or, failing that,
     // when WritableFontData gets better performance, use that.
     byte[] buf = new byte[size];
     putUlong(buf, 0, OPENTYPE_VERSION_1_0);
@@ -108,7 +107,7 @@ public class MtxFontBuilder {
     for (Integer tag : tags) {
       ReadableFontData data = tables.get(tag);
       putUlong(buf, headerOffset, tag.intValue());
-      int checksum = 0;  // TODO(raph): compute checksum
+      int checksum = 0;  
       putUlong(buf, headerOffset + 4, checksum);
       if (data == null) {
         putUlong(buf, headerOffset + 8, 0);

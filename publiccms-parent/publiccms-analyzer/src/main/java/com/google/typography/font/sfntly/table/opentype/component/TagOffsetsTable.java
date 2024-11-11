@@ -193,7 +193,6 @@ public abstract class TagOffsetsTable<S extends SubTable> extends HeaderTable
           int tag = record.tag;
           // Each table ends at the next start, or at the end of the data.
           subTableLimit = record.offset;
-          // TODO(cibu): length computation does not seems to be correct.
           int length = subTableLimit - offset;
           VisibleSubTable.Builder<S> builder = createSubTableBuilder(data, offset, length, tag);
           builders.put(tag, builder);

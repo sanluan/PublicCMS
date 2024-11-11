@@ -53,7 +53,6 @@ public final class PostScriptTable extends Table {
     minMemType1(24),
     maxMemType1(28),
 
-    // TODO: add support for these versions of the table?
     // Version 2.0 table
     numberOfGlyphs(32),
     glyphNameIndex(34);  // start of table
@@ -335,7 +334,6 @@ public final class PostScriptTable extends Table {
     super(header, data);
   }
 
-  // TODO: version enum
   public int version() {
     return this.data.readFixed(Offset.version.offset);
   }
@@ -378,7 +376,6 @@ public final class PostScriptTable extends Table {
     } else if (version() == VERSION_2) {
       return this.data.readUShort(Offset.numberOfGlyphs.offset);
     } else {
-      // TODO: should probably be better at signaling unsupported format
       return -1;
     }
   }
@@ -401,9 +398,6 @@ public final class PostScriptTable extends Table {
     }
     return getNames().get(glyphNameIndex - NUM_STANDARD_NAMES);
   }
-  // TODO: add getters for 2.5 and possibly other tables?
-
-  // Defer the actual parsing of the name strings until first use. Note that this
   // method can therefore throw various runtime exceptions if the table is corrupted.
   /**
    * Get a list containing the names in the table. Since parsing this list is potentially
