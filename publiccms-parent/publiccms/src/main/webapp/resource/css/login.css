@@ -28,6 +28,6 @@ body:before{content:"";height:100%;right:0;left:50%;position:absolute;background
 .login_form>p a.current-lang{color:#4d8dfb;}
 .login_form>p a:after{content:"|";position:absolute;right:2px;top:0;color:#979ea9;}
 .login_form>p a:last-child:after{content:none}
-.login_form .error_msg{height:25px;line-height:25px;text-align:center;color:red;position:absolute;top:32px;width:100%;font-size:13px;}
+.login_form .error_msg{height:25px;line-height:25px;text-align:center;overflow:auto;color:red;position:absolute;top:32px;width:100%;font-size:13px;}
 .login_form .login_box{height:25px;line-height:25px;text-align:center;font-size:16px;}
 .login_form .login_box>a{color: #4d8dfb;text-decoration:none;}
