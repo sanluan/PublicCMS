@@ -80,6 +80,7 @@ if($('input[name=username]').val()){
     $('input[name=username]').focus();
 }
 function encode(){
+    $(".error_msg").text("");
     if($('input[name=secureLogin').is(':checked') ){
         $('input[name=password]').val(sha512($('input[name=password]').val()));
         $('input[name=encoding]').val('sha512');
