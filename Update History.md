@@ -4,6 +4,16 @@ new feature:
 
 1. add otp login
 
+## 202406.f
+
+bug fixed:
+
+1. tag type save
+1. place data import
+1. editor history
+1. xss(https://gitee.com/sanluan/PublicCMS/issues/IB1Q5J,https://gitee.com/sanluan/PublicCMS/issues/IB2BUV)
+1. data error（https://gitee.com/sanluan/PublicCMS/issues/IB2KUS）
+
 ## 202406.e
 
 new feature:

@@ -20,7 +20,7 @@ https://github.com/sanluan/PublicCMS
 
 ## 参与开发
 
-切换到develop,V5-develop分支,免费版本切换到V2021分支
+切换到V4.0-develop,V5-develop分支,免费版本切换到V2021分支
 ![](doc/images/commits.jpg)
 
 ## 授权协议
