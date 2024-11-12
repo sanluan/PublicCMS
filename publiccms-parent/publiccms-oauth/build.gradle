@@ -10,6 +10,9 @@ dependencies {
     
     // https://mvnrepository.com/artifact/com.github.bastiaanjansen/otp-java
     implementation "com.github.bastiaanjansen:otp-java:2.0.3"
+    // https://mvnrepository.com/artifact/com.webauthn4j/webauthn4j-core
+    // https://github.com/webauthn4j/webauthn4j
+    implementation "com.webauthn4j:webauthn4j-core:0.28.0.RELEASE"
     
     providedCompile "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
     providedCompile "jakarta.servlet:jakarta.servlet-api:${servletVersion}"

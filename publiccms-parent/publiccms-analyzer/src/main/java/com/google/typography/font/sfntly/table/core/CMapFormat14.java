@@ -10,7 +10,6 @@ import java.util.Iterator;
 /**
  * A cmap format 14 sub table.
  */
-// TODO(stuartg): completely unsupported yet
 public final class CMapFormat14 extends CMap {
 
   protected CMapFormat14(ReadableFontData data, CMapId cmapId) {

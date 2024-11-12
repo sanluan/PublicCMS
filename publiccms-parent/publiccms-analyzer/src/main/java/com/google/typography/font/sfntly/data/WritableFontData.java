@@ -72,7 +72,6 @@ public final class WritableFontData extends ReadableFontData {
    */
   public static final WritableFontData createWritableFontData(ReadableFontData original) {
     ByteArray<?> ba = null;
-    // TODO(stuartg): push this down into the BAs - maybe remove the difference between growable and fixed
     if (original.array.growable()) {
       ba = new GrowableMemoryByteArray();
     } else {

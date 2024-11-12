@@ -291,7 +291,6 @@ public abstract class IndexSubTable extends SubTable {
      * @param glyphId the glyph id to look up
      * @return the glyph info
      */
-    // TODO(stuartg): could be optimized by pushing down into subclasses
     public BitmapGlyphInfo glyphInfo(int glyphId) {
       return new BitmapGlyphInfo(glyphId, this.imageDataOffset(), this.glyphStartOffset(glyphId),
           this.glyphLength(glyphId), this.imageFormat());

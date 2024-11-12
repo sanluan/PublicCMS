@@ -22,10 +22,11 @@
             <version>2.0.3</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.webauthn4j/webauthn4j-core -->
+        <!-- https://github.com/webauthn4j/webauthn4j -->
         <dependency>
             <groupId>com.webauthn4j</groupId>
             <artifactId>webauthn4j-core</artifactId>
-            <version>0.27.0.RELEASE</version>
+            <version>0.28.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.github.therapi</groupId>

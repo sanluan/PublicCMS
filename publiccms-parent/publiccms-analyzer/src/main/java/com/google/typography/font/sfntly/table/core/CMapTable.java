@@ -143,7 +143,6 @@ public final class CMapTable extends SubTableContainerTable implements Iterable<
     format13_endCharCode(4),
     format13_glyphId(8),
 
-    // TODO: finish support for format 14
     // Format 14: Unicode Variation Sequences
     format14Format(0),
     format14Length(2);
@@ -256,7 +255,6 @@ public final class CMapTable extends SubTableContainerTable implements Iterable<
    * @return the index of the cmap in the table or -1 if the cmap with the CMapId does not exist in
    *         the table
    */
-  // TODO Modify the iterator to be index-based and used here
   public int getCmapIndex(CMapId id) {
     for (int index = 0; index < numCMaps(); index++) {
       if (id.equals(cmapId(index))) {
@@ -475,7 +473,7 @@ public final class CMapTable extends SubTableContainerTable implements Iterable<
    */
   public static class Builder extends SubTableContainerTable.Builder<CMapTable> {
 
-    private int version = 0; // TODO(stuartg): make a CMapTable constant
+    private int version = 0;
     private Map<CMapId, CMap.Builder<? extends CMap>> cmapBuilders;
 
     /**

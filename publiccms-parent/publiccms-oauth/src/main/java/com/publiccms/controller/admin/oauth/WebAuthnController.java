@@ -176,7 +176,7 @@ public class WebAuthnController {
             attributeService.updateSettings(admin.getId(), ExtendUtils.getExtendString(map));
             return result;
         } catch (ValidationException e) {
-            result.put("status", "error");
+            result.put("status", "failed");
             result.put("errorMessage", e.getMessage());
             return result;
         }
@@ -209,7 +209,7 @@ public class WebAuthnController {
         boolean userPresenceRequired = true;
         SysUser user = service.findByName(site.getId(), webauthnuser);
         Map<String, String> result = new HashMap<>();
-        result.put("status", "error");
+        result.put("status", "failed");
         result.put("errorMessage", LanguagesUtils.getMessage(CommonConstants.applicationContext,
                 localeResolver.resolveLocale(request), "verify.custom.fingerprint"));
         String ip = RequestUtils.getIpAddress(request);

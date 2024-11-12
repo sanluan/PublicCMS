@@ -154,7 +154,6 @@ public final class FontFactory {
      * @throws IOException
      */
     public static Font[] loadFonts(byte[] b) throws IOException {
-        // TODO(stuartg): make a ReadableFontData when block loading moved to
         // FontFactory
         WritableFontData rfd = WritableFontData.createWritableFontData(b);
         if (isCollection(rfd)) {
@@ -208,7 +207,6 @@ public final class FontFactory {
      * @throws IOException
      */
     public static void serializeFont(Font font, OutputStream os) throws IOException {
-        // TODO(stuartg) should have serialization options somewhere
         font.serialize(os, null);
     }
 
@@ -223,7 +221,6 @@ public final class FontFactory {
      * @throws IOException
      */
     public static void serializeFont(Font font, OutputStream os, List<Integer> tableOrdering) throws IOException {
-        // TODO(stuartg) should have serialization options somewhere
         font.serialize(os, tableOrdering);
     }
 

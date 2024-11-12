@@ -26,17 +26,17 @@
         <version.servlet>6.1.0</version.servlet>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
-        <version.spring>6.1.12</version.spring>
+        <version.spring>6.1.14</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
-        <version.springBoot>3.3.3</version.springBoot>
+        <version.springBoot>3.3.5</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
-        <version.juint>5.11.0</version.juint>
+        <version.juint>5.11.3</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>6.6.0.Final</version.hibernate>
+        <version.hibernate>6.6.2.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm -->
-        <version.hibernateTools>6.6.0.Final</version.hibernateTools>
+        <version.hibernateTools>6.6.1.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
         <version.hibernateSearch>7.2.1.Final</version.hibernateSearch>
@@ -62,14 +62,14 @@
         <version.lucene>9.11.1</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <!-- https://github.com/redis/jedis -->
-        <version.jedis>5.1.5</version.jedis>
+        <version.jedis>5.2.0</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
         <!-- https://github.com/brettwooldridge/HikariCP -->
-        <version.hikariCP>5.1.0</version.hikariCP>
+        <version.hikariCP>6.1.0</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
-        <version.mysql>9.0.0</version.mysql>
+        <version.mysql>9.1.0</version.mysql>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.14</version.httpclient>
@@ -84,7 +84,7 @@
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <version.lang>3.17.0</version.lang>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-        <version.io>2.16.1</version.io>
+        <version.io>2.17.0</version.io>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <version.text>1.12.0</version.text>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
@@ -92,7 +92,7 @@
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.17.1</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <version.log4j>2.24.0</version.log4j>
+        <version.log4j>2.24.1</version.log4j>
         <!-- https://mvnrepository.com/artifact/org.jboss.logging/jboss-logging -->
         <version.jbossLogging>3.6.1.Final</version.jbossLogging>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
@@ -106,7 +106,7 @@
         <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/jbig2-imageio -->
         <version.jbig2>3.0.4</version.jbig2>
         <!-- https://mvnrepository.com/artifact/com.github.bgalek.security.svg/safe-svg -->
-        <version.safeSvg>1.1.7</version.safeSvg>
+        <version.safeSvg>1.1.8</version.safeSvg>
         <!-- https://mvnrepository.com/artifact/com.blueconic/browscap-java -->
         <version.browscap>1.4.4</version.browscap>
         <!-- https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc -->

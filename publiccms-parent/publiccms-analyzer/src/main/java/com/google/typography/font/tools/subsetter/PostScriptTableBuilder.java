@@ -54,7 +54,6 @@ public class PostScriptTableBuilder {
     minMemType1(24),
     maxMemType1(28),
 
-    // TODO: add support for these versions of the table?
     // Version 2.0 table
     numberOfGlyphs(32),
     glyphNameIndex(34);  // start of table
@@ -361,8 +360,6 @@ public class PostScriptTableBuilder {
   public void initV1From(PostScriptTable src) {
     src.readFontData().slice(0, V1_TABLE_SIZE).copyTo(v1Data);
   }
-
-  // TODO: more setters
 
   public void setNames(List<String> names) {
     this.names = names;
