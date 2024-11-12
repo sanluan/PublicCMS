@@ -20,7 +20,7 @@ https://github.com/sanluan/PublicCMS
 
 ## Participate in development
 
-Switch to the develop,V5-develop branch and the free version to the V2021 branch
+Switch to the V4.0-develop,V5-develop branch and the free version to the V2021 branch
 ![](doc/images/commits.jpg)
 
 ## Licensing agreement
