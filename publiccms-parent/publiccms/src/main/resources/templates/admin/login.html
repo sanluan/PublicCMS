@@ -88,14 +88,8 @@ function encode(){
 function change(obj){
     location.href=location.href+(0<location.href.indexOf('?')?'&':'?')+'currentSiteId='+obj.options[obj.options.selectedIndex].value;
 }
-$(document).on("webauthn-login-success", () => {
-    window.location = "${base+adminContextPath}/webauthn/login?returnUrl="+$("input[name=returnUrl]").val();
-});
 $(document).on("webauthn-not-supported", () => {
     $(".btn-finger-login").hide();
-});
-$(document).on("webauthn-login-error", (err) => {
-    $(".error_msg").text(err.message);
 });
 var webAuthnApp=new WebAuthnApp({
     loginChallengeEndpoint : "${base+adminContextPath}/webauthn/assertion/options",
@@ -103,8 +97,12 @@ var webAuthnApp=new WebAuthnApp({
 });
 $(".btn-finger-login").on("click keydown",function(){
     if($('input[name=username]').val()){
-    	webAuthnApp.username = $("input[name=username]").val();
-        webAuthnApp.login();
+        webAuthnApp.username = $("input[name=username]").val();
+        webAuthnApp.login().then(()=>{
+            window.location = "${base+adminContextPath}/webauthn/login?returnUrl="+$("input[name=returnUrl]").val();
+        }).catch((err)=>{
+            $(".error_msg").text(err.message);
+        });
     } else {
         $('input[name=username]')[0].reportValidity();
     }
