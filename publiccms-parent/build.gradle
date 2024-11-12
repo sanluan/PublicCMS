@@ -40,7 +40,7 @@ subprojects {
         // 3.0,3.1 for Java 17
         springBootVersion = "2.7.18"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        junitVersion = "5.11.0"
+        junitVersion = "5.11.3"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         // 6 for jakarta
@@ -74,7 +74,8 @@ subprojects {
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "8.11.2"
         // http://mvnrepository.com/artifact/redis.clients/jedis
-        jedisVersion = "5.1.5"
+        // https://github.com/redis/jedis
+        jedisVersion = "5.2.0"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         quartzVersion = "2.3.2"
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
@@ -82,7 +83,7 @@ subprojects {
         // Java 11+ maven artifact: 5.0,5.1
         hikariCPVersion = "4.0.3"
         // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
-        mysqlVersion = "9.0.0"
+        mysqlVersion = "9.1.0"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.14"
@@ -98,7 +99,7 @@ subprojects {
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         langVersion = "3.17.0"
         // http://mvnrepository.com/artifact/commons-io/commons-io
-        ioVersion = "2.16.1"
+        ioVersion = "2.17.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-text
         textVersion = "1.12.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
@@ -106,7 +107,7 @@ subprojects {
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
         codecVersion = "1.17.1"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-        log4jVersion = "2.24.0"
+        log4jVersion = "2.24.1"
         // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
         extractorVersion = "2.19.0"
         // https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio
@@ -118,7 +119,7 @@ subprojects {
         // https://mvnrepository.com/artifact/org.apache.pdfbox/jbig2-imageio
         jbig2Version = "3.0.4"
         // https://mvnrepository.com/artifact/com.github.bgalek.security.svg/safe-svg
-        safeSvgVersion = "1.1.7"
+        safeSvgVersion = "1.1.8"
         // http://mvnrepository.com/artifact/com.blueconic/browscap-java
         browscapVersion = "1.4.4"
         // https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc
