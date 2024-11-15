@@ -30,6 +30,7 @@
                 <dt><@t.page 'operate'/>:</dt>
                 <dd>
                     <a class="button" href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>:${(a.alias)!}(${a.size})</a>
+                    <a class="button" href="cmsPlace/clear?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.clear_all'/>" target="ajaxTodo"><i class="icon-wrench icon-large"></i><@t.page 'button.clear_all'/></a>
                 </dd>
             </dl>
             </#if>
