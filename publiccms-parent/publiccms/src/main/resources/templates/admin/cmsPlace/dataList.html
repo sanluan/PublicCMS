@@ -57,8 +57,6 @@
             </#if>
             <li class="line">line</li>
             <li><a href="cmsPlace/delete?_csrf=<@tools.csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
-            <li class="line">line</li>
-            <li><a href="cmsPlace/clear?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.clear_all'/>" target="ajaxTodo"><i class="icon-wrench icon-large"></i><@t.page 'button.clear_all'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
