@@ -25,7 +25,7 @@
     </#if>
     <#if authorizedMap['cmsCategory/list']>
         <li>
-            <a href="cmsCategory/list?categoryId=${(category.parentId)!}" target="navTab" rel="cmsCategory/list" <#if authorizedMap['cmsCategory/addMore'] || category?has_content>class="addMore" </#if>data-diy="category"><@t.page 'category.management'/></a>
+            <a href="cmsCategory/list?parentId=${(category.parentId)!}" target="navTab" rel="cmsCategory/list" <#if authorizedMap['cmsCategory/addMore'] || category?has_content>class="addMore" </#if>data-diy="category"><@t.page 'category.management'/></a>
             <#if authorizedMap['cmsCategory/add']>
                 <a href="cmsCategory/add.html?id={itemId}" target="navTab" rel="cmsCategory/edit" class="hide" data-diy="category" data-diy-item="itemId"><i class="icon-edit"></i><@t.page 'category.edit'/></a>
                 <a href="cmsCategory/add.html?id={itemId}" target="navTab" rel="cmsCategory/edit" class="hide" data-diy="child-category" data-diy-item="itemId"><i class="icon-edit"></i><@t.page 'category.edit'/></a>
@@ -41,7 +41,7 @@
                             <li><a href="cmsCategory/add.html?id=${category.id}&showTab=seo" target="navTab" rel="cmsCategory/edit" data-diy="category" data-diy-id="${category.id}"><i class="icon-edit"></i><@t.page 'seo'/></a></li>
                             <li><a href="cmsCategory/add.html?copyId=${category.id}" target="navTab" rel="cmsCategory/add" title="<@t.page 'category.add'/>" data-diy="category" data-diy-id="${category.id}"><i class="icon-copy"></i><@t.page 'button.copy'/></a></li>
                         </#if>
-                        <li><a href="cmsCategory/list?categoryId=${category.id!}" target="navTab" rel="cmsCategory/list" data-diy="child-category"><@t.page 'category.child_management'/></a></li>
+                        <li><a href="cmsCategory/list?parentId=${category.id!}" target="navTab" rel="cmsCategory/list" data-diy="child-category"><@t.page 'category.child_management'/></a></li>
                         <#if authorizedMap['cmsCategory/addMore']>
                             <li><a href="cmsCategory/addMore.html?parentId=${category.id}" target="dialog" mask="true" data-diy="child-category"><i class="icon-plus"></i><@t.page 'category.add_child'/></a></li>
                         </#if>

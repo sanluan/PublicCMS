@@ -6,6 +6,10 @@
         <input name="parentId" type="hidden" value="${parentId!}"/>
         <div class="searchBar">
             <ul class="searchContent">
+                <#if parentId?has_content>
+                <li>
+                    <label><@t.page 'category.parent'/>:</label><label><@cms.category id=parentId;parent>${parent.name}</@cms.category></label>
+                </li>
                 <li>
                     <select class="combox" name="allowContribute">
                         <option value><@t.page 'contribute'/></option>
