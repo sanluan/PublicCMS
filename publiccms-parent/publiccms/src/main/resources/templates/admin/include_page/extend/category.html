@@ -7,7 +7,7 @@
             <thead>
                 <tr>
                     <th width="250"<#if 'customform'!=type> type="lookup" name="${extend.id.code}_categoryName" fieldClass="<#if extend.required>required</#if>" size="30" fieldAttrs="{'readonly':'readonly','width':'920','height':'580'}" lookupUrl="cmsCategory/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_categoryName" lookupGroup="" lookupPk="${inputName}"</#if>><@t.page 'category'/></th>
-                    <th width="60" type="del"><@t.page 'operate'/></th>
+                    <th width="60" type="delAndSort"><@t.page 'operate'/></th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +21,7 @@
                         </td>
                         <td>
                             <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
+                            <#if 'customform'!=type><a href="javascript:;" class="btnUp"></a><a href="javascript:;" class="btnDown"></a></#if>
                         </td>
                     </tr>
                     </#list>
