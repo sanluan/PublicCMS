@@ -1,4 +1,4 @@
-package com.publiccms.common.interceptor;
+package com.publiccms.interceptor;
 
 public class CsrfCache {
     private boolean enable;

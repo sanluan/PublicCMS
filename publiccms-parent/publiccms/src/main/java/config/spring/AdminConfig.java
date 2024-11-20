@@ -32,9 +32,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.publiccms.common.api.AdminContextPath;
 import com.publiccms.common.handler.FullBeanNameGenerator;
-import com.publiccms.common.interceptor.AdminContextInterceptor;
-import com.publiccms.common.interceptor.CsrfInterceptor;
 import com.publiccms.common.view.AdminFreeMarkerView;
+import com.publiccms.interceptor.AdminContextInterceptor;
+import com.publiccms.interceptor.CsrfInterceptor;
 import com.publiccms.logic.component.cache.CacheComponent;
 
 /**
