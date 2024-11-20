@@ -5,7 +5,7 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 import javax.annotation.Resource;
 
@@ -73,14 +73,15 @@ public class CmsCommentDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsComment> entityList = service.getEntitys(ids);
-                Consumer<CmsComment> consumer = null;
+                UnaryOperator<CmsComment> valueMapper = null;
                 if (replaceSensitive) {
                     KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
-                    consumer = e -> {
+                    valueMapper = e -> {
                         e.setText(ExtendUtils.replaceSensitive(e.getText(), config));
+                        return e;
                     };
                 }
-                Map<String, CmsComment> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
+                Map<String, CmsComment> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }

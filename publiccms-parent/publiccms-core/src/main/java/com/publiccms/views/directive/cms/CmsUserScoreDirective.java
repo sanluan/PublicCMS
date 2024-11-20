@@ -68,8 +68,7 @@ public class CmsUserScoreDirective extends AbstractTemplateDirective {
                         entityIds[i] = new CmsUserScoreId(userId, itemType, itemIds[i]);
                     }
                     List<CmsUserScore> entityList = service.getEntitys(entityIds);
-                    Map<String, CmsUserScore> map = CommonUtils.listToMap(entityList, k -> String.valueOf(k.getId().getItemId()),
-                            null, null);
+                    Map<String, CmsUserScore> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getItemId()), itemIds);
                     handler.put("map", map).render();
                 }
             }

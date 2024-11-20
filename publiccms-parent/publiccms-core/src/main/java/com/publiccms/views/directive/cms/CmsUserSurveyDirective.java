@@ -70,8 +70,8 @@ public class CmsUserSurveyDirective extends AbstractTemplateDirective {
                         entityIds[i] = new CmsUserSurveyId(userId, surveyIds[i]);
                     }
                     List<CmsUserSurvey> entityList = service.getEntitys(entityIds);
-                    Map<String, CmsUserSurvey> map = CommonUtils.listToMap(entityList,
-                            k -> String.valueOf(k.getId().getSurveyId()), null, entity -> site.getId() == entity.getSiteId());
+                    Map<String, CmsUserSurvey> map = CommonUtils.listToMapSorted(entityList,
+                            k -> String.valueOf(k.getId().getSurveyId()), null, surveyIds, entity -> site.getId() == entity.getSiteId());
                     handler.put("map", map).render();
                 }
             }
@@ -83,8 +83,8 @@ public class CmsUserSurveyDirective extends AbstractTemplateDirective {
                     entityIds[i] = new CmsUserSurveyId(userIds[i], surveyId);
                 }
                 List<CmsUserSurvey> entityList = service.getEntitys(entityIds);
-                Map<String, CmsUserSurvey> map = CommonUtils.listToMap(entityList, k -> String.valueOf(k.getId().getUserId()),
-                        null, entity -> site.getId() == entity.getSiteId());
+                Map<String, CmsUserSurvey> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getUserId()), 
+                        null, userIds, entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

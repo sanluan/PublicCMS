@@ -57,7 +57,7 @@ public class CmsTagTypeDirective extends AbstractTemplateDirective {
             Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsTagType> entityList = service.getEntitys(ids);
-                Map<String, CmsTagType> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null,
+                Map<String, CmsTagType> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }

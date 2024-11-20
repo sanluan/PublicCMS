@@ -57,7 +57,7 @@ public class SysTaskDirective extends AbstractTemplateDirective {
             Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<SysTask> entityList = service.getEntitys(ids);
-                Map<String, SysTask> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null,
+                Map<String, SysTask> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }

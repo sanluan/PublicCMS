@@ -5,7 +5,7 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 import javax.annotation.Resource;
 
@@ -74,15 +74,16 @@ public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsSurveyQuestion> entityList = service.getEntitys(ids);
-                Consumer<CmsSurveyQuestion> consumer = e -> {
+                UnaryOperator<CmsSurveyQuestion> valueMapper = e -> {
                     if (!advanced) {
                         e.setAnswer(null);
                     }
                     if (absoluteURL) {
                         e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover()));
                     }
+                    return e;
                 };
-                Map<String, CmsSurveyQuestion> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer, null);
+                Map<String, CmsSurveyQuestion> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids, null);
                 handler.put("map", map).render();
             }
         }

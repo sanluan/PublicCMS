@@ -5,7 +5,7 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 import javax.annotation.Resource;
 
@@ -67,12 +67,13 @@ public class CmsContentProductDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsContentProduct> entityList = service.getEntitys(ids);
-                Consumer<CmsContentProduct> consumer = e -> {
+                UnaryOperator<CmsContentProduct> valueMapper = e -> {
                     if (absoluteURL) {
                         e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover()));
                     }
+                    return e;
                 };
-                Map<String, CmsContentProduct> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
+                Map<String, CmsContentProduct> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
