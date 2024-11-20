@@ -29,12 +29,12 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.publiccms.common.handler.FullBeanNameGenerator;
-import com.publiccms.common.interceptor.CsrfInterceptor;
-import com.publiccms.common.interceptor.SiteInterceptor;
-import com.publiccms.common.interceptor.WebContextInterceptor;
 import com.publiccms.common.view.DefaultWebFreeMarkerView;
 import com.publiccms.common.view.WebFreeMarkerView;
 import com.publiccms.common.view.WebFreeMarkerViewResolver;
+import com.publiccms.interceptor.CsrfInterceptor;
+import com.publiccms.interceptor.SiteInterceptor;
+import com.publiccms.interceptor.WebContextInterceptor;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 

@@ -3,4 +3,4 @@
  *  拦截器
  * 
  */
-package com.publiccms.common.interceptor;
+package com.publiccms.interceptor;

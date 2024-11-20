@@ -1,4 +1,4 @@
-package com.publiccms.common.interceptor;
+package com.publiccms.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

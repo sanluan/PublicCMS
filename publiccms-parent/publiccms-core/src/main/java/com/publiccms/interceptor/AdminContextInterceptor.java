@@ -1,4 +1,4 @@
-package com.publiccms.common.interceptor;
+package com.publiccms.interceptor;
 
 import java.io.IOException;
 
