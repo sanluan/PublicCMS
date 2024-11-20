@@ -56,7 +56,7 @@ public class SysDomainDirective extends AbstractTemplateDirective {
             String[] ids = handler.getStringArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<SysDomain> entityList = service.getEntitys(ids);
-                Map<String, SysDomain> map = CommonUtils.listToMap(entityList, k -> k.getName(), null, null);
+                Map<String, SysDomain> map = CommonUtils.listToMapSorted(entityList, k -> k.getName(), ids);
                 handler.put("map", map).render();
             }
         }

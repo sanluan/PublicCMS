@@ -57,7 +57,7 @@ public class SysDeptDirective extends AbstractTemplateDirective {
             Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<SysDept> entityList = service.getEntitys(ids);
-                Map<String, SysDept> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null,
+                Map<String, SysDept> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }

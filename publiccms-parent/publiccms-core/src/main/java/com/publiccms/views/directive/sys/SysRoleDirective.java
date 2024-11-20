@@ -57,7 +57,7 @@ public class SysRoleDirective extends AbstractTemplateDirective {
             Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<SysRole> entityList = service.getEntitys(ids);
-                Map<String, SysRole> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null,
+                Map<String, SysRole> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }

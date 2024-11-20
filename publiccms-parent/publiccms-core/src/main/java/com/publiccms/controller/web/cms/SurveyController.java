@@ -131,7 +131,7 @@ public class SurveyController {
                     userSurvey.setId(userSurveyId);
                     userSurveyService.save(userSurvey);
                     service.updateVotes(site.getId(), surveyId, 1);
-                    Map<Long, CmsSurveyQuestion> questionMap = CommonUtils.listToMap(questionList, k -> k.getId(), null, null);
+                    Map<Long, CmsSurveyQuestion> questionMap = CommonUtils.listToMap(questionList, k -> k.getId());
                     Set<Serializable> answerSet = new TreeSet<>();
                     List<CmsUserSurveyQuestion> answerList = new ArrayList<>();
                     for (CmsUserSurveyQuestion answer : userQuestionParameters.getAnswerList()) {

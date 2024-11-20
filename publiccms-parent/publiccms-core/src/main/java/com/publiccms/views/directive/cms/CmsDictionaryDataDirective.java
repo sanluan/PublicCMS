@@ -68,7 +68,7 @@ public class CmsDictionaryDataDirective extends AbstractTemplateDirective {
                         ids[i] = new CmsDictionaryDataId(dictionaryId, siteId, values[i]);
                     }
                     List<CmsDictionaryData> entityList = service.getEntitys(ids);
-                    Map<String, CmsDictionaryData> map = CommonUtils.listToMap(entityList, k -> k.getId().getValue(), null, null);
+                    Map<String, CmsDictionaryData> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().getValue(), values);
                     handler.put("map", map).render();
                 }
             }
