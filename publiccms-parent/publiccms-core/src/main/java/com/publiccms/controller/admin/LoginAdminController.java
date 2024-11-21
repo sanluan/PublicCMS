@@ -131,7 +131,7 @@ public class LoginAdminController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), username, null, ip, LogLoginService.CHANNEL_WEB_MANAGER, false,
                     CommonUtils.getDate(), password));
-            return "redirect:login";
+            return "login";
         }
         locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
         if (ControllerUtils.errorCustom("locked.user", locked, model)
@@ -145,7 +145,7 @@ public class LoginAdminController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB_MANAGER, false,
                     CommonUtils.getDate(), password));
-            return "redirect:login";
+            return "login";
         }
 
         lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
@@ -161,8 +161,7 @@ public class LoginAdminController {
             ControllerUtils.setOtpAdminToSession(request.getSession(), user);
             logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
                     CommonUtils.getDate(), null));
-            model.addAttribute("returnUrl", returnUrl);
-            return "redirect:otp/login";
+            return CommonUtils.joinString("redirect:otp/login?returnUrl=", returnUrl);
         } else {
             service.updateLoginStatus(user.getId(), ip);
             String authToken = UUID.randomUUID().toString();
