@@ -20,3 +20,6 @@ ALTER TABLE `visit_item`
     ADD INDEX `visit_item_visit_date` (`site_id`, `visit_date`, `item_type`, `item_id`, `pv`);
 -- 2024-11-07 --
 UPDATE `sys_module` SET parent_id = 'vote_list' WHERE parent_id = 'content_vote';
+-- 2024-11-28 --
+DELETE FROM sys_module WHERE id IN ('log_login_delete','log_operate_delete');
+DELETE FROM sys_module_lang WHERE module_id IN ('log_login_delete','log_operate_delete');
