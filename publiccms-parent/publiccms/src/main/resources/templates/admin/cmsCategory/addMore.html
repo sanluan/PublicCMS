@@ -1,6 +1,6 @@
 <div class="pageFormContent" layoutH>
     <ul class="tree treeFolder">
-        <li><a href="cmsCategory/add.html?parentId=${parentId!}" target="navTab" rel="cmsCategory/add"><@t.page 'category.add'/></a></li>
+        <li><a href="cmsCategory/add.html?parentId=${parentId!}" target="navTab" rel="cmsCategory/add"><#if parentId?has_content><@t.page 'category.add_child'/><#else><@t.page 'category.add'/></#if></a></li>
 <@cms.categoryTypeList>
     <#list page.list as a>
         <li><a href="cmsCategory/add.html?parentId=${parentId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><@t.page 'button.add_some_things' a.name/></a></li>
