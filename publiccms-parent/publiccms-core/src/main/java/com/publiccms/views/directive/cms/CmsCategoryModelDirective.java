@@ -37,7 +37,8 @@ import freemarker.template.TemplateException;
  * &lt;@cms.categoryModel categoryId=1
  * modelId='article'&gt;${object.templatePath}&lt;/@cms.categoryModel&gt;
  * <p>
- * &lt;@cms.categoryModel categoryIds=1,2,3 modelId='article'&gt;&lt;#list map as
+ * &lt;@cms.categoryModel categoryIds=1,2,3 modelId='article'&gt;&lt;#list map
+ * as
  * k,v&gt;${k}:${v.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryModel&gt;
  * 
  * <pre>
@@ -70,8 +71,7 @@ public class CmsCategoryModelDirective extends AbstractTemplateDirective {
                         entityIds[i] = new CmsCategoryModelId(categoryId, modelIds[i]);
                     }
                     List<CmsCategoryModel> entityList = service.getEntitys(entityIds);
-                    Map<String, CmsCategoryModel> map = CommonUtils.listToMap(entityList, k -> k.getId().getModelId(), null,
-                            null);
+                    Map<String, CmsCategoryModel> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().getModelId(), null, modelIds, null);
                     handler.put("map", map).render();
                 }
             }
@@ -83,8 +83,7 @@ public class CmsCategoryModelDirective extends AbstractTemplateDirective {
                     entityIds[i] = new CmsCategoryModelId(categoryIds[i], modelId);
                 }
                 List<CmsCategoryModel> entityList = service.getEntitys(entityIds);
-                Map<String, CmsCategoryModel> map = CommonUtils.listToMap(entityList,
-                        k -> String.valueOf(k.getId().getCategoryId()), null, null);
+                Map<String, CmsCategoryModel> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getCategoryId()), categoryIds);
                 handler.put("map", map).render();
             }
         }

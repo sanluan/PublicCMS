@@ -58,8 +58,7 @@ public class CmsDictionaryExcludeDirective extends AbstractTemplateDirective {
             SysSite site = getSite(handler);
             short siteId = null == site.getParentId() ? site.getId() : site.getParentId();
             if (CommonUtils.notEmpty(excludeDictionaryId)) {
-                CmsDictionaryExclude entity = service
-                        .getEntity(new CmsDictionaryExcludeId(dictionaryId, siteId, excludeDictionaryId));
+                CmsDictionaryExclude entity = service.getEntity(new CmsDictionaryExcludeId(dictionaryId, siteId, excludeDictionaryId));
                 if (null != entity) {
                     handler.put("object", entity).render();
                 }
@@ -71,8 +70,7 @@ public class CmsDictionaryExcludeDirective extends AbstractTemplateDirective {
                         ids[i] = new CmsDictionaryExcludeId(dictionaryId, siteId, excludeDictionaryIds[i]);
                     }
                     List<CmsDictionaryExclude> entityList = service.getEntitys(ids);
-                    Map<String, CmsDictionaryExclude> map = CommonUtils.listToMap(entityList,
-                            k -> k.getId().getExcludeDictionaryId(), null, null);
+                    Map<String, CmsDictionaryExclude> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().getExcludeDictionaryId(), excludeDictionaryIds);
                     handler.put("map", map).render();
                 }
             }

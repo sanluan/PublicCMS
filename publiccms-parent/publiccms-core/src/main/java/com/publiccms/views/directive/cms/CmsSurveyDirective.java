@@ -58,7 +58,7 @@ public class CmsSurveyDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsSurvey> entityList = service.getEntitys(ids);
-                Map<String, CmsSurvey> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null, null);
+                Map<String, CmsSurvey> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), ids);
                 handler.put("map", map).render();
             }
         }

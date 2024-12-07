@@ -59,7 +59,7 @@ public class TradeAccountDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<TradeAccount> entityList = service.getEntitys(ids);
-                Map<String, TradeAccount> map = CommonUtils.listToMap(entityList, k -> String.valueOf(k.getId()), null,
+                Map<String, TradeAccount> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId()), null, ids,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }

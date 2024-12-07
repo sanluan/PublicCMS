@@ -72,8 +72,7 @@ public class CmsDictionaryExcludeValueDirective extends AbstractTemplateDirectiv
                         ids[i] = new CmsDictionaryExcludeValueId(dictionaryId, siteId, excludeDictionaryId, values[i]);
                     }
                     List<CmsDictionaryExcludeValue> entityList = service.getEntitys(ids);
-                    Map<String, CmsDictionaryExcludeValue> map = CommonUtils.listToMap(entityList, k -> k.getId().getValue(),
-                            null, null);
+                    Map<String, CmsDictionaryExcludeValue> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().getValue(), values);
                     handler.put("map", map).render();
                 }
             }

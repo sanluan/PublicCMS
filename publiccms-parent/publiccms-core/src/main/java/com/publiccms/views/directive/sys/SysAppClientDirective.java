@@ -58,7 +58,7 @@ public class SysAppClientDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<SysAppClient> entityList = service.getEntitys(ids);
-                Map<String, SysAppClient> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null,
+                Map<String, SysAppClient> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }

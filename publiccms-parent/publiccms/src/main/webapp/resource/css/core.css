@@ -204,7 +204,8 @@ table.nowrap tbody tr{border-bottom-width:1px;border-bottom-style:solid;}
 table.itemDetail{caption-side:bottom;}
 table.itemDetail caption{border:solid 1px #ededed;background-color:#fff;padding:5px 0px;border-top:0px;}
 table.itemDetail caption label{padding-left:0px;}
-
+table.itemDetail tr:first-child .btnUp{visibility:hidden;}
+table.itemDetail tr:last-child .btnDown{visibility:hidden;}
 /* Taskbar */
 #taskbar{overflow:hidden;height:30px;border-style:solid;border-width:0;border-color:#0f3255;background-color:#112746;position:absolute;z-index:30;left:0px;display:none;}
 #taskbar .taskbarContent{display:block;overflow:hidden;height:100%;position:relative;}
@@ -351,12 +352,14 @@ h3.contentTitle{font-size:16px;border-bottom:solid 1px #CCC;clear:both;}
 #suggest li.hover{border:1px solid #0a246a;}
 
 /* button */
-a.btnDel, a.btnLook, a.btnAttach, a.view{display:block;width:24px;height:26px;overflow:hidden;float:left;text-indent:-1000px;position:relative;margin-right:3px;}
+a.btnDel, a.btnUp, a.btnDown, a.btnLook, a.btnAttach, a.view{display:block;width:24px;height:26px;overflow:hidden;float:left;text-indent:-1000px;position:relative;margin-right:3px;}
+ a.btnUp, a.btnDown{height:13px;}
 a.btnLook, a.btnAttach{margin-top:1px;margin-left:-25px;background-color:rgba(255,255,255,0.8);}
 label a.btnLook{margin-left:0px;}
-.center a.btnDel, .center a.btnLook, .center a.btnAttach,
-.right a.btnDel, .right a.btnLook, .right a.btnAttach{display:inline-block;float:none;}
-a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px;line-height:28px;position:absolute;top:0;left:3px;text-indent:0;text-decoration:none}
+.center a.btnDel, .center a.btnUp, .center a.btnDown, .center a.btnLook, .center a.btnAttach,
+.right a.btnDel, .right a.btnUp, .right a.btnDown, .right a.btnLook, .right a.btnAttach{display:inline-block;float:none;}
+a.btnLook:before,a.btnDel:before,a.btnUp:before,a.btnDown:before,a.btnAttach:before,a.view:before{font-size:20px;line-height:28px;position:absolute;top:0;left:3px;text-indent:0;text-decoration:none}
+a.btnUp:before,a.btnDown:before{line-height:14px;}
 
 .sortDragPlaceholder{border:1px dashed #ccc;}
 #printBox{display:none;}
@@ -490,7 +493,8 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .icon-remove:before{content:"\e61a";font-family:iconfont;font-size:16px;}
 a.btnAttach:before{content:"\e607";font-family:iconfont;}
 .icon-remove-sign:before, a.btnDel:before{content:"\e61a";font-family:iconfont;}
-
+a.btnUp:before{content:"\e654";font-family:iconfont;}
+a.btnDown:before{content:"\e668";font-family:iconfont;}
 .dialog .dialogHeader .close:before{content:"\e61a";}
 .dialog .dialogHeader .maximize:before{content:"\e673";}
 .dialog .dialogHeader .restore:before{content:"\e671";}

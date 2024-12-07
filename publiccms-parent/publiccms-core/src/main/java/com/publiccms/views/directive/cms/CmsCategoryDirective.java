@@ -3,7 +3,7 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 import javax.annotation.Resource;
 
@@ -85,15 +85,16 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                 Map<Integer, CmsCategoryAttribute> attributeMap = containsAttribute
                         ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getCategoryId())
                         : null;
-                Consumer<CmsCategory> consumer = e -> {
+                UnaryOperator<CmsCategory> valueMapper = e -> {
                     if (absoluteURL) {
                         CmsUrlUtils.initCategoryUrl(site, e);
                     }
                     if (containsAttribute) {
                         e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
                     }
+                    return e;
                 };
-                Map<String, CmsCategory> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
+                Map<String, CmsCategory> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }

@@ -3,7 +3,7 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 import javax.annotation.Resource;
 
@@ -90,8 +90,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     fileUploadComponent.initContentCover(site, entity);
                 }
                 if (containsAttribute) {
-                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(id),
-                            contentConfigComponent.getKeywordsConfig(site.getId())));
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(id), contentConfigComponent.getKeywordsConfig(site.getId())));
                 }
                 handler.put("object", entity);
                 handler.render();
@@ -101,10 +100,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
                 KeywordsConfig config = containsAttribute ? contentConfigComponent.getKeywordsConfig(site.getId()) : null;
-                Map<Long, CmsContentAttribute> attributeMap = containsAttribute
-                        ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getContentId())
-                        : null;
-                Consumer<CmsContent> consumer = e -> {
+                Map<Long, CmsContentAttribute> attributeMap = containsAttribute ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getContentId()) : null;
+                UnaryOperator<CmsContent> valueMapper = e -> {
                     ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
                     if (null != statistics) {
                         e.setClicks(e.getClicks() + statistics.getClicks());
@@ -119,9 +116,9 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     if (containsAttribute) {
                         e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()), config));
                     }
+                    return e;
                 };
-                Map<String, CmsContent> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
-                        entity -> site.getId() == entity.getSiteId());
+                Map<String, CmsContent> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids, entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

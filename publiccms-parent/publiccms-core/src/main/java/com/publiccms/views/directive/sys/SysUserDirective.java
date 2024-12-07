@@ -3,7 +3,7 @@ package com.publiccms.views.directive.sys;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 import javax.annotation.Resource;
 
@@ -89,7 +89,7 @@ public class SysUserDirective extends AbstractTemplateDirective {
                 Map<Long, SysUserAttribute> attributeMap = containsAttribute
                         ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getUserId())
                         : null;
-                Consumer<SysUser> consumer = e -> {
+                UnaryOperator<SysUser> valueMapper = e -> {
                     if (absoluteURL) {
                         e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover()));
                     }
@@ -99,9 +99,10 @@ public class SysUserDirective extends AbstractTemplateDirective {
                     if (containsAttribute) {
                         e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
                     }
+                    return e;
                 };
 
-                Map<String, SysUser> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
+                Map<String, SysUser> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }

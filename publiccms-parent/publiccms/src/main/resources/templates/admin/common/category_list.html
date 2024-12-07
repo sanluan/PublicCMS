@@ -42,6 +42,7 @@
                 <a href="cmsCategory/add.html?parentId=${parentId!}" class="addMore" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><#if parentId?has_content><@t.page 'category.add_child'/><#else><@t.page 'category.add'/></#if></a>
                 <ul>
     <@cms.categoryTypeList pageSize=10>
+            <li><a href="cmsCategory/add.html?parentId=${parentId!}" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><#if parentId?has_content><@t.page 'category.add_child'/><#else><@t.page 'category.add'/></#if></a></li>
         <#list page.list as a>
             <li><a href="cmsCategory/add.html?parentId=${parentId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><@t.page 'button.add_some_things' a.name/></a></li>
         </#list>
