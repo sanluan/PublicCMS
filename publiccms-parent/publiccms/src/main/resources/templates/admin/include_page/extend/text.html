@@ -5,7 +5,7 @@
             <thead>
                 <tr>
                     <th width="400"<#if 'customform'!=type> type="text" name="${inputName}" fieldClass="<#if extend.required> required</#if>" size="50"<#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}"</#if></#if>><@t.page 'value'/></th>
-                    <th width="60"<#if 'customform'!=type> type="del"</#if>><@t.page 'operate'/></th>
+                    <th width="60"<#if 'customform'!=type> type="delAndSort"</#if>><@t.page 'operate'/></th>
                 </tr>
             </thead>
             <tbody>
@@ -17,6 +17,7 @@
                         </td>
                         <td>
                             <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
+                            <#if 'customform'!=type><a href="javascript:;" class="btnUp"></a><a href="javascript:;" class="btnDown"></a></#if>
                         </td>
                     </tr>
                     </#list>

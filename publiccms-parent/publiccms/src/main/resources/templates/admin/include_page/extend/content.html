@@ -7,7 +7,7 @@
             <thead>
                 <tr>
                     <th width="250"<#if 'customform'!=type> type="lookup" name="${extend.id.code}_title" fieldClass="<#if extend.required>required</#if>" size="30" fieldAttrs="{'readonly':'readonly','width':'1200','height':'580'}" lookupUrl="cmsContent/lookup.html?field=${inputName?url}&titleField=${extend.id.code?url}_title" lookupGroup="" lookupPk="${inputName}"</#if>><@t.page 'content'/></th>
-                    <th width="60"<#if 'customform'!=type> type="del" </#if>><@t.page 'operate'/></th>
+                    <th width="60"<#if 'customform'!=type> type="delAndSort" </#if>><@t.page 'operate'/></th>
                 </tr>
             </thead>
             <tbody>
@@ -20,7 +20,8 @@
                             <a class="btnLook" href="cmsContent/lookup.html?field=${inputName?url}&titleField=${extend.id.code?url}_title" width="1200" height="580" lookupGroup=""><@t.page 'content.select'/></a>
                         </td>
                         <td>
-                            <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
+                            <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>></a>
+                            <#if 'customform'!=type><a href="javascript:;" class="btnUp"></a><a href="javascript:;" class="btnDown"></a></#if>
                         </td>
                     </tr>
                     </#list>

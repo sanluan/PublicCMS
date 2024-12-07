@@ -313,6 +313,20 @@
                     }
                     return false;
                 });
+                $tbody.find("a.btnUp").on("click", function() {
+                    var $btnUp = $(this);
+                    var $box = $btnUp.parents("tr").first();
+                    $box.after($box.prev()).css("opacity","0.1").animate({"opacity":"1"});
+                    initSuffix($tbody);
+                    return false;
+                });
+                $tbody.find("a.btnDown").on("click", function() {
+                    var $btnUp = $(this);
+                    var $box = $btnUp.parents("tr").first();
+                    $box.before($box.next()).css("opacity","0.1").animate({"opacity":"1"});
+                    initSuffix($tbody);
+                    return false;
+                });
                 var addButTxt = $table.attr("addButton") || "Add New";
                 if (addButTxt ) {
                     var $caption = $("<caption></caption>").appendTo($table);
@@ -351,6 +365,20 @@
                             $tr.on("click", function(){
                                 $tbody.find(">tr.selected").removeClass("selected");
                                 $tr.addClass("selected");
+                            });
+                            $tr.find("a.btnUp").on("click", function() {
+                                var $btnUp = $(this);
+                                var $box = $btnUp.parents("tr").first();
+                                $box.after($box.prev()).css("opacity","0.1").animate({"opacity":"1"});
+                                initSuffix($tbody);
+                                return false;
+                            });
+                            $tr.find("a.btnDown").on("click", function() {
+                                var $btnDown = $(this);
+                                var $box = $btnDown.parents("tr").first();
+                                $box.before($box.next()).css("opacity","0.1").animate({"opacity":"1"});
+                                initSuffix($tbody);
+                                return false;
                             });
                         }
                         initSuffix($tbody);
@@ -412,6 +440,9 @@
                 switch (field.type) {
                     case "del":
                         html = "<a href=\"javascript:void(0)\" class=\"btnDel " + field.fieldClass + "\"></a>";
+                        break;
+                    case "delAndSort":
+                        html = "<a href=\"javascript:void(0)\" class=\"btnDel " + field.fieldClass + "\"></a> <a href=\"javascript:;\" class=\"btnUp\"></a>";
                         break;
                     case "lookup":
                         var suggestFrag = "";

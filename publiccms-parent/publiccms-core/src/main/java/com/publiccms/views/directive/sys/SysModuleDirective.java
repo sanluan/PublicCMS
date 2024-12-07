@@ -55,7 +55,7 @@ public class SysModuleDirective extends AbstractTemplateDirective {
             String[] ids = handler.getStringArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<SysModule> entityList = service.getEntitys(ids);
-                Map<String, SysModule> map = CommonUtils.listToMap(entityList, k -> k.getId(), null, null);
+                Map<String, SysModule> map = CommonUtils.listToMapSorted(entityList, k -> k.getId(), ids);
                 handler.put("map", map).render();
             }
         }

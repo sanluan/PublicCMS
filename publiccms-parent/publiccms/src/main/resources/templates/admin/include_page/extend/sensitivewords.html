@@ -24,7 +24,7 @@
                 <tr>
                     <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas required" fieldAttrs="{'batchGroup':''<#if extend.maxlength?has_content>,'maxlength':'${extend.maxlength}'</#if>}" suffix="sensitivewords"</#if>><@t.page 'sensitivewords'/></th>
                     <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas"<#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}"</#if> suffix="replace"</#if>><@t.page 'replace'/></th>
-                    <th width="60"<#if 'customform'!=type> type="del"</#if>><@t.page 'operate'/></th>
+                    <th width="60"<#if 'customform'!=type> type="delAndSort"</#if>><@t.page 'operate'/></th>
                 </tr>
             </thead>
             <tbody>
@@ -38,6 +38,7 @@
                         </#list>
                         <td>
                             <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
+                            <#if 'customform'!=type><a href="javascript:;" class="btnUp"></a><a href="javascript:;" class="btnDown"></a></#if>
                         </td>
                     </tr>
                 </#list>

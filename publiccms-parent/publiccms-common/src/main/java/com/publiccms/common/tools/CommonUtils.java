@@ -6,16 +6,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.BitSet;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -60,7 +63,7 @@ public class CommonUtils {
      * @return
      */
     public static <T, F> Map<F, T> listToMap(List<T> list, Function<T, F> keyMapper) {
-        return listToMap(list, keyMapper, null, null);
+        return listToMap(list, keyMapper, null, null, null);
     }
 
     /**
@@ -68,24 +71,46 @@ public class CommonUtils {
      * @param <F>
      * @param list
      * @param keyMapper
-     * @param consumer
+     * @param sortKeys
+     * @return
+     */
+    public static <T, F, K> Map<F, T> listToMapSorted(List<T> list, Function<T, F> keyMapper, K[] sortKeys) {
+        return listToMapSorted(list, keyMapper, null, sortKeys, null);
+    }
+
+    /**
+     * @param <T>
+     * @param <F>
+     * @param list
+     * @param keyMapper
+     * @param valueMapper
+     * @param sortKeys
      * @param filter
      * @return
      */
-    public static <T, F> Map<F, T> listToMap(List<T> list, Function<T, F> keyMapper, Consumer<T> consumer, Predicate<T> filter) {
-        if (null != consumer) {
-            list.forEach(consumer);
-        }
-        Map<F, T> map;
-        if (null == filter) {
-            map = list.stream().collect(
-                    Collectors.toMap(keyMapper, Function.identity(), Constants.defaultMegerFunction(), LinkedHashMap::new));
-        } else {
-            map = list.stream().filter(filter).collect(
-                    Collectors.toMap(keyMapper, Function.identity(), Constants.defaultMegerFunction(), LinkedHashMap::new));
-        }
+    public static <T, F, K> Map<F, T> listToMapSorted(List<T> list, Function<T, F> keyMapper, UnaryOperator<T> valueMapper, K[] sortKeys, Predicate<T> filter) {
+        return listToMap(list, keyMapper, valueMapper, (k1, k2) -> ArrayUtils.indexOf(sortKeys, k1) - ArrayUtils.indexOf(sortKeys, k2), filter);
+    }
 
-        return map;
+    /**
+     * @param <T>
+     * @param <F>
+     * @param list
+     * @param keyMapper
+     * @param valueMapper
+     * @param comparator
+     * @param filter
+     * @return
+     */
+    public static <T, F> Map<F, T> listToMap(List<T> list, Function<T, F> keyMapper, UnaryOperator<T> valueMapper, Comparator<? super T> comparator, Predicate<T> filter) {
+        Stream<T> stream = list.stream();
+        if (null != comparator) {
+            stream = stream.sorted(comparator);
+        }
+        if (null != filter) {
+            stream = stream.filter(filter);
+        }
+        return stream.collect(Collectors.toMap(keyMapper, null == valueMapper ? Function.identity() : valueMapper, Constants.defaultMegerFunction(), LinkedHashMap::new));
     }
 
     public static String encodeURI(String s) {
@@ -235,7 +260,7 @@ public class CommonUtils {
     public static boolean empty(Number value) {
         return null == value;
     }
-    
+
     /**
      * @param value
      * @return 是否为空

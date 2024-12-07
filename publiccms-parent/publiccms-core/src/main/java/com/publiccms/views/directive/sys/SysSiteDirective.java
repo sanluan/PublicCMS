@@ -55,7 +55,7 @@ public class SysSiteDirective extends AbstractTemplateDirective {
             Short[] ids = handler.getShortArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<SysSite> entityList = service.getEntitys(ids);
-                Map<String, SysSite> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null, null);
+                Map<String, SysSite> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), ids);
                 handler.put("map", map).render();
             }
         }

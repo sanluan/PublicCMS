@@ -3,7 +3,7 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 import jakarta.annotation.Resource;
 
@@ -80,7 +80,7 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
                 Map<Long, CmsPlaceAttribute> attributeMap = containsAttribute
                         ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getPlaceId())
                         : null;
-                Consumer<CmsPlace> consumer = e -> {
+                UnaryOperator<CmsPlace> valueMapper = e -> {
                     Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
                     if (null != clicks) {
                         e.setClicks(e.getClicks() + clicks);
@@ -92,8 +92,9 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
                     if (containsAttribute) {
                         e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
                     }
+                    return e;
                 };
-                Map<String, CmsPlace> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
+                Map<String, CmsPlace> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids,
                         entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }

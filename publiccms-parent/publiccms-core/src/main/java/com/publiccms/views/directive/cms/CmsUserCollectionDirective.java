@@ -67,8 +67,7 @@ public class CmsUserCollectionDirective extends AbstractTemplateDirective {
                         entityIds[i] = new CmsUserCollectionId(userId, contentIds[i]);
                     }
                     List<CmsUserCollection> entityList = service.getEntitys(entityIds);
-                    Map<String, CmsUserCollection> map = CommonUtils.listToMap(entityList,
-                            k -> String.valueOf(k.getId().getContentId()), null, null);
+                    Map<String, CmsUserCollection> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getContentId()), contentIds);
                     handler.put("map", map).render();
                 }
             }

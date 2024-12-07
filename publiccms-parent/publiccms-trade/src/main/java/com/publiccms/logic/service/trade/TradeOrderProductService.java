@@ -57,7 +57,7 @@ public class TradeOrderProductService extends BaseService<TradeOrderProduct> {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public BigDecimal create(short siteId, long orderId, List<TradeOrderProduct> tradeOrderProductList) {
         BigDecimal amount = BigDecimal.ZERO;
-        if (null != tradeOrderProductList && 0 < tradeOrderProductList.size()) {
+        if (null != tradeOrderProductList && !tradeOrderProductList.isEmpty()) {
             Date now = CommonUtils.getDate();
             List<Long> contentIdsList = new ArrayList<>();
             List<Long> productIdsList = new ArrayList<>();
@@ -67,10 +67,10 @@ public class TradeOrderProductService extends BaseService<TradeOrderProduct> {
             }
 
             List<CmsContent> contentList = contentService.getEntitys(contentIdsList.toArray(new Long[contentIdsList.size()]));
-            Map<Long, CmsContent> contentMap = CommonUtils.listToMap(contentList, k -> k.getId(), null, null);
+            Map<Long, CmsContent> contentMap = CommonUtils.listToMap(contentList, k -> k.getId());
             List<CmsContentProduct> productList = productService
                     .getEntitys(productIdsList.toArray(new Long[productIdsList.size()]));
-            Map<Long, CmsContentProduct> productMap = CommonUtils.listToMap(productList, k -> k.getId(), null, null);
+            Map<Long, CmsContentProduct> productMap = CommonUtils.listToMap(productList, k -> k.getId());
 
             for (TradeOrderProduct entity : tradeOrderProductList) {
                 CmsContent content = contentMap.get(entity.getContentId());
