@@ -26,20 +26,20 @@
         <version.servlet>6.1.0</version.servlet>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
-        <version.spring>6.1.14</version.spring>
+        <version.spring>6.2.0</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
-        <version.springBoot>3.3.5</version.springBoot>
+        <version.springBoot>3.4.0</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <version.juint>5.11.3</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>6.6.2.Final</version.hibernate>
+        <version.hibernate>6.6.3.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm -->
-        <version.hibernateTools>6.6.1.Final</version.hibernateTools>
+        <version.hibernateTools>6.6.2.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>7.2.1.Final</version.hibernateSearch>
+        <version.hibernateSearch>7.2.2.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <version.hibernateValidator>8.0.1.Final</version.hibernateValidator>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
@@ -64,11 +64,10 @@
         <!-- https://github.com/redis/jedis -->
         <version.jedis>5.2.0</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
-        <!-- 2.5 for jakarta -->
-        <version.quartz>2.4.0</version.quartz>
+        <version.quartz>2.5.0</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
         <!-- https://github.com/brettwooldridge/HikariCP -->
-        <version.hikariCP>6.1.0</version.hikariCP>
+        <version.hikariCP>6.2.1</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
         <version.mysql>9.1.0</version.mysql>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
@@ -121,7 +120,7 @@
         <!-- https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail -->
         <version.mail>2.0.1</version.mail>
         <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
-        <version.jaxb>2.3.1</version.jaxb>
+        <version.jaxb>2.3.9</version.jaxb>
     </properties>
     <dependencyManagement>
         <dependencies>

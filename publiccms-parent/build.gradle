@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.3.5"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.4.0"
     }
 }
 
@@ -32,20 +32,20 @@ subprojects {
         servletVersion = "6.1.0"
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "6.1.14"
+        springVersion = "6.2.0"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "3.3.5"
+        springBootVersion = "3.4.0"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
         junitVersion = "5.11.3"
         // http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "6.6.2.Final"
+        hibernateVersion = "6.6.3.Final"
         // http://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm
         hibernateToolsVersion = "6.6.1.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "7.2.1.Final"
+        hibernateSearchVersion = "7.2.2.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
         hibernateValidatorVersion = "8.0.1.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
@@ -71,11 +71,10 @@ subprojects {
         jedisVersion = "5.2.0"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         // https://github.com/quartz-scheduler/quartz/releases
-        // 2.5 for jakarta
-        quartzVersion = "2.4.0"
+        quartzVersion = "2.5.0"
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
         // https://github.com/brettwooldridge/HikariCP
-        hikariCPVersion = "6.1.0"
+        hikariCPVersion = "6.2.1"
         // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
         mysqlVersion = "9.1.0"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
@@ -128,7 +127,7 @@ subprojects {
         // https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail
         mailVersion = "2.0.1"
         // https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
-        jaxbVersion = "2.3.1"
+        jaxbVersion = "2.3.9"
     }
     sourceCompatibility = 17
     targetCompatibility = 17
