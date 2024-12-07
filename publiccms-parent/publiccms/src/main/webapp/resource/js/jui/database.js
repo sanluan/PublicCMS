@@ -316,14 +316,14 @@
                 $tbody.find("a.btnUp").on("click", function() {
                     var $btnUp = $(this);
                     var $box = $btnUp.parents("tr").first();
-                    $box.after($box.prev());
+                    $box.after($box.prev()).css("opacity","0.1").animate({"opacity":"1"});
                     initSuffix($tbody);
                     return false;
                 });
                 $tbody.find("a.btnDown").on("click", function() {
                     var $btnUp = $(this);
                     var $box = $btnUp.parents("tr").first();
-                    $box.before($box.next());
+                    $box.before($box.next()).css("opacity","0.1").animate({"opacity":"1"});
                     initSuffix($tbody);
                     return false;
                 });
@@ -369,14 +369,14 @@
                             $tr.find("a.btnUp").on("click", function() {
                                 var $btnUp = $(this);
                                 var $box = $btnUp.parents("tr").first();
-                                $box.after($box.prev());
+                                $box.after($box.prev()).css("opacity","0.1").animate({"opacity":"1"});
                                 initSuffix($tbody);
                                 return false;
                             });
                             $tr.find("a.btnDown").on("click", function() {
                                 var $btnDown = $(this);
                                 var $box = $btnDown.parents("tr").first();
-                                $box.before($box.next());
+                                $box.before($box.next()).css("opacity","0.1").animate({"opacity":"1"});
                                 initSuffix($tbody);
                                 return false;
                             });
