@@ -20,9 +20,9 @@ dependencies {
     
     implementation "jakarta.mail:jakarta.mail-api:${mailApiVersion}"
     implementation "com.sun.mail:jakarta.mail:${mailVersion}"
+    implementation "com.github.therapi:therapi-runtime-javadoc:${therapiJavadocVersion}"
 
-    implementation "com.sun.mail:jakarta.mail:${mailVersion}"
 
-    providedCompile "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
-    providedCompile "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
+    compileOnly "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
+    compileOnly "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
 }

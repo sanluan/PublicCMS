@@ -14,6 +14,6 @@ dependencies {
     // https://github.com/webauthn4j/webauthn4j
     implementation "com.webauthn4j:webauthn4j-core:0.28.0.RELEASE"
     
-    providedCompile "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
-    providedCompile "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
+    compileOnly "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
+    compileOnly "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
 }
