@@ -7,13 +7,13 @@ configurations {
 dependencies {
     implementation project(path:':publiccms-core', configuration: 'instrumentedJars')
     implementation project(':publiccms-core')
-    
+
     // https://mvnrepository.com/artifact/com.github.bastiaanjansen/otp-java
     implementation "com.github.bastiaanjansen:otp-java:2.0.3"
     // https://mvnrepository.com/artifact/com.webauthn4j/webauthn4j-core
     // https://github.com/webauthn4j/webauthn4j
     implementation "com.webauthn4j:webauthn4j-core:0.28.0.RELEASE"
-    
+
     compileOnly "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
     compileOnly "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
 }
