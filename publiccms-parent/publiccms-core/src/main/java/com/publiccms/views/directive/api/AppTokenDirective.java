@@ -21,31 +21,34 @@ import com.publiccms.logic.service.sys.SysAppTokenService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* appToken 接口访问授权Token获取接口
-* <p>
-* 参数列表
-* <ul>
-* <li><code>appKey</code>:应用key
-* <li><code>appSecret</code>:应用密钥
-* </ul>
-* <p>
-* 返回结果
-* <ul>
-* <li><code>appToken</code>:接口访问授权Token
-* <li><code>expiryDate</code>:过期日期
-* <li><code>error</code>:错误信息,当appKey、appSecret为空或错误时返回【secretError】
-* </ul>
-* 使用示例
-* <p>
-* <pre>
+ *
+ * appToken 接口访问授权Token获取接口
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>appKey</code>:应用key
+ * <li><code>appSecret</code>:应用密钥
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>appToken</code>:接口访问授权Token
+ * <li><code>expiryDate</code>:过期日期
+ * <li><code>error</code>:错误信息,当appKey、appSecret为空或错误时返回【secretError】
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/appToken?appKey=1&amp;appSecret=1', function(data){
   $('article p em').text(data.clicks);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class AppTokenDirective extends AbstractAppDirective {
     private static final String SECRET_ERROR = "secretError";

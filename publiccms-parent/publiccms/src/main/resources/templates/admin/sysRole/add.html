@@ -24,20 +24,18 @@
                     <input name="ownsAllRight" type="checkbox" class="form-check-input"/>
                 </dd>
             </dl>
-    <#macro moduleTree parentId='' deep=0>
+    <#macro moduleTree parentId=''>
         <@sys.moduleList parentId=parentId advanced=true>
-            <#if page.totalCount gt 0>
-                <ul>
                 <#list page.list as a>
                     <li>
-                        <a tname="moduleIds" tvalue="${a.id}"><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a>
-                        <#if deep lte 3>
-                            <@moduleTree a.id deep+1/>
-                        </#if>
+                        <a tname="moduleIds" tvalue="${a.id}"> <@t.menu a.id/></a>
+                    <#if a.hasChild>
+                        <ul>
+                            <@moduleTree a.id/>
+                        </ul>
+                    </#if>
                     </li>
                 </#list>
-                </ul>
-            </#if>
         </@sys.moduleList>
     </#macro>
             <fieldset class="ownsAllRight">
@@ -51,7 +49,9 @@
                 <ul class="tree treeFolder treeCheck">
                     <li>
                         <a href="javascript:;" onclick="return false;"><@t.page 'module.all'/></a>
-                        <@moduleTree deep=0/>
+                        <ul>
+                            <@moduleTree/>
+                        </ul>
                     </li>
                 </ul>
     <script>

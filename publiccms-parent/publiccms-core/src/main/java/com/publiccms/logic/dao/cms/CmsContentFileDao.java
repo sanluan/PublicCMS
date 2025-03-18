@@ -72,6 +72,14 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
         return getEntityList(queryHandler);
     }
 
+    public void deleteByContentId(Long contentId) {
+        if (null != contentId) {
+            QueryHandler queryHandler = getQueryHandler("delete from CmsContentFile bean");
+            queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
+            delete(queryHandler);
+        }
+    }
+
     @Override
     protected CmsContentFile init(CmsContentFile entity) {
         return entity;

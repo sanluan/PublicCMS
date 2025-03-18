@@ -79,16 +79,22 @@ public class CmsWebFileAdminController {
                 if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
                     String filepath = siteComponent.getWebFilePath(site.getId(), path);
                     content = new String(VerificationUtils.base64Decode(content), StandardCharsets.UTF_8);
+                    String action = null;
                     if (CmsFileUtils.createFile(filepath, content)) {
-                        logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                                LogLoginService.CHANNEL_WEB_MANAGER, "save.web.webfile", RequestUtils.getIpAddress(request),
-                                CommonUtils.getDate(), path));
+                        action = "save.web.webfile";
                     } else {
                         String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(), path, true);
                         CmsFileUtils.updateFile(filepath, historyFilePath, content);
+                        action = "update.web.webfile";
+                    }
+                    if (CmsFileUtils.isSafe(filepath, suffix)) {
                         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                                LogLoginService.CHANNEL_WEB_MANAGER, "update.web.webfile", RequestUtils.getIpAddress(request),
+                                LogLoginService.CHANNEL_WEB_MANAGER, action, RequestUtils.getIpAddress(request),
                                 CommonUtils.getDate(), path));
+                    } else {
+                        CmsFileUtils.delete(filepath);
+                        model.addAttribute(CommonConstants.ERROR, "verify.custom.file.unsafe");
+                        return CommonConstants.TEMPLATE_ERROR;
                     }
                 } else {
                     model.addAttribute(CommonConstants.ERROR, "verify.custom.fileType");

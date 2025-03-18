@@ -3,6 +3,7 @@ package com.publiccms.logic.dao.sys;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -55,8 +56,27 @@ public class SysSiteDao extends BaseDao<SysSite> {
 
     @Override
     protected SysSite init(SysSite entity) {
+        if (null != entity.getParentId()) {
+            entity.setHasChild(false);
+        }
+        if (!entity.isHasChild()) {
+            entity.setMultiple(false);
+        }
+        if (!entity.isMultiple()) {
+            entity.setDirectory(null);
+        }
         if (CommonUtils.empty(entity.getDirectory())) {
             entity.setDirectory(null);
+        }
+        if (null == entity.getDynamicPath()) {
+            entity.setDynamicPath(Constants.SEPARATOR);
+        } else if (!entity.getDynamicPath().endsWith(Constants.SEPARATOR)) {
+            entity.setDynamicPath(CommonUtils.joinString(entity.getDynamicPath(), Constants.SEPARATOR));
+        }
+        if (null == entity.getSitePath()) {
+            entity.setSitePath(Constants.SEPARATOR);
+        } else if (!entity.getSitePath().endsWith(Constants.SEPARATOR)) {
+            entity.setSitePath(CommonUtils.joinString(entity.getSitePath(), Constants.SEPARATOR));
         }
         return entity;
     }

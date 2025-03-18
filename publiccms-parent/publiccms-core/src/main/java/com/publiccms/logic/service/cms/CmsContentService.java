@@ -19,7 +19,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.api.Config;
@@ -90,6 +89,10 @@ public class CmsContentService extends BaseService<CmsContent> {
      *
      */
     public static final int STATUS_REJECT = 3;
+    /**
+    *
+    */
+    public static final int STATUS_CHECKING = 4;
 
     /**
      *
@@ -233,16 +236,13 @@ public class CmsContentService extends BaseService<CmsContent> {
         }
         if (null != attribute.getText() && base64) {
             attribute.setText(HtmlUtils.cleanUnsafeHtml(
-                    new String(VerificationUtils.base64Decode(attribute.getText()), StandardCharsets.UTF_8),
-                    site.getSitePath()));
+                    new String(VerificationUtils.base64Decode(attribute.getText()), StandardCharsets.UTF_8), site.getSitePath()));
         }
     }
 
     public CmsContent saveTagAndAttribute(SysSite site, Long userId, Integer deptId, CmsContent entity,
             CmsContentParameters contentParameters, CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
         if (null != entity.getId()) {
-            Date now = CommonUtils.getDate();
-            entity.setUpdateDate(now);
             entity.setUpdateUserId(userId);
             entity = update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
         } else {
@@ -482,12 +482,61 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param user
      * @param id
+     * @param checkPermissions
+     * @return result
+     */
+    public CmsContent checkInProcess(short siteId, SysUser user, Serializable id) {
+        CmsContent entity = getEntity(id);
+        if (null != entity && siteId == entity.getSiteId() && STATUS_CHECKING == entity.getStatus()) {
+            entity.setStatus(STATUS_NORMAL);
+            entity.setCheckUserId(user.getId());
+            entity.setCheckDate(CommonUtils.getDate());
+        }
+        return entity;
+    }
+
+    /**
+     * @param siteId
+     * @param user
+     * @param id
+     * @return results list
+     */
+    public CmsContent rejectInProcess(short siteId, SysUser user, Serializable id) {
+        CmsContent entity = getEntity(id);
+        if (null != entity && siteId == entity.getSiteId() && STATUS_CHECKING == entity.getStatus()) {
+            entity.setStatus(STATUS_REJECT);
+            entity.setCheckUserId(user.getId());
+            entity.setCheckDate(CommonUtils.getDate());
+        }
+        return entity;
+    }
+    
+    /**
+     * @param siteId
+     * @param user
+     * @param id
+     * @param checkPermissions
+     * @return result
+     */
+    public CmsContent checking(short siteId, Serializable id) {
+        CmsContent entity = getEntity(id);
+        if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()) {
+            entity.setStatus(STATUS_CHECKING);
+        }
+        return entity;
+    }
+
+    /**
+     * @param siteId
+     * @param user
+     * @param id
+     * @param checkPermissions
      * @return result
      */
     public CmsContent check(short siteId, SysUser user, Serializable id) {
         CmsContent entity = getEntity(id);
-        if (null != entity && siteId == entity.getSiteId() && STATUS_DRAFT != entity.getStatus()
-                && STATUS_NORMAL != entity.getStatus() && ControllerUtils.hasContentPermissions(user, entity)) {
+        if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()
+                && ControllerUtils.hasContentPermissions(user, entity)) {
             entity.setStatus(STATUS_NORMAL);
             entity.setCheckUserId(user.getId());
             entity.setCheckDate(CommonUtils.getDate());
@@ -504,8 +553,8 @@ public class CmsContentService extends BaseService<CmsContent> {
     public List<CmsContent> check(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
-            if (null != entity && siteId == entity.getSiteId() && STATUS_DRAFT != entity.getStatus()
-                    && STATUS_NORMAL != entity.getStatus() && ControllerUtils.hasContentPermissions(user, entity)) {
+            if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()
+                    && ControllerUtils.hasContentPermissions(user, entity)) {
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckUserId(user.getId());
                 entity.setCheckDate(CommonUtils.getDate());
@@ -513,6 +562,23 @@ public class CmsContentService extends BaseService<CmsContent> {
             }
         }
         return entityList;
+    }
+
+    /**
+     * @param siteId
+     * @param user
+     * @param id
+     * @return results list
+     */
+    public CmsContent reject(short siteId, SysUser user, Serializable id) {
+        CmsContent entity = getEntity(id);
+        if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()
+                && ControllerUtils.hasContentPermissions(user, entity)) {
+            entity.setStatus(STATUS_REJECT);
+            entity.setCheckUserId(user.getId());
+            entity.setCheckDate(CommonUtils.getDate());
+        }
+        return entity;
     }
 
     /**
@@ -633,7 +699,6 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param entitys
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateStatistics(Collection<ClickStatistics> entitys) {
         for (ClickStatistics entityStatistics : entitys) {
             CmsContent entity = getEntity(entityStatistics.getId());
@@ -649,7 +714,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param comments
      * @return
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateComments(short siteId, Serializable id, int comments) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -665,7 +729,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param scores
      * @return
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateScores(short siteId, Serializable id, int scoreUsers, int scores) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -686,7 +749,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param collections
      * @return
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateCollections(short siteId, Serializable id, int collections) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -715,7 +777,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param num
      * @return result
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateChilds(Serializable id, int num) {
         CmsContent entity = getEntity(id);
         if (null != entity) {
@@ -912,6 +973,9 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
                 delete(entity.getId());
                 attributeService.delete(entity.getId());
+                contentFileService.deleteByContentId(entity.getId());
+                contentProductService.deleteByContentId(entity.getId());
+                cmsContentRelatedService.deleteByContentId(entity.getId());
             }
         }
     }

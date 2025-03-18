@@ -13,21 +13,25 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getHash 获取哈希值
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ol>
  * <li>字符串
  * </ol>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>string</code>:哈希值
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * ${getHash('aaa')}
  * <p>
- * 
+ *
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getHash?parameters=aaa', function(data){

@@ -20,34 +20,37 @@ import com.publiccms.logic.service.cms.CmsUserSurveyService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* userSurvey 用户问卷回答查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>userId</code>:用户id
-* <li><code>surveyId</code>:问卷id,结果返回<code>object</code>
-* {@link com.publiccms.entities.cms.CmsUserSurvey}
-* <li><code>surveyIds</code>
-* 多个问卷id,逗号或空格间隔,当surveyId为空且userId不为空时生效,结果返回<code>map</code>(surveyId,<code>object</code>)
-* <li><code>userIds</code>
-* 多个用户id,逗号或空格间隔,当userId为空且surveyId不为空时生效,结果返回<code>map</code>(userId,<code>object</code>)
-* </ul>
-* 使用示例
-* <p>
-* &lt;@cms.userSurvey id=1&gt;${object.score}&lt;/@cms.userSurvey&gt;
-* <p>
-* &lt;@cms.userSurvey ids='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${k}:${v.score}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userSurvey&gt;
-* 
-* <pre>
+ *
+ * userSurvey 用户问卷回答查询指令
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>userId</code>:用户id
+ * <li><code>surveyId</code>:问卷id,结果返回<code>object</code>
+ * {@link com.publiccms.entities.cms.CmsUserSurvey}
+ * <li><code>surveyIds</code>
+ * 多个问卷id,逗号或空格间隔,当surveyId为空且userId不为空时生效,结果返回<code>map</code>(surveyId,<code>object</code>)
+ * <li><code>userIds</code>
+ * 多个用户id,逗号或空格间隔,当userId为空且surveyId不为空时生效,结果返回<code>map</code>(userId,<code>object</code>)
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * &lt;@cms.userSurvey id=1&gt;${object.score}&lt;/@cms.userSurvey&gt;
+ * <p>
+ * &lt;@cms.userSurvey ids='1,2,3'&gt;&lt;#list map as
+ * k,v&gt;${k}:${v.score}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userSurvey&gt;
+ *
+ * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userSurvey?id=1&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/cms/userSurvey?id=1&amp;appToken=接口访问授权Token', function(data){
   console.log(data.score);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class CmsUserSurveyDirective extends AbstractTemplateDirective {
 
@@ -83,7 +86,7 @@ public class CmsUserSurveyDirective extends AbstractTemplateDirective {
                     entityIds[i] = new CmsUserSurveyId(userIds[i], surveyId);
                 }
                 List<CmsUserSurvey> entityList = service.getEntitys(entityIds);
-                Map<String, CmsUserSurvey> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getUserId()), 
+                Map<String, CmsUserSurvey> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getUserId()),
                         null, userIds, entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }

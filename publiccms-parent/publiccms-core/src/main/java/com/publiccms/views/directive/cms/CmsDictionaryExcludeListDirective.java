@@ -18,33 +18,36 @@ import com.publiccms.logic.service.cms.CmsDictionaryExcludeService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* dictionaryExcludeList 数据字典数据列表
-* <p>
-* 参数列表
-* <ul>
-* <li><code>dictionaryId</code>:字典id
-* <li><code>excludeDictionaryId</code>:排除数据字典id
-* </ul>
-* <p>
-* 返回结果
-* <ul>
-* <li><code>list</code>:List类型 查询结果实体列表
-* {@link com.publiccms.entities.cms.CmsDictionaryExclude}
-* </ul>
-* 使用示例
-* <p>
-* &lt;@cms.dictionaryExcludeList dictionaryId='data'&gt;&lt;#list list as
-* a&gt;${a.id.excludeDictionaryId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExcludeList&gt;
-*
-* <pre>
+ *
+ * dictionaryExcludeList 数据字典数据列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>dictionaryId</code>:字典id
+ * <li><code>excludeDictionaryId</code>:排除数据字典id
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>list</code>:List类型 查询结果实体列表
+ * {@link com.publiccms.entities.cms.CmsDictionaryExclude}
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * &lt;@cms.dictionaryExcludeList dictionaryId='data'&gt;&lt;#list list as
+ * a&gt;${a.id.excludeDictionaryId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExcludeList&gt;
+ *
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionaryId=1&amp;parentValue=text', function(data){
   console.log(data);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class CmsDictionaryExcludeListDirective extends AbstractTemplateDirective {
 

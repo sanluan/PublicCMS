@@ -19,24 +19,26 @@ import com.publiccms.logic.service.sys.SysAppClientService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* appClient 客户端注册接口
-* <p>
-* 参数列表
-* <ul>
-* <li><code>uuid</code>:设备唯一id
-* <li><code>clientVersion</code>:客户端版本
-* </ul>
-* <p>
-* 使用示例
-* <p>
-* <pre>
+ *
+ * appClient 客户端注册接口
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>uuid</code>:设备唯一id
+ * <li><code>clientVersion</code>:客户端版本
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/appClient?uuid=1&amp;clientVersion=1.0&amp;appToken=接口访问授权Token', function(data){
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class AppClientDirective extends AbstractAppDirective {
 

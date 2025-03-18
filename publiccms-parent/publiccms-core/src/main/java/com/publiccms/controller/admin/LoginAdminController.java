@@ -23,7 +23,6 @@ import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
-import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.ImageUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.UserPasswordUtils;
@@ -32,7 +31,8 @@ import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.entities.sys.SysUserAttribute;
+import com.publiccms.entities.sys.SysUserSetting;
+import com.publiccms.entities.sys.SysUserSettingId;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.config.ConfigDataComponent;
@@ -42,8 +42,8 @@ import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.logic.service.sys.SysUserAttributeService;
 import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.logic.service.sys.SysUserSettingService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
 import jakarta.annotation.Resource;
@@ -64,7 +64,7 @@ public class LoginAdminController {
     @Resource
     private SysUserService service;
     @Resource
-    private SysUserAttributeService attributeService;
+    private SysUserSettingService settingService;
     @Resource
     private SysUserTokenService sysUserTokenService;
     @Resource
@@ -154,10 +154,9 @@ public class LoginAdminController {
             service.updatePassword(user.getId(),
                     UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
         }
-        SysUserAttribute attribute = attributeService.getEntity(user.getId());
-        Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
-        if (safeConfigComponent.enableOtpLogin(site.getId())
-                || CommonUtils.notEmpty(map.get(SysUserAttributeService.OPTSECRET_SETTINGS_CODE))) {
+        SysUserSetting userSetting = settingService
+                .getEntity(new SysUserSettingId(user.getId(), SysUserSettingService.OPTSECRET_SETTINGS_CODE));
+        if (safeConfigComponent.enableOtpLogin(site.getId()) || null != userSetting) {
             ControllerUtils.setOtpAdminToSession(request.getSession(), user);
             logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
                     CommonUtils.getDate(), null));

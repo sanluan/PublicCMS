@@ -21,7 +21,7 @@
             <#list page.list as a>
                 <#if (childRoleModuleMap[a.id?string])?has_content&&childRoleModuleMap[a.id?string]>
             <li>
-                <a href="${(a.url)!}" target="navTab" rel="${(a.url)!}"><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a>
+                <a href="${(a.url)!}" target="navTab" rel="${(a.url)!}"><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/><#if ['content_check','comment_list','order_list','refund_list','process_list']?seq_contains(a.id)><span class="menuNumber" data-type="${a.id}"></span></#if></a>
             </li>
                 </#if>
             </#list>

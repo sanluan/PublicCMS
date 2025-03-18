@@ -21,8 +21,9 @@ import freemarker.template.TemplateException;
 /**
  *
  * categoryModel 分类内容模型映射查询指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>categoryId</code>:分类id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsCategoryModel}
@@ -32,7 +33,9 @@ import freemarker.template.TemplateException;
  * <li><code>categoryIds</code>
  * 多个分类id,当categoryId不存在,且modelId存在时生效,结果返回<code>map</code>(分类id,<code>object</code>)
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@cms.categoryModel categoryId=1
  * modelId='article'&gt;${object.templatePath}&lt;/@cms.categoryModel&gt;
@@ -40,10 +43,10 @@ import freemarker.template.TemplateException;
  * &lt;@cms.categoryModel categoryIds=1,2,3 modelId='article'&gt;&lt;#list map
  * as
  * k,v&gt;${k}:${v.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryModel&gt;
- * 
+ *
  * <pre>
   &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/categoryModel?categoryId=1&amp;modelId=article', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/cms/categoryModel?categoryId=1&amp;modelId=article', function(data){
      console.log(data.templatePath);
    });
    &lt;/script&gt;

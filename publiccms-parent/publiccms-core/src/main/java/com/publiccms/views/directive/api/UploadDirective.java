@@ -21,16 +21,18 @@ import freemarker.template.TemplateException;
  * <li><code>authToken</code>:用户登录Token
  * <li><code>authUserId</code>:用户id
  * </ul>
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>file</code>:文件
  * <li><code>base64File</code>:文件的base64编码字符串,文件为空时生效
  * <li><code>originalFilename</code>:文件原名,文件以base64方式上传时需要
  * <li><code>privatefile</code>:是否私有文件
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>result</code>:上传结果,【true,false】
  * <li><code>error</code>:错误原因编码
@@ -38,9 +40,11 @@ import freemarker.template.TemplateException;
  * <li><code>fileType</code>:文件类型
  * <li><code>fileSize</code>:文件大小
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
- * 
+ *
  * <pre>
 &lt;script&gt;
 $('input[type=file]').change(function() {

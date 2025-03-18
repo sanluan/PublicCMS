@@ -85,7 +85,7 @@ public class CmsModel implements java.io.Serializable {
     /**
      * has child
      * <p>
-     * 外链
+     * 拥有子模型
      */
     private boolean hasChild;
     /**

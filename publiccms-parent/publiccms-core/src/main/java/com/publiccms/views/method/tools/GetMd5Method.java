@@ -14,21 +14,25 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getMd5 获取md5值
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ol>
  * <li>字符串
  * </ol>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>string</code>:md5值
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * ${getMd5('aaa')}
  * <p>
- * 
+ *
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getMd5?parameters=aaa', function(data){

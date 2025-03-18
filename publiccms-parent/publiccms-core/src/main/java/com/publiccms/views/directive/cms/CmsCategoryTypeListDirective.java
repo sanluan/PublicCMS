@@ -19,21 +19,24 @@ import freemarker.template.TemplateException;
  * categoryTypeList 分类类型列表查询指令
  * <p>
  * 没有可用于查询得参数,该指令固定返回所有结果,不可分页查询
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
  * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.views.pojo.entities.CmsCategoryType}
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@cms.categoryTypeList&gt;&lt;#list page.list as
  * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryTypeList&gt;
- * 
+ *
  * <pre>
   &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/categoryTypeList', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/cms/categoryTypeList', function(data){
      console.log(data.page.totalCount);
    });
    &lt;/script&gt;

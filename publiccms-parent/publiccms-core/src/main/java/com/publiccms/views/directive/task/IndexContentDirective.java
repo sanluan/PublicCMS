@@ -15,20 +15,22 @@ import freemarker.template.TemplateException;
 /**
  *
  * indexContent 重建内容索引指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>id</code>:内容id,ids为空时有效
  * <li><code>ids</code>:多个内容id
  * </ul>
- * <p>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@task.indexContent id=1&gt;&lt;&lt;/@task.indexContent&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/task/indexContent?id=1&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/task/indexContent?id=1&amp;appToken=接口访问授权Token', function(data){
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;

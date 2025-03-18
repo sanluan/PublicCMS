@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
@@ -43,6 +44,7 @@ public class TradeAccount implements java.io.Serializable {
      * 更新日期
      */
     @GeneratorColumn(title = "更新日期")
+    @Version
     private Date updateDate;
 
     public TradeAccount() {

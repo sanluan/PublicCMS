@@ -15,25 +15,29 @@ import freemarker.template.TemplateException;
 /**
 *
 * sysConfigFieldList 配置数据字段列表查询指令
-* <p>
-* 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
 * <ul>
  * <li><code>code</code>:配置编码
 * </ul>
-* <p>
-* 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
 * <ul>
  * <li><code>list</code>:List类型 查询结果实体列表
 * {@link com.publiccms.entities.sys.SysExtendField}
 * </ul>
-* 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
 * <p>
 * &lt;@sys.configFieldList pageSize=10&gt;&lt;#list list as
 * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.configFieldList&gt;
 * 
 * <pre>
  &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/configFieldList?appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/sys/configFieldList?appToken=接口访问授权Token', function(data){
     console.log(data);
   });
   &lt;/script&gt;

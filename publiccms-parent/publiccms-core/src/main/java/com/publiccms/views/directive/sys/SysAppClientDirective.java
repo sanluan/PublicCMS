@@ -18,31 +18,34 @@ import com.publiccms.logic.service.sys.SysAppClientService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* sysAppClient 应用客户端查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>id</code>:客户端id,结果返回<code>object</code>
-* {@link com.publiccms.entities.sys.SysAppClient}
-* <li><code>ids</code>:
-* 多个客户端id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
-* </ul>
-* 使用示例
-* <p>
-* &lt;@sys.appClient id=1&gt;${object.clientVersion}&lt;/@sys.appClient&gt;
-* <p>
-* &lt;@sys.appClient ids='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${k}:${v.clientVersion}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.appClient&gt;
-* 
-* <pre>
+ *
+ * sysAppClient 应用客户端查询指令
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>id</code>:客户端id,结果返回<code>object</code>
+ * {@link com.publiccms.entities.sys.SysAppClient}
+ * <li><code>ids</code>:
+ * 多个客户端id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * &lt;@sys.appClient id=1&gt;${object.clientVersion}&lt;/@sys.appClient&gt;
+ * <p>
+ * &lt;@sys.appClient ids='1,2,3'&gt;&lt;#list map as
+ * k,v&gt;${k}:${v.clientVersion}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.appClient&gt;
+ *
+ * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/appClient?id=1&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/sys/appClient?id=1&amp;appToken=接口访问授权Token', function(data){
   console.log(data.clientVersion);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class SysAppClientDirective extends AbstractTemplateDirective {
 

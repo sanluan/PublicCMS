@@ -44,7 +44,7 @@ function siteDefaultConfig${id!}(type){
     </div>
     <div class="card">
         <div class="pageFormContent" layoutH>
-        <#if parent?has_content>
+    <#if parent?has_content>
             <dl class="nowrap">
                 <dt><@t.page 'site.parent'/>:</dt>
                 <dd>
@@ -53,18 +53,24 @@ function siteDefaultConfig${id!}(type){
                     <span class="info"><@t.page 'site.parent.description'/></span>
                 </dd>
             </dl>
-            <dl class="nowrap">
-                <dt><@t.page 'directory'/>:</dt>
-                <dd>
-                    <input name="directory" type="text" maxlength="50" size="30" value="${(a.directory)!}"/>
-                </dd>
-            </dl>
-        </#if>
+            <#if parent.hasChild && parent.multiple>
+                <dl class="nowrap">
+                    <dt><@t.page 'directory'/>:</dt>
+                    <dd>
+                        <input name="directory" class="required" type="text" maxlength="50" size="30" value="${(a.directory)!}"/>
+                    </dd>
+                </dl>
+            </#if>
+    </#if>
             <dl>
                 <dt><@t.page 'name'/>:</dt>
                 <dd>
                     <input class="required" name="name" type="text" maxlength="255" size="30" value="${(a.name)!}"/>
                     <label><input name="useStatic" type="checkbox" class="form-check-input"<#if a?has_content&&a.useStatic> checked="checked"</#if>/><@t.page 'site.enable_static'/></label>
+                    <#if !parent?has_content>
+                        <label><input name="hasChild" type="checkbox" class="form-check-input"${(a?has_content&&a.hasChild)?then(' checked="checked"','')?no_esc}/><@t.page 'site.has_child'/></label>
+                        <label class="hasChild <#if !(a?has_content&&a.hasChild)>hide</#if>"><input name="multiple" type="checkbox" class="form-check-input"${(a?has_content&&a.multiple)?then(' checked="checked"','')?no_esc}/><@t.page 'site.multiple'/></label>
+                    </#if>
                     <span class="info hide"><@t.page 'site.config.description'/></span>
                 </dd>
             </dl>
@@ -98,15 +104,16 @@ function siteDefaultConfig${id!}(type){
                             <a class="btnLook" href="sysSite/lookupSitefile.html" lookupGroup="" width="1200" height="600"><@t.menu 'sitefile'/></a>
                         </dd>
                     </dl>
+                <#if !(parent?has_content && parent.hasChild && parent.multiple)>
                     <dl class="nowrap">
                         <dt><@t.page 'domain'/>:</dt>
                         <dd>
-                            <input class="<#if !parent?has_content>required </#if>domain" remote="sysDomain/virify" name="domain" data-msg-remote="<@t.message 'verify.hasExist.domain'/>" type="text" maxlength="50" size="20" value=""/>
+                            <input class="required domain" remote="sysDomain/virify" name="domain" data-msg-remote="<@t.message 'verify.hasExist.domain'/>" type="text" maxlength="50" size="20"/>
                             <label><input name="wild" type="checkbox" class="form-check-input"/><@t.page 'domain.wild'/></label>
-                            <#if !parent?has_content><label><input name="multiple" type="checkbox" class="form-check-input"/><@t.page 'domain.multiple'/></label></#if>
                             <span class="info"><@t.page 'domain.description'/></span>
                         </dd>
                     </dl>
+                </#if>
                     <dl class="nowrap">
                         <dt><@t.page 'role'/>:</dt>
                         <dd>
@@ -136,3 +143,12 @@ function siteDefaultConfig${id!}(type){
         </div>
     </div>
 </form>
+<script>
+$('input[name=hasChild]',navTab.getCurrentPanel()).on("click", function(){
+    if($(this).is(':checked')){
+        $('.hasChild',navTab.getCurrentPanel()).show();
+    } else {
+        $('.hasChild',navTab.getCurrentPanel()).hide();
+    }
+});
+</script>

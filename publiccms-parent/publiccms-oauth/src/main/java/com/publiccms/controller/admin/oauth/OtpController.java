@@ -22,19 +22,19 @@ import com.bastiaanjansen.otp.TOTPGenerator;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
-import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.controller.admin.LoginAdminController;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.entities.sys.SysUserAttribute;
+import com.publiccms.entities.sys.SysUserSetting;
+import com.publiccms.entities.sys.SysUserSettingId;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.sys.SysUserAttributeService;
 import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.logic.service.sys.SysUserSettingService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
 import jakarta.annotation.Resource;
@@ -52,7 +52,7 @@ public class OtpController {
     @Resource
     private SysUserService service;
     @Resource
-    private SysUserAttributeService attributeService;
+    private SysUserSettingService settingService;
 
     /**
      * @param site
@@ -70,9 +70,9 @@ public class OtpController {
         if (null == otpadmin) {
             return "redirect:../login";
         }
-        SysUserAttribute attribute = attributeService.getEntity(otpadmin.getId());
-        Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
-        if (CommonUtils.empty(map.get(SysUserAttributeService.OPTSECRET_SETTINGS_CODE))) {
+        SysUserSetting userSetting = settingService
+                .getEntity(new SysUserSettingId(otpadmin.getId(), SysUserSettingService.OPTSECRET_SETTINGS_CODE));
+        if (null != userSetting) {
             byte[] secret = SecretGenerator.generate();
             TOTPGenerator totp = new TOTPGenerator.Builder(secret).build();
             model.addAttribute("secret", new String(secret, StandardCharsets.UTF_8));
@@ -102,10 +102,7 @@ public class OtpController {
             String returnUrl, HttpServletRequest request, ModelMap model) {
         TOTPGenerator totp = new TOTPGenerator.Builder(secret.getBytes()).build();
         if (totp.verify(code)) {
-            SysUserAttribute attribute = attributeService.getEntity(otpadmin.getId());
-            Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
-            map.put(SysUserAttributeService.OPTSECRET_SETTINGS_CODE, secret);
-            attributeService.updateSettings(otpadmin.getId(), ExtendUtils.getExtendString(map));
+            settingService.getOrCreateOrUpdate(otpadmin.getId(), SysUserSettingService.OPTSECRET_SETTINGS_CODE, secret);
             Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
             String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
             if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
@@ -135,11 +132,10 @@ public class OtpController {
         if (null == otpadmin) {
             return "redirect:../login";
         } else {
-            SysUserAttribute attribute = attributeService.getEntity(otpadmin.getId());
-            Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
-            String secret = map.get(SysUserAttributeService.OPTSECRET_SETTINGS_CODE);
-            if (CommonUtils.notEmpty(secret)) {
-                TOTPGenerator totp = new TOTPGenerator.Builder(secret.getBytes()).build();
+            SysUserSetting userSetting = settingService
+                    .getEntity(new SysUserSettingId(otpadmin.getId(), SysUserSettingService.OPTSECRET_SETTINGS_CODE));
+            if (null != userSetting && CommonUtils.notEmpty(userSetting.getData())) {
+                TOTPGenerator totp = new TOTPGenerator.Builder(userSetting.getData().getBytes()).build();
                 if (totp.verify(code)) {
                     ControllerUtils.clearOptAdminToSession(request.getSession());
                     String ip = RequestUtils.getIpAddress(request);

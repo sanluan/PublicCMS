@@ -1,0 +1,50 @@
+<@sys.workflowList name=name orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="sysWorkflow/lookup.html" method="post">
+        <#include "../include_page/parameters.html"/>
+        <input type="hidden" name="field" value="${field!'workflowId'}"/>
+        <input type="hidden" name="titleField" value="${titleField!'workflowName'}"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'name'/>:</label>
+                    <input type="text" name="name" value="${name!}"/>
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="button" class="button" onclick="$.bringBack({'${field!'workflowId'}':'','${titleField!'workflowName'}':''});return false;"><@t.page 'button.clear_select'/></button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
+        <thead>
+            <tr>
+                <th><@t.page 'select'/></th>
+                <th><@t.page 'name'/></th>
+                <th><@t.page 'description'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+            <tr>
+                <td>
+                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'workflowId'}':'${a.id}','${titleField!'workflowName'}':'${(a.name?js_string)!}'});return false;"><i class="icon-ok"></i><@t.page 'select'/></a>
+                </td>
+                <td class="center exclude-translate" >${a.name!}</td>
+                <td class="center exclude-translate">${a.description!}</td>
+                <td>${a.createDate!}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/pageDialog.html"/>
+</div>
+</@sys.workflowList>

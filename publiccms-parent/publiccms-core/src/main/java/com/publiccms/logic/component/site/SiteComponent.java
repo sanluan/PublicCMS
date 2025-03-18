@@ -268,9 +268,13 @@ public class SiteComponent implements Cache {
      * @return site
      */
     public SysSite getSite(SysDomain domain, String serverName, String path) {
-        String cacheKey;
-        String directory = null;
-        if (domain.isMultiple() && CommonUtils.notEmpty(path)) {
+        SysSite site = siteCache.get(serverName);
+        if (null == site) {
+            site = sysSiteService.getEntity(domain.getSiteId());
+            siteCache.put(serverName, site);
+        }
+        if (site.isHasChild() && site.isMultiple() && CommonUtils.notEmpty(path)) {
+            String directory = null;
             int index = 0;
             if (path.startsWith(Constants.SEPARATOR)) {
                 index = path.indexOf(Constants.SEPARATOR, 1);
@@ -283,19 +287,17 @@ public class SiteComponent implements Cache {
                     directory = path.substring(0, index);
                 }
             }
-            cacheKey = null == directory ? serverName : (CommonUtils.joinString(serverName, Constants.SEPARATOR, directory));
-        } else {
-            cacheKey = serverName;
-        }
-        SysSite site = siteCache.get(cacheKey);
-        if (null == site) {
             if (null != directory) {
-                site = sysSiteService.getEntity(domain.getSiteId(), directory);
+                String cacheKey = CommonUtils.joinString(serverName, Constants.SEPARATOR, directory);
+                SysSite newsite = siteCache.get(cacheKey);
+                if (null == newsite) {
+                    site = sysSiteService.getEntity(domain.getSiteId(), directory);
+                }
+                if (null != newsite) {
+                    site = newsite;
+                }
+                siteCache.put(cacheKey, site);
             }
-            if (null == site) {
-                site = sysSiteService.getEntity(domain.getSiteId());
-            }
-            siteCache.put(cacheKey, site);
         }
         return site;
     }

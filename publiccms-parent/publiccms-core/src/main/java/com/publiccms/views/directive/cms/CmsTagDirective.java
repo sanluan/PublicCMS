@@ -16,31 +16,34 @@ import com.publiccms.logic.service.cms.CmsTagService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* tag 标签查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>id</code>:标签id,结果返回<code>object</code>
-* {@link com.publiccms.entities.cms.CmsTag}
-* <li><code>ids</code>:
-* 多个标签id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
-* </ul>
-* 使用示例
-* <p>
-* &lt;@cms.tag id=1&gt;${object.name}&lt;/@cms.tag&gt;
-* <p>
-* &lt;@cms.tag ids='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tag&gt;
-* 
-* <pre>
+ *
+ * tag 标签查询指令
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>id</code>:标签id,结果返回<code>object</code>
+ * {@link com.publiccms.entities.cms.CmsTag}
+ * <li><code>ids</code>:
+ * 多个标签id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * &lt;@cms.tag id=1&gt;${object.name}&lt;/@cms.tag&gt;
+ * <p>
+ * &lt;@cms.tag ids='1,2,3'&gt;&lt;#list map as
+ * k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tag&gt;
+ *
+ * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/tag?id=1', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/cms/tag?id=1', function(data){
   console.log(data.name);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class CmsTagDirective extends AbstractTemplateDirective {
 

@@ -17,27 +17,30 @@ import com.publiccms.logic.service.sys.SysModuleLangService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* sysModuleLang 模块语言查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>moduleId</code>:模块id,结果返回<code>object</code>
-* {@link com.publiccms.entities.sys.SysModule}
-* <li><code>lang</code>:语言【zh:中文,en:英语,ja:日语】
-* </ul>
-* 使用示例
-* <p>
-* &lt;@sys.moduleLang moduleId='page' lang='zh'&gt;${object}&lt;/@sys.moduleLang&gt;
-* 
-* <pre>
+ *
+ * sysModuleLang 模块语言查询指令
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>moduleId</code>:模块id,结果返回<code>object</code>
+ * {@link com.publiccms.entities.sys.SysModule}
+ * <li><code>lang</code>:语言【zh:中文,en:英语,ja:日语】
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * &lt;@sys.moduleLang moduleId='page' lang='zh'&gt;${object}&lt;/@sys.moduleLang&gt;
+ *
+ * <pre>
 &lt;script&gt;
-$.getJSON('//sys.publicsys.com/api/directive/sys/moduleLang?moduleId=page&amp;lang=zh', function(data){    
+$.getJSON('//sys.publicsys.com/api/directive/sys/moduleLang?moduleId=page&amp;lang=zh', function(data){
  console.log(data);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class SysModuleLangDirective extends AbstractTemplateDirective {
 

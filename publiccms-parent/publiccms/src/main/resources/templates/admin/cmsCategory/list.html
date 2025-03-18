@@ -1,14 +1,27 @@
+<#if parentId?has_content>
+<@cms.categoryList advanced=true parentId=parentId pageSize=500>
+<ul>
+    <#list page.list as a>
+           <#if a.childIds?has_content>
+            <li _src="cmsCategory/list.html?parentId=${a.id}">
+                <a href="cmsCategory/category_list.html?parentId=${a.id}" target="ajax" rel="categoryBox" class="exclude-translate">${(a.name)!}</a>
+            </li>
+        </#if>
+    </#list>
+</ul>
+</@cms.categoryList>
+<#else>
 <div class="pageContent">
     <div class="leftPageContent">
         <div class="card">
             <ul class="tree treeFolder" layoutH>
                 <li>
-                    <a href="common/category_list.html" target="ajax" rel="categoryBox"><@t.page 'category.parent'/></a>
+                    <a href="cmsCategory/category_list.html" target="ajax" rel="categoryBox"><@t.page 'category.parent'/></a>
                     <ul>
                         <@cms.categoryList advanced=true parentId=parentId pageSize=500>
                             <#list page.list as a>
-                                <li _src="common/categoryTree.html?parentId=${a.id}">
-                                    <a href="common/category_list.html?parentId=${a.id}" class="exclude-translate" target="ajax" rel="categoryBox">${(a.name)!}</a>
+                                <li _src="cmsCategory/list.html?parentId=${a.id}">
+                                    <a href="cmsCategory/category_list.html?parentId=${a.id}" class="exclude-translate" target="ajax" rel="categoryBox">${(a.name)!}</a>
                                 </li>
                             </#list>
                         </@cms.categoryList>
@@ -18,6 +31,7 @@
         </div>
     </div>
     <div id="categoryBox" class="rightPageContent">
-        <#include "../common/category_list.html"/>
+        <#include "category_list.html"/>
     </div>
 </div>
+</#if>

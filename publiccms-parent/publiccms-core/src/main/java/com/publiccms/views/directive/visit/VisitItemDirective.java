@@ -21,27 +21,30 @@ import com.publiccms.logic.service.visit.VisitItemService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* visitItem 访问项目报表查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>visitDate</code>:访问日期,【2020-01-01】
-* <li><code>itemType</code>:访问项目类型,【category,content,user等页面统计时中的itemType】
-* <li><code>itemId</code>:访问项目id,三个参数都不为空时,结果返回<code>object</code>
+ *
+ * visitItem 访问项目报表查询指令
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>visitDate</code>:访问日期,【2020-01-01】
+ * <li><code>itemType</code>:访问项目类型,【category,content,user等页面统计时中的itemType】
+ * <li><code>itemId</code>:访问项目id,三个参数都不为空时,结果返回<code>object</code>
  * {@link com.publiccms.entities.visit.VisitItem}
-* </ul>
-* 使用示例
-* <p>
-* &lt;@visit.item visitDate='2020-01-01' visitHour=9&gt;${object.pv}&lt;/@visit.item&gt;
-* <pre>
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * &lt;@visit.item visitDate='2020-01-01' visitHour=9&gt;${object.pv}&lt;/@visit.item&gt;
+ * <pre>
  &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/visit/item?visitDate=2020-01-01&amp;itemType=content&amp;itemId=1&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/visit/item?visitDate=2020-01-01&amp;itemType=content&amp;itemId=1&amp;appToken=接口访问授权Token', function(data){
     console.log(data.pv);
   });
   &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class VisitItemDirective extends AbstractTemplateDirective {
 

@@ -1,7 +1,9 @@
 package com.publiccms.logic.service.cms;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 // Generated 2020-3-26 11:46:48 by com.publiccms.common.generator.SourceGenerator
 
@@ -57,7 +59,9 @@ public class CmsVoteItemService extends BaseService<CmsVoteItem> {
      * @param entitys
      * @param ignoreProperties
      */
+    @SuppressWarnings("unchecked")
     public void update(long voteId, List<CmsVoteItem> entitys, String[] ignoreProperties) {
+        Set<Long> idList = new HashSet<>();
         if (CommonUtils.notEmpty(entitys)) {
             for (CmsVoteItem entity : entitys) {
                 if (null != entity.getId()) {
@@ -69,6 +73,12 @@ public class CmsVoteItemService extends BaseService<CmsVoteItem> {
                     entity.setVoteId(voteId);
                     save(entity);
                 }
+                idList.add(entity.getId());
+            }
+        }
+        for (CmsVoteItem file : (List<CmsVoteItem>) getPage(voteId, null, null, null, null).getList()) {
+            if (!idList.contains(file.getId())) {
+                delete(file.getId());
             }
         }
     }

@@ -32,19 +32,16 @@ public class SiteInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         SysDomain domain = siteComponent.getDomain(request.getServerName());
-        SysSite site = null;
-        if (domain.isMultiple()) {
+        SysSite site = siteComponent.getSite(domain, request.getServerName(),
+                UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
+        if (site.isMultiple()) {
             String currentSiteId = request.getParameter("currentSiteId");
             if (null != currentSiteId) {
-                site = siteComponent.getSiteById(currentSiteId);
+                SysSite newSite = siteComponent.getSiteById(currentSiteId);
+                if (null != newSite && null != newSite.getParentId() && newSite.getParentId() != site.getId()) {
+                    site = newSite;
+                }
             }
-            if (null == site || (null == site.getParentId() || site.getParentId() != domain.getSiteId())
-                    && site.getId() != domain.getSiteId()) {
-                site = siteComponent.getSite(domain, request.getServerName(),
-                        UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
-            }
-        } else {
-            site = siteComponent.getSite(domain, request.getServerName(), null);
         }
         request.setAttribute(CommonConstants.getAttributeSite(), site);
         return corsProcessor.processRequest(corsConfigComponent.getConfig(site), request, response);

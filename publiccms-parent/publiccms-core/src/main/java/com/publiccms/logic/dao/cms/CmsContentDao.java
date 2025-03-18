@@ -55,8 +55,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             QueryHandler queryHandler = getQueryHandler("update CmsContent bean set bean.categoryId = :categoryId");
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
             queryHandler.condition("bean.parentId is not null");
-            queryHandler.condition("bean.quoteContentId  = :topId").setParameter("topId", topId)
-                    .setParameter("categoryId", categoryId);
+            queryHandler.condition("bean.quoteContentId  = :topId").setParameter("topId", topId).setParameter("categoryId",
+                    categoryId);
             return update(queryHandler);
         }
         return 0;

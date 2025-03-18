@@ -27,29 +27,33 @@ import jakarta.annotation.Resource;
 
 /**
  * templatePlaceList 模板文件页面片段列表获取指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>path</code>:文件路径
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>list</code>:文件路径列表
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.templatePlaceList path='index.html'&gt;&lt;#list list as
  * a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.templatePlaceList&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/templatePlaceList?path=index.html&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/templatePlaceList?path=index.html&amp;appToken=接口访问授权Token', function(data){
    console.log(data);
  });
  &lt;/script&gt;
  * </pre>
- * 
+ *
  */
 @Component
 public class TemplatePlaceListDirective extends AbstractTemplateDirective {

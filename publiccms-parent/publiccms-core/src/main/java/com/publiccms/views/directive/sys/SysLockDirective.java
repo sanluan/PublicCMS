@@ -23,8 +23,9 @@ import freemarker.template.TemplateException;
 /**
  *
  * lock 锁查询指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>itemType</code>:项目类型
  * <li><code>itemId</code>:项目id,结果返回<code>object</code>
@@ -32,16 +33,18 @@ import freemarker.template.TemplateException;
  * <li><code>itemIds</code>
  * 多个项目id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@sys.lock id=1&gt;${object.count}&lt;/@sys.lock&gt;
  * <p>
  * &lt;@sys.lock ids='1,2,3'&gt;&lt;#list map as
  * k,v&gt;${k}:${v.count}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.lock&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/lock?id=1', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/sys/lock?id=1', function(data){
   console.log(data.count);
 });
 &lt;/script&gt;

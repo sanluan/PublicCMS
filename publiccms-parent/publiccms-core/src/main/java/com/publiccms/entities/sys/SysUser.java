@@ -18,6 +18,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -153,6 +154,14 @@ public class SysUser extends EntityAttribute implements java.io.Serializable {
      */
     @GeneratorColumn(title = "注册日期", condition = true, order = true)
     private Date registeredDate;
+    /**
+     * update date
+     * <p>
+     * 更新日期
+     */
+    @GeneratorColumn(title = "更新日期")
+    @Version
+    private Date updateDate;
 
     public SysUser() {
     }
@@ -175,12 +184,12 @@ public class SysUser extends EntityAttribute implements java.io.Serializable {
             Integer deptId, int contentPermissions, String roles, String email, boolean emailChecked, boolean superuser,
             Date registeredDate) {
         this(siteId, name, password, weakPassword, nickname, cover, deptId, contentPermissions, roles, email, emailChecked,
-                superuser, false, null, null, 0, registeredDate);
+                superuser, false, null, null, 0, registeredDate, null);
     }
 
     public SysUser(short siteId, String name, String password, boolean weakPassword, String nickname, String cover,
             Integer deptId, int contentPermissions, String roles, String email, boolean emailChecked, boolean superuser,
-            boolean disabled, Date lastLoginDate, String lastLoginIp, int loginCount, Date registeredDate) {
+            boolean disabled, Date lastLoginDate, String lastLoginIp, int loginCount, Date registeredDate, Date updateDate) {
         this.siteId = siteId;
         this.name = name;
         this.password = password;
@@ -198,6 +207,7 @@ public class SysUser extends EntityAttribute implements java.io.Serializable {
         this.lastLoginIp = lastLoginIp;
         this.loginCount = loginCount;
         this.registeredDate = registeredDate;
+        this.updateDate = updateDate;
     }
 
     @Id
@@ -366,4 +376,13 @@ public class SysUser extends EntityAttribute implements java.io.Serializable {
         this.registeredDate = registeredDate;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "update_date", length = 19)
+    public Date getUpdateDate() {
+        return this.updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
 }

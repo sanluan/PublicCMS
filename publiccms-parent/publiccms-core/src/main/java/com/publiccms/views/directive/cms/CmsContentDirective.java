@@ -29,20 +29,47 @@ import freemarker.template.TemplateException;
 
 /**
  *
+ * <h3 lang="zh">
  * content 内容查询指令
- * <p>
+ * <h3 lang="en">
+ * content query directive
+ * <h3 lang="ja">
+ * コンテンツクエリーディレクティブ
+ * <p lang="zh">
  * 参数列表
+ * <p lang="en">
+ * parameter list
+ * <p lang="ja">
+ * パラメータリスト
  * <ul>
- * <li><code>id</code>
+ * <li lang="zh"><code>id</code>
  * 内容id,结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsContent}
- * <li><code>absoluteURL</code>:url处理为绝对路径 默认为<code> true</code>
- * <li><code>absoluteId</code>:id处理为引用内容的ID 默认为<code> true</code>
- * <li><code>containsAttribute</code>
+ * <li lang="en"><code>id</code>
+ * content id, result returns <code>object</code> {@link com.publiccms.entities.cms.CmsContent}
+ * <li lang="ja"><code>id</code>
+ * コンテンツID、結果は<code>object</code> {@link com.publiccms.entities.cms.CmsContent} を返します
+ * <li lang="zh"><code>absoluteURL</code>:url处理为绝对路径 默认为<code> true</code>
+ * <li lang="en"><code>absoluteURL</code>:process url as absolute path, default is <code>true</code>
+ * <li lang="ja"><code>absoluteURL</code>:URLを絶対パスに処理する、既定値は <code>true</code>
+ * <li lang="zh"><code>absoluteId</code>:id处理为引用内容的ID 默认为<code> true</code>
+ * <li lang="en"><code>absoluteId</code>:process id as referenced content id, default is <code>true</code>
+ * <li lang="ja"><code>absoluteId</code>:IDを参照コンテンツのIDに処理する、既定値は <code>true</code>
+ * <li lang="zh"><code>containsAttribute</code>
  * 默认为<code>false</code>,http请求时为高级选项,为true时<code>object.attribute</code>为内容扩展数据<code>map</code>(字段编码,<code>value</code>)
- * <li><code>ids</code>:
+ * <li lang="en"><code>containsAttribute</code>
+ * default is <code>false</code>, advanced option for http requests, when true, <code>object.attribute</code> is content extended data <code>map</code>(field code, <code>value</code>)
+ * <li lang="ja"><code>containsAttribute</code>
+ * 既定値は <code>false</code>, HTTPリクエスト時の高度なオプション、trueの場合 <code>object.attribute</code> はコンテンツ拡張データ <code>map</code>(フィールドコード, <code>value</code>)
+ * <li lang="zh"><code>ids</code>:
  * 多个内容id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
+ * <li lang="en"><code>ids</code>:
+ * multiple content ids, separated by commas or spaces, effective when id is empty, result returns <code>map</code>(id, <code>object</code>)
+ * <li lang="ja"><code>ids</code>:
+ * 複数のコンテンツID、カンマまたはスペースで区切る、IDが空のときに有効、結果は<code>map</code>(ID, <code>object</code>)を返します
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@cms.content id=1&gt;${object.title}&lt;/@cms.content&gt;
  * <p>

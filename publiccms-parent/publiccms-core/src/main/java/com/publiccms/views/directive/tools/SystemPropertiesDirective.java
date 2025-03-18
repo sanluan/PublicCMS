@@ -13,8 +13,9 @@ import freemarker.template.TemplateException;
 
 /**
  * systemProperties 服务器参数指令
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>java.version</code>:Java version number
  * <li><code>java.vendor</code>:Java vendor specific string
@@ -32,8 +33,9 @@ import freemarker.template.TemplateException;
  * <li><code>user.home</code>:User home directory
  * <li><code>user.dir</code>:User's current working directory
  * </ul>
- * <p>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.systemProperties&gt;${.vars['java.version']}&lt;/@tools.systemProperties&gt;
  *

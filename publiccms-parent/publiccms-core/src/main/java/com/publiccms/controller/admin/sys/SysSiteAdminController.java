@@ -109,23 +109,13 @@ public class SysSiteAdminController {
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysSite entity, String fileName,
-            String domain, Boolean wild, Boolean multiple, String roleName, String deptName, String userName, String password,
-            String encoding, HttpServletRequest request, ModelMap model) {
+            String domain, Boolean wild, String roleName, String deptName, String userName, String password, String encoding,
+            HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.errorCustom("noright", !siteComponent.isMaster(site.getId()), model)
                 || ControllerUtils.errorCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
                 || (null != domain
                         && ControllerUtils.errorCustom("unauthorizedDomain", !CmsVersion.verifyDomain(domain), model))) {
             return CommonConstants.TEMPLATE_ERROR;
-        }
-        if (null == entity.getDynamicPath()) {
-            entity.setDynamicPath(Constants.SEPARATOR);
-        } else if (!entity.getDynamicPath().endsWith(Constants.SEPARATOR)) {
-            entity.setDynamicPath(CommonUtils.joinString(entity.getDynamicPath(), Constants.SEPARATOR));
-        }
-        if (null == entity.getSitePath()) {
-            entity.setSitePath(Constants.SEPARATOR);
-        } else if (!entity.getSitePath().endsWith(Constants.SEPARATOR)) {
-            entity.setSitePath(CommonUtils.joinString(entity.getSitePath(), Constants.SEPARATOR));
         }
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
@@ -140,8 +130,7 @@ public class SysSiteAdminController {
                     || ControllerUtils.errorHasExist("domain", domainService.getEntity(domain), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            SysUser user = service.save(entity, domain, null != wild && wild, null != multiple && multiple, roleName, deptName,
-                    userName, password, encoding);
+            SysUser user = service.save(entity, domain, null != wild && wild, roleName, deptName, userName, password, encoding);
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -296,8 +285,8 @@ public class SysSiteAdminController {
                     for (Path entry : stream) {
                         File file = entry.toFile();
                         if (file.isFile() && MetadataComponent.DATA_FILE.equalsIgnoreCase(file.getName())) {
-                            String content = StringUtils.replace(FileUtils.readFileToString(file, StandardCharsets.UTF_8),
-                                    oldurl, newurl);
+                            String content = StringUtils.replace(FileUtils.readFileToString(file, StandardCharsets.UTF_8), oldurl,
+                                    newurl);
                             FileUtils.write(file, content, StandardCharsets.UTF_8);
                             i += 1;
                         }

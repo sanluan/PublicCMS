@@ -196,7 +196,8 @@ public class SysConfigDataAdminController {
                 StreamingResponseBody body = new StreamingResponseBody() {
                     @Override
                     public void writeTo(OutputStream outputStream) throws IOException {
-                        try (ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream = new ZipArchiveOutputStream(outputStream)) {
+                        try (ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream = new ZipArchiveOutputStream(
+                                outputStream)) {
                             exchangeComponent.exportEntity(site, entity, archiveOutputStream);
                         }
                     }

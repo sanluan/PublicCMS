@@ -18,8 +18,9 @@ import freemarker.template.TemplateException;
 /**
  *
  * wordload 工作量查询指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>status</code>:多个内容状态,【0:草稿,1:已发布,2:待审核,3:驳回】
  * <li><code>startCreateDate</code>:起始创建日期,【2020-01-01 23:59:59】,【2020-01-01】
@@ -27,20 +28,23 @@ import freemarker.template.TemplateException;
  * <li><code>workloadType</code>:工作量类型【dept:部门,user:用户】,默认部门
  * <li><code>dateField</code>:日期字段【createDate:创建日期,publishDate:发布日期】,默认创建日期
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.views.pojo.entities.Workload}
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@cms.wordload pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.wordload&gt;
- * 
+ *
  * <pre>
  &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/wordload?pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/cms/wordload?pageSize=10&amp;appToken=接口访问授权Token', function(data){
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;

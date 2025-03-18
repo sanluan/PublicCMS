@@ -22,17 +22,21 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getTemplateResult 获取模板解析结果
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ol>
  * <li>模板内容
  * </ol>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>string</code>:解析结果
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * ${getTemplateResult('${.now}')}
  * <p>

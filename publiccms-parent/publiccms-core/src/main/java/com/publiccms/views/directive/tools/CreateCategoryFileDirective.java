@@ -18,8 +18,9 @@ import freemarker.template.TemplateException;
 /**
  *
  * createCategoryFile 创建分类静态文件指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>id</code>:分类id
  * <li><code>templatePath</code>:模板路径
@@ -27,18 +28,21 @@ import freemarker.template.TemplateException;
  * <li><code>pageIndex</code>:当前页码,默认为1
  * <li><code>totalPage</code>:最大页码,为空时则只生成当前页
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>url</code>:静态文件路径
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.createCategoryFile id=1 templatePath='category.html' filePath='category/'+1+'.html'&gt;${url}&lt;/@tools.createCategoryFile&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/createCategoryFile?id=1&amp;templatePath=category.html&amp;filePath=category/1.html&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/createCategoryFile?id=1&amp;templatePath=category.html&amp;filePath=category/1.html&amp;appToken=接口访问授权Token', function(data){
    console.log(data);
  });
  &lt;/script&gt;

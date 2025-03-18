@@ -1,4 +1,4 @@
-<#list 0..3 as s>
+<#list 0..4 as s>
     <label>
         <input name="status" value="${s}" type="checkbox" class="form-check-input"<@t.compare status!'' s?string ' checked="checked"'/>/>
         <@t.page 'status.content.'+s/>

@@ -21,8 +21,9 @@ import freemarker.template.TemplateException;
 /**
  *
  * dictionaryExclude 数据字典排除规则查询指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>dictionaryId</code>:数据字典id
  * <li><code>excludeDictionaryId</code>
@@ -30,7 +31,9 @@ import freemarker.template.TemplateException;
  * <li><code>excludeDictionaryIds</code>
  * 多个排除的字典,逗号或空格间隔,当excludeDictionaryId为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@cms.dictionaryExclude dictionaryId='data'
  * excludeDictionaryId='data1'&gt;${object.id.excludeDictionaryId}&lt;/@cms.dictionaryExclude&gt;
@@ -38,10 +41,10 @@ import freemarker.template.TemplateException;
  * &lt;@cms.dictionaryExclude dictionaryId='data'
  * excludeDictionaryIds='data1,data2'&gt;&lt;#list map as
  * k,v&gt;${k}:${v.id.excludeDictionaryId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExclude&gt;
- * 
+ *
  * <pre>
-*  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExclude?dictionaryId=data&amp;value=1', function(data){    
+ *  &lt;script&gt;
+   $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExclude?dictionaryId=data&amp;value=1', function(data){
      console.log(data.id.excludeDictionaryId);
    });
    &lt;/script&gt;

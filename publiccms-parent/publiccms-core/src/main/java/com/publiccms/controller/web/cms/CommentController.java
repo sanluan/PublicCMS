@@ -132,7 +132,6 @@ public class CommentController {
                         || oldEntity.getUserId() != user.getId() && !user.isSuperuser()) {
                     return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
                 }
-                entity.setUpdateDate(CommonUtils.getDate());
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "update.cmsComment", ip, CommonUtils.getDate(), JsonUtils.getString(entity)));

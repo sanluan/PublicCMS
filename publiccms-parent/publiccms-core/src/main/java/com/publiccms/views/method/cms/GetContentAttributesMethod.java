@@ -28,23 +28,27 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getContentAttributes 获取多个内容扩展数据
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ol>
  * <li>多个内容id
  * </ol>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>map</code>(id,<code>attribute</code>:内容扩展数据(字段编码,<code>value</code>))
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;#assign attributeMap=getContentAttributes('1,2,3,4')/&lt;
  * <p>
  * ${attributeMap['1'].text?no_esc!}
  * <p>
- * 
+ *
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getContentAttributes?appToken=接口访问授权Token&amp;parameters=1,2,3,4', function(data){

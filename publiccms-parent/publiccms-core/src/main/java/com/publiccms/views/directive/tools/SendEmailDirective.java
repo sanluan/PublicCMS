@@ -25,8 +25,9 @@ import jakarta.mail.MessagingException;
 
 /**
  * sendEmail 发送邮件指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>email</code>:多个邮件地址
  * <li><code>cc</code>:多个抄送地址
@@ -38,24 +39,27 @@ import jakarta.mail.MessagingException;
  * <li><code>filePaths</code>:多个文件路径
  * <li><code>parameters</code>:参数map
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>result</code>:是否允许发送,【true,false】
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.sendEmail email='master@puliccms.com' title='title'
  * content='content' parameters={"parameter1":"value1"}/&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/sendEmail?email=master@puliccms.com&amp;title=title&amp;content=content&amp;parameters.parameter1=value1&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/sendEmail?email=master@puliccms.com&amp;title=title&amp;content=content&amp;parameters.parameter1=value1&amp;appToken=接口访问授权Token', function(data){
    console.log(data.alias);
  });
  &lt;/script&gt;
  * </pre>
- * 
+ *
  */
 @Component
 public class SendEmailDirective extends AbstractTemplateDirective {

@@ -19,30 +19,34 @@ import freemarker.template.TemplateException;
 
 /**
  * placeMetadata 页面片段元数据获取指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>path</code>:模板路径
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>object</code>:
  * 元数据{@link com.publiccms.views.pojo.entities.CmsPlaceMetadata}
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.placeMetadata
  * path='00000000-0000-0000-0000-000000000000'&gt;${object.alias}&lt;/@tools.placeMetadata&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/placeMetadata?path=00000000-0000-0000-0000-000000000000.html&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/placeMetadata?path=00000000-0000-0000-0000-000000000000.html&amp;appToken=接口访问授权Token', function(data){
    console.log(data.alias);
  });
  &lt;/script&gt;
  * </pre>
- * 
+ *
  */
 @Component
 public class PlaceMetadataDirective extends AbstractTemplateDirective {

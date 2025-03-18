@@ -18,12 +18,12 @@ import com.bastiaanjansen.otp.TOTPGenerator;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.entities.sys.SysUserAttribute;
+import com.publiccms.entities.sys.SysUserSetting;
+import com.publiccms.entities.sys.SysUserSettingId;
 import com.publiccms.logic.component.config.ConfigDataComponent;
-import com.publiccms.logic.service.sys.SysUserAttributeService;
 import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.logic.service.sys.SysUserSettingService;
 
 import jakarta.annotation.Resource;
 
@@ -36,7 +36,7 @@ public class OtpSettingController {
     @Resource
     private SysUserService service;
     @Resource
-    private SysUserAttributeService attributeService;
+    private SysUserSettingService settingService;
 
     /**
      * @param site
@@ -49,10 +49,7 @@ public class OtpSettingController {
     @PostMapping(value = "unbind")
     @Csrf
     public String unbind(@SessionAttribute SysUser admin) {
-        SysUserAttribute attribute = attributeService.getEntity(admin.getId());
-        Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
-        map.remove(SysUserAttributeService.OPTSECRET_SETTINGS_CODE);
-        attributeService.updateSettings(admin.getId(), ExtendUtils.getExtendString(map));
+        settingService.delete(new SysUserSettingId(admin.getId(), SysUserSettingService.OPTSECRET_SETTINGS_CODE));
         return CommonConstants.TEMPLATE_DONE;
     }
 
@@ -67,9 +64,9 @@ public class OtpSettingController {
     @PostMapping(value = "check")
     @ResponseBody
     public boolean check(@SessionAttribute SysUser admin) {
-        SysUserAttribute attribute = attributeService.getEntity(admin.getId());
-        Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
-        return CommonUtils.empty(map.get(SysUserAttributeService.OPTSECRET_SETTINGS_CODE));
+        SysUserSetting setting = settingService
+                .getEntity(new SysUserSettingId(admin.getId(), SysUserSettingService.OPTSECRET_SETTINGS_CODE));
+        return null == setting || CommonUtils.empty(setting.getData());
     }
 
     /**
@@ -108,10 +105,7 @@ public class OtpSettingController {
     public String bind(@SessionAttribute SysUser admin, String secret, String code) {
         TOTPGenerator totp = new TOTPGenerator.Builder(secret.getBytes()).build();
         if (totp.verify(code)) {
-            SysUserAttribute attribute = attributeService.getEntity(admin.getId());
-            Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
-            map.put(SysUserAttributeService.OPTSECRET_SETTINGS_CODE, secret);
-            attributeService.updateSettings(admin.getId(), ExtendUtils.getExtendString(map));
+            settingService.getOrCreateOrUpdate(admin.getId(), code, secret);
             return CommonConstants.TEMPLATE_DONE;
         }
         return CommonConstants.TEMPLATE_ERROR;

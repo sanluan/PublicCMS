@@ -13,26 +13,28 @@ import freemarker.template.TemplateException;
 /**
  *
  * disk 磁盘空间与路径指令
-* <p>
-* 返回结果
-* <ul>
-* <li><code>freeSpace</code>:空白空间
-* <li><code>totalSpace</code>:总空间
-* <li><code>usableSpace</code>:可用空间
-* <li><code>rootPath</code>:绝对路径
-* </ul>
-* 使用示例
-* <p>
-* &lt;@tools.disk&gt;${freeSpace}&lt;/@tools.disk&gt;
-*
-* <pre>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>freeSpace</code>:空白空间
+ * <li><code>totalSpace</code>:总空间
+ * <li><code>usableSpace</code>:可用空间
+ * <li><code>rootPath</code>:绝对路径
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * &lt;@tools.disk&gt;${freeSpace}&lt;/@tools.disk&gt;
+ *
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授权Token', function(data){
  console.log(data);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class DiskDirective extends AbstractTemplateDirective {
 

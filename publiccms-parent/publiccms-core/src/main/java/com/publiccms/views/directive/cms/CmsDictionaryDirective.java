@@ -17,29 +17,32 @@ import com.publiccms.logic.service.cms.CmsDictionaryService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* dictionary 数据字典查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>id</code>:值,结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsDictionary} 
-* <li><code>ids</code>:多个值,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
-* </ul>
-* 使用示例
-* <p>
-* &lt;@cms.dictionary id='data'&gt;${object.name}&lt;/@cms.dictionary&gt;
-* <p>
-* &lt;@cms.dictionary values='data,data2'&gt;&lt;#list map as
-* k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionary&gt;
-* 
-* <pre>
-*  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/dictionary?dictionaryId=data&amp;value=1', function(data){    
+ *
+ * dictionary 数据字典查询指令
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>id</code>:值,结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsDictionary}
+ * <li><code>ids</code>:多个值,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * &lt;@cms.dictionary id='data'&gt;${object.name}&lt;/@cms.dictionary&gt;
+ * <p>
+ * &lt;@cms.dictionary values='data,data2'&gt;&lt;#list map as
+ * k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionary&gt;
+ *
+ * <pre>
+ *  &lt;script&gt;
+   $.getJSON('${site.dynamicPath}api/directive/cms/dictionary?dictionaryId=data&amp;value=1', function(data){
      console.log(data.name);
    });
    &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class CmsDictionaryDirective extends AbstractTemplateDirective {
 

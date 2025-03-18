@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -220,18 +219,6 @@ public class ExtendUtils {
             return Collections.emptyMap();
         } else {
             return getExtendMap(attribute.getData());
-        }
-    }
-
-    /**
-     * @param attribute
-     * @return extent map
-     */
-    public static Map<String, String> getSettingsMap(@Nullable SysUserAttribute attribute) {
-        if (null == attribute) {
-            return new HashMap<>();
-        } else {
-            return getExtendMap(attribute.getSettings());
         }
     }
 

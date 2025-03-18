@@ -50,7 +50,7 @@ class SysSiteServiceTest {
     @Test
     @DisplayName("site insert test case")
     void insertTest() {
-        SysSite entity = new SysSite("test", false, "/webfile/", false, "/", false);
+        SysSite entity = new SysSite("test", false, "/webfile/", false, "/", false, false, false);
         siteService.save(entity);
     }
 

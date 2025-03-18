@@ -28,22 +28,22 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
-import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.controller.admin.LoginAdminController;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.entities.sys.SysUserAttribute;
+import com.publiccms.entities.sys.SysUserSetting;
+import com.publiccms.entities.sys.SysUserSettingId;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.sys.SysUserAttributeService;
 import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.logic.service.sys.SysUserSettingService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 import com.publiccms.views.pojo.oauth.CredentialRecordData;
 import com.publiccms.views.pojo.oauth.WebauthnCreateOption;
@@ -86,7 +86,7 @@ public class WebAuthnController {
     @Resource
     private SysUserService service;
     @Resource
-    private SysUserAttributeService attributeService;
+    private SysUserSettingService settingService;
     @Resource
     private ConfigDataComponent configDataComponent;
     @Resource
@@ -157,12 +157,11 @@ public class WebAuthnController {
             CredentialRecordData credentialRecord = new CredentialRecordData(registrationData.getAttestationObject(),
                     registrationData.getCollectedClientData(), registrationData.getClientExtensions(),
                     registrationData.getTransports(), objectConverter);
-            SysUserAttribute attribute = attributeService.getEntity(admin.getId());
-            Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
-            String webauthnSettings = map.get(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN);
+            SysUserSetting userSetting = settingService
+                    .getEntity(new SysUserSettingId(admin.getId(), SysUserSettingService.SETTINGS_CODE_WEBAUTHN));
             Map<String, CredentialRecordData> credentialRecordMap = null;
-            if (CommonUtils.notEmpty(webauthnSettings)) {
-                credentialRecordMap = objectConverter.getJsonConverter().readValue(webauthnSettings, typeReference);
+            if (null != userSetting) {
+                credentialRecordMap = objectConverter.getJsonConverter().readValue(userSetting.getData(), typeReference);
             } else {
                 credentialRecordMap = new LinkedHashMap<>();
             }
@@ -171,9 +170,8 @@ public class WebAuthnController {
                     .getAttestedCredentialData();
             credentialRecordMap.put(Base64.getUrlEncoder().encodeToString(attestedCredentialData.getCredentialId()),
                     credentialRecord);
-            map.put(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN,
+            settingService.getOrCreateOrUpdate(admin.getId(), SysUserSettingService.SETTINGS_CODE_WEBAUTHN,
                     objectConverter.getJsonConverter().writeValueAsString(credentialRecordMap));
-            attributeService.updateSettings(admin.getId(), ExtendUtils.getExtendString(map));
             return result;
         } catch (ValidationException e) {
             result.put("status", "failed");
@@ -235,13 +233,12 @@ public class WebAuthnController {
                 result.put("errorMessage", (String) model.get(CommonConstants.ERROR));
                 return result;
             }
-            SysUserAttribute attribute = attributeService.getEntity(user.getId());
-            Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
-            String webauthn = map.get(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN);
-            if (CommonUtils.notEmpty(webauthn)) {
+            SysUserSetting userSetting = settingService
+                    .getEntity(new SysUserSettingId(user.getId(), SysUserSettingService.SETTINGS_CODE_WEBAUTHN));
+            if (null != userSetting) {
                 try {
-                    Map<String, CredentialRecordData> credentialRecordMap = objectConverter.getJsonConverter().readValue(webauthn,
-                            typeReference);
+                    Map<String, CredentialRecordData> credentialRecordMap = objectConverter.getJsonConverter()
+                            .readValue(userSetting.getData(), typeReference);
                     CredentialRecordData credentialRecord = credentialRecordMap
                             .get(Base64.getUrlEncoder().encodeToString(authenticationData.getCredentialId()));
                     if (null != credentialRecord) {
@@ -269,9 +266,8 @@ public class WebAuthnController {
                             credentialRecord.setCounter(authenticationData.getAuthenticatorData().getSignCount());
                             credentialRecordMap.put(Base64.getUrlEncoder().encodeToString(authenticationData.getCredentialId()),
                                     credentialRecord);
-                            map.put(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN,
+                            settingService.getOrCreateOrUpdate(user.getId(), SysUserSettingService.SETTINGS_CODE_WEBAUTHN,
                                     objectConverter.getJsonConverter().writeValueAsString(credentialRecordMap));
-                            attributeService.updateSettings(user.getId(), ExtendUtils.getExtendString(map));
                         }
 
                         result.put("status", "ok");
@@ -290,12 +286,11 @@ public class WebAuthnController {
     @ResponseBody
     public Map<String, Object> getCredentials(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
             HttpServletRequest request) {
-        SysUserAttribute attribute = attributeService.getEntity(admin.getId());
-        Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
-        String webauthnSettings = map.get(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN);
+        SysUserSetting userSetting = settingService
+                .getEntity(new SysUserSettingId(admin.getId(), SysUserSettingService.SETTINGS_CODE_WEBAUTHN));
         Map<String, Object> result = new HashMap<>();
-        if (CommonUtils.notEmpty(webauthnSettings)) {
-            Map<String, CredentialRecordData> webauthnMap = objectConverter.getJsonConverter().readValue(webauthnSettings,
+        if (null != userSetting) {
+            Map<String, CredentialRecordData> webauthnMap = objectConverter.getJsonConverter().readValue(userSetting.getData(),
                     typeReference);
             result.put("credentials", webauthnMap.keySet());
         }
@@ -306,19 +301,21 @@ public class WebAuthnController {
     @ResponseBody
     public Map<String, Object> deleteCredential(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
             String credentialId, HttpServletRequest request) {
-        SysUserAttribute attribute = attributeService.getEntity(admin.getId());
-        Map<String, String> map = ExtendUtils.getSettingsMap(attribute);
-        String webauthnSettings = map.get(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN);
+        SysUserSetting userSetting = settingService
+                .getEntity(new SysUserSettingId(admin.getId(), SysUserSettingService.SETTINGS_CODE_WEBAUTHN));
         Map<String, CredentialRecordData> webauthnMap = null;
-        if (CommonUtils.notEmpty(webauthnSettings)) {
-            webauthnMap = objectConverter.getJsonConverter().readValue(webauthnSettings, typeReference);
+        if (null != userSetting) {
+            webauthnMap = objectConverter.getJsonConverter().readValue(userSetting.getData(), typeReference);
         } else {
             webauthnMap = new LinkedHashMap<>();
         }
         webauthnMap.remove(credentialId);
-        map.put(SysUserAttributeService.SETTINGS_CODE_WEBAUTHN,
-                objectConverter.getJsonConverter().writeValueAsString(webauthnMap));
-        attributeService.updateSettings(admin.getId(), ExtendUtils.getExtendString(map));
+        if(webauthnMap.isEmpty()) {
+            settingService.delete(new SysUserSettingId(admin.getId(), SysUserSettingService.SETTINGS_CODE_WEBAUTHN));
+        }else {
+            settingService.getOrCreateOrUpdate(admin.getId(), SysUserSettingService.SETTINGS_CODE_WEBAUTHN,
+                    objectConverter.getJsonConverter().writeValueAsString(webauthnMap));
+        }
         return Collections.singletonMap("result", true);
     }
 

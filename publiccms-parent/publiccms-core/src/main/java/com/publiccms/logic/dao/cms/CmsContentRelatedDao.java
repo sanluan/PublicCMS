@@ -59,6 +59,14 @@ public class CmsContentRelatedDao extends BaseDao<CmsContentRelated> {
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }
+    
+    public void deleteByContentId(Long contentId) {
+        if (null != contentId) {
+            QueryHandler queryHandler = getQueryHandler("delete from CmsContentRelated bean");
+            queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
+            delete(queryHandler);
+        }
+    }
 
     @Override
     protected CmsContentRelated init(CmsContentRelated entity) {

@@ -14,30 +14,33 @@ import com.publiccms.common.tools.VerificationUtils;
 import freemarker.template.TemplateException;
 
 /**
-*
-* licenseVerify 授权文件验证指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>licenseData</code>:授权文件数据
-* </ul>
-* <p>
-* 返回结果
-* <ul>
-* <li><code>result</code>:验证结果,【true:验证成功,false:验证失败】
-* </ul>
-* 使用示例
-* <p>
-* &lt;@tools.licenseVerify licenseData='content'&gt;${url}&lt;/@tools.licenseVerify&gt;
-* 
-* <pre>
+ *
+ * licenseVerify 授权文件验证指令
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>licenseData</code>:授权文件数据
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>result</code>:验证结果,【true:验证成功,false:验证失败】
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * &lt;@tools.licenseVerify licenseData='content'&gt;${url}&lt;/@tools.licenseVerify&gt;
+ *
+ * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/tools/licenseVerify?licenseData=content', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/tools/licenseVerify?licenseData=content', function(data){
  console.log(data);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class LicenseVerifyDirective extends AbstractTemplateDirective {
 

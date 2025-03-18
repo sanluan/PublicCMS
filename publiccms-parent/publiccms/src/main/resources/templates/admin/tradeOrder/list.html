@@ -25,9 +25,9 @@
                 </li>
                 <li>
                     <select class="combox" name="processed">
-                        <option value><@t.page 'order.process'/></option>
-                        <option value="false"${(processed?has_content&&"false"=processed)?then(' selected="true"','')?no_esc}><@t.page 'no'/></option>
-                        <option value="true"${(processed?has_content&&"true"=processed)?then(' selected="true"','')?no_esc}><@t.page 'yes'/></option>
+                        <option value><@t.page 'order.toprocess'/></option>
+                        <option value="false"${(processed?has_content&&"false"=processed)?then(' selected="true"','')?no_esc}><@t.page 'yes'/></option>
+                        <option value="true"${(processed?has_content&&"true"=processed)?then(' selected="true"','')?no_esc}><@t.page 'no'/></option>
                     </select>
                 </li>
                 <li>
@@ -65,7 +65,7 @@
                 <th><@t.page 'receiver'/></th>
                 <th><@t.page 'remark'/></th>
                 <th><@t.page 'status'/></th>
-                <th><@t.page 'order.process'/></th>
+                <th><@t.page 'order.toprocess'/></th>
                 <th><@t.page 'payment'/></th>
                 <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
@@ -99,7 +99,7 @@
                 <td><span class="statusText ${a.status?switch(2,'green',0,'orange',3,'red','')}"><@t.page 'status.order.'+a.status/></span></td>
                 <td>
                     <div class="box">
-                        <p>${a.processed?then(t.pageMessage('yes'),'')} ${a.processDate!}</p>
+                        <p><span class="statusText ${a.processed?then('green','orange')}">${a.processed?then(t.pageMessage('no'),'')}</span> ${a.processDate!}</p>
                         <p class="exclude-translate"><#if a.processInfo?has_content><label><@t.page 'order.process_info'/>:</label></#if>${a.processInfo!}</p>
                     </div>
                 </td>
@@ -121,7 +121,7 @@
                     </#if>
                 </#if>
                 <#if 2=a.status && a.confirmed && !a.processed && authorizedMap['tradeOrder/process']>
-                    <a href="tradeOrder/processParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><@t.page 'order.process'/></a>
+                    <a href="tradeOrder/processParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><@t.page 'button.handle'/></a>
                 </#if>
                 <#if (!a.confirmed && 0=a.status || 1=a.status || 3=a.status ) && authorizedMap['tradeOrder/close']>
                     <a href="tradeOrder/close?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.close_order'/>" target="ajaxTodo"><@t.page 'button.close'/></a>

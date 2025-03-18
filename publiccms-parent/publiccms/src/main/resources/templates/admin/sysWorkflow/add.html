@@ -1,0 +1,105 @@
+<@sys.workflow id=id><#assign a=object/></@sys.workflow>
+<form method="post" autocomplete="off" action="sysWorkflow/save?callbackType=closeCurrent&navTabId=sysWorkflow/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input name="id" type="hidden" value="${id!}"/>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar card">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="card">
+        <div class="pageFormContent" layoutH>
+            <dl class="nowrap">
+                <dt><@t.page 'name'/>:</dt>
+                <dd><input class="required" name="name" type="text" size="30" value="${(a.name)!}"/></dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'description'/>:</dt>
+                <dd><textarea name="description" maxlength="150" cols="80" rows="3">${(a.description)!}</textarea></dd>
+            </dl>
+            <dl class="miscSortDrag nowrap" data-result="textarea[name=stepdata]" drag-rel="dd .sortDrag" data-id="step" data-duplicate="1">
+                <dt>
+                    <fieldset>
+                        <legend><@t.page 'step'/></legend>
+                        <div class="itemBox">
+                            <div class="dragItem icon-move" data-type="step">
+                                <@t.page 'role'/><span class="close">X</span>
+                                <div class="ctl-label unitBox">
+                                    <label><@t.page 'name'/>:</label><input data-name="name" data-class="required" type="text" size="30"/>
+                                    <br>
+                                    <input name="roleId" type="hidden"/>
+                                    <label><@t.page 'role'/>:</label><input name="roleName" data-class="required" readonly="readonly" type="text" size="30"/>
+                                    <a class="btnLook" href="sysRole/lookup.html" width="920" lookupGroup=""><@t.page 'role.select'/></a>
+                                </div>
+                            </div>
+                            <div class="dragItem icon-move" data-type="step">
+                                <@t.page 'dept'/><span class="close">X</span>
+                                <div class="ctl-label unitBox">
+                                    <label><@t.page 'name'/>:</label><input data-name="name" data-class="required" type="text" size="30"/>
+                                    <br>
+                                    <input name="deptId" type="hidden"/>
+                                    <label><@t.page 'dept'/>:</label><input name="deptName" data-class="required" readonly="readonly" type="text" size="30"/>
+                                    <a class="btnLook" href="sysDept/lookup.html" width="920" lookupGroup=""><@t.page 'dept.select'/></a>
+                                </div>
+                            </div>
+                            <div class="dragItem icon-move" data-type="step">
+                                <@t.page 'user'/><span class="close">X</span>
+                                <div class="ctl-label unitBox">
+                                    <label><@t.page 'name'/>:</label><input data-name="name" data-class="required" type="text" size="30"/>
+                                    <br>
+                                    <input name="userId" type="hidden"/>
+                                    <label><@t.page 'user'/>:</label><input name="nickname" data-class="required" readonly="readonly" type="text" size="30"/>
+                                    <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </dt>
+                <dd>
+                    <fieldset>
+                        <legend><@t.page 'workflow'/></legend>
+                        <div class="workflow">
+                            <div class="text-center step current">
+                                <i class="bi bi-record-circle"></i><br><@t.page 'start'/>
+                            </div>
+                        </div>
+                        <div class="sortDrag workflow" data-over-sort="true" data-accept="step" data-parent="step">
+                            <#if a?has_content>
+                                <@sys.workflowStepList workflowId=id pageSize=100>
+                                    <#list list as step>
+                                        <div class="dragItem icon-move" data-id="${step.id}" data-type="step">
+                                            <span class="close">X</span>
+                                            <div class="ctl-label unitBox">
+                                                <label><@t.page 'name'/>:</label><input data-name="name" class="required" type="text" size="30" value="${step.name}"/><br>
+                                                <#if step.roleId?has_content>
+                                                    <input name="roleId" type="hidden" value="${step.roleId}"/>
+                                                    <label><@t.page 'role'/>:</label><input name="roleName" class="required" readonly="readonly" type="text" size="30" value="<@sys.role id=step.roleId;role>${role.name}</@sys.role>"/>
+                                                    <a class="btnLook" href="sysRole/lookup.html" width="920" lookupGroup=""><@t.page 'role.select'/></a>
+                                                <#elseif step.deptId?has_content>
+                                                    <input name="deptId" type="hidden" value="${step.deptId}"/>
+                                                    <label><@t.page 'dept'/>:</label><input name="deptName" class="required" readonly="readonly" type="text" size="30" value="<@sys.dept id=step.deptId;dept>${dept.name}</@sys.dept>"/>
+                                                    <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'dept.select'/></a>
+                                                <#elseif step.userId?has_content>
+                                                    <input name="userId" type="hidden" value="${step.userId}"/>
+                                                    <label><@t.page 'user'/>:</label><input name="nickname" class="required" readonly="readonly" type="text" size="30" value="<@sys.user id=step.userId;user>${user.nickname}</@sys.user>"/>
+                                                    <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>
+                                                </#if>
+                                            </div>
+                                        </div>
+                                    </#list>
+                                </@sys.workflowStepList>
+                            </#if>
+                        </div>
+                        <div class="workflow">
+                            <div class="text-center step current">
+                                <i class="bi bi-stop-circle"></i><br><@t.page 'end'/>
+                            </div>
+                        </div>
+                        <textarea name="stepdata" class="hide"></textarea>
+                    </fieldset>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</form>

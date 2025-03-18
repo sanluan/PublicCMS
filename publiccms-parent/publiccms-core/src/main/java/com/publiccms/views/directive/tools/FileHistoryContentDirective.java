@@ -16,30 +16,34 @@ import freemarker.template.TemplateException;
 
 /**
  * fileHistoryContent 文件修改历史内容获取指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>type</code>:文件类型【file,task,template】,默认template
  * <li><code>path</code>:文件路径
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>object</code>:文件内容文本
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.fileHistoryContent type='file'
  * path='index.html/2020-01-01_01-01-000000'&gt;${object}&lt;/@tools.fileHistoryContent&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/fileHistoryContent?type=file&amp;path=index.html/2020-01-01_01-01-000000&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/fileHistoryContent?type=file&amp;path=index.html/2020-01-01_01-01-000000&amp;appToken=接口访问授权Token', function(data){
    console.log(data);
  });
  &lt;/script&gt;
  * </pre>
- * 
+ *
  */
 @Component
 public class FileHistoryContentDirective extends AbstractTemplateDirective {

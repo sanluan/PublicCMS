@@ -93,6 +93,14 @@ public class CmsContentProductDao extends BaseDao<CmsContentProduct> {
         return getEntityList(queryHandler);
     }
 
+    public void deleteByContentId(Long contentId) {
+        if (null != contentId) {
+            QueryHandler queryHandler = getQueryHandler("delete from CmsContentProduct bean");
+            queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
+            delete(queryHandler);
+        }
+    }
+
     @Override
     protected CmsContentProduct init(CmsContentProduct entity) {
         if (CommonUtils.empty(entity.getCover())) {

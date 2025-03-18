@@ -150,6 +150,10 @@
             <artifactId>image4j</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.drewnoakes</groupId>
+            <artifactId>metadata-extractor</artifactId>
+        </dependency>
+        <dependency>
             <groupId>net.sf.cssbox</groupId>
             <artifactId>pdf2dom</artifactId>
         </dependency>

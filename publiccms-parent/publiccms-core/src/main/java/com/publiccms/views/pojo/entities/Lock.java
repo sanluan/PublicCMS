@@ -11,7 +11,7 @@ public class Lock extends SysLock {
     private static final long serialVersionUID = 1L;
 
     public Lock(SysLock lock, SysUser user) {
-        super(lock.getId(), lock.getUserId(), lock.getCount(), lock.getCreateDate());
+        super(lock.getId(), lock.getUserId(), lock.getCount(), lock.getCreateDate(), null);
         if (null != user) {
             setNickname(user.getNickname());
         }

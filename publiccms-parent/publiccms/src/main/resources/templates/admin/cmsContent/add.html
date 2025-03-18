@@ -22,6 +22,7 @@
             <li>
                 <label><input type="checkbox" name="draft" class="form-check-input"/><@t.page 'draft'/></label>
             </li>
+            <#if !category.workflowId?has_content>
         <@sys.authorized roleIds=admin.roles url='cmsContent/check'>
             <li>
                 <label>
@@ -30,6 +31,7 @@
                 </label>
             </li>
         </@sys.authorized>
+            </#if>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=content&itemId=${id!}" close-url="common/unlock?itemType=content&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>

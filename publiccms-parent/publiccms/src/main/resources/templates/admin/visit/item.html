@@ -3,7 +3,7 @@
 </#if>
 <@visit.itemList startVisitDate=startVisitDate endVisitDate=endVisitDate itemType=itemType itemId=itemId pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
-    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm"  action="visit/item.html" autocomplete="off" onsubmit="return divSearch(this,'visitBox');" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -20,7 +20,7 @@
                     <input type="text" name="itemType" value="${itemType!}"/>
                 </li>
                 <li>
-                    <label><@t.page 'visit.item'/>:</label>
+                    <label><@t.page 'item'/>:</label>
                     <input type="text" name="itemId" value="${itemId!}"/>
                 </li>
             </ul>
@@ -47,7 +47,7 @@
             <tr>
                 <th><@t.page 'visit.visit_date'/></th>
                 <th><@t.page 'item_type'/></th>
-                <th><@t.page 'visit.item'/></th>
+                <th><@t.page 'item'/></th>
                 <th>PV</th>
                 <th>UV</th>
                 <th>IP Views</th>
@@ -77,6 +77,7 @@
             </#list>
         </tbody>
     </table>
+    <#assign rel='visitBox'/>
     <#include "../include_page/page.html"/>
 </div>
 </@visit.itemList>

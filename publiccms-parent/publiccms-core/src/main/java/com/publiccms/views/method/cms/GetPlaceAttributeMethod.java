@@ -18,17 +18,21 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getPlaceAttribute 获取推荐位数据扩展数据
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ol>
  * <li>推荐位数据id
  * </ol>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>attribute</code>:推荐位数据扩展数据(字段编码,<code>value</code>)
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;#assign attribute=getContentAttribute(1)/&lt;
  * <p>

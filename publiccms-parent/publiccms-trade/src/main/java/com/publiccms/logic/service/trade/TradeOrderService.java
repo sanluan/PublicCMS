@@ -8,7 +8,6 @@ import java.util.List;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -70,9 +69,9 @@ public class TradeOrderService extends BaseService<TradeOrder> {
                 pageSize);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public Long create(short siteId, long userId, TradeOrder entity, String ip, List<TradeOrderProduct> tradeOrderProductList) {
         if (null != entity) {
+            Date now = CommonUtils.getDate();
             entity.setId(null);
             entity.setSiteId(siteId);
             entity.setUserId(userId);
@@ -84,8 +83,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
             entity.setPaymentDate(null);
             entity.setPaymentId(null);
             entity.setProcessUserId(null);
-            entity.setCreateDate(null);
-            entity.setUpdateDate(null);
+            entity.setCreateDate(now);
             entity.setIp(ip);
             save(entity);
             TradeOrderHistory history = new TradeOrderHistory(entity.getSiteId(), entity.getId(), CommonUtils.getDate(),
@@ -104,66 +102,57 @@ public class TradeOrderService extends BaseService<TradeOrder> {
 
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean confirm(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && !entity.isConfirmed()
                 && (entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_PAID)) {
-            Date now = CommonUtils.getDate();
             entity.setConfirmed(true);
-            entity.setUpdateDate(now);
             productService.deduction(siteId, tradeOrderProductService.getList(siteId, orderId));
-            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_CONFIRM);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, CommonUtils.getDate(),
+                    TradeOrderHistoryService.OPERATE_CONFIRM);
             historyDao.save(history);
             return true;
         }
         return false;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean invalid(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId()
                 && (entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_PAID)) {
             entity.setStatus(STATUS_INVALID);
-            Date now = CommonUtils.getDate();
-            entity.setUpdateDate(now);
-            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_INVALID);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, CommonUtils.getDate(),
+                    TradeOrderHistoryService.OPERATE_INVALID);
             historyDao.save(history);
             return true;
         }
         return false;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean pay(short siteId, long orderId, long paymentId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setPaymentId(paymentId);
-            Date now = CommonUtils.getDate();
-            entity.setUpdateDate(now);
-            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_PAY);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, CommonUtils.getDate(),
+                    TradeOrderHistoryService.OPERATE_PAY);
             historyDao.save(history);
             return true;
         }
         return false;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean cancelPayment(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setPaymentId(null);
-            Date now = CommonUtils.getDate();
-            entity.setUpdateDate(now);
-            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_CANCELPAY);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, CommonUtils.getDate(),
+                    TradeOrderHistoryService.OPERATE_CANCELPAY);
             historyDao.save(history);
             return true;
         }
         return false;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean processed(short siteId, long orderId, long userId, String processInfo) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && entity.isConfirmed() && !entity.isProcessed()) {
@@ -172,7 +161,6 @@ public class TradeOrderService extends BaseService<TradeOrder> {
             entity.setProcessInfo(processInfo);
             Date now = CommonUtils.getDate();
             entity.setProcessDate(now);
-            entity.setUpdateDate(now);
             TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_PROCESSED);
             historyDao.save(history);
             return true;
@@ -180,14 +168,12 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean paid(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING) {
             entity.setStatus(STATUS_PAID);
             Date now = CommonUtils.getDate();
             entity.setPaymentDate(now);
-            entity.setUpdateDate(now);
             TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_PAID);
             historyDao.save(history);
             return true;
@@ -195,29 +181,25 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean refunded(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_PAID)) {
             entity.setStatus(STATUS_REFUNDED);
-            Date now = CommonUtils.getDate();
-            entity.setUpdateDate(now);
-            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_REFUND);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, CommonUtils.getDate(),
+                    TradeOrderHistoryService.OPERATE_REFUND);
             historyDao.save(history);
             return true;
         }
         return false;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean close(short siteId, long orderId, Long userId) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && (null == userId || entity.getUserId() == userId)
                 && (entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_INVALID)) {
             entity.setStatus(STATUS_CLOSE);
-            Date now = CommonUtils.getDate();
-            entity.setUpdateDate(now);
-            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_CLOSE);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, CommonUtils.getDate(),
+                    TradeOrderHistoryService.OPERATE_CLOSE);
             historyDao.save(history);
             return true;
         }

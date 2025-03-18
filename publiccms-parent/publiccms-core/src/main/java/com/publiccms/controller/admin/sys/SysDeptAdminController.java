@@ -143,8 +143,7 @@ public class SysDeptAdminController {
                     && entity.getContentPermissions() != oldEntity.getContentPermissions()) {
                 entity.setContentPermissions(SysUserService.CONTENT_PERMISSIONS_DEPT);
             }
-            SysUser user = userService.getEntity(entity.getId());
-            if ((!user.getName().equals(entity.getName()) && ControllerUtils.errorHasExist("username",
+            if ((!oldEntity.getName().equals(entity.getName()) && ControllerUtils.errorHasExist("username",
                     userService.findByName(site.getId(), entity.getName()), model))) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
@@ -155,8 +154,8 @@ public class SysDeptAdminController {
                 entity.setPassword(
                         UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
             } else {
-                entity.setPassword(user.getPassword());
-                if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(user.getEmail())) {
+                entity.setPassword(oldEntity.getPassword());
+                if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(oldEntity.getEmail())) {
                     entity.setEmailChecked(false);
                 }
             }

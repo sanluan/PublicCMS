@@ -85,7 +85,7 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
         SysSite site = ControllerUtils.getSiteFromAttribute(request);
         if (null == site) {
             site = BeanComponent.getSiteComponent().getSite(domain, serverName,
-                    domain.isMultiple() ? UrlPathHelper.defaultInstance.getLookupPathForRequest(request) : null);
+                    UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
         }
         exposeSite(model, site);
     }

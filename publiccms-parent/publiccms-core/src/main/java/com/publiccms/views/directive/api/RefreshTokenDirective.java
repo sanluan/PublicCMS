@@ -18,30 +18,33 @@ import com.publiccms.logic.service.sys.SysAppTokenService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* refreshToken 刷新appToken接口
-* <p>
-* 参数列表
-* <ul>
-* <li><code>appToken</code>:设备唯一id
-* </ul>
-* <p>
-* 返回结果
-* <ul>
-* <li><code>authToken</code>:用户登录授权
-* <li><code>expiryDate</code>:过期日期
-* <li><code>error</code>:错误信息【needNotRefresh】
-* </ul>
-* 使用示例
-* <p>
-* <pre>
+ *
+ * refreshToken 刷新appToken接口
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>appToken</code>:设备唯一id
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>authToken</code>:用户登录授权
+ * <li><code>expiryDate</code>:过期日期
+ * <li><code>error</code>:错误信息【needNotRefresh】
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/login?appToken=接口访问授权Token', function(data){
     console.log(appToken+","+expiryDate);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class RefreshTokenDirective extends AbstractAppDirective {
     private static final String NEED_NOT_REFRESH = "needNotRefresh";

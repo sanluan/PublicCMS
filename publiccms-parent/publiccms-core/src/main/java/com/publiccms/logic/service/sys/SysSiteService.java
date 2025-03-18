@@ -63,13 +63,13 @@ public class SysSiteService extends BaseService<SysSite> {
      * @param encoding
      * @return site master
      */
-    public SysUser save(SysSite entity, String domain, boolean wild, boolean multiple, String roleName, String deptName,
+    public SysUser save(SysSite entity, String domain, boolean wild, String roleName, String deptName,
             String userName, String password, String encoding) {
         save(entity);
         if (CommonUtils.notEmpty(domain)) {
-            domainService.save(new SysDomain(domain, entity.getId(), wild, multiple));
+            domainService.save(new SysDomain(domain, entity.getId(), wild));
         }
-        SysDept dept = new SysDept(entity.getId(), deptName, "code", 0, true, true, true);
+        SysDept dept = new SysDept(entity.getId(), deptName, "code", false, 0, true, true, true);
         deptService.save(dept);// 初始化部门
         SysRole role = new SysRole(entity.getId(), roleName, true, true);
         roleService.save(role);// 初始化角色

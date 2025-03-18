@@ -57,6 +57,7 @@ dependencies {
 
     implementation "org.sejda.imageio:webp-imageio:${webpVersion}"
     implementation "net.ifok.image:image4j:${image4jVersion}"
+    implementation "com.drewnoakes:metadata-extractor:${extractorVersion}"
     implementation ("net.sf.cssbox:pdf2dom:${pdf2domVersion}") {
         exclude group:"commons-logging", module:"commons-logging"
     }

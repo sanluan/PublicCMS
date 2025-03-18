@@ -20,27 +20,31 @@ import freemarker.template.TemplateException;
 /**
  *
  * createContentFile 创建内容静态文件指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>id</code>:内容id
  * <li><code>templatePath</code>:模板路径
  * <li><code>filePath</code>:静态文件路径
  * <li><code>pageIndex</code>:当前页码,默认为1
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>url</code>:静态文件路径
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.createContentFile id=1 templatePath='content.html'
  * filePath='content/'+1+'.html'&gt;${url}&lt;/@tools.createContentFile&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/tools/createContentFile?id=1&amp;templatePath=content.html&amp;filePath=content/1.html&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/tools/createContentFile?id=1&amp;templatePath=content.html&amp;filePath=content/1.html&amp;appToken=接口访问授权Token', function(data){
   console.log(data);
 });
 &lt;/script&gt;

@@ -104,7 +104,7 @@ public class CmsTemplateAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping("saveMetaData")
+    @RequestMapping("saveMetadata")
     @Csrf
     public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, @ModelAttribute CmsPageMetadata metadata, String content, HttpServletRequest request,
             ModelMap model) {

@@ -1,0 +1,77 @@
+<@sys.workflowProcessList itemType=itemType itemId=itemId title=title roleIds=admin.roles deptId=admin.deptId userId=admin.id closed=closed orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader card">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'item_type'/>:</label>
+                    <select class="combox" name="itemType">
+                        <option value><@t.page 'item_type'/></option>
+                        <#list getProcessTypeList() as o>
+                        <option value="${o}"><@t.page o/></option>
+                        </#list>
+                    </select>
+                </li>
+                <li>
+                    <label><@t.page 'item'/>:</label>
+                    <input type="text" name="itemId" value="${itemId!}"/>
+                </li>
+                <li>
+                    <label><@t.page 'title'/>:</label>
+                    <input type="text" name="title" value="${title!}"/>
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<@_sysAuthorized roleIds=admin.roles urls='sysWorkflowProcess/processParameters'><#assign authorizedMap=map/></@_sysAuthorized>
+<div class="pageContent card">
+    <table class="table" width="100%" layoutH "${orderField!}" orderType="${orderType!}">
+        <thead>
+            <tr>
+                <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+                <th><@t.page 'title'/></th>
+                <th><@t.page 'workflow'/></th>
+                <th><@t.page 'step'/></th>
+                <th orderField="createDate"><@t.page 'create_date'/></th>
+                <th><@t.page 'update_date'/></th>
+                <th><@t.page 'operate'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+                <@t.merge 'workflowIds' a.workflowId!/>
+                <@t.merge 'stepIds' a.stepId!/>
+            </#list>
+            
+            <@sys.workflow ids=t.workflowIds!><#assign workflowMap=map!/></@sys.workflow>
+            <@sys.workflowStep ids=t.stepIds!><#assign stepMap=map!/></@sys.workflowStep>
+            
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id}">
+                <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
+                <td><a href="sysWorkflowProcess/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewProcess${a.id}" width="1200" height="500">${a.title!}</a></td>
+                <td>${(workflowMap[a.workflowId?string].name)!t.pageMessage('page.disabled')}</td>
+                <td>${(stepMap[a.stepId?string].name)!t.pageMessage('page.disabled')}</td>
+                <td>${a.createDate!}</td>
+                <td>${a.updateDate!}</td>
+                <td>
+                <#if authorizedMap['sysWorkflowProcess/processParameters']>
+                    <a href="sysWorkflowProcess/processParameters.html?id=${a.id}" class="edit btnText green" target="dialog" width="1200" height="500" mask="true"><@t.page 'button.handle'/></a>
+                </#if>
+                </td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
+</div>
+</@sys.workflowProcessList>

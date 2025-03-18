@@ -34,7 +34,7 @@ public class TradeCoupon implements java.io.Serializable {
     private short siteId;
     /**
      * name
-
+     * <p>
      * 名称
      */
     @GeneratorColumn(title = "名称")
@@ -43,24 +43,66 @@ public class TradeCoupon implements java.io.Serializable {
     private String name;
     /**
      * category
-
+     * <p>
      * 分类
      */
     @GeneratorColumn(title = "分类", condition = true)
     private Integer categoryId;
     /**
      * content
-
+     * <p>
      * 内容
      */
     @GeneratorColumn(title = "内容", condition = true)
     private Long contentId;
+    /**
+     * <p lang="en">start date
+     * <p lang="zh">
+     * 开始日期
+     */
+    @GeneratorColumn(title = "开始日期", condition = true)
     private String startDate;
+    /**
+     * <p lang="en">expiry date
+     * <p lang="zh">
+     * 过期日期
+     */
+    @GeneratorColumn(title = "过期日期", condition = true)
     private String expiryDate;
+    /**
+     * <p lang="en">starting amount
+     * <p lang="zh">
+     * 起始金额
+     */
+    @GeneratorColumn(title = "起始金额")
     private BigDecimal startingAmount;
+    /**
+     * <p lang="en">discount
+     * <p lang="zh">
+     * 折扣
+     */
+    @GeneratorColumn(title = "折扣")
     private BigDecimal discount;
+    /**
+     * <p lang="en">price
+     * <p lang="zh">
+     * 价格
+     */
+    @GeneratorColumn(title = "价格")
     private BigDecimal price;
+    /**
+     * content
+     * <p>
+     * 内容
+     */
+    @GeneratorColumn(title = "内容", condition = true)
     private int type;
+    /**
+     * redeem code
+     * <p>
+     * 兑换码
+     */
+    @GeneratorColumn(title = "兑换码")
     private String redeemCode;
     private int duration;
     private int quantity;

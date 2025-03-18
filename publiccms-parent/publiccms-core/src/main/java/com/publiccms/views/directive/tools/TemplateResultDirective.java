@@ -17,26 +17,28 @@ import freemarker.template.TemplateException;
 
 /**
  * templateResult 模板渲染结果指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>parameters</code>:参数map
  * <li><code>templateContent</code>:模板内容
  * </ul>
  * 打印渲染结果
- * <p>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.templateResult templateContent='${name}' parameters={'name':'value'}/&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/templateResult?path=$%7Bname%7D&amp;parameters.name=value&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/templateResult?path=$%7Bname%7D&amp;parameters.name=value&amp;appToken=接口访问授权Token', function(data){
    console.log(data);
  });
  &lt;/script&gt;
  * </pre>
- * 
+ *
  */
 @Component
 public class TemplateResultDirective extends AbstractTemplateDirective {

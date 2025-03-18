@@ -66,9 +66,9 @@ public class AbstractUeditorController {
             if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
                 try {
                     FileUploadResult uploadResult = fileUploadComponent.upload(site.getId(), file, false,user.getNickname(),
-                            suffix, localeResolver.resolveLocale(request));
+                    		suffix, localeResolver.resolveLocale(request));
                     logUploadService.save(new LogUpload(site.getId(), user.getId(), channel, originalName, false,
-                            CmsFileUtils.getFileType(suffix), file.getSize(), uploadResult.getWidth(), uploadResult.getHeight(),
+                            CmsFileUtils.getFileType(suffix), uploadResult.getFileSize(), uploadResult.getWidth(), uploadResult.getHeight(),
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), uploadResult.getFilename()));
                     Map<String, Object> map = getResultMap();
                     map.put("size", file.getSize());

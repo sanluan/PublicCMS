@@ -14,21 +14,25 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getIpv6Number 获取ip的数字值
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ol>
  * <li>ip
  * </ol>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>number string</code>:字符格式数字
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * ${getIpv6Number('FF01:0:0:0:0:0:0:1101')}
  * <p>
- * 
+ *
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getIpv4Number?parameters=FF01:0:0:0:0:0:0:1101', function(data){

@@ -1,0 +1,29 @@
+<div class="pageContent">
+    <div class="leftPageContent">
+        <div class="card">
+            <ul class="tree treeFolder expand" layoutH>
+            <@sys.dept id=admin.deptId;dept>
+                <li><a href="myself/dept/userList.html?deptId=${dept.id}" target="ajax" rel="userListBox">${dept.name}</a></li>
+            </@sys.dept>
+            <@sys.deptList userId=admin.id pageSize=500>
+                <#if page.totalCount gt 0>
+                    <li>
+                        <a href="javascript:void">我管理的部门</a>
+                        <ul>
+                <#list page.list as dept>
+                    <#if dept.id!=admin.deptId>
+                 <li><a href="myself/dept/userList.html?deptId=${dept.id}" target="ajax" rel="userListBox">${dept.name}</a></li>
+                    </#if>
+                </#list>
+                        </ul>
+                    </li>
+                </#if>
+            </@sys.deptList>
+            </ul>
+        </div>
+    </div>
+    <div id="userListBox" class="rightPageContent">
+        <#assign deptId=admin.deptId/>
+        <#include "./dept/userList.html"/>
+    </div>
+</div>

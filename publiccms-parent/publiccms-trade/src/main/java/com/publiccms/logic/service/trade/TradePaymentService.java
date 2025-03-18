@@ -5,7 +5,6 @@ import java.util.Date;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -69,7 +68,6 @@ public class TradePaymentService extends BaseService<TradePayment> {
                 endCreateDate, paymentType, pageIndex, pageSize);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean create(short siteId, TradePayment entity) {
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setStatus(STATUS_PENDING_PAY);
@@ -82,7 +80,6 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean processed(short siteId, long paymentId, long userId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && !entity.isProcessed()) {
@@ -90,7 +87,6 @@ public class TradePaymentService extends BaseService<TradePayment> {
             entity.setProcessUserId(userId);
             Date now = CommonUtils.getDate();
             entity.setProcessDate(now);
-            entity.setUpdateDate(now);
             TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, now,
                     TradePaymentHistoryService.OPERATE_PROCESSED);
             historyDao.save(history);
@@ -99,7 +95,6 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean paid(short siteId, long paymentId, String accountSerialNumber) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING_PAY) {
@@ -107,7 +102,6 @@ public class TradePaymentService extends BaseService<TradePayment> {
             entity.setAccountSerialNumber(accountSerialNumber);
             Date now = CommonUtils.getDate();
             entity.setPaymentDate(now);
-            entity.setUpdateDate(now);
             TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, now, TradePaymentHistoryService.OPERATE_PAY);
             historyDao.save(history);
             return true;
@@ -115,14 +109,12 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean cancel(short siteId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING_PAY) {
             entity.setStatus(STATUS_CLOSE);
             Date now = CommonUtils.getDate();
             entity.setPaymentDate(now);
-            entity.setUpdateDate(now);
             TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, now, TradePaymentHistoryService.OPERATE_PAY);
             historyDao.save(history);
             return true;
@@ -130,15 +122,12 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean pendingRefund(short siteId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId()
                 && (entity.getStatus() == STATUS_PAID || entity.getStatus() == STATUS_REFUNDED)) {
             entity.setStatus(STATUS_PENDING_REFUND);
-            Date now = CommonUtils.getDate();
-            entity.setUpdateDate(now);
-            TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, now,
+            TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, CommonUtils.getDate(),
                     TradePaymentHistoryService.OPERATE_PENDING_REFUND);
             historyDao.save(history);
             return true;
@@ -146,14 +135,11 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean refunded(short siteId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_PENDING_REFUND)) {
             entity.setStatus(STATUS_REFUNDED);
-            Date now = CommonUtils.getDate();
-            entity.setUpdateDate(now);
-            TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, now,
+            TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, CommonUtils.getDate(),
                     TradePaymentHistoryService.OPERATE_REFUND);
             historyDao.save(history);
             return true;
@@ -161,14 +147,11 @@ public class TradePaymentService extends BaseService<TradePayment> {
         return false;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean close(short siteId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_REFUNDED)) {
             entity.setStatus(STATUS_CLOSE);
-            Date now = CommonUtils.getDate();
-            entity.setUpdateDate(now);
-            TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, now,
+            TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, CommonUtils.getDate(),
                     TradePaymentHistoryService.OPERATE_CLOSE);
             historyDao.save(history);
             return true;

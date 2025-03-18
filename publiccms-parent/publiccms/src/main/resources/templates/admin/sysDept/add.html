@@ -25,7 +25,10 @@
             </dl>
             <dl>
                 <dt><@t.page 'name'/>:</dt>
-                <dd><input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/></dd>
+                <dd>
+                    <input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/>
+                    <label><input name="hasChild" type="checkbox" class="form-check-input"${(a?has_content&&a.hasChild)?then(' checked="checked"','')?no_esc}/><@t.page 'dept.has_child'/></label>
+                </dd>
             </dl>
             <dl>
                 <dt><@t.page 'code'/>:</dt>
@@ -39,8 +42,8 @@
                 <dt><@t.page 'dept.master'/>:</dt>
                 <dd>
                     <input name="userId" value="${userId!}" type="hidden"/>
-                    <input name="nickname" readonly="readonly" size="10" value="<@sys.user id=userId>${(object.nickname)!}</@sys.user>" type="text"/>
-                    <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>    
+                    <input name="nickname" readonly="readonly" size="30" value="<@sys.user id=userId>${(object.nickname)!}</@sys.user>" type="text"/>
+                    <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>
                 </dd>
             </dl>
             <dl>

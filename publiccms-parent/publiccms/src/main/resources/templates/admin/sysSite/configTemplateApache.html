@@ -72,8 +72,8 @@ ProxyPreserveHost On
     ProxyPass ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} balancer://cmsproxy${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
     ProxyPassReverse ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} balancer://cmsproxy${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
 
-    <#if multipleDomain?has_content>
-        <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
+    <#if a?has_content && a.hasChild && a.multiple>
+        <@sys.siteList parentId=a.id pageSize=100>
             <#list page.list as a>
                 <#if a.directory?has_content>
     Alias ${siteLocation?has_content?then('/'+siteLocation,'/')}${a.directory}/ "${realRootPath}/web/site_${a.id}/webfile/"
@@ -118,8 +118,8 @@ ProxyPreserveHost On
     AddOutputFilter INCLUDES .html .shtml
         </#if>
     </#if>
-    <#if multipleDomain?has_content>
-        <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
+    <#if a?has_content && a.hasChild && a.multiple>
+        <@sys.siteList parentId=a.id pageSize=100>
             <#list page.list as a>
                 <#if a.directory?has_content>
     #${a.name} <@t.page 'server_config.static'/>

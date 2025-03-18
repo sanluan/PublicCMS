@@ -14,21 +14,25 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getIpv4Number 获取ip的数字值
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ol>
  * <li>ip
  * </ol>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>number</code>:数字
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * ${getIpv4Number('127.0.0.1')}
  * <p>
- * 
+ *
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getIpv4Number?parameters=127.0.0.1', function(data){

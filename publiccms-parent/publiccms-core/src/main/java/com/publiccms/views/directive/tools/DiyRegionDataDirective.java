@@ -15,30 +15,34 @@ import jakarta.annotation.Resource;
 
 /**
  * regionData diy区域数据获取指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>id</code>:区域id
  * <li><code>categoryId</code>:分类id
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>object</code>:{@link com.publiccms.views.pojo.diy.CmsRegionData}
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.diyMetadata
  * id='00000000-0000-0000-0000-000000000000'&gt;${object.id}&lt;/@tools.diyMetadata&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/regionData?itemId=00000000-0000-0000-0000-000000000000&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/regionData?itemId=00000000-0000-0000-0000-000000000000&amp;appToken=接口访问授权Token', function(data){
    console.log(data.id);
  });
  &lt;/script&gt;
  * </pre>
- * 
+ *
  */
 @Component
 public class DiyRegionDataDirective extends AbstractTemplateDirective {

@@ -16,19 +16,22 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysConfig 配置查询指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>code</code>:配置编码,结果返回<code>object</code>
  * {@link com.publiccms.views.pojo.entities.ConfigInfo}
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@sys.config code='site'&gt;${object.description}&lt;/@sys.config&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/config?code=site&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/sys/config?code=site&amp;appToken=接口访问授权Token', function(data){
   console.log(data.description);
 });
 &lt;/script&gt;

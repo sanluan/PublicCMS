@@ -16,23 +16,26 @@ import com.publiccms.common.tools.RequestUtils;
 import freemarker.template.TemplateException;
 
 /**
-*
-* csrfToken 防跨站请求伪造token指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>admin</code>:是否后台,默认值<code>false</code>:
-* </ul>
-* <p>
-* 返回结果
-* <ul>
-* <li>打印token值
-* </ul>
-* 使用示例
-* <p>
-* &lt;input type="hidden" name="_csrf" value="&lt;@tools.csrfToken/&gt;"/&gt;
-* </p>
-*/
+ *
+ * csrfToken 防跨站请求伪造token指令
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>admin</code>:是否后台,默认值<code>false</code>:
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li>打印token值
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * &lt;input type="hidden" name="_csrf" value="&lt;@tools.csrfToken/&gt;"/&gt;
+ * </p>
+ */
 @Component
 public class CsrfTokenDirective extends AbstractTemplateDirective {
 

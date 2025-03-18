@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Version;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -51,6 +52,13 @@ public class SysLock implements java.io.Serializable {
      */
     @GeneratorColumn(title = "创建日期")
     private Date createDate;
+    /**
+     * update date<p>
+     * 更新日期
+     */
+    @GeneratorColumn(title = "更新日期")
+    @Version
+    private Date updateDate;
 
     public SysLock() {
     }
@@ -61,11 +69,12 @@ public class SysLock implements java.io.Serializable {
         this.createDate = createDate;
     }
 
-    public SysLock(SysLockId id, Long userId, int count, Date createDate) {
+    public SysLock(SysLockId id, Long userId, int count, Date createDate, Date updateDate) {
         this.id = id;
         this.userId = userId;
         this.count = count;
         this.createDate = createDate;
+        this.updateDate = updateDate;
     }
 
     @EmbeddedId
@@ -109,4 +118,13 @@ public class SysLock implements java.io.Serializable {
         this.createDate = createDate;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "update_date", length = 19)
+    public Date getUpdateDate() {
+        return this.updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
 }

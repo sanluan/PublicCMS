@@ -70,11 +70,18 @@ public class SysDept implements java.io.Serializable {
     @GeneratorColumn(title = "负责人", condition = true)
     private Long userId;
     /**
+     * has child
+     * <p>
+     * 拥有子部门
+     */
+    private boolean hasChild;
+    /**
      * max content sort<p>
      * 最大内容置顶级别
      */
     @GeneratorColumn(title = "最大内容置顶级别")
     private int maxSort;
+    
     /**
      * owns all category<p>
      * 拥有全部分类
@@ -97,18 +104,19 @@ public class SysDept implements java.io.Serializable {
     public SysDept() {
     }
 
-    public SysDept(short siteId, String name, String code, int maxSort, boolean ownsAllCategory, boolean ownsAllPage,
+    public SysDept(short siteId, String name, String code, boolean hasChild, int maxSort, boolean ownsAllCategory, boolean ownsAllPage,
             boolean ownsAllConfig) {
         this.siteId = siteId;
         this.name = name;
         this.code = code;
+        this.hasChild = hasChild;
         this.maxSort = maxSort;
         this.ownsAllCategory = ownsAllCategory;
         this.ownsAllPage = ownsAllPage;
         this.ownsAllConfig = ownsAllConfig;
     }
 
-    public SysDept(short siteId, String name, String code, Integer parentId, String description, Long userId, int maxSort,
+    public SysDept(short siteId, String name, String code, Integer parentId, String description, Long userId, boolean hasChild, int maxSort,
             boolean ownsAllCategory, boolean ownsAllPage, boolean ownsAllConfig) {
         this.siteId = siteId;
         this.name = name;
@@ -116,6 +124,7 @@ public class SysDept implements java.io.Serializable {
         this.parentId = parentId;
         this.description = description;
         this.userId = userId;
+        this.hasChild = hasChild;
         this.maxSort = maxSort;
         this.ownsAllCategory = ownsAllCategory;
         this.ownsAllPage = ownsAllPage;
@@ -187,6 +196,15 @@ public class SysDept implements java.io.Serializable {
         this.userId = userId;
     }
 
+    @Column(name = "has_child", nullable = false)
+    public boolean isHasChild() {
+        return this.hasChild;
+    }
+
+    public void setHasChild(boolean hasChild) {
+        this.hasChild = hasChild;
+    }
+    
     @Column(name = "max_sort", nullable = false)
     public int getMaxSort() {
         return this.maxSort;

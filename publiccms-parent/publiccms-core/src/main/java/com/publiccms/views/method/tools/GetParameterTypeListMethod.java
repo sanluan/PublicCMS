@@ -14,17 +14,19 @@ import jakarta.annotation.Resource;
 /**
  *
  * getParameterTypeList 获取参数类型list
- * <p>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>list</code>:参数类型名称
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;#list getParameterTypeList() as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;
  * <p>
- * 
+ *
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getParameterTypeList?appToken=接口访问授权Token', function(data){

@@ -37,17 +37,21 @@ import freemarker.template.TemplateException;
 /**
 *
 * contentCheck 内容审核接口
-* <p>
-* 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
 * <ul>
  * <li><code>ids</code>:多个内容id
  * <li><code>uncheck</code>:取消审核, 【true,false】,默认为<code>false</code>
 * </ul>
-* <p>
-* 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
 * <ul>
 * </ul>
-* 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
 * <p>
  * 
 * <pre>

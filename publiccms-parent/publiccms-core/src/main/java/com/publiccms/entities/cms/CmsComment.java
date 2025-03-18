@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Version;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -102,6 +103,7 @@ public class CmsComment implements java.io.Serializable {
      * 更新日期
      */
     @GeneratorColumn(title = "更新日期", order = true)
+    @Version
     private Date updateDate;
     /**
      * create date

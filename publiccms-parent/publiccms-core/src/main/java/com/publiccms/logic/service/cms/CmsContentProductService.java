@@ -105,6 +105,13 @@ public class CmsContentProductService extends BaseService<CmsContentProduct> {
         }
     }
 
+    /**
+     * @param contentId
+     */
+    public void deleteByContentId(Long contentId) {
+        dao.deleteByContentId(contentId);
+    }
+
     @Resource
     private CmsContentProductDao dao;
 

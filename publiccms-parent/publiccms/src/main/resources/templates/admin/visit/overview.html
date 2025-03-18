@@ -1,0 +1,186 @@
+<a class="button float" href="visit/overview.html" target="ajax" rel="visitBox"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
+<div class="pageFormContent" layoutH>
+    <fieldset>
+        <legend><@t.page 'visit'/></legend>
+        <div class="unit clearfix">
+            <div id="todayVisit" class="chart" data-id="todayVisitChart" style="width:50%;"></div>
+            <div id="yestodayVisit" class="chart" data-id="yestodayVisitChart" style="width:50%;"></div>
+        </div>
+        <div class="unit">
+            <div id="allVisit" class="chart" data-id="allVisitChart" style="width:100%;height:400px;"></div>
+        </div>
+    </fieldset>
+</div>
+<script>
+<@visit.dayList startVisitDate=(.now?long-86400000)?number_to_date hourAnalytics=true>
+todayVisitChart=echarts.init(document.getElementById('todayVisit'));
+todayVisitChart.setOption({
+    title: {
+        text: '${.now?date} <@t.page 'visit'/>',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['PV', 'UV', 'IP Views'],
+        top:30
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [<#list page.list?reverse as a>'${a.id.visitHour!}'<#sep>,</#list>]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+    {
+        name:'PV',
+        type:'line',
+        smooth: true,
+        data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
+        areaStyle: {}
+    },
+    {
+       name:'UV',
+       type:'line',
+       smooth: true,
+       data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
+       areaStyle: {}
+    },
+    {
+       name:'IP Views',
+       type:'line',
+       smooth: true,
+       data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
+       areaStyle: {}
+    }]
+});
+</@visit.dayList>
+<@visit.dayList startVisitDate=(.now?long-2*86400000)?number_to_date endVisitDate=(.now?long-86400000)?number_to_date hourAnalytics=true>
+yestodayVisitChart=echarts.init(document.getElementById('yestodayVisit'));
+yestodayVisitChart.setOption({
+    title: {
+        text: '${(.now?long-86400000)?number_to_date?date} <@t.page 'visit.history'/>',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    legend: {
+        data: ['PV', 'UV', 'IP Views'],
+        top:30
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [<#list page.list?reverse as a>'${a.id.visitHour!}'<#sep>,</#list>]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+    {
+       name:'PV',
+       type:'line',
+       smooth: true,
+       data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
+       areaStyle: {}
+   },
+   {
+       name:'UV',
+       type:'line',
+       smooth: true,
+       data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
+       areaStyle: {}
+   },
+   {
+       name:'IP Views',
+       type:'line',
+       smooth: true,
+       data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
+       areaStyle: {}
+   }]
+});
+</@visit.dayList>
+<@visit.dayList startVisitDate=(.now?long-30*86400000)?number_to_date>
+allVisitChart=echarts.init(document.getElementById('allVisit'));
+allVisitChart.setOption({
+    title: {
+        text: '<@t.page 'visit.history'/>',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    legend: {
+        data: ['PV', 'UV', 'IP Views'],
+        top:30
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [<#list page.list?reverse as a>'${a.id.visitDate?string('MM-dd')}'<#sep>,</#list>]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+    {
+       name:'PV',
+       type:'line',
+       smooth: true,
+       data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
+       areaStyle: {}
+    },
+    {
+       name:'UV',
+       type:'line',
+       smooth: true,
+       data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
+       areaStyle: {}
+    },
+    {
+       name:'IP Views',
+       type:'line',
+       smooth: true,
+       data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
+       areaStyle: {}
+    }]
+});
+</@visit.dayList>
+</script>

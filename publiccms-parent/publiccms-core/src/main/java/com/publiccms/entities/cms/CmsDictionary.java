@@ -29,15 +29,20 @@ public class CmsDictionary implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private CmsDictionaryId id;
     /**
-     * name<p>
+     * <p lang="en">
+     * name
+     * <p lang="zh">
      * 名称
+     * <p lang="ja">
+     * 名前
      */
     @GeneratorColumn(title = "名称")
     @NotNull
     @Length(max = 100)
     private String name;
     /**
-     * child depth<p>
+     * child depth
+     * <p>
      * 子级深度
      */
     @GeneratorColumn(title = "子级深度")

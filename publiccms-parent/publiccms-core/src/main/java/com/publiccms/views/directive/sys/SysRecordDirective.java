@@ -20,21 +20,30 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysRecord 自定义记录查询写入指令
- * <p>
+ * <p lang="zh">
  * 参数列表
+ * <p lang="en">
+ * parameter list
+ * <p lang="ja">
+ * パラメータリスト
  * <ul>
  * <li><code>code</code>:记录编码,结果返回<code>object</code>
  * <li><code>data</code>:记录数据,不为空时记录该数据
  * {@link com.publiccms.entities.sys.SysRecord}
  * <li><code>codes</code>:多个记录编码,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
+ * <p lang="zh">
  * 使用示例
+ * <p lang="en">
+ * usage example
+ * <p lang="ja">
+ * 使用例
  * <p>
  * &lt;@sys.record code='site' data='data'&gt;${object.data}&lt;/@sys.record&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/record?code=site&amp;data=data&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/sys/record?code=site&amp;data=data&amp;appToken=接口访问授权Token', function(data){
  console.log(data.data);
 });
 &lt;/script&gt;
@@ -50,8 +59,7 @@ public class SysRecordDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(code)) {
             String data = handler.getString("data");
-            SysRecordId id = new SysRecordId(site.getId(), code);
-            SysRecord entity = service.saveOrUpdate(id, data);
+            SysRecord entity = service.getOrCreateOrUpdate(site.getId(), code, data);
             if (null != entity) {
                 handler.put("object", entity).render();
             }

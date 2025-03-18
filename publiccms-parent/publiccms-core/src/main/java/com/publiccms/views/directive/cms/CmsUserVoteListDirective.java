@@ -17,8 +17,9 @@ import com.publiccms.common.handler.PageHandler;
 /**
  *
  * userVoteList 用户投票列表查询指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>userId</code>:用户id
  * <li><code>voteId</code>:投票id
@@ -26,21 +27,24 @@ import com.publiccms.common.handler.PageHandler;
  * <li><code>pageIndex</code>:页码
  * <li><code>pageSize</code>:每页条数
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
  * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsUserVote}
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@cms.userVoteList userId=1 pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.ip}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userVoteList&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userVoteList?userId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/cms/userVoteList?userId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;

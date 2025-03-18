@@ -67,7 +67,7 @@
                 <th><@t.page 'payment.account_type'/></th>
                 <th><@t.page 'payment.account_serial_number'/></th>
                 <th><@t.page 'status'/></th>
-                <th><@t.page 'payment.process'/></th>
+                <th><@t.page 'order.toprocess'/></th>
                 <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
@@ -99,7 +99,7 @@
                 <td>${a.accountSerialNumber!}</td>
                 <td><span class="statusText ${a.status?switch(1,'green',0,'orange',2,'orange','')}"><@t.page 'status.payment.'+a.status/></span></td>
                 <td>
-                    ${a.processed?then(t.pageMessage('yes'),'')} ${a.processDate!}
+                    <span class="statusText ${a.processed?then('green','orange')}">${a.processed?then(t.pageMessage('no'),'')}</span> ${a.processDate!}
                 </td>
                 <td>${a.createDate!}</td>
                 <td class="wrap">

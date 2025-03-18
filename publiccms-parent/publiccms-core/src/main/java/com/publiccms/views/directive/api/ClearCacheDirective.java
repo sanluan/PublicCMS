@@ -14,19 +14,20 @@ import jakarta.annotation.Resource;
 import freemarker.template.TemplateException;
 
 /**
-*
-* clearCache 缓存清理接口
-* <p>
-* 使用示例
-* <p>
-* <pre>
+ *
+ * clearCache 缓存清理接口
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * <pre>
   &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/clearCache&amp;appToken=接口访问授权Token', function(data){    
+   $.getJSON('${site.dynamicPath}api/clearCache&amp;appToken=接口访问授权Token', function(data){
      console.log("ok");
    });
    &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class ClearCacheDirective extends AbstractAppDirective {
 

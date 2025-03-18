@@ -6,7 +6,7 @@
 <@cms.contentList advanced=true status=status modelId=modelIds parentId=parentId title=title userId=admin.id
             startPublishDate=startPublishDate endPublishDate=endPublishDate
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@sys.authorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/export,cmsComment/list'><#assign authorizedMap=map/></@sys.authorized>
+<@sys.authorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/export,cmsComment/list,sysWorkflowProcess/view'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader card">
     <form class="pagerForm" action="myself/contentList.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -18,7 +18,7 @@
                     <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}"/>
                 </li>
                 <li class="width:auto">
-                    <#include "../include_page/status.html"/>
+                    <#include "../include_page/contentStatus.html"/>
                 </li>
                 <li>
                     <label><@t.page 'publish_date'/>:</label>
@@ -85,11 +85,13 @@
                 <@t.merge 'checkUserIds' a.checkUserId!/>
                 <@t.merge 'categoryIds' a.categoryId!/>
                 <@t.merge 'modelIds' a.modelId!/>
+                <@t.merge 'ids' a.id!/>
             </#list>
 
             <@sys.user ids=t.checkUserIds!><#assign checkUserMap=map!/></@sys.user>
             <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
             <@cms.model ids=t.modelIds!><#assign modelMap=map!/></@cms.model>
+            <@sys.workflowProcess itemType="content" itemIds=t.ids!><#assign processMap=map!/></@sys.workflowProcess>
 
             <#list page.list as a>
                 <#assign contentId=(a.quoteContentId?has_content)?then(a.quoteContentId,a.id)/>
@@ -127,17 +129,18 @@
                 <td class="center">${a.clicks!}</td>
                 <td class="center">${a.publishDate!}</td>
                 <td>
-                    <span class="statusText ${a.status?switch(1,'green',2,'orange',3,'red','')}"><@t.page 'status.content.'+a.status/></span>
-                    <#if 1==a.status>/${(checkUserMap[a.checkUserId?string].nickname)!}</#if>
+                    <span class="statusText ${a.status?switch(1,'green',2,'orange',3,'red',4,'orange','')}"><@t.page 'status.content.'+a.status/></span>
+                    <#if 1 = a.status>/${(checkUserMap[a.checkUserId?string].nickname)!}</#if>
                 </td>
                 <td class="wrap">
-                    <#if authorizedMap['cmsContent/add']>
+                    <#if 4 != a.status && authorizedMap['cmsContent/add']>
                         <a href="cmsContent/add.html?id=${a.id}&navTabId=myself/contentList" class="edit btnText blue" target="navTab" rel="myself/contentList/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a></li>
                     </#if>
-                    <#if authorizedMap['cmsContent/push']>
-                        <#if 1==a.status>
-                            <a href="cmsContent/push.html?contentId=${contentId}" class="btnText green" width="1200" height="600" target="dialog" mask="true"><@t.page 'button.push'/></a>
-                        </#if>
+                    <#if 4 = a.status && authorizedMap['sysWorkflowProcess/view']>
+                        <a href="sysWorkflowProcess/view.html?id=${processMap[a.id?string].id}" class="edit btnText blue" target="dialog" rel="viewProcess${a.id}" width="1200" height="500"><@t.page 'workflow.check'/></a>
+                    </#if>
+                    <#if 1 = a.status && authorizedMap['cmsContent/push']>
+                        <a href="cmsContent/push.html?contentId=${contentId}" class="btnText green" width="1200" height="600" target="dialog" mask="true"><@t.page 'button.push'/></a>
                     </#if>
                 </td>
             </tr>

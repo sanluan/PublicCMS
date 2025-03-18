@@ -33,20 +33,23 @@ public class SysSite implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private Short id;
     /**
-     * parent site id<p>
+     * parent site id
+     * <p>
      * 父站点id
      */
     @GeneratorColumn(title = "父站点", condition = true)
     private Short parentId;
     /**
-     * directory<p>
+     * directory
+     * <p>
      * 目录
      */
     @GeneratorColumn(title = "目录")
     @Length(max = 50)
     private String directory;
     /**
-     * name<p>
+     * name
+     * <p>
      * 名称
      */
     @GeneratorColumn(title = "名称", condition = true, like = true)
@@ -54,13 +57,15 @@ public class SysSite implements java.io.Serializable {
     @Length(max = 50)
     private String name;
     /**
-     * use static<p>
+     * use static
+     * <p>
      * 启用静态化
      */
     @GeneratorColumn(title = "启用静态化")
     private boolean useStatic;
     /**
-     * site url<p>
+     * site url
+     * <p>
      * 静态站点地址
      */
     @GeneratorColumn(title = "站点地址")
@@ -68,19 +73,36 @@ public class SysSite implements java.io.Serializable {
     @Length(max = 255)
     private String sitePath;
     /**
-     * use SSI<p>
+     * use SSI
+     * <p>
      * 启用服务器端包含
      */
     @GeneratorColumn(title = "启用SSI")
     private boolean useSsi;
     /**
-     * dynamic site url<p>
+     * dynamic site url
+     * <p>
      * 动态站点地址
      */
     @GeneratorColumn(title = "动态站点地址")
     @NotNull
     @Length(max = 255)
     private String dynamicPath;
+
+    /**
+     * has child site
+     * <p>
+     * 拥有子站点
+     */
+    @GeneratorColumn(title = "拥有子站点")
+    private boolean hasChild;
+    /**
+     * multiple site
+     * <p>
+     * 站群
+     */
+    @GeneratorColumn(title = "站群")
+    private boolean multiple;
     @GeneratorColumn(title = "禁用", condition = true)
     @JsonIgnore
     private boolean disabled;
@@ -88,17 +110,20 @@ public class SysSite implements java.io.Serializable {
     public SysSite() {
     }
 
-    public SysSite(String name, boolean useStatic, String sitePath, boolean useSsi, String dynamicPath, boolean disabled) {
+    public SysSite(String name, boolean useStatic, String sitePath, boolean useSsi, String dynamicPath, boolean hasChild,
+            boolean multiple, boolean disabled) {
         this.name = name;
         this.useStatic = useStatic;
         this.sitePath = sitePath;
         this.useSsi = useSsi;
         this.dynamicPath = dynamicPath;
+        this.hasChild = hasChild;
+        this.multiple = multiple;
         this.disabled = disabled;
     }
 
     public SysSite(Short parentId, String directory, String name, boolean useStatic, String sitePath, boolean useSsi,
-            String dynamicPath, boolean disabled) {
+            String dynamicPath, boolean hasChild, boolean multiple, boolean disabled) {
         this.parentId = parentId;
         this.directory = directory;
         this.name = name;
@@ -106,6 +131,8 @@ public class SysSite implements java.io.Serializable {
         this.sitePath = sitePath;
         this.useSsi = useSsi;
         this.dynamicPath = dynamicPath;
+        this.hasChild = hasChild;
+        this.multiple = multiple;
         this.disabled = disabled;
     }
 
@@ -181,6 +208,24 @@ public class SysSite implements java.io.Serializable {
 
     public void setDynamicPath(String dynamicPath) {
         this.dynamicPath = dynamicPath;
+    }
+
+    @Column(name = "has_child", nullable = false)
+    public boolean isHasChild() {
+        return this.hasChild;
+    }
+
+    public void setHasChild(boolean hasChild) {
+        this.hasChild = hasChild;
+    }
+
+    @Column(name = "multiple", nullable = false)
+    public boolean isMultiple() {
+        return this.multiple;
+    }
+
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
     }
 
     @Column(name = "disabled", nullable = false)

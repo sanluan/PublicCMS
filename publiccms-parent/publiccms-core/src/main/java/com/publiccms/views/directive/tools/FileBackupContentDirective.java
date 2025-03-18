@@ -16,30 +16,34 @@ import freemarker.template.TemplateException;
 
 /**
  * fileBackupContent 备份文件内容获取指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>type</code>:文件类型【file,task,template】,默认template
  * <li><code>path</code>:文件路径
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>object</code>:文件内容文本
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.fileBackupContent type='file'
  * path='index.html'&gt;${object}&lt;/@tools.fileBackupContent&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/fileBackupContent?type=file&amp;path=index.html&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/fileBackupContent?type=file&amp;path=index.html&amp;appToken=接口访问授权Token', function(data){
    console.log(data);
  });
  &lt;/script&gt;
  * </pre>
- * 
+ *
  */
 @Component
 public class FileBackupContentDirective extends AbstractTemplateDirective {

@@ -114,6 +114,13 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
             }
         }
     }
+    
+    /**
+     * @param contentId
+     */
+    public void deleteByContentId(Long contentId) {
+        dao.deleteByContentId(contentId);
+    }
 
     @Resource
     private CmsContentFileDao dao;

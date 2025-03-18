@@ -12,31 +12,34 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
-*
-* getKeywords 获取分词结果
-* <p>
-* 参数列表
-* <ol>
-* <li>完整语句
-* </ol>
-* <p>
-* 返回结果
-* <ul>
-* <li><code>list</code>(<code>string</code>):分词结果set
-* </ul>
-* 使用示例
-* <p>
-* &lt;#list getKeywords('这是一段话') as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;&lt;
-* <p>
-* 
-* <pre>
+ *
+ * getKeywords 获取分词结果
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ol>
+ * <li>完整语句
+ * </ol>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>list</code>(<code>string</code>):分词结果set
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * &lt;#list getKeywords('这是一段话') as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;&lt;
+ * <p>
+ *
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getKeywords?parameters=这是一段话', function(data){
 console.log(data);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class GetKeywordsMethod extends BaseMethod {
 

@@ -1,0 +1,85 @@
+<@sys.workflowProcess id=id><#assign a=object/></@sys.workflowProcess>
+<form action="sysWorkflowProcess/handle?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+    <input type="hidden" name="processId" value="${id!}"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <div class="pageFormContent" layoutH>
+<#if a?has_content>
+        <dl class="nowrap">
+            <dt><@t.page "title"/>:</dt>
+            <dd class="exclude-translate">${(a.title)!}</dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page "workflow"/>:</dt>
+            <dd class="exclude-translate"><@sys.workflow id=a.workflowId;workflow>${workflow.name!}</@sys.workflow></dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page "step"/>:</dt>
+            <dd class="exclude-translate"><@sys.workflowStep id=a.stepId;step>${step.name!}</@sys.workflowStep></dd>
+        </dl>
+        <fieldset>
+            <legend><@t.page "workflow"/></legend>
+            <div class="workflow">
+                <div class="text-center step processed">
+                    <i class="bi bi-record-circle"></i><br><@t.page "start"/>
+                </div>
+                <@sys.workflowProcessHistoryList processId=id pageSize=100>
+                    <#list page.list as a>
+                        <@t.merge 'stepIds' a.stepId!/>
+                        <@t.merge 'userIds' a.userId!/>
+                    </#list>
+                    
+                    <@sys.workflowStep ids=t.stepIds!><#assign stepMap=map!/></@sys.workflowStep>
+                    <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+                    <#assign sort=0/>
+                    <#list page.list as a>
+                        <div class="text-center step <#if a.operate='agree'>processed<#elseif a.operate='reject'>reject</#if>">
+                            ${(stepMap[a.stepId?string].name)!t.pageMessage('page.disabled')}
+                            <br>
+                            ${(userMap[a.userId?string].nickname)!}:${a.reason!}
+                        </div>
+                        <#assign sort=(stepMap[a.stepId?string].sort)!0/>
+                    </#list>
+                </@sys.workflowProcessHistoryList>
+
+                <@sys.workflowStepList workflowId=a.workflowId sort=sort pageSize=100>
+                    <#list list as step>
+            <div class="text-center step<#if (a.stepId)?has_content && a.stepId=step.id> current</#if>">
+                ${step.name}
+                <br>
+                <#if step.roleId?has_content>
+                    <@t.page 'role'/>:<@sys.role id=step.roleId;role>${role.name}</@sys.role>
+                <#elseif step.deptId?has_content>
+                    <@t.page 'dept'/>:<@sys.dept id=step.deptId;dept>${dept.name}</@sys.dept>
+                <#elseif step.userId?has_content>
+                    <@t.page 'user'/>:<@sys.user id=step.userId;user>${user.nickname}</@sys.user>
+                </#if>
+            </div>
+                    </#list>
+                </@sys.workflowStepList>
+                <div class="text-center step">
+                    <i class="bi bi-stop-circle"></i><br><@t.page "end"/>
+                </div>
+            </div>
+        </fieldset>
+        <dl class="nowrap">
+            <dt><@t.page "operate"/>:</dt>
+            <dd>
+                <select class="combox" name="operate">
+                    <option value="agree"><@t.page "check_passed"/></option>
+                    <option value="reject"><@t.page "button.reject"/></option>
+                </select>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page "comment"/>:</dt>
+            <dd><textarea name="reason" class="required" maxlength="200" cols="80" rows="3"></textarea></dd>
+        </dl>
+</#if>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.handle'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+</form>

@@ -32,6 +32,7 @@ import org.apache.pdfbox.cos.COSObject;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.drew.imaging.ImageProcessingException;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.views.pojo.entities.FileUploadResult;
@@ -82,25 +83,20 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final String[] DOCUMENT_FILE_SUFFIXS = new String[] { ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf",
-            ".txt", ".md", ".xml", ".ofd" };
+    public static final String[] DOCUMENT_FILE_SUFFIXS = new String[] { ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf", ".txt", ".md", ".ofd" };
     /**
      * 
      */
-    public static final String[] VIDEO_FILE_SUFFIXS = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
-            ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm" };
+    public static final String[] VIDEO_FILE_SUFFIXS = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm" };
     /**
      * 
      */
-    public static final String[] OTHER_FILE_SUFFIXS = new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso",
-            ".psd" };
+    public static final String[] OTHER_FILE_SUFFIXS = new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso", ".psd" };
     /**
      * 
      */
-    public static final String[] ALLOW_FILES = ArrayUtils.addAll(
-            ArrayUtils.addAll(ArrayUtils.addAll(ArrayUtils.addAll(AUDIO_FILE_SUFFIXS, VIDEO_FILE_SUFFIXS), IMAGE_FILE_SUFFIXS),
-                    DOCUMENT_FILE_SUFFIXS),
-            OTHER_FILE_SUFFIXS);
+    public static final String[] ALLOW_FILES = ArrayUtils
+            .addAll(ArrayUtils.addAll(ArrayUtils.addAll(ArrayUtils.addAll(AUDIO_FILE_SUFFIXS, VIDEO_FILE_SUFFIXS), IMAGE_FILE_SUFFIXS), DOCUMENT_FILE_SUFFIXS), OTHER_FILE_SUFFIXS);
     /**
      * 
      */
@@ -108,8 +104,7 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final String[] OTHER_FILETYPES = new String[] { CmsFileUtils.FILE_TYPE_VIDEO, CmsFileUtils.FILE_TYPE_AUDIO,
-            CmsFileUtils.FILE_TYPE_DOCUMENT, CmsFileUtils.FILE_TYPE_OTHER };
+    public static final String[] OTHER_FILETYPES = new String[] { CmsFileUtils.FILE_TYPE_VIDEO, CmsFileUtils.FILE_TYPE_AUDIO, CmsFileUtils.FILE_TYPE_DOCUMENT, CmsFileUtils.FILE_TYPE_OTHER };
 
     /**
      * 
@@ -141,7 +136,7 @@ public class CmsFileUtils {
     public static final String FILE_TYPE_PDF = "pdf";
 
     /**
-     * 获取目录下文件列表
+     * 获取目录下文件列表 Get file list in directory ディレクトリ内のファイルリストを取得します
      *
      * @param dirPath
      * @param orderField
@@ -152,7 +147,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 获取目录下文件列表
+     * 获取目录下文件列表 Get file list in directory ディレクトリ内のファイルリストを取得します
      *
      * @param dirPath
      * @param parentPath
@@ -168,7 +163,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 获取目录下文件列表
+     * 获取目录下文件列表 Get file list in directory ディレクトリ内のファイルリストを取得します
      *
      * @param dirPath
      * @param fileList
@@ -204,7 +199,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 获取目录下文件列表
+     * 获取目录下文件列表 Get file list in directory ディレクトリ内のファイルリストを取得します
      *
      * @param dirPath
      * @param parentPath
@@ -247,7 +242,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 获取目录下文件列表
+     * 获取目录下文件列表 Get file list in directory ディレクトリ内のファイルリストを取得します
      *
      * @param dirPath
      * @param useFilter
@@ -261,8 +256,7 @@ public class CmsFileUtils {
                 Path fileNamePath = entry.getFileName();
                 if (null != fileNamePath) {
                     String fileName = fileNamePath.toString();
-                    if (!useFilter
-                            || !fileName.endsWith(".data") && !TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
+                    if (!useFilter || !fileName.endsWith(".data") && !TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
                         BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
                         fileList.add(new FileInfo(fileName, attrs.isDirectory(), attrs));
                     }
@@ -292,6 +286,8 @@ public class CmsFileUtils {
     }
 
     /**
+     * 将字节数组写入文件 Write byte array to file バイト配列をファイルに書き込みます
+     *
      * @param filepath
      * @param data
      * @throws IOException
@@ -301,6 +297,8 @@ public class CmsFileUtils {
     }
 
     /**
+     * 获取文件大小 Get file size ファイルサイズを取得します
+     *
      * @param filepath
      * @param filename
      * @param suffix
@@ -311,6 +309,8 @@ public class CmsFileUtils {
     }
 
     /**
+     * 获取文件大小 Get file size ファイルサイズを取得します
+     *
      * @param file
      * @param suffix
      * @return uploadResult
@@ -324,20 +324,30 @@ public class CmsFileUtils {
             suffix = CommonUtils.joinString(Constants.DOT, suffix);
         }
         if (ArrayUtils.contains(IMAGE_FILE_SUFFIXS, suffix)) {
-            try (FileInputStream fis = new FileInputStream(file)) {
-                BufferedImage bufferedImg = ImageIO.read(fis);
-                if (null != bufferedImg) {
-                    uploadResult.setImage(true);
-                    uploadResult.setWidth(bufferedImg.getWidth());
-                    uploadResult.setHeight(bufferedImg.getHeight());
+            try {
+                int angle = ImageUtils.getAngle(file);
+                try (FileInputStream fis = new FileInputStream(file)) {
+                    BufferedImage bufferedImg = ImageIO.read(fis);
+                    if (null != bufferedImg) {
+                        uploadResult.setImage(true);
+                        if (90 == angle || 270 == angle) {
+                            uploadResult.setWidth(bufferedImg.getHeight());
+                            uploadResult.setHeight(bufferedImg.getWidth());
+                        } else {
+                            uploadResult.setWidth(bufferedImg.getWidth());
+                            uploadResult.setHeight(bufferedImg.getHeight());
+                        }
+                    }
                 }
-            } catch (Exception e) {
+            } catch (IOException | ImageProcessingException e) {
             }
         }
         return uploadResult;
     }
 
     /**
+     * 将输入流复制到文件 Copy input stream to file 入力ストリームをファイルにコピーします
+     *
      * @param source
      * @param destination
      * @throws IOException
@@ -348,6 +358,8 @@ public class CmsFileUtils {
     }
 
     /**
+     * 将文件复制到文件 Copy file to file ファイルをファイルにコピーします
+     *
      * @param source
      * @param destination
      * @throws IOException
@@ -357,6 +369,8 @@ public class CmsFileUtils {
     }
 
     /**
+     * 将文件复制到输出流 Copy file to output stream ファイルを出力ストリームにコピーします
+     *
      * @param filepath
      * @param outputStream
      * @throws IOException
@@ -368,6 +382,8 @@ public class CmsFileUtils {
     }
 
     /**
+     * 创建目录 Create directory ディレクトリを作成します
+     *
      * @param filepath
      */
     public static void mkdirs(String filepath) {
@@ -376,6 +392,8 @@ public class CmsFileUtils {
     }
 
     /**
+     * 创建父目录 Create parent directory 親ディレクトリを作成します
+     *
      * @param filepath
      */
     public static void mkdirsParent(String filepath) {
@@ -384,6 +402,8 @@ public class CmsFileUtils {
     }
 
     /**
+     * 判断是否为目录 Check if it is a directory ディレクトリであるかどうかを確認します
+     *
      * @param filepath
      * @return
      */
@@ -393,6 +413,8 @@ public class CmsFileUtils {
     }
 
     /**
+     * 判断是否为文件 Check if it is a file ファイルであるかどうかを確認します
+     *
      * @param filepath
      * @return
      */
@@ -402,6 +424,8 @@ public class CmsFileUtils {
     }
 
     /**
+     * 判断文件是否存在 Check if file exists ファイルが存在するかどうかを確認します
+     *
      * @param filepath
      * @return
      */
@@ -410,7 +434,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 写入文件
+     * 写入文件 Write to file ファイルに書き込みます
      *
      * @param filepath
      * @param content
@@ -427,7 +451,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 移动文件或目录
+     * 移动文件或目录 Move file or directory ファイルまたはディレクトリを移動します
      *
      * @param filepath
      * @param backupFilePath
@@ -454,6 +478,8 @@ public class CmsFileUtils {
     }
 
     /**
+     * 获取安全的文件名 Get safe file name セーフなファイル名を取得します
+     *
      * @param path
      * @return safe file path
      */
@@ -466,7 +492,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 移动文件或目录
+     * 删除文件或目录 Delete file or directory ファイルまたはディレクトリを削除します
      *
      * @param filepath
      * @return whether to move successfully
@@ -481,7 +507,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 修改文件内容
+     * 修改文件内容 Update file content ファイルの内容を更新します
      * 
      * @param filepath
      * @param historyFilePath
@@ -506,7 +532,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 获取文件内容
+     * 判断文件是否安全 Check if file is safe ファイルが安全であるかどうかを確認します
      *
      * @param filepath
      * @param suffix
@@ -540,8 +566,7 @@ public class CmsFileUtils {
                 if (null != dic.getDictionaryObject(COSName.JS) || null != dic.getDictionaryObject(COSName.JAVA_SCRIPT)) {
                     return false;
                 }
-            } else if (realObject instanceof COSName
-                    && (COSName.JS.equals(realObject) || COSName.JAVA_SCRIPT.equals(realObject))) {
+            } else if (realObject instanceof COSName && (COSName.JS.equals(realObject) || COSName.JAVA_SCRIPT.equals(realObject))) {
                 return false;
 
             }
@@ -550,9 +575,10 @@ public class CmsFileUtils {
     }
 
     /**
-     * 获取文件内容
+     * 获取文件内容 Get file content ファイルの内容を取得します
      *
      * @param filepath
+     * @param suffix
      * @return file content
      */
     public static String getFileContent(String filepath) {
@@ -568,7 +594,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 获取文件名
+     * 获取上传文件名 Get upload file name アップロードファイル名を取得します
      *
      * @param suffix
      * @return upload file name
@@ -585,7 +611,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 获取私有文件前面字符串
+     * 获取私有文件签名字符串 Get private file sign string 私有ファイルの署名文字列を取得します
      * 
      * @param expiry
      * @param filepath
@@ -596,7 +622,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 获取用户私有文件名
+     * 获取用户私有文件名 Get user private file name ユーザーのプライベートファイル名を取得します
      * 
      * @param userId
      * @param filepath
@@ -607,8 +633,8 @@ public class CmsFileUtils {
     }
 
     /**
-     * 获取文件名
-     * 
+     * 获取文件名 Get file name ファイル名を取得します
+     *
      * @param filePath
      * @return suffix
      */
@@ -623,7 +649,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 获取文件后缀
+     * 获取文件后缀 Get file suffix ファイルのサフィックスを取得します
      *
      * @param originalFilename
      * @return suffix
@@ -632,13 +658,18 @@ public class CmsFileUtils {
         if (null != originalFilename) {
             int index = originalFilename.lastIndexOf(Constants.DOT);
             if (-1 < index) {
-                return originalFilename.substring(originalFilename.lastIndexOf(Constants.DOT), originalFilename.length())
-                        .toLowerCase();
+                return originalFilename.substring(originalFilename.lastIndexOf(Constants.DOT), originalFilename.length()).toLowerCase();
             }
         }
         return null;
     }
 
+    /**
+     * 获取文件类型 Get file type ファイルタイプを取得します
+     *
+     * @param suffix
+     * @return file type
+     */
     public static String getFileType(String suffix) {
         if (null != suffix && !suffix.startsWith(Constants.DOT)) {
             suffix = CommonUtils.joinString(Constants.DOT, suffix);
@@ -657,7 +688,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 上传文件
+     * 上传文件 Upload file ファイルをアップロードします
      *
      * @param data
      * @param fileName
@@ -670,7 +701,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 上传文件
+     * 上传文件 Upload file ファイルをアップロードします
      *
      * @param data
      * @param fileName
@@ -680,8 +711,7 @@ public class CmsFileUtils {
      * @throws IllegalStateException
      * @throws IOException
      */
-    public static String upload(byte[] data, String fileName, String originalName, String metadataPath)
-            throws IllegalStateException, IOException {
+    public static String upload(byte[] data, String fileName, String originalName, String metadataPath) throws IllegalStateException, IOException {
         File dest = new File(fileName);
         dest.getParentFile().mkdirs();
         FileUtils.writeByteArrayToFile(dest, data);
@@ -695,7 +725,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * 上传文件
+     * 上传文件 Upload file ファイルをアップロードします
      *
      * @param file
      * @param fileName
@@ -793,7 +823,7 @@ public class CmsFileUtils {
     }
 
     /**
-     * FileSearchResult 文件查找结果
+     * FileSearchResult 文件查找結果
      * 
      */
     public static class FileSearchResult {
@@ -838,7 +868,7 @@ public class CmsFileUtils {
 
     /**
      *
-     * FileInfo 文件信息封装类
+     * FileInfo ファイル情報封装クラス
      *
      */
     public static class FileInfo {

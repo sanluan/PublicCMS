@@ -205,7 +205,7 @@
             });
         },
         _getOverSortBox: function ($item) {
-            var itemPos = $item.offset(),y = itemPos.top, x = itemPos.left + ($item.width() / 2);
+            var itemPos = $item.offset(),y = itemPos.top + ($item.height() / 2), x = itemPos.left + ($item.width() / 2);
             var op = $.extend({}, _op, $item.data("op"));
             return $(op.sortBoxs).filter(":visible").filter(function(){
                 var $sortBox = $(this);
@@ -302,7 +302,7 @@
             }
         },
         _getOverSortBox: function($item) {
-            var itemPos = $item.offset(), y = itemPos.top + $item.height() / 2, x = itemPos.left + $item.width() / 2;
+            var itemPos = $item.offset(), y = itemPos.top + ($item.height() / 2), x = itemPos.left + ($item.width() / 2);
             var op = $item.data("op");
             return $(op.sortBoxs).filter(":visible").filter(function() {
                 var $sortBox = $(this);
@@ -381,6 +381,9 @@
                 if("function" === typeof initLink){
                     initLink($result);
                 }
+                $result.find("input[data-class]").each(function(){
+                    $(this).addClass($(this).data("class"));
+                });
                 $placeholder.remove();
                 $helper.remove();
                 if ($sortBox.data("duplicate") != 1) {
@@ -457,11 +460,12 @@
                     }
                     $sortDrag.find(">.dragItem").each(function() {
                         var $dragItem = $(this);
-                        var itemData = {
-                            id: $dragItem.data("id")
-                        };
-                        $dragItem.find(">.ctl-label>:input").each(function() {
-                            var $lable = $(this), lableName = $lable.data("name");
+                        var itemData = {};
+                        if($dragItem.data("id")){
+                            itemData["id"]=$dragItem.data("id");
+                        }
+                        $dragItem.find(":input").each(function() {
+                            var $lable = $(this), lableName = $lable.attr("name")||$lable.data("name");
                             if (lableName) {
                                 if ("checkbox" == $lable.attr("type")) {
                                     itemData[lableName] = $lable.is(":checked");

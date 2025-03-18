@@ -11,27 +11,29 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
-*
-* getUUID 获取UUID
-* <p>
-* <p>
-* 返回结果
-* <ul>
-* <li><code>string</code>:随机uuid
-* </ul>
-* 使用示例
-* <p>
-* ${getUUID()}
-* <p>
-* 
-* <pre>
+ *
+ * getUUID 获取UUID
+ * <p>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>string</code>:随机uuid
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * ${getUUID()}
+ * <p>
+ *
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getUUID', function(data){
 console.log(data);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class GetUUIDMethod extends BaseMethod {
 
@@ -39,7 +41,7 @@ public class GetUUIDMethod extends BaseMethod {
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         return UUID.randomUUID();
     }
-    
+
     @Override
     public boolean needAppToken() {
         return false;

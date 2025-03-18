@@ -21,8 +21,9 @@ import jakarta.annotation.Resource;
 /**
  *
  * userCollection 用户收藏查询指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>userId</code>:用户id
  * <li><code>contentId</code>:内容id,结果返回<code>object</code>
@@ -30,17 +31,19 @@ import jakarta.annotation.Resource;
  * <li><code>contentIds</code>
  * 多个项目id,逗号或空格间隔,当contentId为空时生效,结果返回<code>map</code>(contentId,<code>object</code>)
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@cms.userCollection userId=1
  * contentId=1&gt;${object.scores}&lt;/@cms.userCollection&gt;
  * <p>
  * &lt;@cms.userCollection userId=1 contentIds='1,2,3'&gt;&lt;#list map as
  * k,v&gt;${k}:${v.contentId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userCollection&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userCollection?id=1', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/cms/userCollection?id=1', function(data){
   console.log(data.scores);
 });
 &lt;/script&gt;

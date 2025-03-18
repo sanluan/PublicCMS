@@ -17,28 +17,31 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
 import freemarker.template.TemplateException;
 
 /**
-*
-* contentClick 内容点击接口
-* <p>
-* 参数列表
-* <ul>
-* <li><code>id</code>:内容id
-* </ul>
-* <p>
-* 返回结果
-* <ul>
-* <li><code>clicks</code>:内容点击数
-* </ul>
-* 使用示例
-* <p>
-* <pre>
+ *
+ * contentClick 内容点击接口
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>id</code>:内容id
+ * </ul>
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>clicks</code>:内容点击数
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/contentClick?id=1', function(data){
   console.log(data.clicks);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class ContentClickDirective extends AbstractAppDirective {
 

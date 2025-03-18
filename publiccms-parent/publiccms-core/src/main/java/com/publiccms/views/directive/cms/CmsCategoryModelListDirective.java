@@ -18,26 +18,30 @@ import freemarker.template.TemplateException;
 /**
  *
  * categoryModelList 分类模型映射列表查询指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>modelId</code>:内容模型id
  * <li><code>categoryId</code>:分类id
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsCategoryModel}
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@cms.categoryModelList modelId='article'&gt;&lt;#list list as
  * a&gt;${a.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryModelList&gt;
- * 
+ *
  * <pre>
   &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/categoryModelList?modelId=article', function(data){    
+   $.getJSON('${site.dynamicPath}api/directive/cms/categoryModelList?modelId=article', function(data){
      console.log(data[0].totalCount);
    });
    &lt;/script&gt;

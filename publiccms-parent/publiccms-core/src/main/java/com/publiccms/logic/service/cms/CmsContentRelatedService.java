@@ -72,6 +72,13 @@ public class CmsContentRelatedService extends BaseService<CmsContentRelated> {
         }
     }
 
+    /**
+     * @param contentId
+     */
+    public void deleteByContentId(Long contentId) {
+        dao.deleteByContentId(contentId);
+    }
+
     @Resource
     private CmsContentRelatedDao dao;
 

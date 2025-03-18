@@ -5,7 +5,7 @@
     <div class="pageFormContent" layoutH>
         <dl class="nowrap">
             <dt><@t.page 'product_list'/>:</dt>
-            <dd class="exclude-translate" >
+            <dd class="exclude-translate">
                 <@trade.orderProductList orderId=a.id>
                 <#list page.list as op>
                     <@t.merge 'contentIds' op.contentId!/>
@@ -60,7 +60,7 @@
     </div>
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'order.process'/></button></li>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.handle'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>

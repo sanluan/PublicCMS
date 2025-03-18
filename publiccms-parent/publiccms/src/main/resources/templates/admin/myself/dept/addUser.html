@@ -1,8 +1,11 @@
 <@sys.user id=id absoluteURL=false>
     <#assign a=object/>
+    <@sys.dept id=a.deptId><#assign dept=object/></@sys.dept>
 </@sys.user>
-<@sys.dept id=(a.deptId)!deptId><#assign dept=object/></@sys.dept>
-<form method="post" autocomplete="off" action="sysDept/saveUser?callbackType=closeCurrent&navTabId=sysDept/userList" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<#if !dept?has_content>
+<@sys.dept id=deptId><#assign dept=object/></@sys.dept>
+</#if>
+<form method="post" autocomplete="off" action="sysDept/saveUser?callbackType=closeCurrent&navTabId=myself/myDept" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="encoding" value="sha512"/>
@@ -17,7 +20,7 @@
             <dl class="nowrap">
                 <dt><@t.page 'user.username'/>:</dt>
                 <dd>
-                    <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
+                    <input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/>
                     <label><input name="superuser" type="checkbox" class="form-check-input"/><@t.page 'admin'/></label>
                 </dd>
             </dl>
@@ -25,7 +28,7 @@
                 <dt><@t.page 'dept'/>:</dt>
                 <dd>
                     <input name="deptId" type="hidden" value="${(dept.id)!}"/>
-                    <input readonly="readonly" name="deptName" type="text" size="10" value="${(dept.name)!}"/>
+                    <input readonly="readonly" name="deptName" type="text" size="30" value="${(dept.name)!}"/>
                 </dd>
             </dl>
             <dl class="nowrap superuser hide">
@@ -51,7 +54,7 @@
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'user.nickname'/>:</dt>
-                <dd><input class="required" name="nickname" type="text" size="20" maxlength="30" value="${(a.nickname)!}"/></dd>
+                <dd><input class="required" name="nickname" type="text" size="30" maxlength="30" value="${(a.nickname)!}"/></dd>
             </dl>
         <#if id?has_content>
             <dl class="nowrap">

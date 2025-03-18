@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.drew.imaging.ImageProcessingException;
 import com.publiccms.common.api.FileUploader;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
@@ -58,10 +59,8 @@ public class FileUploadComponent {
 
     public String getPrivateFileUrl(SysSite site, Integer expiryMinutes, String filepath, String filename) {
         if (null == expiryMinutes) {
-            Map<String, String> config = configDataComponent.getConfigData(site.getId(),
-                    SafeConfigComponent.CONFIG_CODE);
-            expiryMinutes = ConfigDataComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_SIGN),
-                    SafeConfigComponent.DEFAULT_EXPIRY_MINUTES_SIGN);
+            Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
+            expiryMinutes = ConfigDataComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_SIGN), SafeConfigComponent.DEFAULT_EXPIRY_MINUTES_SIGN);
         }
         if (CommonUtils.notEmpty(uploaderList)) {
             for (FileUploader fileUploader : uploaderList) {
@@ -75,12 +74,10 @@ public class FileUploadComponent {
         String signKey = safeConfigComponent.getSignKey(site.getId());
         String sign = VerificationUtils.base64Encode(VerificationUtils.encryptAES(string, signKey));
         if (CommonUtils.notEmpty(filename)) {
-            return CommonUtils.joinString(site.getDynamicPath(), "file/private?expiry=", expiry, "&sign=",
-                    CommonUtils.encodeURI(sign), "&filePath=", CommonUtils.encodeURI(filepath), "&filename=",
+            return CommonUtils.joinString(site.getDynamicPath(), "file/private?expiry=", expiry, "&sign=", CommonUtils.encodeURI(sign), "&filePath=", CommonUtils.encodeURI(filepath), "&filename=",
                     CommonUtils.encodeURI(filename));
         } else {
-            return CommonUtils.joinString(site.getDynamicPath(), "file/private?expiry=", expiry, "&sign=",
-                    CommonUtils.encodeURI(sign), "&filePath=", CommonUtils.encodeURI(filepath));
+            return CommonUtils.joinString(site.getDynamicPath(), "file/private?expiry=", expiry, "&sign=", CommonUtils.encodeURI(sign), "&filePath=", CommonUtils.encodeURI(filepath));
         }
     }
 
@@ -118,7 +115,7 @@ public class FileUploadComponent {
                     fileSize.setWidth(maxImageWidth);
                     fileSize.setHeight(height);
                     fileSize.setFileSize(new File(filepath).length());
-                } catch (IOException e) {
+                } catch (IOException | ImageProcessingException e) {
                 }
             }
         }
@@ -128,8 +125,7 @@ public class FileUploadComponent {
         if (fileSize.isImage() && null != fileSize.getWidth() && null != fileSize.getHeight()) {
             Map<String, String> config = configDataComponent.getConfigData(siteId, ImageConfigComponent.CONFIG_CODE);
             String watermarkImage = config.get(ImageConfigComponent.CONFIG_WATERMARK_IMAGE);
-            boolean useNickname = ConfigDataComponent
-                    .getBoolean(config.get(ImageConfigComponent.CONFIG_WATERMARK_USE_NICKNAME), false);
+            boolean useNickname = ConfigDataComponent.getBoolean(config.get(ImageConfigComponent.CONFIG_WATERMARK_USE_NICKNAME), false);
             String text = config.get(ImageConfigComponent.CONFIG_WATERMARK_TEXT);
             if (CommonUtils.notEmpty(watermarkImage) || CommonUtils.notEmpty(text) || useNickname) {
                 if (CommonUtils.notEmpty(watermarkImage)) {
@@ -137,17 +133,12 @@ public class FileUploadComponent {
                 }
                 String font = config.get(ImageConfigComponent.CONFIG_WATERMARK_TEXT_FONT);
                 String color = config.get(ImageConfigComponent.CONFIG_WATERMARK_TEXT_COLOR);
-                int fontsize = ConfigDataComponent.getInt(
-                        config.get(ImageConfigComponent.CONFIG_WATERMARK_TEXT_FONTSIZE),
-                        ImageConfigComponent.DEFAULT_FONTSIZE);
-                float alpha = ConfigDataComponent.getFloat(config.get(ImageConfigComponent.CONFIG_WATERMARK_ALPHA),
-                        ImageConfigComponent.DEFAULT_ALPHA);
+                int fontsize = ConfigDataComponent.getInt(config.get(ImageConfigComponent.CONFIG_WATERMARK_TEXT_FONTSIZE), ImageConfigComponent.DEFAULT_FONTSIZE);
+                float alpha = ConfigDataComponent.getFloat(config.get(ImageConfigComponent.CONFIG_WATERMARK_ALPHA), ImageConfigComponent.DEFAULT_ALPHA);
                 String position = config.get(ImageConfigComponent.CONFIG_WATERMARK_POSITION);
                 try {
-                    String textAndNickname = CommonUtils.empty(text) ? nickname
-                            : CommonUtils.joinString(text, Constants.BLANK_SPACE, nickname);
-                    ImageUtils.watermark(filepath, watermarkImage, useNickname ? textAndNickname : text, color, font,
-                            fontsize, alpha, position, suffix);
+                    String textAndNickname = CommonUtils.empty(text) ? nickname : CommonUtils.joinString(text, Constants.BLANK_SPACE, nickname);
+                    ImageUtils.watermark(filepath, watermarkImage, useNickname ? textAndNickname : text, color, font, fontsize, alpha, position, suffix);
                     fileSize.setFileSize(new File(filepath).length());
                 } catch (IOException e) {
                 }
@@ -155,8 +146,7 @@ public class FileUploadComponent {
         }
     }
 
-    public FileUploadResult upload(short siteId, MultipartFile file, boolean privatefile, String nickname,
-            String suffix, Locale locale) throws IOException {
+    public FileUploadResult upload(short siteId, MultipartFile file, boolean privatefile, String nickname, String suffix, Locale locale) throws IOException {
         String fileName = CmsFileUtils.getUploadFileName(suffix);
         if (CommonUtils.notEmpty(uploaderList)) {
             for (FileUploader fileUploader : uploaderList) {
@@ -165,8 +155,7 @@ public class FileUploadComponent {
                 }
             }
         }
-        String filepath = privatefile ? siteComponent.getPrivateFilePath(siteId, fileName)
-                : siteComponent.getWebFilePath(siteId, fileName);
+        String filepath = privatefile ? siteComponent.getPrivateFilePath(siteId, fileName) : siteComponent.getWebFilePath(siteId, fileName);
         Path path = CmsFileUtils.upload(file, filepath);
         if (CmsFileUtils.isSafe(filepath, suffix)) {
             FileUploadResult fileSize = CmsFileUtils.getFileSize(filepath, fileName, suffix);
@@ -175,13 +164,11 @@ public class FileUploadComponent {
             return fileSize;
         } else {
             Files.delete(path);
-            throw new IOException(
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "verify.custom.file.unsafe"));
+            throw new IOException(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "verify.custom.file.unsafe"));
         }
     }
 
-    public FileUploadResult upload(short siteId, byte[] file, boolean privatefile, String nickname, String suffix,
-            Locale locale) throws IOException {
+    public FileUploadResult upload(short siteId, byte[] file, boolean privatefile, String nickname, String suffix, Locale locale) throws IOException {
         String fileName = CmsFileUtils.getUploadFileName(suffix);
         if (CommonUtils.notEmpty(uploaderList)) {
             for (FileUploader fileUploader : uploaderList) {
@@ -190,8 +177,7 @@ public class FileUploadComponent {
                 }
             }
         }
-        String filepath = privatefile ? siteComponent.getPrivateFilePath(siteId, fileName)
-                : siteComponent.getWebFilePath(siteId, fileName);
+        String filepath = privatefile ? siteComponent.getPrivateFilePath(siteId, fileName) : siteComponent.getWebFilePath(siteId, fileName);
         CmsFileUtils.upload(file, filepath);
         if (CmsFileUtils.isSafe(filepath, suffix)) {
             FileUploadResult fileSize = CmsFileUtils.getFileSize(filepath, fileName, suffix);
@@ -199,8 +185,7 @@ public class FileUploadComponent {
             watermark(siteId, nickname, fileSize, filepath, suffix);
             return fileSize;
         } else {
-            throw new IOException(
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "verify.custom.file.unsafe"));
+            throw new IOException(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "verify.custom.file.unsafe"));
         }
     }
 

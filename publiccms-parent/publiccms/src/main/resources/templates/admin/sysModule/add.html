@@ -2,8 +2,7 @@
     <#assign a=object/>
     <#if (object.parentId)?has_content><#assign parentId=(object.parentId)/></#if>
 </@sys.module>
-<@sys.module id=parentId!><#assign module=object/></@sys.module>
-<#if !deep?has_content><#assign deep=0/><#else><#assign deep=deep?number/></#if>
+<@sys.module id=parentId!><#assign parent=object/></@sys.module>
 <form method="post" autocomplete="off" action="sysModule/save?callbackType=closeCurrent&navTabId=sysModule/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="oldId" type="hidden" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
@@ -19,7 +18,8 @@
                 <dt><@t.page 'id'/>:</dt>
                 <dd>
                     <input class="required" remote="sysModule/virify?oldId=${id!}" data-msg-remote="<@t.message 'verify.hasExist.module'/>" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}"/>
-                    <label><input name="menu" type="checkbox" class="form-check-input"<#if (!a?has_content||a.menu)&&deep lte 2> checked="checked"</#if>/><@t.page 'module.menu'/></label>
+                    <label><input name="menu" type="checkbox" class="form-check-input"<#if (!a?has_content||a.menu)> checked="checked"</#if>/><@t.page 'module.menu'/></label>
+                    <label><input name="hasChild" type="checkbox" class="form-check-input"<#if (a.hasChild)?has_content&&a.hasChild> checked="checked"</#if>/><@t.page 'module.has_child'/></label>
                 </dd>
             </dl>
             <dl>
@@ -46,15 +46,13 @@
                 </#if>
             </#list>
           </fieldset>
-        <#if deep lte 2>
-            <dl class="nowrap">
+            <dl class="nowrap menu <#if (a?has_content&&!a.menu)> hide</#if>">
                 <dt><@t.page 'icons'/>:</dt>
                 <dd>
                     <input name="attached" type="text" size="30" maxlength="50" value="${(a.attached)!}"/>
                     <a class="btnLook" href="sysModule/icons.html?field=attached" lookupGroup="" width="1200"><@t.page 'icons.select'/></a>
                 </dd>
             </dl>
-        </#if>
             <dl class="nowrap">
                 <dt><@t.page 'module.page_url'/>:</dt>
                 <dd>
@@ -76,3 +74,12 @@
         </div>
     </div>
 </form>
+<script>
+$('input[name=menu]',navTab.getCurrentPanel()).on("click", function(){
+    if($(this).is(':checked')){
+        $('.menu',navTab.getCurrentPanel()).show();
+    } else {
+        $('.menu',navTab.getCurrentPanel()).hide();
+    }
+});
+</script>

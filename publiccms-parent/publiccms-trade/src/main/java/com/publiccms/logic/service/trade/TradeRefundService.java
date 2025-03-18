@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -69,7 +68,6 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @param reason
      * @return
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean updateAmound(long refundId, long userId, BigDecimal amount, String reason) {
         TradeRefund entity = getEntity(refundId);
         if (null != entity && entity.getUserId() == userId && entity.getStatus() == STATUS_PENDING
@@ -77,7 +75,6 @@ public class TradeRefundService extends BaseService<TradeRefund> {
             entity.setAmount(amount);
             entity.setReason(reason);
             entity.setStatus(STATUS_PENDING);
-            entity.setUpdateDate(CommonUtils.getDate());
             return true;
         }
         return false;
@@ -90,7 +87,6 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @param reply
      * @return
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean refuseResund(short siteId, long refundId, Long refundUserId, String reply) {
         TradeRefund entity = getEntity(refundId);
         if (null != entity && entity.getSiteId() == siteId
@@ -110,7 +106,6 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @param reply
      * @return
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean updateResund(short siteId, long refundId, BigDecimal refundAmount, String reply) {
         TradeRefund entity = getEntity(refundId);
         if (null != entity && entity.getSiteId() == siteId
@@ -133,7 +128,6 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @param status
      * @return
      */
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean updateStatus(short siteId, long refundId, Long refundUserId, Long userId, int status) {
         TradeRefund entity = getEntity(refundId);
         if (null != entity && entity.getSiteId() == siteId && entity.getStatus() != status
@@ -144,7 +138,6 @@ public class TradeRefundService extends BaseService<TradeRefund> {
                 entity.setRefundUserId(refundUserId);
                 entity.setProcessingDate(CommonUtils.getDate());
             }
-            entity.setUpdateDate(CommonUtils.getDate());
             return true;
         }
         return false;

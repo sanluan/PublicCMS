@@ -18,31 +18,34 @@ import com.publiccms.logic.service.cms.CmsSurveyService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* survey 调查问卷查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>id</code>:调查问卷id,结果返回<code>object</code>
-* {@link com.publiccms.entities.cms.CmsSurvey}
-* <li><code>ids</code>:
-* 多个调查问卷id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
-* </ul>
-* 使用示例
-* <p>
-* &lt;@cms.survey id=1&gt;${object.title}&lt;/@cms.survey&gt;
-* <p>
-* &lt;@cms.survey ids='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.survey&gt;
-* 
-* <pre>
+ *
+ * survey 调查问卷查询指令
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
+ * <ul>
+ * <li><code>id</code>:调查问卷id,结果返回<code>object</code>
+ * {@link com.publiccms.entities.cms.CmsSurvey}
+ * <li><code>ids</code>:
+ * 多个调查问卷id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * &lt;@cms.survey id=1&gt;${object.title}&lt;/@cms.survey&gt;
+ * <p>
+ * &lt;@cms.survey ids='1,2,3'&gt;&lt;#list map as
+ * k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.survey&gt;
+ *
+ * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/cms/survey?id=1', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/cms/survey?id=1', function(data){
    console.log(data.title);
  });
  &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class CmsSurveyDirective extends AbstractTemplateDirective {
 

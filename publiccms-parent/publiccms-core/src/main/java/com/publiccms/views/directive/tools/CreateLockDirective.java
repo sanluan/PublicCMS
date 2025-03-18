@@ -15,27 +15,31 @@ import freemarker.template.TemplateException;
 /**
  *
  * createLock 创建锁指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>itemType</code>:锁定项目类型
  * <li><code>itemId</code>:锁定项目id
  * <li><code>userId</code>:锁定用户id
  * <li><code>counter</code>:计数,默认值<code>0</code>:
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>object</code>:{@link com.publiccms.entities.sys.SysLock}
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.createLock itemType='content' itemId='1'
  * userId='1'&gt;${url}&lt;/@tools.createLock&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/tools/createLock?itemType=content&amp;itemId=1&amp;userId=1&amp;appToken=接口访问授权Token', function(data){    
+$.getJSON('${site.dynamicPath}api/directive/tools/createLock?itemType=content&amp;itemId=1&amp;userId=1&amp;appToken=接口访问授权Token', function(data){
   console.log(data);
 });
 &lt;/script&gt;

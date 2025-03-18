@@ -16,33 +16,37 @@ import freemarker.template.TemplateException;
 
 /**
  * fileList 文件列表获取指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>type</code>:文件类型【file,task,template】,默认template
  * <li><code>path</code>:文件路径
  * <li><code>orderField</code>:
  * 排序类型【fileName,fileSize,modifiedDate,createDate】,默认fileName
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>list</code>:文件列表
  * {@link com.publiccms.common.tools.CmsFileUtils$FileInfo}
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.fileList path='/'&gt;&lt;#list list as
  * a&gt;${a.fileName}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.fileList&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/fileList?path=/&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/fileList?path=/&amp;appToken=接口访问授权Token', function(data){
    console.log(data);
  });
  &lt;/script&gt;
  * </pre>
- * 
+ *
  */
 @Component
 public class FileListDirective extends AbstractTemplateDirective {

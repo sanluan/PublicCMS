@@ -7,6 +7,7 @@ import com.publiccms.entities.sys.SysConfigData;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -18,6 +19,9 @@ public class SysConfigDataDao extends BaseDao<SysConfigData> {
 
     @Override
     protected SysConfigData init(SysConfigData entity) {
+        if (null == entity.getCreateDate()) {
+            entity.setCreateDate(CommonUtils.getDate());
+        }
         return entity;
     }
 

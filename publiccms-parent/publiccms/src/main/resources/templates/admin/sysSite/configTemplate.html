@@ -48,7 +48,7 @@ upstream cms {
 server {
     listen       ${dynamicPort?has_content?then(dynamicPort,80)};
     #listen 443 ssl;
-    server_name  ${dynamicPath} <#list page.list as d><#if d.name!=dynamicPath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#if d.multiple><#assign multipleDomain=d/></#if><#sep> </#list>;
+    server_name  ${dynamicPath} <#list page.list as d><#if d.name!=dynamicPath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#sep> </#list>;
 
     #ssl_certificate cert/xxx.pem;
     #ssl_certificate_key cert/xxx.key;
@@ -90,8 +90,8 @@ server {
         try_files  $uri  $uri/  @cmsproxy;
         </#if>
     }
-            <#if multipleDomain?has_content>
-                <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
+            <#if a?has_content && a.hasChild && a.multiple>
+                <@sys.siteList parentId=a.id pageSize=100>
                     <#list page.list as a>
                         <#if a.directory?has_content>
     #${a.name} <@t.page 'server_config.static'/>
@@ -136,8 +136,8 @@ server {
     }
     </#if>
 
-    <#if multipleDomain?has_content>
-        <@sys.siteList parentId=multipleDomain.siteId pageSize=100>
+    <#if a?has_content && a.hasChild && a.multiple>
+        <@sys.siteList parentId=a.id pageSize=100>
             <#list page.list as a>
                 <#if a.directory?has_content>
     location ${siteLocation?has_content?then('/'+siteLocation,'/')}${a.directory}/ {

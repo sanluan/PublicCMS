@@ -20,13 +20,15 @@ import freemarker.template.TemplateException;
 
 /**
  * userAgent user agent分析指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>userAgent</code>:user agent,为空时取当前请求的user agent
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>object.ip</code>:客户端ip
  * <li><code>object.browser</code>:浏览器
@@ -37,13 +39,15 @@ import freemarker.template.TemplateException;
  * <li><code>object.deviceType</code>:设备类型
  * <li><code>object.userAgent</code>:user agent
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.userAgent&gt;${a.deviceType}&lt;/@tools.userAgent&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/userAgent', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/userAgent', function(data){
    console.log(data.deviceType);
  });
  &lt;/script&gt;

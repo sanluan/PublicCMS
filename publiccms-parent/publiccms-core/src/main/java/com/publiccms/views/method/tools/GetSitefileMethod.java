@@ -24,21 +24,25 @@ import jakarta.annotation.Resource;
 /**
  *
  * getSitefile 获取站点文件描述
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ol>
  * <li>文件名
  * </ol>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>sitefile</code>:{@link com.publiccms.views.pojo.entities.Sitefile}
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * ${(getSitefile('aaa-site.zip').name)!}
  * <p>
- * 
+ *
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getSitefile?appToken=接口访问授权Token&amp;parameters=aaa-site.zip', function(data){

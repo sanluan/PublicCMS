@@ -161,12 +161,12 @@ INSERT INTO `sys_config_data` VALUES (2, 'siteAttribute', '{\"logo\":\"assets/im
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES (2, 2, '技术部', '2', NULL, '', 2, 1000, 1, 1, 1);
+INSERT INTO `sys_dept` VALUES (2, 2, '技术部', '2', NULL, '', 2 , 0, 1000, 1, 1, 1);
 
 -- ----------------------------
 -- Records of sys_domain
 -- ----------------------------
-INSERT INTO `sys_domain` VALUES ('site2.dev.publiccms.com', 2, 1, 0, '');
+INSERT INTO `sys_domain` VALUES ('site2.dev.publiccms.com', 2, 1, '');
 
 -- ----------------------------
 -- Records of sys_role
@@ -181,7 +181,7 @@ INSERT INTO `sys_role_user` VALUES (2, 2);
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES (2, NULL, NULL, '企业中英文站点', 0, '//site2.dev.publiccms.com:8080/webfile/', 0, '//site2.dev.publiccms.com:8080/', 0);
+INSERT INTO `sys_site` VALUES (2, NULL, NULL, '企业中英文站点', 0, '//site2.dev.publiccms.com:8080/webfile/', 0, '//site2.dev.publiccms.com:8080/', 0, 0);
 
 -- ----------------------------
 -- Records of sys_user

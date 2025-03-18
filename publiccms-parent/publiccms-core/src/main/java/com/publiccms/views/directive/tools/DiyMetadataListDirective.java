@@ -15,32 +15,36 @@ import jakarta.annotation.Resource;
 
 /**
  * diyMetadataList diy元数据列表获取指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>itemType</code>:元数据类型,【region,layout,module】
  * <li><code>region</code>:区域id,当itemType为layout或module时有效
  * <li><code>showGlobal</code>:元数据类型,【true,false】,当itemType为layout或module时有效,默认为<code>true</code>:
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>list</code>:
  * diy元数据列表<code>region</code>:{@link com.publiccms.views.pojo.diy.CmsRegion},<code>layout</code>:{@link com.publiccms.views.pojo.diy.CmsLayout},<code>module</code>:{@link com.publiccms.views.pojo.diy.CmsModule}
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@tools.diyMetadataList itemType='region'&gt;&lt;#list page.list as
  * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.diyMetadataList&gt;
- * 
+ *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/diyMetadataList?itemType=region&amp;appToken=接口访问授权Token', function(data){    
+ $.getJSON('${site.dynamicPath}api/directive/tools/diyMetadataList?itemType=region&amp;appToken=接口访问授权Token', function(data){
    console.log(data.name);
  });
  &lt;/script&gt;
  * </pre>
- * 
+ *
  */
 @Component
 public class DiyMetadataListDirective extends AbstractTemplateDirective {

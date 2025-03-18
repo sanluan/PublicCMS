@@ -12,8 +12,6 @@ dependencies {
     implementation "com.blueconic:browscap-java:${browscapVersion}"
     implementation "org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}"
     
-    implementation "com.drewnoakes:metadata-extractor:${extractorVersion}"
-
     implementation "org.mybatis:mybatis-spring:${mybatisSpringVersion}"
     implementation "org.mybatis.dynamic-sql:mybatis-dynamic-sql:${dynamicSqlVersion}"
     implementation "com.github.pagehelper:pagehelper:${pageHelperVersion}"

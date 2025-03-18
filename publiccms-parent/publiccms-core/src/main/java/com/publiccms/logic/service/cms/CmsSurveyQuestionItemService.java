@@ -2,7 +2,9 @@ package com.publiccms.logic.service.cms;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 // Generated 2020-7-1 21:06:19 by com.publiccms.common.generator.SourceGenerator
 
@@ -21,7 +23,7 @@ import com.publiccms.views.pojo.entities.QuestionItem;
 /**
  *
  * CmsSurveyQuestionItemService
- * 
+ *
  */
 @Service
 @Transactional
@@ -61,7 +63,9 @@ public class CmsSurveyQuestionItemService extends BaseService<CmsSurveyQuestionI
      * @param entitys
      * @param ignoreProperties
      */
+    @SuppressWarnings("unchecked")
     public void update(long questionId, List<QuestionItem> entitys, String[] ignoreProperties) {
+        Set<Long> idList = new HashSet<>();
         if (CommonUtils.notEmpty(entitys)) {
             for (QuestionItem entity : entitys) {
                 if (null != entity.getId()) {
@@ -74,6 +78,13 @@ public class CmsSurveyQuestionItemService extends BaseService<CmsSurveyQuestionI
                     save(temp);
                     entity.setId(temp.getId());
                 }
+                idList.add(entity.getId());
+            }
+        }
+
+        for (CmsSurveyQuestionItem file : (List<CmsSurveyQuestionItem>) getPage(questionId, null, null, null, null).getList()) {
+            if (!idList.contains(file.getId())) {
+                delete(file.getId());
             }
         }
     }

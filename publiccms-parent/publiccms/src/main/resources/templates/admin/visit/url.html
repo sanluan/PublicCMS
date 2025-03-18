@@ -3,7 +3,7 @@
 </#if>
 <@visit.urlList startVisitDate=startVisitDate endVisitDate=endVisitDate pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
-    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm"  action="visit/url.html" autocomplete="off" onsubmit="return divSearch(this,'visitBox');" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -65,6 +65,7 @@
             </#list>
         </tbody>
     </table>
+    <#assign rel='visitBox'/>
     <#include "../include_page/page.html"/>
 </div>
 </@visit.urlList>

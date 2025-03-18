@@ -46,10 +46,11 @@ public class AdminContextInterceptor extends WebContextInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        SysSite site = null;
         SysDomain domain = siteComponent.getDomain(request.getServerName());
+        SysSite site = siteComponent.getSite(domain, request.getServerName(), null);
         String ctxPath = urlPathHelper.getOriginatingContextPath(request);
-        if (domain.isMultiple()) {
+
+        if (site.isMultiple()) {
             String currentSiteId = request.getParameter("currentSiteId");
             if (null != currentSiteId) {
                 try {
@@ -63,16 +64,15 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             }
             Cookie cookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesSite());
             if (null != cookie && CommonUtils.notEmpty(cookie.getValue())) {
-                site = siteComponent.getSiteById(cookie.getValue());
-                if (null == site || (null == site.getParentId() || site.getParentId() != domain.getSiteId())
-                        && site.getId() != domain.getSiteId()) {
+                SysSite newSite = siteComponent.getSiteById(cookie.getValue());
+                if (null != newSite && null != newSite.getParentId() && newSite.getParentId() != site.getId()) {
+                    site = newSite;
+                } else {
                     RequestUtils.cancleCookie(ctxPath, request.getScheme(), response, CommonConstants.getCookiesSite(), null);
                 }
             }
         }
-        if (null == site) {
-            site = siteComponent.getSite(domain, request.getServerName(), null);
-        }
+
         request.setAttribute(CommonConstants.getAttributeSite(), site);
         String path = CmsFileUtils.getSafeFileName(urlPathHelper.getLookupPathForRequest(request));
         if (adminContextPath.equals(path)) {

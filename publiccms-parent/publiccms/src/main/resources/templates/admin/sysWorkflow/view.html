@@ -1,0 +1,42 @@
+<@sys.workflow id=id><#assign a=object/></@sys.workflow>
+<div class="pageFormContent" layoutH>
+    <dl class="nowrap">
+        <dt><@t.page 'name'/>:</dt>
+        <dd class="exclude-translate">${(a.name)!}</dd>
+    </dl>
+    <dl class="nowrap">
+        <dt><@t.page 'description'/>:</dt>
+        <dd class="exclude-translate">${(a.description)!}</dd>
+    </dl>
+    <fieldset>
+        <legend><@t.page 'workflow'/></legend>
+        <div class="workflow">
+            <div class="text-center step current">
+                <i class="bi bi-record-circle"></i><br><@t.page 'start'/>
+            </div>
+            <@sys.workflowStepList workflowId=id pageSize=100>
+                <#list list as a>
+            <div class="text-center step current">
+                ${a.name}
+                <br>
+                <#if a.roleId?has_content>
+                    <@t.page 'role'/>:<@sys.role id=a.roleId;role>${role.name}</@sys.role>
+                <#elseif a.deptId?has_content>
+                    <@t.page 'dept'/>:<@sys.dept id=a.deptId;dept>${dept.name}</@sys.dept>
+                <#elseif a.userId?has_content>
+                    <@t.page 'user'/>:<@sys.user id=a.userId;user>${user.nickname}</@sys.user>
+                </#if>
+            </div>
+                </#list>
+            </@sys.workflowStepList>
+            <div class="text-center step current">
+                <i class="bi bi-stop-circle"></i><br><@t.page 'end'/>
+            </div>
+        </div>
+    </fieldset>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

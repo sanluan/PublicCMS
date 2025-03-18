@@ -1,13 +1,32 @@
+<#if parentId?has_content>
+<@cms.categoryList advanced=true parentId=parentId pageSize=500>
+<ul>
+    <#list page.list as a>
+        <@t.merge 'categoryIds' a.id!/>
+    </#list>
+    <@sys.deptItem itemType='category' deptId=(admin.deptId)!'' itemIds=t.categoryIds!><#assign deptCategoryMap=map!/></@sys.deptItem>
+    <#list page.list as a>
+        <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
+            <li<#if a.childIds?has_content> _src="cmsContent/list.html?parentId=${a.id}"</#if>>
+                <a href="cmsContent/content_list.html?categoryId=${a.id}" target="ajax" rel="contentBox" class="exclude-translate">${(a.name)!}</a>
+            </li>
+        </#if>
+    <#else>
+        <li><a><@t.page 'empty_directory'/></a></li>
+    </#list>
+</ul>
+</@cms.categoryList>
+<#else>
 <div class="pageContent">
     <div class="leftPageContent">
         <div class="card">
             <ul class="tree treeFolder" layoutH>
                 <li>
                     <@sys.dept id=admin.deptId>
-                        <#assign  dept=object/>
+                        <#assign dept=object/>
                     </@sys.dept>
                     <#if dept?has_content&&dept.ownsAllCategory>
-                        <a href="common/content_list.html" target="ajax" rel="contentBox"><@t.page 'category'/></a>
+                        <a href="cmsContent/content_list.html" target="ajax" rel="contentBox"><@t.page 'category'/></a>
                     <#else>
                         <a href="javascript:;" onclick="return false;"><@t.page 'category'/></a>
                     </#if>
@@ -19,8 +38,8 @@
                             <@sys.deptItem itemType='category' deptId=admin.deptId!'' itemIds=t.categoryIds!><#assign deptCategoryMap=map!/></@sys.deptItem>
                             <#list page.list as a>
                                 <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
-                                    <li<#if a.childIds?has_content> _src="common/contentCategoryTree.html?parentId=${a.id}"</#if>>
-                                        <a href="common/content_list.html?categoryId=${a.id}" class="exclude-translate" target="ajax" rel="contentBox">${(a.name)!}</a>
+                                    <li<#if a.childIds?has_content> _src="cmsContent/list.html?parentId=${a.id}"</#if>>
+                                        <a href="cmsContent/content_list.html?categoryId=${a.id}" class="exclude-translate" target="ajax" rel="contentBox">${(a.name)!}</a>
                                     </li>
                                 </#if>
                             <#else>
@@ -33,6 +52,7 @@
         </div>
     </div>
     <div id="contentBox" class="rightPageContent">
-        <#include "../common/content_list.html"/>
+        <#include "content_list.html"/>
     </div>
 </div>
+</#if>

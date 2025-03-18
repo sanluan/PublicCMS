@@ -13,26 +13,28 @@ import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
-*
-* getLicenseData 获取授权数据
-* <p>
-* 返回结果
-* <ul>
-* <li><code>string</code>:base64编码的授权数据
-* </ul>
-* 使用示例
-* <p>
-* ${getLicenseData()}
-* <p>
-* 
-* <pre>
+ *
+ * getLicenseData 获取授权数据
+ * <p>
+ * 返回结果
+ * <ul>
+ * <li><code>string</code>:base64编码的授权数据
+ * </ul>
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
+ * <p>
+ * ${getLicenseData()}
+ * <p>
+ *
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getLicenseData, function(data){
 console.log(data);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class GetLicenseDataMethod extends BaseMethod {
 

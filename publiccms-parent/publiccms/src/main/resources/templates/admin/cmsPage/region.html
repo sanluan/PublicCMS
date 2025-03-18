@@ -17,7 +17,7 @@
                         <@tools.diyMetadataList itemType="layout" region=a.id showGlobal=true>
                         <div class="itemBox">
                             <#list list as a>
-                                <div class="dragItem icon-move icon-large" data-id="${a.id}" data-type="layout" title="${a.name!}">
+                                <div class="dragItem icon-move" data-id="${a.id}" data-type="layout" title="${a.name!}">
                                     ${a.name!} (${a.count})<span class="close">X</span>
                                     <div class="ctl-label">
                                         <@tools.includeLayout id=a.id>
@@ -41,9 +41,9 @@
                     <@tools.diyMetadataList itemType="module" region=a.id showGlobal=true>
                         <div class="itemBox">
                             <#list list as a>
-                        <div class="dragItem icon-move icon-large" data-id="${a.id}" data-type="module" title="${a.name!}">
+                        <div class="dragItem icon-move" data-id="${a.id}" data-type="module" title="${a.name!}">
                             ${a.name!}<span class="close">X</span>
-                            <span class="ctl-label">
+                            <div class="ctl-label">
                                 <input data-name="name" type="text" class="required" value="<@cms.category id=categoryId>${object.name}-</@cms.category>${a.name}"/>
                                 <#if a.place?has_content && !a.clone>
                                     <@tools.placeMetadata path=a.place>
@@ -55,7 +55,7 @@
                                         </#if>
                                     </@tools.placeMetadata>
                                 </#if>
-                            </span>
+                            </div>
                             <#if a.cover?has_content>
                             <div class="ctl-label">
                                 <img src="${(getUrl(a.cover))!}" alt="${a.name}"/>
@@ -85,7 +85,7 @@
                                                             <#list layoutdata.moduleList[index] as moduleData>
                                                                 <div class="dragItem icon-move" data-id="${moduleData.id}" data-type="module" >
                                                                     ${moduleData.name}<span class="close">X</span>
-                                                                    <span class="ctl-label">
+                                                                    <div class="ctl-label">
                                                                         <@tools.placeMetadata path=moduleData.place>
                                                                             <#if (object.metadataExtendList)?has_content>
                                                                                 <a class="button" href="cmsPlace/metadata.html?path=${moduleData.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!moduleData.place}</a>
@@ -97,7 +97,7 @@
                                                                         <input data-name="name" type="hidden" value="${moduleData.name}"/>
                                                                         <input data-name="place" type="hidden" value="${moduleData.place!}"/>
                                                                         <input data-name="fragment" type="hidden" value="${moduleData.fragment!}"/>
-                                                                    </span>
+                                                                    </div>
                                                                     <@tools.diyMetadata itemType="module" itemId=moduleData.id;module>
                                                                         <#if module.cover?has_content>
                                                                             <div class="ctl-label">

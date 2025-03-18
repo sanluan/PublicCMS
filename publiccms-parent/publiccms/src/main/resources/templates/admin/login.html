@@ -12,13 +12,13 @@
     <div class="login_form clearfix">
         <form action="${base+adminContextPath}/login" method="post" onsubmit="encode()">
             <p class="logo">
-                <#if domain.multiple>
+                <#if site.multiple || parentSite?has_content && parentSite.multiple>
                     <select onchange="change(this)">
-                        <@sys.site id=domain.siteId><option value="${object.id}"<#if object.id==site.id> selected="true"</#if>>${object.name}</option></@sys.site>
-                        <@sys.siteList parentId=domain.siteId pageSize=100>
+                        <option value="${(parentSite!site).id}">${(parentSite!site).name}</option>
+                        <@sys.siteList parentId=(parentSite!site).id pageSize=100>
                         <optgroup label="<@t.page 'site.child_management'/>">
                             <#list page.list as a>
-                        <option value="${a.id}"<#if a.id==site.id> selected="true"</#if>>${a.name}</option>
+                        <option value="${a.id}"<#if a.id = site.id> selected="true"</#if>>${a.name}</option>
                             </#list>
                         </optgroup>
                         </@sys.siteList>

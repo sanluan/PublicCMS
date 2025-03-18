@@ -59,6 +59,12 @@ public class SysModule implements java.io.Serializable {
     @GeneratorColumn(title = "是否菜单", condition = true)
     private boolean menu;
     /**
+     * has child
+     * <p>
+     * 拥有子模型
+     */
+    private boolean hasChild;
+    /**
      * sort<p>
      * 排序
      */
@@ -68,20 +74,22 @@ public class SysModule implements java.io.Serializable {
     public SysModule() {
     }
 
-    public SysModule(String id, boolean menu, int sort) {
+    public SysModule(String id, boolean menu, boolean hasChild, int sort) {
         this.id = id;
         this.menu = menu;
+        this.hasChild = hasChild;
         this.sort = sort;
     }
 
     public SysModule(String id, String url, String authorizedUrl, String attached, String parentId, boolean menu,
-            int sort) {
+            boolean hasChild, int sort) {
         this.id = id;
         this.url = url;
         this.authorizedUrl = authorizedUrl;
         this.attached = attached;
         this.parentId = parentId;
         this.menu = menu;
+        this.hasChild = hasChild;
         this.sort = sort;
     }
 
@@ -138,6 +146,15 @@ public class SysModule implements java.io.Serializable {
 
     public void setMenu(boolean menu) {
         this.menu = menu;
+    }
+
+    @Column(name = "has_child", nullable = false)
+    public boolean isHasChild() {
+        return this.hasChild;
+    }
+
+    public void setHasChild(boolean hasChild) {
+        this.hasChild = hasChild;
     }
 
     @Column(name = "sort", nullable = false)

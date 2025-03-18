@@ -27,6 +27,12 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.drew.imaging.ImageMetadataReader;
+import com.drew.imaging.ImageProcessingException;
+import com.drew.metadata.Directory;
+import com.drew.metadata.Metadata;
+import com.drew.metadata.Tag;
+import com.drew.metadata.exif.ExifIFD0Directory;
 import com.github.bgalek.security.svg.SvgSecurityValidator;
 import com.github.bgalek.security.svg.ValidationResult;
 import com.luciad.imageio.webp.WebPReadParam;
@@ -76,8 +82,7 @@ public class ImageUtils {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         drawImage(width, height, text, byteArrayOutputStream);
         byteArrayOutputStream.close();
-        return CommonUtils.joinString("data:image/png;base64,",
-                VerificationUtils.base64Encode(byteArrayOutputStream.toByteArray()));
+        return CommonUtils.joinString("data:image/png;base64,", VerificationUtils.base64Encode(byteArrayOutputStream.toByteArray()));
     }
 
     /**
@@ -98,9 +103,8 @@ public class ImageUtils {
      * 
      * <pre>
      * &#64;PostMapping("doLogin")
-     * public String login(@RequestAttribute SysSite site, HttpSession session, String username, String password,
-     *         String captcha, String returnUrl, Long clientId, String uuid, HttpServletRequest request,
-     *         ModelMap model) {
+     * public String login(@RequestAttribute SysSite site, HttpSession session, String username, String password, String captcha, String returnUrl, Long clientId, String uuid,
+     *         HttpServletRequest request, ModelMap model) {
      *     String sessionCaptcha = (String) session.getAttribute("captcha");
      *     session.removeAttribute("captcha");
      *     if (null != sessionCaptcha &amp;&amp; sessionCaptcha.equalsIgnoreCase(captcha)) {
@@ -130,9 +134,7 @@ public class ImageUtils {
             for (int i = 0; i < text.length(); i++) {
                 AffineTransform saveAT = g.getTransform();
                 AffineTransform affine = new AffineTransform();
-                affine.setToRotation(
-                        Math.PI / 4 * Constants.random.nextDouble() * (Constants.random.nextBoolean() ? 1 : -1),
-                        i * fontWidth + 3, height / 2);
+                affine.setToRotation(Math.PI / 4 * Constants.random.nextDouble() * (Constants.random.nextBoolean() ? 1 : -1), i * fontWidth + 3, height / 2);
                 g.setTransform(affine);
                 g.setFont(font1);
                 g.setColor(getRandColor(0, 200));
@@ -141,14 +143,12 @@ public class ImageUtils {
                 g.setFont(font2);
                 for (int j = 0; j < 4; j++) {
                     g.setColor(getRandColor(100, 250));
-                    g.drawString(String.valueOf(text.charAt(i)), Constants.random.nextInt(width),
-                            Constants.random.nextInt(height));
+                    g.drawString(String.valueOf(text.charAt(i)), Constants.random.nextInt(width), Constants.random.nextInt(height));
                 }
             }
             g.setColor(getRandColor(160, 250));
             for (int i = 0; i < 10; i++) {
-                g.drawLine(Constants.random.nextInt(width), Constants.random.nextInt(height),
-                        Constants.random.nextInt(width), Constants.random.nextInt(height));
+                g.drawLine(Constants.random.nextInt(width), Constants.random.nextInt(height), Constants.random.nextInt(width), Constants.random.nextInt(height));
             }
             shearX(g, width, height, Color.white);
         }
@@ -174,8 +174,7 @@ public class ImageUtils {
             fc = 255;
         }
         int rc = (bc > 255 ? 255 : bc) - fc;
-        return new Color(fc + Constants.random.nextInt(rc), fc + Constants.random.nextInt(rc),
-                fc + Constants.random.nextInt(rc));
+        return new Color(fc + Constants.random.nextInt(rc), fc + Constants.random.nextInt(rc), fc + Constants.random.nextInt(rc));
     }
 
     private static Font getFont(int size) {
@@ -212,7 +211,7 @@ public class ImageUtils {
 
     public static void image2Ico(InputStream input, String suffix, int size, String icoFilepath) throws IOException {
         BufferedImage sourceImage = ImageIO.read(input);
-        BufferedImage resultImage = thumb(sourceImage, size, size, ".png".equalsIgnoreCase(suffix));
+        BufferedImage resultImage = thumb(sourceImage, size, size, 0, ".png".equalsIgnoreCase(suffix));
         try (FileOutputStream outputStream = new FileOutputStream(icoFilepath)) {
             ICOEncoder.write(resultImage, outputStream);
         }
@@ -224,8 +223,7 @@ public class ImageUtils {
         safeElementsList.add("font-face");
         List<String> safeAttributesList = new ArrayList<>();
         safeAttributesList.add("horiz-adv-x");
-        SvgSecurityValidator svgSecurityValidator = SvgSecurityValidator.builder()
-                .withAdditionalElements(safeElementsList).withAdditionalAttributes(safeAttributesList).build();
+        SvgSecurityValidator svgSecurityValidator = SvgSecurityValidator.builder().withAdditionalElements(safeElementsList).withAdditionalAttributes(safeAttributesList).build();
         ValidationResult validation;
         validation = svgSecurityValidator.validate(FileUtils.readFileToString(imageFile, StandardCharsets.UTF_8));
         if (validation.hasViolations()) {
@@ -237,30 +235,48 @@ public class ImageUtils {
         return true;
     }
 
-    public static BufferedImage thumb(BufferedImage sourceImage, int width, int height, boolean png) {
+    public static BufferedImage thumb(BufferedImage sourceImage, int width, int height, int angle, boolean png) {
         BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        Image scaledImage = sourceImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
         Graphics2D g = resultImage.createGraphics();
         if (png) {
-            resultImage = g.getDeviceConfiguration().createCompatibleImage(resultImage.getWidth(),
-                    resultImage.getHeight(), Transparency.TRANSLUCENT);
+            resultImage = g.getDeviceConfiguration().createCompatibleImage(resultImage.getWidth(), resultImage.getHeight(), Transparency.TRANSLUCENT);
             g = resultImage.createGraphics();
+        }
+        Image scaledImage;
+        if (90 == angle || 270 == angle) {
+            scaledImage = sourceImage.getScaledInstance(height, width, Image.SCALE_SMOOTH);
+        } else {
+            scaledImage = sourceImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        }
+        if (90 == angle || 180 == angle || 270 == angle) {
+            AffineTransform at = new AffineTransform();
+            if (180 == angle) {
+                at.rotate(Math.toRadians(angle), width / 2, height / 2);
+            } else {
+                at.rotate(Math.toRadians(angle), height / 2, width / 2);
+                if (angle == 270) {
+                    at.translate((width - height) / 2, (width - height) / 2);
+                } else {
+                    at.translate((height - width) / 2, (height - width) / 2);
+                }
+            }
+            g.setTransform(at);
         }
         g.drawImage(scaledImage, 0, 0, null);
         g.dispose();
         return resultImage;
     }
 
-    public static void thumb(String sourceFilePath, String thumbFilePath, int width, int height, String suffix)
-            throws IOException {
-        BufferedImage sourceImage = ImageIO.read(new File(sourceFilePath));
+    public static void thumb(String sourceFilePath, String thumbFilePath, int width, int height, String suffix) throws IOException, ImageProcessingException {
+        File file = new File(sourceFilePath);
+        BufferedImage sourceImage = ImageIO.read(file);
         if (width > sourceImage.getWidth()) {
             width = sourceImage.getWidth();
         }
         if (height > sourceImage.getHeight()) {
             height = sourceImage.getHeight();
         }
-        BufferedImage resultImage = thumb(sourceImage, width, height, ".png".equalsIgnoreCase(suffix));
+        BufferedImage resultImage = thumb(sourceImage, width, height, getAngle(file), ".png".equalsIgnoreCase(suffix));
         try (FileOutputStream outputStream = new FileOutputStream(thumbFilePath)) {
             if (null != suffix && suffix.length() > 1) {
                 ImageIO.write(resultImage, suffix.substring(1), outputStream);
@@ -270,8 +286,27 @@ public class ImageUtils {
         }
     }
 
-    public static void watermark(String sourceFilePath, String watermarkFilePath, String watermarkText, String color,
-            String font, int fontsize, float alpha, String position, String suffix) throws IOException {
+    public static int getAngle(File file) throws ImageProcessingException, IOException {
+        Metadata metadata = ImageMetadataReader.readMetadata(file);
+        for (Directory d : metadata.getDirectoriesOfType(ExifIFD0Directory.class)) {
+            for (Tag tag : d.getTags()) {
+                if ("Orientation".equals(tag.getTagName())) {
+                    String desc = tag.getDescription();
+                    if (desc.contains("90")) {
+                        return 90;
+                    } else if (desc.contains("270")) {
+                        return 270;
+                    } else if (desc.contains("180")) {
+                        return 180;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    public static void watermark(String sourceFilePath, String watermarkFilePath, String watermarkText, String color, String font, int fontsize, float alpha, String position, String suffix)
+            throws IOException {
         if (CommonUtils.notEmpty(watermarkFilePath) || CommonUtils.notEmpty(watermarkText)) {
             BufferedImage sourceImage = ImageIO.read(new File(sourceFilePath));
             Graphics2D g = sourceImage.createGraphics();
@@ -297,21 +332,14 @@ public class ImageUtils {
                 fontWidth = g.getFontMetrics().charsWidth(watermarkText.toCharArray(), 0, watermarkText.length());
                 fontHeight = g.getFontMetrics().getHeight();
                 if (fontWidth < sourceImage.getWidth() - 10 && fontHeight < sourceImage.getHeight() - 10) {
-                    g.drawString(watermarkText,
-                            matermarkPosition(position, sourceImage.getWidth(), sourceImage.getHeight(), watermarkWidth,
-                                    watermarkHeight, fontWidth, fontHeight, true, true),
-                            matermarkPosition(position, sourceImage.getWidth(), sourceImage.getHeight(), watermarkWidth,
-                                    watermarkHeight, fontWidth, fontHeight, false, true));
+                    g.drawString(watermarkText, matermarkPosition(position, sourceImage.getWidth(), sourceImage.getHeight(), watermarkWidth, watermarkHeight, fontWidth, fontHeight, true, true),
+                            matermarkPosition(position, sourceImage.getWidth(), sourceImage.getHeight(), watermarkWidth, watermarkHeight, fontWidth, fontHeight, false, true));
                 }
             }
-            if (null != watermarkImage && (watermarkWidth < sourceImage.getWidth() - 10
-                    && watermarkHeight < sourceImage.getHeight() - 10)) {
-                g.drawImage(watermarkImage,
-                        matermarkPosition(position, sourceImage.getWidth(), sourceImage.getHeight(), watermarkWidth,
-                                watermarkHeight, fontWidth, fontHeight, true, false),
-                        matermarkPosition(position, sourceImage.getWidth(), sourceImage.getHeight(), watermarkWidth,
-                                watermarkHeight, fontWidth, fontHeight, false, false),
-                        watermarkWidth, watermarkHeight, null);
+            if (null != watermarkImage && (watermarkWidth < sourceImage.getWidth() - 10 && watermarkHeight < sourceImage.getHeight() - 10)) {
+                g.drawImage(watermarkImage, matermarkPosition(position, sourceImage.getWidth(), sourceImage.getHeight(), watermarkWidth, watermarkHeight, fontWidth, fontHeight, true, false),
+                        matermarkPosition(position, sourceImage.getWidth(), sourceImage.getHeight(), watermarkWidth, watermarkHeight, fontWidth, fontHeight, false, false), watermarkWidth,
+                        watermarkHeight, null);
 
             }
             try (FileOutputStream outputStream = new FileOutputStream(sourceFilePath)) {
@@ -325,8 +353,7 @@ public class ImageUtils {
         }
     }
 
-    private static int matermarkPosition(String position, int width, int height, int watermarkWidth,
-            int watermarkHeight, int textWidth, int textHeight, boolean x, boolean text) {
+    private static int matermarkPosition(String position, int width, int height, int watermarkWidth, int watermarkHeight, int textWidth, int textHeight, boolean x, boolean text) {
         int result = 0;
         int between = (0 == watermarkWidth || 0 == textWidth) ? 0 : 10;
         int boxHeight = watermarkHeight > textHeight ? watermarkHeight : textHeight;

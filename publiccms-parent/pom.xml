@@ -560,9 +560,6 @@
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>
-                    <compilerArguments>
-                        <extdirs>src\main\webapp\WEB-INF\lib</extdirs>
-                    </compilerArguments>
                 </configuration>
             </plugin>
             <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/versions-maven-plugin -->

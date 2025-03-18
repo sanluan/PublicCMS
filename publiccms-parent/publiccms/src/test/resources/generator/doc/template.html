@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="${messages.lang[lang]}">
 <head>
-<title>PublicCMS 函数指令手册</title>
+<title>PublicCMS ${messages.title[lang]}</title>
 <style type="text/css">
 html,body{background-color:#ffffff;color:#353833;font-size:14px;margin:0;height:100%;}
 h1{text-align:center;margin:20px;}
-h3{margin:0;padding:5px;background-color:#4D7A97;color:#fff;}
+h3{margin:0;padding:5px;background-color:#4D7A97;color:#fff;word-break:break-all;}
 a:link, a:visited {text-decoration:none;color:#4A6782;}
 a:hover, a:focus {text-decoration:none;color:#bb7a2a;}
 a:active{text-decoration:none;color:#4A6782;}
@@ -25,28 +25,28 @@ pre{background-color: #efefef;overflow: auto;padding: 10px;}
 <div class="container">
     <div class="indexContainer">
     <#list namespace as k,v>
-        <h3>指令(命名空间:${k})</h3>
+        <h3>${messages.directive[lang]}(${messages.namespace[lang]}:${k})</h3>
         <ul>
-            <#list v as k1,v>
+            <#list v[lang] as k1,v>
             <li><a href="#${k}-${k1}">${k1}</a></li>
             </#list>
         </ul>
     </#list>
-        <h3>函数</h3>
+        <h3>${messages.method[lang]}</h3>
         <ul>
-        <#list methodMap as k,v>
+        <#list methodMap[lang] as k,v>
             <li><a href="#method-${k}">${k}</a></li>
         </#list>
         </ul>
     </div>
     <div class="doc">
-        <h1>PublicCMS 函数指令手册 ${version}</h1>
+        <h1>PublicCMS ${messages.title[lang]} ${version}</h1>
     <#list namespace as k,v>
-        <#list v as k1,v1>
+        <#list v[lang] as k1,v1>
         <div class="block" data-id="${k}-${k1}">${v1!}</div>
         </#list>
     </#list>
-    <#list methodMap as k,v>
+    <#list methodMap[lang] as k,v>
         <div class="block" data-id="method-${k}">${v!}</div>
     </#list>
     </div>

@@ -17,8 +17,9 @@ import freemarker.template.TemplateException;
 /**
  *
  * modelList 内容模型列表查询指令
- * <p>
- * 参数列表
+ * <p lang="zh">参数列表
+ * <p lang="en">parameter list
+ * <p lang="ja">パラメータリスト
  * <ul>
  * <li><code>parentId</code>:父内容模型id
  * <li><code>queryAll</code>:查询所有模型,parentId为空时有效,【true,false】,默认false
@@ -27,20 +28,23 @@ import freemarker.template.TemplateException;
  * <li><code>hasImages</code>:拥有图片列表,【true,false】
  * <li><code>hasFiles</code>:拥有文件列表,【true,false】
  * </ul>
- * <p>
- * 返回结果
+ * <p lang="zh">返回结果
+ * <p lang="en">return result
+ * <p lang="ja">戻り値
  * <ul>
  * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.views.pojo.entities.CmsModel}
  * </ul>
- * 使用示例
+ * <p lang="zh">使用示例
+ * <p lang="en">usage example
+ * <p lang="ja">使用例
  * <p>
  * &lt;@cms.modelList&gt;&lt;#list page.list as
  * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.modelList&gt;
- * 
+ *
  * <pre>
  &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/modelList', function(data){    
+  $.getJSON('${site.dynamicPath}api/directive/cms/modelList', function(data){
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
