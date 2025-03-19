@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.4.2"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.4.3"
     }
 }
 
@@ -32,15 +32,15 @@ subprojects {
         servletVersion = "6.1.0"
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "6.2.2"
+        springVersion = "6.2.4"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "3.4.2"
+        springBootVersion = "3.4.3"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        junitVersion = "5.11.4"
+        junitVersion = "5.12.1"
         // http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "7.0.0.Beta3"
+        hibernateVersion = "7.0.0.Beta4"
         // http://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm
         hibernateToolsVersion = "7.0.0.Beta3"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
@@ -61,7 +61,7 @@ subprojects {
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "1.5.2"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.18.2"
+        jacksonVersion = "2.18.3"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.34"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-core
@@ -115,11 +115,11 @@ subprojects {
         // https://mvnrepository.com/artifact/com.github.bgalek.security.svg/safe-svg
         safeSvgVersion = "1.1.8"
         // http://mvnrepository.com/artifact/com.blueconic/browscap-java
-        browscapVersion = "1.4.4"
+        browscapVersion = "1.4.5"
         // https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc
         therapiJavadocVersion = "0.15.0"
         // https://mvnrepository.com/artifact/org.jsoup/jsoup
-        jsoupVersion = "1.18.3"
+        jsoupVersion = "1.19.1"
         // https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api
         annotationVersion = "2.1.1"
         // https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api
