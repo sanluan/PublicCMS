@@ -83,7 +83,7 @@
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.14</version.httpclient>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
-        <version.poi>5.3.0</version.poi>
+        <version.poi>5.4.0</version.poi>
         <!-- https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml -->
         <!-- 2.1.0 for Java 17+ -->
         <version.xhtmlConverter>2.0.6</version.xhtmlConverter>
