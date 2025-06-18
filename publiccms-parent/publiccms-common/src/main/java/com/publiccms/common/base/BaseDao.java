@@ -472,7 +472,7 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return page
      */
-    public PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
+    public PageHandler getPage(SearchQueryOptionsStep<?, ?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
             Integer pageIndex, Integer pageSize, Integer maxResults) {
         return getPage(optionsStep, highLighterQuery, null, pageIndex, pageSize, maxResults);
     }
@@ -484,7 +484,7 @@ public abstract class BaseDao<E> {
      * @param pageSize
      * @return page
      */
-    public PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
+    public PageHandler getPage(SearchQueryOptionsStep<?, ?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
             Integer pageIndex, Integer pageSize) {
         return getPage(optionsStep, highLighterQuery, null, pageIndex, pageSize, Integer.MAX_VALUE);
     }
@@ -498,7 +498,7 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return results page
      */
-    public PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
+    public PageHandler getPage(SearchQueryOptionsStep<?, ?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
             Integer firstResult, Integer pageIndex, Integer pageSize, Integer maxResults) {
         PageHandler page = new PageHandler(firstResult, pageIndex, pageSize);
         SearchResult<E> result;
@@ -533,8 +533,8 @@ public abstract class BaseDao<E> {
      * @param pageSize
      * @return page
      */
-    public FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep,
-            UnaryOperator<SearchQueryOptionsStep<?, E, ?, ?, ?>> facetFieldKeys,
+    public FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, ?, E, ?, ?, ?> optionsStep,
+            UnaryOperator<SearchQueryOptionsStep<?, ?, E, ?, ?, ?>> facetFieldKeys,
             Function<SearchResult<E>, Map<String, Map<String, Long>>> facetFieldResult, HighLighterQuery highLighterQuery,
             Integer pageIndex, Integer pageSize) {
         return getFacetPage(optionsStep, facetFieldKeys, facetFieldResult, highLighterQuery, pageIndex, pageSize,
@@ -551,8 +551,8 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return results page
      */
-    public FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep,
-            UnaryOperator<SearchQueryOptionsStep<?, E, ?, ?, ?>> facetFieldKeys,
+    public FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, ?, E, ?, ?, ?> optionsStep,
+            UnaryOperator<SearchQueryOptionsStep<?, ?, E, ?, ?, ?>> facetFieldKeys,
             Function<SearchResult<E>, Map<String, Map<String, Long>>> facetFieldResult, HighLighterQuery highLighterQuery,
             Integer pageIndex, Integer pageSize, Integer maxResults) {
         FacetPageHandler page = new FacetPageHandler(pageIndex, pageSize);
