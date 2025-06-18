@@ -161,6 +161,7 @@
                     label: lang.uploadSelectFile
                 },
                 server: actionUrl,
+                headers: editor.getOpt('headers') || {},
                 fileVal: editor.getOpt('fileFieldName'),
                 duplicate: true,
                 fileSingleSizeLimit: fileMaxSize,
@@ -488,7 +489,7 @@
 
             uploader.on('uploadBeforeSend', function (file, data, header) {
                 //这里可以通过data对象添加POST参数
-                header['X_Requested_With'] = 'XMLHttpRequest';
+                header['X-Requested-With'] = 'XMLHttpRequest';
             });
 
             uploader.on('uploadProgress', function (file, percentage) {
@@ -635,6 +636,7 @@
                 this.isLoadingData = true;
                 ajax.request(editor.getActionUrl(editor.getOpt('fileManagerActionName')), {
                     timeout: 100000,
+                    'headers': editor.options.headers || {},
                     data: utils.extend({
                             start: this.listIndex,
                             size: this.listSize
@@ -642,7 +644,7 @@
                     method: 'get',
                     onsuccess: function (r) {
                         try {
-                            var json = eval('(' + r.responseText + ')');
+                            var json = utils.str2json(r.responseText);
                             if (json.state == 'SUCCESS') {
                                 _this.pushData(json.list);
                                 _this.listIndex = parseInt(json.start) + parseInt(json.list.length);

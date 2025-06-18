@@ -37,9 +37,9 @@ import freemarker.template.TemplateException;
 import jakarta.annotation.Resource;
 
 /**
- * 元数据组件
+ * DIY数据组件
  *
- * MetaData Component
+ * Diy Component
  *
  */
 @Component

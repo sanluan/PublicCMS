@@ -12,18 +12,18 @@
 </@tools.disk>
 <div class="pageFormContent" layoutH>
     <dl class="nowrap">
+        <dt><@t.page 'site'/>:</dt>
+        <dd>
+            ${(a.name)!}
+            <span class="info"><@t.page 'server_config.description'/></span>
+        </dd>
+    </dl>
+    <dl class="nowrap">
         <dt><@t.page 'server_config.tomcat'/>:</dt>
         <dd><textarea class="code" mode="xml">
         &lt;!-- this valve replaces the apparent client remote IP address and hostname and scheme for the request --&gt;
         &lt;Valve className="org.apache.catalina.valves.RemoteIpValve" protocolHeader="X-Forwarded-Proto" portHeader="X-Forwarded-Port"/&gt;</textarea>
             <span class="info"><@t.page 'server_config.tomcat_description'/></span>
-        </dd>
-    </dl>
-    <dl class="nowrap">
-        <dt><@t.page 'site'/>:</dt>
-        <dd>
-            ${(a.name)!}
-            <span class="info"><@t.page 'server_config.description'/></span>
         </dd>
     </dl>
     <div class="tabs">
@@ -68,9 +68,23 @@ server {
         proxy_set_header Sendfile X-Accel-Redirect;
         proxy_connect_timeout 5;
         proxy_send_timeout 30;
-        proxy_read_timeout 10;
+        proxy_read_timeout 20;
         proxy_pass http://cms;
     }
+    
+    location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}admin/simpleAi/ {
+        proxy_redirect off;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Port $server_port;
+        proxy_connect_timeout 20;
+        proxy_send_timeout 30;
+        proxy_read_timeout 600;
+        proxy_pass http://cms;
+    }
+    
     location /privatefile/ {
         internal;
         alias ${realRootPath}/web/private/site_${siteId}/;
@@ -160,7 +174,7 @@ server {
         </div>
     </div>
 </div>
-<div class="formBar card">
+<div class="formBar">
     <ul>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>

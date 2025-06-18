@@ -39,15 +39,15 @@
         <ul class="toolBar">
 <#if authorizedMap['cmsCategory/add']>
             <li>
-                <a href="cmsCategory/add.html?parentId=${parentId!}" class="addMore" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><#if parentId?has_content><@t.page 'category.add_child'/><#else><@t.page 'category.add'/></#if></a>
+                <a href="cmsCategory/add.html?parentId=${parentId!}" class="addMore" target="navTab" rel="cmsCategory/add"><i class="icon-double-angle-down icon-large"></i><#if parentId?has_content><@t.page 'category.add_child'/><#else><@t.page 'category.add'/></#if></a>
                 <ul>
     <@cms.categoryTypeList pageSize=10>
-            <li><a href="cmsCategory/add.html?parentId=${parentId!}" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><#if parentId?has_content><@t.page 'category.add_child'/><#else><@t.page 'category.add'/></#if></a></li>
+            <li><a href="cmsCategory/add.html?parentId=${parentId!}" target="navTab" rel="cmsCategory/add"><i class="bi bi-plus-circle-dotted"></i><#if parentId?has_content><@t.page 'category.add_child'/><#else><@t.page 'category.add'/></#if></a></li>
         <#list page.list as a>
-            <li><a href="cmsCategory/add.html?parentId=${parentId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i><@t.page 'button.add_some_things' a.name/></a></li>
+            <li><a href="cmsCategory/add.html?parentId=${parentId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><i class="bi bi-plus-circle-dotted"></i><@t.page 'button.add_some_things' a.name/></a></li>
         </#list>
         <#if page.totalCount gt 10>
-            <li><a href="cmsCategory/addMore.html?parentId=${parentId!}" target="dialog" mask="true"><i class="icon-plus icon-large"></i><@t.page 'category.add_more'/></a></li>
+            <li><a href="cmsCategory/addMore.html?parentId=${parentId!}" target="dialog" mask="true"><i class="bi bi-plus-circle-dotted"></i><@t.page 'category.add_more'/></a></li>
         </#if>
     </@cms.categoryTypeList>
                 </ul>

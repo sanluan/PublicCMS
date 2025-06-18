@@ -269,7 +269,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
     }
 
     @Override
-    public boolean enable(short siteId) {
+    public boolean enabled(short siteId) {
         Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
         return CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY));
     }

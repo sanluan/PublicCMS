@@ -32,7 +32,7 @@ public class SysWorkflowStepDao extends BaseDao<SysWorkflowStep> {
             QueryHandler queryHandler = getQueryHandler("from SysWorkflowStep bean");
             queryHandler.condition("bean.workflowId = :workflowId").setParameter("workflowId", workflowId);
             if (null != sort) {
-                queryHandler.condition("bean.sort >= :sort").setParameter("sort", sort);
+                queryHandler.condition("bean.sort > :sort").setParameter("sort", sort);
             }
             queryHandler.order("bean.sort asc");
             return getEntityList(queryHandler);

@@ -1,30 +1,29 @@
 <#macro dictionaryTree dictionaryId parentValue depth>
-<#if depth gte 0>
+    <ul>
     <@cms.dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
-        <ul>
-            <li>
-                <a href="cmsDictionary/add.html?id=${dictionaryId}&parentValue=${parentValue}" target="navTab" rel="cmsDictionary/add"><i class="icon-edit"></i><@t.page 'dictionary.edit'/></a>
-            </li>
-            <#list list as d>
-                <li>
-                    <a href="javascript:void(0)">${d.id.value}:${d.text}</a>
-                    <@dictionaryTree dictionaryId=dictionaryId parentValue=d.id.value depth=depth-1/>
-                </li>
-            </#list>
-        </ul>
+        <#list list as d>
+        <li>
+            <a href="cmsDictionary/add.html?id=${object.id.id}&parentValue=${d.id.value}" target="navTab" rel="cmsDictionary/edit" title="<@t.page 'dictionary.edit'/>">${d.id.value}:${d.text}</a>
+            <#if depth gt 1>
+                <@dictionaryTree dictionaryId=dictionaryId parentValue=d.id.value depth=depth-1/>
+            </#if>
+        </li>
+        </#list>
     </@cms.dictionaryDataList>
-</#if>
+    </ul>
 </#macro>
-<div class="pageFormContent">
+<div class="pageFormContent" layoutH>
 <@cms.dictionary id=id>
-    <ul class="tree treeFolder" layoutH>
+    <ul class="tree treeFolder">
         <li><a href="cmsDictionary/add.html?id=${object.id.id}" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i><@t.page 'dictionary.edit'/></a></li>
         <#if object.childDepth gt 0>
 <@cms.dictionaryDataList dictionaryId=object.id.id>
     <#list list as d>
         <li>
-            <a href="cmsDictionary/add.html?id=${object.id.id}&parentValue=${d.id.value}" target="navTab" rel="cmsDictionary/add"> ${d.id.value}:${d.text}</a>
-            <@dictionaryTree dictionaryId=id parentValue=d.id.value depth=object.childDepth-1/>
+            <a href="cmsDictionary/add.html?id=${object.id.id}&parentValue=${d.id.value}" target="navTab" rel="cmsDictionary/edit" title="<@t.page 'dictionary.edit'/>"> ${d.id.value}:${d.text}</a>
+            <#if object.childDepth gt 1>
+                <@dictionaryTree dictionaryId=id parentValue=d.id.value depth=object.childDepth-1/>
+            </#if>
         </li>
     </#list>
 </@cms.dictionaryDataList>

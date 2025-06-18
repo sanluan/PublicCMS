@@ -25,7 +25,6 @@ import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.controller.admin.LoginAdminController;
 import com.publiccms.controller.web.LoginController;
-import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -129,9 +128,6 @@ public class WebContextInterceptor implements HandlerInterceptor {
                             && (null == userToken.getExpiryDate() || now.before(userToken.getExpiryDate()))
                             && null != (user = sysUserService.getEntity(userId)) && !user.isDisabled()) {
                         user.setPassword(null);
-                        String ip = RequestUtils.getIpAddress(request);
-                        logLoginService
-                                .save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel, true, now, null));
                         Map<String, String> config = configDataComponent.getConfigData(site.getId(),
                                 SafeConfigComponent.CONFIG_CODE);
                         int expiryMinutes;

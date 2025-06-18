@@ -1,0 +1,141 @@
+<script src="${base}/resource/plugins/marked/marked.min.js"></script>
+<div class="pageFormContent" layoutH>
+    <#assign index=0/>
+    <form>
+        <dl class="nowrap">
+            <dt><@t.page 'content'/>:</dt>
+            <dd>
+                <audio id="audioCompletePlay" src="${base}/resource/sounds/jia.mp3" preload="auto" class="hide"></audio>
+                <input name="scene" value="${scene!'text'}" type="hidden"/>
+                <#if scene?has_content && "html"=scene>
+                    <input name="messages[0].role" value="system" type="hidden"/>
+                    <input name="messages[0].content" value="ONLY USE HTML, CSS AND JAVASCRIPT. If you want to use ICON make sure to import the library first. Try to create the best UI possible by using only HTML, CSS and JAVASCRIPT. Use as much as you can TailwindCSS for the CSS, if you can't do something with TailwindCSS, then use custom CSS (make sure to import &lt;script src=&quot;https://cdn.tailwindcss.com&quot;&gt;&lt;/script&gt; in the head). Also, try to ellaborate as much as you can, to create something unique. ALWAYS GIVE THE RESPONSE INTO A SINGLE HTML FILE" type="hidden"/>
+                    <input name="messages[1].role" value="assistant" type="hidden"/>
+                    <input name="messages[1].content" class="html" value="The current code is: " type="hidden"/>
+                    <#assign index=2/>
+                </#if>
+                <input name="messages[${index}].role" value="user" type="hidden"/>
+                <textarea name="messages[${index}].content" class="input" rows="3" cols="80"></textarea>
+                <button type="button" class="buttonActive send"><@t.page 'button.send'/></button>
+                <button type="button" onclick="$('.input',$.pdialog.getCurrent()).val('')" class="button"><@t.page 'button.clear'/></button>
+                <#assign index++/>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'reply'/>:</dt>
+            <dd>
+                <textarea class="result" rows="10" style="width:80%;"></textarea>
+            </dd>
+        </dl>
+        <div class="unit">
+            <h2 class="contentTitle"><@t.page 'report.content.lastest'/></h2>
+            <@log.operateList operate="ai.chat."+(scene!"text") userId=admin.id pageSize=5>
+                <#list page.list as a>
+            <p class="ellipsis">
+                <span class="float-right date info">${a.createDate!}</span>
+                <#assign content=a.content?eval_json/>
+                <a href="javascript:void(0)" class="exclude-translate"><@t.cut content.input 80 "..."/></a>
+                <textarea class="hide in">${(content.input)!}</textarea>
+                <textarea class="hide out">${(content.output)!}</textarea>
+            </p>
+                </#list>
+            </@log.operateList>
+        </div>
+    </form>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button mdImport buttonDisabled"><@t.page 'use'/></button></li>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>
+<script>
+$(".input",$.pdialog.getCurrent()).on("change", function(){
+    if($(this).val()){
+        $(".send",$.pdialog.getCurrent()).prop("disabled",false).removeClass("buttonDisabled");
+    }else{
+        $(".send",$.pdialog.getCurrent()).prop("disabled",true).addClass("buttonDisabled");
+    }
+});
+$("p a",$.pdialog.getCurrent()).on("click", function(){
+    $(".input",$.pdialog.getCurrent()).val($(this).parent().find(".in").val());
+    $(".result",$.pdialog.getCurrent()).val($(this).parent().find(".out").val());
+    $(".mdImport",$.pdialog.getCurrent()).prop("disabled",false).removeClass("buttonDisabled");
+});
+$('form',navTab.getCurrentPanel()).trigger(JUI.eventType.editorSync);
+<#if scene?has_content && "html"=scene>
+$(".html",$.pdialog.getCurrent()).val($(".html",$.pdialog.getCurrent()).val()+$("[name=${field!'text'}]",navTab.getCurrentPanel()).val()+".");
+$(".mdImport",$.pdialog.getCurrent()).on("click", function(){
+    $.bringBack({"${field!'text'}":$("textarea.result",$.pdialog.getCurrent()).val()});
+});
+<#else>
+$(".input",$.pdialog.getCurrent()).val($("[name=${field!'text'}]",navTab.getCurrentPanel()).val());
+$(".mdImport",$.pdialog.getCurrent()).on("click", function(){
+    $.bringBack({"${field!'text'}":marked.parse($("textarea.result",$.pdialog.getCurrent()).val())});
+});
+</#if>
+$(".send",$.pdialog.getCurrent()).on("click",function(){
+    $(".mdImport",$.pdialog.getCurrent()).prop("disabled",true).addClass("buttonDisabled");
+    $(".send",$.pdialog.getCurrent()).prop("disabled",true).addClass("buttonDisabled");
+    fetch("simpleAi/doChat?_csrf=<@tools.csrfToken admin=true/>",{
+            "method":"POST",
+            "headers":{
+                "content-type":"application/x-www-form-urlencoded"
+            },
+            "body":$( "form",$.pdialog.getCurrent()).serialize()
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(JUI.msg("networkError"));
+            }
+            return response.body;
+        }).then(body => {
+            var reader = body.getReader();
+            var decoder = new TextDecoder('utf-8');
+            var result = "";
+            var tempResult = null;
+            function read() {
+                return reader.read().then(({done, value}) => {
+                    if (done) {
+                        $("#audioCompletePlay")[0].play();
+                        $(".mdImport",$.pdialog.getCurrent()).prop("disabled",false).removeClass("buttonDisabled");
+                        $(".send",$.pdialog.getCurrent()).prop("disabled",false).removeClass("buttonDisabled");
+                        return;
+                    }
+                    var body = decoder.decode(value);
+                    if(body){
+                        if(tempResult){
+                            body = tempResult+body;
+                            tempResult = null;
+                        }
+                        if(!body.endsWith("\n")){
+                            tempResult = body.substring(body.lastIndexOf("\n"));
+                            body = body.substring(0, body.lastIndexOf("\n"));
+                        }
+                        var lines = body.split("\n");
+                        for (var line of lines) {
+                            if(line){
+                                try{
+                                    var jsonObj = JSON.parse(line);
+                                    if(jsonObj && jsonObj.choices && 0 < jsonObj.choices.length && jsonObj.choices[0] && jsonObj.choices[0].delta && jsonObj.choices[0].delta.content){
+                                        result += jsonObj.choices[0].delta.content;
+                                    }
+                                }catch(e){
+                                    console.log(e+":"+line);
+                                }
+                            }
+                        }
+                        $("textarea.result",$.pdialog.getCurrent()).val(result);
+                        $("textarea.result",$.pdialog.getCurrent()).scrollTop($("textarea.result",$.pdialog.getCurrent())[0].scrollHeight);
+                    }
+                    return read();
+                });
+            }
+            return read();
+        }).catch(error  => {
+             alertMsg.error(error);
+             $("#audioCompletePlay")[0].play();
+             $(".mdImport",$.pdialog.getCurrent()).prop("disabled",false).removeClass("buttonDisabled");
+             $(".send",$.pdialog.getCurrent()).prop("disabled",false).removeClass("buttonDisabled");
+        });
+});
+</script>

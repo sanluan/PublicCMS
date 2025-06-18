@@ -11,7 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.persistence.Version;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -57,7 +56,6 @@ public class SysLock implements java.io.Serializable {
      * 更新日期
      */
     @GeneratorColumn(title = "更新日期")
-    @Version
     private Date updateDate;
 
     public SysLock() {

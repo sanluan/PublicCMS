@@ -56,6 +56,10 @@
         if (options.event ) {
             $(container).on( ( options.event ) + ".jui-accordion", null, null, clickHandler);
         }
+        $(".accordionContent li a",$(container)).on("click",function(){
+            $(".accordionContent li a.selected",$(container)).removeClass("selected");
+            $(this).addClass("selected");
+        })
     };
     $.jui.accordion.prototype = {
         activate: function(index) {

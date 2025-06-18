@@ -24,6 +24,9 @@ import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.entities.sys.SysWorkflowProcess;
+import com.publiccms.entities.sys.SysWorkflowProcessItem;
+import com.publiccms.entities.sys.SysWorkflowProcessItemId;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -34,6 +37,8 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.logic.service.sys.SysWorkflowProcessItemService;
+import com.publiccms.logic.service.sys.SysWorkflowProcessService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.model.CmsContentParameters;
@@ -65,6 +70,10 @@ public class ContentController {
     private LockComponent lockComponent;
     @Resource
     protected SafeConfigComponent safeConfigComponent;
+    @Resource
+    private SysWorkflowProcessItemService workflowProcessItemService;
+    @Resource
+    private SysWorkflowProcessService workflowProcessService;
 
     /**
      * 保存内容
@@ -119,8 +128,9 @@ public class ContentController {
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
         CmsContentService.initContent(entity, site, cmsModel, draft, false, attribute, false, CommonUtils.getDate());
+        CmsContent oldEntity = null;
         if (null != entity.getId()) {
-            CmsContent oldEntity = service.getEntity(entity.getId());
+            oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
                     || oldEntity.getUserId() != user.getId() && !user.isSuperuser()) {
                 return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
@@ -143,6 +153,21 @@ public class ContentController {
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "save.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
+        if (null != category.getWorkflowId()) {
+            SysWorkflowProcessItem item = workflowProcessItemService.getEntity(
+                    new SysWorkflowProcessItemId(SysWorkflowProcessService.ITEM_TYPE_CONTENT, String.valueOf(entity.getId())));
+            if (null == item ||  null!=oldEntity && CmsContentService.STATUS_NORMAL == oldEntity.getStatus()) {
+                SysWorkflowProcess process = workflowProcessService.createProcess(site.getId(), category.getWorkflowId(),
+                        user.getId(), entity.getTitle(), SysWorkflowProcessService.ITEM_TYPE_CONTENT,
+                        String.valueOf(entity.getId()));
+                if (null != process) {
+                    service.checking(site.getId(), entity.getId());
+                }
+            } else if (null != item && CmsContentService.STATUS_REJECT == oldEntity.getStatus()) {
+                workflowProcessService.reopenProcess(site.getId(), item.getProcessId());
+            }
+        }
+        
         lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE, String.valueOf(user.getId()), null, true);
         model.addAttribute("dataId", entity.getId());
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);

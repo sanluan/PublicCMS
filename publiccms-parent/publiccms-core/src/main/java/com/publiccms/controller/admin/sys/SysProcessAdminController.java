@@ -17,7 +17,7 @@ import jakarta.annotation.Resource;
 
 /**
  *
- * SysProcessAdminController
+ * ProcessController
  * 
  */
 @Controller
@@ -28,14 +28,12 @@ public class SysProcessAdminController {
      * @param site
      * @param admin
      * @param entity
-     * @param request
-     * @param model
      * @return operate result
      */
     @RequestMapping("handle")
     @Csrf
     public String handle(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysWorkflowProcessHistory entity) {
-        service.handleProcess(site.getId(), entity, admin);
+        service.handleProcess(site, entity, admin);
         return CommonConstants.TEMPLATE_DONE;
     }
 

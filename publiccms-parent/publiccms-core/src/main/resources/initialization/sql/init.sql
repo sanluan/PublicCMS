@@ -561,6 +561,7 @@ CREATE TABLE `log_login` (
   `user_id` bigint(20) default NULL COMMENT '用户',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `channel` varchar(50) NOT NULL COMMENT '登录渠道',
+  `login_method` varchar(50) NOT NULL COMMENT '登录方式',
   `result` tinyint(1) NOT NULL COMMENT '结果',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `error_password` varchar(255) default NULL COMMENT '错误密码',
@@ -568,7 +569,7 @@ CREATE TABLE `log_login` (
   KEY `log_login_result` (`site_id`, `result`, `create_date`),
   KEY `log_login_user_id` (`site_id`, `user_id`, `create_date`),
   KEY `log_login_ip` (`site_id`, `ip`, `create_date`),
-  KEY `log_login_channel` (`site_id`, `channel`, `create_date`)
+  KEY `log_login_channel` (`site_id`, `channel`, `login_method`, `create_date`)
 ) COMMENT='登录日志';
 
 -- ----------------------------
@@ -868,6 +869,7 @@ INSERT INTO `sys_module` VALUES ('account_add', 'tradeAccount/add', 'tradeAccoun
 INSERT INTO `sys_module` VALUES ('account_history_list', 'tradeAccountHistory/list', NULL, NULL, 'account_list', 1, 0, 0);
 INSERT INTO `sys_module` VALUES ('account_list', 'tradeAccount/list', NULL, 'icon-credit-card', 'trade', 1, 1, 6);
 INSERT INTO `sys_module` VALUES ('account_recharge', 'tradeAccount/rechargeParameters', 'tradeAccount/recharge', NULL, 'account_list', 0, 0, 2);
+INSERT INTO `sys_module` VALUES ('ai_chat', 'simpleAi/chat', 'simpleAi/doChat', NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('app_add', 'sysApp/add', 'sysApp/save', NULL, 'app_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('app_client_disable', NULL, 'sysAppClient/disable', NULL, 'app_client_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('app_client_enable', NULL, 'sysAppClient/enable', NULL, 'app_client_list', 0, 0, 0);
@@ -910,7 +912,7 @@ INSERT INTO `sys_module` VALUES ('config_list', 'sysConfig/list', NULL, 'icon-co
 INSERT INTO `sys_module` VALUES ('content', NULL, NULL, 'bi bi-file-post', NULL, 1, 1, 2);
 INSERT INTO `sys_module` VALUES ('content_add', 'cmsContent/add', 'cmsContent/addMore,cmsContent/save', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_change_model', 'cmsContent/changeModelParameters', 'cmsContent/changeModel', NULL, 'content_list', 0, 0, 0);
-INSERT INTO `sys_module` VALUES ('content_check', 'cmsContent/uncheck_list', 'cmsContent/check,cmsContent/reject', 'icon-check-sign', 'content', 1, 0, 1);
+INSERT INTO `sys_module` VALUES ('content_check', 'cmsContent/uncheck_list', 'cmsContent/check,cmsContent/reject', NULL, 'content_list', 0, 0, 1);
 INSERT INTO `sys_module` VALUES ('content_delete', NULL, 'cmsContent/delete', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_distribute', 'cmsCategory/lookupBySiteId', 'cmsContent/distribute', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_export', 'cmsContent/export', 'cmsContent/exportExcel,cmsContent/exportData', NULL, 'content_list', 0, 0, 0);
@@ -928,7 +930,7 @@ INSERT INTO `sys_module` VALUES ('content_refresh', NULL, 'cmsContent/refresh', 
 INSERT INTO `sys_module` VALUES ('content_search', 'cmsContent/search', 'cmsContent/view', 'icon-search', 'content', 1, 0, 3);
 INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_uncheck', NULL, 'cmsContent/uncheck', NULL, 'content_list', 0, 0, 0);
-INSERT INTO `sys_module` VALUES ('content_view', 'cmsContent/view', NULL, NULL, 'content_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('content_view', 'cmsContent/view', NULL, NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_add', 'sysDept/add', 'sysDept/save,sysDept/virify', NULL, 'dept_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_delete', NULL, 'sysDept/delete', NULL, 'dept_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_list', 'sysDept/list', NULL, 'icon-group', 'user', 1, 1, 2);
@@ -964,7 +966,6 @@ INSERT INTO `sys_module` VALUES ('myself_content_delete', NULL, 'cmsContent/dele
 INSERT INTO `sys_module` VALUES ('myself_content_publish', NULL, 'cmsContent/publish', NULL, 'myself_content', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('myself_content_push', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsContent/push_to_place,cmsContent/related', NULL, 'myself_content', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('myself_content_refresh', NULL, 'cmsContent/refresh', NULL, 'myself_content', 0, 0, 0);
-INSERT INTO `sys_module` VALUES ('myself_content_view', 'cmsContent/view', NULL, NULL, 'myself_content', 1, 0, 0);
 INSERT INTO `sys_module` VALUES ('myself_dept', 'myself/myDept', NULL, 'icon-group', 'myself', 1, 1, 0);
 INSERT INTO `sys_module` VALUES ('myself_dept_user_add', 'myself/dept/addUser', 'sysDept/saveUser', NULL, 'myself_dept', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('myself_dept_user_list', 'myself/dept/userList', 'sysDept/enableUser,sysDept/disableUser', NULL, 'myself_dept', 0, 0, 0);
@@ -972,12 +973,11 @@ INSERT INTO `sys_module` VALUES ('myself_device', 'myself/userDeviceList', 'sysA
 INSERT INTO `sys_module` VALUES ('myself_log_login', 'myself/logLogin', NULL, 'icon-signin', 'myself', 1, 0, 4);
 INSERT INTO `sys_module` VALUES ('myself_log_operate', 'myself/logOperate', NULL, 'icon-list-alt', 'myself', 1, 0, 3);
 INSERT INTO `sys_module` VALUES ('myself_password', 'myself/password', 'changePassword', NULL, 'myself_profile', 1, 0, 0);
-INSERT INTO `sys_module` VALUES ('myself_process_view', 'sysWorkflowProcess/view', NULL, NULL, 'myself_content', 1, 0, 0);
-INSERT INTO `sys_module` VALUES ('myself_profile', 'myself/profile', 'sysUser/update,file/doUpload', 'icon-user', 'myself', 1, 0, 0);
+INSERT INTO `sys_module` VALUES ('myself_profile', 'myself/profile', 'sysUser/update,myself/otpsettings,otpSetting/bind,otpSetting/unbind,webauthn/attestation/options,webauthn/attestation/result,webauthn/getCredentials,webauthn/deleteCredential', 'icon-user', 'myself', 1, 0, 0);
 INSERT INTO `sys_module` VALUES ('myself_token', 'myself/userTokenList', 'sysUserToken/delete', 'icon-unlock-alt', 'myself', 1, 0, 5);
 INSERT INTO `sys_module` VALUES ('operation', NULL, NULL, 'bi bi-binoculars-fill', NULL, 1, 1, 7);
 INSERT INTO `sys_module` VALUES ('order_confirm', 'tradeOrder/confirmParameters', 'tradeOrder/confirm', NULL, 'order_list', 0, 0, 0);
-INSERT INTO `sys_module` VALUES ('order_history_list', 'tradeOrderHistory/list', 'sysUser/lookup', NULL, 'order_list', 1, 0, 0);
+INSERT INTO `sys_module` VALUES ('order_history_list', 'tradeOrderHistory/list', NULL, NULL, 'order_list', 1, 0, 0);
 INSERT INTO `sys_module` VALUES ('order_list', 'tradeOrder/list', NULL, 'icon-barcode', 'trade', 1, 1, 1);
 INSERT INTO `sys_module` VALUES ('order_process', 'tradeOrder/processParameters', 'tradeOrder/process,tradeOrder/invalid,tradeOrder/close,tradeOrder/export', NULL, 'order_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('order_view', 'tradeOrder/view', NULL, NULL, 'order_list', 0, 0, 0);
@@ -985,30 +985,30 @@ INSERT INTO `sys_module` VALUES ('page', NULL, NULL, 'icon-tablet', NULL, 1, 1, 
 INSERT INTO `sys_module` VALUES ('page_diy', 'cmsPage/diy', 'cmsPage/region,cmsDiy/save', 'bi bi-palette', 'page', 1, 1, 3);
 INSERT INTO `sys_module` VALUES ('page_diy_buttons', 'cmsDiy/buttons', NULL, NULL, 'page_diy', 0, 0, 3);
 INSERT INTO `sys_module` VALUES ('page_diy_region', 'cmsPage/region', NULL, NULL, 'page_diy', 0, 0, 1);
-INSERT INTO `sys_module` VALUES ('page_list', 'cmsPage/list', 'cmsPage/metadata', 'icon-globe', 'page', 1, 1, 1);
-INSERT INTO `sys_module` VALUES ('page_metadata', 'cmsPage/metadata', 'cmsPage/save', NULL, 'page_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('page_list', 'cmsPage/list', NULL, 'icon-globe', 'page', 1, 1, 1);
+INSERT INTO `sys_module` VALUES ('page_metadata', 'cmsPage/metadata', 'cmsPage/save,cmsPage/clearCache', NULL, 'page_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('page_preview', 'cmsDiy/preview', NULL, 'bi bi-palette2', 'page', 1, 0, 0);
 INSERT INTO `sys_module` VALUES ('page_publish', NULL, 'cmsTemplate/publish', NULL, 'page_list', 0, 0, 0);
-INSERT INTO `sys_module` VALUES ('page_save', NULL, 'cmsPage/save,cmsPage/clearCache', NULL, 'page_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('payment_history_list', 'tradePaymentHistory/list', 'tradePaymentHistory/view', NULL, 'trade_payment', 1, 0, 0);
-INSERT INTO `sys_module` VALUES ('payment_list', 'tradePayment/list', 'sysUser/lookup', 'icon-money', 'trade', 1, 0, 3);
+INSERT INTO `sys_module` VALUES ('payment_list', 'tradePayment/list', 'tradePayment/refund,tradePayment/refuse', 'icon-money', 'trade', 1, 0, 3);
 INSERT INTO `sys_module` VALUES ('place_add', 'cmsPlace/add', 'cmsPlace/lookup,cmsPlace/lookup_content_list,cmsPlace/save', NULL, 'place_list', 0, 0, 0);
-INSERT INTO `sys_module` VALUES ('place_check', NULL, 'cmsPlace/check,cmsPlace/uncheck', NULL, 'place_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('place_check', NULL, 'cmsPlace/check,cmsPlace/uncheck,cmsPlace/reject', NULL, 'place_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('place_clear', NULL, 'cmsPlace/clear', NULL, 'place_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('place_data_list', 'cmsPlace/dataList', 'cmsPlace/export', NULL, 'place_list', 0, 0, 1);
 INSERT INTO `sys_module` VALUES ('place_delete', NULL, 'cmsPlace/delete', NULL, 'place_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('place_form', 'placeTemplate/form', NULL, NULL, 'common', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('place_import', 'cmsPlace/import', 'cmsPlace/doImport', NULL, 'place_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('place_list', 'cmsPlace/list', NULL, 'icon-list-alt', 'page', 1, 1, 2);
 INSERT INTO `sys_module` VALUES ('place_publish', 'cmsPlace/metadata', 'cmsTemplate/publishPlace', NULL, 'place_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('place_refresh', NULL, 'cmsPlace/refresh', NULL, 'place_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_content', 'placeTemplate/content', 'cmsTemplate/help,cmsTemplate/savePlace,cmsWebFile/lookup', NULL, 'place_template_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_help', 'cmsTemplate/help', NULL, NULL, 'place_template_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_list', 'placeTemplate/list', 'placeTemplate/directory', 'icon-list-alt', 'file', 1, 1, 2);
-INSERT INTO `sys_module` VALUES ('place_template_metadata', 'placeTemplate/metadata', 'cmsTemplate/savePlaceMetaData,cmsTemplate/deletePlace,cmsTemplate/createDirectory', NULL, 'place_template_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('place_template_metadata', 'placeTemplate/metadata', 'cmsTemplate/savePlaceMetadata,cmsTemplate/deletePlace,cmsTemplate/createDirectory', NULL, 'place_template_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('place_view', 'cmsPlace/view', NULL, NULL, 'place_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('process_handle', 'sysWorkflowProcess/processParameters', 'sysWorkflowProcess/handle', NULL, 'process_list', 1, 0, 0);
 INSERT INTO `sys_module` VALUES ('process_list', 'sysWorkflowProcess/list', NULL, 'bi bi-ui-checks', 'content', 1, 1, 2);
-INSERT INTO `sys_module` VALUES ('process_view', 'sysWorkflowProcess/view', NULL, NULL, 'process_list', 1, 0, 0);
+INSERT INTO `sys_module` VALUES ('process_view', 'sysWorkflowProcess/view', NULL, NULL, 'common', 1, 0, 0);
 INSERT INTO `sys_module` VALUES ('product_add', 'cmsContentProduct/add', 'cmsContentProduct/save', NULL, 'product_list', 1, 0, 0);
 INSERT INTO `sys_module` VALUES ('product_list', 'cmsContentProduct/list', NULL, 'icon-truck', 'trade', 1, 1, 1);
 INSERT INTO `sys_module` VALUES ('record_add', 'sysRecord/add', 'sysRecord/save', NULL, 'record_list', 0, 0, 0);
@@ -1028,6 +1028,7 @@ INSERT INTO `sys_module` VALUES ('select_category_type', 'cmsCategoryType/lookup
 INSERT INTO `sys_module` VALUES ('select_content', 'cmsContent/lookup', 'cmsContent/lookup_list,cmsContent/contentImage', NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_dept', 'sysDept/lookup', NULL, NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_dictionary', 'cmsDictionary/lookup', NULL, NULL, 'common', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('select_directory', 'cmsWebFile/directoryLookup', NULL, NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_fragment', 'cmsTemplate/ftlLookup', NULL, NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_place', 'placeTemplate/lookup', 'placeTemplate/lookupPlace', NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_role', 'sysRole/lookup', NULL, NULL, 'common', 1, 0, 0);
@@ -1035,6 +1036,7 @@ INSERT INTO `sys_module` VALUES ('select_survey', 'cmsSurvey/lookup', NULL, NULL
 INSERT INTO `sys_module` VALUES ('select_tag', 'cmsTag/lookup', NULL, NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_tag_type', 'cmsTagType/lookup', NULL, NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_template', 'cmsTemplate/lookup', NULL, NULL, 'common', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('select_template_directory', 'cmsTemplate/directoryLookup', NULL, NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_user', 'sysUser/lookup', 'sysUser/lookup_list', NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_vote', 'cmsVote/lookup', NULL, NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_workflow', 'sysWorkflow/lookup', NULL, NULL, 'common', 1, 0, 0);
@@ -1048,6 +1050,7 @@ INSERT INTO `sys_module` VALUES ('system', NULL, NULL, 'icon-cogs', NULL, 1, 1, 
 INSERT INTO `sys_module` VALUES ('system_workflow', 'sysWorkflow/list', NULL, 'bi bi-diagram-3', 'system', 1, 1, 0);
 INSERT INTO `sys_module` VALUES ('system_workflow_add', 'sysWorkflow/add', 'sysWorkflow/save', NULL, 'system_workflow', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('system_workflow_delete', NULL, 'sysWorkflow/delete', NULL, 'system_workflow', 1, 0, 0);
+INSERT INTO `sys_module` VALUES ('system_workflow_use', 'sysWorkflow/batchParameters', 'cmsCategory/saveWorkflow', NULL, 'system_workflow', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('tag_add', 'cmsTag/add', 'cmsTag/save', NULL, 'tag_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('tag_delete', NULL, 'cmsTag/delete', NULL, 'tag_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('tag_list', 'cmsTag/list', NULL, 'icon-tag', 'content', 1, 1, 6);
@@ -1101,9 +1104,10 @@ INSERT INTO `sys_module` VALUES ('webfile_content', 'cmsWebFile/content', 'cmsWe
 INSERT INTO `sys_module` VALUES ('webfile_directory', 'cmsWebFile/directory', 'cmsWebFile/createDirectory', NULL, 'webfile_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_list', 'cmsWebFile/list', NULL, 'icon-globe', 'file', 1, 1, 5);
 INSERT INTO `sys_module` VALUES ('webfile_unzip', 'cmsWebFile/unzipParameters', 'cmsWebFile/unzip', NULL, 'webfile_list', 0, 0, 0);
-INSERT INTO `sys_module` VALUES ('webfile_upload', 'cmsWebFile/upload', 'cmsWebFile/doUpload,cmsWebFile/uploadIco,cmsWebFile/doUpload,cmsWebFile/doUploadIco,cmsWebFile/check', NULL, 'webfile_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('webfile_upload', 'cmsWebFile/upload', 'cmsWebFile/doUpload,cmsWebFile/uploadIco,cmsWebFile/doUploadIco,cmsWebFile/check', NULL, 'webfile_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_zip', NULL, 'cmsWebFile/zip', NULL, 'webfile_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', 'cmsWord/hidden,cmsWord/delete,cmsWord/show,cmsWord/add,cmsWord/save', 'bi bi-search-heart', 'content', 1, 0, 10);
+INSERT INTO `sys_module` VALUES ('workflow_view', 'sysWorkflow/view', NULL, NULL, 'common', 1, 0, 0);
 
 -- ----------------------------
 -- Table structure for sys_module_lang
@@ -1132,6 +1136,9 @@ INSERT INTO `sys_module_lang` VALUES ('account_list', 'zh', '账户管理');
 INSERT INTO `sys_module_lang` VALUES ('account_recharge', 'en', 'Recharge');
 INSERT INTO `sys_module_lang` VALUES ('account_recharge', 'ja', 'チャージ');
 INSERT INTO `sys_module_lang` VALUES ('account_recharge', 'zh', '充值');
+INSERT INTO `sys_module_lang` VALUES ('ai_chat', 'en', 'AI');
+INSERT INTO `sys_module_lang` VALUES ('ai_chat', 'ja', 'AI');
+INSERT INTO `sys_module_lang` VALUES ('ai_chat', 'zh', 'AI');
 INSERT INTO `sys_module_lang` VALUES ('app_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('app_add', 'ja', '追加/変更');
 INSERT INTO `sys_module_lang` VALUES ('app_add', 'zh', '增加/修改');
@@ -1444,9 +1451,9 @@ INSERT INTO `sys_module_lang` VALUES ('myself_log_operate', 'zh', '我的操作�
 INSERT INTO `sys_module_lang` VALUES ('myself_password', 'en', 'Change password');
 INSERT INTO `sys_module_lang` VALUES ('myself_password', 'ja', 'パスワードを変更');
 INSERT INTO `sys_module_lang` VALUES ('myself_password', 'zh', '修改密码');
-INSERT INTO `sys_module_lang` VALUES ('myself_process_view', 'en', 'View');
-INSERT INTO `sys_module_lang` VALUES ('myself_process_view', 'ja', '見る');
-INSERT INTO `sys_module_lang` VALUES ('myself_process_view', 'zh', '查看');
+INSERT INTO `sys_module_lang` VALUES ('myself_process_view', 'en', 'Process view');
+INSERT INTO `sys_module_lang` VALUES ('myself_process_view', 'ja', 'プロセスビューイング');
+INSERT INTO `sys_module_lang` VALUES ('myself_process_view', 'zh', '流程查看');
 INSERT INTO `sys_module_lang` VALUES ('myself_profile', 'en', 'Modify personal information');
 INSERT INTO `sys_module_lang` VALUES ('myself_profile', 'ja', '個人情報を変更する');
 INSERT INTO `sys_module_lang` VALUES ('myself_profile', 'zh', '修改个人信息');
@@ -1486,18 +1493,15 @@ INSERT INTO `sys_module_lang` VALUES ('page_diy_region', 'zh', '区域');
 INSERT INTO `sys_module_lang` VALUES ('page_list', 'en', 'Page management');
 INSERT INTO `sys_module_lang` VALUES ('page_list', 'ja', 'ページ管理');
 INSERT INTO `sys_module_lang` VALUES ('page_list', 'zh', '页面管理');
-INSERT INTO `sys_module_lang` VALUES ('page_metadata', 'en', 'Metadata management');
-INSERT INTO `sys_module_lang` VALUES ('page_metadata', 'ja', 'メタデータ管理');
-INSERT INTO `sys_module_lang` VALUES ('page_metadata', 'zh', '元数据管理');
+INSERT INTO `sys_module_lang` VALUES ('page_metadata', 'en', 'Save configuration');
+INSERT INTO `sys_module_lang` VALUES ('page_metadata', 'ja', 'ページ設定を保存');
+INSERT INTO `sys_module_lang` VALUES ('page_metadata', 'zh', '保存页面配置');
 INSERT INTO `sys_module_lang` VALUES ('page_preview', 'en', 'Quick Maintenance');
 INSERT INTO `sys_module_lang` VALUES ('page_preview', 'ja', 'クイックメンテナンス');
 INSERT INTO `sys_module_lang` VALUES ('page_preview', 'zh', '快捷维护');
 INSERT INTO `sys_module_lang` VALUES ('page_publish', 'en', 'Publish');
 INSERT INTO `sys_module_lang` VALUES ('page_publish', 'ja', 'ページを生成する');
 INSERT INTO `sys_module_lang` VALUES ('page_publish', 'zh', '生成页面');
-INSERT INTO `sys_module_lang` VALUES ('page_save', 'en', 'Save configuration');
-INSERT INTO `sys_module_lang` VALUES ('page_save', 'ja', 'ページ設定を保存');
-INSERT INTO `sys_module_lang` VALUES ('page_save', 'zh', '保存页面配置');
 INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'en', 'Payment history');
 INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'ja', '支払歴');
 INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'zh', '支付历史');
@@ -1522,6 +1526,9 @@ INSERT INTO `sys_module_lang` VALUES ('place_delete', 'zh', '删除推荐位数�
 INSERT INTO `sys_module_lang` VALUES ('place_form', 'en', 'Page fragment data contribute form');
 INSERT INTO `sys_module_lang` VALUES ('place_form', 'ja', 'ページフラグメント提出フォーム');
 INSERT INTO `sys_module_lang` VALUES ('place_form', 'zh', '页面片段投稿表单');
+INSERT INTO `sys_module_lang` VALUES ('place_import', 'en', 'Import');
+INSERT INTO `sys_module_lang` VALUES ('place_import', 'ja', '導入');
+INSERT INTO `sys_module_lang` VALUES ('place_import', 'zh', '导入');
 INSERT INTO `sys_module_lang` VALUES ('place_list', 'en', 'Page fragment management');
 INSERT INTO `sys_module_lang` VALUES ('place_list', 'ja', 'ページフラグメント管理');
 INSERT INTO `sys_module_lang` VALUES ('place_list', 'zh', '页面片段管理');
@@ -1612,6 +1619,9 @@ INSERT INTO `sys_module_lang` VALUES ('select_dept', 'zh', '选择部门');
 INSERT INTO `sys_module_lang` VALUES ('select_dictionary', 'en', 'Select data dictionary');
 INSERT INTO `sys_module_lang` VALUES ('select_dictionary', 'ja', 'データ辞書を選択');
 INSERT INTO `sys_module_lang` VALUES ('select_dictionary', 'zh', '选择数据字典');
+INSERT INTO `sys_module_lang` VALUES ('select_directory', 'en', 'Select website file directory');
+INSERT INTO `sys_module_lang` VALUES ('select_directory', 'ja', 'ウェブサイトのファイルディレクトリを選択する');
+INSERT INTO `sys_module_lang` VALUES ('select_directory', 'zh', '选择网站文件目录');
 INSERT INTO `sys_module_lang` VALUES ('select_fragment', 'en', 'Template fragment');
 INSERT INTO `sys_module_lang` VALUES ('select_fragment', 'ja', 'テンプレートフラグメント');
 INSERT INTO `sys_module_lang` VALUES ('select_fragment', 'zh', '模板片段');
@@ -1633,6 +1643,9 @@ INSERT INTO `sys_module_lang` VALUES ('select_tag_type', 'zh', '选择标签类�
 INSERT INTO `sys_module_lang` VALUES ('select_template', 'en', 'Select template');
 INSERT INTO `sys_module_lang` VALUES ('select_template', 'ja', 'テンプレートを選択');
 INSERT INTO `sys_module_lang` VALUES ('select_template', 'zh', '选择模板');
+INSERT INTO `sys_module_lang` VALUES ('select_template_directory', 'en', 'Select template directory');
+INSERT INTO `sys_module_lang` VALUES ('select_template_directory', 'ja', 'テンプレートディレクトリを選択する');
+INSERT INTO `sys_module_lang` VALUES ('select_template_directory', 'zh', '选择模板目录');
 INSERT INTO `sys_module_lang` VALUES ('select_user', 'en', 'Select user');
 INSERT INTO `sys_module_lang` VALUES ('select_user', 'ja', 'ユーザーを選択');
 INSERT INTO `sys_module_lang` VALUES ('select_user', 'zh', '选择用户');
@@ -1672,6 +1685,9 @@ INSERT INTO `sys_module_lang` VALUES ('system_workflow_add', 'zh', '增加');
 INSERT INTO `sys_module_lang` VALUES ('system_workflow_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('system_workflow_delete', 'ja', '削除');
 INSERT INTO `sys_module_lang` VALUES ('system_workflow_delete', 'zh', '删除');
+INSERT INTO `sys_module_lang` VALUES ('system_workflow_use', 'en', 'Batch use');
+INSERT INTO `sys_module_lang` VALUES ('system_workflow_use', 'ja', 'バッチ使用');
+INSERT INTO `sys_module_lang` VALUES ('system_workflow_use', 'zh', '批量应用');
 INSERT INTO `sys_module_lang` VALUES ('tag_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('tag_add', 'ja', '追加/変更');
 INSERT INTO `sys_module_lang` VALUES ('tag_add', 'zh', '增加/修改');
@@ -1840,6 +1856,9 @@ INSERT INTO `sys_module_lang` VALUES ('webfile_zip', 'zh', '压缩');
 INSERT INTO `sys_module_lang` VALUES ('word_list', 'en', 'Search word management');
 INSERT INTO `sys_module_lang` VALUES ('word_list', 'ja', '検索ワード管理');
 INSERT INTO `sys_module_lang` VALUES ('word_list', 'zh', '搜索词管理');
+INSERT INTO `sys_module_lang` VALUES ('workflow_view', 'en', 'View');
+INSERT INTO `sys_module_lang` VALUES ('workflow_view', 'ja', '見る');
+INSERT INTO `sys_module_lang` VALUES ('workflow_view', 'zh', '查看');
 
 -- ----------------------------
 -- Table structure for sys_record
@@ -1932,6 +1951,7 @@ CREATE TABLE `sys_site` (
   `site_path` varchar(255) NOT NULL COMMENT '站点地址',
   `use_ssi` tinyint(1) NOT NULL COMMENT '启用服务器端包含',
   `dynamic_path` varchar(255) NOT NULL COMMENT '动态站点地址',
+  `has_child` tinyint(1) NOT NULL COMMENT '拥有子站点',
   `multiple` tinyint(1) NOT NULL COMMENT '站点群',
   `disabled` tinyint(1) NOT NULL COMMENT '禁用',
   PRIMARY KEY  (`id`),
@@ -1942,7 +1962,7 @@ CREATE TABLE `sys_site` (
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES ('1', null ,null ,'PublicCMS', '0', '//dev.publiccms.com:8080/webfile/', '0', '//dev.publiccms.com:8080/', '0', '0');
+INSERT INTO `sys_site` VALUES ('1', null ,null ,'PublicCMS', '0', '//dev.publiccms.com:8080/webfile/', '0', '//dev.publiccms.com:8080/', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for sys_task
@@ -2023,7 +2043,7 @@ CREATE TABLE `sys_user_setting` (
   `create_date` datetime(0) NULL COMMENT '创建日期',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`user_id`,`code`)
-);
+) COMMENT='用户设置';
 
 -- ----------------------------
 -- Table structure for sys_user_token
@@ -2075,10 +2095,11 @@ CREATE TABLE `sys_workflow_process` (
   `dept_id` int(11) DEFAULT NULL COMMENT '部门',
   `user_id` bigint(20) DEFAULT NULL COMMENT '用户',
   `closed` tinyint(1) NOT NULL COMMENT '已关闭',
+  `create_user_id` bigint(20) NOT NULL COMMENT '创建用户',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`id`),
-  KEY `sys_workflow_process_item_id` (`site_id`,`item_type`,`item_id`,`create_date`),
+  KEY `sys_workflow_process_item_id` (`site_id`,`item_type`,`item_id`,`create_user_id`,`create_date`),
   KEY `sys_workflow_process_user_id` (`site_id`,`role_id`,`dept_id`,`user_id` , `closed`)
 ) COMMENT='工作流流程';
 
@@ -2095,8 +2116,8 @@ CREATE TABLE `sys_workflow_process_history` (
   `reason` varchar(255) DEFAULT NULL COMMENT '理由',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
-  KEY `sys_workflow_process_content_id` (`process_id`),
-  KEY `sys_workflow_process_user_id` (`user_id`)
+  KEY `sys_workflow_process_history_content_id` (`process_id`),
+  KEY `sys_workflow_process_history_user_id` (`user_id`)
 ) COMMENT='工作流流程步骤';
 
 -- ----------------------------
@@ -2121,6 +2142,7 @@ CREATE TABLE `sys_workflow_step` (
   `role_id` int(11) DEFAULT NULL COMMENT '角色',
   `dept_id` int(11) DEFAULT NULL COMMENT '部门',
   `user_id` bigint(20) DEFAULT NULL COMMENT '用户',
+  `use_create_user` tinyint(1) NOT NULL COMMENT '使用创建用户',
   `next_step_id` bigint(20) DEFAULT NULL COMMENT '下一步',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY (`id`),
@@ -2210,7 +2232,7 @@ CREATE TABLE `trade_coupon` (
   `starting_amount` decimal(10,2) DEFAULT NULL COMMENT '起始金额',
   `discount` decimal(10,1) DEFAULT NULL COMMENT '折扣优惠',
   `price` decimal(10,2) DEFAULT NULL COMMENT '优惠券价格',
-  `type` int(11) NOT NULL COMMENT '类型(1折扣,2免运费,3满减)',
+  `coupon_type` int(11) NOT NULL COMMENT '类型(1折扣,2免运费,3满减)',
   `redeem_code` varchar(255) DEFAULT NULL COMMENT '兑换码',
   `duration` int(11) NOT NULL COMMENT '有效天数',
   `quantity` int(11) NOT NULL COMMENT '优惠券数量',

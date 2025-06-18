@@ -23,9 +23,16 @@ public class RedisUtils {
         int timeout = Integer.parseInt(redisProperties.getProperty("redis.timeout", "3000"));
         int maxidle = Integer.parseInt(redisProperties.getProperty("redis.maxidle", "10"));
         String password = redisProperties.getProperty("redis.password");
+        String user = redisProperties.getProperty("redis.user");
+        String databaseValue = redisProperties.getProperty("redis.database");
+        int database = 0;
+        if (CommonUtils.notEmpty(database)) {
+            database = Integer.parseInt(databaseValue);
+        }
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxIdle(maxidle);
-        return new JedisPool(config, host, port, timeout, CommonUtils.empty(password) ? null : password);
+        return new JedisPool(config, host, port, timeout, CommonUtils.empty(user) ? null : user,
+                CommonUtils.empty(password) ? null : password, database);
     }
 
     /**

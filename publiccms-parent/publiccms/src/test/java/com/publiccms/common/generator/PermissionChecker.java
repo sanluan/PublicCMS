@@ -87,8 +87,8 @@ public class PermissionChecker {
                 && !url.startsWith("sysSite/") && !url.startsWith("cmsTemplate\\demo\\") && !url.startsWith("sysModule\\")
                 && !url.startsWith("sysModule/") && !url.startsWith("sysDomain/save") && !url.startsWith("sysDomain/delete")
                 && !url.startsWith("dict/save") && !url.startsWith("sysDomain\\add") && !url.startsWith("sysDomain\\list")
-                && !url.startsWith("sysCluster\\") && !url.startsWith("changeLocale") && !url.startsWith("index")
-                && !url.startsWith("<") && !url.startsWith("$")) {
+                && !url.startsWith("sysCluster\\") && !url.startsWith("changeLocale") && !url.startsWith("otp\\")
+                && !url.startsWith("otp/") && !url.startsWith("index") && !url.startsWith("<") && !url.startsWith("$")) {
             addUrl(url, pageUrlSet);
         }
     }

@@ -5,7 +5,7 @@ configurations {
 }
 
 dependencies {
-    compileOnly "jakarta.servlet:javax.servlet-api:${servletVersion}"
+    compileOnly "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
     compileOnly "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
 
     implementation "org.springframework:spring-context-support:${springVersion}"

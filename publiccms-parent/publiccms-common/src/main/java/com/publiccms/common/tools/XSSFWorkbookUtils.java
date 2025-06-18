@@ -108,8 +108,10 @@ public class XSSFWorkbookUtils {
 
     /**
      * 获取表格单元格Cell内容
+     * @param cell 
+     * @return 
      */
-    private static String getCellValue(Cell cell) {
+    public static String getCellValue(Cell cell) {
         String result;
         switch (cell.getCellType()) {
         case NUMERIC:// 数字类型

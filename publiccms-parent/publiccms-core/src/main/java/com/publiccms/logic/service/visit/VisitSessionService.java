@@ -48,11 +48,12 @@ public class VisitSessionService extends BaseService<VisitSession> {
     /**
      * @param siteId
      * @param visitDate
+     * @param maxResults 
      * @return results page
      */
     @Transactional(readOnly = true)
-    public List<VisitDay> getDayList(Short siteId, Date visitDate) {
-        return dao.getDayList(siteId, visitDate);
+    public List<VisitDay> getDayList(Short siteId, Date visitDate, Integer maxResults) {
+        return dao.getDayList(siteId, visitDate, maxResults);
     }
 
     /**

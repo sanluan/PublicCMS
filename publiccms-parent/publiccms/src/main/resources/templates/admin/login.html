@@ -96,17 +96,19 @@ var webAuthnApp=new WebAuthnApp({
     loginChallengeEndpoint : "${base+adminContextPath}/webauthn/assertion/options",
     loginResponseEndpoint : "${base+adminContextPath}/webauthn/assertion/result"
 });
-$(".btn-finger-login").on("click keydown",function(){
-    $(".error_msg").text("");
-    if($('input[name=username]').val()){
-        webAuthnApp.username = $("input[name=username]").val();
-        webAuthnApp.login().then(()=>{
-            window.location = "${base+adminContextPath}/webauthn/login?returnUrl="+$("input[name=returnUrl]").val();
-        }).catch((err)=>{
-            $(".error_msg").text(err.message);
-        });
-    } else {
-        $('input[name=username]')[0].reportValidity();
+$(".btn-finger-login").on("click keydown",function(e){
+    if(e.originalEvent.type !== "keydown" || "Space" === e.originalEvent.code || "Enter" === e.originalEvent.code){
+        $(".error_msg").text("");
+        if($('input[name=username]').val()){
+            webAuthnApp.username = $("input[name=username]").val();
+            webAuthnApp.login().then(()=>{
+                window.location = "${base+adminContextPath}/webauthn/login?returnUrl="+$("input[name=returnUrl]").val();
+            }).catch((err)=>{
+                $(".error_msg").text(err.message);
+            });
+        } else {
+            $('input[name=username]')[0].reportValidity();
+        }
     }
 });
 </script>

@@ -50,22 +50,24 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
      * @param siteId
      * @param startCreateDate
      * @param endCreateDate
+     * @param maxResults 
      * @return results page
      */
     @Transactional(readOnly = true)
-    public List<VisitSession> getSessionList(Short siteId, Date startCreateDate, Date endCreateDate) {
-        return dao.getSessionList(siteId, startCreateDate, endCreateDate);
+    public List<VisitSession> getSessionList(Short siteId, Date startCreateDate, Date endCreateDate, Integer maxResults) {
+        return dao.getSessionList(siteId, startCreateDate, endCreateDate, maxResults);
     }
 
     /**
      * @param siteId
      * @param visitDate
      * @param visitHour
+     * @param maxResults 
      * @return results page
      */
     @Transactional(readOnly = true)
-    public List<VisitDay> getHourList(Short siteId, Date visitDate, Byte visitHour) {
-        return dao.getHourList(siteId, visitDate, visitHour);
+    public List<VisitDay> getHourList(Short siteId, Date visitDate, Byte visitHour, Integer maxResults) {
+        return dao.getHourList(siteId, visitDate, visitHour, maxResults);
     }
 
     /**
@@ -73,22 +75,24 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
      * @param visitDate
      * @param itemType
      * @param itemId
+     * @param maxResults 
      * @return results page
      */
     @Transactional(readOnly = true)
-    public List<VisitItem> getItemList(Short siteId, Date visitDate, String itemType, String itemId) {
-        return dao.getItemList(siteId, visitDate, itemType, itemId);
+    public List<VisitItem> getItemList(Short siteId, Date visitDate, String itemType, String itemId, Integer maxResults) {
+        return dao.getItemList(siteId, visitDate, itemType, itemId, maxResults);
     }
 
     /**
      * @param siteId
      * @param url
      * @param visitDate
+     * @param maxResults 
      * @return results page
      */
     @Transactional(readOnly = true)
-    public List<VisitUrl> getUrlList(Short siteId, String url, Date visitDate) {
-        return dao.getUrlList(siteId, url, visitDate);
+    public List<VisitUrl> getUrlList(Short siteId, String url, Date visitDate, Integer maxResults) {
+        return dao.getUrlList(siteId, url, visitDate, maxResults);
     }
 
     /**

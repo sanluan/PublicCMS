@@ -54,6 +54,12 @@ public abstract class Constants {
      */
     public static final String DOT = ".";
     /**
+     * 冒号
+     * 
+     * COLON
+     */
+    public static final String COLON = ":";
+    /**
      * 下划线
      * 
      * underline

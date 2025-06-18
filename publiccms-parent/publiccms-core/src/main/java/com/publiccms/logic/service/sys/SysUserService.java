@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -80,6 +81,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param cover
      * @return entity
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public SysUser updateCover(Serializable id, String cover) {
         SysUser entity = getEntity(id);
         if (null != entity) {
@@ -95,6 +97,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param email
      * @return entity
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public SysUser updateProfile(Serializable id, String nickname, String cover, String email) {
         SysUser entity = getEntity(id);
         if (null != entity) {
@@ -111,6 +114,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param id
      * @param password
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updatePassword(Serializable id, String password) {
         SysUser entity = getEntity(id);
         if (null != entity) {
@@ -122,6 +126,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param id
      * @param weak
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateWeekPassword(Serializable id, boolean weak) {
         SysUser entity = getEntity(id);
         if (null != entity) {
@@ -134,6 +139,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param ip
      * @return
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public SysUser updateLoginStatus(Serializable id, String ip) {
         SysUser entity = getEntity(id);
         if (null != entity) {
@@ -162,6 +168,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param id
      * @param email
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void checked(Serializable id, String email) {
         SysUser entity = getEntity(id);
         if (null != entity) {
@@ -175,6 +182,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param nickname
      * @return
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public SysUser updateNickname(Serializable id, String nickname) {
         SysUser entity = getEntity(id);
         if (null != entity) {
@@ -188,6 +196,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param status
      * @return
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public SysUser updateStatus(Serializable id, boolean status) {
         SysUser entity = getEntity(id);
         if (null != entity) {
@@ -203,6 +212,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param status
      * @return
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public List<SysUser> updateStatus(short siteId, Serializable[] ids, Serializable operateId, boolean status) {
         List<SysUser> entityList = getEntitys(ids);
         if (null != entityList) {

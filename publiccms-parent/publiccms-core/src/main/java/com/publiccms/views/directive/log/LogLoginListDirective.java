@@ -26,6 +26,7 @@ import com.publiccms.common.handler.RenderHandler;
  * <li><code>startCreateDate</code>:起始创建日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>endCreateDate</code>:终止创建日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>channel</code>:登录渠道
+ * <li><code>loginMethod</code>:登录方式
  * <li><code>result</code>:登录结果,【true,false】
  * <li><code>name</code>:用户名
  * <li><code>ip</code>:IP
@@ -61,7 +62,7 @@ public class LogLoginListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"),
-                handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), handler.getString("channel"),
+                handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), handler.getString("channel"), handler.getString("loginMethod"),
                 handler.getBoolean("result"), handler.getString("name"), handler.getString("ip"), handler.getString("orderType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();

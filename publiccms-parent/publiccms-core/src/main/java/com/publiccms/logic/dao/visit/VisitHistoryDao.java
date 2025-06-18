@@ -31,7 +31,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param sessionId
      * @param ip
      * @param url
-     * @param userId 
+     * @param userId
      * @param startCreateDate
      * @param endCreateDate
      * @param orderType
@@ -75,9 +75,10 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param visitDate
      * @param itemType
      * @param itemId
+     * @param maxResults 
      * @return results page
      */
-    public List<VisitItem> getItemList(Short siteId, Date visitDate, String itemType, String itemId) {
+    public List<VisitItem> getItemList(Short siteId, Date visitDate, String itemType, String itemId, Integer maxResults) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new VisitItem(bean.siteId,bean.visitDate,bean.itemType,bean.itemId,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from VisitHistory bean");
         if (null != siteId) {
@@ -100,6 +101,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         queryHandler.group("bean.itemType");
         queryHandler.group("bean.itemId");
         queryHandler.order("count(*) desc");
+        queryHandler.setMaxResults(maxResults);
         return getList(queryHandler, VisitItem.class);
     }
 
@@ -107,9 +109,10 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param siteId
      * @param url
      * @param visitDate
+     * @param maxResults 
      * @return results page
      */
-    public List<VisitUrl> getUrlList(Short siteId, String url, Date visitDate) {
+    public List<VisitUrl> getUrlList(Short siteId, String url, Date visitDate, Integer maxResults) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new VisitUrl(bean.siteId,bean.visitDate,bean.url,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from VisitHistory bean");
         if (null != siteId) {
@@ -124,6 +127,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         queryHandler.group("bean.visitDate");
         queryHandler.group("bean.url");
         queryHandler.order("count(*) desc");
+        queryHandler.setMaxResults(maxResults);
         return getList(queryHandler, VisitUrl.class);
     }
 
@@ -131,9 +135,10 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param siteId
      * @param visitDate
      * @param visitHour
+     * @param maxResults 
      * @return results page
      */
-    public List<VisitDay> getHourList(Short siteId, Date visitDate, byte visitHour) {
+    public List<VisitDay> getHourList(Short siteId, Date visitDate, byte visitHour, Integer maxResults) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new VisitDay(bean.siteId,bean.visitDate,bean.visitHour,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from VisitHistory bean");
         if (null != siteId) {
@@ -145,6 +150,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         queryHandler.group("bean.siteId");
         queryHandler.group("bean.visitDate");
         queryHandler.group("bean.visitHour");
+        queryHandler.setMaxResults(maxResults);
         return getList(queryHandler, VisitDay.class);
     }
 
@@ -152,9 +158,10 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param siteId
      * @param startCreateDate
      * @param endCreateDate
+     * @param maxResults 
      * @return results page
      */
-    public List<VisitSession> getSessionList(Short siteId, Date startCreateDate, Date endCreateDate) {
+    public List<VisitSession> getSessionList(Short siteId, Date startCreateDate, Date endCreateDate, Integer maxResults) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new VisitSession(bean.siteId,bean.sessionId,bean.visitDate,max(bean.createDate), min(bean.createDate), bean.ip, count(*)) from VisitHistory bean");
         if (null != startCreateDate) {
@@ -170,6 +177,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         queryHandler.group("bean.sessionId");
         queryHandler.group("bean.visitDate");
         queryHandler.group("bean.ip");
+        queryHandler.setMaxResults(maxResults);
         return getList(queryHandler, VisitSession.class);
     }
 

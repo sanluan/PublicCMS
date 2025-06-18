@@ -1,13 +1,13 @@
-<a class="button float" href="sysSite/monitor.html" target="navTab" rel="sysSite/monitor"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
+<a class="button float" href="sysSite/monitor.html" target="navTab" rel="sysSite/monitor" data-change-title="false"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
 <div class="pageFormContent">
     <fieldset>
         <legend><@t.page 'report.cms'/></legend>
         <div class="unit clearfix">
-            <div id="memory_count" class="chart" data-id="memoryChart" style="width:50%;"></div>
-            <div id="disk" class="chart" data-id="diskChart" style="width:50%;"></div>
+            <div id="memory_count" class="chart box w" data-resize-object="memoryChart"></div>
+            <div id="disk" class="chart box w" data-resize-object="diskChart"></div>
         </div>
         <div class="unit">
-            <div id="memory" class="chart" style="width:100%;height:300px;"></div>
+            <div id="memory" class="chart box full"></div>
         </div>
     </fieldset>
 </div>

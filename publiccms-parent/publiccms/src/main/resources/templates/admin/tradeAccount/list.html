@@ -41,7 +41,7 @@
                     <a href="tradeAccount/rechargeParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><@t.page 'button.recharge'/></a>
                 </#if>
                 <#if authorizedMap['tradeAccountHistory/list']>
-                    <a href="tradeAccountHistory/list.html?id=${a.id}" class="btnText" target="navTab" rel="tradeAccountHistory/list"><@t.page 'account.history'/></a>
+                    <a href="tradeAccountHistory/list.html?userId=${a.id}" class="btnText" target="navTab" rel="tradeAccountHistory/list"><@t.page 'account.history'/></a>
                 </#if>
                 </td>
             </tr>

@@ -5,7 +5,7 @@
     <form class="pagerForm" action="tradeOrder/list.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
-            <ul class="searchContent">
+            <ul class="searchContent"<@trade.orderList processed=false status=2 pageSize=0> data-todo="${(page.totalCount gt 0)?then(page.totalCount,'')}" data-todo-type="order_list"</@trade.orderList>>
                 <li>
                     <label><@t.page 'user'/>:</label>
                     <#include "../include_page/userId.html"/>

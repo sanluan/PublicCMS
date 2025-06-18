@@ -92,7 +92,8 @@ public class OauthController {
             RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, STATE_COOKIE_NAME, state, null, null);
             returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
             RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, RETURN_URL, returnUrl, null, null);
-            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, oauthGateway.getAuthorizeUrl(site.getId(), state));
+            return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX,
+                    oauthGateway.getAuthorizeUrl(site.getId(), state));
         }
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, site.getDynamicPath());
     }
@@ -115,7 +116,7 @@ public class OauthController {
         Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
         RequestUtils.cancleCookie(request.getContextPath(), request.getScheme(), response, RETURN_URL, null);
         String returnUrl;
-        Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
+        Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
         String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
         if (null != cookie && CommonUtils.notEmpty(cookie.getValue())
                 && !SafeConfigComponent.isUnSafeUrl(cookie.getValue(), site, safeReturnUrl, request.getContextPath())) {
@@ -168,8 +169,8 @@ public class OauthController {
                                         LogLoginService.CHANNEL_WEB, now, DateUtils.addMinutes(now, expiryMinutes), ip));
                                 LoginController.addLoginStatus(user, loginToken, request, response, expiryMinutes);
                                 sysUserService.updateLoginStatus(user.getId(), ip);
-                                logLoginService.save(
-                                        new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel, true, now, null));
+                                logLoginService.save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel,
+                                        oauthGateway.getChannel(), true, now, null));
                             }
                         }
                     } else {

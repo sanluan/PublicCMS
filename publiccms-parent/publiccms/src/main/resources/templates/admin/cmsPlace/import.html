@@ -1,0 +1,19 @@
+<form action="cmsPlace/doImport?callbackType=closeCurrent&navTabId=cmsPlace/dataList" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <input type="hidden" name="path" value="${path}"/>
+    <div class="pageFormContent layoutBox" layoutH>
+        <dl class="nowrap">
+            <dt><@t.page 'file'/>:</dt>
+            <dd>
+                <input type="file" name="file" class="required" size="30" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"/>
+                <span class="info"><@t.page 'file_type'/>:*.xlsx</span>
+            </dd>
+        </dl>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'import'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+</form>

@@ -81,7 +81,7 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
         String serverName = request.getServerName();
         model.put(CONTEXT_BASE, request.getContextPath());
         SysDomain domain = BeanComponent.getSiteComponent().getDomain(serverName);
-        model.put(CONTEXT_DOMAIN, BeanComponent.getSiteComponent().getDomain(serverName));
+        model.put(CONTEXT_DOMAIN, domain);
         SysSite site = ControllerUtils.getSiteFromAttribute(request);
         if (null == site) {
             site = BeanComponent.getSiteComponent().getSite(domain, serverName,

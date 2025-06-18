@@ -288,6 +288,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                         CmsUrlUtils.initCategoryUrl(site, category);
                         entity.setAttribute(ExtendUtils.getAttributeMap(contentAttributeService.getEntity(entity.getId()), null));
                         modelMap.put("content", entity);
+                        modelMap.put("attribute", entity.getAttribute());
                         modelMap.put("category", category);
                         modelMap.put(CommonConstants.getAttributeSite(), site);
                         String filepath = FreeMarkerUtils.generateStringByString(contentPath, webConfiguration, modelMap);

@@ -169,10 +169,14 @@ function navTabAjaxDone(json) {
 function dialogAjaxDone(json) {
     JUI.ajaxDone(json);
     if (json[JUI.keys.statusCode] == JUI.statusCode.ok ) {
-        if (json.navTabId ) {
-            navTab.reload(json.forwardUrl, {
-                navTabId: json.navTabId
-            });
+        if ("forward" == json.callbackType ) {
+            if (json.navTabId ) {
+                navTab.reload(json.forwardUrl, {
+                    navTabId: json.navTabId
+                });
+            }else{
+                $.pdialog.reload(json.forwardUrl);
+            }
         } else {
             var $panel = navTab.getCurrentPanel();
             var $pagerForm = $(".pagerForm", navTab.getCurrentPanel());
@@ -332,47 +336,6 @@ function ajaxTodo(url, callback) {
     });
 }
 
-/**
- * http://www.uploadify.com/documentation/uploadify/onqueuecomplete/
- */
-function uploadifyQueueComplete(queueData) {
-    var msg = "The total number of files uploaded: " + queueData.uploadsSuccessful + "<br/>" + "The total number of errors while uploading: " + queueData.uploadsErrored + "<br/>"
-            + "The total number of bytes uploaded: " + queueData.queueBytesUploaded + "<br/>" + "The average speed of all uploaded files: " + queueData.averageSpeed;
-    if (queueData.uploadsErrored ) {
-        alertMsg.error(msg);
-    } else {
-        alertMsg.correct(msg);
-    }
-}
-/**
- * http://www.uploadify.com/documentation/uploadify/onuploadsuccess/
- */
-function uploadifySuccess(file, data, response) {
-    alert(data)
-}
-
-/**
- * http://www.uploadify.com/documentation/uploadify/onuploaderror/
- */
-function uploadifyError(file, errorCode, errorMsg) {
-    alertMsg.error(errorCode + ": " + errorMsg);
-}
-
-/**
- * http://www.uploadify.com/documentation/
- *
- * @param {Object}
- *            event
- * @param {Object}
- *            queueID
- * @param {Object}
- *            fileObj
- * @param {Object}
- *            errorObj
- */
-function uploadifyError(event, queueId, fileObj, errorObj) {
-    alert("event:" + event + "\nqueueId:" + queueId + "\nfileObj.name:" + fileObj.name + "\nerrorObj.type:" + errorObj.type + "\nerrorObj.info:" + errorObj.info);
-}
 $.fn.extend({
     ajaxTodo: function() {
         return this.each(function() {

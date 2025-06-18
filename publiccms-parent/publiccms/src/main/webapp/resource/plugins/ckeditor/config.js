@@ -34,4 +34,9 @@ CKEDITOR.on('instanceReady', function(event){
             }
         }
     }});
+    editor.on( 'fileUploadRequest', function( evt ) {
+        var xhr = evt.data.fileLoader.xhr;
+        xhr.setRequestHeader( 'test', 'test' );
+        xhr.withCredentials = true;
+    } );
 });

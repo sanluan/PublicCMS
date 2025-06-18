@@ -231,8 +231,8 @@
                 <dl class="nowrap categoryModelContentPath">
                     <dt><@t.page 'workflow.check'/>:</dt>
                     <dd>
-                        <input name="workflowId" type="hidden" value="${a.workflowId!}"/>
-                        <input name="workflowName" type="text" value="<@sys.workflow id=a.workflowId;workflow>${workflow.name}</@sys.workflow>"/>
+                        <input name="workflowId" type="hidden" value="${(a.workflowId)!}"/>
+                        <input name="workflowName" type="text" value="<#if a?has_content><@sys.workflow id=a.workflowId;workflow>${workflow.name}</@sys.workflow></#if>"/>
                         <a class="btnLook" href="sysWorkflow/lookup.html" width="920" lookupGroup=""><@t.page 'select'/></a>
                     </dd>
                 </dl>
@@ -318,9 +318,9 @@ $('input[name$=\\.categoryModel\\.customContentPath]',navTab.getCurrentPanel()).
 checkCategoryModel();
 <#if showTab?has_content>
     <#if 'model'=showTab>
-    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.categoryModelControl').index('.tabsHeader ul li'));
+    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.categoryModelControl',navTab.getCurrentPanel()).index());
     <#elseif 'seo'=showTab>
-    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.seo').index('.tabsHeader ul li'));
+    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.seo',navTab.getCurrentPanel()).index());
     </#if>
 </#if>
 </script>

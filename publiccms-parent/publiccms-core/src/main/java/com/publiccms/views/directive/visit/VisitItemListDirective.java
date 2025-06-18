@@ -22,6 +22,7 @@ import freemarker.template.TemplateException;
  * <ul>
  * <li><code>startVisitDate</code>:起始访问日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>endVisitDate</code>:终止访问日期,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>dayAnalytics</code>:天统计,【true,false】,默认true
  * <li><code>itemType</code>:项目类型,【category,content,user等页面统计时中的itemType】
  * <li><code>itemId</code>:项目id
  * <li><code>pageIndex</code>:页码
@@ -56,7 +57,7 @@ public class VisitItemListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getDate("startVisitDate"),
-                handler.getDate("endVisitDate"), handler.getString("itemType"), handler.getString("itemId"),
+                handler.getDate("endVisitDate"), handler.getBoolean("dayAnalytics", true), handler.getString("itemType"), handler.getString("itemId"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }

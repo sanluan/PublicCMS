@@ -26,6 +26,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.cms.CmsContentRelated;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.template.ModelComponent;
@@ -38,6 +39,7 @@ import com.publiccms.logic.service.cms.CmsContentRelatedService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
+import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.exchange.Content;
@@ -72,6 +74,8 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
     private SysUserService sysUserService;
     @Resource
     private SysDeptService sysDeptService;
+    @Resource
+    private SysExtendService extendService;
     @Resource
     private SysExtendFieldService extendFieldService;
 
@@ -174,7 +178,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
             entity.setUserId(user.getId());
             entity.setDeptId(null != user ? user.getDeptId() : null);
             entity.setCategoryId(category.getId());
-            if (null == entity.getId()) {
+            if (null == entity.getId() || null == oldentity) {
                 service.save(entity);
             } else {
                 service.update(entity.getId(), entity);
@@ -228,6 +232,12 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
                 }
                 relatedService.save(data.getRelatedList());
             }
+            CmsModel cmsModel = modelComponent.getModel(site, entity.getModelId());
+            List<SysExtendField> categoryExtendList = null;
+            if (null != category.getExtendId() && null != extendService.getEntity(category.getExtendId())) {
+                categoryExtendList = extendFieldService.getList(category.getExtendId(), null, null);
+            }
+            service.rebuildSearchText(site, cmsModel, categoryExtendList, entity);
             try {
                 templateComponent.createContentFile(site, entity, category, null);
             } catch (IOException | TemplateException e) {

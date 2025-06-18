@@ -4,7 +4,7 @@ body,html{color:#31353e;}
 ::-webkit-scrollbar-thumb:vertical:hover{background-color:rgba(0,0,0,.35);}
 ::-webkit-scrollbar-thumb:vertical:active{background-color:rgba(0,0,0,.38);}
 a{color:#8f0006;}
-h2.contentTitle{border-color:#e4e9f2;background-color:#fff;}
+.contentTitle{border-color:#e4e9f2;background-color:#fff;}
 header{background-color:#8f0006;color:#afc5f6;}
 header .navbar-toggler li{background-color:#8f0006;}
 header .navbar-toggler li:hover{background-color:#b52e31;}
@@ -23,9 +23,9 @@ header .nav>li>ul a,header .nav>li>ul a:hover{color:#8f0006;}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC;}
 
 #sidebar_s,.accordion .accordionHeader{color:#e3e3e3;}
-.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover,.accordion .accordionHeader a{color:#333;}
-.accordionContent .tree div:hover a{background-color:#D8403D;color:#eee;}
-.accordionContent .tree div.selected a{background-color:#FA5151;color:#fff;}
+.accordion .accordionContent,.accordionContent a,.accordion .accordionHeader a{color:#333;}
+.accordionContent a:hover{background-color:#FA5151;color:#eee;}
+.accordionContent a.selected,.accordionContent a.selected .todoNumber{background-color:#D8403D;color:#fff;}
 
 .tabsPage .tabsPageHeader{background-color:#e7ecf0;}
 .tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight{color:#333;}
@@ -139,7 +139,6 @@ footer a{color:#4d84ff;}
 #calendar .tm .hh li:hover,#calendar .tm .mm li:hover,#calendar .tm .ss li:hover{background-color:#8f0006;color:#fff;}
 #calendar .close:hover{color:#3587ef;}
 /* 树样式 */
-.accordionContent .tree div.selected div{color:#fff;}
 .tree a{color:#333;}
 .tree a:hover,.tree .selected a{color:#8f0006;}
 .treeForm{border-color:#f2f6f9;}

@@ -2,11 +2,9 @@
     <@tools.fileList path=filepath>
         <#list list as a>
         <li>
-            <#local path=filepath+'/'+a.fileName/>
+            <#local path=filepath?has_content?then(filepath+'/','')+a.fileName/>
         <#if a.directory>
-            <@tools.metadata path=path>
-                <a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field}':'${path}'});return false;">${a.fileName} ${(object.alias)?has_content?then('('+object.alias+')','')}</a>
-            </@tools.metadata>
+            <a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field}':'${path}'});return false;">${a.fileName}</a>
             <ul>
                 <@templateTree field path/>
             </ul>

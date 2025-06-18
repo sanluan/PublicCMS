@@ -189,6 +189,7 @@ window.addEventListener("message", function(event) {
                     $("input[name=itemId]",navTab.getCurrentPanel()).val(op.itemId);
                     $("form",navTab.getCurrentPanel()).trigger("submit");
                     $("#audioLoadPlay")[0].play();
+                    $(".iframe-box .error").hide();
                 }
             } else if("enter" === op.diyevent) {
                 if(diyShowMenu(op.itemType, op.itemId, op.noborder)) {
@@ -276,7 +277,7 @@ function diyShowButton(itemType,itemId){
               clearTimeout(diyButtonTimer);
               diyButtonTimer=null;
           }
-          
+
           buttons.clone().appendTo($(".diy-button",navTab.getCurrentPanel()).empty()).removeClass("hide").addClass("button").each(function(i,button){
               var value={},$button=$(button);
               value[$button.data("diy-item")]=itemId;

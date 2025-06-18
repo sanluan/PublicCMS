@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -28,13 +29,15 @@ public class SysUserAttributeService extends BaseService<SysUserAttribute> {
      * @param userId
      * @param data
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateAttribute(Long userId, String data) {
-        SysUserAttribute attribute = getEntity(userId);
-        if (null != attribute) {
-            attribute.setData(data);
+        SysUserAttribute entity = getEntity(userId);
+        if (null != entity) {
+            entity.setData(data);
+            entity.setUpdateDate(CommonUtils.getDate());
         } else if (CommonUtils.notEmpty(data)) {
-            attribute = new SysUserAttribute(userId, data, CommonUtils.getDate());
-            save(attribute);
+            entity = new SysUserAttribute(userId, data, CommonUtils.getDate());
+            save(entity);
         }
     }
 }

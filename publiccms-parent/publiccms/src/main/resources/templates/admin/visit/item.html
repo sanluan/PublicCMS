@@ -1,7 +1,7 @@
 <#if !startVisitDate?has_content>
     <#assign startVisitDate=(.now?long-7*24*3600*1000)?number_to_date/>
 </#if>
-<@visit.itemList startVisitDate=startVisitDate endVisitDate=endVisitDate itemType=itemType itemId=itemId pageIndex=pageNum pageSize=numPerPage>
+<@visit.itemList startVisitDate=startVisitDate endVisitDate=endVisitDate dayAnalytics=dayAnalytics itemType=itemType itemId=itemId pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
     <form class="pagerForm"  action="visit/item.html" autocomplete="off" onsubmit="return divSearch(this,'visitBox');" method="post">
         <#include "../include_page/parameters.html"/>
@@ -14,6 +14,13 @@
                     <span>-</span>
                     <input type="text" name="endVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endVisitDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
+                </li>
+                <li>
+                    <select class="combox" name="dayAnalytics">
+                        <option value><@t.page 'analytics.type'/></option>
+                        <option value="true"${(!(dayAnalytics?has_content)||"true"=dayAnalytics)?then(' selected="true"','')?no_esc}><@t.page 'visit.hour_analytics.day'/></option>
+                        <option value="false"${(dayAnalytics?has_content&&"false"=dayAnalytics)?then(' selected="true"','')?no_esc}><@t.page 'total'/></option>
+                    </select>
                 </li>
                 <li>
                     <label><@t.page 'item_type'/>:</label>
@@ -56,7 +63,7 @@
         <tbody>
             <#list page.list as a>
             <tr>
-                <td><a href="visit/history.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="visit/history" title="<@t.page 'visit.history'/>">${a.id.visitDate?date}</a></td>
+                <td><#if a.id.visitDate?has_content><a href="visit/history.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="visit/history" title="<@t.page 'visit.history'/>">${(a.id.visitDate?date)!}</a></#if></td>
                 <td>${a.id.itemType!}</td>
                 <td>
                     ${a.id.itemId!}

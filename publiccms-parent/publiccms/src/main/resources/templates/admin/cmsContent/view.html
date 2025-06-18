@@ -211,12 +211,10 @@
             </dl>
         </#if>
         <#if fieldList?seq_contains('content')>
-            <dl class="nowrap">
-                <dt>${(model.fieldTextMap['content'])!}(${(attribute.wordCount)!}):</dt>
-                <dd id="content" class="exclude-translate">
-                    ${(attribute.text?no_esc)!}
-                </dd>
-            </dl>
+            <div class="unit" id="content" class="exclude-translate">
+                <h3>${(model.fieldTextMap['content'])!} (<@t.page "word_count"/>:${(attribute.wordCount)!}):</h3>
+                ${(attribute.text?no_esc)!}
+            </div>
         </#if>
     </#if>
     <@cms.contentRelatedList contentId=a.id>
@@ -257,6 +255,9 @@
         <#if model?has_content&&model.hasChild>
             <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></li>
         </#if>
+        <@sys.workflowProcessItem itemType="content" itemId=a.id>
+            <li><a href="sysWorkflowProcess/view.html?id=${object.processId}" class="button" target="dialog" rel="viewProcess${object.processId}" width="1200" height="500"><@t.page 'workflow.check'/></a></li>
+        </@sys.workflowProcessItem>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>

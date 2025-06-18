@@ -18,7 +18,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -160,7 +159,6 @@ public class SysUser extends EntityAttribute implements java.io.Serializable {
      * 更新日期
      */
     @GeneratorColumn(title = "更新日期")
-    @Version
     private Date updateDate;
 
     public SysUser() {

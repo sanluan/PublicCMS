@@ -71,7 +71,7 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
     }
 
     @Override
-    public boolean enable(short siteId) {
+    public boolean enabled(short siteId) {
         return true;
     }
 }

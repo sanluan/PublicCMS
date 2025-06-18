@@ -1,0 +1,30 @@
+<#macro webfileTree field filepath="">
+    <@tools.fileList type='file' path=filepath>
+        <#list list as a>
+        <li>
+            <#local path=filepath?has_content?then(filepath+'/','')+a.fileName/>
+        <#if a.directory>
+            <a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field}':'${path}'});return false;">${a.fileName}</a>
+            <ul>
+                <@webfileTree field path/>
+            </ul>
+        </#if>
+        </li>
+        <#else>
+            <li><a><@t.page 'empty_directory'/></a></li>
+        </#list>
+    </@tools.fileList>
+</#macro>
+<div class="pageFormContent" layoutH>
+    <ul class="tree treeFolder">
+        <@webfileTree field/>
+    </ul>
+    <script>
+        $('a[data="${(value?js_string)!}"]',$.pdialog.getCurrent()).parent().addClass('selected');
+    </script>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

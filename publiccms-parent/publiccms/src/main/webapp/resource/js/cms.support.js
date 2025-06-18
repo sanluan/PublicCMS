@@ -72,15 +72,15 @@ if (typeof window.cmsAnalytics !== 'object') {
         function getParams(action){
             var params=[];
             params.push('sessionId='+encodeURIComponent(getCookie(cmsAnalytics.sessionIdName)));
-            params.push('lang='+encodeURIComponent(getLang()));
-            params.push('screenw='+window.screen.width || 0);
-            params.push('screenh='+window.screen.height || 0);
-            params.push('referer='+encodeURIComponent(getReferrer()));
             params.push('url='+encodeURIComponent(document.location.href));
-            params.push('title='+encodeURIComponent(document.title));
             if(action){
                 params.push('action='+action);
             }else{
+                params.push('lang='+encodeURIComponent(getLang()));
+                params.push('screenw='+window.screen.width || 0);
+                params.push('screenh='+window.screen.height || 0);
+                params.push('referer='+encodeURIComponent(getReferrer()));
+                params.push('title='+encodeURIComponent(document.title));
                 params.push('action=visit');
             }
             return params;

@@ -31,7 +31,7 @@
 <#if !path?has_content>
         <fieldset>
             <legend><@t.page 'server_config.site'/></legend>
-            <div><a href="sysConfigData/edit.html?code=site" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a></div>
+            <div><a href="sysConfigData/edit.html?code=site" class="button" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a></div>
         <@sys.configData code="site"><#assign siteConfig=object/></@sys.configData>
             <dl class="nowrap">
                 <dt><@t.message 'config.site.site_exclude_module'/>:</dt>

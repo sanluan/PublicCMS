@@ -42,7 +42,8 @@ public class VisitItem implements java.io.Serializable {
     @GeneratorColumn(title = "UV")
     private Long uv;
     /**
-     * ip views<p>
+     * ip views
+     * <p>
      * ip访问数
      */
     @GeneratorColumn(title = "IP Views")
@@ -54,6 +55,13 @@ public class VisitItem implements java.io.Serializable {
     public VisitItem(VisitItemId id, long pv) {
         this.id = id;
         this.pv = pv;
+    }
+
+    public VisitItem(short siteId, String itemType, String itemId, long pv, Long uv, Long ipviews) {
+        this.id = new VisitItemId(siteId, null, itemType, itemId);
+        this.pv = pv;
+        this.uv = uv;
+        this.ipviews = ipviews;
     }
 
     public VisitItem(short siteId, Date visitDate, String itemType, String itemId, long pv, Long uv, Long ipviews) {

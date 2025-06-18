@@ -1,0 +1,35 @@
+<#if parentId?has_content>
+<ul>
+    <@cms.categoryList advanced=true parentId=parentId pageSize=500>
+        <#list page.list as a>
+    <li<#if a.childIds?has_content> _src="sysWorkflow/batchParameters.html?parentId=${a.id}&id=${id!}"</#if>>
+        <a href="javascript:;" tname="categoryIds" tvalue="${a.id}"<#if a.workflowId?has_content && a.workflowId?string = id> checked="checked" disabled="disabled" class="disabled exclude-translate"<#else> class="exclude-translate"</#if>>${a.name!}</a>
+    </li>
+        <#else>
+    <li><a><@t.page 'empty_directory'/></a></li>
+        </#list>
+    </@cms.categoryList>
+</ul>
+<#else>
+<form action="cmsCategory/saveWorkflow?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+    <input type="hidden" name="workflowId" value="${id!}"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <div class="pageFormContent" layoutH>
+        <ul class="tree treeFolder treeCheck excludeParent">
+            <@cms.categoryList advanced=true parentId=parentId pageSize=500>
+                <#list page.list as a>
+            <li<#if a.childIds?has_content> _src="sysWorkflow/batchParameters.html?parentId=${a.id}&id=${id!}"</#if>>
+                <a href="javascript:;" tname="categoryIds" tvalue="${a.id}"<#if a.workflowId?has_content && a.workflowId?string = id> checked="checked" disabled="disabled" class="disabled exclude-translate"<#else> class="exclude-translate"</#if>>${a.name!}</a>
+            </li>
+                </#list>
+            </@cms.categoryList>
+        </ul>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+</form>
+</#if>

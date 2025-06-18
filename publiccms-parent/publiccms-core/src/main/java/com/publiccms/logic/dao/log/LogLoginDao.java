@@ -24,6 +24,7 @@ public class LogLoginDao extends BaseDao<LogLogin> {
      * @param startCreateDate
      * @param endCreateDate
      * @param channel
+     * @param loginMethod 
      * @param result
      * @param name
      * @param ip
@@ -33,7 +34,7 @@ public class LogLoginDao extends BaseDao<LogLogin> {
      * @return results page
      */
     public PageHandler getPage(Short siteId, Long userId, Date startCreateDate, Date endCreateDate, String channel,
-            Boolean result, String name, String ip, String orderType, Integer pageIndex, Integer pageSize) {
+            String loginMethod, Boolean result, String name, String ip, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from LogLogin bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -49,6 +50,9 @@ public class LogLoginDao extends BaseDao<LogLogin> {
         }
         if (CommonUtils.notEmpty(channel)) {
             queryHandler.condition("bean.channel = :channel").setParameter("channel", channel);
+        }
+        if (CommonUtils.notEmpty(loginMethod)) {
+            queryHandler.condition("bean.loginMethod = :loginMethod").setParameter("loginMethod", loginMethod);
         }
         if (null != result) {
             queryHandler.condition("bean.result = :result").setParameter("result", result);

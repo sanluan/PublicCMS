@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.WorkflowHandler;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysWorkflowProcess;
 import com.publiccms.entities.sys.SysWorkflowProcessHistory;
@@ -19,26 +20,34 @@ public class ProcessComponent {
 
     /**
      * @param <T>
+     * @param site 
      * @param entity
      * @param user
      * @param history
      */
-    public <T> void finishProcess(SysWorkflowProcess entity, SysUser user, SysWorkflowProcessHistory history) {
+    public <T> void finishProcess(SysSite site, SysWorkflowProcess entity, SysUser user, SysWorkflowProcessHistory history) {
         @SuppressWarnings("unchecked")
         WorkflowHandler<T> workflowHandler = (WorkflowHandler<T>) workflowHandlerMap.get(entity.getItemType());
         if (null != workflowHandler) {
             if (entity.isClosed() && SysWorkflowProcessHistoryService.OPERATE_AGREE.equalsIgnoreCase(history.getOperate())) {
-                workflowHandler.finish(entity, user, history, workflowHandler.getItemId(entity.getItemId()));
+                workflowHandler.finish(site, entity, user, history, workflowHandler.getItemId(entity.getItemId()));
             }
         }
     }
 
-    public <T> void reject(SysWorkflowProcess entity, SysUser user, SysWorkflowProcessHistory history) {
+    /**
+     * @param <T>
+     * @param site
+     * @param entity
+     * @param user
+     * @param history
+     */
+    public <T> void reject(SysSite site, SysWorkflowProcess entity, SysUser user, SysWorkflowProcessHistory history) {
         @SuppressWarnings("unchecked")
         WorkflowHandler<T> workflowHandler = (WorkflowHandler<T>) workflowHandlerMap.get(entity.getItemType());
         if (null != workflowHandler) {
             if (SysWorkflowProcessHistoryService.OPERATE_REJECT.equalsIgnoreCase(history.getOperate())) {
-                workflowHandler.interrupt(entity, user, history, workflowHandler.getItemId(entity.getItemId()));
+                workflowHandler.interrupt(site, entity, user, history, workflowHandler.getItemId(entity.getItemId()));
             }
         }
     }

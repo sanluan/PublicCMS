@@ -55,28 +55,28 @@ public class VisitComponent implements Cache {
     public void dealLastMinuteVisitLog() {
         Date now = CommonUtils.getMinuteDate();
         List<VisitSession> entityList = visitHistoryService.getSessionList(null, DateUtils.addMinutes(now, -2),
-                DateUtils.addMinutes(now, -1));
+                DateUtils.addMinutes(now, -1), null);
         visitSessionService.save(entityList);
     }
 
     public void dealLastHourVisitLog() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR_OF_DAY, -1);
-        List<VisitDay> entityList = visitHistoryService.getHourList(null, now.getTime(), (byte) now.get(Calendar.HOUR_OF_DAY));
+        List<VisitDay> entityList = visitHistoryService.getHourList(null, now.getTime(), (byte) now.get(Calendar.HOUR_OF_DAY), null);
         visitDayService.save(entityList);
     }
 
     public void dealLastDayItemVisitLog() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR_OF_DAY, -1);
-        List<VisitItem> entityList = visitHistoryService.getItemList(null, now.getTime(), null, null);
+        List<VisitItem> entityList = visitHistoryService.getItemList(null, now.getTime(), null, null, null);
         visitItemService.save(entityList);
     }
 
     public void dealLastDayUrlVisitLog() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR_OF_DAY, -1);
-        List<VisitUrl> entityList = visitHistoryService.getUrlList(null, null, now.getTime());
+        List<VisitUrl> entityList = visitHistoryService.getUrlList(null, null, now.getTime(), null);
         for (VisitUrl entity : entityList) {
             entity.getId().setUrlMd5(VerificationUtils.md5Encode(entity.getUrl()));
             entity.getId().setUrlSha(VerificationUtils.sha1Encode(entity.getUrl()));
@@ -87,7 +87,7 @@ public class VisitComponent implements Cache {
     public void dealLastDayVisitLog() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DAY_OF_MONTH, -1);
-        List<VisitDay> entityList = visitSessionService.getDayList(null, now.getTime());
+        List<VisitDay> entityList = visitSessionService.getDayList(null, now.getTime(), null);
         visitDayService.save(entityList);
         for (VisitDay entity : entityList) {
             SysRecordId recordId = new SysRecordId(entity.getId().getSiteId(), "visit");

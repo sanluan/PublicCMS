@@ -93,7 +93,7 @@
                 <li>
                     <#local path=filepath+'/'+a.fileName>
                     <@tools.metadata path=path>
-                        <a tname="pages" tvalue="${path}">${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}</a>
+                        <a tname="pages" tvalue="${path}">${(object.alias)?has_content?then(object.alias+' '+a.fileName,a.fileName)}</a>
                     </@tools.metadata>
                     <#if a.directory>
                         <ul>

@@ -56,7 +56,7 @@ public class TradeOrderController {
         PaymentGateway paymentGateway = gatewayComponent.get(accountType);
         TradeOrder order = service.getEntity(orderId);
         StringBuilder sb = new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX);
-        if (null != paymentGateway && paymentGateway.enable(site.getId()) && null == order.getPaymentId()) {
+        if (null != paymentGateway && paymentGateway.enabled(site.getId()) && null == order.getPaymentId()) {
             if (1 == order.getAmount().compareTo(BigDecimal.ZERO)) {
                 String ip = RequestUtils.getIpAddress(request);
                 Date now = CommonUtils.getDate();

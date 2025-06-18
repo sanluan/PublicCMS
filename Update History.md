@@ -4,8 +4,15 @@ new feature:
 
 1. add otp login
 1. add watermark config
-1. add fingerprint login
+1. add fingerprint login (V5)
 1. add workflow
+1. add user setting
+1. add todo number
+1. add my dept
+1. add markdown file import
+1. add AI (V5)
+1. add extend field type:template directory,webfile directory
+1. add place data import
 
 ## 202406.f
 

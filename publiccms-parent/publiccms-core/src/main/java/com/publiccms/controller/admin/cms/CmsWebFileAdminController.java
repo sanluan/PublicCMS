@@ -1,9 +1,11 @@
 package com.publiccms.controller.admin.cms;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -116,6 +118,10 @@ public class CmsWebFileAdminController {
      * @param path
      * @param privatefile
      * @param overwrite
+     * @param unzip
+     * @param encoding
+     * @param here
+     * @param zipOverwrite
      * @param request
      * @param model
      * @return view name
@@ -123,7 +129,8 @@ public class CmsWebFileAdminController {
     @RequestMapping("doUpload")
     @Csrf
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files, String path,
-            boolean privatefile, boolean overwrite, HttpServletRequest request, ModelMap model) {
+            boolean privatefile, boolean overwrite, boolean unzip, String encoding, boolean here, boolean zipOverwrite,
+            HttpServletRequest request, ModelMap model) {
         if (null != files) {
             try {
                 for (MultipartFile file : files) {
@@ -132,7 +139,39 @@ public class CmsWebFileAdminController {
                     String filepath = CommonUtils.joinString(path, Constants.SEPARATOR, originalName);
                     String fuleFilePath = siteComponent.getWebFilePath(site.getId(), filepath);
                     if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
-                        if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
+                        if (CommonUtils.notEmpty(suffix) && suffix.equalsIgnoreCase(".zip") && unzip) {
+                            try {
+                                File dest = File.createTempFile("temp_", suffix);
+                                file.transferTo(dest);
+                                if (here) {
+                                    ZipUtils.unzipHere(dest.getAbsolutePath(), encoding, zipOverwrite, (f, e) -> {
+                                        String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(),
+                                                e.getName(), true);
+                                        if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
+                                            try {
+                                                CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
+                                            } catch (IOException e1) {
+                                            }
+                                        }
+                                        return true;
+                                    });
+                                } else {
+                                    ZipUtils.unzip(dest.getAbsolutePath(), encoding, zipOverwrite, (f, e) -> {
+                                        String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(), e.getName(),
+                                                true);
+                                        try {
+                                            CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
+                                        } catch (IOException e1) {
+                                        }
+                                        return true;
+                                    });
+                                }
+                                Files.delete(dest.toPath());
+                            } catch (IOException e) {
+                                model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                                log.error(e.getMessage(), e);
+                            }
+                        } else if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
                             if (CmsFileUtils.exists(fuleFilePath)) {
                                 String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(), filepath, true);
                                 try {
@@ -166,6 +205,7 @@ public class CmsWebFileAdminController {
             }
         }
         return CommonConstants.TEMPLATE_DONE;
+
     }
 
     /**
@@ -283,26 +323,23 @@ public class CmsWebFileAdminController {
     @Csrf
     public String doZip(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, HttpServletRequest request,
             ModelMap model) {
-        if (CommonUtils.notEmpty(path)) {
-            String filepath = siteComponent.getWebFilePath(site.getId(), path);
-            if (CmsFileUtils.isDirectory(filepath)) {
-                try {
-                    String zipFileName = null;
-                    if (path.endsWith("/") || path.endsWith("\\")) {
-                        zipFileName = CommonUtils.joinString(filepath, "files.zip");
-                    } else {
-                        zipFileName = CommonUtils.joinString(filepath, ".zip");
-                    }
-                    ZipUtils.zip(filepath, zipFileName);
-                } catch (IOException e) {
-                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                    log.error(e.getMessage(), e);
+        String filepath = siteComponent.getWebFilePath(site.getId(), path);
+        if (CmsFileUtils.isDirectory(filepath)) {
+            try {
+                String zipFileName = null;
+                if (CommonUtils.empty(path) || path.endsWith("/") || path.endsWith("\\")) {
+                    zipFileName = CommonUtils.joinString(filepath, "files.zip");
+                } else {
+                    zipFileName = CommonUtils.joinString(filepath, ".zip");
                 }
+                ZipUtils.zip(filepath, zipFileName);
+            } catch (IOException e) {
+                model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                log.error(e.getMessage(), e);
             }
-            logOperateService
-                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "zip.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
+        logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                "zip.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         return CommonConstants.TEMPLATE_DONE;
     }
 

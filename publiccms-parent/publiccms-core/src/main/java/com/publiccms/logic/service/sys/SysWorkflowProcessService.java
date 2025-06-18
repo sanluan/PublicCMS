@@ -3,12 +3,14 @@ package com.publiccms.logic.service.sys;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysWorkflow;
 import com.publiccms.entities.sys.SysWorkflowProcess;
@@ -31,6 +33,10 @@ public class SysWorkflowProcessService extends BaseService<SysWorkflowProcess> {
      * 
      */
     public static final String ITEM_TYPE_CONTENT = "content";
+    /**
+     * 
+     */
+    public static final String ITEM_TYPE_PLACE = "place";
     @Resource
     private SysWorkflowService workflowService;
     @Resource
@@ -61,29 +67,43 @@ public class SysWorkflowProcessService extends BaseService<SysWorkflowProcess> {
         return dao.getPage(siteId, itemType, itemId, title, roleIds, deptId, userId, closed, pageIndex, pageSize);
     }
 
-    public SysWorkflowProcess createProcess(short siteId, int workflowId, String title, String itemType, String itemId) {
+    public SysWorkflowProcess createProcess(short siteId, int workflowId, long userId, String title, String itemType,
+            String itemId) {
         SysWorkflow workflow = workflowService.getEntity(workflowId);
         if (null != workflow && siteId == workflow.getSiteId() && null != workflow.getStartStepId()) {
             SysWorkflowStep step = workflowStepService.getEntity(workflow.getStartStepId());
-            SysWorkflowProcess entity = new SysWorkflowProcess(siteId, workflowId, title, itemType, itemId, step.getId(), false,
-                    CommonUtils.getDate());
-            entity.setRoleId(step.getRoleId());
-            entity.setDeptId(step.getDeptId());
-            entity.setUserId(step.getUserId());
-            save(entity);
-            if (CommonUtils.notEmpty(itemId)) {
-                itemService.createOrUpdate(itemType, itemId, entity.getId());
+            if (null != step) {
+                SysWorkflowProcess entity = new SysWorkflowProcess(siteId, workflowId, title, itemType, itemId, step.getId(),
+                        false, userId, CommonUtils.getDate());
+                entity.setRoleId(step.getRoleId());
+                entity.setDeptId(step.getDeptId());
+                entity.setUserId(step.getUserId());
+                save(entity);
+                if (CommonUtils.notEmpty(itemId)) {
+                    itemService.createOrUpdate(itemType, itemId, entity.getId());
+                }
+                return entity;
             }
-            return entity;
         }
         return null;
     }
 
-    public SysWorkflowProcess handleProcess(short siteId, SysWorkflowProcessHistory history, SysUser user) {
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public SysWorkflowProcess reopenProcess(short siteId, Long processId) {
+        SysWorkflowProcess entity = getEntity(processId);
+        if (null != entity && siteId == entity.getSiteId() && entity.isClosed()) {
+            entity.setClosed(false);
+        }
+        return entity;
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public SysWorkflowProcess handleProcess(SysSite site, SysWorkflowProcessHistory history, SysUser user) {
         SysWorkflowProcess entity = getEntity(history.getProcessId());
-        if (null != entity && siteId == entity.getSiteId() && !entity.isClosed()
+        if (null != entity && site.getId() == entity.getSiteId() && !entity.isClosed()
                 && (null != entity.getRoleId()
-                        && ArrayUtils.contains(StringUtils.split(user.getRoles(), Constants.COMMA), String.valueOf(entity.getRoleId()))
+                        && ArrayUtils.contains(StringUtils.split(user.getRoles(), Constants.COMMA),
+                                String.valueOf(entity.getRoleId()))
                         || null != entity.getDeptId() && user.getDeptId() == entity.getDeptId()
                         || null != entity.getUserId() && user.getId() == entity.getUserId())) {
             history.setId(null);
@@ -93,22 +113,32 @@ public class SysWorkflowProcessService extends BaseService<SysWorkflowProcess> {
             if (SysWorkflowProcessHistoryService.OPERATE_AGREE.equalsIgnoreCase(history.getOperate())) {
                 SysWorkflowStep step = workflowStepService.getEntity(entity.getStepId());
                 if (null == step) {
+                    entity.setUpdateDate(CommonUtils.getDate());
                     entity.setClosed(true);
-                    entity = createProcess(siteId, entity.getWorkflowId(), entity.getTitle(), entity.getItemType(),
-                            entity.getItemId());
+                    entity = createProcess(site.getId(), entity.getWorkflowId(), user.getId(), entity.getTitle(),
+                            entity.getItemType(), entity.getItemId());
                 } else {
-                    if (null == step.getNextStepId()) {
+                    SysWorkflowStep nextStep = workflowStepService.getEntity(step.getNextStepId());
+                    if (null == nextStep) {
+                        entity.setUpdateDate(CommonUtils.getDate());
                         entity.setClosed(true);
-                        processComponent.finishProcess(entity, user, history);
+                        processComponent.finishProcess(site, entity, user, history);
                     } else {
+                        entity.setUpdateDate(CommonUtils.getDate());
                         entity.setStepId(step.getNextStepId());
-                        entity.setRoleId(step.getRoleId());
-                        entity.setDeptId(step.getDeptId());
-                        entity.setUserId(step.getUserId());
+                        entity.setRoleId(nextStep.getRoleId());
+                        entity.setDeptId(nextStep.getDeptId());
+                        if (nextStep.isUseCreateUser()) {
+                            entity.setUserId(entity.getCreateUserId());
+                        } else {
+                            entity.setUserId(nextStep.getUserId());
+                        }
                     }
                 }
             } else if (SysWorkflowProcessHistoryService.OPERATE_REJECT.equalsIgnoreCase(history.getOperate())) {
-                processComponent.reject(entity, user, history);
+                entity.setUpdateDate(CommonUtils.getDate());
+                entity.setClosed(true);
+                processComponent.reject(site, entity, user, history);
             }
             historyService.save(history);
             return entity;

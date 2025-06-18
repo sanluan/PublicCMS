@@ -29,6 +29,22 @@ public class LogLoginService extends BaseService<LogLogin> {
      * 
      */
     public static final String CHANNEL_WEB = "web";
+    /**
+     * 
+     */
+    public static final String METHOD_PASSWORD = "password";
+    /**
+     * 
+     */
+    public static final String METHOD_OTP = "opt";
+    /**
+     * 
+     */
+    public static final String METHOD_CLIENT_AUTO_LOGIN = "clientAutoLogin";
+    /**
+     * 
+     */
+    public static final String METHOD_FINGERPRINT = "fingerprint";
 
     /**
      * @param siteId
@@ -36,6 +52,7 @@ public class LogLoginService extends BaseService<LogLogin> {
      * @param startCreateDate
      * @param endCreateDate
      * @param channel
+     * @param loginMethod 
      * @param result
      * @param name
      * @param ip
@@ -45,9 +62,9 @@ public class LogLoginService extends BaseService<LogLogin> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Long userId, Date startCreateDate, Date endCreateDate, String channel,
+    public PageHandler getPage(Short siteId, Long userId, Date startCreateDate, Date endCreateDate, String channel, String loginMethod,
             Boolean result, String name, String ip, String orderType, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, userId, startCreateDate, endCreateDate, channel, result, name, ip, orderType, pageIndex,
+        return dao.getPage(siteId, userId, startCreateDate, endCreateDate, channel, loginMethod, result, name, ip, orderType, pageIndex,
                 pageSize);
     }
 

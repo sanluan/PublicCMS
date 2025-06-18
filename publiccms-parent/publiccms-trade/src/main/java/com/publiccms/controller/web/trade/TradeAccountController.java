@@ -56,7 +56,7 @@ public class TradeAccountController {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         PaymentGateway paymentGateway = gatewayComponent.get(accountType);
         if (null != paymentGateway && !accountType.equalsIgnoreCase(accountGatewayComponent.getAccountType())
-                && paymentGateway.enable(site.getId()) && null != change) {
+                && paymentGateway.enabled(site.getId()) && null != change) {
             if (1 == change.compareTo(BigDecimal.ZERO)) {
                 String ip = RequestUtils.getIpAddress(request);
                 Date now = CommonUtils.getDate();

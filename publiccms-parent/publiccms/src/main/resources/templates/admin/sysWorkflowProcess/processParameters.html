@@ -30,14 +30,14 @@
                     
                     <@sys.workflowStep ids=t.stepIds!><#assign stepMap=map!/></@sys.workflowStep>
                     <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
-                    <#assign sort=0/>
+                    <#assign sort=-1/>
                     <#list page.list as a>
                         <div class="text-center step <#if a.operate='agree'>processed<#elseif a.operate='reject'>reject</#if>">
                             ${(stepMap[a.stepId?string].name)!t.pageMessage('page.disabled')}
                             <br>
                             ${(userMap[a.userId?string].nickname)!}:${a.reason!}
                         </div>
-                        <#assign sort=(stepMap[a.stepId?string].sort)!0/>
+                        <#assign sort=(stepMap[a.stepId?string].sort)!-1/>
                     </#list>
                 </@sys.workflowProcessHistoryList>
 

@@ -1,4 +1,4 @@
-<@log.loginList result=result userId=admin.id channel=channel
+<@log.loginList result=result userId=admin.id channel=channel loginMethod=loginMethod
             name=name startCreateDate=startCreateDate endCreateDate=endCreateDate ip=ip
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
@@ -17,6 +17,10 @@
                 <li>
                     <label><@t.page 'channel'/>:</label>
                     <input type="text" name="channel" value="${channel!}"/>
+                </li>
+                <li>
+                    <label><@t.page 'login_method'/>:</label>
+                    <input type="text" name="loginMethod" value="${loginMethod!}"/>
                 </li>
                 <li>
                     <label><@t.page 'log.login_date'/>:</label>
@@ -47,6 +51,7 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'channel'/></th>
+                <th><@t.page 'login_method'/></th>
                 <th><@t.page 'log.login_ip'/></th>
                 <th><@t.page 'result'/></th>
                 <th orderField="createDate"><@t.page 'log.login_date'/></th>
@@ -58,6 +63,7 @@
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td class="exclude-translate">${a.channel!}</td>
+                <td><#if a.loginMethod?has_content><@t.page a.loginMethod?switch('otp','login.2fa','password','password','login.'+a.loginMethod)/></#if></td>
                 <td>
                     <div class="box">
                         <p>${a.ip!}</p>

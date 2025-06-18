@@ -91,12 +91,12 @@ public class TradeCoupon implements java.io.Serializable {
     @GeneratorColumn(title = "价格")
     private BigDecimal price;
     /**
-     * content
+     * coupon_type
      * <p>
-     * 内容
+     * coupon_type
      */
-    @GeneratorColumn(title = "内容", condition = true)
-    private int type;
+    @GeneratorColumn(title = "优惠券类型", condition = true)
+    private int couponType;
     /**
      * redeem code
      * <p>
@@ -112,18 +112,18 @@ public class TradeCoupon implements java.io.Serializable {
     public TradeCoupon() {
     }
 
-    public TradeCoupon(short siteId, String name, String startDate, int type, int duration, int quantity, boolean disabled) {
+    public TradeCoupon(short siteId, String name, String startDate, int couponType, int duration, int quantity, boolean disabled) {
         this.siteId = siteId;
         this.name = name;
         this.startDate = startDate;
-        this.type = type;
+        this.couponType = couponType;
         this.duration = duration;
         this.quantity = quantity;
         this.disabled = disabled;
     }
 
     public TradeCoupon(short siteId, String name, Integer categoryId, Long contentId, String startDate, String expiryDate,
-            BigDecimal startingAmount, BigDecimal discount, BigDecimal price, int type, String redeemCode, int duration,
+            BigDecimal startingAmount, BigDecimal discount, BigDecimal price, int couponType, String redeemCode, int duration,
             int quantity, String createDate, boolean disabled) {
         this.siteId = siteId;
         this.name = name;
@@ -134,7 +134,7 @@ public class TradeCoupon implements java.io.Serializable {
         this.startingAmount = startingAmount;
         this.discount = discount;
         this.price = price;
-        this.type = type;
+        this.couponType = couponType;
         this.redeemCode = redeemCode;
         this.duration = duration;
         this.quantity = quantity;
@@ -234,13 +234,13 @@ public class TradeCoupon implements java.io.Serializable {
         this.price = price;
     }
 
-    @Column(name = "type", nullable = false)
-    public int getType() {
-        return this.type;
+    @Column(name = "coupon_type", nullable = false)
+    public int getCouponType() {
+        return this.couponType;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setCouponType(int couponType) {
+        this.couponType = couponType;
     }
 
     @Column(name = "redeem_code")

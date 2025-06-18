@@ -62,9 +62,10 @@ public class VisitSessionDao extends BaseDao<VisitSession> {
     /**
      * @param siteId
      * @param visitDate
+     * @param maxResults 
      * @return results page
      */
-    public List<VisitDay> getDayList(Short siteId, Date visitDate) {
+    public List<VisitDay> getDayList(Short siteId, Date visitDate, Integer maxResults) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new VisitDay(bean.id.siteId,bean.id.visitDate,sum(bean.pv),count(distinct bean.id.sessionId),count(distinct bean.ip)) from VisitSession bean");
         if (null != siteId) {
@@ -74,6 +75,7 @@ public class VisitSessionDao extends BaseDao<VisitSession> {
                 DateUtils.truncate(visitDate, Calendar.DAY_OF_MONTH));
         queryHandler.group("bean.id.siteId");
         queryHandler.group("bean.id.visitDate");
+        queryHandler.setMaxResults(maxResults);
         return getList(queryHandler, VisitDay.class);
     }
 

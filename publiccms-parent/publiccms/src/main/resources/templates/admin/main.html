@@ -1,9 +1,20 @@
-<a class="button float" href="main.html" target="navTab" rel="main"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
+<a class="button float" href="main.html" target="navTab" rel="main" data-change-title="false"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
 <div class="pageFormContent" layoutH>
     <fieldset>
         <legend><@t.page 'my_account'/></legend>
         <div class="unit">
             <ul>
+                <li>
+                    <div class="card">
+                        <i class="bi bi-ui-checks icon-large icon"></i>
+                        <p><@t.page 'process.pending'/></p>
+                        <a href="sysWorkflowProcess/list.html" title="<@t.page 'process.pending'/>" target="navTab" rel="sysWorkflowProcess/list">
+                            <@sys.workflowProcessList roleIds=admin.roles deptId=admin.deptId userId=admin.id pageSize=0>
+                                <h3 data-todo="${(page.totalCount gt 0)?then(page.totalCount,'')}" data-todo-type="process_list">${page.totalCount}</h3>
+                            </@sys.workflowProcessList>
+                        </a>
+                    </div>
+                </li>
                 <li>
                     <div class="card">
                         <i class="icon-book icon-large icon"></i>
@@ -69,11 +80,62 @@
             </ul>
         </div>
     </fieldset>
+    <fieldset>
+        <legend><@t.page 'content'/></legend>
+        <ul class="report clearfix">
+            <li>
+                <h2 class="contentTitle"><@t.page 'report.content.lastest'/></h2>
+                <div class="pageFormContent">
+                    <@cms.contentList orderField="publishDate" pageSize=5>
+                        <#list page.list as content>
+                            <@t.merge 'categoryIds' content.categoryId!/>
+                        </#list>
+                        <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
+                        <#list page.list as content>
+                    <p class="ellipsis">
+                        <span class="float-right date info">${content.publishDate?string("yyyy-MM-dd")!} <i class="bi bi-eye"></i> ${content.clicks!}</span>
+                        [<a href="${(categoryMap[content.categoryId?string].url)!}" class="exclude-translate" target="_blank">${(categoryMap[content.categoryId?string].name)!}</a>]
+                        <a href="${content.url!}" class="exclude-translate" target="_blank">${(content.title)!}</a>
+                    </p>
+                        </#list>
+                    </@cms.contentList>
+                </div>
+            </li>
+            <li>
+                <div class="tabs box">
+                    <div class="tabsHeader">
+                        <ul class="right">
+                            <h2 class="float-left"><@t.page 'report.content.hot'/></h2>
+                            <#assign today=.now?string("yyyy-MM-dd")/>
+                            <#assign thisMonth=.now?string("yyyy-MM-01")/>
+                            <li><a href="common/hotContent.html?startVisitDate=${today}" class="j-ajax"><@t.page 'report.today'/></a></li>
+                            <li><a href="common/hotContent.html?startVisitDate=${getDate('yesterday',getDate('yesterday',today))?date}&endVisitDate=${getDate('yesterday',today)?date}" class="j-ajax"><@t.page 'report.yesterday'/></a></li>
+                            <li><a href="common/hotContent.html?startVisitDate=${getDate('lastSunday',today)?date}&dayAnalytics=false" class="j-ajax"><@t.page 'report.this_week'/></a></li>
+                            <li><a href="common/hotContent.html?startVisitDate=${getDate('yesterday',getDate('lastMonday',today))?date}&endVisitDate=${getDate('lastSunday',today)?date}&dayAnalytics=false" class="j-ajax"><@t.page 'report.last_week'/></a></li>
+                            <li><a href="common/hotContent.html?startVisitDate=${getDate('yesterday',thisMonth)?date}&dayAnalytics=false" class="j-ajax"><@t.page 'report.this_month'/></a></li>
+                            <li><a href="common/hotContent.html?startVisitDate=${getDate('yesterday',getDate('lastMonth',thisMonth))?date}&endVisitDate=${getDate('yesterday',thisMonth)?date}&dayAnalytics=false" class="j-ajax"><@t.page 'report.last_month'/></a></li>
+                        </ul>
+                    </div>
+                    <div class="tabsContent unitBox">
+                        <div>
+                            <#assign startVisitDate=today/>
+                            <#include "common/hotContent.html"/>
+                        </div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </fieldset>
 <@sys.authorized roleIds=admin.roles url='cmsComment/list'>
     <fieldset>
         <legend><@t.page 'comment.management'/></legend>
         <div class="unit">
-            <div id="comment" class="chart" data-id="commentChart"></div>
+            <div id="comment" class="chart box" data-resize-object="commentChart"></div>
             <ul class="clearfix">
                 <li>
                     <div class="card">
@@ -81,7 +143,7 @@
                         <p><@t.page 'comment.uncheck'/></p>
                         <a href="cmsComment/list.html?status=2" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
                             <@cms.commentList advanced=true status=2 pageSize=0>
-                                <h3>${page.totalCount}</h3>
+                                <h3 data-todo="${(page.totalCount gt 0)?then(page.totalCount,'')}" data-todo-type="comment_list">${page.totalCount}</h3>
                             </@cms.commentList>
                         </a>
                     </div>
@@ -141,7 +203,7 @@ commentChart.setOption({
     <fieldset>
         <legend><@t.page 'order'/></legend>
         <div class="unit">
-            <div id="order" class="chart" data-id="orderChart"></div>
+            <div id="order" class="chart box" data-resize-object="orderChart"></div>
             <ul class="clearfix">
                 <li>
                     <div class="card">
@@ -149,7 +211,7 @@ commentChart.setOption({
                         <p><@t.page 'order.toprocess'/></p>
                         <a href="tradeOrder/list.html?status=2&processed=false" title="<@t.page 'order'/>" target="navTab" rel="tradeOrder/list">
                             <@trade.orderList processed=false status=2 pageSize=0>
-                                <h3>${page.totalCount}</h3>
+                                <h3 data-todo="${(page.totalCount gt 0)?then(page.totalCount,'')}" data-todo-type="order_list">${page.totalCount}</h3>
                             </@trade.orderList>
                         </a>
                     </div>
@@ -182,7 +244,7 @@ commentChart.setOption({
                         <p><@t.page 'status.refund.0'/></p>
                         <a href="tradeRefund/list.html?status=0" title="<@t.page 'refund'/>" target="navTab" rel="tradeRefund/list">
                             <@trade.refundList status=0 pageSize=0>
-                                <h3>${page.totalCount}</h3>
+                                <h3 data-todo="${(page.totalCount gt 0)?then(page.totalCount,'')}" data-todo-type="refund_list">${page.totalCount}</h3>
                             </@trade.refundList>
                         </a>
                     </div>
@@ -235,7 +297,7 @@ orderChart.setOption({
     <fieldset>
         <legend><@t.page 'report.user'/></legend>
         <div class="unit">
-            <#if visitAuthorized><div id="visit" class="chart" data-id="visitChart"></div></#if>
+            <#if visitAuthorized><div id="visit" class="chart box"  data-resize-object="visitChart"></div></#if>
             <ul>
                 <li>
                     <div class="card">
@@ -346,42 +408,46 @@ visitChart.setOption({
     <fieldset>
         <legend><@t.page 'system'/></legend>
         <div class="unit">
-            <p class="cmsVersion">
-                <label><@t.page 'publiccms'/>:</label>
-                <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" title="<@t.page 'publiccms_website'/>">${cms}.${revision}</a> <span class="new hide" style="color:green">[<@t.page 'version.new'/>]</span><span class="old hide" style="color:red">[<@t.page 'version.old'/>]</span>
-            </p>
+            <ul>
+                <li class="cmsVersion">
+                    <label><@t.page 'publiccms'/>:</label>
+                    <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" title="<@t.page 'publiccms_website'/>">${cms}.${revision}</a> <span class="new hide" style="color:green">[<@t.page 'version.new'/>]</span><span class="old hide" style="color:red">[<@t.page 'version.old'/>]</span>
+                </li>
     <@tools.systemProperties>
-            <p>
-                <label><@t.page 'os.timezone'/>:</label>${.vars['user.timezone']!}
-            </p>
+                <li>
+                    <label><@t.page 'os.timezone'/>:</label>${.vars['user.timezone']!}
+                </li>
     </@tools.systemProperties>
     <@tools.masterSite>
-            <p>
-                <label>${t.pageMessage(master?then('cluster.master','cluster.normal'))}:</label>
-                <a href="sysCluster/list.html" title="<@t.menu 'cluster'/>" target="navTab" rel="sysCluster/list">${cluster}</a>
-            </p>
+                <li>
+                    <label>${t.pageMessage(master?then('cluster.master','cluster.normal'))}:</label>
+                    <a href="sysCluster/list.html" title="<@t.menu 'cluster'/>" target="navTab" rel="sysCluster/list">${cluster}</a>
+                </li>
         <@tools.disk>
-            <p>
-                <label><@t.page 'data.directory'/>:</label>
-                <a href="sysSite/monitor.html" title="<@t.page 'system_monitor'/>" target="navTab" rel="sysSite/monitor">${(rootPath)!}</a>
-            </p>
-            <p>
-                <label><@t.page 'disk_space'/>:</label><@t.fileSize totalSpace/>
-            </p>
+                <li>
+                    <label><@t.page 'data.directory'/>:</label>
+                    <a href="sysSite/monitor.html" title="<@t.page 'system_monitor'/>" target="navTab" rel="sysSite/monitor">${(rootPath)!}</a>
+                </li>
+                <li>
+                    <label><@t.page 'disk_space'/>:</label><@t.fileSize totalSpace/>
+                </li>
+            </ul>
         </@tools.disk>
     </@tools.masterSite>
         </div>
     <@tools.masterSite>
         <div class="divider"></div>
         <div class="unit">
-            <p>
-                <label><@t.page 'site.count'/>:</label>
-                <a href="sysSite/list.html" title="<@t.menu 'site_list'/>" target="navTab" rel="sysSite/list"><@sys.siteList pageSize=0>${page.totalCount}</@sys.siteList></a>
-            </p>
-            <p>
-                <label><@t.page 'domain.count'/>:</label>
-                <a href="sysDomain/list.html" title="<@t.menu 'site_domain_list'/>" target="navTab" rel="sysDomain/list"><@sys.domainList advanced=true pageSize=0>${page.totalCount}</@sys.domainList></a>
-            </p>
+            <ul>
+                <li>
+                    <label><@t.page 'site.count'/>:</label>
+                    <a href="sysSite/list.html" title="<@t.menu 'site_list'/>" target="navTab" rel="sysSite/list"><@sys.siteList pageSize=0>${page.totalCount}</@sys.siteList></a>
+                </li>
+                <li>
+                    <label><@t.page 'domain.count'/>:</label>
+                    <a href="sysDomain/list.html" title="<@t.menu 'site_domain_list'/>" target="navTab" rel="sysDomain/list"><@sys.domainList advanced=true pageSize=0>${page.totalCount}</@sys.domainList></a>
+                </li>
+            </ul>
         </div>
     </@tools.masterSite>
     </fieldset>

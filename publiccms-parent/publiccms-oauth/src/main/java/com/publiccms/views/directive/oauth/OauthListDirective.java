@@ -16,7 +16,7 @@ import freemarker.template.TemplateException;
 
 /**
 *
-* oauthList 账户查询指令
+* oauthList 第三方登录查询指令
 * <p>
 * 参数列表
 返回结果

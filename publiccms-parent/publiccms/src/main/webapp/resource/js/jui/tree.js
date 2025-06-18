@@ -19,7 +19,7 @@
                     var last = $li.next()[0] ? false: true;
                     $li.genTree({
                         root: $this,
-                        icon: $this.hasClass("treeFolder"), ckbox: $this.hasClass("treeCheck") , excludeParent:  $this.hasClass("excludeParent"), options: op, level: 0,
+                        icon: $this.hasClass("treeFolder"), ckbox: $this.hasClass("treeCheck") , excludeParent:  $this.hasClass("excludeParent"), options: op, 
                         exp: ( cnum > 1 ? ( first ? op.firstExp: ( last ? op.lastExp: op.exp ) ): op.endExp ),
                         coll: ( cnum > 1 ? ( first ? op.firstColl: ( last ? op.lastColl: op.coll ) ): op.endColl ),
                         showSub: ( !$this.hasClass("collapse") && ( $this.hasClass("expand") || $li.hasClass("expand") || ( cnum > 1 ? false : true ) ) ),
@@ -30,7 +30,7 @@
                     if ($this.hasClass("treeCheck") ) {
                         var checkFn = eval($this.attr("oncheck"));
                         if (checkFn && "function" === typeof checkFn ) {
-                            $("div.ckbox", $this).each(function() {
+                            $(".ckbox", $this).each(function() {
                                 var ckbox = $(this);
                                 ckbox.on("click", function() {
                                     var checked = $(ckbox).hasClass("checked");
@@ -78,21 +78,21 @@
                 }, 1);
             });
         },
-        subTree: function(op, level) {
+        subTree: function(op) {
             return this.each(function() {
                 $(">li", this).each(function() {
                     var $this = $(this);
                     var isLast = ( $this.next()[0] ? false: true );
                     $this.genTree({
                         root: op.root, icon: op.icon, ckbox: op.ckbox, excludeParent: op.excludeParent, exp: isLast ? op.options.lastExp: op.options.exp, coll: isLast ? op.options.lastColl: op.options.coll,
-                        options: op.options, level: level, space: isLast ? null: op.space, showSub: op.showSub, isLast: isLast
+                        options: op.options, space: isLast ? null: op.space, showSub: op.showSub, isLast: isLast
                     });
                 });
             });
         },
         genTree: function(options) {
             var op = $.extend({
-                root: options.root, icon: options.icon, ckbox: options.ckbox, excludeParent: options.excludeParent, exp: "", coll: "", showSub: false, level: 0, options: null, isLast: false
+                root: options.root, icon: options.icon, ckbox: options.ckbox, excludeParent: options.excludeParent, exp: "", coll: "", showSub: false, options: null, isLast: false
             }, options);
             return this.each(function() {
                 var node = $(this);
@@ -105,12 +105,12 @@
                 if (tree.length > 0 || node.attr(op.options.async)) {
                     node.children(":first").wrap("<div></div>");
                     var showIcon = op.icon && !tree.hasClass("noFolder");
-                    $(">div", node).prepend(( op.ckbox ? "<div class=\"ckbox " + checked + "\"></div>": "" )
-                            + ( showIcon ? "<div class=\"" + ( ( op.showSub  && !node.attr(op.options.async) )  ? op.options.folderColl: op.options.folderExp ) + "\"></div>": "<div class=\"" + ( ( op.showSub && !node.attr(op.options.async) ) ? op.coll: op.exp ) + "\"></div>" ));
+                    $(">div", node).prepend(( op.ckbox ? "<span class=\"ckbox " + checked + "\"></span>": "" )
+                            + ( showIcon ? "<span class=\"" + ( ( op.showSub  && !node.attr(op.options.async) )  ? op.options.folderColl: op.options.folderExp ) + "\"></span>": "<span class=\"" + ( ( op.showSub && !node.attr(op.options.async) ) ? op.coll: op.exp ) + "\"></span>" ));
                     if (tree.length > 0 ) {
                         op.showSub ? tree.show(): tree.hide();
                     }
-                    $(">div>div."+op.options.folderColl+",>div>div."+op.options.folderExp+",>div>a", node).on("click", function() {
+                    $(">div>."+op.options.folderColl+",>div>."+op.options.folderExp+",>div>a", node).on("click", function() {
                         var tree=$(">ul", node);
                         if(node.attr(op.options.async)){
                             var isHidden = tree.is(":hidden");
@@ -148,38 +148,36 @@
                         }
                         var $fnode = $(">li:first", tree);
                         if ($fnode.children(":first").isTag("a") ) {
-                            tree.subTree(op, op.level + 1);
+                            tree.subTree(op);
                         }
                         var isA = $(this).isTag("a");
-                        var $this = $(">div>div."+op.coll+",>div>div."+op.exp, node);
+                        var $this = $(">div>."+op.coll+",>div>."+op.exp, node);
                         if (!isA || tree.is(":hidden") ) {
                             $this.toggleClass(op.exp).toggleClass(op.coll);
                             if (op.icon ) {
-                                $(">div>div", node).last().toggleClass(op.options.folderExp).toggleClass(op.options.folderColl);
+                                $(">div>span", node).last().toggleClass(op.options.folderExp).toggleClass(op.options.folderColl);
                             }
                         }
                         ( tree.is(":hidden") ) ? tree.slideDown(100): ( isA ? "": tree.slideUp(100) );
                         return false;
                     });
-                    addSpace(op.level, node);
                     if (op.showSub ) {
-                        tree.subTree(op, op.level + 1);
+                        tree.subTree(op);
                     }
                 } else {
                     node.children().wrap("<div></div>");
-                    var $box=$(">div", node).prepend(( op.ckbox ? "<div class=\"ckbox " + checked + "\"></div>": "" )
-                            + ( op.icon ? "<div class=\""+op.options.file+"\"></div>": "<div class=\"node\"></div>" ));
+                    var $box=$(">div", node).prepend(( op.ckbox ? "<span class=\"ckbox " + checked + "\"></span>": "" )
+                            + ( op.icon ? "<span class=\""+op.options.file+"\"></span>": "" ));
                     if(node.hasClass(op.options.selected) ){
                         node.removeClass(op.options.selected);
                         $box.addClass(op.options.selected);
                     }
                     if(op.icon ) {
-                        $(">div>div."+op.options.file, node).on("click", function() {
+                        $(">div>."+op.options.file, node).on("click", function() {
                             $(this).next().trigger("click");
                             return false;
                         });
                     }
-                    addSpace(op.level, node);
                 }
                 if (op.ckbox ) {
                     node._check(op);
@@ -189,24 +187,6 @@
                     return false;
                 });
             });
-            function addSpace(level, node) {
-                if (level > 0 ) {
-                    var parent = node.parent().parent();
-                    var space = !parent.next()[0] ? "indent": "line";
-                    var plist = "<div class=\"" + space + "\"></div>";
-                    if (level > 1 ) {
-                        var next = $(">div>div", parent).filter(":first");
-                        var prev = "";
-                        while (level > 1) {
-                            prev = prev + "<div class=\"" + next.attr("class") + "\"></div>";
-                            next = next.next();
-                            level--;
-                        }
-                        plist = prev + plist;
-                    }
-                    $(">div", node).prepend(plist);
-                }
-            }
         }, _check: function(op) {
             var node = $(this);
             var ckbox = $(">div>.ckbox", node);
@@ -226,7 +206,7 @@
                 ckbox.removeClass(rClass).removeClass(!cked ? "indeterminate": "").addClass(aClass);
                 $("input", ckbox).prop("checked", !cked);
                 $(">ul", node).find("li").each(function() {
-                    var box = $("div.ckbox", this);
+                    var box = $(".ckbox", this);
                     box.removeClass(rClass).removeClass(!cked ? "indeterminate": "").addClass(aClass).find("input").prop("checked", !cked);
                 });
                 $(node)._checkParent(op.excludeParent);
@@ -238,14 +218,18 @@
                 ckbox.removeClass("unchecked").addClass("checked");
                 $(node)._checkParent(op.excludeParent);
             }
+            var cAttr = $input.attr("disabled") || false;
+            if (cAttr ) {
+                ckbox.find("input").prop("disabled", true);
+            }
         }, _checkParent: function(excludeParent) {
             if ($(this).parent().hasClass("tree") ) {
                 return;
             }
             var parent = $(this).parent().parent();
             var stree = $(">ul", parent);
-            var ckbox = stree.find(">li>a").length + stree.find("div.ckbox").length;
-            var ckboxed = stree.find("div.checked").length;
+            var ckbox = stree.find(">li>a").length + stree.find(".ckbox").length;
+            var ckboxed = stree.find(".checked").length;
             var aClass = ( ckboxed == ckbox ? "checked": ( ckboxed != 0 ? "indeterminate": "unchecked" ) );
             var rClass = ( ckboxed == ckbox ? "indeterminate": ( ckboxed != 0 ? "checked": "indeterminate" ) );
             $(">div>.ckbox", parent).removeClass("unchecked").removeClass("checked").removeClass(rClass).addClass(aClass);

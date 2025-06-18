@@ -88,18 +88,6 @@ function initUI(_box) {
     if ($.fn.combox ){
         $("select.combox", $p).combox();
     }
-    if ($.fn.uploadify ) {
-        $(":file[uploaderOption]", $p).each(function() {
-            var $this = $(this);
-            var options = {
-                fileObjName: $this.attr("name") || "file", auto: true, multi: true, onUploadError: uploadifyError
-            };
-            var uploaderOption = JUI.jsonEval($this.attr("uploaderOption"));
-            $.extend(options, uploaderOption);
-            JUI.debug("uploaderOption: " + JUI.obj2str(uploaderOption));
-            $this.uploadify(options);
-        });
-    }
 
     // validate form
     $("form.required-validate", $p).each(function() {
@@ -186,6 +174,10 @@ function initLink($p) {
             if(title){
                 title = title.replace(/<[^>]*>/gi,"");
             }
+            var changeTitle = false;
+            if($this.data("change-title") && "true" == $this.data("change-title")){
+                changeTitle=true;
+            }
             var tabid = $this.attr("rel") || "_blank";
             var fresh = eval($this.attr("fresh") || "true");
             var external = eval($this.attr("external") || "false");
@@ -197,7 +189,7 @@ function initLink($p) {
                 return false;
             }
             navTab.openTab(tabid, url, {
-                title: title, fresh: fresh, external: external, focusNewWindow:newWindow
+                title: title, changeTitle:changeTitle, fresh: fresh, external: external, focusNewWindow:newWindow
             });
             return false;
         });

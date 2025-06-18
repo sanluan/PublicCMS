@@ -107,16 +107,6 @@ public class RedisClient {
     }
 
     /**
-     * 
-     */
-    public void flushDb() {
-        log.info("flush db...");
-        Jedis jedis = jedisPool.getResource();
-        jedis.flushDB();
-        jedis.close();
-    }
-
-    /**
      * @param region
      * @return
      */

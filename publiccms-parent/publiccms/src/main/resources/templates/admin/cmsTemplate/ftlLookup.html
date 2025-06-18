@@ -11,7 +11,7 @@
             <#else>
                 <@tools.metadata path=path>
                     <a href="javascript:;" onclick="use('${path}','${(object.alias)?has_content?then('<#-- '+object.alias+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">
-                        ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
+                        ${(object.alias)?has_content?then(object.alias+' '+a.fileName,a.fileName)}
                     </a>
                 </@tools.metadata>
             </#if>

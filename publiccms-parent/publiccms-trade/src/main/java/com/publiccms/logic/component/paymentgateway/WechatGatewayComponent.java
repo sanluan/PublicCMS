@@ -364,7 +364,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     }
 
     @Override
-    public boolean enable(short siteId) {
+    public boolean enabled(short siteId) {
         Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
         return CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_APPID));
     }

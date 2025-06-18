@@ -30,7 +30,7 @@
                                   <#assign lockUser=(userMap[lockMap[currentPath].userId?string].nickname)!''/>
                                   <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[currentPath].createDate}"></i>
                                </#if>
-                               ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
+                               ${(object.alias)?has_content?then(object.alias+' '+a.fileName,a.fileName)}
                             </@tools.metadata>
                         </a>
                     </#if>

@@ -191,9 +191,9 @@ public class CmsTemplateAdminController {
      * @param model
      * @return view name
      */
-    @RequestMapping("savePlaceMetaData")
+    @RequestMapping("savePlaceMetadata")
     @Csrf
-    public String savePlaceMetaData(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, @ModelAttribute CmsPlaceMetadata metadata, String content, HttpServletRequest request,
+    public String savePlaceMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, @ModelAttribute CmsPlaceMetadata metadata, String content, HttpServletRequest request,
             ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);

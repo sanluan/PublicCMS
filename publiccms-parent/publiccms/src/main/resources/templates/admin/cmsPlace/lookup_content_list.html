@@ -1,7 +1,7 @@
 <@cms.contentList advanced=true status=1 endPublishDate=.now categoryId=categoryId modelId=modelIds title=title
     parentId=parentId containChild=true userId=userId startPublishDate=startPublishDate
     orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<div class="pageHeader card">
+<div class="pageHeader">
     <form class="pagerForm" autocomplete="off" action="cmsPlace/lookup_content_list.html" onsubmit="return divSearch(this, 'lookup_content_list');" method="post">
         <#include "../include_page/parameters.html"/>
         <input type="hidden" name="userId" value="${userId!}"/>
@@ -36,61 +36,59 @@
         </div>
     </form>
 </div>
-<div class="card">
-    <table class="table" width="100%" layoutH targetType="ajax" rel="lookup_content_list" orderField="${orderField!}" orderType="${orderType!}">
-        <thead>
-            <tr>
-                <th width="20"><@t.page 'use'/></th>
-                <th width="20"><@t.page 'id'/></th>
-                <th width="200"><@t.page 'content'/></th>
-                <th width="30" orderField="comments"><@t.page 'content.comments'/></th>
-                <th width="30" orderField="clicks"><@t.page 'clicks'/></th>
-                <th width="70" orderField="publishDate"><@t.page 'publish_date'/></th>
-            </tr>
-        </thead>
-        <tbody>
-            <#list page.list as a>
-                <@t.merge 'userIds' a.userId!/>
-                <@t.merge 'userIds' a.checkUserId!/>
-                <@t.merge 'categoryIds' a.categoryId!/>
-                <@t.merge 'modelIds' a.modelId!/>
-            </#list>
+<table class="table" width="100%" layoutH targetType="ajax" rel="lookup_content_list" orderField="${orderField!}" orderType="${orderType!}">
+    <thead>
+        <tr>
+            <th width="20"><@t.page 'use'/></th>
+            <th width="20"><@t.page 'id'/></th>
+            <th width="200"><@t.page 'content'/></th>
+            <th width="30" orderField="comments"><@t.page 'content.comments'/></th>
+            <th width="30" orderField="clicks"><@t.page 'clicks'/></th>
+            <th width="70" orderField="publishDate"><@t.page 'publish_date'/></th>
+        </tr>
+    </thead>
+    <tbody>
+        <#list page.list as a>
+            <@t.merge 'userIds' a.userId!/>
+            <@t.merge 'userIds' a.checkUserId!/>
+            <@t.merge 'categoryIds' a.categoryId!/>
+            <@t.merge 'modelIds' a.modelId!/>
+        </#list>
 
-            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
-            <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
-            <@cms.model ids=t.modelIds!><#assign modelMap=map!/></@cms.model>
+        <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+        <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
+        <@cms.model ids=t.modelIds!><#assign modelMap=map!/></@cms.model>
 
-            <#list page.list as a>
-            <tr>
-                <td>
-                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({itemId:'${a.id}', itemType:'content', url:'${a.url!}', title:'${(a.title?js_string)!}', description:'${(a.description?js_string)!}',cover:'${(a.cover?js_string)!}',publishDate:'${(a.publishDate)!}'}); return false;"><i class="icon-ok"></i><@t.page 'select'/></a>
-                </td>
-                <td>${a.id}</td>
-                <td>
-                    <div class="box">
-                        <h3>
-                            [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
-                            ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
-                            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" width="1200" height="600" rel="viewContent${a.id}">${(a.title)!}</a>
-                        </h3>
-                        <p>
-                            <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickname)!}</span>
-                            <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
-                            <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                                <label><a href="cmsContent/lookup_list.html?parentId=${a.id}&categoryId=${a.categoryId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list"><@t.page 'content.child_management'/></a></label>
-                            </#if>
-                            <#if a.expiryDate?has_content><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></#if>
-                        </p>
-                    </div>
-                </td>
-                <td>${a.comments!}</td>
-                <td>${a.clicks!}</td>
-                <td>${a.publishDate!}</td>
-            </tr>
-            </#list>
-        </tbody>
-    </table>
-    <#assign rel='lookup_content_list'/>
-    <#include "../include_page/pageDialog.html"/>
-</div>
+        <#list page.list as a>
+        <tr>
+            <td>
+                <a href="javascript:;" class="btnText green" onclick="$.bringBack({itemId:'${a.id}', itemType:'content', url:'${a.url!}', title:'${(a.title?js_string)!}', description:'${(a.description?js_string)!}',cover:'${(a.cover?js_string)!}',publishDate:'${(a.publishDate)!}'}); return false;"><i class="icon-ok"></i><@t.page 'select'/></a>
+            </td>
+            <td>${a.id}</td>
+            <td>
+                <div class="box">
+                    <h3>
+                        [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
+                        ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
+                        <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" width="1200" height="600" rel="viewContent${a.id}">${(a.title)!}</a>
+                    </h3>
+                    <p>
+                        <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickname)!}</span>
+                        <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
+                        <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
+                            <label><a href="cmsContent/lookup_list.html?parentId=${a.id}&categoryId=${a.categoryId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list"><@t.page 'content.child_management'/></a></label>
+                        </#if>
+                        <#if a.expiryDate?has_content><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></#if>
+                    </p>
+                </div>
+            </td>
+            <td>${a.comments!}</td>
+            <td>${a.clicks!}</td>
+            <td>${a.publishDate!}</td>
+        </tr>
+        </#list>
+    </tbody>
+</table>
+<#assign rel='lookup_content_list'/>
+<#include "../include_page/pageDialog.html"/>
 </@cms.contentList>

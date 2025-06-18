@@ -35,9 +35,8 @@
         <#if path?has_content>
             <tr>
                 <td></td>
-                <td class="tree"><div class="folder_expandable"></div></td>
                 <td>
-                    <a href="cmsFileBackup/list.html?type=${type!}&path=${path?contains('/')?then(path?keep_before_last('/'),'')}" target="navTab" rel="cmsFileBackup/list">
+                    <a href="cmsFileBackup/list.html?type=${type!}&path=${path?contains('/')?then(path?keep_before_last('/'),'')}" data-change-title="false" target="navTab" rel="cmsFileBackup/list">
                         <@t.page 'button.return'/>
                     </a>
                 </td>
@@ -51,14 +50,14 @@
             <#assign filePath=path?has_content?then(path+'/','')+a.fileName/>
             <tr>
                 <td><input name="paths" value="${filePath}" type="checkbox"></td>
-                <td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
                 <td>
                     <#if a.directory>
-                        <a href="cmsFileBackup/list.html?type=${type!}&path=${filePath?url}" target="navTab" rel="cmsFileBackup/list">
+                        <span class="bi bi-folder"></span>
+                        <a href="cmsFileBackup/list.html?type=${type!}&path=${filePath?url}" data-change-title="false" target="navTab" rel="cmsFileBackup/list">
                             ${a.fileName}
                         </a>
                     <#else>
-                        ${a.fileName}
+                        <span class="bi bi-file-text"></span> ${a.fileName}
                     </#if>
                 </td>
                 <td>${a.lastModifiedTime?datetime}</td>

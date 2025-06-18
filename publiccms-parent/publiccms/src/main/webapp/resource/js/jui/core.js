@@ -182,8 +182,8 @@ var JUI = {
             $(window).on(JUI.eventType.resizeChart, null, null, function() {
                 $(".chart").each(function() {
                     $chart=$(this);
-                    if($chart.data("id") && window[$chart.data("id")] && "function" == typeof window[$chart.data("id")].resize){
-                        window[$chart.data("id")].resize();
+                    if($chart.data("resize-object") && window[$chart.data("resize-object")] && "function" == typeof window[$chart.data("resize-object")].resize){
+                        window[$chart.data("resize-object")].resize();
                     }
                 });
             });
@@ -347,11 +347,24 @@ var JUI = {
                 }else if ($this.parents(".leftPageContent").length != 0){
                     iLayoutH = $this.getSiblingsElemsH($this.parents(".leftPageContent"));
                 }else if ($this.parents(".pageFormContent").length != 0){
-                    iLayoutH = $this.getSiblingsElemsH($this.parents(".pageFormContent")) + 30;
+                    iLayoutH = $this.getSiblingsElemsH($this.parents(".pageFormContent"));
                 }else if ($this.parents(".page").length != 0 ) {
                     iLayoutH = $this.getSiblingsElemsH($this.parents(".page"));
                 }else if ($this.parents(".dialogContent").length != 0){
                     iLayoutH = $this.getSiblingsElemsH($this.parents(".dialogContent"));
+                }
+                
+                if ($this.parents(".card").length != 0){
+                    var $cards = $this.parents(".card");
+                    for(var i=0;i<$cards.length;i++){
+                        var $card = $cards.eq(i);
+                        if(!$card.prev().hasClass("card")){
+                            iLayoutH += parseInt($cards.eq(i).css("margin-top"));
+                        }
+                        if(!$card.next().hasClass("card")){
+                            iLayoutH += parseInt($cards.eq(i).css("margin-bottom"));
+                        }
+                    }
                 }
 
                 var iH = iRefH - iLayoutH > 50 ? iRefH - iLayoutH: 50;

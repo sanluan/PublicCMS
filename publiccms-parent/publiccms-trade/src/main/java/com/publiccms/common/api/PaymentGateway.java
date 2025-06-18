@@ -15,7 +15,7 @@ public interface PaymentGateway extends Container<String> {
         return () -> getAccountType();
     }
 
-    boolean enable(short siteId);
+    boolean enabled(short siteId);
 
     boolean pay(SysSite site, TradePayment payment, String paymentType, String callbackUrl, HttpServletResponse response);
 

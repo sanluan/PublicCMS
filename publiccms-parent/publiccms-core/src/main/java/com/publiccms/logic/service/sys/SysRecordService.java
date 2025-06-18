@@ -3,6 +3,7 @@ package com.publiccms.logic.service.sys;
 import java.util.Date;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -38,6 +39,7 @@ public class SysRecordService extends BaseService<SysRecord> {
         return dao.getPage(siteId, code, startCreateDate, endCreateDate, orderField, orderType, pageIndex, pageSize);
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public SysRecord getOrCreateOrUpdate(short siteId, String code, String data) {
         SysRecordId id = new SysRecordId(siteId, code);
         SysRecord entity = getEntity(id);
@@ -49,6 +51,7 @@ public class SysRecordService extends BaseService<SysRecord> {
                 save(entity);
             } else if (!data.equals(entity.getData())) {
                 entity.setData(data);
+                entity.setUpdateDate(CommonUtils.getDate());
             }
         }
         return entity;

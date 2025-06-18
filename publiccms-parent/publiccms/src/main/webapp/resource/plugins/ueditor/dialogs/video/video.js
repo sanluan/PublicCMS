@@ -450,6 +450,7 @@
                     mimeTypes: 'video/*'
                 },
                 server: actionUrl,
+                headers: editor.getOpt('headers') || {},
                 fileVal: editor.getOpt('videoFieldName'),
                 duplicate: true,
                 fileSingleSizeLimit: fileMaxSize,
@@ -934,6 +935,7 @@
                     mimeTypes: 'image/*'
                 },
                 server: actionUrl,
+                headers: editor.getOpt('headers') || {},
                 fileVal: editor.getOpt('imageFieldName'),
                 duplicate: true,
                 fileSingleSizeLimit: imageMaxSize,    // 默认 2 M
@@ -1417,11 +1419,9 @@
 
             if(!_this.listEnd && !this.isLoadingData) {
                 this.isLoadingData = true;
-                var url = editor.getActionUrl(editor.getOpt('videoManagerActionName')),
-                    isJsonp = utils.isCrossDomainUrl(url);
-                ajax.request(url, {
+                ajax.request(editor.getActionUrl(editor.getOpt('videoManagerActionName')), {
                     'timeout': 100000,
-                    'dataType': isJsonp ? 'jsonp':'',
+                    'headers': editor.options.headers || {},
                     'data': utils.extend({
                             start: this.listIndex,
                             size: this.listSize
@@ -1429,7 +1429,7 @@
                     'method': 'get',
                     'onsuccess': function (r) {
                         try {
-                            var json = isJsonp ? r:eval('(' + r.responseText + ')');
+                            var json = utils.str2json(r.responseText);
                             if (json.state == 'SUCCESS') {
                                 _this.pushData(json.list);
                                 _this.listIndex = parseInt(json.start) + parseInt(json.list.length);
@@ -1558,11 +1558,9 @@
 
             if(!_this.listEnd && !this.isLoadingData) {
                 this.isLoadingData = true;
-                var url = editor.getActionUrl(editor.getOpt('imageManagerActionName')),
-                    isJsonp = utils.isCrossDomainUrl(url);
-                ajax.request(url, {
+                ajax.request(editor.getActionUrl(editor.getOpt('imageManagerActionName')), {
                     'timeout': 100000,
-                    'dataType': isJsonp ? 'jsonp':'',
+                    'headers': editor.options.headers || {},
                     'data': utils.extend({
                             start: this.listIndex,
                             size: this.listSize
@@ -1570,7 +1568,7 @@
                     'method': 'get',
                     'onsuccess': function (r) {
                         try {
-                            var json = isJsonp ? r:eval('(' + r.responseText + ')');
+                            var json = utils.str2json(r.responseText);
                             if (json.state == 'SUCCESS') {
                                 _this.pushData(json.list);
                                 _this.listIndex = parseInt(json.start) + parseInt(json.list.length);

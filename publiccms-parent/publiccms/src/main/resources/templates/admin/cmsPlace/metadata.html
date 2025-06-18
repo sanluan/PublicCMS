@@ -41,14 +41,12 @@
                 <dd>
                     <#list list as a>
                         <@tools.placeMetadata path=a>
-                        <p>
                             <#if (object.metadataExtendList)?has_content>
                                 <a class="button" href="cmsPlace/metadata.html?path=${a?url}&rel=${rel!'placeBox'}" target="ajax" rel="${rel!'placeBox'}">${(object.alias)!a}</a>
                             </#if>
                             <#if 0 lt ((object.size)!0)>
                                <a class="button" href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList:${a!}"><@t.page 'place_data'/>:${(object.alias)!a}(${object.size})</a>
                             </#if>
-                        </p>
                         </@tools.placeMetadata>
                     </#list>
                 </dd>
@@ -62,9 +60,7 @@
                 <dd>
                     <#list list as a>
                         <@tools.diyMetadata itemType='region' itemId=a>
-                        <p>
                             <a class="button" href="cmsPage/diy.html?id=${(object.id?url)!}" target="navTab" rel="cmsPage/diy" title="<@t.page 'diy'/>">${(object.name)!}</a>
-                        </p>
                         </@tools.diyMetadata>
                     </#list>
                 </dd>

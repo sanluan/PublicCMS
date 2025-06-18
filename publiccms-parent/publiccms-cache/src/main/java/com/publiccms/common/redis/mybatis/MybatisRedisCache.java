@@ -52,7 +52,7 @@ public class MybatisRedisCache implements Cache {
 
     @Override
     public void clear() {
-        redisClient.flushDb();
+        redisClient.clearRegion(id);
     }
 
     @Override

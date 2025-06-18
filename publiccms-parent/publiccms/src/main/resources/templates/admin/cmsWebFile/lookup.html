@@ -50,7 +50,7 @@
                     </a>
                 <#else>
                     <#if t.fileType(a.fileName) = 'image'>
-                        <img src="${site.sitePath+filePath}" alt="${a.fileName}" title="${a.fileName}(<@t.fileSize a.size/>)">
+                        <img src="${getUrl(filePath)}" alt="${a.fileName}" title="${a.fileName}(<@t.fileSize a.size/>)">
                     <#else>
                         <i class="thumb icon-file-alt icon-large"></i>
                     </#if>

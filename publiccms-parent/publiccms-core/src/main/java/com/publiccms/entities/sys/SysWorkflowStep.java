@@ -69,6 +69,13 @@ public class SysWorkflowStep implements java.io.Serializable {
     @GeneratorColumn(title = "人员")
     private Long userId;
     /**
+     * 使用创建用户
+     * <p>
+     * use create user
+     */
+    @GeneratorColumn(title = "使用创建用户")
+    private boolean useCreateUser;
+    /**
      * next step
      * <p>
      * 下一步
@@ -86,18 +93,20 @@ public class SysWorkflowStep implements java.io.Serializable {
     public SysWorkflowStep() {
     }
 
-    public SysWorkflowStep(int workflowId, String name, int sort) {
+    public SysWorkflowStep(int workflowId, String name, boolean useCreateUser, int sort) {
         this.workflowId = workflowId;
         this.name = name;
+        this.useCreateUser = useCreateUser;
         this.sort = sort;
     }
 
-    public SysWorkflowStep(int workflowId, String name, Integer roleId, Integer deptId, Long userId, Long nextStepId, int sort) {
+    public SysWorkflowStep(int workflowId, String name, Integer roleId, Integer deptId, Long userId, boolean useCreateUser, Long nextStepId, int sort) {
         this.workflowId = workflowId;
         this.name = name;
         this.roleId = roleId;
         this.deptId = deptId;
         this.userId = userId;
+        this.useCreateUser = useCreateUser;
         this.nextStepId = nextStepId;
         this.sort = sort;
     }
@@ -158,6 +167,15 @@ public class SysWorkflowStep implements java.io.Serializable {
         this.userId = userId;
     }
 
+    @Column(name = "use_create_user", nullable = false)
+    public boolean isUseCreateUser() {
+        return this.useCreateUser;
+    }
+
+    public void setUseCreateUser(boolean useCreateUser) {
+        this.useCreateUser = useCreateUser;
+    }
+    
     @Column(name = "next_step_id")
     public Long getNextStepId() {
         return this.nextStepId;

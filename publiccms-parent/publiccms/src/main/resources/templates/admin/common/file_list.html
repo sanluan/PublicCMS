@@ -1,38 +1,36 @@
-<div class="card">
-    <@tools.fileList type='file' path=path>
-        <#if path?has_content>
-            <div class="image-list">
-                <a href="common/file_list.html?path=${path?contains('/')?then(path?keep_before_last('/'),'')?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox">
-                    <i class="thumb icon-folder-open-alt icon-large"></i>
-                    <p><@t.page 'button.return'/></p>
+<@tools.fileList type='file' path=path>
+    <#if path?has_content>
+        <div class="image-list">
+            <a href="common/file_list.html?path=${path?contains('/')?then(path?keep_before_last('/'),'')?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox">
+                <i class="thumb icon-folder-open-alt icon-large"></i>
+                <p><@t.page 'button.return'/></p>
+            </a>
+        </div>
+    </#if>
+    <#list list as a>
+        <#assign filePath=path?has_content?then(path+'/','')+a.fileName/>
+        <div class="image-list">
+            <#if a.directory>
+                <a href="common/file_list.html?path=${filePath?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${filePath}">
+                    <i class="thumb icon-folder-close-alt icon-large"></i>
+                    <p>${a.fileName}</p>
                 </a>
-            </div>
-        </#if>
-        <#list list as a>
-            <#assign filePath=path?has_content?then(path+'/','')+a.fileName/>
-            <div class="image-list">
-                <#if a.directory>
-                    <a href="common/file_list.html?path=${filePath?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${filePath}">
-                        <i class="thumb icon-folder-close-alt icon-large"></i>
-                        <p>${a.fileName}</p>
-                    </a>
-                <#elseif !fileTypes?has_content || fileTypes = t.fileType(a.fileName)>
-                    <#if fileTypes?has_content && fileTypes = 'image'>
-                        <img src="${site.sitePath+filePath}" alt="${a.fileName}" title="${a.fileName}(<@t.fileSize a.size/>)">
-                        <a href="javascript:;" class="edit-icon" onclick="$('.tabImageBtn',$.pdialog.getCurrent()).trigger('click');$('div.upload-wrap', $.pdialog.getCurrent()).editImg({imgUrl:'${site.sitePath+filePath!}',imgName:'${a.fileName!}'});return false;"></a>
-                    <#else>
-                        <i class="thumb icon-file-alt icon-large"></i>
-                    </#if>
-                    <p title="<@t.page 'modified_date'/>:${a.lastModifiedTime?date},<@t.page 'create_date'/>:${a.creationTime?date}">
-                        <a href="javascript:;" onclick="$.bringBack({'${field!'fileName'}':'${filePath!}','fileType':'${t.fileType(a.fileName)}','fileSize':'${a.size!}','${originalField!'originalName'}':'${a.fileName!}'});return false;">
-                            ${a.fileName}(<@t.fileSize a.size/>)
-                        </a>
-                    </p>
+            <#elseif !fileTypes?has_content || fileTypes = t.fileType(a.fileName)>
+                <#if fileTypes?has_content && fileTypes = 'image'>
+                    <img src="${getUrl(filePath)}" alt="${a.fileName}" title="${a.fileName}(<@t.fileSize a.size/>)">
+                    <a href="javascript:;" class="edit-icon" onclick="$('.tabImageBtn',$.pdialog.getCurrent()).trigger('click');$('div.upload-wrap', $.pdialog.getCurrent()).editImg({imgUrl:'${getUrl(filePath)!}',imgName:'${a.fileName!}'});return false;"></a>
                 <#else>
-                    <i class="thumb icon-file-alt icon-large" title="${a.fileName}(<@t.fileSize a.size/>)"></i>
-                    <p title="<@t.page 'modified_date'/>:${a.lastModifiedTime?date},<@t.page 'create_date'/>:${a.creationTime?date}">${a.fileName}(<@t.fileSize a.size/>)</p>
+                    <i class="thumb icon-file-alt icon-large"></i>
                 </#if>
-            </div>
-        </#list>
-    </@tools.fileList>
-</div>
+                <p title="<@t.page 'modified_date'/>:${a.lastModifiedTime?date},<@t.page 'create_date'/>:${a.creationTime?date}">
+                    <a href="javascript:;" onclick="$.bringBack({'${field!'fileName'}':'${filePath!}','fileType':'${t.fileType(a.fileName)}','fileSize':'${a.size!}','${originalField!'originalName'}':'${a.fileName!}'});return false;">
+                        ${a.fileName}(<@t.fileSize a.size/>)
+                    </a>
+                </p>
+            <#else>
+                <i class="thumb icon-file-alt icon-large" title="${a.fileName}(<@t.fileSize a.size/>)"></i>
+                <p title="<@t.page 'modified_date'/>:${a.lastModifiedTime?date},<@t.page 'create_date'/>:${a.creationTime?date}">${a.fileName}(<@t.fileSize a.size/>)</p>
+            </#if>
+        </div>
+    </#list>
+</@tools.fileList>

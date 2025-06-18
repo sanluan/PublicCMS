@@ -48,18 +48,21 @@
                 <@cms.userSurveyQuestion userId=object.id.userId questionIds=t.questionIds!><#assign userQuestionMap=map!/></@cms.userSurveyQuestion>
                 <#list page.list as q>
                     <div class="unit">
-                        <p class="nowrap"><label><@t.page 'question'/>:</label>[<@t.page 'question.type.'+q.questionType/>] ${q.title}</p>
+                        <p><label><@t.page 'question'/>:</label>[<@t.page 'question.type.'+q.questionType/>] ${q.title}</p>
                         <#if q.cover?has_content>
                             <p class="thumbnail">
                                 <img src="${(q.cover)!}" alt="${a.title}"/>
                             </p>
                         </#if>
                         <#if ['radio','select','checkbox']?seq_contains(q.questionType)>
+                        <div>
+                            <label><@t.page 'question.item'/>:</label>
                             <@cms.surveyQuestionItemList questionId=q.id pageSize=500>
                                 <#list page.list as a>
-                            <p><label><@t.page 'question.item'/>:</label>${a.sort}. ${a.title} <#if (q.answer)?has_content&&q.answer?split(',')?seq_contains(a.id?string)>[<@t.page 'answer.correct'/>]</#if> <#if (userQuestionMap[q.id?string].answer)?has_content&&userQuestionMap[q.id?string].answer?split(',')?seq_contains(a.id?string)>(<@t.page 'answer.user'/>)</#if></p>
+                            <p>${a.sort}. ${a.title} <#if (q.answer)?has_content&&q.answer?split(',')?seq_contains(a.id?string)><span class="statusText green">[<@t.page 'answer.correct'/>]</span></#if> <#if (userQuestionMap[q.id?string].answer)?has_content&&userQuestionMap[q.id?string].answer?split(',')?seq_contains(a.id?string)>(<@t.page 'answer.user'/>)</#if></p>
                                 </#list>
                             </@cms.surveyQuestionItemList>
+                        </div>
                         <#elseif 'text'=q.questionType>
                             <#if q.answer?has_content><p><label><@t.page 'answer.correct'/>:</label>${(q.answer)!}</p></#if>
                             <p><label><@t.page 'answer.user'/>:</label>${(userQuestionMap[q.id?string].answer)!}</p>

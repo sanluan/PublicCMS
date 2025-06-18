@@ -633,6 +633,7 @@ function exec(scrawlObj) {
         if (!!base64) {
             var options = {
                 timeout:100000,
+                headers: editor.options.headers || {},
                 onsuccess:function (xhr) {
                     if (!scrawlObj.isCancelScrawl) {
                         var responseObj;

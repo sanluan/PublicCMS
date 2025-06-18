@@ -130,8 +130,8 @@ public class LoginController {
                     lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
                 }
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
-                logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, false,
-                        now, password));
+                logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB,
+                        LogLoginService.METHOD_PASSWORD, false, now, password));
                 return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
             }
         }
@@ -151,8 +151,8 @@ public class LoginController {
             Long userId = user.getId();
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
-            logLoginService
-                    .save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false, now, password));
+            logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB,
+                    LogLoginService.METHOD_PASSWORD, false, now, password));
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
         }
         lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
@@ -178,8 +178,8 @@ public class LoginController {
         addLoginStatus(user, authToken, request, response, expiryMinutes);
         sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, now,
                 DateUtils.addMinutes(now, expiryMinutes), ip));
-        logLoginService
-                .save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true, now, null));
+        logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB,
+                LogLoginService.METHOD_PASSWORD, true, now, null));
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 

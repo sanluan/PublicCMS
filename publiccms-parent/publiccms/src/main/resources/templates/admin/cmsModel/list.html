@@ -20,7 +20,7 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if parent?has_content>
-                <li><a href="cmsModel/list.html?parentId=${(parent.parentId?url)!}" target="navTab" rel="cmsModel/list"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
+                <li><a href="cmsModel/list.html?parentId=${(parent.parentId?url)!}" target="navTab" rel="cmsModel/list" data-change-title="false"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
             <#if !site.parentId?has_content>
@@ -65,7 +65,7 @@
                 </td>
                 <td>
                     <#if a.hasChild>
-                        <a href="cmsModel/list.html?parentId=${a.id?url}" class="btnText" target="navTab" rel="cmsModel/list"><@t.page 'model.child_management'/></a>
+                        <a href="cmsModel/list.html?parentId=${a.id?url}" class="btnText" target="navTab" rel="cmsModel/list" data-change-title="false"><@t.page 'model.child_management'/></a>
                     </#if>
                 </td>
                 <td>${a.onlyUrl?then(t.pageMessage('yes'),'')}</td>

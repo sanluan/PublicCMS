@@ -40,8 +40,11 @@ public class LockComponent implements Config, SiteCache {
     public static final String ITEM_TYPE_FILEUPLOAD_PRIVATE_SIZE = "fileUploadPrivateSize";
     public static final String ITEM_TYPE_CONTRIBUTE = "contribute";
     public static final String ITEM_TYPE_COMMENT = "comment";
+    public static final String ITEM_TYPE_INPUT_TOKENS = "maxInputTokens";
+    public static final String ITEM_TYPE_OUTPUT_TOKENS = "maxOutputTokens";
     public static final String[] SYSTEM_ITEM_TYPES = { ITEM_TYPE_LOGIN, ITEM_TYPE_IP_LOGIN, ITEM_TYPE_IP_VOTE,
-            ITEM_TYPE_IP_SURVEY, ITEM_TYPE_REGISTER, ITEM_TYPE_FILEUPLOAD, ITEM_TYPE_CONTRIBUTE, ITEM_TYPE_COMMENT };
+            ITEM_TYPE_IP_SURVEY, ITEM_TYPE_REGISTER, ITEM_TYPE_FILEUPLOAD, ITEM_TYPE_CONTRIBUTE, ITEM_TYPE_COMMENT,
+            ITEM_TYPE_INPUT_TOKENS, ITEM_TYPE_OUTPUT_TOKENS };
     private static final String[] ITEM_TYPE_LOGINS = new String[] { ITEM_TYPE_LOGIN, ITEM_TYPE_IP_LOGIN };
     /**
      * 
@@ -131,6 +134,16 @@ public class LockComponent implements Config, SiteCache {
      *
      */
     public static final String CONFIG_LOCK_IP_SURVEY_MAX_COUNT = "anonymous.survey.max_count";
+
+    /**
+     * 
+     */
+    public static final String CONFIG_LOCK_INPUT_TOKENS = "tokens.input.max_count";
+
+    /**
+     * 
+     */
+    public static final String CONFIG_LOCK_OUTPUT_TOKENS = "tokens.output.max_count";
     /**
      * default expiry minutes
      */
@@ -230,6 +243,10 @@ public class LockComponent implements Config, SiteCache {
                 maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_IP_VOTE_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
             } else if (ITEM_TYPE_IP_SURVEY.equalsIgnoreCase(itemType)) {
                 maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_IP_SURVEY_MAX_COUNT), DEFAULT_OPERATE_MAX_COUNT);
+            } else if (ITEM_TYPE_INPUT_TOKENS.equalsIgnoreCase(itemType)) {
+                maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_INPUT_TOKENS));
+            } else if (ITEM_TYPE_OUTPUT_TOKENS.equalsIgnoreCase(itemType)) {
+                maxCount = ConfigDataComponent.getInt(config.get(CONFIG_LOCK_OUTPUT_TOKENS));
             }
             if (0 < expriy && (0 < maxCount || -1 == maxCount)) {
                 SysLockId id = new SysLockId(siteId, itemType, itemId);
@@ -426,6 +443,12 @@ public class LockComponent implements Config, SiteCache {
                 getMessage(locale,
                         CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_LOCK_IP_SURVEY_MAX_COUNT)),
                 null, String.valueOf(DEFAULT_OPERATE_MAX_COUNT)));
+        
+//        extendFieldList.add(new SysExtendField(CONFIG_LOCK_INPUT_TOKENS, INPUTTYPE_NUMBER, false,
+//                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_LOCK_INPUT_TOKENS)), null, null));
+//        
+//        extendFieldList.add(new SysExtendField(CONFIG_LOCK_OUTPUT_TOKENS, INPUTTYPE_NUMBER, false,
+//                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_LOCK_OUTPUT_TOKENS)), null, null));
         return extendFieldList;
     }
 

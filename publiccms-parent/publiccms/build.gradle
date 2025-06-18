@@ -34,7 +34,7 @@ dependencies {
     // https://mvnrepository.com/artifact/cn.smallbun.screw/screw-core
     testImplementation "cn.smallbun.screw:screw-core:1.0.5"
 
-    compileOnly "org.mybatis.generator:mybatis-generator-core:${mybatisGenerator}"
+    testImplementation "org.mybatis.generator:mybatis-generator-core:${mybatisGenerator}"
     compileOnly "jakarta.servlet:jakarta.servlet-api:${servletVersion}"
 }
 war{

@@ -3,7 +3,6 @@ package com.publiccms.logic.component.cache;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractCachingViewResolver;
 
@@ -11,6 +10,7 @@ import com.publiccms.common.api.Cache;
 import com.publiccms.logic.service.tools.HqlService;
 
 import jakarta.annotation.PreDestroy;
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -36,7 +36,7 @@ public class CacheComponent {
         clearViewCache();
         hqlService.clear();
     }
-    
+
     /**
      * 
      */

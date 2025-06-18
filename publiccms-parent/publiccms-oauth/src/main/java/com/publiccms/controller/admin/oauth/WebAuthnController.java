@@ -142,9 +142,8 @@ public class WebAuthnController {
             @RequestBody String registrationResponseJSON, HttpServletRequest request) {
         Challenge challenge = new DefaultChallenge(admin.getName().getBytes());
         Origin origin = new Origin(RequestUtils.getOrigin(request));
-        byte[] tokenBindingId = null;
         RegistrationData registrationData = webAuthnManager.parseRegistrationResponseJSON(registrationResponseJSON);
-        ServerProperty serverProperty = new ServerProperty(origin, request.getServerName(), challenge, tokenBindingId);
+        ServerProperty serverProperty = new ServerProperty(origin, request.getServerName(), challenge);
         boolean userVerificationRequired = false;
         boolean userPresenceRequired = true;
         RegistrationParameters registrationParameters = new RegistrationParameters(serverProperty, pubKeyCredParams,
@@ -198,10 +197,9 @@ public class WebAuthnController {
             @SessionAttribute String webauthnuser, HttpServletRequest request, HttpServletResponse response,
             HttpSession session) {
         Origin origin = new Origin(RequestUtils.getOrigin(request));
-        byte[] tokenBindingId = null;
         AuthenticationData authenticationData = webAuthnManager.parseAuthenticationResponseJSON(authenticationResponseJSON);
         ServerProperty serverProperty = new ServerProperty(origin, request.getServerName(),
-                new DefaultChallenge(webauthnuser.getBytes()), tokenBindingId);
+                new DefaultChallenge(webauthnuser.getBytes()));
         List<byte[]> allowCredentials = null;
         boolean userVerificationRequired = true;
         boolean userPresenceRequired = true;
@@ -217,7 +215,7 @@ public class WebAuthnController {
                 || ControllerUtils.errorNotEquals("password", user, model)) {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), webauthnuser, null == user ? null : user.getId(), ip,
-                    LogLoginService.CHANNEL_WEB_MANAGER, false, CommonUtils.getDate(), "fingerprint"));
+                    LogLoginService.CHANNEL_WEB_MANAGER, LogLoginService.METHOD_FINGERPRINT, false, CommonUtils.getDate(), null));
             result.put("errorMessage", (String) model.get(CommonConstants.ERROR));
             return result;
         }
@@ -229,7 +227,7 @@ public class WebAuthnController {
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
                 logLoginService.save(new LogLogin(site.getId(), webauthnuser, userId, ip, LogLoginService.CHANNEL_WEB_MANAGER,
-                        false, CommonUtils.getDate(), "fingerprint"));
+                        LogLoginService.METHOD_FINGERPRINT, false, CommonUtils.getDate(), null));
                 result.put("errorMessage", (String) model.get(CommonConstants.ERROR));
                 return result;
             }
@@ -258,8 +256,9 @@ public class WebAuthnController {
                         LoginAdminController.addLoginStatus(user, authToken, request, response, expiryMinutes);
                         sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(),
                                 LogLoginService.CHANNEL_WEB_MANAGER, now, DateUtils.addMinutes(now, expiryMinutes), ip));
-                        logLoginService.save(new LogLogin(site.getId(), webauthnuser, user.getId(), ip,
-                                LogLoginService.CHANNEL_WEB_MANAGER, true, CommonUtils.getDate(), null));
+                        logLoginService.save(
+                                new LogLogin(site.getId(), webauthnuser, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER,
+                                        LogLoginService.METHOD_FINGERPRINT, true, CommonUtils.getDate(), null));
                         session.removeAttribute("webauthnuser");
 
                         if (0 < authenticationData.getAuthenticatorData().getSignCount() || 0 < credentialRecord.getCounter()) {
@@ -310,9 +309,9 @@ public class WebAuthnController {
             webauthnMap = new LinkedHashMap<>();
         }
         webauthnMap.remove(credentialId);
-        if(webauthnMap.isEmpty()) {
+        if (webauthnMap.isEmpty()) {
             settingService.delete(new SysUserSettingId(admin.getId(), SysUserSettingService.SETTINGS_CODE_WEBAUTHN));
-        }else {
+        } else {
             settingService.getOrCreateOrUpdate(admin.getId(), SysUserSettingService.SETTINGS_CODE_WEBAUTHN,
                     objectConverter.getJsonConverter().writeValueAsString(webauthnMap));
         }

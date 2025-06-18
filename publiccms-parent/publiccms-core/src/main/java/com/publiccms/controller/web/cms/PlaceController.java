@@ -31,17 +31,23 @@ import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.entities.sys.SysWorkflowProcess;
+import com.publiccms.entities.sys.SysWorkflowProcessItem;
+import com.publiccms.entities.sys.SysWorkflowProcessItemId;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsEditorHistoryService;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.logic.service.sys.SysWorkflowProcessItemService;
+import com.publiccms.logic.service.sys.SysWorkflowProcessService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
@@ -76,6 +82,10 @@ public class PlaceController {
     private CmsEditorHistoryService editorHistoryService;
     @Resource
     private LockComponent lockComponent;
+    @Resource
+    private SysWorkflowProcessItemService workflowProcessItemService;
+    @Resource
+    private SysWorkflowProcessService workflowProcessService;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "type", "path", "createDate", "userId", "disabled" };
 
@@ -139,9 +149,9 @@ public class PlaceController {
                     }
                 }
             }
-
+            CmsPlace oldEntity = null;
             if (null != entity.getId()) {
-                CmsPlace oldEntity = service.getEntity(entity.getId());
+                oldEntity = service.getEntity(entity.getId());
                 if (null == oldEntity || CommonUtils.empty(oldEntity.getUserId()) || null == user
                         || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
                         || ControllerUtils.errorNotEquals("siteId", user.getId(), oldEntity.getUserId(), model)) {
@@ -170,6 +180,21 @@ public class PlaceController {
             Map<String, String> map = placeParameters.getExtendData();
             attributeService.updateAttribute(entity.getId(),
                     ExtendUtils.getExtendString(map, site.getSitePath(), metadata.getExtendList()));
+
+            if (null != metadata.getWorkflowId()) {
+                SysWorkflowProcessItem item = workflowProcessItemService.getEntity(
+                        new SysWorkflowProcessItemId(SysWorkflowProcessService.ITEM_TYPE_PLACE, String.valueOf(entity.getId())));
+                if (null == item || null != oldEntity && CmsContentService.STATUS_NORMAL == oldEntity.getStatus()) {
+                    SysWorkflowProcess process = workflowProcessService.createProcess(site.getId(), metadata.getWorkflowId(),
+                            user.getId(), entity.getTitle(), SysWorkflowProcessService.ITEM_TYPE_PLACE,
+                            String.valueOf(entity.getId()));
+                    if (null != process) {
+                        service.checking(site.getId(), entity.getId());
+                    }
+                } else if (null != item && CmsContentService.STATUS_REJECT == oldEntity.getStatus()) {
+                    workflowProcessService.reopenProcess(site.getId(), item.getProcessId());
+                }
+            }
             model.addAttribute("dataId", entity.getId());
         }
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
@@ -238,7 +263,47 @@ public class PlaceController {
                     CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
                     model) || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             } else {
-                service.check(id, user.getId());
+                service.check(site.getId(), id, user.getId());
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
+                        "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
+                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
+                    try {
+                        CmsPageData data = metadataComponent.getTemplateData(filepath);
+                        templateComponent.staticPlace(site, entity.getPath(), metadata, data);
+                    } catch (IOException | TemplateException e) {
+                        model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                        log.error(e.getMessage(), e);
+                    }
+                }
+            }
+        }
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
+    }
+    
+    /**
+     * @param site
+     * @param id
+     * @param user
+     * @param returnUrl
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("reject")
+    @Csrf
+    public String reject(@RequestAttribute SysSite site, Long id, @SessionAttribute SysUser user, String returnUrl,
+            HttpServletRequest request, RedirectAttributes model) {
+        returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        CmsPlace entity = service.getEntity(id);
+        if (null != entity) {
+            String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, entity.getPath());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
+            if (ControllerUtils.errorCustom("manage",
+                    CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
+                    model) || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            } else {
+                service.reject(site.getId(), id, user.getId());
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
                 if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
@@ -278,7 +343,7 @@ public class PlaceController {
                     CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
                     model) || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             } else {
-                service.uncheck(id);
+                service.uncheck(site.getId(), id);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
                 if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {

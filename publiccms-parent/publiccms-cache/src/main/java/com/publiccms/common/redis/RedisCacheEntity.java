@@ -34,7 +34,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     private static final StringSerializer stringSerializer = new StringSerializer();
     private final Serializer<V> valueSerializer = new ValueSerializer<>();
 
-    public static final String CACHE_PREFIX = "cms2025.";
+    public static final String CACHE_PREFIX = "cms2025::";
 
     @Override
     public List<V> put(K key, V value) {
@@ -78,7 +78,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
         if (recycling) {
             List<V> list = new ArrayList<>();
             Jedis jedis = jedisPool.getResource();
-            Set<String> keyList = jedis.keys(CommonUtils.joinString(region, Constants.DOT, "*"));
+            Set<String> keyList = jedis.keys(CommonUtils.joinString(region, Constants.COLON, "*"));
             keyList.forEach(k -> {
                 byte[] byteKey = stringSerializer.serialize(k);
                 V value = valueSerializer.deserialize(jedis.get(byteKey));
@@ -90,7 +90,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
             return list;
         } else {
             Jedis jedis = jedisPool.getResource();
-            Set<String> keyList = jedis.keys(CommonUtils.joinString(region, Constants.DOT, "*"));
+            Set<String> keyList = jedis.keys(CommonUtils.joinString(region, Constants.COLON, "*"));
             keyList.forEach(k -> {
                 jedis.del(k);
             });
@@ -108,7 +108,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     }
 
     private byte[] getKey(K key) {
-        return stringSerializer.serialize(CommonUtils.joinString(CACHE_PREFIX, region, Constants.DOT, key));
+        return stringSerializer.serialize(CommonUtils.joinString(CACHE_PREFIX, region, Constants.COLON, key));
     }
 
     @Override

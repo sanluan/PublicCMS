@@ -60,6 +60,7 @@ public class SysRecordAdminController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             if (null != oldEntity) {
+                entity.setUpdateDate(CommonUtils.getDate());
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
                 if (null != entity) {
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),

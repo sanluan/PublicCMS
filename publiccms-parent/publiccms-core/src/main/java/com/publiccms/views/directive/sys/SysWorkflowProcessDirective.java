@@ -13,8 +13,6 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysWorkflowProcess;
-import com.publiccms.entities.sys.SysWorkflowProcessItem;
-import com.publiccms.entities.sys.SysWorkflowProcessItemId;
 import com.publiccms.logic.service.sys.SysWorkflowProcessItemService;
 import com.publiccms.logic.service.sys.SysWorkflowProcessService;
 
@@ -32,43 +30,11 @@ public class SysWorkflowProcessDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
-        String itemType = handler.getString("itemType");
-
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
             SysWorkflowProcess entity = service.getEntity(id);
             if (null != entity) {
                 handler.put("object", entity).render();
-            }
-        } else if (CommonUtils.notEmpty(itemType)) {
-            String itemId = handler.getString("itemId");
-            if (CommonUtils.notEmpty(itemId)) {
-                SysWorkflowProcessItem item = workflowProcessItemService
-                        .getEntity(new SysWorkflowProcessItemId(itemType, itemId));
-                if (null != item) {
-                    SysWorkflowProcess entity = service.getEntity(item.getProcessId());
-                    if (null != entity) {
-                        handler.put("object", entity).render();
-                    }
-                }
-            } else {
-                String[] itemIds = handler.getStringArray("itemIds");
-                if (CommonUtils.notEmpty(itemIds)) {
-                    SysWorkflowProcessItemId[] entityIds = new SysWorkflowProcessItemId[itemIds.length];
-                    for (int i = 0; i < itemIds.length; i++) {
-                        entityIds[i] = new SysWorkflowProcessItemId(itemType, itemIds[i]);
-                    }
-                    List<SysWorkflowProcessItem> itemList = workflowProcessItemService.getEntitys(entityIds);
-                    Long[] ids = new Long[itemList.size()];
-                    for (int i = 0; i < ids.length; i++) {
-                        ids[i] = itemList.get(i).getProcessId();
-                    }
-                    List<SysWorkflowProcess> entityList = service.getEntitys(ids);
-
-                    Map<String, SysWorkflowProcess> map = CommonUtils.listToMapSorted(entityList,
-                            k -> String.valueOf(k.getItemId()), itemIds);
-                    handler.put("map", map).render();
-                }
             }
         } else {
             Long[] ids = handler.getLongArray("ids");

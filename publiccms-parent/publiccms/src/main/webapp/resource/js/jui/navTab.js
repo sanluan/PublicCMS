@@ -402,14 +402,16 @@ var navTab = {
     openTab: function(tabid, url, options) { // if found tabid replace tab,
         // else create a new tab.
         var op = $.extend({
-            title: "New Tab", data: {}, fresh: true, external: false, focusNewWindow:false
+            title: "New Tab" , changeTitle : true, data: {}, fresh: true, external: false, focusNewWindow:false
         }, options);
         var iOpenIndex = this._indexTabId(tabid);
         if (iOpenIndex >= 0 && !op.focusNewWindow) {
             var $tab = this._getTabs().eq(iOpenIndex);
             var $panel = this._getPanels().eq(iOpenIndex);
-            $tab.find(">a").eq(0).attr("title", op.title).text(op.title);
-            this._getMoreLi().eq(iOpenIndex).find(">a").attr("title",op.title).text(op.title);
+            if(op.changeTitle){
+                $tab.find(">a").eq(0).attr("title", op.title).text(op.title);
+                this._getMoreLi().eq(iOpenIndex).find(">a").attr("title",op.title).text(op.title);
+            }
             if (op.fresh || $tab.attr("url") != url ) {
                 $tab.attr("url", url);
                 if (op.external || url.isExternalUrl() ) {

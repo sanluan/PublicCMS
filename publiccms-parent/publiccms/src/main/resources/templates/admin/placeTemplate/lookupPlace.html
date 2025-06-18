@@ -11,7 +11,7 @@
             <#else>
                 <@tools.placeMetadata path=path>
                     <a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'${path}','${fieldName!'name'}':'${object.alias!}'});return false;">
-                        ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
+                        ${(object.alias)?has_content?then(object.alias+' '+a.fileName,a.fileName)}
                     </a>
                 </@tools.placeMetadata>
             </#if>

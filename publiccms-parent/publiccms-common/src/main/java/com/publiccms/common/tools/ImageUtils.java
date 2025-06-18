@@ -223,9 +223,10 @@ public class ImageUtils {
         safeElementsList.add("font-face");
         List<String> safeAttributesList = new ArrayList<>();
         safeAttributesList.add("horiz-adv-x");
+        safeAttributesList.add("t");
+        safeAttributesList.add("p-id");
         SvgSecurityValidator svgSecurityValidator = SvgSecurityValidator.builder().withAdditionalElements(safeElementsList).withAdditionalAttributes(safeAttributesList).build();
-        ValidationResult validation;
-        validation = svgSecurityValidator.validate(FileUtils.readFileToString(imageFile, StandardCharsets.UTF_8));
+        ValidationResult validation = svgSecurityValidator.validate(FileUtils.readFileToString(imageFile, StandardCharsets.UTF_8));
         if (validation.hasViolations()) {
             log.error("unsafe svg file:");
             log.error(imageFile.getAbsolutePath());

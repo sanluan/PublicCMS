@@ -19,6 +19,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.api.Config;
@@ -243,6 +244,8 @@ public class CmsContentService extends BaseService<CmsContent> {
     public CmsContent saveTagAndAttribute(SysSite site, Long userId, Integer deptId, CmsContent entity,
             CmsContentParameters contentParameters, CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
         if (null != entity.getId()) {
+            Date now = CommonUtils.getDate();
+            entity.setUpdateDate(now);
             entity.setUpdateUserId(userId);
             entity = update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
         } else {
@@ -329,27 +332,31 @@ public class CmsContentService extends BaseService<CmsContent> {
     public void rebuildSearchText(SysSite site, CmsModel cmsModel, List<SysExtendField> categoryExtendList,
             List<CmsContent> list) {
         for (CmsContent entity : list) {
-            CmsContentAttribute attribute = attributeService.getEntity(entity.getId());
-            if (null == attribute) {
-                attribute = new CmsContentAttribute(entity.getId(), 0);
-            }
-            List<SysExtendField> modelExtendList = cmsModel.getExtendList();
-            List<CmsContentFile> files = null;
-            List<CmsContentFile> images = null;
-            List<CmsContentProduct> products = null;
-            if (entity.isHasFiles()) {
-                files = contentFileService.getList(entity.getId(), CmsFileUtils.OTHER_FILETYPES);
-            }
-            if (entity.isHasImages()) {
-                images = contentFileService.getList(entity.getId(), CmsFileUtils.IMAGE_FILETYPES);
-            }
-            if (entity.isHasProducts()) {
-                products = contentProductService.getList(site.getId(), entity.getId());
-            }
-            dealAttribute(entity, site, modelExtendList, categoryExtendList, ExtendUtils.getExtendMap(attribute.getData()),
-                    cmsModel, files, images, products, attribute);
-            attributeService.updateAttribute(entity.getId(), attribute);
+            rebuildSearchText(site, cmsModel, categoryExtendList, entity);
         }
+    }
+
+    public void rebuildSearchText(SysSite site, CmsModel cmsModel, List<SysExtendField> categoryExtendList, CmsContent entity) {
+        CmsContentAttribute attribute = attributeService.getEntity(entity.getId());
+        if (null == attribute) {
+            attribute = new CmsContentAttribute(entity.getId(), 0);
+        }
+        List<SysExtendField> modelExtendList = cmsModel.getExtendList();
+        List<CmsContentFile> files = null;
+        List<CmsContentFile> images = null;
+        List<CmsContentProduct> products = null;
+        if (entity.isHasFiles()) {
+            files = contentFileService.getList(entity.getId(), CmsFileUtils.OTHER_FILETYPES);
+        }
+        if (entity.isHasImages()) {
+            images = contentFileService.getList(entity.getId(), CmsFileUtils.IMAGE_FILETYPES);
+        }
+        if (entity.isHasProducts()) {
+            products = contentProductService.getList(site.getId(), entity.getId());
+        }
+        dealAttribute(entity, site, modelExtendList, categoryExtendList, ExtendUtils.getExtendMap(attribute.getData()),
+                cmsModel, files, images, products, attribute);
+        attributeService.updateAttribute(entity.getId(), attribute);
     }
 
     private void dealAttribute(CmsContent entity, SysSite site, List<SysExtendField> modelExtendList,
@@ -480,16 +487,16 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param user
+     * @param userId
      * @param id
      * @param checkPermissions
      * @return result
      */
-    public CmsContent checkInProcess(short siteId, SysUser user, Serializable id) {
+    public CmsContent checkInProcess(short siteId, Long userId, Serializable id) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId() && STATUS_CHECKING == entity.getStatus()) {
             entity.setStatus(STATUS_NORMAL);
-            entity.setCheckUserId(user.getId());
+            entity.setCheckUserId(userId);
             entity.setCheckDate(CommonUtils.getDate());
         }
         return entity;
@@ -497,15 +504,15 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param user
+     * @param userId
      * @param id
      * @return results list
      */
-    public CmsContent rejectInProcess(short siteId, SysUser user, Serializable id) {
+    public CmsContent rejectInProcess(short siteId, Long userId, Serializable id) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId() && STATUS_CHECKING == entity.getStatus()) {
             entity.setStatus(STATUS_REJECT);
-            entity.setCheckUserId(user.getId());
+            entity.setCheckUserId(userId);
             entity.setCheckDate(CommonUtils.getDate());
         }
         return entity;
@@ -699,6 +706,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param entitys
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void updateStatistics(Collection<ClickStatistics> entitys) {
         for (ClickStatistics entityStatistics : entitys) {
             CmsContent entity = getEntity(entityStatistics.getId());
@@ -714,6 +722,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param comments
      * @return
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateComments(short siteId, Serializable id, int comments) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -729,6 +738,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param scores
      * @return
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateScores(short siteId, Serializable id, int scoreUsers, int scores) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -749,6 +759,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param collections
      * @return
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateCollections(short siteId, Serializable id, int collections) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -777,6 +788,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param num
      * @return result
      */
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public CmsContent updateChilds(Serializable id, int num) {
         CmsContent entity = getEntity(id);
         if (null != entity) {

@@ -152,6 +152,7 @@
                     mimeTypes: 'image/*'
                 },
                 server: actionUrl,
+                headers: editor.getOpt('headers') || {},
                 fileVal: editor.getOpt('imageFieldName'),
                 duplicate: true,
                 fileSingleSizeLimit: imageMaxSize,    // 默认 2 M
@@ -481,7 +482,7 @@
 
             uploader.on('uploadBeforeSend', function (file, data, header) {
                 //这里可以通过data对象添加POST参数
-                header['X_Requested_With'] = 'XMLHttpRequest';
+                header['X-Requested-With'] = 'XMLHttpRequest';
             });
 
             uploader.on('uploadProgress', function (file, percentage) {

@@ -209,9 +209,9 @@ public class VisitExportComponent {
         return view;
     }
 
-    public ExcelView exportItem(SysSite site, String itemType, String itemId, Date startVisitDate, Date endVisitDate,
+    public ExcelView exportItem(SysSite site, String itemType, String itemId, Date startVisitDate, Date endVisitDate,boolean dayAnalytics,
             Locale locale) {
-        PageHandler page = itemService.getPage(site.getId(), startVisitDate, endVisitDate, itemType, itemId, null,
+        PageHandler page = itemService.getPage(site.getId(), startVisitDate, endVisitDate, dayAnalytics, itemType, itemId, null,
                 PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<VisitItem> entityList = (List<VisitItem>) page.getList();

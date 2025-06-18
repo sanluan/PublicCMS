@@ -30,6 +30,7 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysRoleUserService;
 import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.logic.service.sys.SysUserTokenService;
 
 /**
  *
@@ -41,6 +42,8 @@ import com.publiccms.logic.service.sys.SysUserService;
 public class SysUserAdminController {
     @Resource
     private SysUserService service;
+    @Resource
+    private SysUserTokenService sysUserTokenService;
     @Resource
     private SysRoleUserService roleUserService;
     @Resource
@@ -100,10 +103,12 @@ public class SysUserAdminController {
                 }
                 service.updatePassword(entity.getId(),
                         UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
+                sysUserTokenService.delete(entity.getId());
             }
             if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(oldEntity.getEmail())) {
                 entity.setEmailChecked(false);
             }
+            entity.setUpdateDate(CommonUtils.getDate());
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
                 roleUserService.dealRoleUsers(entity.getId(), roleIds);

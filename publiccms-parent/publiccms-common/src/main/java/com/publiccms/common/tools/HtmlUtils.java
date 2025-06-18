@@ -46,7 +46,7 @@ public class HtmlUtils {
             .addAttributes("video", "autoplay", "controls", "data-setup", "height", "loop", "muted", "preload", "poster", "src",
                     "width")
             .addAttributes("source", "media", "sizes", "src", "srcset", "type")
-            .addAttributes("table", "align", "border", "cellspacing", "cellpadding")
+            .addAttributes("table", "align", "border", "cellspacing", "cellpadding", "data-chart")
             .addAttributes("td", "align","valign")
             .addAttributes("th", "align","valign")
             .addAttributes("track", "default", "kind", "label", "src", "srclang").addProtocols("a", "href", "#")

@@ -46,13 +46,14 @@ public class VisitDayService extends BaseService<VisitDay> {
             Integer pageSize) {
         PageHandler page = dao.getPage(siteId, startVisitDate, endVisitDate, hourAnalytics, pageIndex, pageSize);
         Date now = CommonUtils.getMinuteDate();
-        if (null!= page.getList() && (null == pageIndex || 1 == pageIndex) && (null == endVisitDate || DateUtils.isSameDay(now, endVisitDate))) {
+        if (null != page.getList() && (null == pageIndex || 1 == pageIndex)
+                && (null == endVisitDate || DateUtils.isSameDay(now, endVisitDate))) {
             if (hourAnalytics) {
                 Calendar c = Calendar.getInstance();
                 ((List<VisitDay>) page.getList()).addAll(0,
-                        visitHistoryService.getHourList(siteId, now, (byte) c.get(Calendar.HOUR_OF_DAY)));
+                        visitHistoryService.getHourList(siteId, now, (byte) c.get(Calendar.HOUR_OF_DAY), pageSize));
             } else {
-                ((List<VisitDay>) page.getList()).addAll(0, visitSessionService.getDayList(siteId, now));
+                ((List<VisitDay>) page.getList()).addAll(0, visitSessionService.getDayList(siteId, now, pageSize));
             }
         }
         return page;

@@ -39,7 +39,7 @@ import com.publiccms.logic.component.cache.CacheComponent;
 
 /**
  * AdminServlet配置类
- * 
+ *
  * AdminConfig
  *
  */
@@ -71,7 +71,7 @@ public class AdminConfig implements WebMvcConfigurer {
 
     /**
      * 视图层解析器
-     * 
+     *
      * @return FreeMarker view resolver
      */
     @Bean
@@ -90,7 +90,7 @@ public class AdminConfig implements WebMvcConfigurer {
 
     /**
      * 拦截器
-     * 
+     *
      * @param adminContextPathList
      * @return admin servlet interceptor
      */
@@ -106,8 +106,8 @@ public class AdminConfig implements WebMvcConfigurer {
         bean.setLoginUrl("/login.html");
         bean.setUnauthorizedUrl("/common/unauthorizedUrl.html");
         bean.setLoginJsonUrl("/common/ajaxTimeout.html");
-        bean.setNeedNotLoginUrls(new String[] { "/changeLocale", "/login", "/getCaptchaImage", "/otp/", "/webauthn/assertion/" });
-        bean.setNeedNotAuthorizedUrls(new String[] { "/index", "/main", "/logout", "/common/" });
+        bean.setNeedNotLoginUrls(new String[] { "/changeLocale", "/login", "/logout", "/getCaptchaImage", "/otp/", "/webauthn/assertion/"});
+        bean.setNeedNotAuthorizedUrls(new String[] { "/index", "/main", "/common/", "/webauthn/login"  });
         return bean;
     }
 

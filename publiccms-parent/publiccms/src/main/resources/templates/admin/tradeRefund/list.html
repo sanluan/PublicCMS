@@ -3,7 +3,7 @@
 <div class="pageHeader card">
     <form class="pagerForm" action="tradeRefund/list.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
-        <div class="searchBar">
+        <div class="searchBar"<@trade.refundList status=0 pageSize=0> data-todo="${(page.totalCount gt 0)?then(page.totalCount,'')}" data-todo-type="refund_list"</@trade.refundList>>
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'payment.id'/>:</label>

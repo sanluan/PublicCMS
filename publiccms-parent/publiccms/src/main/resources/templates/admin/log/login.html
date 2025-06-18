@@ -7,10 +7,6 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label><@t.page 'channel'/>:</label>
-                    <input type="text" name="channel" value="${channel!}"/>
-                </li>
-                <li>
                     <label><@t.page 'user'/>:</label>
                     <#include "../include_page/userId.html"/>
                 </li>
@@ -19,19 +15,27 @@
                     <input type="text" name="name" value="${name!}"/>
                 </li>
                 <li>
+                    <select class="combox" name="result">
+                        <option value><@t.page 'result'/></option>
+                        <option value="true"${(result?has_content && "true" = result)?then(' selected="true"','')?no_esc}><@t.page 'success'/></option>
+                        <option value="false"${(result?has_content && "false" = result)?then(' selected="true"','')?no_esc}><@t.page 'fail'/></option>
+                    </select>
+                </li>
+                <li>
+                    <label><@t.page 'channel'/>:</label>
+                    <input type="text" name="channel" value="${channel!}"/>
+                </li>
+                <li>
+                    <label><@t.page 'login_method'/>:</label>
+                    <input type="text" name="loginMethod" value="${loginMethod!}"/>
+                </li>
+                <li>
                     <label><@t.page 'log.login_date'/>:</label>
                     <input type="text" name="startCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                     <span>-</span>
                     <input type="text" name="endCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
-                </li>
-                <li>
-                    <select class="combox" name="result">
-                        <option value><@t.page 'result'/></option>
-                        <option value="true"${(result?has_content && "true" = result)?then(' selected="true"','')?no_esc}><@t.page 'success'/></option>
-                        <option value="false"${(result?has_content && "false" = result)?then(' selected="true"','')?no_esc}><@t.page 'fail'/></option>
-                    </select>
                 </li>
                 <li>
                     <label><@t.page 'log.login_ip'/>:</label>
@@ -56,6 +60,7 @@
                 <th><@t.page 'user.username'/></th>
                 <th><@t.page 'user.id'/></th>
                 <th><@t.page 'channel'/></th>
+                <th><@t.page 'login_method'/></th>
                 <th><@t.page 'log.login_ip'/></th>
                 <th><@t.page 'result'/></th>
                 <th orderField="createDate"><@t.page 'log.login_date'/></th>
@@ -72,6 +77,9 @@
                 </td>
                 <td class="exclude-translate">
                     ${a.channel!}
+                </td>
+                <td>
+                    <#if a.loginMethod?has_content><@t.page a.loginMethod?switch('otp','login.2fa','password','password','login.'+a.loginMethod)/></#if>
                 </td>
                 <td>
                     <div class="box">

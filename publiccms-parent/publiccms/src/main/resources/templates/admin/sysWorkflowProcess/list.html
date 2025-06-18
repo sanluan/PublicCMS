@@ -1,8 +1,8 @@
-<@sys.workflowProcessList itemType=itemType itemId=itemId title=title roleIds=admin.roles deptId=admin.deptId userId=admin.id closed=closed orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@sys.workflowProcessList itemType=itemType itemId=itemId createUserId=createUserId title=title roleIds=admin.roles deptId=admin.deptId userId=admin.id closed=closed orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
-        <div class="searchBar">
+        <div class="searchBar"<@sys.workflowProcessList roleIds=admin.roles deptId=admin.deptId userId=admin.id pageSize=0> data-todo="${(page.totalCount gt 0)?then(page.totalCount,'')}" data-todo-type="process_list"</@sys.workflowProcessList>>
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'item_type'/>:</label>
@@ -21,6 +21,13 @@
                     <label><@t.page 'title'/>:</label>
                     <input type="text" name="title" value="${title!}"/>
                 </li>
+                <li>
+                    <label><@t.page 'content.promulgator'/>:</label>
+                    <#if createUserId?has_content><@sys.user id=createUserId><#assign u=object/></@sys.user></#if>
+                    <input name="createUserId" value="${(u.id)!}" type="hidden"/>
+                    <input name="nickname" readonly="readonly" size="10" value="${(u.nickname)!}" type="text"/>
+                    <a class="btnLook" href="sysUser/lookup.html?field=createUserId" width="1200" height="580" lookupGroup=""><@t.page 'user.select'/></a>
+                </li>
             </ul>
             <div class="subBar">
                 <ul>
@@ -34,13 +41,13 @@
 </div>
 <@_sysAuthorized roleIds=admin.roles urls='sysWorkflowProcess/processParameters'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent card">
-    <table class="table" width="100%" layoutH "${orderField!}" orderType="${orderType!}">
+    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'title'/></th>
-                <th><@t.page 'workflow'/></th>
-                <th><@t.page 'step'/></th>
+                <th><@t.page 'workflow'/>:<@t.page 'step'/></th>
+                <th><@t.page 'content.promulgator'/></th>
                 <th orderField="createDate"><@t.page 'create_date'/></th>
                 <th><@t.page 'update_date'/></th>
                 <th><@t.page 'operate'/></th>
@@ -50,17 +57,19 @@
             <#list page.list as a>
                 <@t.merge 'workflowIds' a.workflowId!/>
                 <@t.merge 'stepIds' a.stepId!/>
+                <@t.merge 'userIds' a.createUserId!/>
             </#list>
             
             <@sys.workflow ids=t.workflowIds!><#assign workflowMap=map!/></@sys.workflow>
             <@sys.workflowStep ids=t.stepIds!><#assign stepMap=map!/></@sys.workflowStep>
+            <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
             
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
-                <td><a href="sysWorkflowProcess/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewProcess${a.id}" width="1200" height="500">${a.title!}</a></td>
-                <td>${(workflowMap[a.workflowId?string].name)!t.pageMessage('page.disabled')}</td>
-                <td>${(stepMap[a.stepId?string].name)!t.pageMessage('page.disabled')}</td>
+                <td><a href="<#if a.itemType="content">cmsContent/view.html?id=${a.itemId}</#if>" class="exclude-translate" target="dialog" rel="viewProcess${a.id}" width="1200" height="500">${a.title!}</a></td>
+                <td><a href="sysWorkflowProcess/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewProcess${a.id}" width="1200" height="500">${(workflowMap[a.workflowId?string].name)!t.pageMessage('page.disabled')} : ${(stepMap[a.stepId?string].name)!t.pageMessage('page.disabled')}</a></td>
+                <td class="exclude-translate">${(userMap[a.createUserId?string].nickname)!}</td>
                 <td>${a.createDate!}</td>
                 <td>${a.updateDate!}</td>
                 <td>

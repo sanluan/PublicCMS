@@ -1,6 +1,6 @@
 -- 2024-09-25 --
 UPDATE sys_module SET authorized_url= 'cmsPlace/push,cmsPlace/add,cmsPlace/save,cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_to_relation,cmsContent/related,cmsContent/unrelated,cmsPlace/delete' WHERE id ='content_push';
-UPDATE sys_module SET authorized_url= 'cmsTemplate/save,cmsTemplate/saveMetaData,cmsWebFile/lookup,cmsTemplate/help' WHERE id ='template_content';
+UPDATE sys_module SET authorized_url= 'cmsTemplate/save,cmsTemplate/saveMetadata,cmsWebFile/lookup,cmsTemplate/help' WHERE id ='template_content';
 DROP TABLE IF EXISTS `sys_user_attribute`;
 CREATE TABLE `sys_user_attribute` (
   `user_id` bigint(20) NOT NULL,
@@ -27,16 +27,16 @@ DELETE FROM sys_module_lang WHERE module_id IN ('log_login_delete','log_operate_
 UPDATE sys_module SET parent_id = 'tag_list',sort=0, attached=NULL WHERE id = 'tag_type_list';
 UPDATE sys_module SET parent_id = 'content_list',sort=0, attached=NULL WHERE id = 'content_recycle_list';
 -- 2025-03-11 --
-ALTER TABLE `sys_site` 
+ALTER TABLE `sys_site`
     ADD COLUMN `has_child` tinyint(1) NOT NULL COMMENT '拥有子站点' AFTER `dynamic_path`,
     ADD COLUMN `multiple` tinyint(1) NOT NULL COMMENT '站点群' AFTER `has_child`;
 UPDATE sys_site s1, sys_site s2 SET s1.has_child = 1 WHERE s1.id = s2.parent_id;
 UPDATE sys_site SET multiple = 1 WHERE id in(SELECT site_id FROM sys_domain WHERE multiple = 1);
 ALTER TABLE `sys_domain` DROP COLUMN `multiple`;
-ALTER TABLE `sys_dept` 
+ALTER TABLE `sys_dept`
     ADD COLUMN `has_child` tinyint(1) NOT NULL COMMENT '拥有子部门' AFTER `user_id`;
 UPDATE sys_dept d1,sys_dept d2 SET d1.has_child = 1 WHERE d1.id = d2.parent_id;
-ALTER TABLE `sys_module` 
+ALTER TABLE `sys_module`
     ADD COLUMN `has_child` tinyint(1) NOT NULL COMMENT '拥有子模块' AFTER `menu`;
 UPDATE sys_module m1,sys_module m2 SET m1.has_child = 1 WHERE m1.id = m2.parent_id;
 -- 2025-03-12 --
@@ -112,10 +112,11 @@ CREATE TABLE `sys_workflow_process` (
   `dept_id` int(11) DEFAULT NULL COMMENT '部门',
   `user_id` bigint(20) DEFAULT NULL COMMENT '用户',
   `closed` tinyint(1) NOT NULL COMMENT '已关闭',
+  `create_user_id` bigint(20) NOT NULL COMMENT '创建用户',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`id`),
-  KEY `sys_workflow_process_item_id` (`site_id`,`item_type`,`item_id`,`create_date`),
+  KEY `sys_workflow_process_item_id` (`site_id`,`item_type`,`item_id`,`create_user_id`,`create_date`),
   KEY `sys_workflow_process_user_id` (`site_id`,`role_id`,`dept_id`,`user_id` , `closed`)
 ) COMMENT='工作流流程';
 
@@ -129,8 +130,8 @@ CREATE TABLE `sys_workflow_process_history` (
   `reason` varchar(255) DEFAULT NULL COMMENT '理由',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
-  KEY `sys_workflow_process_content_id` (`process_id`),
-  KEY `sys_workflow_process_user_id` (`user_id`)
+  KEY `sys_workflow_process_history_content_id` (`process_id`),
+  KEY `sys_workflow_process_history_user_id` (`user_id`)
 ) COMMENT='工作流流程步骤';
 
 DROP TABLE IF EXISTS `sys_workflow_process_item`;
@@ -149,6 +150,7 @@ CREATE TABLE `sys_workflow_step` (
   `role_id` int(11) DEFAULT NULL COMMENT '角色',
   `dept_id` int(11) DEFAULT NULL COMMENT '部门',
   `user_id` bigint(20) DEFAULT NULL COMMENT '用户',
+  `use_create_user` tinyint(1) NOT NULL COMMENT '使用创建用户',
   `next_step_id` bigint(20) DEFAULT NULL COMMENT '下一步',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY (`id`),
@@ -183,7 +185,7 @@ CREATE TABLE `trade_coupon` (
   `starting_amount` decimal(10,2) DEFAULT NULL COMMENT '起始金额',
   `discount` decimal(10,1) DEFAULT NULL COMMENT '折扣优惠',
   `price` decimal(10,2) DEFAULT NULL COMMENT '优惠券价格',
-  `type` int(11) NOT NULL COMMENT '类型(1折扣,2免运费,3满减)',
+  `coupon_type` int(11) NOT NULL COMMENT '类型(1折扣,2免运费,3满减)',
   `redeem_code` varchar(255) DEFAULT NULL COMMENT '兑换码',
   `duration` int(11) NOT NULL COMMENT '有效天数',
   `quantity` int(11) NOT NULL COMMENT '优惠券数量',
@@ -257,39 +259,82 @@ CREATE TABLE `sys_user_setting` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`user_id`,`code`)
-);
+) COMMENT='用户设置';
 ALTER TABLE `sys_user_attribute`
     DROP COLUMN `settings`,
-    ADD COLUMN `create_date` datetime DEFAULT NULL COMMENT '创建日期' AFTER `data`;
+    ADD COLUMN `create_date` datetime DEFAULT NULL COMMENT '创建日期' AFTER `data`,
     ADD COLUMN `update_date` datetime DEFAULT NULL COMMENT '更新日期' AFTER `create_date`;
-ALTER TABLE `sys_config_data` 
-    ADD COLUMN `create_date` datetime DEFAULT NULL COMMENT '创建日期' AFTER `data`;
+ALTER TABLE `sys_config_data`
+    ADD COLUMN `create_date` datetime DEFAULT NULL COMMENT '创建日期' AFTER `data`,
     ADD COLUMN `update_date` datetime DEFAULT NULL COMMENT '更新日期' AFTER `create_date`;
-ALTER TABLE `cms_place` 
+ALTER TABLE `cms_place`
     ADD COLUMN `update_date` datetime DEFAULT NULL COMMENT '更新日期' AFTER `max_clicks`;
-ALTER TABLE `sys_lock` 
+ALTER TABLE `sys_lock`
     ADD COLUMN `update_date` datetime DEFAULT NULL COMMENT '更新日期' AFTER `create_date`;
-ALTER TABLE `sys_user` 
+ALTER TABLE `sys_user`
     ADD COLUMN `update_date` datetime DEFAULT NULL COMMENT '更新日期' AFTER `registered_date`;
 -- 2025-03-18 --
 UPDATE sys_module SET sort=sort+1 WHERE id in ('content_search','comment_list','category_list','tag_list');
-INSERT INTO sys_module VALUES ('myself_content_view', 'cmsContent/view', NULL, NULL, 'myself_content', 1, 0, 0);
-INSERT INTO sys_module VALUES ('myself_process_view', 'sysWorkflowProcess/view', NULL, NULL, 'myself_content', 1, 0, 0);
 INSERT INTO sys_module VALUES ('process_handle', 'sysWorkflowProcess/processParameters', 'sysWorkflowProcess/handle', NULL, 'process_list', 1, 0, 0);
 INSERT INTO sys_module VALUES ('process_list', 'sysWorkflowProcess/list', NULL, 'bi bi-ui-checks', 'content', 1, 1, 2);
-INSERT INTO sys_module VALUES ('process_view', 'sysWorkflowProcess/view', NULL, NULL, 'process_list', 1, 0, 0);
-INSERT INTO `sys_module_lang` VALUES ('myself_content_view', 'en', 'View');
-INSERT INTO `sys_module_lang` VALUES ('myself_content_view', 'ja', '見る');
-INSERT INTO `sys_module_lang` VALUES ('myself_content_view', 'zh', '查看');
-INSERT INTO `sys_module_lang` VALUES ('myself_process_view', 'en', 'View');
-INSERT INTO `sys_module_lang` VALUES ('myself_process_view', 'ja', '見る');
-INSERT INTO `sys_module_lang` VALUES ('myself_process_view', 'zh', '查看');
 INSERT INTO `sys_module_lang` VALUES ('process_handle', 'en', 'Handle');
 INSERT INTO `sys_module_lang` VALUES ('process_handle', 'ja', 'ハンドル');
 INSERT INTO `sys_module_lang` VALUES ('process_handle', 'zh', '处理');
-INSERT INTO `sys_module_lang` VALUES ('process_list', 'en', 'Review Process');
+INSERT INTO `sys_module_lang` VALUES ('process_list', 'en', 'Review process');
 INSERT INTO `sys_module_lang` VALUES ('process_list', 'ja', 'レビュープロセス');
 INSERT INTO `sys_module_lang` VALUES ('process_list', 'zh', '审核流程');
+-- 2025-03-19 --
+UPDATE sys_module SET parent_id = 'content_list',sort=0,attached=NULL WHERE id = 'content_check';
+-- 2025-03-25 --
+INSERT INTO sys_module VALUES ('system_workflow_use', 'sysWorkflow/batchParameters', 'cmsCategory/saveWorkflow', NULL, 'system_workflow', 0, 0, 0);
+INSERT INTO sys_module_lang VALUES ('system_workflow_use', 'en', 'Batch use');
+INSERT INTO sys_module_lang VALUES ('system_workflow_use', 'ja', 'バッチ使用');
+INSERT INTO sys_module_lang VALUES ('system_workflow_use', 'zh', '批量应用');
+UPDATE sys_module SET authorized_url='cmsTemplate/savePlaceMetadata,cmsTemplate/deletePlace,cmsTemplate/createDirectory' WHERE id = 'place_template_metadata';
+-- 2025-04-15 --
+ALTER TABLE `log_login`
+    ADD COLUMN `login_method` varchar(50) NOT NULL COMMENT '登录方式' default 'password' AFTER `channel`,
+    DROP INDEX `log_login_channel`,
+    ADD INDEX `log_login_channel` (`site_id`, `channel`, `login_method`, `create_date`);
+-- 2025-04-25 --
+INSERT INTO `sys_module` VALUES ('ai_chat', 'simpleAi/chat', 'simpleAi/doChat', NULL, 'common', 0, 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('ai_chat', 'en', 'AI');
+INSERT INTO `sys_module_lang` VALUES ('ai_chat', 'ja', 'AI');
+INSERT INTO `sys_module_lang` VALUES ('ai_chat', 'zh', 'AI');
+-- 2025-04-29 --
+INSERT INTO `sys_module` VALUES ('select_directory', 'cmsWebFile/directoryLookup', NULL, NULL, 'common', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('select_template_directory', 'cmsTemplate/directoryLookup', NULL, NULL, 'common', 0, 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('select_directory', 'en', 'Select website file directory');
+INSERT INTO `sys_module_lang` VALUES ('select_directory', 'ja', 'ウェブサイトのファイルディレクトリを選択する');
+INSERT INTO `sys_module_lang` VALUES ('select_directory', 'zh', '选择网站文件目录');
+INSERT INTO `sys_module_lang` VALUES ('select_template_directory', 'en', 'Select template directory');
+INSERT INTO `sys_module_lang` VALUES ('select_template_directory', 'ja', 'テンプレートディレクトリを選択する');
+INSERT INTO `sys_module_lang` VALUES ('select_template_directory', 'zh', '选择模板目录');
+-- 2025-05-17 --
+UPDATE sys_module SET authorized_url = 'sysUser/update,myself/otpsettings,otpSetting/bind,otpSetting/unbind,webauthn/attestation/options,webauthn/attestation/result,webauthn/getCredentials,webauthn/deleteCredential' WHERE id = 'myself_profile';
+UPDATE sys_module SET authorized_url = 'tradePayment/refund,tradePayment/refuse' WHERE id = 'payment_list';
+UPDATE sys_module SET authorized_url = 'cmsPlace/check,cmsPlace/uncheck,cmsPlace/reject' WHERE id = 'place_check';
+UPDATE sys_module SET authorized_url = NULL WHERE id = 'order_history_list';
+INSERT INTO sys_module VALUES ('process_view', 'sysWorkflowProcess/view', NULL, NULL, 'common', 1, 0, 0);
 INSERT INTO `sys_module_lang` VALUES ('process_view', 'en', 'View');
 INSERT INTO `sys_module_lang` VALUES ('process_view', 'ja', '見る');
-INSERT INTO `sys_module_lang` VALUES ('process_view', 'zh', '查看');
+INSERT INTO `sys_module_lang` VALUES ('process_view', 'zh', '流查看');
+UPDATE sys_module SET parent_id = 'common',sort=0,attached=NULL WHERE id = 'content_view';
+INSERT INTO `sys_module` VALUES ('workflow_view', 'sysWorkflow/view', NULL, NULL, 'common', 1, 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('workflow_view', 'en', 'View');
+INSERT INTO `sys_module_lang` VALUES ('workflow_view', 'ja', '見る');
+INSERT INTO `sys_module_lang` VALUES ('workflow_view', 'zh', '查看');
+-- 2025-05-29 --
+UPDATE sys_module SET authorized_url = NULL WHERE id = 'page_list';
+UPDATE sys_module SET authorized_url = 'cmsPage/save,cmsPage/clearCache' WHERE id = 'page_metadata';
+UPDATE sys_module SET authorized_url = 'cmsWebFile/doUpload,cmsWebFile/uploadIco,cmsWebFile/doUploadIco,cmsWebFile/check' WHERE id = 'webfile_upload';
+UPDATE `sys_module_lang` SET value = 'Save configuration' WHERE module_id = 'page_metadata' and lang = 'en';
+UPDATE `sys_module_lang` SET value = 'ページ設定を保存' WHERE module_id = 'page_metadata' and lang = 'ja';
+UPDATE `sys_module_lang` SET value = '保存页面配置' WHERE module_id = 'page_metadata' and lang = 'zh';
+DELETE FROM sys_module WHERE id = 'page_save';
+DELETE FROM sys_module_lang WHERE module_id = 'page_save';
+-- 2025-06-12 --
+INSERT INTO `sys_module` VALUES ('place_import', 'cmsPlace/import', 'cmsPlace/doImport', NULL, 'place_list', 0, 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('place_import', 'en', 'Import');
+INSERT INTO `sys_module_lang` VALUES ('place_import', 'ja', '導入');
+INSERT INTO `sys_module_lang` VALUES ('place_import', 'zh', '导入');

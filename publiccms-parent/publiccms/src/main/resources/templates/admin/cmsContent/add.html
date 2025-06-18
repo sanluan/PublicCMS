@@ -17,7 +17,7 @@
     <div class="formBar card">
         <ul>
             <#if a?has_content && model?has_content && model.hasChild>
-                <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></li>
+                <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list" data-change-title="false"><@t.page 'content.child_management'/></a></li>
             </#if>
             <li>
                 <label><input type="checkbox" name="draft" class="form-check-input"/><@t.page 'draft'/></label>
@@ -203,7 +203,10 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                     <dt>${(model.fieldTextMap['content'])!}:</dt>
                     <dd>
                         <div>
-                            <a class="button" href="common/import.html" lookupGroup="" width="500" height="300"><@t.page 'import_doc'/></a>
+                            <a class="button" href="common/import.html" lookupGroup="" width="600" height="400"><@t.page 'import_doc'/></a>
+                        <#if getAiChatEnable?? && getDictEnable?is_method && getAiChatEnable()>
+                            <a class="button" href="simpleAi/chat.html" lookupGroup="" width="800" height="500">AI</a>
+                        </#if>
                         <#if a?has_content>
                             <a class="button" href="cmsEditorHistory/lookup.html?itemType=content&itemId=${a.id}&fieldName=text" lookupGroup=""><@t.page 'history'/></a>
                         </#if>

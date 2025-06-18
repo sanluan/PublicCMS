@@ -247,84 +247,84 @@
                     </tbody>
                 </table>
             </fieldset>
-            <script>
-                $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
-                    var box = $(this).parent().parent().parent();
-                    box.find('dd').hide();
-                    $('.copied',navTab.getCurrentPanel()).hide();
-                    $(this).on("click", function(){
-                        if( $(this).is(':checked') ) {
-                            box.find('dd').show().find('input[type=text]').addClass('required');
-                            if("copied"==$(this).val()){
-                                $('.copied',navTab.getCurrentPanel()).show().find('input[type=text]').addClass('required');
-                            }
-                        } else {
-                            box.find('dd').hide().find('input[type=text]').removeClass('required');
-                            if("copied"==$(this).val()){
-                                $('.copied',navTab.getCurrentPanel()).hide().find('input[type=text]').removeClass('required');
-                            }
-                        }
-                    });
-                });
-                $('input[name=onlyUrl]',navTab.getCurrentPanel()).on("click", function(){
-                    if($(this).is(':checked')) {
-                        $('.onlyUrl',navTab.getCurrentPanel()).hide();
-                        $('.urlText',navTab.getCurrentPanel()).show();
-                        $('.urlText input[type=text]',navTab.getCurrentPanel()).addClass('required');
-                    } else {
-                        $('.onlyUrl',navTab.getCurrentPanel()).show();
-                        $('.urlText',navTab.getCurrentPanel()).hide();
-                        $('.urlText input[type=text]',navTab.getCurrentPanel()).removeClass('required');
-                    }
-                });
-                $('input[name=hasChild],input[name=hasImages],input[name=hasFiles],input[name=hasProducts]',navTab.getCurrentPanel()).on("click", function(){
-                    if($(this).is(':checked')) {
-                        $('.'+$(this).attr('name'),navTab.getCurrentPanel()).show();
-                    } else {
-                        $('.'+$(this).attr('name'),navTab.getCurrentPanel()).hide();
-                    }
-                });
-                $('input[name=searchableModel]',navTab.getCurrentPanel()).on("click", function(){
-                    if($(this).is(':checked')) {
-                        $('.searchable',navTab.getCurrentPanel()).show();
-                    } else {
-                        $('.searchable',navTab.getCurrentPanel()).hide();
-                    }
-                });
-                <#if a?has_content>
-                    <#if a.onlyUrl>
-                        $('input[name=onlyUrl]',navTab.getCurrentPanel()).trigger("click");
-                    </#if>
-                    <#if a.searchableModel>
-                        $('input[name=searchableModel]',navTab.getCurrentPanel()).trigger("click");
-                    </#if>
-                    <#if a.hasChild>
-                        $('input[name=hasChild]',navTab.getCurrentPanel()).trigger("click");
-                    </#if>
-                    <#if a.hasImages>
-                        $('input[name=hasImages]',navTab.getCurrentPanel()).trigger("click");
-                    </#if>
-                    <#if a.hasFiles>
-                        $('input[name=hasFiles]',navTab.getCurrentPanel()).trigger("click");
-                    </#if>
-                    <#if a.hasProducts>
-                        $('input[name=hasProducts]',navTab.getCurrentPanel()).trigger("click");
-                    </#if>
-    
-                    <#if a.fieldList?has_content>
-                        <#list a.fieldList as field>
-                            $('input[name=fieldList][value=${field}]',navTab.getCurrentPanel()).trigger("click");
-                        </#list>
-                    </#if>
-                    <#if a.requiredFieldList?has_content>
-                        <#list a.requiredFieldList as field>
-                            $('input[name=requiredFieldList][value=${field}]',navTab.getCurrentPanel()).trigger("click");
-                        </#list>
-                    </#if>
-                <#else>
-                    $('input[name=searchableModel]',navTab.getCurrentPanel()).trigger("click");
-                </#if>
-            </script>
         </div>
     </div>
+<script>
+    $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
+        var box = $(this).parent().parent().parent();
+        box.find('dd').hide();
+        $('.copied',navTab.getCurrentPanel()).hide();
+        $(this).on("click", function(){
+            if( $(this).is(':checked') ) {
+                box.find('dd').show().find('input[type=text]').addClass('required');
+                if("copied"==$(this).val()){
+                    $('.copied',navTab.getCurrentPanel()).show().find('input[type=text]').addClass('required');
+                }
+            } else {
+                box.find('dd').hide().find('input[type=text]').removeClass('required');
+                if("copied"==$(this).val()){
+                    $('.copied',navTab.getCurrentPanel()).hide().find('input[type=text]').removeClass('required');
+                }
+            }
+        });
+    });
+    $('input[name=onlyUrl]',navTab.getCurrentPanel()).on("click", function(){
+        if($(this).is(':checked')) {
+            $('.onlyUrl',navTab.getCurrentPanel()).hide();
+            $('.urlText',navTab.getCurrentPanel()).show();
+            $('.urlText input[type=text]',navTab.getCurrentPanel()).addClass('required');
+        } else {
+            $('.onlyUrl',navTab.getCurrentPanel()).show();
+            $('.urlText',navTab.getCurrentPanel()).hide();
+            $('.urlText input[type=text]',navTab.getCurrentPanel()).removeClass('required');
+        }
+    });
+    $('input[name=hasChild],input[name=hasImages],input[name=hasFiles],input[name=hasProducts]',navTab.getCurrentPanel()).on("click", function(){
+        if($(this).is(':checked')) {
+            $('.'+$(this).attr('name'),navTab.getCurrentPanel()).show();
+        } else {
+            $('.'+$(this).attr('name'),navTab.getCurrentPanel()).hide();
+        }
+    });
+    $('input[name=searchableModel]',navTab.getCurrentPanel()).on("click", function(){
+        if($(this).is(':checked')) {
+            $('.searchable',navTab.getCurrentPanel()).show();
+        } else {
+            $('.searchable',navTab.getCurrentPanel()).hide();
+        }
+    });
+    <#if a?has_content>
+        <#if a.onlyUrl>
+            $('input[name=onlyUrl]',navTab.getCurrentPanel()).trigger("click");
+        </#if>
+        <#if a.searchableModel>
+            $('input[name=searchableModel]',navTab.getCurrentPanel()).trigger("click");
+        </#if>
+        <#if a.hasChild>
+            $('input[name=hasChild]',navTab.getCurrentPanel()).trigger("click");
+        </#if>
+        <#if a.hasImages>
+            $('input[name=hasImages]',navTab.getCurrentPanel()).trigger("click");
+        </#if>
+        <#if a.hasFiles>
+            $('input[name=hasFiles]',navTab.getCurrentPanel()).trigger("click");
+        </#if>
+        <#if a.hasProducts>
+            $('input[name=hasProducts]',navTab.getCurrentPanel()).trigger("click");
+        </#if>
+
+        <#if a.fieldList?has_content>
+            <#list a.fieldList as field>
+                $('input[name=fieldList][value=${field}]',navTab.getCurrentPanel()).trigger("click");
+            </#list>
+        </#if>
+        <#if a.requiredFieldList?has_content>
+            <#list a.requiredFieldList as field>
+                $('input[name=requiredFieldList][value=${field}]',navTab.getCurrentPanel()).trigger("click");
+            </#list>
+        </#if>
+    <#else>
+        $('input[name=searchableModel]',navTab.getCurrentPanel()).trigger("click");
+    </#if>
+</script>
 </form>

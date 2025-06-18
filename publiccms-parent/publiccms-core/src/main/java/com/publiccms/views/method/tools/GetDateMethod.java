@@ -19,7 +19,7 @@ import freemarker.template.TemplateModelException;
  * <p>
  * 参数列表
  * <ol>
- * <li>日期类型【yesterday:昨天,tomorrow:明天,thisSunday:本周日,thisMonday:本周一,lastMonday:上周一,lastSunday:上周日,lastMonth:上个月,lastYear:去年,nextMonday:下周一,nextSunday:下周日,nextMonth:下个月,nextYear:明年】,默认当前时间
+ * <li>日期类型【yesterday:昨天,tomorrow:明天,thisSunday:本周日,thisMonday:本周一,lastMonday:上周一,lastSunday:上周日,lastWeek:上一周,lastMonth:上个月,lastSeason:上季度,lastHalfYear:半年前,lastYear:去年,nextMonday:下周一,nextSunday:下周日,nextWeek:下一周,nextMonth:下个月,nextSeason:下季度,nextHalfYear:半年后,nextYear:明年】,默认当前时间
  * <li>日期,【2020-01-01 23:59:59】,【2020-01-01】,为空则取当前日期
  * </ol>
  * <p>
@@ -31,7 +31,7 @@ import freemarker.template.TemplateModelException;
  * <p>
  * ${getDate('thisSunday','2020-01-01')}
  * <p>
- * 
+ *
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/method/getDate?parameters=thisSunday&amp;parameters=2020-01-01', function(data){
@@ -61,30 +61,49 @@ public class GetDateMethod extends BaseMethod {
                 date = DateUtils.addDays(date, 1);
                 break;
             case "thisSunday":
-                date = getThisSunday(date);
+                date = getSunday(date);
                 break;
             case "thisMonday":
-                date = getThisMonday(date);
+                date = getMonday(date);
                 break;
             case "lastMonday":
-                date = getLastMonday(date);
+                date = getMonday(DateUtils.addWeeks(date, -1));
                 break;
             case "lastSunday":
-                date = getLastSunday(date);
+                date = getSunday(DateUtils.addWeeks(date, -1));
+                break;
+            case "lastWeek":
+                date = DateUtils.addWeeks(date, -1);
                 break;
             case "lastMonth":
                 date = DateUtils.addMonths(date, -1);
+                break;
+            case "lastSeason":
+                date = DateUtils.addMonths(date, -3);
+                break;
+            case "lastHalfYear":
+                date = DateUtils.addMonths(date, -6);
+                break;
             case "lastYear":
                 date = DateUtils.addYears(date, -1);
                 break;
             case "nextMonday":
-                date = getNextMonday(date);
+                date = getMonday(DateUtils.addWeeks(date, 1));
                 break;
             case "nextSunday":
-                date = getNextSunday(date);
+                date = getSunday(DateUtils.addWeeks(date, 1));
+                break;
+            case "nextWeek":
+                date = DateUtils.addWeeks(date, 1);
                 break;
             case "nextMonth":
                 date = DateUtils.addMonths(date, 1);
+                break;
+            case "nextSeason":
+                date = DateUtils.addMonths(date, 3);
+                break;
+            case "nextHalfYear":
+                date = DateUtils.addMonths(date, 6);
                 break;
             case "nextYear":
                 date = DateUtils.addYears(date, 1);
@@ -105,44 +124,18 @@ public class GetDateMethod extends BaseMethod {
         return 0;
     }
 
-    static Date getThisMonday(Date date) {
+    static Date getMonday(Date date) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(DateUtils.addDays(date, -1));
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.setTime(date);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         return calendar.getTime();
     }
 
-    static Date getThisSunday(Date date) {
+    static Date getSunday(Date date) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(DateUtils.addDays(date, 6));
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        return calendar.getTime();
-    }
-
-    static Date getLastMonday(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(DateUtils.addDays(date, -8));
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        return calendar.getTime();
-    }
-
-    static Date getLastSunday(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(DateUtils.addDays(date, -1));
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        return calendar.getTime();
-    }
-
-    static Date getNextMonday(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(DateUtils.addDays(date, 7));
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        return calendar.getTime();
-    }
-
-    static Date getNextSunday(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(DateUtils.addDays(date, 13));
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.setTime(date);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         return calendar.getTime();
     }

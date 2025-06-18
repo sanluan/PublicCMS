@@ -31,9 +31,12 @@ import freemarker.template.TemplateException;
 /**
  *
  * autoLogin 自动登录接口
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p lang="zh">
+ * 参数列表
+ * <p lang="en">
+ * parameter list
+ * <p lang="ja">
+ * パラメータリスト
  * <ul>
  * <li><code>uuid</code>:设备唯一id
  * <li><code>username</code>:用户名
@@ -47,10 +50,14 @@ import freemarker.template.TemplateException;
  * <li><code>expiryDate</code>:过期日期
  * <li><code>user</code>:用户信息 {@link com.publiccms.entities.sys.SysUser}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p lang="zh">
+ * 使用示例
+ * <p lang="en">
+ * usage example
+ * <p lang="ja">
+ * 使用例
  * <p>
+ * 
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/autoLogin?uuid=1&amp;username=admin&amp;channel=web', function(data){
@@ -84,7 +91,8 @@ public class AutoLoginDirective extends AbstractAppDirective {
                     sysUserTokenService
                             .save(new SysUserToken(authToken, site.getId(), user.getId(), channel, now, expiryDate, ip));
                     service.updateLoginStatus(user.getId(), ip);
-                    logLoginService.save(new LogLogin(site.getId(), uuid, user.getId(), ip, channel, true, now, null));
+                    logLoginService.save(new LogLogin(site.getId(), uuid, user.getId(), ip, channel,
+                            LogLoginService.METHOD_CLIENT_AUTO_LOGIN, true, now, null));
                     user.setPassword(null);
                     result = true;
                     handler.put("authToken", authToken).put("expiryDate", expiryDate).put("user", user);

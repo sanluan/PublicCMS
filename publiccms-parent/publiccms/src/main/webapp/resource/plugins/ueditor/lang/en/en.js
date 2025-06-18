@@ -28,10 +28,9 @@ UE.I18N['en'] = {
         'charts': 'charts','drafts': 'Load from Drafts'
     },
     'insertorderedlist':{
-        'num':'1,2,3...',
         'num1':'1),2),3)...',
         'num2':'(1),(2),(3)...',
-        'cn':'一,二,三....',
+        'cjk-ideographic':'一,二,三....',
         'cn1':'一),二),三)....',
         'cn2':'(一),(二),(三)....',
         'decimal':'1,2,3...',

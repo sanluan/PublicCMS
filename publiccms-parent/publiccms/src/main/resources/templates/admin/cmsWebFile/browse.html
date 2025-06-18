@@ -75,7 +75,7 @@ fileSuffixs = {
                 <a href="?path=${filePath}&CKEditorFuncNum=${CKEditorFuncNum!}&type=${type!}" target="_self">${a.fileName}</a>
             <#else>
                 <#if !type?has_content || fileSuffixs[type]?has_content && fileSuffixs[type]?seq_contains(a.fileName?keep_after_last('.'))>
-                    <a href="javascript:callback('${site.sitePath+filePath}');">${a.fileName}</a>
+                    <a href="javascript:callback('${getUrl(filePath)}');">${a.fileName}</a>
                 <#else>
                     ${a.fileName}
                 </#if>

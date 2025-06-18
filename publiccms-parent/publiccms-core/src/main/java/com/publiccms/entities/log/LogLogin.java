@@ -61,6 +61,12 @@ public class LogLogin implements java.io.Serializable {
     @GeneratorColumn(title = "登录渠道", condition = true)
     private String channel;
     /**
+     * login method<p>
+     * 登录方式
+     */
+    @GeneratorColumn(title = "登录方式", condition = true)
+    private String loginMethod;
+    /**
      * login result<p>
      * 登录结果
      */
@@ -82,22 +88,24 @@ public class LogLogin implements java.io.Serializable {
     public LogLogin() {
     }
 
-    public LogLogin(short siteId, String name, String ip, String channel, boolean result, Date createDate) {
+    public LogLogin(short siteId, String name, String ip, String channel, String loginMethod, boolean result, Date createDate) {
         this.siteId = siteId;
         this.name = name;
         this.ip = ip;
         this.channel = channel;
+        this.loginMethod = loginMethod;
         this.result = result;
         this.createDate = createDate;
     }
 
-    public LogLogin(short siteId, String name, Long userId, String ip, String channel, boolean result, Date createDate,
+    public LogLogin(short siteId, String name, Long userId, String ip, String channel, String loginMethod, boolean result, Date createDate,
             String errorPassword) {
         this.siteId = siteId;
         this.name = name;
         this.userId = userId;
         this.ip = ip;
         this.channel = channel;
+        this.loginMethod = loginMethod;
         this.result = result;
         this.createDate = createDate;
         this.errorPassword = errorPassword;
@@ -157,6 +165,15 @@ public class LogLogin implements java.io.Serializable {
 
     public void setChannel(String channel) {
         this.channel = channel;
+    }
+
+    @Column(name = "login_method", nullable = false, length = 50)
+    public String getLoginMethod() {
+        return this.loginMethod;
+    }
+
+    public void setLoginMethod(String loginMethod) {
+        this.loginMethod = loginMethod;
     }
 
     @Column(name = "result", nullable = false)

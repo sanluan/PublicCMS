@@ -71,7 +71,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
      * @param siteId
      * @param sitePath
      * @param entity
-     * @param oldEntity 
+     * @param oldEntity
      * @param userId
      * @param attribute
      * @param categoryType
@@ -307,6 +307,22 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         CmsCategory entity = getEntity(id);
         if (null != entity) {
             entity.setChildIds(childIds);
+        }
+    }
+
+    /**
+     * @param siteId
+     * @param ids
+     * @param workflowId
+     */
+    public void updateWrokflow(short siteId, Integer[] ids, Integer workflowId) {
+        if (CommonUtils.notEmpty(ids)) {
+            List<CmsCategory> entityList = getEntitys(ids);
+            for (CmsCategory entity : entityList) {
+                if (null != entity && siteId == entity.getSiteId()) {
+                    entity.setWorkflowId(workflowId);
+                }
+            }
         }
     }
 

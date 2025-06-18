@@ -24,15 +24,21 @@ public class VisitItemDao extends BaseDao<VisitItem> {
      * @param siteId
      * @param startVisitDate
      * @param endVisitDate
+     * @param dayAnalytics 
      * @param itemType
      * @param itemId
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(short siteId, Date startVisitDate, Date endVisitDate, String itemType, String itemId,
+    public PageHandler getPage(short siteId, Date startVisitDate, Date endVisitDate, boolean dayAnalytics, String itemType, String itemId,
             Integer pageIndex, Integer pageSize) {
-        QueryHandler queryHandler = getQueryHandler("from VisitItem bean");
+        QueryHandler queryHandler ;
+        if(dayAnalytics) {
+            queryHandler = getQueryHandler("from VisitItem bean");
+        }else {
+            queryHandler = getQueryHandler("select new VisitItem(bean.id.siteId,bean.id.itemType,bean.id.itemId,sum(bean.pv),sum(bean.uv),sum(bean.ipviews)) from VisitItem bean");
+        }
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
         if (null != startVisitDate) {
             queryHandler.condition("bean.id.visitDate > :startVisitDate").setParameter("startVisitDate", startVisitDate);
@@ -46,8 +52,13 @@ public class VisitItemDao extends BaseDao<VisitItem> {
         if (CommonUtils.notEmpty(itemId)) {
             queryHandler.condition("bean.id.itemId <= :itemId").setParameter("itemId", itemId);
         }
-        queryHandler.order("bean.id.visitDate").append(ORDERTYPE_DESC);
-        queryHandler.order("bean.pv").append(ORDERTYPE_DESC);
+        if(dayAnalytics) {
+            queryHandler.order("bean.id.visitDate").append(ORDERTYPE_DESC);
+            queryHandler.order("bean.pv").append(ORDERTYPE_DESC);
+        }else {
+            queryHandler.group("bean.id.siteId").group("bean.id.itemType").group("bean.id.itemId");
+            queryHandler.order("sum(bean.pv)").append(ORDERTYPE_DESC);
+        }
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

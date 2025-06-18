@@ -194,7 +194,11 @@ var alertMsg = {
         var buttons = [ {
             name: op.okName, call: op.okCall, keyCode: JUI.keyCode.ENTER
         } ];
-        this._open(type, msg, buttons);
+        if($.regional.alertMsg.traditional){
+            this._open(type, $.regional.alertMsg.traditional(msg), buttons);
+        }else{
+            this._open(type, msg, buttons);
+        }
     } ,
     /**
      * @param {Object}

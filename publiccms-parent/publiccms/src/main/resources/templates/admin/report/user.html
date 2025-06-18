@@ -1,12 +1,69 @@
-<a class="button float" href="report/user.html" target="navTab" rel="report/user"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
+<a class="button float" href="report/user.html" target="navTab" rel="report/user" data-change-title="false"><i class="icon-refresh"></i><@t.page 'button.refresh'/></a>
 <div class="pageFormContent" layoutH>
     <fieldset>
         <legend><@t.page 'report.user'/></legend>
         <div class="unit clearfix">
-            <div id="register" class="chart" data-id="registerChart" style="width:50%;"></div>
-            <div id="login" class="chart" data-id="loginChart" style="width:50%;"></div>
-            <div id="operate" class="chart" data-id="operateChart" style="width:50%;"></div>
-            <div id="userComment" class="chart" data-id="userCommentChart" style="width:50%;"></div>
+            <div id="register" class="chart box w"  data-resize-object="registerChart"></div>
+            <div class="box w">
+                <div class="pageFormContent">
+                    <@sys.userList pageSize=10>
+                        <#list page.list as user>
+                    <p class="ellipsis">
+                        <span class="float-right info">${user.registeredDate}</span>
+                        ${user.nickname}
+                    </p>
+                        </#list>
+                    </@sys.userList>
+                </div>
+            </div>
+            <div id="login" class="chart box w"  data-resize-object="loginChart"></div>
+            <div class="box w">
+                <div class="pageFormContent">
+                    <@log.loginList pageSize=10>
+                        <#list page.list as a>
+                    <p class="ellipsis">
+                        <span class="float-right info">${a.createDate}</span>
+                        ${(a.name)!}
+                        <span class="statusText ${a.result?then('green','red')}">${t.pageMessage(a.result?then('success','fail'))}</span>
+                    </p>
+                        </#list>
+                    </@log.loginList>
+                </div>
+            </div>
+            <div id="operate" class="chart box w" data-resize-object="operateChart"></div>
+            <div class="box w">
+                <div class="pageFormContent">
+                    <@log.operateList pageSize=10>
+                        <#list page.list as a>
+                            <@t.merge 'userIds' a.userId!/>
+                        </#list>
+                        <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+                        <#list page.list as a>
+                    <p class="ellipsis">
+                        <span class="float-right info">${a.createDate}</span>
+                        ${(userMap[a.userId?string].nickname)!} <@t.message 'operate.'+a.operate/>
+                    </p>
+                        </#list>
+                    </@log.operateList>
+                </div>
+            </div>
+            <div id="userComment" class="chart box w"data-resize-object="userCommentChart"></div>
+            <div class="box w">
+                <div class="pageFormContent">
+                    <@cms.commentList advanced=true pageSize=10>
+                        <#list page.list as a>
+                            <@t.merge 'userIds' a.userId!/>
+                        </#list>
+                        <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
+                        <#list page.list as a>
+                    <p class="ellipsis">
+                        <span class="float-right info">${a.createDate}</span>
+                        ${(userMap[a.userId?string].nickname)!} : ${(a.text)!}
+                    </p>
+                        </#list>
+                    </@cms.commentList>
+                </div>
+            </div>
          </div>
     </fieldset>
 </div>

@@ -1,16 +1,20 @@
 <#if 0=admin.contentPermissions><#assign userId=admin.id/></#if>
 <#if 2=admin.contentPermissions><#assign deptId=admin.deptId/></#if>
-<@cms.contentList advanced=true status=2 modelId=modelIds title=title userId=userId deptId=deptId
+<@cms.contentList advanced=true status=2 modelId=modelIds categoryId=categoryId containChild=containChild title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <@sys.authorized roleIds=admin.roles urls='cmsContent/delete,cmsContent/add,cmsContent/check,cmsContent/reject,cmsComment/list'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader card">
-    <form class="pagerForm" action="cmsContent/uncheck_list.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" action="cmsContent/uncheck_list.html" autocomplete="off" onsubmit="return divSearch(this,'contentBox');" method="post">
         <#include "../include_page/parameters.html"/>
         <input name="categoryId" type="hidden" value="${categoryId!}"/>
-        <input name="parentId" type="hidden" value="${(parent.id)!}"/>
         <div class="searchBar">
             <ul class="searchContent">
+            <#if categoryId?has_content>
+                <li>
+                    <label><@t.page 'category'/>: <@cms.category id=categoryId;category>${category.name}</@cms.category></label>
+                </li>
+            </#if>
                 <li>
                     <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}"/>
                 </li>
@@ -64,7 +68,7 @@
         </#if>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH orderField="${orderField!}" orderType="${orderType!}">
+    <table class="table" width="100%" layoutH targetType="ajax" orderField="${orderField!}" orderType="${orderType!}" rel="contentBox">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
@@ -115,7 +119,7 @@
                         </h3>
                         <p>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                                <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="btnText" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></label>
+                                <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="btnText" target="navTab" rel="cmsContent/list" data-change-title="false"><@t.page 'content.child_management'/></a></label>
                             </#if>
                             <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickname)!}</span>
                             <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
@@ -150,6 +154,7 @@
             </#list>
         </tbody>
     </table>
+    <#assign rel='contentBox'/>
     <#include "../include_page/page.html"/>
 </div>
 </@cms.contentList>

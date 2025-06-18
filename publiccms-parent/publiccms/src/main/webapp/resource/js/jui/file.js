@@ -115,7 +115,7 @@
             loadScripts(window.imageEditor.resources,function(){
                 window.imageEditor.initd=true;
                 init($this,dataId,img,fileName);
-            });
+            }, window.imageEditor.base );
         }
         $this.attr("data-id",dataId);
     }
