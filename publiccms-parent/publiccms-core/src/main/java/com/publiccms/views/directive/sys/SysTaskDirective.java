@@ -18,18 +18,14 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysTask 任务计划查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>id</code>:任务计划id,结果返回<code>object</code>
  * {@link com.publiccms.entities.sys.SysTask}
  * <li><code>ids</code>:
  * 多个任务计划id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@sys.task id=1&gt;${object.name}&lt;/@sys.task&gt;
  * <p>

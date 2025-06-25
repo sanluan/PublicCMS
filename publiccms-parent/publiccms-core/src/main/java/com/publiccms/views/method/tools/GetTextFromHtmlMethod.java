@@ -14,9 +14,7 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getTextFromHtml 获取html中的文本
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ol>
  * <li>html内容
  * </ol>
@@ -25,9 +23,7 @@ import freemarker.template.TemplateModelException;
  * <ul>
  * <li><code>string</code>:文本结果
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * ${getTextFromHtml('&lt;a href="http://www.publiccms.com/"&gt;publiccms&lt;/a&gt;')}
  * <p>

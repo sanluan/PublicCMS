@@ -12,9 +12,7 @@ import freemarker.template.TemplateException;
 
 /**
  * version 版本指令
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>cms</code>:cms版本
  * <li><code>revision</code>:修订版
@@ -25,9 +23,7 @@ import freemarker.template.TemplateException;
  * <li><code>cluster</code>:节点id
  * <li><code>master</code>:是否管理节点【true:管理节点,false:普通节点】
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@tools.version path='/'&gt;${a.fileName}&lt;/@tools.version&gt;
  *

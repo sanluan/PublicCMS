@@ -21,22 +21,16 @@ import freemarker.template.TemplateException;
 /**
  *
  * publishContent 发布分类静态页面指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>id</code>:内容id
  * <li><code>ids</code>:多个内容id,id为空时有效
  * </ul>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>map</code>map类型,键值内容id,值为生成结果
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@task.publishContent id=1&gt;&lt;#list map as
  * k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@task.publishContent&gt;

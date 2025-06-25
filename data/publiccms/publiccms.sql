@@ -130,15 +130,15 @@ INSERT INTO `cms_content_attribute` VALUES (1, NULL, NULL, NULL, NULL, NULL, NUL
 -- ----------------------------
 -- Records of cms_place
 -- ----------------------------
-INSERT INTO `cms_place` VALUES (1, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '投资管理', '#', NULL, 'assets/images/201210310952338421.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, 0);
-INSERT INTO `cms_place` VALUES (2, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '置业建设', '#', NULL, 'assets/images/201210310953075326.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, 0);
-INSERT INTO `cms_place` VALUES (3, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '能源光电', '#', NULL, 'assets/images/201210310953287112.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, 0);
-INSERT INTO `cms_place` VALUES (4, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '现代物流', '#', NULL, 'assets/images/201210310953526760.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, 0);
-INSERT INTO `cms_place` VALUES (5, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '生物制药', '#', NULL, 'assets/images/201209291145162884.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, 0);
-INSERT INTO `cms_place` VALUES (6, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '现代农业', '#', NULL, 'assets/images/201210091631452563.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, 0);
-INSERT INTO `cms_place` VALUES (7, 2, '/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html', 2, 2, 'custom', NULL, 'PublicCMS', 'http://www.publiccms.com/', NULL, '', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, 0);
-INSERT INTO `cms_place` VALUES (8, 2, '/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html', 2, 2, 'custom', NULL, 'OA', '#', NULL, 'assets/images/l_1.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, 0);
-INSERT INTO `cms_place` VALUES (9, 2, '/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html', 2, 2, 'custom', NULL, '联系我们', '#', NULL, 'assets/images/l_2.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, 0);
+INSERT INTO `cms_place` VALUES (1, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '投资管理', '#', NULL, 'assets/images/201210310952338421.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, NULL, 0);
+INSERT INTO `cms_place` VALUES (2, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '置业建设', '#', NULL, 'assets/images/201210310953075326.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, NULL, 0);
+INSERT INTO `cms_place` VALUES (3, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '能源光电', '#', NULL, 'assets/images/201210310953287112.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, NULL, 0);
+INSERT INTO `cms_place` VALUES (4, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '现代物流', '#', NULL, 'assets/images/201210310953526760.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, NULL, 0);
+INSERT INTO `cms_place` VALUES (5, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '生物制药', '#', NULL, 'assets/images/201209291145162884.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, NULL, 0);
+INSERT INTO `cms_place` VALUES (6, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 2, 'custom', NULL, '现代农业', '#', NULL, 'assets/images/201210091631452563.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, NULL, 0);
+INSERT INTO `cms_place` VALUES (7, 2, '/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html', 2, 2, 'custom', NULL, 'PublicCMS', 'http://www.publiccms.com/', NULL, '', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, NULL, 0);
+INSERT INTO `cms_place` VALUES (8, 2, '/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html', 2, 2, 'custom', NULL, 'OA', '#', NULL, 'assets/images/l_1.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, NULL, 0);
+INSERT INTO `cms_place` VALUES (9, 2, '/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html', 2, 2, 'custom', NULL, '联系我们', '#', NULL, 'assets/images/l_2.gif', '2020-01-01 00:00:00', '2020-01-01 00:00:00', NULL, 1, 0, 0, NULL, 0);
 
 -- ----------------------------
 -- Records of cms_place_attribute
@@ -155,8 +155,8 @@ INSERT INTO `cms_place_attribute` VALUES (9, '{}');
 -- ----------------------------
 -- Records of sys_config_data
 -- ----------------------------
-INSERT INTO `sys_config_data` VALUES (2, 'site', '{\"register_url\":\"\",\"login_path\":\"\",\"category_path\":\"news/${category.id}\",\"default_content_status\":\"2\",\"default_content_user\":\"\",\"comment_need_check\":\"true\",\"max_scores\":\"5\",\"statistics\":\"\"}');
-INSERT INTO `sys_config_data` VALUES (2, 'siteAttribute', '{\"logo\":\"assets/images/logo.gif\",\"parentId\":\"1\",\"parentId_en\":\"2\"}');
+INSERT INTO `sys_config_data` VALUES (2, 'site', '{\"register_url\":\"\",\"login_path\":\"\",\"category_path\":\"news/${category.id}\",\"default_content_status\":\"2\",\"default_content_user\":\"\",\"comment_need_check\":\"true\",\"max_scores\":\"5\",\"statistics\":\"\"}', NULL, NULL);
+INSERT INTO `sys_config_data` VALUES (2, 'siteAttribute', '{\"logo\":\"assets/images/logo.gif\",\"parentId\":\"1\",\"parentId_en\":\"2\"}', NULL, NULL);
 
 -- ----------------------------
 -- Records of sys_dept
@@ -181,9 +181,9 @@ INSERT INTO `sys_role_user` VALUES (2, 2);
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES (2, NULL, NULL, '企业中英文站点', 0, '//site2.dev.publiccms.com:8080/webfile/', 0, '//site2.dev.publiccms.com:8080/', 0, 0);
+INSERT INTO `sys_site` VALUES (2, NULL, NULL, '企业中英文站点', 0, '//site2.dev.publiccms.com:8080/webfile/', 0, '//site2.dev.publiccms.com:8080/', 0, 0, 0);
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (2, 2, 'admin', '0123456789.2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', 1, 'admin', NULL, 2 , 1, '2', '', 0, 1, 0, '2020-01-01 00:00:00', '127.0.0.1', 0, '2020-01-01 00:00:00');
+INSERT INTO `sys_user` VALUES (2, 2, 'admin', '0123456789.2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', 1, 'admin', NULL, 2, 1, '2', '', 0, 1, 0, '2020-01-01 00:00:00', '127.0.0.1', 0, '2020-01-01 00:00:00', NULL);

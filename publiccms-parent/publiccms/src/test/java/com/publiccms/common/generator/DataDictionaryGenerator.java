@@ -35,7 +35,7 @@ public class DataDictionaryGenerator {
         ProcessConfig processConfig = ProcessConfig.builder().build();
 
         // 配置
-        Configuration config = Configuration.builder().version("202406").description("Data Dictionary").dataSource(dataSource)
+        Configuration config = Configuration.builder().version("202506").description("Data Dictionary").dataSource(dataSource)
                 .engineConfig(engineConfig).produceConfig(processConfig).build();
         // 执行生成
         new DocumentationExecute(config).execute();

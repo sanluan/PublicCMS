@@ -14,21 +14,15 @@ import freemarker.template.TemplateException;
 /**
  *
  * facetSearch 内容列表查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト{@link com.publiccms.views.directive.cms.CmsSearchDirective}
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>参数列表{@link com.publiccms.views.directive.cms.CmsSearchDirective}
+ * <p>返回结果
  * <ul>
  * <li><code>page</code>
  * 分面搜索结果{@link com.publiccms.common.handler.FacetPageHandler}
  * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsContent}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  *
  * <pre>
   &lt;@cms.facetSearch word='cms' pageSize=10&gt;

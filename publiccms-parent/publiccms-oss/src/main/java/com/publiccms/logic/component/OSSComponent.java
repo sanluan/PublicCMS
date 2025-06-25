@@ -71,7 +71,7 @@ public class OSSComponent implements Config, AdminContextPath {
 
     /**
      * @param locale locale
-     * @return
+     * @return description
      */
     @Override
     public String getCodeDescription(Locale locale) {

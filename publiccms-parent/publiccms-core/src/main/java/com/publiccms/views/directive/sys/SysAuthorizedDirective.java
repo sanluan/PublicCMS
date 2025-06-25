@@ -32,9 +32,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysAuthorized 角色url授权查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>roleIds</code>:多个角色id
  * <li><code>url</code>
@@ -42,9 +40,7 @@ import freemarker.template.TemplateException;
  * <li><code>urls</code>
  * 多个url,当roleIds存在,且url为空时生效,结果返回<code>map</code>(url,<code>true</code>或<code>false</code>)
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@sys.authorized roleIds='1,2,3'
  * url='cmsContent/list'&gt;${object}&lt;/@sys.authorized&gt;

@@ -18,9 +18,7 @@ import com.publiccms.common.handler.RenderHandler;
 /**
  *
  * sysRoleModuleList 角色模块映射列表查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>roleId</code>:角色id
  * <li><code>moduleId</code>:模块id
@@ -34,9 +32,7 @@ import com.publiccms.common.handler.RenderHandler;
  * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.sys.SysRoleModule}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@sys.roleModuleList roleId=1 pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.id.roleId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.roleModuleList&gt;

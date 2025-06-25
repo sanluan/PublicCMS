@@ -14,21 +14,15 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getSha256 获取sha256
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ol>
  * <li>字符串
  * </ol>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>string</code>:sha256值
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * ${getSha256('aaa')}
  * <p>

@@ -36,12 +36,8 @@ public class SysWorkflowStep implements java.io.Serializable {
     @GeneratorColumn(title = "流程", condition = true)
     private int workflowId;
     /**
-     * <p lang="en">
      * name
-     * <p lang="zh">
      * 名称
-     * <p lang="ja">
-     * 名前
      */
     @GeneratorColumn(title = "名称")
     @NotNull

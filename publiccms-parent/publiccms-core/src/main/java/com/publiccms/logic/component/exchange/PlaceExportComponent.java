@@ -40,7 +40,7 @@ import jakarta.annotation.Resource;
  * 
  */
 @Component
-public class PlaceExportComponent  {
+public class PlaceExportComponent {
     @Resource
     private CmsPlaceService service;
     @Resource
@@ -51,7 +51,6 @@ public class PlaceExportComponent  {
     private MetadataComponent metadataComponent;
     @Resource
     private SiteComponent siteComponent;
-
 
     /**
      * @param site
@@ -143,6 +142,9 @@ public class PlaceExportComponent  {
                     row.createCell(j++).setCellValue(extend.getName());
                 }
             }
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.item_type"));
+            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.item"));
 
             SysUser user;
             CmsPlaceAttribute attribute;
@@ -176,6 +178,10 @@ public class PlaceExportComponent  {
                     for (SysExtendField extend : metadata.getExtendList()) {
                         row.createCell(j++).setCellValue(map.get(extend.getId().getCode()));
                     }
+                }
+                row.createCell(j++).setCellValue(entity.getItemType());
+                if (null != entity.getItemId()) {
+                    row.createCell(j++).setCellValue(entity.getItemId());
                 }
             }
         });

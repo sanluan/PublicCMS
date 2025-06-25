@@ -12,7 +12,7 @@ dependencies {
     implementation "com.github.bastiaanjansen:otp-java:2.1.0"
     // https://mvnrepository.com/artifact/com.webauthn4j/webauthn4j-core
     // https://github.com/webauthn4j/webauthn4j
-    implementation "com.webauthn4j:webauthn4j-core:0.29.2.RELEASE"
+    implementation "com.webauthn4j:webauthn4j-core:0.29.3.RELEASE"
 
     compileOnly "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
     compileOnly "jakarta.servlet:jakarta.servlet-api:${servletVersion}"

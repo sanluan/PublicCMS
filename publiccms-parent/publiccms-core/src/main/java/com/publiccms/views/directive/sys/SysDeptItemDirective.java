@@ -21,9 +21,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysDeptItem 数据授权查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>deptId</code>:部门id
  * <li><code>ItemId</code>
@@ -31,9 +29,7 @@ import freemarker.template.TemplateException;
  * <li><code>ItemIds</code>
  * 多个分类id,当deptId存在,且ItemId为空时生效,结果返回<code>map</code>(分类id,<code>true</code>或<code>false</code>)
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@sys.deptItem deptId=1 ItemId=1&gt;${object}&lt;/@sys.deptItem&gt;
  * <p>

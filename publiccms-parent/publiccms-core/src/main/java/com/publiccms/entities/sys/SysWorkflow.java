@@ -37,24 +37,16 @@ public class SysWorkflow implements java.io.Serializable {
     @JsonIgnore
     private short siteId;
     /**
-     * <p lang="en">
      * name
-     * <p lang="zh">
      * 名称
-     * <p lang="ja">
-     * 名前
      */
     @GeneratorColumn(title = "名称", condition = true, like = true, or = true, name = "name")
     @NotNull
     @Length(max = 100)
     private String name;
     /**
-     * <p lang="en">
      * description
-     * <p lang="zh">
      * 描述
-     * <p lang="ja">
-     * 説明
      */
     @Length(max = 300)
     @GeneratorColumn(title = "描述", condition = true, like = true, or = true, name = "name")

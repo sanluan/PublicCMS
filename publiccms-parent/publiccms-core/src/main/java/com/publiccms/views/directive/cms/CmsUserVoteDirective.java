@@ -22,9 +22,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * userVote 用户投票查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>userId</code>:用户id
  * <li><code>voteId</code>:投票id,结果返回<code>object</code>
@@ -32,9 +30,7 @@ import freemarker.template.TemplateException;
  * <li><code>voteIds</code>
  * 多个投票id,逗号或空格间隔,当voteId为空时生效,结果返回<code>map</code>(voteId,<code>object</code>)
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@cms.userVote id=1&gt;${object.itemId}&lt;/@cms.userVote&gt;
  * <p>

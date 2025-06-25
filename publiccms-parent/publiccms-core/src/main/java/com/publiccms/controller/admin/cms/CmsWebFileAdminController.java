@@ -211,6 +211,7 @@ public class CmsWebFileAdminController {
     /**
      * @param site
      * @param admin
+     * @param path
      * @param file
      * @param filename
      * @param base64File
@@ -223,8 +224,9 @@ public class CmsWebFileAdminController {
      */
     @RequestMapping("doUploadIco")
     @Csrf
-    public String uploadIco(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, String filename,
-            String base64File, String originalFilename, int size, boolean overwrite, HttpServletRequest request, ModelMap model) {
+    public String uploadIco(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, MultipartFile file,
+            String filename, String base64File, String originalFilename, int size, boolean overwrite, HttpServletRequest request,
+            ModelMap model) {
         if (null != file && !file.isEmpty() || CommonUtils.notEmpty(base64File)) {
             String originalName;
             String suffix;
@@ -235,7 +237,7 @@ public class CmsWebFileAdminController {
             }
             suffix = CmsFileUtils.getSuffix(originalName);
             try {
-                String filepath = CommonUtils.joinString(Constants.SEPARATOR, filename);
+                String filepath = CommonUtils.joinString(path, Constants.SEPARATOR, filename);
                 String fuleFilePath = siteComponent.getWebFilePath(site.getId(), filepath);
                 if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
                     CmsFileUtils.mkdirsParent(fuleFilePath);

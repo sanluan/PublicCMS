@@ -22,17 +22,13 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysConfigData 配置数据查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>code</code>:配置编码,结果返回<code>object</code>
  * {@link com.publiccms.entities.sys.SysConfigData}
  * <li><code>codes</code>:多个配置编码,结果返回<code>map</code>(code,<code>object</code>)
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@sys.configData code='site'&gt;${object.register_url}&lt;/@sys.configData&gt;
  *

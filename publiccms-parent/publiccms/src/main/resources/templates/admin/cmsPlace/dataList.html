@@ -66,7 +66,7 @@
             </#if>
             <#if authorizedMap['cmsPlace/import']>
                 <li class="line">line</li>
-                <li><a href="cmsPlace/import.html" target="dialog" mask="true" width="500" height="250"><i class="icon-upload-alt icon-large"></i><@t.page 'import'/></a></li>
+                <li><a href="cmsPlace/import.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="250"><i class="icon-upload-alt icon-large"></i><@t.page 'import'/></a></li>
             </#if>
             <#if authorizedMap['cmsPlace/delete']>
                 <li class="line">line</li>

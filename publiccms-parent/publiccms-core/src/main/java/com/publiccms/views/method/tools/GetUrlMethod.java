@@ -21,22 +21,16 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  *
  * getUrl 获取url绝对路径
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ol>
  * <li>url前缀
  * <li><code>url</code>,当第二个为空时,将第一个参数当作url
  * </ol>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>url</code>:绝对路径的url
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * ${getUrl(site.sitePath,'index.html')} ${getUrl('index.html')}
  * <p>

@@ -18,23 +18,17 @@ import freemarker.template.TemplateException;
 /**
  *
  * categoryModelList 分类模型映射列表查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>modelId</code>:内容模型id
  * <li><code>categoryId</code>:分类id
  * </ul>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsCategoryModel}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@cms.categoryModelList modelId='article'&gt;&lt;#list list as
  * a&gt;${a.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryModelList&gt;

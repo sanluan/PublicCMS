@@ -17,17 +17,13 @@ import freemarker.template.TemplateException;
 
 /**
  * templateResult 模板渲染结果指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>parameters</code>:参数map
  * <li><code>templateContent</code>:模板内容
  * </ul>
  * 打印渲染结果
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@tools.templateResult templateContent='${name}' parameters={'name':'value'}/&gt;
  *

@@ -11,15 +11,11 @@ import freemarker.template.TemplateException;
 
 /**
  * exception 异常获取指令
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>object</code>:异常字符串
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@tools.exception&gt;${object}&lt;/@tools.exception&gt;
  *

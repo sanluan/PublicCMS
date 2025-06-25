@@ -25,7 +25,6 @@ import java.io.InputStream;
  *
  * The data types used are as listed:
  * <table>
- * <table>
  * <tr>
  * <td>BYTE</td>
  * <td>8-bit unsigned integer.</td>

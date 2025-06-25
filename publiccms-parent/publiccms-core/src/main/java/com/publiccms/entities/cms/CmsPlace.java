@@ -95,12 +95,8 @@ public class CmsPlace extends EntityAttribute implements java.io.Serializable {
     @Length(max = 1000)
     private String url;
     /**
-     * <p lang="en">
      * description
-     * <p lang="zh">
      * 描述
-     * <p lang="ja">
-     * 説明
      */
     @GeneratorColumn(title = "描述")
     @Length(max = 300)

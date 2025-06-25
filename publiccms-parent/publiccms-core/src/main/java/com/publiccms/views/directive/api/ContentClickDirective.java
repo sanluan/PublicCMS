@@ -19,9 +19,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * contentClick 内容点击接口
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>id</code>:内容id
  * </ul>
@@ -30,10 +28,7 @@ import freemarker.template.TemplateException;
  * <ul>
  * <li><code>clicks</code>:内容点击数
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
- * <p>
+ * <p>使用示例
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/contentClick?id=1', function(data){

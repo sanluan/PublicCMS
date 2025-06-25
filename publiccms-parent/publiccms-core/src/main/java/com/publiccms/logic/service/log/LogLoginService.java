@@ -36,7 +36,7 @@ public class LogLoginService extends BaseService<LogLogin> {
     /**
      * 
      */
-    public static final String METHOD_OTP = "opt";
+    public static final String METHOD_OTPCODE = "otpcode";
     /**
      * 
      */

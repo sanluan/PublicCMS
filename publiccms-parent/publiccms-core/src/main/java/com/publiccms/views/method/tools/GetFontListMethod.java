@@ -13,15 +13,11 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getFontList 获取系统字体列表
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>font list</code>:字体名称列表
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;#list getFontList() as font&gt;${font}&lt;/#list&gt;
  * <p>

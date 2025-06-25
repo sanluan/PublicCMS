@@ -22,24 +22,18 @@ import freemarker.template.TemplateException;
 /**
  *
  * createTemplateFile 创建静态文件指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>templatePath</code>:模板路径
  * <li><code>filePath</code>:静态文件路径
  * <li><code>pageIndex</code>:当前页码,默认为1
  * <li><code>parameters</code>:参数map
  * </ul>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>url</code>:静态文件路径
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@tools.createTemplateFile templatePath='template.html'
  * filePath='page/'+1+'.html'

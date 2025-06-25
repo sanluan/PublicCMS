@@ -19,18 +19,14 @@ import freemarker.template.TemplateException;
 /**
  *
  * model 页面片段数据查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>id</code>:内容模型id,结果返回<code>object</code>
  * {@link com.publiccms.views.pojo.entities.CmsModel}
  * <li><code>ids</code>:
  * 多个内容模型id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@cms.model id='article'&gt;${object.name}&lt;/@cms.model&gt;
  * <p>

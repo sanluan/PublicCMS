@@ -29,12 +29,8 @@ public class CmsDictionary implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private CmsDictionaryId id;
     /**
-     * <p lang="en">
      * name
-     * <p lang="zh">
      * 名称
-     * <p lang="ja">
-     * 名前
      */
     @GeneratorColumn(title = "名称")
     @NotNull

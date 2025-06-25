@@ -19,17 +19,13 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysModuleLang 模块语言查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>moduleId</code>:模块id,结果返回<code>object</code>
  * {@link com.publiccms.entities.sys.SysModule}
  * <li><code>lang</code>:语言【zh:中文,en:英语,ja:日语】
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@sys.moduleLang moduleId='page' lang='zh'&gt;${object}&lt;/@sys.moduleLang&gt;
  *

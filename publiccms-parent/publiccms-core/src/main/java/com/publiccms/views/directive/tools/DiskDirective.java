@@ -21,9 +21,7 @@ import freemarker.template.TemplateException;
  * <li><code>usableSpace</code>:可用空间
  * <li><code>rootPath</code>:绝对路径
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@tools.disk&gt;${freeSpace}&lt;/@tools.disk&gt;
  *

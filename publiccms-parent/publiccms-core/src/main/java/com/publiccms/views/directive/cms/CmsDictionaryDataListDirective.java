@@ -20,23 +20,17 @@ import freemarker.template.TemplateException;
 /**
  *
  * dictionaryDataList 数据字典数据列表
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>dictionaryId</code>:字典id,为空时返回空结果
  * <li><code>parentValue</code>:父节点值
  * </ul>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsDictionaryData}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@cms.dictionaryDataList dictionaryId='data'&gt;&lt;#list list as
  * a&gt;${a.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryDataList&gt;

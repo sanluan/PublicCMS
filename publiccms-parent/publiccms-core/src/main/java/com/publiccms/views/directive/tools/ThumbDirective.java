@@ -17,9 +17,7 @@ import freemarker.template.TemplateException;
 
 /**
  * thumb 缩略图指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>path</code>:文件路径
  * <li><code>width</code>:宽度
@@ -27,9 +25,7 @@ import freemarker.template.TemplateException;
  * </ul>
  * <p>
  * 打印结果文件路径
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@tools.thumb path='images/logo.jpg' width=100 height=100/&gt;
  *

@@ -18,9 +18,7 @@ import com.publiccms.common.handler.RenderHandler;
 /**
  *
  * sysUserTokenList 用户登录授权列表查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>userId</code>:用户id
  * <li><code>channel</code>:渠道
@@ -36,9 +34,7 @@ import com.publiccms.common.handler.RenderHandler;
  * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.sys.SysUserToken}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@sys.userTokenList userId=1 pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.id.deptId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.userTokenList&gt;

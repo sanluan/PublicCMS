@@ -19,18 +19,14 @@ import freemarker.template.TemplateException;
 /**
  *
  * categoryType 分类类型查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>id</code>:分类id,结果返回<code>object</code>
  * {@link com.publiccms.views.pojo.entities.CmsCategoryType}
  * <li><code>ids</code>:
  * 多个分类id,逗号或空格间隔,当id或code为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@cms.categoryType id=1&gt;${object.name}&lt;/@cms.categoryType&gt;
  * <p>

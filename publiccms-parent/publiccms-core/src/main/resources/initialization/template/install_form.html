@@ -26,7 +26,7 @@
     <div class="wrapper" id="useUpdate"<#if !fromVersion?has_content> style="display:none"</#if>>
         <label>Original CMS version</label>
         <select name="from_version">
-            <#list versions as v>
+            <#list versions?reverse as v>
                 <option value="${v}"<#if fromVersion?has_content&&fromVersion=v> selected="true"</#if>>${v}</option>
             </#list>
         </select>

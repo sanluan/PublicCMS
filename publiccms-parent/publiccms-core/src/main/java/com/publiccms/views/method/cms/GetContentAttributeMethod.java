@@ -24,21 +24,15 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getContentAttribute 获取内容扩展数据
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ol>
  * <li>内容id
  * </ol>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>attribute</code>:内容扩展数据(字段编码,<code>value</code>)
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;#assign attribute=getContentAttribute(1)/&lt;
  * <p>

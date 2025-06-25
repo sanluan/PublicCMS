@@ -21,9 +21,7 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getXml 获取xml节点
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ol>
  * <li><code>string</code>:xml文本
  * </ol>
@@ -32,9 +30,7 @@ import freemarker.template.TemplateModelException;
  * <ul>
  * <li><code>xml</code>:xml模型
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * ${getXml('&lt;xml&gt;&lt;data&gt;value&lt;/data&gt;&lt;/xml&gt;').xml.data}
  * <p>

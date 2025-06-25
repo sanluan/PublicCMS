@@ -26,9 +26,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysRoleModule 角色模块授权查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>roleIds</code>:多个角色id
  * <li><code>moduleId</code>
@@ -36,9 +34,7 @@ import freemarker.template.TemplateException;
  * <li><code>moduleIds</code>
  * 多个模块id,当roleIds存在,且moduleId为空时生效,结果返回<code>map</code>(模块id,<code>true</code>或<code>false</code>)
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@sys.roleModule roleIds='1,2,3'
  * modelId='page'&gt;${object}&lt;/@sys.roleModule&gt;

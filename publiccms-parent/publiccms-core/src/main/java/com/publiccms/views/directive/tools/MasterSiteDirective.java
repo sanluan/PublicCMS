@@ -12,9 +12,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * masterSite 管理站点判断指令
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@tools.masterSite&gt;this is a master site&lt;/@tools.masterSite&gt;
  */

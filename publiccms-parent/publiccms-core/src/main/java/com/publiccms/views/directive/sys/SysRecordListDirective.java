@@ -17,9 +17,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysRecordList 自定义记录列表查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>code</code>:编码
  * <li><code>startCreateDate</code>:起始创建日期,【2020-01-01 23:59:59】,【2020-01-01】
@@ -30,16 +28,12 @@ import freemarker.template.TemplateException;
  * <li><code>pageIndex</code>:页码
  * <li><code>pageSize</code>:每页条数
  * </ul>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.sys.SysRecord}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@sys.recordList&gt;&lt;#list list as
  * a&gt;${a.data}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.recordList&gt;

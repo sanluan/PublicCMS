@@ -15,22 +15,16 @@ import freemarker.template.TemplateException;
 /**
 *
 * sysConfigFieldList 配置数据字段列表查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
 * <ul>
  * <li><code>code</code>:配置编码
 * </ul>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
 * <ul>
  * <li><code>list</code>:List类型 查询结果实体列表
-* {@link com.publiccms.entities.sys.SysExtendField}
-* </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * {@link com.publiccms.entities.sys.SysExtendField}
+ * </ul>
+ * <p>使用示例
 * <p>
 * &lt;@sys.configFieldList pageSize=10&gt;&lt;#list list as
 * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.configFieldList&gt;

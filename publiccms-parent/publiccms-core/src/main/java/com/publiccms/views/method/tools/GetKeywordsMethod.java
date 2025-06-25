@@ -14,9 +14,7 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getKeywords 获取分词结果
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ol>
  * <li>完整语句
  * </ol>
@@ -25,9 +23,7 @@ import freemarker.template.TemplateModelException;
  * <ul>
  * <li><code>list</code>(<code>string</code>):分词结果set
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;#list getKeywords('这是一段话') as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;&lt;
  * <p>

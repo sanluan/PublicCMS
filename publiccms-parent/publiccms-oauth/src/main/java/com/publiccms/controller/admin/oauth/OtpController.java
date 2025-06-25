@@ -153,7 +153,7 @@ public class OtpController {
                     sysUserTokenService.save(new SysUserToken(authToken, site.getId(), otpadmin.getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, now, DateUtils.addMinutes(now, expiryMinutes), ip));
                     logLoginService.save(new LogLogin(site.getId(), otpadmin.getName(), otpadmin.getId(), ip,
-                            LogLoginService.CHANNEL_WEB_MANAGER, LogLoginService.METHOD_OTP, true, now, null));
+                            LogLoginService.CHANNEL_WEB_MANAGER, LogLoginService.METHOD_OTPCODE, true, now, null));
                     Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
                     String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
                     if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {

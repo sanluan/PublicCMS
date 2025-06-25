@@ -56,36 +56,31 @@ public class TradeCoupon implements java.io.Serializable {
     @GeneratorColumn(title = "内容", condition = true)
     private Long contentId;
     /**
-     * <p lang="en">start date
-     * <p lang="zh">
+     * start date
      * 开始日期
      */
     @GeneratorColumn(title = "开始日期", condition = true)
     private String startDate;
     /**
-     * <p lang="en">expiry date
-     * <p lang="zh">
+     * expiry date
      * 过期日期
      */
     @GeneratorColumn(title = "过期日期", condition = true)
     private String expiryDate;
     /**
-     * <p lang="en">starting amount
-     * <p lang="zh">
+     * starting amount
      * 起始金额
      */
     @GeneratorColumn(title = "起始金额")
     private BigDecimal startingAmount;
     /**
-     * <p lang="en">discount
-     * <p lang="zh">
+     * discount
      * 折扣
      */
     @GeneratorColumn(title = "折扣")
     private BigDecimal discount;
     /**
-     * <p lang="en">price
-     * <p lang="zh">
+     * price
      * 价格
      */
     @GeneratorColumn(title = "价格")
@@ -93,7 +88,7 @@ public class TradeCoupon implements java.io.Serializable {
     /**
      * coupon_type
      * <p>
-     * coupon_type
+     * 优惠券类型
      */
     @GeneratorColumn(title = "优惠券类型", condition = true)
     private int couponType;

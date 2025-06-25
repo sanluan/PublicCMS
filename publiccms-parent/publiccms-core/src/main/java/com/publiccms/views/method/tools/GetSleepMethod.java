@@ -13,9 +13,7 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getSleep 睡眠一段时间
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ol>
  * <li><code>number</code>:睡眠时间0-60秒
  * </ol>
@@ -24,9 +22,7 @@ import freemarker.template.TemplateModelException;
  * <ul>
  * <li><code>boolean</code>:是否睡眠
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * ${getSleep(5)}
  * <p>

@@ -19,20 +19,14 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  *
  * getFileUploadPrefix 获取
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ol>
  * </ol>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>url</code>:文件上传前缀
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * ${getFileUploadPrefix()}
  * <p>

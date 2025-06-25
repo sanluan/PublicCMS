@@ -17,9 +17,7 @@ import com.publiccms.common.handler.PageHandler;
 /**
  *
  * userScoreList 用户评分列表查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>userId</code>:用户id
  * <li><code>itemType</code>:项目类型
@@ -34,9 +32,7 @@ import com.publiccms.common.handler.PageHandler;
  * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsUserScore}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@cms.userScoreList userId=1 pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.scores}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userScoreList&gt;

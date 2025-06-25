@@ -20,9 +20,7 @@ import freemarker.template.TemplateModelException;
  * <ul>
  * <li><code>string</code>:base64编码的授权数据
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * ${getLicenseData()}
  * <p>

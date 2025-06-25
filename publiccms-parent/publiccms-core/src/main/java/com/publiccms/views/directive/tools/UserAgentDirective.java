@@ -20,15 +20,11 @@ import freemarker.template.TemplateException;
 
 /**
  * userAgent user agent分析指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>userAgent</code>:user agent,为空时取当前请求的user agent
  * </ul>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>object.ip</code>:客户端ip
  * <li><code>object.browser</code>:浏览器
@@ -39,9 +35,7 @@ import freemarker.template.TemplateException;
  * <li><code>object.deviceType</code>:设备类型
  * <li><code>object.userAgent</code>:user agent
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@tools.userAgent&gt;${a.deviceType}&lt;/@tools.userAgent&gt;
  *

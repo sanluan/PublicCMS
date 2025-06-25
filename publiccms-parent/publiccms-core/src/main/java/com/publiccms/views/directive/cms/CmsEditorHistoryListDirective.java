@@ -17,9 +17,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * editorHistoryList 内容正文历史列表查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>itemType</code>:项目类型
  * <li><code>itemId</code>:项目id
@@ -29,17 +27,13 @@ import freemarker.template.TemplateException;
  * <li><code>pageIndex</code>:页码
  * <li><code>pageSize</code>:每页条数
  * </ul>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値page子属性:
+ * <p>返回结果
  * <ul>
  * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
  * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsEditorHistory}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@cms.editorHistoryList contentId=1 fieldName='text'
  * pageSize=10&gt;&lt;#list page.list as

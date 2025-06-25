@@ -59,9 +59,7 @@ import jakarta.validation.ValidatorFactory;
  *
  * contentCreate 内容创建接口
  *
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>id</code>:内容id,为空时新建内容
  * <li><code>categoryId</code>:分类id
@@ -87,18 +85,13 @@ import jakarta.validation.ValidatorFactory;
  * <li><code>imagePaths</code>:多个图片路径
  * <li><code>imageDescriptions</code>:多个图片描述
  * </ul>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>result</code>:结果【failed:失败,success:成功】
  * <li><code>contentId</code>:内容id,当result为success时有效
  * <li><code>error</code>:错误,当result为failed时有效
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
- * <p>
+ * <p>使用示例
  *
  * <pre>
 &lt;script&gt;

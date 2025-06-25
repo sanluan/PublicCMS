@@ -14,15 +14,11 @@ import jakarta.annotation.Resource;
 /**
  *
  * getProcessTypeList 获取参数类型list
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>list</code>:参数类型名称
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;#list getProcessTypeList() as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;
  * <p>

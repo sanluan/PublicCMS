@@ -17,25 +17,19 @@ import freemarker.template.TemplateException;
 
 /**
  * fileHistoryList 文件修改历史列表获取指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>type</code>:文件类型【file,task,template】,默认template
  * <li><code>path</code>:文件路径
  * <li><code>orderField</code>:
  * 排序类型【fileName,fileSize,modifiedDate,createDate】,默认fileName
  * </ul>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>list</code>:文件列表
  * {@link com.publiccms.common.tools.CmsFileUtils$FileInfo}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@tools.fileHistoryList path='/'&gt;&lt;#list list as
  * a&gt;${a.fileName}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.fileHistoryList&gt;

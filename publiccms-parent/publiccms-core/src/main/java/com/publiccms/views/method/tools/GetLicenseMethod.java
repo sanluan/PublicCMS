@@ -18,9 +18,7 @@ import freemarker.template.TemplateModelException;
  * <ul>
  * <li><code>license</code>:授权数据{@link com.publiccms.common.copyright.License}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * ${getLicense().domain}
  * <p>

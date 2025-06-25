@@ -25,9 +25,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * surveyQuestion 调查问卷问题查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>id</code>:调查问卷问题id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsSurveyQuestion}
@@ -36,9 +34,7 @@ import freemarker.template.TemplateException;
  * <li><code>absoluteURL</code>:封面图处理为绝对路径 默认为<code>true</code>
  * <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@cms.surveyQuestion id=1&gt;${object.title}&lt;/@cms.surveyQuestion&gt;
  * <p>

@@ -15,19 +15,24 @@
                     <input type="text" name="name" value="${name!}"/>
                 </li>
                 <li>
+                    <label><@t.page 'channel'/>:</label>
+                    <input type="text" name="channel" value="${channel!}"/>
+                </li>
+                <li>
+                    <select class="combox" name="loginMethod">
+                        <option value><@t.page 'login_method'/></option>
+                        <option value="password"${(loginMethod?has_content&&"password"=loginMethod)?then(' selected="true"','')?no_esc}><@t.page 'password'/></option>
+                        <option value="clientAutoLogin"${(loginMethod?has_content&&"clientAutoLogin"=loginMethod)?then(' selected="true"','')?no_esc}><@t.page 'login.clientAutoLogin'/></option>
+                        <option value="otpcode"${(loginMethod?has_content&&"otpcode"=loginMethod)?then(' selected="true"','')?no_esc}><@t.page 'login.2fa'/>-<@t.page 'login.otpcode'/></option>
+                        <option value="fingerprint"${(loginMethod?has_content&&"fingerprint"=loginMethod)?then(' selected="true"','')?no_esc}><@t.page 'login.fingerprint'/></option>
+                    </select>
+                </li>
+                <li>
                     <select class="combox" name="result">
                         <option value><@t.page 'result'/></option>
                         <option value="true"${(result?has_content && "true" = result)?then(' selected="true"','')?no_esc}><@t.page 'success'/></option>
                         <option value="false"${(result?has_content && "false" = result)?then(' selected="true"','')?no_esc}><@t.page 'fail'/></option>
                     </select>
-                </li>
-                <li>
-                    <label><@t.page 'channel'/>:</label>
-                    <input type="text" name="channel" value="${channel!}"/>
-                </li>
-                <li>
-                    <label><@t.page 'login_method'/>:</label>
-                    <input type="text" name="loginMethod" value="${loginMethod!}"/>
                 </li>
                 <li>
                     <label><@t.page 'log.login_date'/>:</label>

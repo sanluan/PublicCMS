@@ -18,23 +18,17 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getPage 获取分页url
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ol>
  * <li><code>url</code>
  * <li><code>pageIndex</code>:页码数字
  * <li><code>string</code>:分页参数,动态url分页参数名,为空时返回静态化url分页结果
  * </ol>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>url</code>:带分页的url
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * ${getPage('https://www.publiccms.com/introduction/index_3.html',2)}
  * <p>

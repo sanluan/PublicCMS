@@ -39,23 +39,17 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  *
  * getHtml 获取远程页面文本
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ol>
  * <li><code>url</code>:
  * <li>参数,<code>map</code>类型或<code>string</code>类型,为空时以get方式请求,不为空时以post方式请求
  * <li>请求头,<code>map</code>类型
  * </ol>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>html</code>:页面文本
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * ${getHtml('https://www.publiccms.com/')}
  * <p>

@@ -16,9 +16,7 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getLayoutStyle 布局样式表
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ol>
  * <li>包含&#47;&#42; selecter &#42;&#47;的样式表
  * <li>被替换的选择器
@@ -28,9 +26,7 @@ import freemarker.template.TemplateModelException;
  * <ul>
  * <li><code>style</code>:替换后的样式表
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * ${getLayoutStyle('&#47;&#42; selecter &#42;&#47;','.diy-layout')}
  * <p>

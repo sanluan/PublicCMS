@@ -15,22 +15,16 @@ import jakarta.annotation.Resource;
 
 /**
  * diyMetadata diy元数据获取指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>itemType</code>:元数据类型,【region,layout,module】
  * <li><code>itemId</code>:元数据id
  * </ul>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>object</code>:diy元数据<code>region</code>:{@link com.publiccms.views.pojo.diy.CmsRegion},<code>layout</code>:{@link com.publiccms.views.pojo.diy.CmsLayout},<code>module</code>:{@link com.publiccms.views.pojo.diy.CmsModule}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@tools.diyMetadata itemType='region' itemId='00000000-0000-0000-0000-000000000000'&gt;${object.name}&lt;/@tools.diyMetadata&gt;
  *

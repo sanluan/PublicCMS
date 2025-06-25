@@ -22,24 +22,18 @@ import freemarker.template.TemplateException;
 /**
  *
  * clearLog 日志清理指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>clearDate</code>:起始发布日期,【2020-01-01 23:59:59】,【2020-01-01】,默认3个月前
  * </ul>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>result</code>map类型
  * <li><code>result.loginLog</code>:登录日志删除数量
  * <li><code>result.operateLog</code>:操作日志删除数量
  * <li><code>result.taskLog</code>:任务计划日志删除数量
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@task.clearLog&gt;&lt;#list result as
  * k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@task.clearLog&gt;

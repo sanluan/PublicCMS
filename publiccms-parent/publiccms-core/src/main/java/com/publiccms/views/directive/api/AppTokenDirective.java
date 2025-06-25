@@ -23,9 +23,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * appToken 接口访问授权Token获取接口
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>appKey</code>:应用key
  * <li><code>appSecret</code>:应用密钥
@@ -37,10 +35,7 @@ import freemarker.template.TemplateException;
  * <li><code>expiryDate</code>:过期日期
  * <li><code>error</code>:错误信息,当appKey、appSecret为空或错误时返回【secretError】
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
- * <p>
+ * <p>使用示例
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/appToken?appKey=1&amp;appSecret=1', function(data){

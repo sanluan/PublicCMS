@@ -8,7 +8,7 @@ dependencies {
     implementation project(':publiccms-core')
 
     // https://mvnrepository.com/artifact/software.amazon.awssdk/s3
-    implementation "software.amazon.awssdk:s3:2.31.65"
+    implementation "software.amazon.awssdk:s3:2.31.70"
 
     compileOnly "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
     compileOnly "jakarta.servlet:jakarta.servlet-api:${servletVersion}"

@@ -21,9 +21,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * categoryModel 分类内容模型映射查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>categoryId</code>:分类id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsCategoryModel}
@@ -33,9 +31,7 @@ import freemarker.template.TemplateException;
  * <li><code>categoryIds</code>
  * 多个分类id,当categoryId不存在,且modelId存在时生效,结果返回<code>map</code>(分类id,<code>object</code>)
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@cms.categoryModel categoryId=1
  * modelId='article'&gt;${object.templatePath}&lt;/@cms.categoryModel&gt;

@@ -20,9 +20,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * bindingUser 客户端绑定用户接口
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>uuid</code>:设备唯一id
  * <li><code>channel</code>:客户端版本
@@ -32,10 +30,7 @@ import freemarker.template.TemplateException;
  * <ul>
  * <li><code>result</code>:绑定结果
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
- * <p>
+ * <p>使用示例
  * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/bindingUser?uuid=1&amp;channel=web&amp;authToken=用户登录授权&amp;authUserId=1', function(data){

@@ -19,9 +19,7 @@ import freemarker.template.TemplateModelException;
  * <ul>
  * <li><code>string</code>:随机uuid
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * ${getUUID()}
  * <p>

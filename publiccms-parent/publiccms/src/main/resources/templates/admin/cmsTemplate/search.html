@@ -35,7 +35,7 @@
                                     <ul class="searchResult">
                                     <#list list as a>
                                     <li>
-                                        <a tname="replaceList[${a?index}].path" tvalue="${a.path}" href="javascript:;" checked="true" onclick="return false;">${a.path}<#if a.matchList?size gt 1> (${a.matchList?size})</#if></a>
+                                        <a tname="replaceList[${a?index}].path" tvalue="${a.path}" href="javascript:;" checked="true" onclick="return false;"><#if a.path?starts_with("/include")><@tools.placeMetadata path=a.path?keep_after("/include")>${(object.alias)!}</@tools.placeMetadata><#else><@tools.metadata path=a.path>${(object.alias)!}</@tools.metadata></#if> ${a.path}<#if a.matchList?size gt 1> (${a.matchList?size})</#if></a>
                                         <ul>
                                         <#list a.matchList as m>
                                             <li>

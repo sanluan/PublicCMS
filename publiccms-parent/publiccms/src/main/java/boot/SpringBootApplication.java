@@ -37,9 +37,9 @@ import config.spring.CmsConfig;
 public class SpringBootApplication {
 
     /**
-     * <p lang="zh">在idea中通过main方法启动需要将工作目录改为 publiccms 模块所在的路径，否则静态资源不能加载
-     * <p lang="ja">ideaのmainメソッドから始めるには、作業ディレクトリをpubliccmsモジュールが配置されているパスに変更する必要があり、そうしないと静的リソースをロードできません
-     * <p lang="en">To start through the main method in idea, you need to change the working directory to the path where the publiccms module is located, otherwise the static resources cannot be loaded
+     * <p>在idea中通过main方法启动需要将工作目录改为 publiccms 模块所在的路径，否则静态资源不能加载
+     * <p>ideaのmainメソッドから始めるには、作業ディレクトリをpubliccmsモジュールが配置されているパスに変更する必要があり、そうしないと静的リソースをロードできません
+     * <p>To start through the main method in idea, you need to change the working directory to the path where the publiccms module is located, otherwise the static resources cannot be loaded
      * <p>https://www.publiccms.com/question/2018/02-13/376.html
      * 
      * @param args

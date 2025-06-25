@@ -196,6 +196,9 @@ public class CmsTemplateAdminController {
     public String savePlaceMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, @ModelAttribute CmsPlaceMetadata metadata, String content, HttpServletRequest request,
             ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
+            if (!path.startsWith(Constants.SEPARATOR)) {
+                path = CommonUtils.joinString(Constants.SEPARATOR, path);
+            }
             String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
             String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
             try {

@@ -20,23 +20,17 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  *
  * getPrivateUrl 获取私有文件绝对路径
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ol>
  * <li><code>url</code>,文件url
  * <li><code>expiryMinutes</code>,过期分钟数,可以为空
  * <li><code>string</code>,文件名,可以为空
  * </ol>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>url</code>:绝对路径的url
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * ${getPrivateUrl('index.html')}
  * <p>

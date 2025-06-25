@@ -75,7 +75,8 @@ public class PlaceImportComponent {
             for (int rowNum = sheet.getFirstRowNum() + 1; rowNum <= lastRowNum; rowNum++) {
                 j = 1;
                 CmsPlace entity = new CmsPlace();
-                CmsPlaceAttribute attribute = new CmsPlaceAttribute();
+                entity.setPath(path);
+                entity.setSiteId(site.getId());
                 row = sheet.getRow(rowNum);
                 entity.setTitle(XSSFWorkbookUtils.getCellValue(row.getCell(j++)));
                 if (null != fieldList && fieldList.contains("url")) {
@@ -101,13 +102,24 @@ public class PlaceImportComponent {
                 }
                 j++;
                 entity.setStatus(CmsPlaceService.STATUS_PEND);
-                service.save(entity);
+                j++;
+                CmsPlaceAttribute attribute = null;
                 if (CommonUtils.notEmpty(metadata.getExtendList())) {
+                    attribute = new CmsPlaceAttribute();
                     Map<String, String> map = new HashMap<>();
                     for (SysExtendField extend : metadata.getExtendList()) {
                         map.put(extend.getId().getCode(), XSSFWorkbookUtils.getCellValue(row.getCell(j++)));
                     }
                     attribute.setData(ExtendUtils.getExtendString(map));
+                }
+                if (row.getLastCellNum() > j) {
+                    entity.setItemType(XSSFWorkbookUtils.getCellValue(row.getCell(j++)));
+                    if (!CmsPlaceService.ITEM_TYPE_CUSTOM.equalsIgnoreCase(entity.getItemType())) {
+                        entity.setItemId(Long.valueOf(XSSFWorkbookUtils.getCellValue(row.getCell(j++))));
+                    }
+                }
+                service.save(entity);
+                if (null != attribute) {
                     attribute.setPlaceId(entity.getId());
                     attributeService.save(attribute);
                 }

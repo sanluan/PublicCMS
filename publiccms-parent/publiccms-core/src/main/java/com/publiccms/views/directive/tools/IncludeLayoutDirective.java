@@ -22,17 +22,13 @@ import jakarta.annotation.Resource;
 
 /**
  * includeLayout 包含diy布局指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>id</code>:布局id
  * </ul>
  * <p>
  * 打印包含结果
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@tools.includeLayout
  * id='00000000-0000-0000-0000-000000000000'&gt;${index},&lt;/@tools.includeLayout&gt;

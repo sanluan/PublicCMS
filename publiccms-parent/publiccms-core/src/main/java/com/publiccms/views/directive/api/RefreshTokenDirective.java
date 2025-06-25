@@ -20,9 +20,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * refreshToken 刷新appToken接口
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>appToken</code>:设备唯一id
  * </ul>
@@ -33,9 +31,7 @@ import freemarker.template.TemplateException;
  * <li><code>expiryDate</code>:过期日期
  * <li><code>error</code>:错误信息【needNotRefresh】
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * <pre>
 &lt;script&gt;

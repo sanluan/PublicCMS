@@ -23,17 +23,13 @@ import freemarker.template.TemplateException;
 /**
  *
  * visitSession 访问会话报表查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>visitDate</code>:访问日期,【2020-01-01】
  * <li><code>sessionId</code>:会话id,两个参数都不为空时,结果返回<code>object</code>
  * {@link com.publiccms.entities.visit.VisitSession}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@visit.session visitDate='2020-01-01' sessionId='xxxx-xxxx-xxxx'&gt;${object.pv}&lt;/@visit.session&gt;
  * <pre>

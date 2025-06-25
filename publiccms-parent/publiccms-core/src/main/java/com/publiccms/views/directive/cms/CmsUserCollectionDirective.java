@@ -21,9 +21,7 @@ import jakarta.annotation.Resource;
 /**
  *
  * userCollection 用户收藏查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>userId</code>:用户id
  * <li><code>contentId</code>:内容id,结果返回<code>object</code>
@@ -31,9 +29,7 @@ import jakarta.annotation.Resource;
  * <li><code>contentIds</code>
  * 多个项目id,逗号或空格间隔,当contentId为空时生效,结果返回<code>map</code>(contentId,<code>object</code>)
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@cms.userCollection userId=1
  * contentId=1&gt;${object.scores}&lt;/@cms.userCollection&gt;

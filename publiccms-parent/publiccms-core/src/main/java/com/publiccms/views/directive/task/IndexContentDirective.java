@@ -15,16 +15,12 @@ import freemarker.template.TemplateException;
 /**
  *
  * indexContent 重建内容索引指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>id</code>:内容id,ids为空时有效
  * <li><code>ids</code>:多个内容id
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@task.indexContent id=1&gt;&lt;&lt;/@task.indexContent&gt;
  *

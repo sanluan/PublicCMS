@@ -37,12 +37,8 @@ public class CmsCategory extends EntityAttribute implements java.io.Serializable
     @JsonIgnore
     private short siteId;
     /**
-     * <p lang="en">
      * name
-     * <p lang="zh">
      * 名称
-     * <p lang="ja">
-     * 名前
      */
     @GeneratorColumn(title = "名称")
     @NotNull

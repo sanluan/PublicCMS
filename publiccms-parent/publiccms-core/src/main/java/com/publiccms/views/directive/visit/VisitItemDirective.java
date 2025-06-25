@@ -23,18 +23,14 @@ import freemarker.template.TemplateException;
 /**
  *
  * visitItem 访问项目报表查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>visitDate</code>:访问日期,【2020-01-01】
  * <li><code>itemType</code>:访问项目类型,【category,content,user等页面统计时中的itemType】
  * <li><code>itemId</code>:访问项目id,三个参数都不为空时,结果返回<code>object</code>
  * {@link com.publiccms.entities.visit.VisitItem}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@visit.item visitDate='2020-01-01' visitHour=9&gt;${object.pv}&lt;/@visit.item&gt;
  * <pre>

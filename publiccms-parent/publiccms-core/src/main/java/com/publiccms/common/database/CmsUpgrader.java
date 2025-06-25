@@ -37,6 +37,8 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
     private static final String VERSION_202302 = "V4.0.202302";
     private static final String VERSION5_202302 = "V5.202302";
     private static final String VERSION_202406 = "V4.0.202406";
+    private static final String VERSION5_202406 = "V5.202406";
+    private static final String VERSION_202506 = "V4.0.202506";
 
     private static final List<String> OLD_DATABASE_CONFIG_VERSION_LIST = Arrays.asList(VERSION_20170708, VERSION_20180210,
             VERSION_180707, VERSION_180825, VERSION_181024);
@@ -45,7 +47,7 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
      */
     private static final List<String> VERSION_LIST = Arrays.asList(VERSION_20170708, VERSION_20180210, VERSION_180707,
             VERSION_180825, VERSION_181024, VERSION_190312, VERSION_2019, VERSION_202004, VERSION_202011, VERSION_202107,
-            VERSION_2021, VERSION_202204, VERSION_202302, VERSION5_202302);
+            VERSION_2021, VERSION_202204, VERSION_202302, VERSION5_202302, VERSION_202406, VERSION5_202406);
 
     /**
      * @throws SQLException
@@ -83,7 +85,8 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
         case VERSION5_202302:
             runScript(stringWriter, connection, VERSION_202302, VERSION_202406);
         case VERSION_202406:
-            runScript(stringWriter, connection, VERSION_202406, VERSION_202406);
+        case VERSION5_202406:
+            runScript(stringWriter, connection, VERSION_202406, VERSION_202506);
             updateImageConfig(stringWriter, connection);
         }
     }

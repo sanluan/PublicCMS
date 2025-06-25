@@ -243,7 +243,7 @@ input.gray, textarea.gray{color:gray;}
 select{border:1px solid;border-color:#A2BAC0 #B8D0D6 #B8D0D6 #A2BAC0;}
 textarea{max-width:100%;}
 .image-preview{position:relative;width:1px;}
-.image-preview .image-box{position:absolute;margin-bottom:30px;top:0;left:0;z-index:9999;}
+.image-preview .image-box{position:absolute;top:30px;left:0;z-index:9999;}
 .image-preview .image-box img{max-height:400px;max-width:500px;}
 span.error{display:block;overflow:hidden;width:165px;height:28px;padding:0 3px;line-height:28px;background:#F00;color:#FFF;}
 

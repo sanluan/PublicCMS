@@ -17,32 +17,19 @@ import com.publiccms.views.pojo.entities.ConfigInfo;
 import freemarker.template.TemplateException;
 
 /**
-*
-* sysConfigList 配置列表查询指令
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
-* <ul>
  *
  * sysConfigList 配置列表查询指令
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.views.pojo.entities.ConfigInfo}
-* </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
-* <p>
-* &lt;@sys.configList&gt;&lt;#list list as
-* a&gt;${a.code}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.configList&gt;
-* 
-* <pre>
+ * </ul>
+ * <p>使用示例
+ * <p>
+ * &lt;@sys.configList&gt;&lt;#list list as
+ * a&gt;${a.code}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.configList&gt;
+ *
+ * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/sys/configList?appToken=接口访问授权Token', function(data){
     console.log(data);

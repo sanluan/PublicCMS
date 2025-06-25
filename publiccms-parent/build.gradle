@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.5.0"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.5.3"
     }
 }
 
@@ -23,7 +23,7 @@ subprojects {
     apply plugin: "eclipse-wtp"
 
     group = "com.publiccms"
-    version = "V5.202406.f"
+    version = "V5.2024506.a"
 
     test.enabled = false
 
@@ -35,12 +35,12 @@ subprojects {
         springVersion = "6.2.8"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "3.5.0"
+        springBootVersion = "3.5.3"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        junitVersion = "5.13.1"
+        junitVersion = "5.13.2"
         // http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "7.0.2.Final"
+        hibernateVersion = "7.0.3.Final"
         // http://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm
         hibernateToolsVersion = "7.0.2.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
@@ -57,7 +57,7 @@ subprojects {
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
         mybatisGenerator = "1.4.2"
         // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
-        pageHelperVersion = "6.1.0"
+        pageHelperVersion = "6.1.1"
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "1.5.2"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
@@ -119,7 +119,7 @@ subprojects {
         // https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc
         therapiJavadocVersion = "0.15.0"
         // https://mvnrepository.com/artifact/org.jsoup/jsoup
-        jsoupVersion = "1.20.1"
+        jsoupVersion = "1.21.1"
         // https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api
         annotationVersion = "2.1.1"
         // https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api
@@ -127,7 +127,7 @@ subprojects {
         // https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail
         mailVersion = "2.0.1"
         // https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
-        jaxbVersion = "4.0.5"
+        jaxbVersion = "2.3.9"
     }
     sourceCompatibility = 21
     targetCompatibility = 21

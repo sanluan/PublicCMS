@@ -19,12 +19,7 @@ import jakarta.annotation.Resource;
 /**
  *
  * sysUserSetting 配置数据查询指令
- * <p lang="zh">
- * 参数列表
- * <p lang="en">
- * parameter list
- * <p lang="ja">
- * パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>userId</code>:用户ID
  * <li><code>code</code>:配置编码,userId不为空时结果返回<code>string</code>
@@ -32,12 +27,7 @@ import jakarta.annotation.Resource;
  * <li><code>codes</code>:多个配置编码,userId不为空时结果返回<code>map</code>(code,<code>string</code>)
  * <li><code>userIds</code>:多个用户ID,code不为空时,结果返回<code>map</code>(userId,<code>string</code>)
  * </ul>
- * <p lang="zh">
- * 使用示例
- * <p lang="en">
- * usage example
- * <p lang="ja">
- * 使用例
+ * <p>使用示例
  * <p>
  * &lt;@sys.UserSetting userId=1
  * code='home_title'&gt;${object}&lt;/@sys.UserSetting&gt;

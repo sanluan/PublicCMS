@@ -31,14 +31,14 @@ public class CmsVersion {
      * @return version
      */
     public static final String getVersion() {
-        return BASE_VERSION + ".202406";
+        return BASE_VERSION + ".202506";
     }
 
     /**
      * @return revision
      */
     public static final String getRevision() {
-        return "f";
+        return "a";
     }
 
     /**

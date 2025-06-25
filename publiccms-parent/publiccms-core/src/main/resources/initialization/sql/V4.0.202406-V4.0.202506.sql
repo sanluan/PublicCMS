@@ -318,7 +318,7 @@ UPDATE sys_module SET authorized_url = NULL WHERE id = 'order_history_list';
 INSERT INTO sys_module VALUES ('process_view', 'sysWorkflowProcess/view', NULL, NULL, 'common', 1, 0, 0);
 INSERT INTO `sys_module_lang` VALUES ('process_view', 'en', 'View');
 INSERT INTO `sys_module_lang` VALUES ('process_view', 'ja', '見る');
-INSERT INTO `sys_module_lang` VALUES ('process_view', 'zh', '流查看');
+INSERT INTO `sys_module_lang` VALUES ('process_view', 'zh', '查看');
 UPDATE sys_module SET parent_id = 'common',sort=0,attached=NULL WHERE id = 'content_view';
 INSERT INTO `sys_module` VALUES ('workflow_view', 'sysWorkflow/view', NULL, NULL, 'common', 1, 0, 0);
 INSERT INTO `sys_module_lang` VALUES ('workflow_view', 'en', 'View');
@@ -338,3 +338,6 @@ INSERT INTO `sys_module` VALUES ('place_import', 'cmsPlace/import', 'cmsPlace/do
 INSERT INTO `sys_module_lang` VALUES ('place_import', 'en', 'Import');
 INSERT INTO `sys_module_lang` VALUES ('place_import', 'ja', '導入');
 INSERT INTO `sys_module_lang` VALUES ('place_import', 'zh', '导入');
+-- 2025-06-25 --
+DELETE FROM sys_module_lang WHERE module_id in ('myself_content_view','myself_process_view');
+UPDATE sys_module SET menu = 0 WHERE id = 'content_check';

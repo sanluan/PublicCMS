@@ -19,21 +19,15 @@ import freemarker.template.TemplateException;
 
 /**
  * templateRegionList 模板文件页面可视化区域列表指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>path</code>:文件路径
  * </ul>
- * <p lang="zh">返回结果
- * <p lang="en">return result
- * <p lang="ja">戻り値
+ * <p>返回结果
  * <ul>
  * <li><code>list</code>:可视化区域id列表
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@tools.templateRegionList path='index.html'&gt;&lt;#list list as
  * a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.templateRegionList&gt;

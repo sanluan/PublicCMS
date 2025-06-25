@@ -16,9 +16,7 @@ import freemarker.template.TemplateException;
 /**
  *
  * userSurveyQuestionList 用户问卷问题解答列表查询指令
- * <p lang="zh">参数列表
- * <p lang="en">parameter list
- * <p lang="ja">パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>userId</code>:用户id
  * <li><code>questionId</code>:问题id
@@ -35,9 +33,7 @@ import freemarker.template.TemplateException;
  * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsUserSurveyQuestion}
  * </ul>
- * <p lang="zh">使用示例
- * <p lang="en">usage example
- * <p lang="ja">使用例
+ * <p>使用示例
  * <p>
  * &lt;@cms.userSurveyQuestionList userId=1 pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.answer}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userSurveyQuestionList&gt;

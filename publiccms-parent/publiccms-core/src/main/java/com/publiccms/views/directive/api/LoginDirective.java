@@ -33,37 +33,23 @@ import jakarta.annotation.Resource;
 /**
  *
  * login 登录接口
- * <p lang="zh">
+ * <p>
  * 参数列表
- * <p lang="en">
- * parameter list
- * <p lang="ja">
- * パラメータリスト
  * <ul>
  * <li><code>username</code>:设备唯一id
  * <li><code>password</code>:用户名
  * <li><code>encoding</code>:密码加密方式
  * <li><code>channel</code>:登录渠道
  * </ul>
- * <p lang="zh">
+ * <p>
  * 返回结果
- * <p lang="en">
- * return result
- * <p lang="ja">
- * 戻り値
  * <ul>
  * <li><code>result</code>:登录结果,【true,false】
  * <li><code>authToken</code>:用户登录授权
  * <li><code>expiryDate</code>:过期日期
  * <li><code>user</code>:用户信息 {@link com.publiccms.entities.sys.SysUser}
  * </ul>
- * <p lang="zh">
- * 使用示例
- * <p lang="en">
- * usage example
- * <p lang="ja">
- * 使用例
- * <p>
+ * <p>使用示例
  *
  * <pre>
 &lt;script&gt;

@@ -20,24 +20,14 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysRecord 自定义记录查询写入指令
- * <p lang="zh">
- * 参数列表
- * <p lang="en">
- * parameter list
- * <p lang="ja">
- * パラメータリスト
+ * <p>参数列表
  * <ul>
  * <li><code>code</code>:记录编码,结果返回<code>object</code>
  * <li><code>data</code>:记录数据,不为空时记录该数据
  * {@link com.publiccms.entities.sys.SysRecord}
  * <li><code>codes</code>:多个记录编码,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p lang="zh">
- * 使用示例
- * <p lang="en">
- * usage example
- * <p lang="ja">
- * 使用例
+ * <p>使用示例
  * <p>
  * &lt;@sys.record code='site' data='data'&gt;${object.data}&lt;/@sys.record&gt;
  *
