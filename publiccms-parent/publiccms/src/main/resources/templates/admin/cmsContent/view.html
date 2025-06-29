@@ -163,7 +163,7 @@
                 <dd>
             <@cms.contentFileList contentId=a.id fileTypes='video,audio,document,other'>
                 <#list page.list as file>
-                    <p><a href="${(file.filePath)!}" download="${(file.description)!}">${(file.description)!}</a> <@t.page 'clicks'/>:${a.clicks!}</p>
+                    <p><a href="${(file.filePath)!}" download="${(file.description)!}" class="exclude-translate" target="_blank">${(file.description)!}</a> <@t.page 'clicks'/>:${a.clicks!}</p>
                 </#list>
             </@cms.contentFileList>
                 </dd>

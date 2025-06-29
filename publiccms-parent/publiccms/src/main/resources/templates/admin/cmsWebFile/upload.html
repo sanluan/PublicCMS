@@ -6,15 +6,15 @@
             <dd>
                 <input type="hidden" name="path" value="${path!}"/>
                 <input type="file" name="files" class="required" size="30" multiple="multiple"/>
-                <label class="overwrite hide"><input type="checkbox" name="overwrite" class="form-check-input" checked="checked"><@t.page 'upload.overwrite'/></label>
                 <label class="unzip hide"><input type="checkbox" name="unzip" class="form-check-input"><@t.page 'button.decompress'/></label>
+                <label class="overwrite hide"><input type="checkbox" name="overwrite" class="form-check-input" checked="checked"><@t.page 'upload.overwrite'/></label>
                 <span class="info warning hide">
                     <@t.message "verify.custom.fileType"/>
                     <a href="sysConfigData/edit.html?code=safe" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a>
                 </span>
             </dd>
             <dl class="nowrap zip hide">
-                <dt>`<@t.page 'decompress.position'/>:</dt>
+                <dt><@t.page 'decompress.position'/>:</dt>
                 <dd>
                     <label><input type="radio" name="here" value="false" checked="checked"/><@t.page 'decompress.position.new'/></label>
                     <label><input type="radio" name="here" value="true"/><@t.page 'decompress.position.here'/></label>
@@ -27,7 +27,7 @@
                     <label><input type="radio" name="encoding" value="utf-8" checked="checked"/><@t.page 'file.encoding.utf8'/></label>
                     <label><input type="radio" name="encoding" value="gbk"/><@t.page 'file.encoding.gbk'/></label>
                 </dd>
-            </dl>`
+            </dl>
         </dl>
     </div>
     <div class="formBar">
@@ -38,6 +38,7 @@
     </div>
 </form>
 <script>
+<#assign safeFileTypes=[]/>
 <@sys.configData code="safe"><#assign safeFileTypes=(object.allow_files?split(','))![]/></@sys.configData>
 $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",function(){
     if($(this).length && $(this)[0].files){
@@ -67,9 +68,9 @@ $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",func
             },
             success: function (result) {
                 if(result){
-                    $('.overwrite').show();
+                    $('.overwrite',$.pdialog.getCurrent()).show();
                 } else {
-                    $('.overwrite').hide();
+                    $('.overwrite',$.pdialog.getCurrent()).hide();
                 }
             }
         });
@@ -78,8 +79,10 @@ $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",func
 $("input[name=unzip]",$.pdialog.getCurrent()).on("click", function(){
     if($(this).is(':checked')) {
         $('.zip',$.pdialog.getCurrent()).show();
+        $('.overwrite',$.pdialog.getCurrent()).hide();
     } else {
         $('.zip',$.pdialog.getCurrent()).hide();
+        $('.overwrite',$.pdialog.getCurrent()).show();
     }
 });
 </script>

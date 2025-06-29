@@ -143,29 +143,23 @@ public class CmsWebFileAdminController {
                             try {
                                 File dest = File.createTempFile("temp_", suffix);
                                 file.transferTo(dest);
+                                String targetPath;
                                 if (here) {
-                                    ZipUtils.unzipHere(dest.getAbsolutePath(), encoding, zipOverwrite, (f, e) -> {
-                                        String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(),
-                                                e.getName(), true);
-                                        if (ArrayUtils.contains(safeConfigComponent.getSafeSuffix(site), suffix)) {
-                                            try {
-                                                CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
-                                            } catch (IOException e1) {
-                                            }
-                                        }
-                                        return true;
-                                    });
+                                    targetPath = siteComponent.getWebFilePath(site.getId(), path);
                                 } else {
-                                    ZipUtils.unzip(dest.getAbsolutePath(), encoding, zipOverwrite, (f, e) -> {
-                                        String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(), e.getName(),
-                                                true);
-                                        try {
-                                            CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
-                                        } catch (IOException e1) {
-                                        }
-                                        return true;
-                                    });
+                                    targetPath = siteComponent.getWebFilePath(site.getId(),
+                                            CommonUtils.joinString(path, Constants.SEPARATOR,
+                                                    originalName.substring(0, originalName.lastIndexOf(Constants.DOT))));
                                 }
+                                ZipUtils.unzip(dest.getAbsolutePath(), targetPath, encoding, zipOverwrite, (f, e) -> {
+                                    String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(), e.getName(),
+                                            true);
+                                    try {
+                                        CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
+                                    } catch (IOException e1) {
+                                    }
+                                    return true;
+                                });
                                 Files.delete(dest.toPath());
                             } catch (IOException e) {
                                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -329,7 +323,9 @@ public class CmsWebFileAdminController {
         if (CmsFileUtils.isDirectory(filepath)) {
             try {
                 String zipFileName = null;
-                if (CommonUtils.empty(path) || path.endsWith("/") || path.endsWith("\\")) {
+                if (CommonUtils.empty(path)) {
+                    zipFileName = CommonUtils.joinString(filepath, Constants.SEPARATOR, "files.zip");
+                } else if (path.endsWith("/") || path.endsWith("\\")) {
                     zipFileName = CommonUtils.joinString(filepath, "files.zip");
                 } else {
                     zipFileName = CommonUtils.joinString(filepath, ".zip");
