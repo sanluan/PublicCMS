@@ -83,7 +83,7 @@
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
         <version.collections>4.5.0</version.collections>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-        <version.lang>3.17.0</version.lang>
+        <version.lang>3.18.0</version.lang>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <version.io>2.19.0</version.io>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
