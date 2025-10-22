@@ -25,7 +25,7 @@ public class CmsVersion {
     /**
      * base version
      */
-    public static final String BASE_VERSION = "V5";
+    public static final String BASE_VERSION = "V6";
 
     /**
      * @return version
