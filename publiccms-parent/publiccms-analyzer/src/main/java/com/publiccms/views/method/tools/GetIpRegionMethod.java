@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.lionsoul.ip2region.xdb.LongByteArray;
 import org.lionsoul.ip2region.xdb.Searcher;
+import org.lionsoul.ip2region.xdb.Version;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
@@ -41,24 +43,34 @@ console.log(data);
  */
 @Component
 public class GetIpRegionMethod extends BaseMethod {
-    private Searcher searcher;
+    private static LongByteArray longByteArray;
 
     public GetIpRegionMethod() {
-        try (InputStream inputStream = GetIpRegionMethod.class.getResourceAsStream("/ip2region.xdb")) {
-            searcher = Searcher.newWithBuffer(IOUtils.toByteArray(inputStream));
+        try (InputStream inputStream = GetIpRegionMethod.class.getResourceAsStream("/ip2region_v4.xdb")) {
+            longByteArray = new LongByteArray(IOUtils.toByteArray(inputStream));
         } catch (IOException e) {
-            searcher = null;
+            e.printStackTrace();
+            longByteArray = null;
         }
     }
 
     @Override
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String ip = getString(0, arguments);
-        if (CommonUtils.notEmpty(ip) && IpUtils.isIpv4(ip) && null != searcher) {
+        if (CommonUtils.notEmpty(ip) && IpUtils.isIpv4(ip) && null != longByteArray) {
+            Searcher searcher = null;
             try {
+                searcher = Searcher.newWithBuffer(Version.IPv4, longByteArray);
                 return getIpRegion(searcher.search(ip));
             } catch (Exception e) {
                 log.error(e.getMessage());
+            } finally {
+                if (null != searcher) {
+                    try {
+                        searcher.close();
+                    } catch (IOException e) {
+                    }
+                }
             }
         }
         return null;
@@ -80,11 +92,14 @@ public class GetIpRegionMethod extends BaseMethod {
         if (strings.length > 0 && !"0".equals(strings[0])) {
             ipRegion.setCountry(strings[0]);
         }
+        if (strings.length > 1 && !"0".equals(strings[1])) {
+            ipRegion.setProvince(strings[1]);
+        }
         if (strings.length > 2 && !"0".equals(strings[2])) {
-            ipRegion.setProvince(strings[2]);
+            ipRegion.setCity(strings[2]);
         }
         if (strings.length > 3 && !"0".equals(strings[3])) {
-            ipRegion.setCity(strings[3]);
+            ipRegion.setOperator(strings[3]);
         }
         return ipRegion;
     }

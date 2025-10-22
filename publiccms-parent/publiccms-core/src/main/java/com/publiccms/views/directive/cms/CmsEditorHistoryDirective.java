@@ -20,14 +20,16 @@ import freemarker.template.TemplateException;
 /**
  *
  * editorHistory 正文历史查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>id</code>:id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsEditorHistory}
  * <li><code>ids</code>:
  * 多个id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.editorHistory id=1&gt;${object.text}&lt;/@cms.editorHistory&gt;
  * <p>
@@ -57,7 +59,8 @@ public class CmsEditorHistoryDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsEditorHistory> entityList = service.getEntitys(ids);
-                Map<String, CmsEditorHistory> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), ids);
+                Map<String, CmsEditorHistory> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), ids,
+                        e -> e.getId());
                 handler.put("map", map).render();
             }
         }

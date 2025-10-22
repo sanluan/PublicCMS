@@ -41,7 +41,7 @@ public class SysWorkflowProcessDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<SysWorkflowProcess> entityList = service.getEntitys(ids);
                 Map<String, SysWorkflowProcess> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null,
-                        ids, entity -> site.getId() == entity.getSiteId());
+                        ids, e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

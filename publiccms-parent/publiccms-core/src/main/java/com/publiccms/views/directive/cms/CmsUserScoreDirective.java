@@ -21,7 +21,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * userScore 用户评分查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>userId</code>:用户id
  * <li><code>itemType</code>:项目类型
@@ -30,11 +31,14 @@ import freemarker.template.TemplateException;
  * <li><code>itemIds</code>
  * 多个项目id,逗号或空格间隔,当itemId为空时生效,结果返回<code>map</code>(itemId,<code>object</code>)
  * </ul>
- * <p>使用示例
  * <p>
- * &lt;@cms.userScore userId=1 itemType="content" itemId=1&gt;${object.scores}&lt;/@cms.userScore&gt;
+ * 使用示例
  * <p>
- * &lt;@cms.userScore userId=1 itemType="content" itemIds='1,2,3'&gt;&lt;#list map as
+ * &lt;@cms.userScore userId=1 itemType="content"
+ * itemId=1&gt;${object.scores}&lt;/@cms.userScore&gt;
+ * <p>
+ * &lt;@cms.userScore userId=1 itemType="content" itemIds='1,2,3'&gt;&lt;#list
+ * map as
  * k,v&gt;${k}:${v.scores}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userScore&gt;
  *
  * <pre>
@@ -67,7 +71,8 @@ public class CmsUserScoreDirective extends AbstractTemplateDirective {
                         entityIds[i] = new CmsUserScoreId(userId, itemType, itemIds[i]);
                     }
                     List<CmsUserScore> entityList = service.getEntitys(entityIds);
-                    Map<String, CmsUserScore> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getItemId()), itemIds);
+                    Map<String, CmsUserScore> map = CommonUtils.listToMapSorted(entityList,
+                            k -> String.valueOf(k.getId().getItemId()), itemIds, e -> e.getId().getItemId());
                     handler.put("map", map).render();
                 }
             }

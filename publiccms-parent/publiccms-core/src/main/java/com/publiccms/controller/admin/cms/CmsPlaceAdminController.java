@@ -46,9 +46,9 @@ import com.publiccms.logic.component.exchange.PlaceExchangeComponent;
 import com.publiccms.logic.component.exchange.PlaceExportComponent;
 import com.publiccms.logic.component.exchange.PlaceImportComponent;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsEditorHistoryService;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
@@ -65,7 +65,7 @@ import com.publiccms.views.pojo.model.ExtendDataParameters;
 import freemarker.template.TemplateException;
 
 /**
- * 
+ *
  * cmsPlaceController
  *
  */
@@ -97,6 +97,8 @@ public class CmsPlaceAdminController {
     private PlaceExportComponent exportComponent;
     @Resource
     private PlaceImportComponent importComponent;
+    @Resource
+    private StatisticsComponent statisticsComponent;
     @Resource
     private SysWorkflowProcessItemService workflowProcessItemService;
     @Resource
@@ -146,6 +148,9 @@ public class CmsPlaceAdminController {
                 if (ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
+                if (ControllerUtils.errorCustom("statusError", CmsPlaceService.STATUS_CHECKING == oldEntity.getStatus(), model)) {
+                    return CommonConstants.TEMPLATE_ERROR;
+                }
                 entity.setUpdateDate(CommonUtils.getDate());
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 if (null != entity) {
@@ -153,6 +158,7 @@ public class CmsPlaceAdminController {
                             && (entity.getClicks() < entity.getMaxClicks() || 0 == entity.getMaxClicks())) {
                         service.shelf(entity.getId(), true);
                     }
+                    statisticsComponent.removePlace(entity.getId());
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.place", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -185,15 +191,16 @@ public class CmsPlaceAdminController {
             if (null != metadata.getWorkflowId()) {
                 SysWorkflowProcessItem item = workflowProcessItemService.getEntity(
                         new SysWorkflowProcessItemId(SysWorkflowProcessService.ITEM_TYPE_PLACE, String.valueOf(entity.getId())));
-                if (null == item || null != oldEntity && CmsContentService.STATUS_NORMAL == oldEntity.getStatus()) {
+                if (null == item || null != oldEntity && CmsPlaceService.STATUS_PEND == oldEntity.getStatus()) {
                     SysWorkflowProcess process = workflowProcessService.createProcess(site.getId(), metadata.getWorkflowId(),
                             admin.getId(), entity.getTitle(), SysWorkflowProcessService.ITEM_TYPE_PLACE,
                             String.valueOf(entity.getId()));
                     if (null != process) {
                         service.checking(site.getId(), entity.getId());
                     }
-                } else if (null != item && CmsContentService.STATUS_REJECT == oldEntity.getStatus()) {
+                } else if (null != item) {
                     workflowProcessService.reopenProcess(site.getId(), item.getProcessId());
+                    service.checking(site.getId(), entity.getId());
                 }
             }
 

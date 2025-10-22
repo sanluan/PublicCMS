@@ -158,6 +158,7 @@ public class PlaceController {
                     return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
+                statisticsComponent.removePlace(entity.getId());
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), null == user ? null : user.getDeptId(),
                         LogLoginService.CHANNEL_WEB, "update.place", ip, CommonUtils.getDate(), entity.getPath()));
             } else {

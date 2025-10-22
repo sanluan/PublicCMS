@@ -15,7 +15,7 @@ import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -81,7 +81,7 @@ public abstract class AbstractDataExchange<E, D> implements DataExchange<E, D> {
             for (String file : webfileList) {
                 String fullName;
                 if (file.startsWith(site.getSitePath())) {
-                    fullName = StringUtils.removeStart(file, site.getSitePath());
+                    fullName = Strings.CS.removeStart(file, site.getSitePath());
                 } else {
                     fullName = file;
                 }

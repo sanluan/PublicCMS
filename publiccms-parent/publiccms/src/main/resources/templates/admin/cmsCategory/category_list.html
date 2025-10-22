@@ -26,7 +26,7 @@
                     </li>
                     <#if authorizedMap['cmsCategory/export']>
                         <li>
-                            <a class="button" href="cmsCategory/export?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
+                            <a class="button" href="cmsCategory/export?_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="bi bi-cloud-download"></i><@t.page "button.export"/></a>
                         </li>
                     </#if>
                 </ul>
@@ -65,17 +65,17 @@
         </#if>
         <#if authorizedMap['cmsCategory/delete']>
             <li class="line">line</li>
-            <li><a href="cmsCategory/delete?_csrf=<@tools.csrfToken admin=true/>&ref=page" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsCategory/delete?_csrf=<@tools.csrfToken admin=true/>&rel=page" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i><@t.page 'button.batch_delete'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/rebuildChildIds']>
             <li class="line">line</li>
-            <li><a href="cmsCategory/rebuildChildIds?_csrf=<@tools.csrfToken admin=true/>&ref=page" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh icon-large"></i><@t.page 'button.rebuild_childs'/></a></li>
+            <li><a href="cmsCategory/rebuildChildIds?_csrf=<@tools.csrfToken admin=true/>&rel=page" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh icon-large"></i><@t.page 'button.rebuild_childs'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/seo']>
             <li><a href="cmsCategory/seo.html" target="navTab" rel="cmsCategory/seo"><i class="bi bi-search-heart"></i><@t.page 'button.batch_seo'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/import']>
-            <li><a href="cmsCategory/import.html" target="dialog" mask="true" width="500" height="250"><i class="icon-upload-alt icon-large"></i><@t.page 'import'/></a></li>
+            <li><a href="cmsCategory/import.html" target="dialog" mask="true" width="500" height="250"><i class="bi bi-cloud-upload"></i><@t.page "import"/></a></li>
         </#if>
         </ul>
     </div>
@@ -160,7 +160,7 @@
                     <a href="cmsCategory/batchCopy.html?id=${a.id}" class="btnText blue" target="navTab" rel="cmsCategory/batchCopy"><i class="bi bi-files"></i><@t.page 'button.batch_copy'/></a>
                 </#if>
                 <#if authorizedMap['cmsCategory/export']>
-                    <a href="cmsCategory/export?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText" target="_blank"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
+                    <a href="cmsCategory/export?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText" target="_blank"><i class="bi bi-cloud-download"></i><@t.page "button.export"/></a>
                 </#if>
                 <#if authorizedMap['cmsPlace/push']>
                     <a href="cmsPlace/push.html?itemType=category&itemId=${a.id}" class="btnText blue" target="dialog" mask="true"><@t.page 'button.push'/></a>

@@ -3,13 +3,13 @@
     <#list page.list as a>
         <@t.merge 'contentIds' a.id.itemId!/>
     </#list>
-    
+
     <@cms.content ids=t.contentIds><#assign contentMap=map/></@cms.content>
     <#list page.list as a>
         <p class="ellipsis">
-            <#assign content=contentMap[a.id.itemId?string]/>
-            <span class="float-right date info">${content.publishDate?string("yyyy-MM-dd")!} <i class="bi bi-eye"></i> ${a.uv!}</span>
-            <a href="${content.url!}" class="exclude-translate" target="_blank">${(content.title)!}</a>
+            <#assign content=contentMap[a.id.itemId?string]!{}/>
+            <span class="float-right date info">${(content.publishDate?string["yyyy-MM-dd"])!} <i class="bi bi-eye"></i> ${a.uv!}</span>
+            <a href="${(content.url)!}" class="exclude-translate" target="_blank">${(content.title)!}</a>
         </p>
     </#list>
 </@visit.itemList>

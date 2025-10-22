@@ -314,7 +314,7 @@ onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].r
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.tool_method'/></a>
                     <ul>
-                        <li><a href="javascript:;" <@getAction r'${getDate(.now,"thisSunday")}' t.pageMessage('help.method.date.description')/>><@t.page 'help.method.date'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getDate("thisSunday",.now)}' t.pageMessage('help.method.date.description')/>><@t.page 'help.method.date'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getHtml(url,parameter)}' t.pageMessage('help.method.html.description')/>><@t.page 'help.method.html'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<#list getKeywords(word) as a>${a}<#sep>,</#list>' t.pageMessage('help.method.keywords.description')/>><@t.page 'help.method.keywords'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getMd5(value)}' t.pageMessage('help.method.md5.description')/>><@t.page 'help.method.md5'/></a></li>
@@ -327,7 +327,7 @@ onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].r
                         <li><a href="javascript:;" <@getAction r'${getTemplateResult(template)}' t.pageMessage('help.method.template_result.description')/>><@t.page 'help.method.template_result'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getTextFromHtml(html)}' t.pageMessage('help.method.text_from_html.description')/>><@t.page 'help.method.text_from_html'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getUUID()}' t.pageMessage('help.method.uuid.description')/>><@t.page 'help.method.uuid'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'getXml(xml)' t.pageMessage('help.method.xml.description')/>><@t.page 'help.method.xml'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getXml("<xml><data>value</data></xml>").xml.data}' t.pageMessage('help.method.xml.description')/>><@t.page 'help.method.xml'/></a></li>
                     </ul>
                 </li>
             </ul>

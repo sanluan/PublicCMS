@@ -22,8 +22,8 @@
         <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate2.html?field1=${inputName?url}&fieldName1=sensitivewords&field2=${inputName?url}&fieldName2=replace&suffix1=sensitivewords&suffix2=replace">
             <thead>
                 <tr>
-                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas required" fieldAttrs="{'batchGroup':''<#if extend.maxlength?has_content>,'maxlength':'${extend.maxlength}'</#if>}" suffix="sensitivewords"</#if>><@t.page 'sensitivewords'/></th>
-                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas"<#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}"</#if> suffix="replace"</#if>><@t.page 'replace'/></th>
+                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas required" fieldAttrs='{"batchGroup":""<#if extend.maxlength?has_content>,"maxlength":${extend.maxlength}</#if>}' suffix="sensitivewords"</#if>><@t.page 'sensitivewords'/></th>
+                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas"<#if extend.maxlength?has_content> fieldAttrs='{"maxlength":${extend.maxlength}}'</#if> suffix="replace"</#if>><@t.page 'replace'/></th>
                     <th width="60"<#if 'customform'!=type> type="delAndSort"</#if>><@t.page 'operate'/></th>
                 </tr>
             </thead>

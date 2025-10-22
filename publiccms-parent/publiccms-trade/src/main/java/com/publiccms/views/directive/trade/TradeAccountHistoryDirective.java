@@ -19,35 +19,37 @@ import com.publiccms.logic.service.trade.TradeAccountHistoryService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* tradeAccountHistory 账户历史查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>id</code> 账户历史id，结果返回<code>object</code>
-* {@link com.publiccms.entities.trade.TradeAccountHistory}
-* <li><code>ids</code> 多个账户历史id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
-* </ul>
-* 使用示例
-* <p>
-* &lt;@trade.accountHistory id=1&gt;${object.balance}&lt;/@trade.accountHistory&gt;
-* <p>
-* &lt;@trade.accountHistory ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${k}:${v.balance}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.accountHistory&gt;
-* 
-* <pre>
+ *
+ * tradeAccountHistory 账户历史查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>id</code> 账户历史id，结果返回<code>object</code>
+ * {@link com.publiccms.entities.trade.TradeAccountHistory}
+ * <li><code>ids</code>
+ * 多个账户历史id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@trade.accountHistory
+ * id=1&gt;${object.balance}&lt;/@trade.accountHistory&gt;
+ * <p>
+ * &lt;@trade.accountHistory ids=1,2,3&gt;&lt;#list map as
+ * k,v&gt;${k}:${v.balance}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.accountHistory&gt;
+ * 
+ * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/trade/accountHistory?id=1&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.balance);
   });
   &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class TradeAccountHistoryDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, TemplateException  {
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
@@ -59,13 +61,13 @@ public class TradeAccountHistoryDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<TradeAccountHistory> entityList = service.getEntitys(ids);
-                Map<String, TradeAccountHistory> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                Map<String, TradeAccountHistory> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null,
+                        ids, e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }
     }
-    
+
     @Override
     public boolean needAppToken() {
         return true;

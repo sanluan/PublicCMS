@@ -184,11 +184,13 @@ public class SiteComponent implements Cache {
                         sysDomain = sysDomainService.getEntity(subname);
                         if (null == sysDomain || !sysDomain.isWild()) {
                             sysDomain = new SysDomain();
+                            sysDomain.setName(subname);
                             sysDomain.setSiteId(defaultSiteId);
                         }
                     }
                 } else {
                     sysDomain = new SysDomain();
+                    sysDomain.setName(serverName);
                     sysDomain.setSiteId(defaultSiteId);
                 }
             }

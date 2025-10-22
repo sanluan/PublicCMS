@@ -37,8 +37,8 @@ public class SysWorkflowStepDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<SysWorkflowStep> entityList = service.getEntitys(ids);
-                Map<String, SysWorkflowStep> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
-                        null);
+                Map<String, SysWorkflowStep> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), ids,
+                        e -> e.getId());
                 handler.put("map", map).render();
             }
         }

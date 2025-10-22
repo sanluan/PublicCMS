@@ -359,6 +359,9 @@ $.fn.extend({
                 }
                 event.preventDefault();
             });
+            $this.on("contextmenu", function() {
+                return false;
+            });
         });
     }, dwzExport: function() {
         function _doExport($this) {

@@ -20,7 +20,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * dictionaryData 数据字典数据查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>dictionaryId</code>:数据字典id
  * <li><code>value</code>
@@ -28,7 +29,8 @@ import freemarker.template.TemplateException;
  * <li><code>values</code>
  * 多个值,逗号或空格间隔,当value为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.dictionaryData dictionaryId='data'
  * value='1'&gt;${object.text}&lt;/@cms.dictionaryData&gt;
@@ -67,7 +69,8 @@ public class CmsDictionaryDataDirective extends AbstractTemplateDirective {
                         ids[i] = new CmsDictionaryDataId(dictionaryId, siteId, values[i]);
                     }
                     List<CmsDictionaryData> entityList = service.getEntitys(ids);
-                    Map<String, CmsDictionaryData> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().getValue(), values);
+                    Map<String, CmsDictionaryData> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().getValue(),
+                            values, e -> e.getId().getValue());
                     handler.put("map", map).render();
                 }
             }

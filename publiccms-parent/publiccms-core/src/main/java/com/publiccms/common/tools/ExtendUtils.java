@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.Constants;
@@ -97,7 +98,7 @@ public class ExtendUtils {
             if (noMoreMatchesForReplIndex[i] || searchList[i] == null || searchList[i].isEmpty() || replacementList[i] == null) {
                 continue;
             }
-            tempIndex = StringUtils.indexOfIgnoreCase(text, searchList[i]);
+            tempIndex = Strings.CI.indexOf(text, searchList[i]);
             if (tempIndex == -1) {
                 noMoreMatchesForReplIndex[i] = true;
             } else if (textIndex == -1 || tempIndex < textIndex) {
@@ -135,7 +136,7 @@ public class ExtendUtils {
                         || replacementList[i] == null) {
                     continue;
                 }
-                tempIndex = StringUtils.indexOfIgnoreCase(text, searchList[i], start);
+                tempIndex = Strings.CI.indexOf(text, searchList[i], start);
                 if (tempIndex == -1) {
                     noMoreMatchesForReplIndex[i] = true;
                 } else if (textIndex == -1 || tempIndex < textIndex) {

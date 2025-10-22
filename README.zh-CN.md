@@ -16,6 +16,7 @@ PublicCMS是采用2024年主流技术开发的开源JAVACMS系统。由天津黑
 ## 获取源码
 
 https://gitee.com/sanluan/PublicCMS
+https://gitcode.com/sanluan/PublicCMS
 https://github.com/sanluan/PublicCMS
 
 ## 参与开发

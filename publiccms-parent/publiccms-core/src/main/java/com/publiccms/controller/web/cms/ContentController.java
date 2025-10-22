@@ -137,6 +137,7 @@ public class ContentController {
             }
             entity = service.saveTagAndAttribute(site, user.getId(), user.getDeptId(), entity, contentParameters, cmsModel,
                     category.getExtendId(), attribute);
+            statisticsComponent.removePlace(entity.getId());
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "update.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {

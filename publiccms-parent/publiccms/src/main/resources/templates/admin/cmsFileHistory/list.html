@@ -20,13 +20,13 @@
         <#list list as a>
         <tr>
             <td>
-                <a href="cmsFileHistory/use.html?type=${type!}&path=${path!}&fileName=${a.fileName}" target="dialog" mask="true" class="btnText green"><i class="icon-ok"></i><@t.page 'select'/></a>
+                <a href="cmsFileHistory/use.html?type=${type!}&path=${(path?url)!}&fileName=${a.fileName}" target="dialog" mask="true" class="btnText green"><i class="icon-ok"></i><@t.page 'select'/></a>
             </td>
             <td>${a.lastModifiedTime?datetime}</td>
             <td>${a.creationTime?datetime}</td>
             <td><@t.fileSize a.size/></td>
             <td>
-                <a href="cmsFileHistory/compare.html?type=${type!}&path=${path!}&fileName=${a.fileName}" target="dialog" max="true" mask="true" class="btnText bule"><i class="bi bi-file-diff"></i><@t.page 'compare'/></a>
+                <a href="cmsFileHistory/compare.html?type=${type!}&path=${(path?url)!}&fileName=${a.fileName}" target="dialog" max="true" mask="true" class="btnText bule"><i class="bi bi-file-diff"></i><@t.page 'compare'/></a>
             </td>
         </tr>
         </#list>

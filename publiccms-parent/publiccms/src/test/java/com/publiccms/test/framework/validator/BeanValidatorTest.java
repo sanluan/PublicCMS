@@ -3,6 +3,7 @@ package com.publiccms.test.framework.validator;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.HibernateValidator;
@@ -194,15 +195,15 @@ class CssBoxProperties implements java.io.Serializable {
     }
 
     public boolean isAllSame() {
-        return StringUtils.equals(left, right) && StringUtils.equals(top, bottom) && StringUtils.equals(top, left);
+        return Strings.CS.equals(left, right) && Strings.CS.equals(top, bottom) && Strings.CS.equals(top, left);
     }
 
     public boolean isSame2() {
-        return StringUtils.equals(left, right) && StringUtils.equals(top, bottom);
+        return Strings.CS.equals(left, right) && Strings.CS.equals(top, bottom);
     }
 
     public boolean isSame3() {
-        return StringUtils.equals(left, right);
+        return Strings.CS.equals(left, right);
     }
 
     /**

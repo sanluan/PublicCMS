@@ -4,7 +4,7 @@
         <table<#if 'customform'!=type> class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate.html?field=${inputName?url}"</#if>>
             <thead>
                 <tr>
-                    <th width="400"<#if 'customform'!=type> type="text" name="${inputName}" fieldClass="<#if extend.required> required</#if>" size="50"<#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}"</#if></#if>><@t.page 'value'/></th>
+                    <th width="400"<#if 'customform'!=type> type="text" name="${inputName}" fieldClass="<#if extend.required> required</#if>" size="50"<#if extend.maxlength?has_content> fieldAttrs='{"maxlength":${extend.maxlength}}'</#if></#if>><@t.page 'value'/></th>
                     <th width="60"<#if 'customform'!=type> type="delAndSort"</#if>><@t.page 'operate'/></th>
                 </tr>
             </thead>

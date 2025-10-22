@@ -42,7 +42,8 @@ import freemarker.template.TemplateException;
  * <li><code>ids</code>:
  * 多个内容id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.content id=1&gt;${object.title}&lt;/@cms.content&gt;
  * <p>
@@ -90,7 +91,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     fileUploadComponent.initContentCover(site, entity);
                 }
                 if (containsAttribute) {
-                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(id), contentConfigComponent.getKeywordsConfig(site.getId())));
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(id),
+                            contentConfigComponent.getKeywordsConfig(site.getId())));
                 }
                 handler.put("object", entity);
                 handler.render();
@@ -100,7 +102,9 @@ public class CmsContentDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
                 KeywordsConfig config = containsAttribute ? contentConfigComponent.getKeywordsConfig(site.getId()) : null;
-                Map<Long, CmsContentAttribute> attributeMap = containsAttribute ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getContentId()) : null;
+                Map<Long, CmsContentAttribute> attributeMap = containsAttribute
+                        ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getContentId())
+                        : null;
                 UnaryOperator<CmsContent> valueMapper = e -> {
                     ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
                     if (null != statistics) {
@@ -118,7 +122,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     }
                     return e;
                 };
-                Map<String, CmsContent> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids, entity -> site.getId() == entity.getSiteId());
+                Map<String, CmsContent> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids,
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

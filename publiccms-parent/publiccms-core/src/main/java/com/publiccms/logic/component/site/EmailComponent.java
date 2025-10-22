@@ -31,6 +31,7 @@ import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigDataComponent;
+import com.publiccms.views.pojo.entities.ConfigableCacheEntity;
 
 import jakarta.annotation.PreDestroy;
 import jakarta.mail.MessagingException;
@@ -97,7 +98,7 @@ public class EmailComponent implements SiteCache, Config {
     @Resource
     protected ConfigDataComponent configDataComponent;
 
-    private CacheEntity<Short, JavaMailSenderImpl> cache;
+    private CacheEntity<Short, ConfigableCacheEntity<JavaMailSenderImpl>> cache;
 
     private static ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
@@ -107,12 +108,12 @@ public class EmailComponent implements SiteCache, Config {
      * @return mail sender
      */
     public JavaMailSender getMailSender(short siteId, Map<String, String> config) {
-        JavaMailSenderImpl javaMailSender = cache.get(siteId);
-        if (null == javaMailSender) {
+        ConfigableCacheEntity<JavaMailSenderImpl> configableCacheEntity = cache.get(siteId);
+        if (null == configableCacheEntity || !config.equals(configableCacheEntity.getConfig())) {
             synchronized (cache) {
-                javaMailSender = cache.get(siteId);
-                if (null == javaMailSender) {
-                    javaMailSender = new JavaMailSenderImpl();
+                configableCacheEntity = cache.get(siteId);
+                if (null == configableCacheEntity || !config.equals(configableCacheEntity.getConfig())) {
+                    JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
                     javaMailSender.setDefaultEncoding(config.get(CONFIG_DEFAULTENCODING));
                     javaMailSender.setHost(config.get(CONFIG_HOST));
                     javaMailSender.setPort(Integer.parseInt(config.get(CONFIG_PORT)));
@@ -125,11 +126,17 @@ public class EmailComponent implements SiteCache, Config {
                     properties.setProperty("mail.smtp.auth", config.get(CONFIG_AUTH));
                     properties.setProperty("mail.smtp.timeout", config.get(CONFIG_TIMEOUT));
                     javaMailSender.setJavaMailProperties(properties);
-                    cache.put(siteId, javaMailSender);
+                    if (null == configableCacheEntity) {
+                        configableCacheEntity = new ConfigableCacheEntity<>(javaMailSender, config);
+                    } else {
+                        configableCacheEntity.setConfig(config);
+                        configableCacheEntity.setEntity(javaMailSender);
+                    }
+                    cache.put(siteId, configableCacheEntity);
                 }
             }
         }
-        return javaMailSender;
+        return configableCacheEntity.getEntity();
     }
 
     /**
@@ -278,37 +285,32 @@ public class EmailComponent implements SiteCache, Config {
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new SysExtendField(CONFIG_DEFAULTENCODING, INPUTTYPE_TEXT, true,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_DEFAULTENCODING)),
-                null, StandardCharsets.UTF_8.name()));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_DEFAULTENCODING)), null,
+                StandardCharsets.UTF_8.name()));
         extendFieldList.add(new SysExtendField(CONFIG_HOST, INPUTTYPE_TEXT, true,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_HOST)), null,
-                null));
-        extendFieldList.add(new SysExtendField(CONFIG_PORT, INPUTTYPE_NUMBER, true,
-                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PORT)),
-                null, String.valueOf(25)));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_HOST)), null, null));
+        extendFieldList
+                .add(new SysExtendField(CONFIG_PORT, INPUTTYPE_NUMBER, true,
+                        LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                                CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PORT)),
+                        null, String.valueOf(25)));
         extendFieldList.add(new SysExtendField(CONFIG_USERNAME, INPUTTYPE_TEXT, true,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_USERNAME)), null,
-                null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_USERNAME)), null, null));
         extendFieldList.add(new SysExtendField(CONFIG_PASSWORD, INPUTTYPE_PASSWORD, true,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PASSWORD)), null,
-                null));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PASSWORD)), null, null));
         extendFieldList.add(new SysExtendField(CONFIG_TIMEOUT, INPUTTYPE_NUMBER, true,
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
                         CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_TIMEOUT)),
                 null, String.valueOf(3000)));
         extendFieldList.add(new SysExtendField(CONFIG_AUTH, INPUTTYPE_BOOLEAN, true,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_AUTH)), null,
-                "true"));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_AUTH)), null, "true"));
         extendFieldList.add(new SysExtendField(CONFIG_SSL, INPUTTYPE_BOOLEAN, true,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_SSL)), null,
-                "true"));
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_SSL)), null, "true"));
         extendFieldList.add(new SysExtendField(CONFIG_FROMADDRESS, INPUTTYPE_EMAIL, true,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_FROMADDRESS)),
-                null, null));
-        extendFieldList.add(new SysExtendField(CONFIG_PERSONAL, INPUTTYPE_EMAIL, true,
-                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PERSONAL)), null,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_FROMADDRESS)), null,
                 null));
+        extendFieldList.add(new SysExtendField(CONFIG_PERSONAL, INPUTTYPE_EMAIL, true,
+                getMessage(locale, CommonUtils.joinString(CONFIG_CODE_DESCRIPTION, Constants.DOT, CONFIG_PERSONAL)), null, null));
         return extendFieldList;
     }
 

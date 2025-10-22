@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -281,7 +281,7 @@ public abstract class BaseHandler implements RenderHandler {
         regristerParameter(PARAMETER_TYPE_INTEGERARRAY, name);
         String[] arr = getStringArrayWithoutRegister(name);
         if (CommonUtils.notEmpty(arr)) {
-            Set<Integer> set = new TreeSet<>();
+            Set<Integer> set = new LinkedHashSet<>();
             for (String s : arr) {
                 try {
                     set.add(Integer.valueOf(s));
@@ -298,7 +298,7 @@ public abstract class BaseHandler implements RenderHandler {
         regristerParameter(PARAMETER_TYPE_LONGARRAY, name);
         String[] arr = getStringArrayWithoutRegister(name);
         if (CommonUtils.notEmpty(arr)) {
-            Set<Long> set = new TreeSet<>();
+            Set<Long> set = new LinkedHashSet<>();
             for (String s : arr) {
                 try {
                     set.add(Long.valueOf(s));
@@ -315,7 +315,7 @@ public abstract class BaseHandler implements RenderHandler {
         regristerParameter(PARAMETER_TYPE_SHORTARRAY, name);
         String[] arr = getStringArrayWithoutRegister(name);
         if (CommonUtils.notEmpty(arr)) {
-            Set<Short> set = new TreeSet<>();
+            Set<Short> set = new LinkedHashSet<>();
             for (String s : arr) {
                 try {
                     set.add(Short.valueOf(s));

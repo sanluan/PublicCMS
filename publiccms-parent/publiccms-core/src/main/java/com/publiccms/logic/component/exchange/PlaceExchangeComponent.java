@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractDataExchange;
@@ -90,11 +90,11 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
                     placeData.getAttribute().setPlaceId(0);
                     if (needReplace(placeData.getAttribute().getData(), site.getDynamicPath())) {
                         placeData.getAttribute().setData(
-                                StringUtils.replace(placeData.getAttribute().getData(), site.getDynamicPath(), "#DYNAMICPATH#"));
+                                Strings.CS.replace(placeData.getAttribute().getData(), site.getDynamicPath(), "#DYNAMICPATH#"));
                     }
                     if (needReplace(placeData.getAttribute().getData(), site.getSitePath())) {
                         placeData.getAttribute().setData(
-                                StringUtils.replace(placeData.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));
+                                Strings.CS.replace(placeData.getAttribute().getData(), site.getSitePath(), "#SITEPATH#"));
                     }
                 }
                 datalist.add(placeData);
@@ -127,12 +127,12 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
                     if (null != entity.getId() && null != placeData.getAttribute()) {
                         placeData.getAttribute().setPlaceId(entity.getId());
                         if (CommonUtils.notEmpty(placeData.getAttribute().getData())) {
-                            placeData.getAttribute().setData(StringUtils.replace(placeData.getAttribute().getData(),
+                            placeData.getAttribute().setData(Strings.CS.replace(placeData.getAttribute().getData(),
                                     "#DYNAMICPATH#", site.getDynamicPath()));
                         }
                         if (CommonUtils.notEmpty(placeData.getAttribute().getData())) {
                             placeData.getAttribute().setData(
-                                    StringUtils.replace(placeData.getAttribute().getData(), "#SITEPATH#", site.getSitePath()));
+                                    Strings.CS.replace(placeData.getAttribute().getData(), "#SITEPATH#", site.getSitePath()));
                         }
                         attributeService.save(placeData.getAttribute());
                     }

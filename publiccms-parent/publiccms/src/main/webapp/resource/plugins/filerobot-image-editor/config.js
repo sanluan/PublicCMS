@@ -7,7 +7,7 @@ var filerobotImageEditorConfig = {
   useBackendTranslations:false,
   Text: { text: "..." },
   Rotate: { angle: 90, componentType: "slider" },
-  tabsIds: ["Adjust","Annotate","Filters","Finetune","Watermark"],//,"Resize"
+  tabsIds: ["Adjust","Resize","Annotate","Filters","Finetune","Watermark"],
   defaultTabId: "Adjust",
   defaultToolId: "Crop"
 };

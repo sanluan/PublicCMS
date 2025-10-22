@@ -6,7 +6,7 @@
         <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>">
             <thead>
                 <tr>
-                    <th width="250"<#if 'customform'!=type> type="lookup" name="${extend.id.code}_categoryName" fieldClass="<#if extend.required>required</#if>" size="30" fieldAttrs="{'readonly':'readonly','width':'920','height':'580'}" lookupUrl="cmsCategory/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_categoryName" lookupGroup="" lookupPk="${inputName}"</#if>><@t.page 'category'/></th>
+                    <th width="250"<#if 'customform'!=type> type="lookup" name="${extend.id.code}_categoryName" fieldClass="<#if extend.required>required</#if>" size="30" fieldAttrs='{"readonly":"readonly","width":920,"height":580}' lookupUrl="cmsCategory/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_categoryName" lookupGroup="" lookupPk="${inputName}"</#if>><@t.page 'category'/></th>
                     <th width="60" type="delAndSort"><@t.page 'operate'/></th>
                 </tr>
             </thead>
@@ -37,7 +37,7 @@
 <#else>
     <@cms.category id=value><#assign values=object/></@cms.category>
     <#if 'view'=type>
-        ${(value)!}:${(values=object.name)!}
+        ${(value)!}:${(values.name)!}
     <#else>
         <input name="${inputName}" value="${(value)!}" type="hidden"/>
         <input name="${extend.id.code}_categoryName" readonly="readonly" size="30" value="${(values.name)!}" type="text" class="<#if extend.required> required</#if>"/>

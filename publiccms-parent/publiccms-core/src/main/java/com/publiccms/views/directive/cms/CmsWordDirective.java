@@ -18,14 +18,16 @@ import freemarker.template.TemplateException;
 /**
  *
  * word 搜索词查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>id</code>:搜索词id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsWord}
  * <li><code>ids</code>:
  * 多个搜索词id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.word id=1&gt;${object.name}&lt;/@cms.word&gt;
  * <p>
@@ -57,7 +59,7 @@ public class CmsWordDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsWord> entityList = service.getEntitys(ids);
                 Map<String, CmsWord> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

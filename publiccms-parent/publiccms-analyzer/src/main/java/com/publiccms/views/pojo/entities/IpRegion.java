@@ -32,6 +32,12 @@ public class IpRegion implements java.io.Serializable {
      * 城市
      */
     private String city;
+    /**
+     * operator
+     * <p>
+     * 运营商
+     */
+    private String operator;
 
     /**
      * @return the region
@@ -93,6 +99,21 @@ public class IpRegion implements java.io.Serializable {
         this.city = city;
     }
 
+    /**
+     * @return the operator
+     */
+    public String getOperator() {
+        return operator;
+    }
+
+    /**
+     * @param operator
+     *            the operator to set
+     */
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
     public String getAddress() {
         StringBuilder sb = new StringBuilder();
         if (null != country) {
@@ -109,6 +130,12 @@ public class IpRegion implements java.io.Serializable {
                 sb.append(",");
             }
             sb.append(city);
+        }
+        if (null != operator) {
+            if (sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(operator);
         }
         return sb.toString();
     }

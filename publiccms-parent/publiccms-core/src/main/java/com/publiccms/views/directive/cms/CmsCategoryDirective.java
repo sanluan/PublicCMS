@@ -25,7 +25,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * category 分类查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>id</code>:分类id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsCategory}
@@ -35,7 +36,8 @@ import freemarker.template.TemplateException;
  * <li><code>ids</code>:
  * 多个分类id,逗号或空格间隔,当id或code为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.category id=1&gt;${object.name}&lt;/@cms.category&gt;
  * <p>
@@ -93,8 +95,8 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                     }
                     return e;
                 };
-                Map<String, CmsCategory> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                Map<String, CmsCategory> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper,
+                        ids, e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

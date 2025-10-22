@@ -21,14 +21,16 @@ import freemarker.template.TemplateException;
 /**
  *
  * vote 投票查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>id</code>:投票id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsVote}
  * <li><code>ids</code>:
  * 多个投票id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.vote id=1&gt;${object.title}&lt;/@cms.vote&gt;
  * <p>
@@ -60,7 +62,7 @@ public class CmsVoteDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsVote> entityList = service.getEntitys(ids);
                 Map<String, CmsVote> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

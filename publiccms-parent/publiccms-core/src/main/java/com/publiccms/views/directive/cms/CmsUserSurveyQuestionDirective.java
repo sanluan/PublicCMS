@@ -22,7 +22,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * userSurveyQuestion 用户问卷问题解答查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>userId</code>:用户id
  * <li><code>questionId</code>:问题id,结果返回<code>object</code>
@@ -32,9 +33,11 @@ import freemarker.template.TemplateException;
  * <li><code>userIds</code>
  * 多个用户id,逗号或空格间隔,当userId为空且questionId不为空时生效,结果返回<code>map</code>(userId,<code>object</code>)
  * </ul>
- * <p>使用示例
  * <p>
- * &lt;@cms.userSurveyQuestion id=1&gt;${object.answer}&lt;/@cms.userSurveyQuestion&gt;
+ * 使用示例
+ * <p>
+ * &lt;@cms.userSurveyQuestion
+ * id=1&gt;${object.answer}&lt;/@cms.userSurveyQuestion&gt;
  * <p>
  * &lt;@cms.userSurveyQuestion ids='1,2,3'&gt;&lt;#list map as
  * k,v&gt;${k}:${v.answer}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userSurveyQuestion&gt;
@@ -70,7 +73,8 @@ public class CmsUserSurveyQuestionDirective extends AbstractTemplateDirective {
                     }
                     List<CmsUserSurveyQuestion> entityList = service.getEntitys(entityIds);
                     Map<String, CmsUserSurveyQuestion> map = CommonUtils.listToMapSorted(entityList,
-                            k -> String.valueOf(k.getId().getQuestionId()), null, questionIds, entity -> site.getId() == entity.getSiteId());
+                            k -> String.valueOf(k.getId().getQuestionId()), null, questionIds, e -> e.getId().getQuestionId(),
+                            entity -> site.getId() == entity.getSiteId());
                     handler.put("map", map).render();
                 }
             }
@@ -83,7 +87,8 @@ public class CmsUserSurveyQuestionDirective extends AbstractTemplateDirective {
                 }
                 List<CmsUserSurveyQuestion> entityList = service.getEntitys(entityIds);
                 Map<String, CmsUserSurveyQuestion> map = CommonUtils.listToMapSorted(entityList,
-                        k -> String.valueOf(k.getId().getUserId()), null, userIds, entity -> site.getId() == entity.getSiteId());
+                        k -> String.valueOf(k.getId().getUserId()), null, userIds, e -> e.getId().getUserId(),
+                        entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

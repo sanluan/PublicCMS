@@ -1,4 +1,4 @@
-<@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
+<@tools.placeMetadata path=path><#assign metadata=object/></@tools.placeMetadata>
 <@cms.placeList path=path advanced=true status=status userId=userId startPublishDate=startPublishDate endPublishDate=endPublishDate
     orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
@@ -8,7 +8,7 @@
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'place_data.page_size'/>:</label>
-                    <label>${(a.size)!} ${(a.allowContribute?then('['+t.pageMessage('allow_contribute')+']',''))!}</label>
+                    <label>${(metadata.size)!} ${(metadata.allowContribute?then('['+t.pageMessage('allow_contribute')+']',''))!}</label>
                 </li>
                 <li class="width:auto">
                     <#list 0..3 as s>
@@ -37,14 +37,14 @@
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                     <li>
-                        <a class="button" href="cmsPlace/export?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
+                        <a class="button" href="cmsPlace/export?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="bi bi-cloud-download"></i><@t.page "button.export"/></a>
                     </li>
                 </ul>
             </div>
         </div>
     </form>
 </div>
-<@sys.authorized roleIds=admin.roles urls='cmsPlace/add,cmsPlace/refresh,cmsPlace/check,cmsPlace/uncheck,cmsPlace/reject,cmsPlace/import,cmsTemplate/publishPlace,cmsPlace/delete'><#assign authorizedMap=map/></@sys.authorized>
+<@sys.authorized roleIds=admin.roles urls='cmsPlace/add,cmsPlace/refresh,cmsPlace/check,cmsPlace/uncheck,cmsPlace/reject,cmsPlace/import,cmsTemplate/publishPlace,cmsPlace/delete,sysWorkflowProcess/view'><#assign authorizedMap=map/></@sys.authorized>
 <div class="card">
     <div class="panelBar">
         <ul class="toolBar">
@@ -66,7 +66,7 @@
             </#if>
             <#if authorizedMap['cmsPlace/import']>
                 <li class="line">line</li>
-                <li><a href="cmsPlace/import.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="250"><i class="icon-upload-alt icon-large"></i><@t.page 'import'/></a></li>
+                <li><a href="cmsPlace/import.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="250"><i class="bi bi-cloud-upload"></i><@t.page "import"/></a></li>
             </#if>
             <#if authorizedMap['cmsPlace/delete']>
                 <li class="line">line</li>
@@ -94,6 +94,7 @@
         <@t.merge 'userIds' a.userId!/>
         <@t.merge 'userIds' a.checkUserId!/>
         <@t.merge 'ids' a.id/>
+        <#if (metadata.workflowId)?has_content><@sys.workflowProcessItem itemType="place" itemIds=t.ids!><#assign processItemMap=map!/></@sys.workflowProcessItem></#if>
     </#list>
     <@sys.lock userId=admin.id itemType='place' itemIds=t.ids><#assign lockMap=map!/></@sys.lock>
     <#if lockMap?has_content>
@@ -130,6 +131,9 @@
                 <td>
                     <span class="statusText ${a.status?switch(1,'green',2,'orange',3,'red','')}"><@t.page 'status.place.data.'+a.status/></span>
                     <#if 1=a.status&&a.checkUserId?has_content>/ ${(userMap[a.checkUserId?string].nickname)!}</#if>
+                    <#if (metadata.workflowId)?has_content>
+                        <#if processItemMap[a.id?string]?has_content && authorizedMap['sysWorkflowProcess/view']><a href="sysWorkflowProcess/view.html?id=${processItemMap[a.id?string].processId}" class="btnText blue" target="dialog" rel="viewProcess${processItemMap[a.id?string].processId}" width="1200" height="500"><@t.page 'workflow.check'/></a></#if>
+                    </#if>
                 </td>
                 <td>${a.createDate}</td>
                 <td class="wrap">

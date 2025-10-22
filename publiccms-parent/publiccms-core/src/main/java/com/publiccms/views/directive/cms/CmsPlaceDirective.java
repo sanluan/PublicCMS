@@ -27,7 +27,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * place 推荐位查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>id</code>:推荐位id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsPlace}
@@ -36,7 +37,8 @@ import freemarker.template.TemplateException;
  * <li><code>ids</code>:
  * 多个推荐位id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.place id=1&gt;${object.title}&lt;/@cms.place&gt;
  * <p>
@@ -94,7 +96,7 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
                     return e;
                 };
                 Map<String, CmsPlace> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

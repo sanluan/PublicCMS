@@ -16,6 +16,7 @@ import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.config.ConfigDataComponent;
+import com.publiccms.views.pojo.entities.ConfigableCacheEntity;
 import com.publiccms.views.pojo.entities.FileUploadResult;
 
 import jakarta.annotation.Resource;
@@ -38,16 +39,16 @@ import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequ
 public class OSSFileUploaderComponent implements FileUploader {
     @Resource
     private ConfigDataComponent configDataComponent;
-    private CacheEntity<Short, S3Client> cache;
-    private CacheEntity<Short, S3Presigner> presignerCache;
+    private CacheEntity<Short, ConfigableCacheEntity<S3Client>> cache;
+    private CacheEntity<Short, ConfigableCacheEntity<S3Presigner>> presignerCache;
 
     public S3Presigner getPresigner(short siteId, Map<String, String> config) {
-        S3Presigner presigner = presignerCache.get(siteId);
-        if (null == presigner) {
+        ConfigableCacheEntity<S3Presigner> configableCacheEntity = presignerCache.get(siteId);
+        if (null == configableCacheEntity || !config.equals(configableCacheEntity.getConfig())) {
             synchronized (presignerCache) {
-                presigner = presignerCache.get(siteId);
-                if (null == presigner) {
-                    presigner = S3Presigner.builder()
+                configableCacheEntity = presignerCache.get(siteId);
+                if (null == configableCacheEntity || !config.equals(configableCacheEntity.getConfig())) {
+                    S3Presigner presigner = S3Presigner.builder()
                             .credentialsProvider(StaticCredentialsProvider
                                     .create(AwsBasicCredentials.create(config.get(OSSComponent.CONFIG_ACCESSKEYID),
                                             config.get(OSSComponent.CONFIG_ACCESSKEYSECRET))))
@@ -56,32 +57,46 @@ public class OSSFileUploaderComponent implements FileUploader {
                             .serviceConfiguration(
                                     S3Configuration.builder().pathStyleAccessEnabled(false).chunkedEncodingEnabled(false).build())
                             .build();
-                    presignerCache.put(siteId, presigner);
+                    if (null == configableCacheEntity) {
+                        configableCacheEntity = new ConfigableCacheEntity<>(presigner, config);
+                    } else {
+                        configableCacheEntity.setConfig(config);
+                        configableCacheEntity.setEntity(presigner);
+                    }
+                    presignerCache.put(siteId, configableCacheEntity);
                 }
             }
         }
-        return presigner;
+        return configableCacheEntity.getEntity();
     }
 
     public S3Client getClient(short siteId, boolean privatefile, Map<String, String> config) {
-        S3Client client = cache.get(siteId);
-        if (null == client) {
+        ConfigableCacheEntity<S3Client> configableCacheEntity = cache.get(siteId);
+        if (null == configableCacheEntity || !config.equals(configableCacheEntity.getConfig())) {
             synchronized (cache) {
-                client = cache.get(siteId);
-                if (null == client) {
-                    client = S3Client.builder().credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(
-                            config.get(OSSComponent.CONFIG_ACCESSKEYID), config.get(OSSComponent.CONFIG_ACCESSKEYSECRET))))
+                configableCacheEntity = cache.get(siteId);
+                if (null == configableCacheEntity || !config.equals(configableCacheEntity.getConfig())) {
+                    S3Client client = S3Client.builder()
+                            .credentialsProvider(StaticCredentialsProvider
+                                    .create(AwsBasicCredentials.create(config.get(OSSComponent.CONFIG_ACCESSKEYID),
+                                            config.get(OSSComponent.CONFIG_ACCESSKEYSECRET))))
                             .region(Region.AWS_GLOBAL)
                             .endpointOverride(URI.create(config
                                     .get(privatefile ? OSSComponent.CONFIG_PRIVATE_ENDPOINT : OSSComponent.CONFIG_ENDPOINT)))
                             .serviceConfiguration(
                                     S3Configuration.builder().pathStyleAccessEnabled(false).chunkedEncodingEnabled(false).build())
                             .build();
-                    cache.put(siteId, client);
+                    if (null == configableCacheEntity) {
+                        configableCacheEntity = new ConfigableCacheEntity<>(client, config);
+                    } else {
+                        configableCacheEntity.setConfig(config);
+                        configableCacheEntity.setEntity(client);
+                    }
+                    cache.put(siteId, configableCacheEntity);
                 }
             }
         }
-        return client;
+        return configableCacheEntity.getEntity();
     }
 
     @Override

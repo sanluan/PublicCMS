@@ -137,6 +137,7 @@ public class RequestUtils {
         if (CommonUtils.notEmpty(domain)) {
             cookie.setDomain(domain);
         }
+        cookie.setAttribute("SameSite", "Strict");;
         cookie.setSecure("https".equalsIgnoreCase(schema));
         cookie.setHttpOnly(true);
         cookie.setPath(CommonUtils.empty(contextPath) ? Constants.SEPARATOR : contextPath);

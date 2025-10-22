@@ -17,13 +17,13 @@
                 </a>
             <#elseif !fileTypes?has_content || fileTypes = t.fileType(a.fileName)>
                 <#if fileTypes?has_content && fileTypes = 'image'>
-                    <img src="${getUrl(filePath)}" alt="${a.fileName}" title="${a.fileName}(<@t.fileSize a.size/>)">
-                    <a href="javascript:;" class="edit-icon" onclick="$('.tabImageBtn',$.pdialog.getCurrent()).trigger('click');$('div.upload-wrap', $.pdialog.getCurrent()).editImg({imgUrl:'${getUrl(filePath)!}',imgName:'${a.fileName!}'});return false;"></a>
+                    <img src="${getUrl(filePath?url_path)}" alt="${a.fileName}" title="${a.fileName}(<@t.fileSize a.size/>)">
+                    <a href="javascript:;" class="edit-icon" onclick="$('.tabImageBtn',$.pdialog.getCurrent()).trigger('click');$('div.upload-wrap', $.pdialog.getCurrent()).editImg({imgUrl:'${getUrl(filePath?url_path?js_string)!}',imgName:'${(a.fileName?js_string)!}'});return false;"></a>
                 <#else>
                     <i class="thumb icon-file-alt icon-large"></i>
                 </#if>
                 <p title="<@t.page 'modified_date'/>:${a.lastModifiedTime?date},<@t.page 'create_date'/>:${a.creationTime?date}">
-                    <a href="javascript:;" onclick="$.bringBack({'${field!'fileName'}':'${filePath!}','fileType':'${t.fileType(a.fileName)}','fileSize':'${a.size!}','${originalField!'originalName'}':'${a.fileName!}'});return false;">
+                    <a href="javascript:;" onclick="$.bringBack({'${field!'fileName'}':'${(filePath?url_path?js_string)!}','fileType':'${t.fileType(a.fileName)}','fileSize':'${a.size!}','${originalField!'originalName'}':'${(a.fileName?js_string)!}'});return false;">
                         ${a.fileName}(<@t.fileSize a.size/>)
                     </a>
                 </p>

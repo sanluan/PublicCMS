@@ -251,6 +251,14 @@ public class StatisticsComponent implements Cache {
         }
         return null;
     }
+    
+    public void removePlace(Long id) {
+        placeCache.remove(id);
+    }
+    
+    public void removeContent(Long id) {
+        contentCache.remove(id);
+    }
 
     @Override
     public void clear() {

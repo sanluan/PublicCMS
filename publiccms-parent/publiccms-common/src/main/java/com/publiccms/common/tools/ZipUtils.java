@@ -18,7 +18,7 @@ import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -248,7 +248,7 @@ public class ZipUtils {
         while (entryEnum.hasMoreElements()) {
             ZipArchiveEntry zipEntry = entryEnum.nextElement();
             if (null == directory || zipEntry.getName().startsWith(directory)) {
-                unzip(zipFile, zipEntry, targetPath, StringUtils.removeStart(zipEntry.getName(), directory), overwrite,
+                unzip(zipFile, zipEntry, targetPath, Strings.CS.removeStart(zipEntry.getName(), directory), overwrite,
                         overwriteFunction);
             }
         }

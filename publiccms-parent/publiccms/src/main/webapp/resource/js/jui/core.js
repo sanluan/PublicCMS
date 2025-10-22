@@ -98,7 +98,11 @@ var JUI = {
     jsonEval: function(data) {
         try {
             if (typeof data == "string" ) {
-                return eval("(" + data + ")");
+                if(JSON && "function" == typeof JSON.parse){
+                    return JSON.parse(data);
+                }else{
+                    return eval("(" + data + ")");
+                }
             } else {
                 return data;
             }

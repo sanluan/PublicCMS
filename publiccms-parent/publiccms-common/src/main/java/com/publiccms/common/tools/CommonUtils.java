@@ -69,27 +69,33 @@ public class CommonUtils {
     /**
      * @param <T>
      * @param <F>
+     * @param <K> 
      * @param list
      * @param keyMapper
      * @param sortKeys
+     * @param getKeyFunc 
      * @return
      */
-    public static <T, F, K> Map<F, T> listToMapSorted(List<T> list, Function<T, F> keyMapper, K[] sortKeys) {
-        return listToMapSorted(list, keyMapper, null, sortKeys, null);
+    public static <T, F, K> Map<F, T> listToMapSorted(List<T> list, Function<T, F> keyMapper, K[] sortKeys, Function<T, K> getKeyFunc) {
+        return listToMapSorted(list, keyMapper, null, sortKeys, getKeyFunc, null);
     }
 
     /**
      * @param <T>
      * @param <F>
+     * @param <K> 
      * @param list
      * @param keyMapper
      * @param valueMapper
      * @param sortKeys
+     * @param getKeyFunc 
      * @param filter
      * @return
      */
-    public static <T, F, K> Map<F, T> listToMapSorted(List<T> list, Function<T, F> keyMapper, UnaryOperator<T> valueMapper, K[] sortKeys, Predicate<T> filter) {
-        return listToMap(list, keyMapper, valueMapper, (k1, k2) -> ArrayUtils.indexOf(sortKeys, k1) - ArrayUtils.indexOf(sortKeys, k2), filter);
+    public static <T, F, K> Map<F, T> listToMapSorted(List<T> list, Function<T, F> keyMapper, UnaryOperator<T> valueMapper,
+            K[] sortKeys, Function<T, K> getKeyFunc, Predicate<T> filter) {
+        return listToMap(list, keyMapper, valueMapper,
+                (k1, k2) -> ArrayUtils.indexOf(sortKeys, getKeyFunc.apply(k1)) - ArrayUtils.indexOf(sortKeys, getKeyFunc.apply(k2)), filter);
     }
 
     /**
@@ -102,7 +108,8 @@ public class CommonUtils {
      * @param filter
      * @return
      */
-    public static <T, F> Map<F, T> listToMap(List<T> list, Function<T, F> keyMapper, UnaryOperator<T> valueMapper, Comparator<? super T> comparator, Predicate<T> filter) {
+    public static <T, F> Map<F, T> listToMap(List<T> list, Function<T, F> keyMapper, UnaryOperator<T> valueMapper,
+            Comparator<? super T> comparator, Predicate<T> filter) {
         Stream<T> stream = list.stream();
         if (null != comparator) {
             stream = stream.sorted(comparator);
@@ -110,7 +117,8 @@ public class CommonUtils {
         if (null != filter) {
             stream = stream.filter(filter);
         }
-        return stream.collect(Collectors.toMap(keyMapper, null == valueMapper ? Function.identity() : valueMapper, Constants.defaultMegerFunction(), LinkedHashMap::new));
+        return stream.collect(Collectors.toMap(keyMapper, null == valueMapper ? Function.identity() : valueMapper,
+                Constants.defaultMegerFunction(), LinkedHashMap::new));
     }
 
     public static String encodeURI(String s) {

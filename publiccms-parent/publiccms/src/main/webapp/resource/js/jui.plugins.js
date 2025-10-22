@@ -150,7 +150,7 @@ JUI.regPlugins.push(function($p){
     $("textarea.code", $p).each(function() {
         var $this = $(this);
         var index= window.codemirror.index++;
-        var dataId="editor_"+index;
+        var dataId="codeEditor_"+index;
         var mode = "htmlmixed"
         if($(this).attr("mode")){
             mode = $(this).attr("mode");

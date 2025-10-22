@@ -102,7 +102,7 @@ public class SysUserDirective extends AbstractTemplateDirective {
                 };
 
                 Map<String, SysUser> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

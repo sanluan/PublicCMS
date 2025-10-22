@@ -22,7 +22,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * userVote 用户投票查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>userId</code>:用户id
  * <li><code>voteId</code>:投票id,结果返回<code>object</code>
@@ -30,7 +31,8 @@ import freemarker.template.TemplateException;
  * <li><code>voteIds</code>
  * 多个投票id,逗号或空格间隔,当voteId为空时生效,结果返回<code>map</code>(voteId,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.userVote id=1&gt;${object.itemId}&lt;/@cms.userVote&gt;
  * <p>
@@ -57,7 +59,7 @@ public class CmsUserVoteDirective extends AbstractTemplateDirective {
             if (null != entity) {
                 handler.put("object", entity).render();
             }
-        } else {
+        } else if (null != userId) {
             Long[] voteIds = handler.getLongArray("voteIds");
             if (CommonUtils.notEmpty(voteIds)) {
                 CmsUserVoteId[] entityIds = new CmsUserVoteId[voteIds.length];
@@ -65,7 +67,8 @@ public class CmsUserVoteDirective extends AbstractTemplateDirective {
                     entityIds[i] = new CmsUserVoteId(userId, voteIds[i]);
                 }
                 List<CmsUserVote> entityList = service.getEntitys(entityIds);
-                Map<String, CmsUserVote> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getVoteId()), voteIds);
+                Map<String, CmsUserVote> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getVoteId()),
+                        voteIds, e -> e.getId().getVoteId());
                 handler.put("map", map).render();
             }
         }

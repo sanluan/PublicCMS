@@ -16,31 +16,31 @@ import com.publiccms.logic.service.log.LogOperateService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* logOperate 操作日志查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>id</code>:日志id,结果返回<code>object</code>
-* {@link com.publiccms.entities.log.LogOperate}
-* <li><code>ids</code>:
-* 多个日志id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
-* </ul>
-* 使用示例
-* <p>
-* &lt;@log.operate id=1&gt;${object.content}&lt;/@log.operate&gt;
-* <p>
-* &lt;@log.operate ids='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${k}:${v.content}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@log.operate&gt;
-* 
-* <pre>
+ *
+ * logOperate 操作日志查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>id</code>:日志id,结果返回<code>object</code>
+ * {@link com.publiccms.entities.log.LogOperate}
+ * <li><code>ids</code>:
+ * 多个日志id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@log.operate id=1&gt;${object.content}&lt;/@log.operate&gt;
+ * <p>
+ * &lt;@log.operate ids='1,2,3'&gt;&lt;#list map as
+ * k,v&gt;${k}:${v.content}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@log.operate&gt;
+ * 
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/log/operate?id=1&amp;appToken=接口访问授权Token', function(data){    
   console.log(data.content);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class LogOperateDirective extends AbstractTemplateDirective {
 
@@ -58,7 +58,7 @@ public class LogOperateDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<LogOperate> entityList = service.getEntitys(ids);
                 Map<String, LogOperate> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

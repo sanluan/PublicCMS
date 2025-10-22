@@ -4,7 +4,7 @@
         <li>
             <#local path=filepath?has_content?then(filepath+'/','')+a.fileName/>
         <#if a.directory>
-            <a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field}':'${path}'});return false;">${a.fileName}</a>
+            <a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field}':'${path?url_path?js_string}'});return false;">${a.fileName}</a>
             <ul>
                 <@webfileTree field path/>
             </ul>

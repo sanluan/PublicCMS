@@ -32,6 +32,7 @@ import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.trade.PaymentProcessorComponent;
 import com.publiccms.logic.service.trade.TradePaymentHistoryService;
 import com.publiccms.logic.service.trade.TradePaymentService;
+import com.publiccms.views.pojo.entities.ConfigableCacheEntity;
 
 @Component
 public class AlipayGatewayComponent extends AbstractPaymentGateway implements com.publiccms.common.api.Config, SiteCache {
@@ -86,7 +87,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
     @Resource
     private PaymentProcessorComponent tradePaymentProcessorComponent;
 
-    private CacheEntity<Short, MultipleFactory> cache;
+    private CacheEntity<Short, ConfigableCacheEntity<MultipleFactory>> cache;
 
     /**
      * @param siteId
@@ -118,12 +119,12 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
      * @return factory
      */
     public MultipleFactory getFactory(short siteId, Map<String, String> config) {
-        MultipleFactory factory = cache.get(siteId);
-        if (null == factory) {
+        ConfigableCacheEntity<MultipleFactory> configableCacheEntity = cache.get(siteId);
+        if (null == configableCacheEntity || !config.equals(configableCacheEntity.getConfig())) {
             synchronized (cache) {
-                factory = cache.get(siteId);
-                if (null == factory) {
-                    factory = new MultipleFactory();
+                configableCacheEntity = cache.get(siteId);
+                if (null == configableCacheEntity || !config.equals(configableCacheEntity.getConfig())) {
+                    MultipleFactory factory = new MultipleFactory();
                     Config c = new Config();
                     c.protocol = "https";
                     c.gatewayHost = config.get(CONFIG_GATEWAY);
@@ -134,11 +135,17 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
                     c.notifyUrl = config.get(CONFIG_NOTIFYURL);
                     c.encryptKey = config.get(CONFIG_ENCRYPTKEY);
                     factory.setOptions(c);
-                    cache.put(siteId, factory);
+                    if (null == configableCacheEntity) {
+                        configableCacheEntity = new ConfigableCacheEntity<>(factory, config);
+                    } else {
+                        configableCacheEntity.setConfig(config);
+                        configableCacheEntity.setEntity(factory);
+                    }
+                    cache.put(siteId, configableCacheEntity);
                 }
             }
         }
-        return factory;
+        return configableCacheEntity.getEntity();
     }
 
     @Override

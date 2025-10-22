@@ -20,6 +20,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.views.pojo.entities.ConfigableCacheEntity;
 
 /**
  *
@@ -45,7 +46,7 @@ public class CorsConfigComponent implements SiteCache, Config {
     private static final String CONFIG_ALLOW_CREDENTIALS = "allow_credentials";
     private static final String CONFIG_MAXAGE = "max_age";
 
-    private CacheEntity<Short, CorsConfiguration> cache;
+    private CacheEntity<Short, ConfigableCacheEntity<CorsConfiguration>> cache;
 
     @Resource
     private SiteComponent siteComponent;
@@ -63,47 +64,61 @@ public class CorsConfigComponent implements SiteCache, Config {
     }
 
     public CorsConfiguration getConfig(SysSite site) {
-        CorsConfiguration config = cache.get(site.getId());
-        if (null == config) {
-            Map<String, String> configData = configDataComponent.getConfigData(site.getId(), CONFIG_CODE);
-            config = new CorsConfiguration();
-            if (null != configData) {
-                config.setAllowCredentials(ConfigDataComponent.getBoolean(configData.get(CONFIG_ALLOW_CREDENTIALS), false));
-
-                if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_ORIGINS))) {
-                    String[] array = StringUtils.split(configData.get(CONFIG_ALLOWED_ORIGINS), Constants.COMMA);
-                    for (String p : array) {
-                        if (p.contains(CorsConfiguration.ALL)) {
-                            config.addAllowedOriginPattern(p);
-                        } else {
-                            config.addAllowedOrigin(p);
+        ConfigableCacheEntity<CorsConfiguration> configableCacheEntity = cache.get(site.getId());
+        Map<String, String> configData = configDataComponent.getConfigData(site.getId(), CONFIG_CODE);
+        if (null == configData) {
+            if (null != configableCacheEntity) {
+                cache.remove(site.getId());
+            }
+            return null;
+        } else if (null == configableCacheEntity || !configData.equals(configableCacheEntity.getConfig())) {
+            synchronized (cache) {
+                configableCacheEntity = cache.get(site.getId());
+                if (null == configableCacheEntity || !configData.equals(configableCacheEntity.getConfig())) {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowCredentials(ConfigDataComponent.getBoolean(configData.get(CONFIG_ALLOW_CREDENTIALS), false));
+                    if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_ORIGINS))) {
+                        String[] array = StringUtils.split(configData.get(CONFIG_ALLOWED_ORIGINS), Constants.COMMA);
+                        for (String p : array) {
+                            if (p.contains(CorsConfiguration.ALL)) {
+                                config.addAllowedOriginPattern(p);
+                            } else {
+                                config.addAllowedOrigin(p);
+                            }
                         }
                     }
-                }
-                if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_METHODS))) {
-                    config.setAllowedMethods(
-                            Arrays.asList(StringUtils.split(configData.get(CONFIG_ALLOWED_METHODS), Constants.COMMA)));
-                }
-                if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_HEADERS))) {
-                    config.setAllowedHeaders(
-                            Arrays.asList(StringUtils.split(configData.get(CONFIG_ALLOWED_HEADERS), Constants.COMMA)));
-                }
-                if (CommonUtils.notEmpty(configData.get(CONFIG_EXPOSED_HEADERS))) {
-                    config.setExposedHeaders(
-                            Arrays.asList(StringUtils.split(configData.get(CONFIG_EXPOSED_HEADERS), Constants.COMMA)));
-                }
-                if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOW_CREDENTIALS))) {
-                    try {
-                        config.setMaxAge(Long.parseLong(configData.get(CONFIG_MAXAGE)));
-                    } catch (NumberFormatException e) {
-
+                    if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_METHODS))) {
+                        config.setAllowedMethods(
+                                Arrays.asList(StringUtils.split(configData.get(CONFIG_ALLOWED_METHODS), Constants.COMMA)));
                     }
+                    if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_HEADERS))) {
+                        config.setAllowedHeaders(
+                                Arrays.asList(StringUtils.split(configData.get(CONFIG_ALLOWED_HEADERS), Constants.COMMA)));
+                    }
+                    if (CommonUtils.notEmpty(configData.get(CONFIG_EXPOSED_HEADERS))) {
+                        config.setExposedHeaders(
+                                Arrays.asList(StringUtils.split(configData.get(CONFIG_EXPOSED_HEADERS), Constants.COMMA)));
+                    }
+                    if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOW_CREDENTIALS))) {
+                        try {
+                            config.setMaxAge(Long.parseLong(configData.get(CONFIG_MAXAGE)));
+                        } catch (NumberFormatException e) {
+
+                        }
+                    }
+                    config.applyPermitDefaultValues();
+                    if (null == configableCacheEntity) {
+                        configableCacheEntity = new ConfigableCacheEntity<>(config, configData);
+                    } else {
+                        configableCacheEntity.setConfig(configData);
+                        configableCacheEntity.setEntity(config);
+                    }
+                    cache.put(site.getId(), configableCacheEntity);
                 }
-                config.applyPermitDefaultValues();
             }
-            cache.put(site.getId(), config);
         }
-        return config;
+        return configableCacheEntity.getEntity();
+
     }
 
     /**

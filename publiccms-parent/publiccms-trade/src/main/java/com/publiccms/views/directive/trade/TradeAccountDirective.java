@@ -60,7 +60,7 @@ public class TradeAccountDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<TradeAccount> entityList = service.getEntitys(ids);
                 Map<String, TradeAccount> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId()), null, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

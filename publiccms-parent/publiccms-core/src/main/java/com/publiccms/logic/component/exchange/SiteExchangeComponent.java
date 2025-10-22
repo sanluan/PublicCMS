@@ -12,7 +12,7 @@ import java.util.Map;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
@@ -198,11 +198,11 @@ public class SiteExchangeComponent {
                 ZipUtils.unzip(zipFile, "template", filepath, overwrite, (f, e) -> {
                     if (e.getName().toLowerCase().endsWith(".data")) {
                         String datafile = siteComponent.getTemplateFilePath(site.getId(),
-                                StringUtils.removeStart(e.getName(), "template/"));
+                                Strings.CS.removeStart(e.getName(), "template/"));
                         return mergeDataFile(datafile, site, f, e);
                     } else {
                         String historyFilePath = siteComponent.getTemplateHistoryFilePath(site.getId(),
-                                StringUtils.removeStart(e.getName(), "template/"), true);
+                                Strings.CS.removeStart(e.getName(), "template/"), true);
                         try {
                             CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
                         } catch (IOException e1) {
@@ -217,7 +217,7 @@ public class SiteExchangeComponent {
                 String filepath = siteComponent.getWebFilePath(site.getId(), Constants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "web", filepath, overwrite, (f, e) -> {
                     String historyFilePath = siteComponent.getWebHistoryFilePath(site.getId(),
-                            StringUtils.removeStart(e.getName(), "web/"), true);
+                            Strings.CS.removeStart(e.getName(), "web/"), true);
                     try {
                         CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
                     } catch (IOException e1) {
@@ -229,7 +229,7 @@ public class SiteExchangeComponent {
                 String filepath = siteComponent.getTaskTemplateFilePath(site.getId(), Constants.SEPARATOR);
                 ZipUtils.unzip(zipFile, "tasktemplate", filepath, overwrite, (f, e) -> {
                     String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site.getId(),
-                            StringUtils.removeStart(e.getName(), "tasktemplate/"), true);
+                            Strings.CS.removeStart(e.getName(), "tasktemplate/"), true);
                     try {
                         CmsFileUtils.copyInputStreamToFile(f.getInputStream(e), historyFilePath);
                     } catch (IOException e1) {

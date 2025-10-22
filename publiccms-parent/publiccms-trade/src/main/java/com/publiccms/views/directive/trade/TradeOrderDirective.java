@@ -20,30 +20,31 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 
 /**
-*
-* tradeOrder 订单查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>id</code> 订单id，结果返回<code>object</code>
-* {@link com.publiccms.entities.trade.TradeOrder}
-* <li><code>ids</code> 多个订单id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
-* </ul>
-* 使用示例
-* <p>
-* &lt;@trade.order id=1&gt;${object.title}&lt;/@trade.order&gt;
-* <p>
-* &lt;@trade.order ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.order&gt;
-* 
-* <pre>
+ *
+ * tradeOrder 订单查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>id</code> 订单id，结果返回<code>object</code>
+ * {@link com.publiccms.entities.trade.TradeOrder}
+ * <li><code>ids</code>
+ * 多个订单id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@trade.order id=1&gt;${object.title}&lt;/@trade.order&gt;
+ * <p>
+ * &lt;@trade.order ids=1,2,3&gt;&lt;#list map as
+ * k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.order&gt;
+ * 
+ * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/trade/order?id=1&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.title);
   });
   &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class TradeOrderDirective extends AbstractTemplateDirective {
 
@@ -61,7 +62,7 @@ public class TradeOrderDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<TradeOrder> entityList = service.getEntitys(ids);
                 Map<String, TradeOrder> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

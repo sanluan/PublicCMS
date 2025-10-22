@@ -6,7 +6,7 @@
         <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>">
             <thead>
                 <tr>
-                    <th width="250"<#if 'customform'!=type> type="lookup" name="${extend.id.code}_nickname" fieldClass="<#if extend.required>required</#if>" size="30" fieldAttrs="{'readonly':'readonly','width':'1200','height':'580'}" lookupUrl="sysUser/lookup.html?field=${inputName?url}&nicknameField=${extend.id.code?url}_nickname" lookupGroup="" lookupPk="${inputName}"</#if>><@t.page 'user'/></th>
+                    <th width="250"<#if 'customform'!=type> type="lookup" name="${extend.id.code}_nickname" fieldClass="<#if extend.required>required</#if>" size="30" fieldAttrs='{"readonly":"readonly","width":1200,"height":580}' lookupUrl="sysUser/lookup.html?field=${inputName?url}&nicknameField=${extend.id.code?url}_nickname" lookupGroup="" lookupPk="${inputName}"</#if>><@t.page 'user'/></th>
                     <th width="60"<#if 'customform'!=type> type="delAndSort" </#if>><@t.page 'operate'/></th>
                 </tr>
             </thead>

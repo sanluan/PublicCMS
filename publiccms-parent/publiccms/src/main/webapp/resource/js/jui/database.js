@@ -98,8 +98,8 @@
         lookup: function() {
             return this.each(function() {
                 var $this = $(this), options = {
-                    mask: true, width: $this.attr("width") || 820, height: $this.attr("height") || 500, maxable: eval($this.attr("maxable") || "true") ,
-                    resizable: eval($this.attr("resizable") || "true")
+                    mask: true, width: $this.attr("width") || 820, height: $this.attr("height") || 500, maxable: "true" == ($this.attr("maxable") || "true") ,
+                    resizable: "true" == ($this.attr("resizable") || "true")
                 };
                 $this.on("click", function(event) {
                     _lookup = $.extend(_lookup, {
@@ -111,6 +111,9 @@
                         return false;
                     }
                     $.pdialog.open(url, "_blank", $this.attr("title") || $this.text(), options);
+                    return false;
+                });
+                $this.on("contextmenu", function() {
                     return false;
                 });
             });
@@ -193,9 +196,9 @@
                                     if (liAttr ) {
                                         liAttr += ",";
                                     }
-                                    liAttr += "'" + key + "':'" + this[key] + "'";
+                                    liAttr += "\"" + key + "\":\""+ this[key] + "\"";
                                 }
-                                html += "<li lookupAttrs=\"" + escapeHtml(liAttr) + "\">" + escapeHtml(liLabel) + "</li>";
+                                html += "<li lookupAttrs='" + escapeHtml(liAttr) + "'>" + escapeHtml(liLabel) + "</li>";
                             });
                             var $lis = $suggest.html("<ul>" + html + "</ul>").find("li");
                             $lis.on("click", function() {
@@ -214,9 +217,9 @@
                                     if (jsonStr ) {
                                         jsonStr += ",";
                                     }
-                                    jsonStr += "'" + suggestFields[i] + "':''";
+                                    jsonStr += "\"" + suggestFields[i] + "\":\"\"";
                                 }
-                                jsonStr = "{'" + _lookup.pk + "':''," + jsonStr + "}";
+                                jsonStr = "{\"" + _lookup.pk + "\":\"\"," + jsonStr + "}";
                                 $.bringBackSuggest(JUI.jsonEval(jsonStr),callbackFields);
                             }
                         }, error: function() {
@@ -551,6 +554,9 @@
                     } else {
                         _doPost();
                     }
+                    return false;
+                });
+                $this.on("contextmenu", function() {
                     return false;
                 });
             });

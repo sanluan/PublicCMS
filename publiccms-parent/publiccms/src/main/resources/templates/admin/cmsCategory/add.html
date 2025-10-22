@@ -47,7 +47,7 @@
         </@cms.modelList>
     </#if>
 </#macro>
-<form method="post" autocomplete="off" action="cmsCategory/save?callbackType=closeCurrent&navTabId=cmsCategory/list<#if !id?has_content>&ref=page</#if>" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsCategory/save?callbackType=closeCurrent&navTabId=cmsCategory/list<#if !id?has_content>&rel=page</#if>" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">

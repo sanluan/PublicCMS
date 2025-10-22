@@ -24,7 +24,7 @@ public class VisitItemDao extends BaseDao<VisitItem> {
      * @param siteId
      * @param startVisitDate
      * @param endVisitDate
-     * @param dayAnalytics 
+     * @param dayAnalytics
      * @param itemType
      * @param itemId
      * @param pageIndex
@@ -47,10 +47,10 @@ public class VisitItemDao extends BaseDao<VisitItem> {
             queryHandler.condition("bean.id.visitDate <= :endVisitDate").setParameter("endVisitDate", endVisitDate);
         }
         if (CommonUtils.notEmpty(itemType)) {
-            queryHandler.condition("bean.id.itemType <= :itemType").setParameter("itemType", itemType);
+            queryHandler.condition("bean.id.itemType = :itemType").setParameter("itemType", itemType);
         }
         if (CommonUtils.notEmpty(itemId)) {
-            queryHandler.condition("bean.id.itemId <= :itemId").setParameter("itemId", itemId);
+            queryHandler.condition("bean.id.itemId = :itemId").setParameter("itemId", itemId);
         }
         if(dayAnalytics) {
             queryHandler.order("bean.id.visitDate").append(ORDERTYPE_DESC);

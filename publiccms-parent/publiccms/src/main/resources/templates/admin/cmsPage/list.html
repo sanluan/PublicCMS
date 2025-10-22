@@ -1,7 +1,7 @@
 <#macro pageList filepath=''>
     <@tools.fileList path=filepath>
         <#list list as a>
-            <@t.merge 'pages' filepath?has_content?then(filepath+'/','')+a.fileName/>
+            <@t.merge 'pages' filepath+'/'+a.fileName/>
             <#if !a.directory><@t.merge 'paths' filepath+'/'+a.fileName/></#if>
         </#list>
         <@sys.lock userId=admin.id itemType='page' itemIds=t.paths><#assign lockMap=map!/></@sys.lock>
@@ -14,7 +14,7 @@
         <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
         <#list list as a>
             <#local currentPath=filepath?has_content?then(filepath+'/','')+a.fileName>
-            <#if (deptPageMap[currentPath])?has_content&&deptPageMap[currentPath]>
+            <#if (deptPageMap[filepath+'/'+a.fileName])?has_content&&deptPageMap[filepath+'/'+a.fileName]>
                 <li<#if a.directory><#if (path?has_content && path?starts_with(currentPath+'/'))> class="expand"<#else> _src="cmsPage/list.html?parent=${currentPath?url}"</#if><#elseif path?has_content && path=currentPath> class="selected"</#if>>
                     <#if a.directory>
                         <a href="javascript:;" onclick="return false;">${a.fileName}</a>

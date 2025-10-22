@@ -15,7 +15,7 @@ import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.ContentDisposition;
@@ -285,7 +285,7 @@ public class SysSiteAdminController {
                     for (Path entry : stream) {
                         File file = entry.toFile();
                         if (file.isFile() && MetadataComponent.DATA_FILE.equalsIgnoreCase(file.getName())) {
-                            String content = StringUtils.replace(FileUtils.readFileToString(file, StandardCharsets.UTF_8), oldurl,
+                            String content = Strings.CS.replace(FileUtils.readFileToString(file, StandardCharsets.UTF_8), oldurl,
                                     newurl);
                             FileUtils.write(file, content, StandardCharsets.UTF_8);
                             i += 1;

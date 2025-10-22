@@ -179,8 +179,8 @@ function initLink($p) {
                 changeTitle=true;
             }
             var tabid = $this.attr("rel") || "_blank";
-            var fresh = eval($this.attr("fresh") || "true");
-            var external = eval($this.attr("external") || "false");
+            var fresh = "true" == ($this.attr("fresh") || "true");
+            var external = "true" == ($this.attr("external") || "false");
             var url = $this.attr("href").replaceTmById($(event.target).parents(".unitBox:first"));
             var newWindow = (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey);
             JUI.debug(url);
@@ -191,6 +191,9 @@ function initLink($p) {
             navTab.openTab(tabid, url, {
                 title: title, changeTitle:changeTitle, fresh: fresh, external: external, focusNewWindow:newWindow
             });
+            return false;
+        });
+        $(this).on("contextmenu", function() {
             return false;
         });
     });
@@ -210,13 +213,13 @@ function initLink($p) {
             if (h ) {
                 options.height = h;
             }
-            options.max = eval($this.attr("max") || "false");
-            options.mask = eval($this.attr("mask") || "false");
-            options.maxable = eval($this.attr("maxable") || "true");
-            options.minable = eval($this.attr("minable") || "true");
-            options.fresh = eval($this.attr("fresh") || "true");
-            options.resizable = eval($this.attr("resizable") || "true");
-            options.drawable = eval($this.attr("drawable") || "true");
+            options.max = "true" == ($this.attr("max") || "false");
+            options.mask = "true" == ($this.attr("mask") || "false");
+            options.maxable = "true" == ($this.attr("maxable") || "true");
+            options.minable = "true" == ($this.attr("minable") || "true");
+            options.fresh = "true" == ($this.attr("fresh") || "true");
+            options.resizable = "true" == ($this.attr("resizable") || "true");
+            options.drawable = "true" == ($this.attr("drawable") || "true");
             options.close = eval($this.attr("close") || "");
             options.param = $this.attr("param") || "";
             options.focusNewWindow = (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey);
@@ -227,6 +230,9 @@ function initLink($p) {
                 return false;
             }
             $.pdialog.open(url, rel, title, options);
+            return false;
+        });
+        $(this).on("contextmenu", function() {
             return false;
         });
     });
@@ -240,6 +246,9 @@ function initLink($p) {
                     $rel.find("[layoutH]").layoutH();
                 });
             }
+            return false;
+        });
+        $(this).on("contextmenu", function() {
             return false;
         });
     });

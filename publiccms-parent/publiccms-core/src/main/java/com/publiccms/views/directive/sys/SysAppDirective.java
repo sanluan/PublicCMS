@@ -16,31 +16,31 @@ import com.publiccms.logic.service.sys.SysAppService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* sysApp 应用查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>id</code>:应用id,结果返回<code>object</code>
-* {@link com.publiccms.entities.sys.SysApp}
-* <li><code>ids</code>:
-* 多个应用id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
-* </ul>
-* 使用示例
-* <p>
-* &lt;@sys.app id=1&gt;${object.channel}&lt;/@sys.app&gt;
-* <p>
-* &lt;@sys.app ids='1,2,3'&gt;&lt;#list map as
-* k,v&gt;${k}:${v.channel}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.app&gt;
-* 
-* <pre>
+ *
+ * sysApp 应用查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>id</code>:应用id,结果返回<code>object</code>
+ * {@link com.publiccms.entities.sys.SysApp}
+ * <li><code>ids</code>:
+ * 多个应用id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@sys.app id=1&gt;${object.channel}&lt;/@sys.app&gt;
+ * <p>
+ * &lt;@sys.app ids='1,2,3'&gt;&lt;#list map as
+ * k,v&gt;${k}:${v.channel}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.app&gt;
+ * 
+ * <pre>
 &lt;script&gt;
 $.getJSON('${site.dynamicPath}api/directive/sys/app?id=1&amp;appToken=接口访问授权Token', function(data){    
   console.log(data.channel);
 });
 &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class SysAppDirective extends AbstractTemplateDirective {
 
@@ -58,12 +58,12 @@ public class SysAppDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<SysApp> entityList = service.getEntitys(ids);
                 Map<String, SysApp> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }
     }
-    
+
     @Override
     public boolean needAppToken() {
         return true;

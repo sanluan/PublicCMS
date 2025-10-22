@@ -57,7 +57,7 @@
                 <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
                     <thead>
                         <tr>
-                            <th type="text" name="itemList[#index#].title" size="50" fieldClass="required" fieldAttrs="{maxlength:100}"><@t.page 'title'/></th>
+                            <th type="text" name="itemList[#index#].title" size="50" fieldClass="required" fieldAttrs='{"maxlength":100}'><@t.page 'title'/></th>
                             <th type="text" name="itemList[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
                         <#if 'exam'=object.surveyType>
                             <th type="checkbox" name="itemList[#index#].answer" fieldClass="form-check-input" size="10"><@t.page 'answer.correct'/></th>

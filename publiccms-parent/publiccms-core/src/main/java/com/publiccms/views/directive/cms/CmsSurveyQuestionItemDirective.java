@@ -20,16 +20,19 @@ import freemarker.template.TemplateException;
 /**
  *
  * surveyQuestionItem 调查问卷问题选项查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>id</code>:调查问卷问题id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsSurveyQuestionItem}
  * <li><code>ids</code>:
  * 多个调查问卷问题id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
  * <p>
- * &lt;@cms.surveyQuestionItem id=1&gt;${object.title}&lt;/@cms.surveyQuestionItem&gt;
+ * 使用示例
+ * <p>
+ * &lt;@cms.surveyQuestionItem
+ * id=1&gt;${object.title}&lt;/@cms.surveyQuestionItem&gt;
  * <p>
  * &lt;@cms.surveyQuestionItem ids='1,2,3'&gt;&lt;#list map as
  * k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.surveyQuestionItem&gt;
@@ -57,7 +60,8 @@ public class CmsSurveyQuestionItemDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsSurveyQuestionItem> entityList = service.getEntitys(ids);
-                Map<String, CmsSurveyQuestionItem> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), ids);
+                Map<String, CmsSurveyQuestionItem> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), ids,
+                        e -> e.getId());
                 handler.put("map", map).render();
             }
         }

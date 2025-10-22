@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -94,7 +94,7 @@ public class GetHtmlMethod extends BaseMethod {
         Map<?, ?> headers = getMap(2, arguments);
         String html = null;
         if (CommonUtils.notEmpty(url)) {
-            if (StringUtils.startsWithAny(url, safeConfigComponent.getAllowUrls(site))) {
+            if (Strings.CS.startsWithAny(url, safeConfigComponent.getAllowUrls(site))) {
                 try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(Constants.defaultRequestConfig)
                         .build()) {
                     HttpUriRequest request;

@@ -23,7 +23,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * lock 锁查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>itemType</code>:项目类型
  * <li><code>itemId</code>:项目id,结果返回<code>object</code>
@@ -31,7 +32,8 @@ import freemarker.template.TemplateException;
  * <li><code>itemIds</code>
  * 多个项目id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@sys.lock id=1&gt;${object.count}&lt;/@sys.lock&gt;
  * <p>
@@ -74,7 +76,8 @@ public class SysLockDirective extends AbstractTemplateDirective {
                     }
                     List<SysLock> entityList = service.getEntitys(entityIds);
                     int expriy = lockComponent.getExpriy(siteId, itemType);
-                    Map<String, SysLock> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getItemId()), null, itemIds,
+                    Map<String, SysLock> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getItemId()),
+                            null, itemIds, e -> e.getId().getItemId(),
                             expriy > 0
                                     ? f -> f.getCreateDate().after(DateUtils.addMinutes(CommonUtils.getDate(), -expriy))
                                             && (null == f.getUserId() || null == userId || !f.getUserId().equals(userId))

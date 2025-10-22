@@ -19,35 +19,36 @@ import com.publiccms.logic.service.trade.TradePaymentService;
 import freemarker.template.TemplateException;
 
 /**
-*
-* tradePayment 支付订单查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>id</code> 支付订单id，结果返回<code>object</code>
-* {@link com.publiccms.entities.trade.TradePayment}
-* <li><code>ids</code> 多个支付订单id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
-* </ul>
-* 使用示例
-* <p>
-* &lt;@trade.payment id=1&gt;${object.amount}&lt;/@trade.payment&gt;
-* <p>
-* &lt;@trade.payment ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${k}:${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.payment&gt;
-* 
-* <pre>
+ *
+ * tradePayment 支付订单查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>id</code> 支付订单id，结果返回<code>object</code>
+ * {@link com.publiccms.entities.trade.TradePayment}
+ * <li><code>ids</code>
+ * 多个支付订单id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@trade.payment id=1&gt;${object.amount}&lt;/@trade.payment&gt;
+ * <p>
+ * &lt;@trade.payment ids=1,2,3&gt;&lt;#list map as
+ * k,v&gt;${k}:${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.payment&gt;
+ * 
+ * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/trade/payment?id=1&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.amount);
   });
   &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class TradePaymentDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, TemplateException{
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
@@ -59,7 +60,8 @@ public class TradePaymentDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<TradePayment> entityList = service.getEntitys(ids);
-                Map<String, TradePayment> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids, entity -> site.getId() == entity.getSiteId());
+                Map<String, TradePayment> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

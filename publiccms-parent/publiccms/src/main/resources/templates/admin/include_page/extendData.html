@@ -28,7 +28,7 @@
             <#break>
         <#case 'file'>
             <#if 'view'=type>
-                <a href="${getUrl(value)!}" target="_blank">${(value)!}</a>
+                <a href="${getUrl(value?url_path)!}" target="_blank">${(value)!}</a>
             <#else>
         <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'=type>
@@ -41,7 +41,7 @@
             <#break>
         <#case 'privatefile'>
             <#if 'view'=type>
-                <a href="${getPrivateUrl(value)!}" target="_blank">${(value)!}</a>
+                <a href="${getPrivateUrl(value?url_path)!}" target="_blank">${(value)!}</a>
             <#else>
         <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
                 <#if 'customform'=type>
@@ -53,7 +53,7 @@
             <#break>
         <#case 'image'>
             <#if 'view'=type>
-                <img src="${getUrl(value)!}" alt="image" style="max-width:200px;max-height:200px;"/>
+                <img src="${getUrl(value?url_path)!}" alt="image" style="max-width:200px;max-height:200px;"/>
                 <br/>
                 ${(value)!}
             <#else>
@@ -69,7 +69,7 @@
             <#break>
         <#case 'privateimage'>
             <#if 'view'=type>
-                <img src="${getPrivateUrl(value)!}" alt="image" style="max-width:200px;max-height:200px;"/>
+                <img src="${getPrivateUrl(value?url_path)!}" alt="image" style="max-width:200px;max-height:200px;"/>
                 <br/>
                 ${(value)!}
             <#else>
@@ -84,7 +84,7 @@
             <#break>
         <#case 'video'>
             <#if 'view'=type>
-                <video controls="controls" src="${getUrl(value)!}" style="max-width:500px;max-height:500px;"></video>
+                <video controls="controls" src="${getUrl(value?url_path)!}" style="max-width:500px;max-height:500px;"></video>
                 <br/>
                 ${(value)!}
             <#else>
@@ -99,7 +99,7 @@
             <#break>
         <#case 'privatevideo'>
             <#if 'view'=type>
-                <video controls="controls" src="${getPrivateUrl(value)!}" style="max-width:500px;max-height:500px;"></video>
+                <video controls="controls" src="${getPrivateUrl(value?url_path)!}" style="max-width:500px;max-height:500px;"></video>
                 <br/>
                 ${(value)!}
             <#else>

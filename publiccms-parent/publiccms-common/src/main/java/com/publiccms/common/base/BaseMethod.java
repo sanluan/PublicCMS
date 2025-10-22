@@ -1,10 +1,10 @@
 package com.publiccms.common.base;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -125,7 +125,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
     public static Integer[] getIntegerArray(int index, List<TemplateModel> arguments) throws TemplateModelException {
         String[] arr = getStringArray(index, arguments);
         if (CommonUtils.notEmpty(arr)) {
-            Set<Integer> set = new TreeSet<>();
+            Set<Integer> set = new LinkedHashSet<>();
             for (String s : arr) {
                 try {
                     set.add(Integer.valueOf(s));
@@ -146,7 +146,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
     public static Long[] getLongArray(int index, List<TemplateModel> arguments) throws TemplateModelException {
         String[] arr = getStringArray(index, arguments);
         if (CommonUtils.notEmpty(arr)) {
-            Set<Long> set = new TreeSet<>();
+            Set<Long> set = new LinkedHashSet<>();
             for (String s : arr) {
                 try {
                     set.add(Long.valueOf(s));

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -87,6 +88,9 @@ public class CmsPageAdminController {
     public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String type,
             @ModelAttribute CmsPageData pageDate, HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
+        if (!path.startsWith(Constants.SEPARATOR)) {
+            path = CommonUtils.joinString(Constants.SEPARATOR, path);
+        }
         if (ControllerUtils.errorNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.errorNotEmpty("deptId", dept, model)
                 || ControllerUtils.errorCustom("noright",

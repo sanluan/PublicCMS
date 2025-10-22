@@ -20,35 +20,37 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 
 /**
-*
-* tradeOrderProduct 订单产品查询指令
-* <p>
-* 参数列表
-* <ul>
-* <li><code>id</code> 订单产品id，结果返回<code>object</code>
-* {@link com.publiccms.entities.trade.TradeOrderProduct}
-* <li><code>ids</code> 多个订单产品id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
-* </ul>
-* 使用示例
-* <p>
-* &lt;@trade.orderProduct id=1&gt;${object.quantity}&lt;/@trade.orderProduct&gt;
-* <p>
-* &lt;@trade.orderProduct ids=1,2,3&gt;&lt;#list map as
-* k,v&gt;${k}:${v.quantity}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.orderProduct&gt;
-* 
-* <pre>
+ *
+ * tradeOrderProduct 订单产品查询指令
+ * <p>
+ * 参数列表
+ * <ul>
+ * <li><code>id</code> 订单产品id，结果返回<code>object</code>
+ * {@link com.publiccms.entities.trade.TradeOrderProduct}
+ * <li><code>ids</code>
+ * 多个订单产品id，逗号或空格间隔，当id为空时生效，结果返回<code>map</code>(id,<code>object</code>)
+ * </ul>
+ * 使用示例
+ * <p>
+ * &lt;@trade.orderProduct
+ * id=1&gt;${object.quantity}&lt;/@trade.orderProduct&gt;
+ * <p>
+ * &lt;@trade.orderProduct ids=1,2,3&gt;&lt;#list map as
+ * k,v&gt;${k}:${v.quantity}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.orderProduct&gt;
+ * 
+ * <pre>
  &lt;script&gt;
   $.getJSON('${site.dynamicPath}api/directive/trade/orderProduct?id=1&amp;appToken=接口访问授权Token', function(data){    
     console.log(data.quantity);
   });
   &lt;/script&gt;
-* </pre>
-*/
+ * </pre>
+ */
 @Component
 public class TradeOrderProductDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, TemplateException{
+    public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
@@ -61,7 +63,7 @@ public class TradeOrderProductDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<TradeOrderProduct> entityList = service.getEntitys(ids);
                 Map<String, TradeOrderProduct> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

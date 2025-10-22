@@ -55,8 +55,11 @@ public class SysDeptItemDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(deptId) && CommonUtils.notEmpty(itemType)) {
             if (CommonUtils.notEmpty(itemId)) {
                 SysDept entity = sysDeptService.getEntity(deptId);
-                handler.put("object", null != entity
-                        && (entity.isOwnsAllCategory() || null != service.getEntity(new SysDeptItemId(deptId, itemType, itemId))))
+                handler.put("object",
+                        null != entity && ("category".equals(itemType) && entity.isOwnsAllCategory()
+                                || "page".equals(itemType) && entity.isOwnsAllPage()
+                                || "config".equals(itemType) && entity.isOwnsAllConfig()
+                                || null != service.getEntity(new SysDeptItemId(deptId, itemType, itemId))))
                         .render();
             } else {
                 String[] itemIds = handler.getStringArray("itemIds");
@@ -64,7 +67,9 @@ public class SysDeptItemDirective extends AbstractTemplateDirective {
                     Map<String, Boolean> map = new LinkedHashMap<>();
                     SysDept entity = sysDeptService.getEntity(deptId);
                     if (null != entity) {
-                        if (entity.isOwnsAllCategory()) {
+                        if ("category".equals(itemType) && entity.isOwnsAllCategory()
+                                || "page".equals(itemType) && entity.isOwnsAllPage()
+                                || "config".equals(itemType) && entity.isOwnsAllConfig()) {
                             for (String id : itemIds) {
                                 map.put(id, true);
                             }

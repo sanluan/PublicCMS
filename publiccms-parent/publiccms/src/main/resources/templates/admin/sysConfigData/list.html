@@ -3,7 +3,7 @@
     <div class="panelBar">
         <ul class="toolBar">
         <#if authorizedMap['sysConfigData/import']>
-            <li><a href="sysConfigData/import.html" target="dialog" mask="true" width="500" height="250"><i class="icon-upload-alt icon-large"></i><@t.page 'import'/></a></li>
+            <li><a href="sysConfigData/import.html" target="dialog" mask="true" width="500" height="250"><i class="bi bi-cloud-upload"></i><@t.page "import"/></a></li>
         </#if>
         </ul>
     </div>
@@ -47,7 +47,7 @@
                     <a href="sysConfigData/edit.html?code=${a.code!}" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a>
                 </#if>
                 <#if authorizedMap['sysConfigData/export']>
-                    <a href="sysConfigData/export?code=${a.code}&_csrf=<@tools.csrfToken admin=true/>" class="edit btnText" target="_blank"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
+                    <a href="sysConfigData/export?code=${a.code}&_csrf=<@tools.csrfToken admin=true/>" class="edit btnText" target="_blank"><i class="bi bi-cloud-download"></i><@t.page "button.export"/></a>
                 </#if>
                 </td>
             </tr>

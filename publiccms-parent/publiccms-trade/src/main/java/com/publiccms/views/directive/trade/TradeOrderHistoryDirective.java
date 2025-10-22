@@ -60,7 +60,8 @@ public class TradeOrderHistoryDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<TradeOrderHistory> entityList = service.getEntitys(ids);
-                Map<String, TradeOrderHistory> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids, entity -> site.getId() == entity.getSiteId());
+                Map<String, TradeOrderHistory> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

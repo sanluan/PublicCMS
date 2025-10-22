@@ -22,8 +22,8 @@
         <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate2.html?field1=${inputName?url}&fieldName1=keywords&field2=${inputName?url}&fieldName2=url&suffix1=keywords&suffix2=url">
             <thead>
                 <tr>
-                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas required" fieldAttrs="{'batchGroup':''<#if extend.maxlength?has_content>,'maxlength':'${extend.maxlength}'</#if>}" suffix="keywords"</#if>><@t.page 'keywords'/></th>
-                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas required"<#if extend.maxlength?has_content> fieldAttrs="{'maxlength':'${extend.maxlength}'}"</#if> suffix="url"</#if>><@t.page 'url'/></th>
+                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas required" fieldAttrs='{"batchGroup":""<#if extend.maxlength?has_content>,maxlength:${extend.maxlength}</#if>}" suffix="keywords"</#if>><@t.page 'keywords'/></th>
+                    <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas required"<#if extend.maxlength?has_content> fieldAttrs='{"maxlength":${extend.maxlength}}'</#if> suffix="url"</#if>><@t.page 'url'/></th>
                     <th width="60"<#if 'customform'!=type> type="delAndSort"</#if>><@t.page 'operate'/></th>
                 </tr>
             </thead>

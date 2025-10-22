@@ -25,13 +25,15 @@ import freemarker.template.TemplateException;
 /**
  *
  * contentProduct 产品查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>id</code>:内容id,结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsContentProduct}
  * <li><code>absoluteURL</code>:cover处理为绝对路径 默认为<code> true</code>
  * <li><code>ids</code>:多个内容id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.contentProduct id=1&gt;${object.title}&lt;/@cms.contentProduct&gt;
  * <p>
@@ -72,8 +74,8 @@ public class CmsContentProductDirective extends AbstractTemplateDirective {
                     }
                     return e;
                 };
-                Map<String, CmsContentProduct> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                Map<String, CmsContentProduct> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(),
+                        valueMapper, ids, e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

@@ -22,7 +22,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * userSurvey 用户问卷回答查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>userId</code>:用户id
  * <li><code>surveyId</code>:问卷id,结果返回<code>object</code>
@@ -32,7 +33,8 @@ import freemarker.template.TemplateException;
  * <li><code>userIds</code>
  * 多个用户id,逗号或空格间隔,当userId为空且surveyId不为空时生效,结果返回<code>map</code>(userId,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.userSurvey id=1&gt;${object.score}&lt;/@cms.userSurvey&gt;
  * <p>
@@ -70,7 +72,8 @@ public class CmsUserSurveyDirective extends AbstractTemplateDirective {
                     }
                     List<CmsUserSurvey> entityList = service.getEntitys(entityIds);
                     Map<String, CmsUserSurvey> map = CommonUtils.listToMapSorted(entityList,
-                            k -> String.valueOf(k.getId().getSurveyId()), null, surveyIds, entity -> site.getId() == entity.getSiteId());
+                            k -> String.valueOf(k.getId().getSurveyId()), null, surveyIds, e -> e.getId().getSurveyId(),
+                            entity -> site.getId() == entity.getSiteId());
                     handler.put("map", map).render();
                 }
             }
@@ -82,8 +85,9 @@ public class CmsUserSurveyDirective extends AbstractTemplateDirective {
                     entityIds[i] = new CmsUserSurveyId(userIds[i], surveyId);
                 }
                 List<CmsUserSurvey> entityList = service.getEntitys(entityIds);
-                Map<String, CmsUserSurvey> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getUserId()),
-                        null, userIds, entity -> site.getId() == entity.getSiteId());
+                Map<String, CmsUserSurvey> map = CommonUtils.listToMapSorted(entityList,
+                        k -> String.valueOf(k.getId().getUserId()), null, userIds, e -> e.getId().getUserId(),
+                        entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

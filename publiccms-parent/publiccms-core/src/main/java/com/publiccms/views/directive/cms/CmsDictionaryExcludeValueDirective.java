@@ -20,7 +20,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * dictionaryExcludeValue 数据字典排除值查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>dictionaryId</code>:数据字典id
  * <li><code>excludeDictionaryId</code>:排除的字典
@@ -29,13 +30,15 @@ import freemarker.template.TemplateException;
  * <li><code>values</code>
  * 多个的字典值,逗号或空格间隔,当value为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
  * <p>
- * &lt;@cms.dictionaryExcludeValue dictionaryId='data' excludeDictionaryId='data1'
+ * 使用示例
+ * <p>
+ * &lt;@cms.dictionaryExcludeValue dictionaryId='data'
+ * excludeDictionaryId='data1'
  * value='data1'&gt;${object.excludeValues}&lt;/@cms.dictionaryExcludeValue&gt;
  * <p>
- * &lt;@cms.dictionaryExcludeValue dictionaryId='data' excludeDictionaryId='data1'
- * values='1,2'&gt;&lt;#list map as
+ * &lt;@cms.dictionaryExcludeValue dictionaryId='data'
+ * excludeDictionaryId='data1' values='1,2'&gt;&lt;#list map as
  * k,v&gt;${k}:${v.excludeValues}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExcludeValue&gt;
  *
  * <pre>
@@ -71,7 +74,8 @@ public class CmsDictionaryExcludeValueDirective extends AbstractTemplateDirectiv
                         ids[i] = new CmsDictionaryExcludeValueId(dictionaryId, siteId, excludeDictionaryId, values[i]);
                     }
                     List<CmsDictionaryExcludeValue> entityList = service.getEntitys(ids);
-                    Map<String, CmsDictionaryExcludeValue> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().getValue(), values);
+                    Map<String, CmsDictionaryExcludeValue> map = CommonUtils.listToMapSorted(entityList,
+                            k -> k.getId().getValue(), values, e -> e.getId().getValue());
                     handler.put("map", map).render();
                 }
             }

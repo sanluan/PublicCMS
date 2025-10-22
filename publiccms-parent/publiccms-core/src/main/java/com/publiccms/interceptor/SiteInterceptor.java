@@ -38,7 +38,7 @@ public class SiteInterceptor implements HandlerInterceptor {
             String currentSiteId = request.getParameter("currentSiteId");
             if (null != currentSiteId) {
                 SysSite newSite = siteComponent.getSiteById(currentSiteId);
-                if (null != newSite && null != newSite.getParentId() && newSite.getParentId() != site.getId()) {
+                if (null != newSite && null != newSite.getParentId() && newSite.getParentId() == site.getId()) {
                     site = newSite;
                 }
             }

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.HtmlUtils;
 
@@ -64,7 +64,7 @@ public class TemplateSearchListDirective extends AbstractTemplateDirective {
             list.forEach(file -> {
                 for (int i = 0; i < file.getMatchList().size(); i++) {
                     String safeLine = HtmlUtils.htmlEscape(file.getMatchList().get(i), StandardCharsets.UTF_8.name());
-                    file.getMatchList().set(i, StringUtils.replace(safeLine, safeWord, resultWord));
+                    file.getMatchList().set(i, Strings.CS.replace(safeLine, safeWord, resultWord));
                 }
             });
             handler.put("list", list).render();

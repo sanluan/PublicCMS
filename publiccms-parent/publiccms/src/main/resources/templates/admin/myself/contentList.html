@@ -40,7 +40,7 @@
                     </li>
                 <#if authorizedMap['cmsContent/export']>
                     <li>
-                        <a class="button" href="cmsContent/export.html" target="dialog" mask="true" width="500" height="250"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
+                        <a class="button" href="cmsContent/export.html" target="dialog" mask="true" width="500" height="250"><i class="bi bi-cloud-download"></i><@t.page "button.export"/></a>
                     </li>
                 </#if>
                 </ul>
@@ -116,6 +116,7 @@
                                 <label><a href="myself/contentList.html?parentId=${contentId}" class="btnText" target="navTab" data-change-title="false" rel="myself/contentList"><@t.page 'content.child_management'/></a></label>
                             </#if>
                             <#if a.expiryDate?has_content><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></#if>
+                            <#if processItemMap[a.id?string]?has_content && authorizedMap['sysWorkflowProcess/view']><a href="sysWorkflowProcess/view.html?id=${processItemMap[a.id?string].processId}" class="btnText blue" target="dialog" rel="viewProcess${processItemMap[a.id?string].processId}" width="1200" height="500"><@t.page 'workflow.check'/></a></#if>
                         </p>
                     </div>
                 </td>
@@ -135,9 +136,6 @@
                 <td class="wrap">
                     <#if 4 != a.status && authorizedMap['cmsContent/add']>
                         <a href="cmsContent/add.html?id=${a.id}&navTabId=myself/contentList" class="edit btnText blue" target="navTab" rel="myself/contentList/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a></li>
-                    </#if>
-                    <#if 4 = a.status && authorizedMap['sysWorkflowProcess/view']>
-                        <a href="sysWorkflowProcess/view.html?id=${processItemMap[a.id?string].processId}" class="edit btnText blue" target="dialog" rel="viewProcess${a.id}" width="1200" height="500"><@t.page 'workflow.check'/></a>
                     </#if>
                     <#if 1 = a.status && authorizedMap['cmsContent/push']>
                         <a href="cmsContent/push.html?contentId=${contentId}" class="btnText green" width="1200" height="600" target="dialog" mask="true"><@t.page 'button.push'/></a>

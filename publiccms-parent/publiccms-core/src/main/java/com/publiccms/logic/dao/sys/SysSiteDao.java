@@ -62,10 +62,7 @@ public class SysSiteDao extends BaseDao<SysSite> {
         if (!entity.isHasChild()) {
             entity.setMultiple(false);
         }
-        if (!entity.isMultiple()) {
-            entity.setDirectory(null);
-        }
-        if (CommonUtils.empty(entity.getDirectory())) {
+        if (null== entity.getParentId() || CommonUtils.empty(entity.getDirectory())) {
             entity.setDirectory(null);
         }
         if (null == entity.getDynamicPath()) {

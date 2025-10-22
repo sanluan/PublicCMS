@@ -59,7 +59,7 @@
                     </li>
                 <#if authorizedMap['cmsContent/export']>
                     <li>
-                        <a class="button" href="cmsContent/export.html" target="dialog" mask="true" width="500" height="250"><i class="icon-download-alt icon-large"></i><@t.page 'button.export'/></a>
+                        <a class="button" href="cmsContent/export.html" target="dialog" mask="true" width="500" height="250"><i class="bi bi-cloud-download"></i><@t.page "button.export"/></a>
                     </li>
                 </#if>
                 </ul>
@@ -123,7 +123,7 @@
         </#if>
         <#if authorizedMap['cmsContent/import']>
             <li class="line">line</li>
-            <li><a href="cmsContent/import.html" target="dialog" mask="true" width="500" height="250"><i class="icon-upload-alt icon-large"></i><@t.page 'import'/></a></li>
+            <li><a href="cmsContent/import.html" target="dialog" mask="true" width="500" height="250"><i class="bi bi-cloud-upload"></i><@t.page "import"/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/delete']>
             <li class="line">line</li>

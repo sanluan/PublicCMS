@@ -221,7 +221,7 @@ public class CmsWebFileAdminController {
     public String uploadIco(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, MultipartFile file,
             String filename, String base64File, String originalFilename, int size, boolean overwrite, HttpServletRequest request,
             ModelMap model) {
-        if (null != file && !file.isEmpty() || CommonUtils.notEmpty(base64File)) {
+        if (filename.endsWith(".ico") && (null != file && !file.isEmpty() || CommonUtils.notEmpty(base64File))) {
             String originalName;
             String suffix;
             if (null != file && !file.isEmpty()) {
@@ -230,9 +230,9 @@ public class CmsWebFileAdminController {
                 originalName = originalFilename;
             }
             suffix = CmsFileUtils.getSuffix(originalName);
+            String filepath = CommonUtils.joinString(path, Constants.SEPARATOR, filename);
+            String fuleFilePath = siteComponent.getWebFilePath(site.getId(), filepath);
             try {
-                String filepath = CommonUtils.joinString(path, Constants.SEPARATOR, filename);
-                String fuleFilePath = siteComponent.getWebFilePath(site.getId(), filepath);
                 if (overwrite || !CmsFileUtils.exists(fuleFilePath)) {
                     CmsFileUtils.mkdirsParent(fuleFilePath);
                     if (CommonUtils.notEmpty(base64File)) {
@@ -250,6 +250,7 @@ public class CmsWebFileAdminController {
                             uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
                 }
             } catch (IOException e) {
+                CmsFileUtils.delete(fuleFilePath);
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
                 return CommonConstants.TEMPLATE_ERROR;

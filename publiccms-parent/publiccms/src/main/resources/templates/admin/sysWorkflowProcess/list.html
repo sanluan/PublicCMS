@@ -67,7 +67,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
-                <td><a href="<#if a.itemType="content">cmsContent/view.html?id=${a.itemId}</#if>" class="exclude-translate" target="dialog" rel="viewProcess${a.id}" width="1200" height="500">${a.title!}</a></td>
+                <td><a href="<#if a.itemType="content">cmsContent/view.html?id=${a.itemId}<#elseif a.itemType="place">cmsPlace/view.html?id=${a.itemId}</#if>" class="exclude-translate" target="dialog" rel="viewProcess${a.id}" width="1200" height="500">${a.title!}</a></td>
                 <td><a href="sysWorkflowProcess/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewProcess${a.id}" width="1200" height="500">${(workflowMap[a.workflowId?string].name)!t.pageMessage('page.disabled')} : ${(stepMap[a.stepId?string].name)!t.pageMessage('page.disabled')}</a></td>
                 <td class="exclude-translate">${(userMap[a.createUserId?string].nickname)!}</td>
                 <td>${a.createDate!}</td>

@@ -182,10 +182,6 @@
                 if (op.ckbox ) {
                     node._check(op);
                 }
-                $(">div", node).on("click", function() {
-                    $("a", this).trigger("click");
-                    return false;
-                });
             });
         }, _check: function(op) {
             var node = $(this);

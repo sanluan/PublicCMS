@@ -16,6 +16,7 @@ PublicCMS is an open source JAVACMS system developed with mainstream technologie
 ## Get the source code
 
 https://gitee.com/sanluan/PublicCMS
+https://gitcode.com/sanluan/PublicCMS
 https://github.com/sanluan/PublicCMS
 
 ## Participate in development

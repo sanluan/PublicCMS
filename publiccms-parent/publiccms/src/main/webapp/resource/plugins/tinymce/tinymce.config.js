@@ -22,7 +22,8 @@
             images_upload_handler : (blobInfo, progress) => new Promise((resolve, reject) => {
                 const xhr = new XMLHttpRequest();
                 xhr.withCredentials = false;
-                xhr.open('POST', 'postAcceptor.php');
+                xhr.open('POST', base + '/tinymce/upload');
+                xhr.setRequestHeader( 'test', 'test' );
                 xhr.upload.onprogress = (e) => {
                     progress(e.loaded / e.total * 100);
                 };
@@ -40,7 +41,7 @@
                         reject('Invalid JSON: ' + xhr.responseText);
                         return;
                     }
-                    resolve(json.location);
+                    resolve(window.TIMYMCE_RESOURCE_PREFIX+json.location);
                 };
 
                 xhr.onerror = () => {
@@ -89,7 +90,7 @@
                 var input = document.createElement('input');
                     input.setAttribute('type', 'file');
                     input.setAttribute('accept', filetype);
-                input.trigger("click");
+                input.click();
                 input.onchange = function() {
                     var file = this.files[0];
                     var xhr, formData;

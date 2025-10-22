@@ -1,35 +1,28 @@
-<#macro chipTree filepath>
+<#macro chipTree filepath="">
     <@tools.fileList path=filepath>
         <#list list as a>
-            <li>
-                <#local path=filepath+'/'+a.fileName>
-            <#if a.directory>
-                <a href="javascript:;" onclick="return false;">${a.fileName} </a>
-                <ul>
-                    <@chipTree path/>
-                </ul>
-            <#else>
-                <@tools.metadata path=path>
-                    <a href="javascript:;" onclick="use('${path}','${(object.alias)?has_content?then('<#-- '+object.alias+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">
-                        ${(object.alias)?has_content?then(object.alias+' '+a.fileName,a.fileName)}
-                    </a>
-                </@tools.metadata>
-            </#if>
+            <#local path=filepath+'/'+a.fileName>
+            <li<#if a.directory> _src="cmsTemplate/ftlLookup.html?parent=${path}"</#if>>
+                <#if a.directory>
+                    <a href="javascript:;" onclick="return false;">${a.fileName}</a>
+                <#else>
+	                <@tools.metadata path=path>
+	                    <a href="javascript:;" onclick="use('${path}','${(object.alias)?has_content?then('<#-- '+object.alias+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">
+	                        ${(object.alias)?has_content?then(object.alias+' '+a.fileName,a.fileName)}
+	                    </a>
+	                </@tools.metadata>
+                </#if>
             </li>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@tools.fileList>
 </#macro>
-<script>
-function use(path,description){
-    if('include'==$('input[name=use]:checked',$.pdialog.getCurrent()).val()){
-        JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<@include path="'?no_esc}'+path+'${r'"/>'?no_esc}'+description);
-    } else {
-        JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<@import path="'?no_esc}'+path+'" namespace="'+$('input[name=namespace]',$.pdialog.getCurrent()).val()+'"${r'/>'?no_esc}'+description);
-    }
-}
-</script>
+<#if parent?has_content>
+     <ul>
+         <@chipTree parent/>
+     </ul>
+<#else>
 <div class="pageFormContent" layoutH>
     <dl class="nowrap">
         <dt><@t.page 'use_way'/></dt>
@@ -46,6 +39,13 @@ function use(path,description){
         </dd>
     </dl>
     <script>
+    function use(path,description){
+        if('include'==$('input[name=use]:checked',$.pdialog.getCurrent()).val()){
+            JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<@include path="'?no_esc}'+path+'${r'"/>'?no_esc}'+description);
+        } else {
+            JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<@import path="'?no_esc}'+path+'" namespace="'+$('input[name=namespace]',$.pdialog.getCurrent()).val()+'"${r'/>'?no_esc}'+description);
+        }
+    }
     $('input[name=use]',$.pdialog.getCurrent()).on('change',function(){
         if('include'==$('input[name=use]:checked',$.pdialog.getCurrent()).val()){
             $('input[name=namespace]',$.pdialog.getCurrent()).parent().hide();
@@ -55,7 +55,7 @@ function use(path,description){
     });
     </script>
     <ul class="tree treeFolder">
-<@chipTree ''/>
+        <@chipTree ''/>
     </ul>
 </div>
 <div class="formBar">
@@ -63,3 +63,4 @@ function use(path,description){
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>
+</#if>

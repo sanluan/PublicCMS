@@ -18,14 +18,16 @@ import freemarker.template.TemplateException;
 /**
  *
  * tag 标签查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>id</code>:标签id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsTag}
  * <li><code>ids</code>:
  * 多个标签id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.tag id=1&gt;${object.name}&lt;/@cms.tag&gt;
  * <p>
@@ -56,8 +58,8 @@ public class CmsTagDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsTag> entityList = service.getEntitys(ids);
-                Map<String, CmsTag> map =  CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                Map<String, CmsTag> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), null, ids,
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

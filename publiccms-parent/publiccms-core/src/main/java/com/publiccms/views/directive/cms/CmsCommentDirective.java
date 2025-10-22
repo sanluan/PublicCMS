@@ -26,7 +26,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * comment 评论查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>replaceSensitive</code>:替换敏感词, 默认为<code>true</code>
  * <li><code>id</code>:评论id,结果返回<code>object</code>
@@ -34,7 +35,8 @@ import freemarker.template.TemplateException;
  * <li><code>ids</code>:
  * 多个评论id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.comment id=1&gt;${object.text}&lt;/@cms.comment&gt;
  * <p>
@@ -81,7 +83,7 @@ public class CmsCommentDirective extends AbstractTemplateDirective {
                     };
                 }
                 Map<String, CmsComment> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper, ids,
-                        entity -> site.getId() == entity.getSiteId());
+                        e -> e.getId(), entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }
