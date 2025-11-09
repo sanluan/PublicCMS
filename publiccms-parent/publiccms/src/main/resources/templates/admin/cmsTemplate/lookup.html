@@ -2,7 +2,7 @@
     <@tools.fileList path=filepath>
         <#list list as a>
             <#local path=filepath+'/'+a.fileName/>
-            <li<#if a.directory> _src="cmsTemplate/lookup.html?field=${field!'path'}&parent=${path}"</#if>>
+            <li<#if a.directory> _src="cmsTemplate/lookup.html?field=${(field?url)!'path'}&parent=${path}"</#if>>
                 <#if a.directory>
                     <a href="javascript:;" onclick="return false;">${a.fileName}</a>
                 <#else>

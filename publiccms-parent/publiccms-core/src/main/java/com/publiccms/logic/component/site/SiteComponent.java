@@ -293,7 +293,7 @@ public class SiteComponent implements Cache {
                 String cacheKey = CommonUtils.joinString(serverName, Constants.SEPARATOR, directory);
                 SysSite newsite = siteCache.get(cacheKey);
                 if (null == newsite) {
-                    site = sysSiteService.getEntity(domain.getSiteId(), directory);
+                    newsite = sysSiteService.getEntity(domain.getSiteId(), directory);
                 }
                 if (null != newsite) {
                     site = newsite;

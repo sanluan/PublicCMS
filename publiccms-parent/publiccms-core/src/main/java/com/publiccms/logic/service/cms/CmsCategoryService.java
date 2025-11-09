@@ -39,7 +39,7 @@ import jakarta.annotation.Resource;
 @Transactional
 public class CmsCategoryService extends BaseService<CmsCategory> {
 
-    private String[] ignoreCopyProperties = new String[] { "id", "childIds", "extendId", "code", "name", "sort" };
+    private String[] ignoreCopyProperties = new String[] { "id", "childIds" ,"parentId" ,"extendId", "code", "name", "sort" };
     private String[] ignoreProperties = new String[] { "id", "siteId", "childIds", "tagTypeIds", "url", "disabled", "extendId",
             "hasStatic", "typeId" };
 
@@ -127,6 +127,9 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     }
 
     public void copy(short siteId, CmsCategory entity, CmsCategory copy) {
+        if(null == entity.getParentId() && null!= copy.getParentId() ){
+            entity.setParentId(copy.getParentId());
+        }
         BeanUtils.copyProperties(copy, entity, ignoreCopyProperties);
         save(entity);
         categoryModelService.copy(siteId, entity.getId(), copy.getId());

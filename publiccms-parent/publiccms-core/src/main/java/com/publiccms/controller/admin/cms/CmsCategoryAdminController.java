@@ -132,17 +132,21 @@ public class CmsCategoryAdminController {
      * @param site
      * @param admin
      * @param id
+     * @param parentId
      * @param categoryListParameters
      * @param request
      * @return view name
      */
     @RequestMapping("batchSave")
     @Csrf
-    public String batchSave(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id,
+    public String batchSave(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id, Integer parentId,
             @ModelAttribute CmsCategoryListParameters categoryListParameters, HttpServletRequest request) {
         CmsCategory copy = service.getEntity(id);
         if (null != copy && site.getId() == copy.getSiteId() && CommonUtils.notEmpty(categoryListParameters.getCategoryList())) {
             for (CmsCategory entity : categoryListParameters.getCategoryList()) {
+                if( null != parentId ){
+                    entity.setParentId(parentId);
+                }
                 service.copy(site.getId(), entity, copy);
                 try {
                     templateComponent.createCategoryFile(site, entity, null, null);

@@ -17,6 +17,14 @@
                     ${a.name!}
                 </dd>
             </dl>
+            <dl>
+                <dt><@t.page 'category.parent'/>:</dt>
+                <dd>
+                    <input name="parentId" type="hidden" value="${parentId!}"/>
+                    <input name="categoryName" readonly="readonly" type="text" size="10" value="${(category.name)!}"/>
+                    <a class="btnLook" href="cmsCategory/lookup.html?currentCategoryId=${(a.id)!}&field=parentId" lookupGroup=""></a>
+                </dd>
+            </dl>
             <fieldset>
                 <legend><@t.page 'button.copy'/></legend>
                 <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate2.html" width="100%">
