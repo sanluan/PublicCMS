@@ -105,7 +105,7 @@ public class OtpSettingController {
     public String bind(@SessionAttribute SysUser admin, String secret, String code) {
         TOTPGenerator totp = new TOTPGenerator.Builder(secret.getBytes()).build();
         if (totp.verify(code)) {
-            settingService.getOrCreateOrUpdate(admin.getId(), code, secret);
+            settingService.getOrCreateOrUpdate(admin.getId(), SysUserSettingService.OPTSECRET_SETTINGS_CODE, secret);
             return CommonConstants.TEMPLATE_DONE;
         }
         return CommonConstants.TEMPLATE_ERROR;

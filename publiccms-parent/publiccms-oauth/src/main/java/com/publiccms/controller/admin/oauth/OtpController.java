@@ -74,7 +74,7 @@ public class OtpController {
         }
         SysUserSetting userSetting = settingService
                 .getEntity(new SysUserSettingId(otpadmin.getId(), SysUserSettingService.OPTSECRET_SETTINGS_CODE));
-        if (null != userSetting) {
+        if (null == userSetting) {
             byte[] secret = SecretGenerator.generate();
             TOTPGenerator totp = new TOTPGenerator.Builder(secret).build();
             model.addAttribute("secret", new String(secret, StandardCharsets.UTF_8));
