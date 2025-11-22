@@ -36,7 +36,7 @@
         <!-- http://hibernate.org/orm/releases/ -->
         <version.hibernate>7.1.9.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm -->
-        <version.hibernateTools>7.1.8.Final</version.hibernateTools>
+        <version.hibernateTools>7.1.9.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
         <version.hibernateSearch>8.1.2.Final</version.hibernateSearch>
