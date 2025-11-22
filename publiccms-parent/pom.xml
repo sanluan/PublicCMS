@@ -114,7 +114,7 @@
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
         <version.jsoup>1.21.2</version.jsoup>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
-        <version.annotation>2.1.1</version.annotation>
+        <version.annotation>3.0.0</version.annotation>
         <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->
         <version.mailApi>2.1.5</version.mailApi>
         <!-- https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail -->
