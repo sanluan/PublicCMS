@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
@@ -16,6 +15,7 @@ import com.publiccms.entities.sys.SysWorkflowStep;
 import com.publiccms.logic.dao.sys.SysWorkflowDao;
 
 import jakarta.annotation.Resource;
+import tools.jackson.core.JacksonException;
 
 /**
  *
@@ -119,7 +119,7 @@ public class SysWorkflowService extends BaseService<SysWorkflow> {
                     }
                 }
                 return null;
-            } catch (JsonProcessingException e) {
+            } catch (JacksonException e) {
                 return null;
             }
         } else {

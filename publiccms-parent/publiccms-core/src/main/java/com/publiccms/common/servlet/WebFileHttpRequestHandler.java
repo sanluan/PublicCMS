@@ -2,10 +2,6 @@ package com.publiccms.common.servlet;
 
 import java.io.IOException;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -22,6 +18,10 @@ import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -51,7 +51,7 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
 
     @Override
     protected Resource getResource(HttpServletRequest request) throws IOException {
-        String path = getUrlPathHelper().getLookupPathForRequest(request);
+        String path = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
         if (CmsVersion.isInitialized()) {
             if (path.endsWith(Constants.SEPARATOR)) {
                 path = CommonUtils.joinString(path, CommonConstants.getDefaultPage());
@@ -71,13 +71,11 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        setUrlPathHelper(UrlPathHelper.defaultInstance);
         if (null == getResourceHttpMessageConverter()) {
             setResourceHttpMessageConverter(new ResourceHttpMessageConverter());
         }
         if (null == getResourceRegionHttpMessageConverter()) {
             setResourceRegionHttpMessageConverter(new ResourceRegionHttpMessageConverter());
         }
-
     }
 }

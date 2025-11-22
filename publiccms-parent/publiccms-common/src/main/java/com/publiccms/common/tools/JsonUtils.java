@@ -1,8 +1,8 @@
 package com.publiccms.common.tools;
 
-import java.io.IOException;
-
 import com.publiccms.common.constants.Constants;
+
+import tools.jackson.core.JacksonException;
 
 /**
  * 
@@ -18,7 +18,7 @@ public final class JsonUtils {
     public static String getString(Object object) {
         try {
             return Constants.objectMapper.writeValueAsString(object);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             return null;
         }
     }

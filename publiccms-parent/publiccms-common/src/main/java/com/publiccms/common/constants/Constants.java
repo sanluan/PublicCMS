@@ -6,9 +6,13 @@ import java.util.function.BinaryOperator;
 
 import org.apache.http.client.config.RequestConfig;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.cfg.DateTimeFeature;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.json.JsonMapper.Builder;
+import tools.jackson.databind.module.SimpleModule;
+import tools.jackson.databind.ser.std.ToStringSerializer;
 
 /**
  *
@@ -20,9 +24,16 @@ public abstract class Constants {
     }
 
     /**
+     * Json Mapper builder
+     */
+    public static final Builder builder = JsonMapper.builder()
+            .configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false)
+            .configure(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS, true)
+            .addModule(new SimpleModule().addSerializer(Long.TYPE, ToStringSerializer.instance));
+    /**
      * Json Mapper
      */
-    public static final ObjectMapper objectMapper = JsonMapper.builder().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false).build();
+    public static final ObjectMapper objectMapper = builder.build();
 
     /**
      * Default Request Config

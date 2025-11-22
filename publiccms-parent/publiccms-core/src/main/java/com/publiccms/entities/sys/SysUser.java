@@ -15,8 +15,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -336,7 +334,6 @@ public class SysUser extends EntityAttribute implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_login_date", length = 19)
     public Date getLastLoginDate() {
         return this.lastLoginDate;
@@ -364,7 +361,6 @@ public class SysUser extends EntityAttribute implements java.io.Serializable {
         this.loginCount = loginCount;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "registered_date", length = 19)
     public Date getRegisteredDate() {
         return this.registeredDate;
@@ -374,7 +370,6 @@ public class SysUser extends EntityAttribute implements java.io.Serializable {
         this.registeredDate = registeredDate;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_date", length = 19)
     public Date getUpdateDate() {
         return this.updateDate;

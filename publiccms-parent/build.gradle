@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:3.5.6"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:4.0.0"
     }
 }
 
@@ -32,22 +32,22 @@ subprojects {
         servletVersion = "6.1.0"
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "6.2.12"
+        springVersion = "7.0.1"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "3.5.6"
+        springBootVersion = "4.0.0"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        junitVersion = "6.0.0"
+        junitVersion = "6.0.1"
         // http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "7.1.4.Final"
+        hibernateVersion = "7.1.9.Final"
         // http://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm
-        hibernateToolsVersion = "7.1.4.Final"
+        hibernateToolsVersion = "7.1.8.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
         hibernateSearchVersion = "8.1.2.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
-        hibernateValidatorVersion = "9.0.1.Final"
+        hibernateValidatorVersion = "9.1.0.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
         ehcacheVersion = "3.11.1"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
@@ -61,43 +61,43 @@ subprojects {
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "1.5.2"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "2.20.0"
+        jacksonVersion = "3.0.2"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.34"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-core
         luceneVersion = "10.3.1"
         // http://mvnrepository.com/artifact/redis.clients/jedis
         // https://github.com/redis/jedis
-        jedisVersion = "7.0.0"
+        jedisVersion = "7.1.0"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         // https://github.com/quartz-scheduler/quartz/releases
-        quartzVersion = "2.5.0"
+        quartzVersion = "2.5.1"
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
         // https://github.com/brettwooldridge/HikariCP
         hikariCPVersion = "7.0.2"
         // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
-        mysqlVersion = "9.4.0"
+        mysqlVersion = "9.5.0"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.14"
         // https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml
         xhtmlConverterVersion = "2.1.0"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
-        poiVersion = "5.4.1"
+        poiVersion = "5.5.0"
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
         fileuploadVersion = "1.6.0"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
         collectionsVersion = "4.5.0"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-        langVersion = "3.19.0"
+        langVersion = "3.20.0"
         // http://mvnrepository.com/artifact/commons-io/commons-io
-        ioVersion = "2.20.0"
+        ioVersion = "2.21.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-text
         textVersion = "1.14.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
         compressVersion = "1.28.0"
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
-        codecVersion = "1.19.0"
+        codecVersion = "1.20.0"
         // https://mvnrepository.com/artifact/org.jboss.logging/jboss-logging
         jbossLoggingVersion = "3.6.1.Final"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core

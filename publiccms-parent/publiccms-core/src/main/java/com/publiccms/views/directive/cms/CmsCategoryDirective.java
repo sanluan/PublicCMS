@@ -74,7 +74,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                     CmsUrlUtils.initCategoryUrl(site, entity);
                 }
                 if (containsAttribute) {
-                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(id)));
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(entity.getId())));
                 }
                 handler.put("object", entity);
                 handler.render();

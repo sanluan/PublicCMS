@@ -5,13 +5,10 @@ import java.util.Set;
 
 import org.apache.catalina.valves.RemoteIpValve;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
-import org.springframework.boot.web.server.ErrorPage;
+import org.springframework.boot.tomcat.servlet.TomcatServletWebServerFactory;
+import org.springframework.boot.web.error.ErrorPage;
+import org.springframework.boot.web.server.servlet.ServletWebServerFactory;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
-import org.springframework.boot.web.servlet.server.AbstractServletWebServerFactory;
-import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -37,10 +34,16 @@ import config.spring.CmsConfig;
 public class SpringBootApplication {
 
     /**
-     * <p>在idea中通过main方法启动需要将工作目录改为 publiccms 模块所在的路径，否则静态资源不能加载
-     * <p>ideaのmainメソッドから始めるには、作業ディレクトリをpubliccmsモジュールが配置されているパスに変更する必要があり、そうしないと静的リソースをロードできません
-     * <p>To start through the main method in idea, you need to change the working directory to the path where the publiccms module is located, otherwise the static resources cannot be loaded
-     * <p>https://www.publiccms.com/question/2018/02-13/376.html
+     * <p>
+     * 在idea中通过main方法启动需要将工作目录改为 publiccms 模块所在的路径，否则静态资源不能加载
+     * <p>
+     * ideaのmainメソッドから始めるには、作業ディレクトリをpubliccmsモジュールが配置されているパスに変更する必要があり、そうしないと静的リソースをロードできません
+     * <p>
+     * To start through the main method in idea, you need to change the working
+     * directory to the path where the publiccms module is located, otherwise
+     * the static resources cannot be loaded
+     * <p>
+     * https://www.publiccms.com/question/2018/02-13/376.html
      * 
      * @param args
      */
@@ -53,19 +56,10 @@ public class SpringBootApplication {
      */
     @Bean
     public ServletWebServerFactory servletContainer() {
-        String server = System.getProperty("cms.server");
-        AbstractServletWebServerFactory factory = null;
-        if ("jetty".equalsIgnoreCase(server)) {
-            factory = new JettyServletWebServerFactory();
-        } else if ("undertow".equalsIgnoreCase(server)) {
-            factory = new UndertowServletWebServerFactory();
-        } else {
-            TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
-            String initProto = System.getProperty("cms.initProto");
-            if (CommonUtils.notEmpty(initProto) && "false".equalsIgnoreCase(initProto)) {
-                tomcat.addEngineValves(new RemoteIpValve());
-            }
-            factory = tomcat;
+        TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
+        String initProto = System.getProperty("cms.initProto");
+        if (CommonUtils.notEmpty(initProto) && "false".equalsIgnoreCase(initProto)) {
+            factory.addEngineValves(new RemoteIpValve());
         }
         Set<ErrorPage> errorPageSet = factory.getErrorPages();
         errorPageSet.add(new ErrorPage(Throwable.class, "/error/500.html"));
@@ -77,8 +71,8 @@ public class SpringBootApplication {
         factory.setContextPath(System.getProperty("cms.contextPath", ""));
         factory.setDisplayName("PublicCMS");
         factory.setRegisterDefaultServlet(true);
-        factory.getSession().setTimeout(Duration.ofMinutes(20));
-        factory.getJsp().setRegistered(false);
+        factory.getSettings().getSession().setTimeout(Duration.ofMinutes(20));
+        factory.getSettings().getJsp().setRegistered(false);
         return factory;
     }
 

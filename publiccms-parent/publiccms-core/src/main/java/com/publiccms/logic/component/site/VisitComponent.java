@@ -1,6 +1,5 @@
 package com.publiccms.logic.component.site;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.lang3.time.DateUtils;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Cache;
@@ -29,6 +27,9 @@ import com.publiccms.logic.service.visit.VisitHistoryService;
 import com.publiccms.logic.service.visit.VisitItemService;
 import com.publiccms.logic.service.visit.VisitSessionService;
 import com.publiccms.logic.service.visit.VisitUrlService;
+
+import jakarta.annotation.Resource;
+import tools.jackson.core.JacksonException;
 
 /**
  *
@@ -97,7 +98,7 @@ public class VisitComponent implements Cache {
                 try {
                     visit = Constants.objectMapper.readValue(recordEntity.getData(),
                             Constants.objectMapper.getTypeFactory().constructType(Visit.class));
-                } catch (IOException | ClassCastException e) {
+                } catch (JacksonException | ClassCastException e) {
                     recordService.delete(recordId);
                 }
             }

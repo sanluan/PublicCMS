@@ -16,8 +16,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
 
 /**
@@ -303,7 +301,6 @@ public class CmsPlace extends EntityAttribute implements java.io.Serializable {
         this.cover = cover;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", nullable = false, length = 19)
     public Date getCreateDate() {
         return this.createDate;
@@ -313,7 +310,6 @@ public class CmsPlace extends EntityAttribute implements java.io.Serializable {
         this.createDate = createDate;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "publish_date", nullable = false, length = 19)
     public Date getPublishDate() {
         return this.publishDate;
@@ -323,7 +319,6 @@ public class CmsPlace extends EntityAttribute implements java.io.Serializable {
         this.publishDate = publishDate;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "expiry_date", length = 19)
     public Date getExpiryDate() {
         return this.expiryDate;
@@ -360,7 +355,6 @@ public class CmsPlace extends EntityAttribute implements java.io.Serializable {
         this.maxClicks = maxClicks;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_date", length = 19)
     public Date getUpdateDate() {
         return this.updateDate;

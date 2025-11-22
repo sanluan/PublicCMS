@@ -40,6 +40,7 @@ import com.publiccms.views.pojo.model.SimpleAiMessageParameters;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import tools.jackson.core.JacksonException;
 
 /**
  *
@@ -143,7 +144,7 @@ public class SimpleAiAdminController {
                                         }
                                     }
                                 }
-                            } catch (IOException | ClassCastException e) {
+                            } catch (JacksonException | ClassCastException e) {
                             }
                         }
                     }

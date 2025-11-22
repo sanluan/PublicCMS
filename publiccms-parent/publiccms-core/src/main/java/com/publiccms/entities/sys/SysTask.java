@@ -16,8 +16,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -189,7 +187,6 @@ public class SysTask implements java.io.Serializable {
         this.filepath = filepath;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_date", length = 19)
     public Date getUpdateDate() {
         return this.updateDate;

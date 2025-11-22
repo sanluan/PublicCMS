@@ -16,8 +16,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
 
 /**
@@ -147,7 +145,6 @@ public class CmsVote implements java.io.Serializable {
         this.siteId = siteId;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "start_date", nullable = false, length = 19)
     public Date getStartDate() {
         return this.startDate;
@@ -157,7 +154,6 @@ public class CmsVote implements java.io.Serializable {
         this.startDate = startDate;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "end_date", length = 19)
     public Date getEndDate() {
         return this.endDate;
@@ -203,7 +199,6 @@ public class CmsVote implements java.io.Serializable {
         this.allowAnonymous = allowAnonymous;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", nullable = false, length = 19)
     public Date getCreateDate() {
         return this.createDate;

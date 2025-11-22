@@ -16,7 +16,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,7 +71,7 @@ public class ApiController {
     private Map<String, AbstractAppDirective> appDirectiveMap = new HashMap<>();
     private List<Map<String, String>> appList = new ArrayList<>();
     @Resource
-    protected MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
+    protected JacksonJsonHttpMessageConverter jacksonJsonHttpMessageConverter;
     @Resource
     private LockComponent lockComponent;
     @Resource
@@ -158,13 +158,13 @@ public class ApiController {
                         request.setAttribute(AUTH_USER_ID, authUserId);
                     }
                 }
-                directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, response);
+                directive.execute(jacksonJsonHttpMessageConverter, CommonConstants.jsonMediaType, request, response);
             } else {
-                HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, response);
+                HttpParameterHandler handler = new HttpParameterHandler(jacksonJsonHttpMessageConverter, CommonConstants.jsonMediaType, request, response);
                 handler.put(CommonConstants.ERROR, INTERFACE_NOT_FOUND).render();
             }
         } catch (Exception e) {
-            HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, response);
+            HttpParameterHandler handler = new HttpParameterHandler(jacksonJsonHttpMessageConverter, CommonConstants.jsonMediaType, request, response);
             try {
                 log.error(e.getMessage(), e);
                 handler.put(CommonConstants.ERROR, e.getMessage()).render();

@@ -143,7 +143,8 @@ public class WebAuthnController {
         Challenge challenge = new DefaultChallenge(admin.getName().getBytes());
         Origin origin = new Origin(RequestUtils.getOrigin(request));
         RegistrationData registrationData = webAuthnManager.parseRegistrationResponseJSON(registrationResponseJSON);
-        ServerProperty serverProperty = new ServerProperty(origin, request.getServerName(), challenge);
+        ServerProperty serverProperty = ServerProperty.builder().origin(origin).rpId(request.getServerName()).challenge(challenge)
+                .build();
         boolean userVerificationRequired = false;
         boolean userPresenceRequired = true;
         RegistrationParameters registrationParameters = new RegistrationParameters(serverProperty, pubKeyCredParams,
@@ -198,8 +199,8 @@ public class WebAuthnController {
             HttpSession session) {
         Origin origin = new Origin(RequestUtils.getOrigin(request));
         AuthenticationData authenticationData = webAuthnManager.parseAuthenticationResponseJSON(authenticationResponseJSON);
-        ServerProperty serverProperty = new ServerProperty(origin, request.getServerName(),
-                new DefaultChallenge(webauthnuser.getBytes()));
+        ServerProperty serverProperty = ServerProperty.builder().origin(origin).rpId(request.getServerName())
+                .challenge(new DefaultChallenge(webauthnuser.getBytes())).build();
         List<byte[]> allowCredentials = null;
         boolean userVerificationRequired = true;
         boolean userPresenceRequired = true;

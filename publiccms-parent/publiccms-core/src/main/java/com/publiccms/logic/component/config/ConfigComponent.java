@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import jakarta.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +23,9 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.views.pojo.entities.ConfigInfo;
 import com.publiccms.views.pojo.entities.SysConfig;
+
+import jakarta.annotation.Resource;
+import tools.jackson.core.JacksonException;
 
 /**
  *
@@ -150,7 +151,7 @@ public class ConfigComponent {
             try {
                 modelMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                         .constructMapType(HashMap.class, String.class, SysConfig.class));
-            } catch (IOException | ClassCastException e) {
+            } catch (JacksonException | ClassCastException e) {
                 modelMap = new HashMap<>();
             }
         } else {

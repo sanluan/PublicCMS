@@ -53,6 +53,7 @@ import com.publiccms.logic.service.cms.CmsContentService;
 
 import config.spring.ApplicationConfig;
 import jakarta.annotation.Resource;
+import tools.jackson.core.JacksonException;
 
 @DisplayName("Content batch import")
 @ExtendWith(SpringExtension.class)
@@ -133,7 +134,7 @@ class ContentBatchImportTest {
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (JacksonException e) {
         }
     }
 

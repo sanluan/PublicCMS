@@ -27,8 +27,8 @@ dependencies {
         exclude group:"org.glassfish.jaxb", module:"jaxb-runtime"
     }
     
-    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-    implementation "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}"
+    implementation "tools.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation "tools.jackson.core:jackson-core:${jacksonVersion}"
     implementation "org.freemarker:freemarker:${freemarkerVersion}"
 
     implementation "org.apache.lucene:lucene-backward-codecs:${luceneVersion}"

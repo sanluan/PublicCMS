@@ -34,6 +34,8 @@ import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.views.pojo.entities.CmsCategoryType;
 import com.publiccms.views.pojo.entities.CmsPageData;
 
+import tools.jackson.core.JacksonException;
+
 /**
  *
  * AbstractCmsUpgrader
@@ -113,7 +115,7 @@ public abstract class AbstractCmsUpgrader {
                     Constants.objectMapper.writeValue(new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH,
                             Constants.SEPARATOR, SiteComponent.TEMPLATE_PATH, Constants.SEPARATOR, SiteComponent.SITE_PATH_PREFIX,
                             rs.getString("id"), Constants.SEPARATOR, MetadataComponent.DATA_FILE)), dataMap);
-                } catch (IOException | ClassCastException e) {
+                } catch (JacksonException | ClassCastException e) {
                     stringWriter.write(e.getMessage());
                     stringWriter.write(System.lineSeparator());
                 }
@@ -232,7 +234,7 @@ public abstract class AbstractCmsUpgrader {
                     try {
                         categoryTypeMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                                 .constructMapType(HashMap.class, String.class, CmsCategoryType.class));
-                    } catch (IOException | ClassCastException e) {
+                    } catch (JacksonException | ClassCastException e) {
                         categoryTypeMap = new HashMap<>();
                     }
                     entity.setId(rs.getString("id"));
@@ -266,7 +268,7 @@ public abstract class AbstractCmsUpgrader {
                     }
                     categoryTypeMap.put(entity.getId(), entity);
                     Constants.objectMapper.writeValue(file, categoryTypeMap);
-                } catch (IOException | SQLException e) {
+                } catch (JacksonException | SQLException e) {
                     stringWriter.write(e.getMessage());
                     stringWriter.write(System.lineSeparator());
                     e.printStackTrace();

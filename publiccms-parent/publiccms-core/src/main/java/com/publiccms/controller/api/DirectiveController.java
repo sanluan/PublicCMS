@@ -13,13 +13,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import jakarta.annotation.Resource;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -34,6 +30,10 @@ import com.publiccms.common.tools.JavaDocUtils;
 import com.publiccms.logic.component.site.DirectiveComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 /**
  * 
  * DirectiveController 接口指令统一分发
@@ -46,7 +46,7 @@ public class DirectiveController {
     private Map<String, List<Map<String, Object>>> namespaceMap = new TreeMap<>(Comparable::compareTo);
     private List<Map<String, Object>> actionList = new ArrayList<>();
     @Resource
-    protected MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
+    protected JacksonJsonHttpMessageConverter jacksonJsonHttpMessageConverter;
     @Resource
     protected SiteComponent siteComponent;
     protected DirectiveComponent directiveComponent;
@@ -85,14 +85,14 @@ public class DirectiveController {
                         request.setAttribute(APP_TOKEN, appToken);
                     }
                 }
-                directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, response);
+                directive.execute(jacksonJsonHttpMessageConverter, CommonConstants.jsonMediaType, request, response);
             } else {
-                HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
+                HttpParameterHandler handler = new HttpParameterHandler(jacksonJsonHttpMessageConverter,
                         CommonConstants.jsonMediaType, request, response);
                 handler.put(CommonConstants.ERROR, ApiController.INTERFACE_NOT_FOUND).render();
             }
         } catch (Exception e) {
-            HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
+            HttpParameterHandler handler = new HttpParameterHandler(jacksonJsonHttpMessageConverter,
                     CommonConstants.jsonMediaType, request, response);
             try {
                 handler.put(CommonConstants.ERROR, ApiController.EXCEPTION).render();
@@ -139,14 +139,14 @@ public class DirectiveController {
                         request.setAttribute(APP_TOKEN, appToken);
                     }
                 }
-                d.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, response);
+                d.execute(jacksonJsonHttpMessageConverter, CommonConstants.jsonMediaType, request, response);
             } else {
-                HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
+                HttpParameterHandler handler = new HttpParameterHandler(jacksonJsonHttpMessageConverter,
                         CommonConstants.jsonMediaType, request, response);
                 handler.put(CommonConstants.ERROR, ApiController.INTERFACE_NOT_FOUND).render();
             }
         } catch (Exception e) {
-            HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
+            HttpParameterHandler handler = new HttpParameterHandler(jacksonJsonHttpMessageConverter,
                     CommonConstants.jsonMediaType, request, response);
             try {
                 log.error(e.getMessage(), e);

@@ -47,9 +47,15 @@ public class SysDeptDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer id = handler.getInteger("id");
+        String code = handler.getString("code");
         SysSite site = getSite(handler);
-        if (CommonUtils.notEmpty(id)) {
-            SysDept entity = service.getEntity(id);
+        if (CommonUtils.notEmpty(id) || CommonUtils.notEmpty(code)) {
+            SysDept entity;
+            if (CommonUtils.notEmpty(id)) {
+                entity = service.getEntity(id);
+            } else {
+                entity = service.getEntityByCode(site.getId(), code);
+            }
             if (null != entity && site.getId() == entity.getSiteId()) {
                 handler.put("object", entity).render();
             }

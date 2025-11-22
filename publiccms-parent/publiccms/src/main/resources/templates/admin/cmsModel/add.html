@@ -9,69 +9,69 @@
     <div class="formBar card">
         <ul>
         <#if a?has_content && a.hasChild>
-            <li><a href="cmsModel/list.html?parentId=${a.id?url}" class="button" target="navTab" rel="cmsModel/list"><@t.page 'model.child_management'/></a></li>
+            <li><a href="cmsModel/list.html?parentId=${a.id?url}" class="button" target="navTab" rel="cmsModel/list"><@t.page "model.child_management"/></a></li>
         </#if>
         <#if site.parentId?has_content>
-            <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
+            <li><button type="button" class="buttonDisabled"><@t.page "site.parent_maintain"/></button></li>
         <#else>
-        <@sys.authorized roleIds=admin.roles url='cmsModel/save'>
-            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=model&itemId=${id!} close-url="common/unlock?itemType=model&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
+        <@sys.authorized roleIds=admin.roles url="cmsModel/save">
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=model&itemId=${id!} close-url="common/unlock?itemType=model&itemId=${id!}"</#if>><@t.page "button.save"/></button></li>
         </@sys.authorized>
         </#if>
-            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+            <li><button type="button" class="button close"><@t.page "button.close"/></button></li>
         </ul>
     </div>
     <div class="card">
         <div class="pageFormContent" layoutH>
             <fieldset>
-                <legend><@t.page 'base_info'/></legend>
+                <legend><@t.page "base_info"/></legend>
                 <dl class="nowrap">
-                    <dt><@t.page 'id'/>:</dt>
+                    <dt><@t.page "id"/>:</dt>
                     <dd>
                         <input class="required" name="id" type="text" maxlength="20" size="20" value="${(a.id)!}"/>
-                        <label><input name="onlyUrl" type="checkbox" class="form-check-input"/><@t.page 'url'/></label>
+                        <label><input name="onlyUrl" type="checkbox" class="form-check-input"/><@t.page "url"/></label>
                     </dd>
                 </dl>
                 <dl class="nowrap">
-                    <dt><@t.page 'name'/>:</dt>
+                    <dt><@t.page "name"/>:</dt>
                     <dd>
                         <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
-                        <label><input name="searchableModel" type="checkbox" class="form-check-input"/><@t.page 'searchableModel'/></label>
+                        <label><input name="searchableModel" type="checkbox" class="form-check-input"/><@t.page "searchableModel"/></label>
                     </dd>
                 </dl>
             <#if site.useStatic>
                 <dl class="onlyUrl nowrap">
-                    <dt><@t.page 'template_path'/>:</dt>
+                    <dt><@t.page "template_path"/>:</dt>
                     <dd>
                         <input name="templatePath" type="text" autocomplete="on" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-                        <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup=""><@t.page 'template.select'/></a>
+                        <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup=""><@t.page "template.select"/></a>
                     </dd>
                 </dl>
             </#if>
                 <dl class="onlyUrl nowrap">
-                    <dt><@t.page 'content_path'/>:</dt>
+                    <dt><@t.page "content_path"/>:</dt>
                     <dd>
                         <input name="contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!(categoryType.contentPath)!(config.content_path)!}"/>
-                        <a class="btnLook" href="cmsCategory/contentPath.html<#if parentId?has_content>?childContent=true</#if>" width="920" lookupGroup=""><@t.page 'select_path'/></a>
+                        <a class="btnLook" href="cmsCategory/contentPath.html<#if parentId?has_content>?childContent=true</#if>" width="920" lookupGroup=""><@t.page "select_path"/></a>
                     </dd>
                 </dl>
             </fieldset>
             <fieldset class="systemField">
-                <legend><@t.page 'model.system_field'/></legend>
+                <legend><@t.page "model.system_field"/></legend>
                 <div class="unit">
-                    <label><input name="hasChild" type="checkbox" class="form-check-input"/><@t.page 'model.has_child'/></label>
-                    <label><input name="hasImages" type="checkbox" class="form-check-input"/><@t.page 'model.has_images'/></label>
-                    <label><input name="hasFiles" type="checkbox" class="form-check-input"/><@t.page 'model.has_attachs'/></label>
-                    <label><input name="hasProducts" type="checkbox" class="form-check-input"/><@t.page 'model.has_products'/></label>
-                    <span class="info hasChild hide"><@t.page 'content.child'/>:<#noparse>&lt;@cms.contentList parentId=content.id&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentList&gt;</#noparse></span>
-                    <span class="info hasImages hide"><@t.page 'image_list'/>:<#noparse>&lt;@cms.contentFileList contentId=content.id fileTypes='image'&gt;&lt;#list page.list as a&gt;${a.filePath!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;</#noparse></span>
-                    <span class="info hasFiles hide"><@t.page 'attach_list'/>:<#noparse>&lt;@cms.contentFileList contentId=content.id fileTypes='video,document,audio,other'&gt;&lt;#list page.list as a&gt;${a.filePath!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;</#noparse></span>
-                    <span class="info hasProducts hide"><@t.page 'product_list'/>:<#noparse>&lt;@cms.contentProductList contentId=content.id&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentProductList&gt;</#noparse></span>
+                    <label><input name="hasChild" type="checkbox" class="form-check-input"/><@t.page "model.has_child"/></label>
+                    <label><input name="hasImages" type="checkbox" class="form-check-input"/><@t.page "model.has_images"/></label>
+                    <label><input name="hasFiles" type="checkbox" class="form-check-input"/><@t.page "model.has_attachs"/></label>
+                    <label><input name="hasProducts" type="checkbox" class="form-check-input"/><@t.page "model.has_products"/></label>
+                    <span class="info hasChild hide"><@t.page "content.child"/>:<#noparse>&lt;@cms.contentList parentId=content.id&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentList&gt;</#noparse></span>
+                    <span class="info hasImages hide"><@t.page "image_list"/>:<#noparse>&lt;@cms.contentFileList contentId=content.id fileTypes="image"&gt;&lt;#list page.list as a&gt;${a.filePath!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;</#noparse></span>
+                    <span class="info hasFiles hide"><@t.page "attach_list"/>:<#noparse>&lt;@cms.contentFileList contentId=content.id fileTypes="video,document,audio,other"&gt;&lt;#list page.list as a&gt;${a.filePath!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;</#noparse></span>
+                    <span class="info hasProducts hide"><@t.page "product_list"/>:<#noparse>&lt;@cms.contentProductList contentId=content.id&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentProductList&gt;</#noparse></span>
                 </div>
                 <div class="divider"></div>
                 <dl>
                     <dt>
-                        <label><@t.page 'field.title'/>:</label>
+                        <label><@t.page "field.title"/>:</label>
                     </dt>
                     <dd>
                         <input name="fieldTextMap[title]" class="required" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['title'])!t.pageMessage('title')}"/>
@@ -80,7 +80,7 @@
                 </dl>
                 <dl>
                     <dt>
-                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="sort"/><@t.page 'top'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="sort"/><@t.page "top"/></label>
                     </dt>
                     <dd>
                         <input name="fieldTextMap[sort]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['sort'])!t.pageMessage('content.top_level')}"/>
@@ -89,49 +89,49 @@
                 </dl>
                 <dl>
                     <dt>
-                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="copied"/><@t.page 'copied'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="copied"/><@t.page "copied"/></label>
                     </dt>
                     <dd>
-                        <label><@t.page 'text'/>:</label>
+                        <label><@t.page "text"/>:</label>
                         <input name="fieldTextMap[copied]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['copied'])!t.pageMessage('copied')}"/>
                         <span class="info"><#noparse>${(content.copied)!}</#noparse></span>
                     </dd>
                 </dl>
                 <dl>
                     <dt>
-                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="tag"/><@t.page 'tag'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="tag"/><@t.page "tag"/></label>
                     </dt>
                     <dd>
-                        <label><@t.page 'text'/>:</label>
+                        <label><@t.page "text"/>:</label>
                         <input name="fieldTextMap[tag]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['tag'])!t.pageMessage('tag')}"/>
                         <span class="info"><#noparse>&lt;@cms.tag ids=content.tagIds&gt;&lt;#list map as k,v&gt;${v.name!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tag&gt;</#noparse></span>
                     </dd>
                 </dl>
                 <dl>
                     <dt>
-                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="author"/><@t.page 'content.author'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="author"/><@t.page "content.author"/></label>
                     </dt>
                     <dd>
-                        <label><@t.page 'text'/>:</label>
+                        <label><@t.page "text"/>:</label>
                         <input name="fieldTextMap[author]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['author'])!t.pageMessage('content.author')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="author"/><@t.page 'required'/></label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="author"/><@t.page "required"/></label>
                         <span class="info"><#noparse>${(content.author)!}</#noparse></span>
                     </dd>
                 </dl>
                 <dl>
                     <dt>
-                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="editor"/><@t.page 'editor'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="editor"/><@t.page "editor"/></label>
                     </dt>
                     <dd>
-                        <label><@t.page 'text'/>:</label>
+                        <label><@t.page "text"/>:</label>
                         <input name="fieldTextMap[editor]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['editor'])!t.pageMessage('editor')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="editor"/><@t.page 'required'/></label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="editor"/><@t.page "required"/></label>
                         <span class="info"><#noparse>${(content.editor)!}</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="urlText hide">
                     <dt>
-                        <label><@t.page 'field.url_text'/>:</label>
+                        <label><@t.page "field.url_text"/>:</label>
                     </dt>
                     <dd>
                         <input name="fieldTextMap[url]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['url'])!t.pageMessage('url')}"/>
@@ -140,56 +140,63 @@
                 </dl>
                 <dl>
                     <dt>
-                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="description"/><@t.page 'description'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="description"/><@t.page "description"/></label>
                     </dt>
                     <dd>
-                        <label><@t.page 'text'/>:</label>
+                        <label><@t.page "text"/>:</label>
                         <input name="fieldTextMap[description]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['description'])!t.pageMessage('description')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="description"/><@t.page 'required'/></label>
-                        <span class="info"><#noparse>&lt;#list (content.description!'')?split("\n") as a&gt;${a}&lt;#sep&gt;&lt;br/&gt;&lt;/#list&gt;</#noparse></span>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="description"/><@t.page "required"/></label>
+                        <span class="info"><#noparse>&lt;#list (content.description!"")?split("\n") as a&gt;${a}&lt;#sep&gt;&lt;br/&gt;&lt;/#list&gt;</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
                     <dt>
-                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="cover"/><@t.page 'cover'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="cover"/><@t.page "cover"/></label>
                     </dt>
                     <dd>
-                        <label><@t.page 'text'/>:</label>
+                        <label><@t.page "text"/>:</label>
                         <input name="fieldTextMap[cover]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['cover'])!t.pageMessage('cover')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="cover"/><@t.page 'required'/></label>
-                        <label><@t.page 'width'/></label><input name="coverWidth" type="number" size="5" value="${(a.coverWidth)!}"/>
-                        <label><@t.page 'height'/></label><input name="coverHeight" type="number" size="5" value="${(a.coverHeight)!}"/>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="cover"/><@t.page "required"/></label>
+                        <label><@t.page "width"/></label><input name="coverWidth" type="number" size="5" value="${(a.coverWidth)!}"/>
+                        <label><@t.page "height"/></label><input name="coverHeight" type="number" size="5" value="${(a.coverHeight)!}"/>
                         <span class="info"><#noparse>&lt;img src="${(content.cover)!}" alt="${(content.title)!}"/&gt;</#noparse></span>
                     </dd>
                 </dl>
             </fieldset>
             <fieldset class="systemField">
-                <legend><@t.page 'content.extend_field'/></legend>
-                <span class="info"><@t.page 'extend_field.use.content'/></span>
-                <dl class="nowrap copied">
+                <legend><@t.page "content.extend_field"/></legend>
+                <span class="info"><@t.page "extend_field.use.content"/></span>
+                <dl class="nowrap">
                     <dt>
-                        <label><@t.page 'content.source'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="source"/><@t.page "content.source"/></label>
                     </dt>
                     <dd>
-                        <label><@t.page 'field.source'/>(source):</label>
+                        <label><@t.page "text"/>:</label>
                         <input name="fieldTextMap[source]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['source'])!t.pageMessage('content.source')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="source"/><@t.page 'required'/></label>
-                        <label><@t.page 'field.source_url'/>(sourceUrl):</label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="source"/><@t.page "required"/></label>
+                        <span class="info"><#noparse>&lt;${(attribute.source)!}</#noparse></span>
+                    </dd>
+                </dl>
+                <dl class="nowrap copied">
+                    <dt>
+                        <label><@t.page "field.source_url"/></label>
+                    </dt>
+                    <dd>
                         <input name="fieldTextMap[sourceUrl]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['sourceUrl'])!t.pageMessage('content.source_url')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="sourceUrl"/><@t.page 'required'/></label>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="sourceUrl"/><@t.page "required"/></label>
                         <span class="info"><#noparse>&lt;a href="${(attribute.sourceUrl)!}"&gt;${(attribute.source)!}&lt;/a&gt;</#noparse></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
                     <dt>
-                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="content"/><@t.page 'content.text'/></label>
+                        <label><input name="fieldList" type="checkbox" class="form-check-input" value="content"/><@t.page "content.text"/></label>
                     </dt>
                     <dd>
-                        <label><@t.page 'text'/>:</label><input name="fieldTextMap[content]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['content'])!t.pageMessage('content.text')}"/>
-                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="content"/><@t.page 'required'/></label>
-                        <label class="searchable"><input name="searchable" type="checkbox" class="form-check-input" ${(!a?has_content||a.searchable)?then(' checked="true"','')?no_esc}/><@t.page 'searchable'/></label>
-                        <label><@t.page 'editor_type'/>:</label>
-                        <#assign editorTypes={'ueditor':t.pageMessage('ueditor'),'tinymce':t.pageMessage('tinymce'),'ckeditor':t.pageMessage('ckeditor')}/>
+                        <label><@t.page "text"/>:</label><input name="fieldTextMap[content]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['content'])!t.pageMessage('content.text')}"/>
+                        <label><input name="requiredFieldList" type="checkbox" class="form-check-input" value="content"/><@t.page "required"/></label>
+                        <label class="searchable"><input name="searchable" type="checkbox" class="form-check-input" ${(!a?has_content||a.searchable)?then(' checked="true"','')?no_esc}/><@t.page "searchable"/></label>
+                        <label><@t.page "editor_type"/>:</label>
+                        <#assign editorTypes={"ueditor":t.pageMessage("ueditor"),"tinymce":t.pageMessage("tinymce"),"ckeditor":t.pageMessage("ckeditor")}/>
                         <select class="combox" name="editorType">
                             <#list editorTypes as k,v>
                             <option value="${k}"${(k=(a.editorType)!)?then(' selected="true"','')?no_esc}>${v}</option>
@@ -200,22 +207,22 @@
                 </dl>
             </fieldset>
             <fieldset>
-                <legend><@t.page 'extend_field'/></legend>
-                <span class="info"><@t.page 'extend_field.use.content'/>;<@t.page 'extend_field.invalid'/>:source,sourceUrl,wordCount,minPrice,maxPrice,text;<@t.page 'metadata.default_value_description'/></span>
+                <legend><@t.page "extend_field"/></legend>
+                <span class="info"><@t.page "extend_field.use.content"/>;<@t.page "extend_field.invalid"/>:source,sourceUrl,wordCount,minPrice,maxPrice,text;<@t.page "metadata.default_value_description"/></span>
                 <#include "../include_page/extends.html"/>
                 <#assign contentExtendList=(a.extendList)![]>
-                <@extends 'extendList' contentExtendList true true/>
-                <span class="info"><@t.page 'extend_field.name.description'/></span>
+                <@extends "extendList" contentExtendList true true/>
+                <span class="info"><@t.page "extend_field.name.description"/></span>
             </fieldset>
             <fieldset>
-                <legend><@t.page 'recommend_info'/></legend>
-                <span class="info"><@t.page 'recommend_info'/>:<#noparse>&lt;@cms.contentRelatedList contentId=content.id relationType=dictionaryId relation=dictionaryDataValue&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentRelatedList&gt;</#noparse></span>
+                <legend><@t.page "recommend_info"/></legend>
+                <span class="info"><@t.page "recommend_info"/>:<#noparse>&lt;@cms.contentRelatedList contentId=content.id relationType=dictionaryId relation=dictionaryDataValue&gt;&lt;#list page.list as a&gt;${a.title!}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentRelatedList&gt;</#noparse></span>
                 <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
                     <thead>
                         <tr>
-                            <th type="lookup" name="relatedList[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="relatedList[#index#]" fieldAttrs='{"readonly":"readonly"}' size="10"><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary/list"><@t.page 'dictionary'/></a></th>
-                            <th type="enum" name="relatedList[#index#].modelIds" enumUrl="common/modelId.html?queryAll=true"><@t.page 'model'/></th>
-                            <th type="del" width="100"><@t.page 'operate'/></th>
+                            <th type="lookup" name="relatedList[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="relatedList[#index#]" fieldAttrs='{"readonly":"readonly"}' size="10"><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary/list"><@t.page "dictionary"/></a></th>
+                            <th type="enum" name="relatedList[#index#].modelIds" enumUrl="common/modelId.html?queryAll=true"><@t.page "model"/></th>
+                            <th type="del" width="100"><@t.page "operate"/></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -226,7 +233,7 @@
                                 <@cms.dictionary id=a.dictionaryId><#assign dictionary=object/></@cms.dictionary>
                                 <input type="hidden" name="relatedList[${a?index}].dictionaryId" value="${(a.dictionaryId)!}"/>
                                 <input type="text" name="relatedList[${a?index}].dictionaryName" readonly="readonly" size="10" value="${(dictionary.name)!}"/>
-                                <a class="btnLook" href="cmsDictionary/lookup.html" lookupGroup="relatedList[${a?index}]" width="1000" height="500"><@t.page 'dictionary.select'/></a>
+                                <a class="btnLook" href="cmsDictionary/lookup.html" lookupGroup="relatedList[${a?index}]" width="1000" height="500"><@t.page "dictionary.select"/></a>
                             </td>
                             <td>
                                 <@cms.modelList queryAll=true>
@@ -239,7 +246,7 @@
                                 </@cms.modelList>
                             </td>
                             <td>
-                                <a href="javascript:;" class="btnDel"><@t.page 'button.delete'/></a>
+                                <a href="javascript:;" class="btnDel"><@t.page "button.delete"/></a>
                             </td>
                         </tr>
                     </#list>
@@ -250,81 +257,84 @@
         </div>
     </div>
 <script>
-    $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
+    $(".systemField dt [type=checkbox]",navTab.getCurrentPanel()).each(function(){
         var box = $(this).parent().parent().parent();
-        box.find('dd').hide();
-        $('.copied',navTab.getCurrentPanel()).hide();
+        box.find("dd").hide();
+        $(".copied",navTab.getCurrentPanel()).hide();
         $(this).on("click", function(){
-            if( $(this).is(':checked') ) {
-                box.find('dd').show().find('input[type=text]').addClass('required');
+            if( $(this).is(":checked") ) {
+                box.find("dd").show().find("input[type=text]").addClass("required");
                 if("copied"==$(this).val()){
-                    $('.copied',navTab.getCurrentPanel()).show().find('input[type=text]').addClass('required');
+                    if(!$("input[name=fieldList][value=source]",navTab.getCurrentPanel()).is(":checked")){
+                        $("input[name=fieldList][value=source]",navTab.getCurrentPanel()).trigger("click");
+                    }
+                    $(".copied",navTab.getCurrentPanel()).show().find("input[type=text]").addClass("required");
                 }
             } else {
-                box.find('dd').hide().find('input[type=text]').removeClass('required');
+                box.find("dd").hide().find("input[type=text]").removeClass("required");
                 if("copied"==$(this).val()){
-                    $('.copied',navTab.getCurrentPanel()).hide().find('input[type=text]').removeClass('required');
+                    $(".copied",navTab.getCurrentPanel()).hide().find("input[type=text]").removeClass("required");
                 }
             }
         });
     });
-    $('input[name=onlyUrl]',navTab.getCurrentPanel()).on("click", function(){
-        if($(this).is(':checked')) {
-            $('.onlyUrl',navTab.getCurrentPanel()).hide();
-            $('.urlText',navTab.getCurrentPanel()).show();
-            $('.urlText input[type=text]',navTab.getCurrentPanel()).addClass('required');
+    $("input[name=onlyUrl]",navTab.getCurrentPanel()).on("click", function(){
+        if($(this).is(":checked")) {
+            $(".onlyUrl",navTab.getCurrentPanel()).hide();
+            $(".urlText",navTab.getCurrentPanel()).show();
+            $(".urlText input[type=text]",navTab.getCurrentPanel()).addClass("required");
         } else {
-            $('.onlyUrl',navTab.getCurrentPanel()).show();
-            $('.urlText',navTab.getCurrentPanel()).hide();
-            $('.urlText input[type=text]',navTab.getCurrentPanel()).removeClass('required');
+            $(".onlyUrl",navTab.getCurrentPanel()).show();
+            $(".urlText",navTab.getCurrentPanel()).hide();
+            $(".urlText input[type=text]",navTab.getCurrentPanel()).removeClass("required");
         }
     });
-    $('input[name=hasChild],input[name=hasImages],input[name=hasFiles],input[name=hasProducts]',navTab.getCurrentPanel()).on("click", function(){
-        if($(this).is(':checked')) {
-            $('.'+$(this).attr('name'),navTab.getCurrentPanel()).show();
+    $("input[name=hasChild],input[name=hasImages],input[name=hasFiles],input[name=hasProducts]",navTab.getCurrentPanel()).on("click", function(){
+        if($(this).is(":checked")) {
+            $("."+$(this).attr("name"),navTab.getCurrentPanel()).show();
         } else {
-            $('.'+$(this).attr('name'),navTab.getCurrentPanel()).hide();
+            $("."+$(this).attr("name"),navTab.getCurrentPanel()).hide();
         }
     });
-    $('input[name=searchableModel]',navTab.getCurrentPanel()).on("click", function(){
-        if($(this).is(':checked')) {
-            $('.searchable',navTab.getCurrentPanel()).show();
+    $("input[name=searchableModel]",navTab.getCurrentPanel()).on("click", function(){
+        if($(this).is(":checked")) {
+            $(".searchable",navTab.getCurrentPanel()).show();
         } else {
-            $('.searchable',navTab.getCurrentPanel()).hide();
+            $(".searchable",navTab.getCurrentPanel()).hide();
         }
     });
     <#if a?has_content>
         <#if a.onlyUrl>
-            $('input[name=onlyUrl]',navTab.getCurrentPanel()).trigger("click");
+            $("input[name=onlyUrl]",navTab.getCurrentPanel()).trigger("click");
         </#if>
         <#if a.searchableModel>
-            $('input[name=searchableModel]',navTab.getCurrentPanel()).trigger("click");
+            $("input[name=searchableModel]",navTab.getCurrentPanel()).trigger("click");
         </#if>
         <#if a.hasChild>
-            $('input[name=hasChild]',navTab.getCurrentPanel()).trigger("click");
+            $("input[name=hasChild]",navTab.getCurrentPanel()).trigger("click");
         </#if>
         <#if a.hasImages>
-            $('input[name=hasImages]',navTab.getCurrentPanel()).trigger("click");
+            $("input[name=hasImages]",navTab.getCurrentPanel()).trigger("click");
         </#if>
         <#if a.hasFiles>
-            $('input[name=hasFiles]',navTab.getCurrentPanel()).trigger("click");
+            $("input[name=hasFiles]",navTab.getCurrentPanel()).trigger("click");
         </#if>
         <#if a.hasProducts>
-            $('input[name=hasProducts]',navTab.getCurrentPanel()).trigger("click");
+            $("input[name=hasProducts]",navTab.getCurrentPanel()).trigger("click");
         </#if>
 
         <#if a.fieldList?has_content>
             <#list a.fieldList as field>
-                $('input[name=fieldList][value=${field}]',navTab.getCurrentPanel()).trigger("click");
+                $("input[name=fieldList][value=${field}]",navTab.getCurrentPanel()).trigger("click");
             </#list>
         </#if>
         <#if a.requiredFieldList?has_content>
             <#list a.requiredFieldList as field>
-                $('input[name=requiredFieldList][value=${field}]',navTab.getCurrentPanel()).trigger("click");
+                $("input[name=requiredFieldList][value=${field}]",navTab.getCurrentPanel()).trigger("click");
             </#list>
         </#if>
     <#else>
-        $('input[name=searchableModel]',navTab.getCurrentPanel()).trigger("click");
+        $("input[name=searchableModel]",navTab.getCurrentPanel()).trigger("click");
     </#if>
 </script>
 </form>

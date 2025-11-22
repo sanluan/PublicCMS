@@ -15,7 +15,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
@@ -35,6 +34,7 @@ import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 
 import freemarker.template.TemplateException;
 import jakarta.annotation.Resource;
+import tools.jackson.core.JacksonException;
 
 /**
  * DIY数据组件
@@ -354,7 +354,7 @@ public class DiyComponent implements SiteCache {
                 try {
                     metadataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                             .constructMapType(CaseInsensitiveMap.class, String.class, CmsRegion.class));
-                } catch (IOException | ClassCastException e) {
+                } catch (JacksonException | ClassCastException e) {
                     metadataMap = new CaseInsensitiveMap<>();
                 }
             } else {
@@ -380,7 +380,7 @@ public class DiyComponent implements SiteCache {
                 try {
                     metadataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                             .constructMapType(CaseInsensitiveMap.class, String.class, CmsLayout.class));
-                } catch (IOException | ClassCastException e) {
+                } catch (JacksonException | ClassCastException e) {
                     metadataMap = new CaseInsensitiveMap<>();
                 }
             } else {
@@ -406,7 +406,7 @@ public class DiyComponent implements SiteCache {
                 try {
                     metadataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                             .constructMapType(CaseInsensitiveMap.class, String.class, CmsModule.class));
-                } catch (IOException | ClassCastException e) {
+                } catch (JacksonException | ClassCastException e) {
                     metadataMap = new CaseInsensitiveMap<>();
                 }
             } else {
@@ -434,7 +434,7 @@ public class DiyComponent implements SiteCache {
                 }
             }
             return null;
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             return null;
         }
     }
@@ -549,7 +549,7 @@ public class DiyComponent implements SiteCache {
                 try {
                     dataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                             .constructMapType(CaseInsensitiveMap.class, String.class, CmsRegionData.class));
-                } catch (IOException | ClassCastException e) {
+                } catch (JacksonException | ClassCastException e) {
                     dataMap = new CaseInsensitiveMap<>();
                 }
             } else {

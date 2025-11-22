@@ -252,7 +252,7 @@ textarea{max-width:100%;}
 span.error{display:block;overflow:hidden;width:165px;height:28px;padding:0 3px;line-height:28px;background:#F00;color:#FFF;}
 
 /* Button */
-.button,.buttonActive,.buttonDisabled{display:inline-block;height:28px;padding:0 8px;box-sizing:border-box;border-width:1px;border-style:solid;border-radius:2px;cursor:pointer;text-align:center;line-height:28px;white-space:nowrap;font-size:14px;letter-spacing:.03em;box-shadow: 0 2px 4px 0 rgba(31, 38, 135, 0.37);}
+.button,.buttonActive,.buttonDisabled{display:inline-block;height:28px;line-height:28px;padding:0 8px;margin-bottom: 5px;box-sizing:border-box;border-width:1px;border-style:solid;border-radius:2px;cursor:pointer;text-align:center;white-space:nowrap;font-size:14px;letter-spacing:.03em;box-shadow: 0 2px 4px 0 rgba(31, 38, 135, 0.37);}
 button.buttonActive{border-width:1px;border-style:solid;font-weight:400;}
 a.button,button.button{border-width:1px;border-style:solid;}
 a.button:hover{text-decoration:none;}

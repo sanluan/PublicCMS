@@ -1,6 +1,5 @@
 package com.publiccms.common.tools;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,6 +27,8 @@ import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysUserAttribute;
 import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
+
+import tools.jackson.core.JacksonException;
 
 /**
  *
@@ -232,7 +233,7 @@ public class ExtendUtils {
             try {
                 return Constants.objectMapper.readValue(data, Constants.objectMapper.getTypeFactory()
                         .constructMapType(LinkedHashMap.class, String.class, String.class));
-            } catch (IOException | ClassCastException e) {
+            } catch (JacksonException | ClassCastException e) {
                 return new LinkedHashMap<>();
             }
         }
@@ -330,7 +331,7 @@ public class ExtendUtils {
             }
             try {
                 return Constants.objectMapper.writeValueAsString(map);
-            } catch (IOException e) {
+            } catch (JacksonException e) {
                 return null;
             }
         }
@@ -341,7 +342,7 @@ public class ExtendUtils {
         if (null != map) {
             try {
                 return Constants.objectMapper.writeValueAsString(map);
-            } catch (IOException e) {
+            } catch (JacksonException e) {
                 return null;
             }
         }

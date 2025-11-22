@@ -30,6 +30,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
 
 import jakarta.annotation.Resource;
+import tools.jackson.core.JacksonException;
 
 public abstract class AbstractDataExchange<E, D> implements DataExchange<E, D> {
     protected static final Log log = LogFactory.getLog(AbstractDataExchange.class);
@@ -175,7 +176,7 @@ public abstract class AbstractDataExchange<E, D> implements DataExchange<E, D> {
             if (null != data) {
                 save(site, userId, overwrite, data);
             }
-        } catch (IOException e) {
+        } catch (JacksonException e) {
         }
     }
 

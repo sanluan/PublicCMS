@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Cache;
@@ -17,6 +16,9 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
+
+import jakarta.annotation.Resource;
+import tools.jackson.core.JacksonException;
 
 /**
  * 元数据组件
@@ -217,7 +219,7 @@ public class MetadataComponent implements Cache {
                 try {
                     metadataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                             .constructMapType(CaseInsensitiveMap.class, String.class, CmsPlaceMetadata.class));
-                } catch (IOException | ClassCastException e) {
+                } catch (JacksonException | ClassCastException e) {
                     metadataMap = new CaseInsensitiveMap<>();
                 }
             } else {
@@ -242,7 +244,7 @@ public class MetadataComponent implements Cache {
                 try {
                     metadataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                             .constructMapType(CaseInsensitiveMap.class, String.class, CmsPageMetadata.class));
-                } catch (IOException | ClassCastException e) {
+                } catch (JacksonException | ClassCastException e) {
                     metadataMap = new CaseInsensitiveMap<>();
                 }
             } else {
@@ -267,7 +269,7 @@ public class MetadataComponent implements Cache {
                 try {
                     dataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                             .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsPageData.class));
-                } catch (IOException | ClassCastException e) {
+                } catch (JacksonException | ClassCastException e) {
                     dataMap = new CaseInsensitiveMap<>();
                 }
             } else {

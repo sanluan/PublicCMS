@@ -252,6 +252,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                         contentService.updateUrl(entity.getId(), quote.getUrl(), false);
                     }
                 }
+                return true;
             } else {
                 if (null == category) {
                     category = categoryService.getEntity(entity.getCategoryId());
@@ -260,14 +261,15 @@ public class TemplateComponent implements Cache, AdminContextPath {
                     categoryModel = categoryModelService
                             .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
                 }
-                CmsModel model = modelComponent.getModel(site, entity.getModelId());
-                if (null != categoryModel && null != category && null != model) {
+
+                if (null != categoryModel && null != category) {
                     String contentPath = null;
                     String templatePath = null;
                     if (categoryModel.isCustomContentPath()) {
                         contentPath = categoryModel.getContentPath();
                         templatePath = categoryModel.getTemplatePath();
                     } else {
+                        CmsModel model = modelComponent.getModel(site, entity.getModelId());
                         templatePath = model.getTemplatePath();
                         if (category.isCustomContentPath()) {
                             contentPath = category.getContentPath();
@@ -391,7 +393,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
 
     /**
      * 生成页面片段路径
-     * 
+     *
      * @param filepath
      * @param category
      * @param model
@@ -640,7 +642,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
 }
 
 /**
- * 
+ *
  * PublishTask 静态化线程
  *
  */

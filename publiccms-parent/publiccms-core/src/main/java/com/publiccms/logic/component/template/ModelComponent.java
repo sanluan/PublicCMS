@@ -24,6 +24,7 @@ import com.publiccms.views.pojo.entities.CmsCategoryType;
 import com.publiccms.views.pojo.entities.CmsModel;
 
 import jakarta.annotation.Resource;
+import tools.jackson.core.JacksonException;
 
 /**
  *
@@ -103,7 +104,7 @@ public class ModelComponent implements SiteCache {
                 try {
                     modelMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                             .constructMapType(HashMap.class, String.class, CmsModel.class));
-                } catch (IOException | ClassCastException e) {
+                } catch (JacksonException | ClassCastException e) {
                     modelMap = new HashMap<>();
                 }
             } else {
@@ -135,7 +136,7 @@ public class ModelComponent implements SiteCache {
                 try {
                     typeMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
                             .constructMapType(HashMap.class, String.class, CmsCategoryType.class));
-                } catch (IOException | ClassCastException e) {
+                } catch (JacksonException | ClassCastException e) {
                     typeMap = new HashMap<>();
                 }
             } else {

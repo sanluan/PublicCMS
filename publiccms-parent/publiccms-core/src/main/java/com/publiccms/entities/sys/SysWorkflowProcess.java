@@ -15,8 +15,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotBlank;
 
 /**
@@ -267,7 +265,6 @@ public class SysWorkflowProcess implements java.io.Serializable {
         this.createUserId = createUserId;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", nullable = false, length = 19)
     public Date getCreateDate() {
         return this.createDate;
@@ -277,7 +274,6 @@ public class SysWorkflowProcess implements java.io.Serializable {
         this.createDate = createDate;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_date", length = 19)
     public Date getUpdateDate() {
         return this.updateDate;

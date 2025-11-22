@@ -1,5 +1,5 @@
 <@cms.category id=id><#assign a=object/></@cms.category>
-<form method="post" autocomplete="off" action="cmsCategory/batchSave?callbackType=closeCurrent&navTabId=cmsCategory/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsCategory/batchSave?callbackType=closeCurrent&navTabId=cmsCategory/list&rel=page" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input name="id" type="hidden" value="${id!}"/>
     <div class="formBar card">
@@ -17,7 +17,7 @@
                     ${a.name!}
                 </dd>
             </dl>
-            <dl>
+            <dl class="nowrap">
                 <dt><@t.page 'category.parent'/>:</dt>
                 <dd>
                     <input name="parentId" type="hidden" value="${parentId!}"/>

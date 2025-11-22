@@ -13,8 +13,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
 
 /**
@@ -163,7 +161,6 @@ public class SysAppClient implements java.io.Serializable {
         this.clientVersion = clientVersion;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_login_date", length = 19)
     public Date getLastLoginDate() {
         return this.lastLoginDate;
@@ -182,7 +179,6 @@ public class SysAppClient implements java.io.Serializable {
         this.lastLoginIp = lastLoginIp;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", nullable = false, length = 19)
     public Date getCreateDate() {
         return this.createDate;

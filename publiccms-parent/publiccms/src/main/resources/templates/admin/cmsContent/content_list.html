@@ -196,6 +196,7 @@
                             ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
                             <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}" width="1200" height="600">${(a.title)!}</a>
                             <#if a.url?has_content><a href="${a.url!}" target="_blank"><i class="icon-external-link"></i></a></#if>
+                            <#if a.quoteContentId?has_content && !a.parentId?has_content><span class="statusText orange"><@t.page "content.quote"/></span></#if>
                         </h3>
                         <p>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>

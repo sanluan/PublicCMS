@@ -1,28 +1,22 @@
 package com.publiccms.common.handler;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ser.std.StdSerializer;
 
 public class LinkedHashMapSerializer extends StdSerializer<LinkedHashMap<?, ?>> {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
     public LinkedHashMapSerializer() {
-        super(LinkedHashMap.class, false);
+        super(LinkedHashMap.class);
     }
 
     @Override
-    public void serialize(LinkedHashMap<?, ?> value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(LinkedHashMap<?, ?> value, JsonGenerator gen, SerializationContext provider) {
         gen.writeStartObject();
         for (Map.Entry<?, ?> entry : value.entrySet()) {
-            gen.writeObjectField((String) entry.getKey(), entry.getValue());
+            gen.writePOJOProperty((String) entry.getKey(), entry.getValue());
         }
         gen.writeEndObject();
     }

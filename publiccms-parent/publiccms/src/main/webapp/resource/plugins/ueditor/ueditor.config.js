@@ -428,6 +428,7 @@
 			span:   ['class', 'style'],
 			sub:    ['class', 'style'],
 			sup:    ['class', 'style'],
+            source: ['src', 'type'],
 			strong: ['class', 'style'],
 			table:  ['width', 'border', 'align', 'valign', 'class', 'style'],
 			tbody:  ['align', 'valign', 'class', 'style'],

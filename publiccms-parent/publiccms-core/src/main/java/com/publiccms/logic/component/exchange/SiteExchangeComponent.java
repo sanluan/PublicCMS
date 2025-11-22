@@ -37,6 +37,7 @@ import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import com.publiccms.views.pojo.entities.SysConfig;
 
 import jakarta.annotation.Resource;
+import tools.jackson.core.JacksonException;
 
 /**
  * SiteExchangeComponent 站点导入导出组件
@@ -154,7 +155,7 @@ public class SiteExchangeComponent {
         try {
             map = Constants.objectMapper.readValue(file,
                     Constants.objectMapper.getTypeFactory().constructMapType(HashMap.class, String.class, clazz));
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             return true;
         }
         try {
