@@ -59,7 +59,7 @@
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.34</version.freemarker>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
-        <version.lucene>10.3.1</version.lucene>
+        <version.lucene>10.3.2</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <!-- https://github.com/redis/jedis -->
         <version.jedis>7.1.0</version.jedis>
