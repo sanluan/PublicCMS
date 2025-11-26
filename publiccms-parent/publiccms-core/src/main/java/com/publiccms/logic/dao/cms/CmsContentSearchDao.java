@@ -140,20 +140,22 @@ public class CmsContentSearchDao {
     }
 
     private void initHighLighterQuery(HighLighterQuery highLighterQuery, String text) {
-        if (highLighterQuery.isHighlight() && CommonUtils.notEmpty(text)) {
+        if (highLighterQuery.isHighlight()) {
             highLighterQuery.setFields(highLighterTextFields);
-            Backend backend = dao.getSearchBackend();
-            Optional<? extends Analyzer> analyzer;
-            if (backend instanceof LuceneBackend) {
-                analyzer = backend.unwrap(LuceneBackend.class).analyzer(CmsContentAttributeBinder.ANALYZER_NAME);
-            } else {
-                analyzer = Optional.of(new StandardAnalyzer());
-            }
-            if (analyzer.isPresent()) {
-                MultiFieldQueryParser queryParser = new MultiFieldQueryParser(highLighterTextFields, analyzer.get());
-                try {
-                    highLighterQuery.setQuery(queryParser.parse(text));
-                } catch (ParseException e) {
+            if (CommonUtils.notEmpty(text)) {
+                Backend backend = dao.getSearchBackend();
+                Optional<? extends Analyzer> analyzer;
+                if (backend instanceof LuceneBackend) {
+                    analyzer = backend.unwrap(LuceneBackend.class).analyzer(CmsContentAttributeBinder.ANALYZER_NAME);
+                } else {
+                    analyzer = Optional.of(new StandardAnalyzer());
+                }
+                if (analyzer.isPresent()) {
+                    MultiFieldQueryParser queryParser = new MultiFieldQueryParser(highLighterTextFields, analyzer.get());
+                    try {
+                        highLighterQuery.setQuery(queryParser.parse(text));
+                    } catch (ParseException e) {
+                    }
                 }
             }
         }

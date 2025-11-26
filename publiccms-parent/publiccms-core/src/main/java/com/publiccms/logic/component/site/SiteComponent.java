@@ -371,7 +371,7 @@ public class SiteComponent implements Cache {
      * @return site file path
      */
     public String getSiteFilePath(String path) {
-        return CommonUtils.joinString(rootPath, BACKUP_PATH, Constants.SEPARATOR, SITE_FILE_PATH, Constants.SEPARATOR, path);
+        return CommonUtils.joinString(rootPath, BACKUP_PATH, Constants.SEPARATOR, SITE_FILE_PATH, Constants.SEPARATOR, CmsFileUtils.getSafeFileName(path));
     }
 
     /**

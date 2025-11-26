@@ -45,8 +45,8 @@ public class AbstractCkEditorController {
     private static final String RESULT_FILENAME = "fileName";
     private static final String RESULT_URL = "url";
 
-    protected Map<String, Object> upload(SysSite site, SysUser user, MultipartFile upload, String ckCsrfToken, String channel,
-            String csrfToken, HttpServletRequest request) {
+    protected Map<String, Object> upload(SysSite site, SysUser user, MultipartFile upload, String ckCsrfToken, 
+            String csrfToken, String channel, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         int uploaded = 0;
         if (null != upload && !upload.isEmpty() && csrfToken.equals(ckCsrfToken)) {
