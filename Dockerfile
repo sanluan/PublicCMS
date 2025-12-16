@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk
+FROM eclipse-temurin:21-jdk
 ADD publiccms-parent/publiccms/target/publiccms.war /opt/publiccms.war
 ADD data /data
 ENV PORT=8080
