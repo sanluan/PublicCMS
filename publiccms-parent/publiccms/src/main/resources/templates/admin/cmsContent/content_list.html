@@ -171,7 +171,7 @@
                     <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
                 </#list>
             </#if>
-            
+
             <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
             <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
             <@cms.model ids=t.modelId!><#assign modelMap=map!/></@cms.model>

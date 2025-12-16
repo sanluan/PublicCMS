@@ -3,7 +3,7 @@
 <@cms.contentList advanced=true status=2 modelId=modelIds categoryId=categoryId containChild=containChild title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@sys.authorized roleIds=admin.roles urls='cmsContent/delete,cmsContent/add,cmsContent/check,cmsContent/reject,cmsComment/list'><#assign authorizedMap=map/></@sys.authorized>
+<@sys.authorized roleIds=admin.roles urls='cmsContent/delete,cmsContent/preview,cmsContent/add,cmsContent/check,cmsContent/reject,cmsComment/list'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader card">
     <form class="pagerForm" action="cmsContent/uncheck_list.html" autocomplete="off" onsubmit="return divSearch(this,'contentBox');" method="post">
         <#include "../include_page/parameters.html"/>
@@ -115,7 +115,10 @@
                             </#if>
                             [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
                             ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
-                            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" width="1200" height="600" rel="viewContent${a.id}">${(a.title)!}</a>                            
+                            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" width="1200" height="600" rel="viewContent${a.id}">${(a.title)!}</a>
+                            <#if !a.onlyUrl && authorizedMap['cmsContent/preview']>
+                                <a href="cmsContent/preview?id=${a.id}" class="btnText blue" target="_blank"><@t.page 'button.preview'/></a>
+                            </#if>
                             <#if a.quoteContentId?has_content && !a.parentId?has_content><span class="statusText orange"><@t.page "content.quote"/></span></#if>
                         </h3>
                         <p>
@@ -141,9 +144,6 @@
                     <span class="statusText orange"><@t.page 'status.content.'+a.status/></span>
                 </td>
                 <td class="wrap">
-                    <#if authorizedMap['cmsContent/add']>
-                        <a href="cmsContent/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsContent/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a>
-                    </#if>
                     <#if authorizedMap['cmsContent/check']>
                         <a href="cmsContent/check?ids=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-check"></i><@t.page 'button.check'/></a>
                     </#if>
