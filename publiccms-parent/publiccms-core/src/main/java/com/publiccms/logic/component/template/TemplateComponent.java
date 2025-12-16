@@ -249,7 +249,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                 if (null == entity.getParentId() && null != entity.getQuoteContentId()) {
                     CmsContent quote = contentService.getEntity(entity.getQuoteContentId());
                     if (null != quote) {
-                        contentService.updateUrl(entity.getId(), quote.getUrl(), false);
+                        contentService.updateUrl(entity.getId(), quote.getUrl(), quote.isHasStatic());
                     }
                 }
                 return true;
