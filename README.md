@@ -11,7 +11,7 @@
 
 ## Introduction
 
-PublicCMS is an open source JAVACMS system developed with mainstream technologies in 2025. Developed by Tianjin Black Core Technology Co., LTD., the structure is scientific, easily support tens of millions of data, tens of millions of PV; Support visual editing, multi-dimensional expansion, full-text search, static site, SSI, dynamic page local static, URL rules completely customized for you to quickly build a site, large-scale site to provide a powerful drive, is also a good choice for enterprise project product prototype.
+PublicCMS is an open source JAVACMS system developed with mainstream technologies in 2026. Developed by Tianjin Black Core Technology Co., LTD., the structure is scientific, easily support tens of millions of data, tens of millions of PV; Support visual editing, multi-dimensional expansion, full-text search, static site, SSI, dynamic page local static, URL rules completely customized for you to quickly build a site, large-scale site to provide a powerful drive, is also a good choice for enterprise project product prototype.
 
 ## Get the source code
 
@@ -21,17 +21,17 @@ https://github.com/sanluan/PublicCMS
 
 ## Participate in development
 
-Switch to the V4.0-develop,V5-develop branch and the free version to the V2021 branch
+Switch to the develop branch and the free version to the V2021 branch
 ![](doc/images/commits.jpg)
 
 ## Licensing agreement
 
-* Version :V4.0,V5 Free for individuals and paid for enterprises: See LICENSE for details
+* Version :V4.0,V5,V6 Free for individuals and paid for enterprises: See LICENSE for details
 * Version :V1.0,V2016,V2017,V2019,V2021 Completely free license agreement :MIT
 
 ## Environmental requirements
 
-* V4.0 jdk or jre 1.8 and later,V5 Java17 and later
+* V4.0 jdk or jre 1.8 and later,V5 Java17 and later,V6 Java21 and later
 * mysql 5.5 and later
 
 ## Directory description
