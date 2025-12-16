@@ -22,13 +22,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.ModelMap;
 
 import com.publiccms.common.api.AdminContextPath;
 import com.publiccms.common.api.Cache;
 import com.publiccms.common.base.AbstractFreemarkerView;
+import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
+import com.publiccms.common.directive.BaseTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -41,6 +46,7 @@ import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.BeanComponent;
 import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.ContentConfigComponent;
 import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
@@ -60,9 +66,11 @@ import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
+import com.publiccms.views.pojo.model.CmsContentParameters;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
+import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
 /**
@@ -388,6 +396,155 @@ public class TemplateComponent implements Cache, AdminContextPath {
                 future.get();
             } catch (InterruptedException | ExecutionException e) {
                 Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    /**
+     * @param site
+     * @param entity
+     * @param attribute
+     * @param contentParameters
+     * @param writer
+     * @param model
+     */
+    public void initPreviewContentModel(SysSite site, CmsContent entity, CmsContentAttribute attribute,
+            CmsContentParameters contentParameters, ModelMap model) {
+        KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
+        Map<String, BaseTemplateDirective> directiveMap = new HashMap<>();
+        directiveMap.putAll(BeanComponent.getDirectiveComponent().getNamespaceMap().get("cms"));
+        directiveMap.put("content", new AbstractTemplateDirective() {
+            @Override
+            public void execute(RenderHandler handler) throws IOException, TemplateException {
+                handler.put("object", entity);
+                handler.render();
+            }
+        });
+        if (null != contentParameters.getFiles() || null != contentParameters.getImages()) {
+            directiveMap.put("contentFileList", new AbstractTemplateDirective() {
+                @Override
+                public void execute(RenderHandler handler) throws IOException, TemplateException {
+                    PageHandler page = new PageHandler(1, 0);
+                    boolean absoluteURL = handler.getBoolean("absoluteURL", true);
+                    if (handler.getBoolean("image", false) && null != contentParameters.getImages()
+                            || null == contentParameters.getFiles()) {
+                        if (absoluteURL) {
+                            contentParameters.getImages().forEach(
+                                    e -> e.setFilePath(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getFilePath())));
+                        }
+                        page.setList(contentParameters.getImages());
+                    } else if (null != contentParameters.getFiles()) {
+                        if (absoluteURL) {
+                            contentParameters.getFiles().forEach(
+                                    e -> e.setFilePath(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getFilePath())));
+                        }
+                        page.setList(contentParameters.getFiles());
+                    }
+                    page.setTotalCount(page.getList().size());
+                    handler.put("page", page);
+                    handler.render();
+                }
+            });
+        }
+        if (null != contentParameters.getProducts()) {
+            directiveMap.put("contentProductList", new AbstractTemplateDirective() {
+                @Override
+                public void execute(RenderHandler handler) throws IOException, TemplateException {
+                    PageHandler page = new PageHandler(1, 0);
+                    boolean absoluteURL = handler.getBoolean("absoluteURL", true);
+                    contentParameters.getProducts().forEach(e -> {
+                        if (absoluteURL) {
+                            e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover()));
+                        }
+                    });
+                    page.setList(contentParameters.getFiles());
+                    page.setTotalCount(page.getList().size());
+                    handler.put("page", page);
+                    handler.render();
+                }
+            });
+        }
+        model.put("cms", directiveMap);
+        attribute.setData(ExtendUtils.getExtendString(contentParameters.getExtendData(), site.getSitePath()));
+        model.put("getContentAttribute", new BaseMethod() {
+
+            @Override
+            public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
+                return ExtendUtils.getAttributeMap(attribute, config);
+            }
+
+            @Override
+            public int minParametersNumber() {
+                return 0;
+            }
+
+            @Override
+            public boolean needAppToken() {
+                return false;
+            }
+
+        });
+    }
+
+    /**
+     * @param site
+     * @param entity
+     * @param attribute
+     * @param writer
+     * @param model
+     */
+    public void previewContent(SysSite site, CmsContent entity, CmsContentAttribute attribute, Writer writer, ModelMap model) {
+        CmsCategoryModel categoryModel = categoryModelService
+                .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
+        if (null != categoryModel) {
+            String contentPath = null;
+            String templatePath = null;
+            CmsCategory category = categoryService.getEntity(entity.getCategoryId());
+            if (categoryModel.isCustomContentPath()) {
+                contentPath = categoryModel.getContentPath();
+                templatePath = categoryModel.getTemplatePath();
+            } else {
+                CmsModel cmsmodel = modelComponent.getModel(site, entity.getModelId());
+                templatePath = cmsmodel.getTemplatePath();
+                if (null != category && category.isCustomContentPath()) {
+                    contentPath = category.getContentPath();
+                } else if (null != cmsmodel) {
+                    contentPath = cmsmodel.getContentPath();
+                }
+            }
+            if (CommonUtils.notEmpty(templatePath) || CommonUtils.notEmpty(contentPath)) {
+                if (CommonUtils.empty(templatePath)) {
+                    if (contentPath.contains("?")) {
+                        templatePath = contentPath.substring(0, contentPath.indexOf("?"));
+                    } else if (contentPath.contains("/${content.id}")) {
+                        templatePath = CommonUtils.joinString(contentPath.substring(0, contentPath.indexOf("/${content.id}")),
+                                ".html");
+                    } else {
+                        templatePath = null;
+                    }
+                }
+                if (CommonUtils.notEmpty(templatePath)) {
+                    CmsUrlUtils.initContentUrl(site, entity);
+                    fileUploadComponent.initContentCover(site, entity);
+                    CmsUrlUtils.initCategoryUrl(site, category);
+                    KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attribute, config));
+                    model.put("content", entity);
+                    model.put("attribute", entity.getAttribute());
+                    model.put("category", category);
+                    model.put("text", ExtendUtils.replaceText(attribute.getText(), config));
+                    String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
+                    CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
+                    CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
+                    Map<String, Object> metadataMap = metadata.getAsMap(data);
+                    model.put("metadata", metadataMap);
+                    model.put("url", templatePath);
+                    try {
+                        FreeMarkerUtils.generateStringByFile(writer,
+                                SiteComponent.getFullTemplatePath(site.getId(), templatePath), webConfiguration, model);
+                    } catch (IOException | TemplateException e) {
+                    }
+                }
             }
         }
     }

@@ -33,6 +33,9 @@
         </@sys.authorized>
             </#if>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=content&itemId=${id!}" close-url="common/unlock?itemType=content&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
+        <@sys.authorized roleIds=admin.roles url='cmsContent/previewBeforeSave'>
+            <li><button type="button" class="button" onclick="var $form = $('form',navTab.getCurrentPanel()).clone().hide().appendTo($(body));$form.attr('action','cmsContent/previewBeforeSave');$form.attr('target','_blank');$form.attr('onsubmit','');$form.submit();$form.remove();"><@t.page 'button.preview'/></button></li>
+        </@sys.authorized>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
