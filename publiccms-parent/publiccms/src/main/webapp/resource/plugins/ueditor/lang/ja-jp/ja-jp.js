@@ -351,6 +351,7 @@ UE.I18N['ja-jp'] = {
             'lang_videoW':"幅",
             'lang_videoH':"高さ",
             'lang_alignment':"配置",
+            'lang_input_autoplay':"オートプレイ",
             'lang_input_fileStatus':' ファイルをアップロードしていません',
             'startUpload':{'style':"background:url(upload.png) no-repeat;"},
             'lang_videoLoading':"　ビデオの読み込み...",

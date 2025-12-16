@@ -262,7 +262,7 @@
             height = (!ow || !oh) ? '':width*oh/ow;
 
             if(url) {
-                preview.innerHTML = '<img src="' + url + '" width="' + width + '" height="' + height + '" border="' + border + 'px solid #000" title="' + title + '" />';
+                preview.innerHTML = '<img src="' + url + '" width="' + width + '" height="' + height + '" border="' + border + 'px solid #000" alt="' + title + '" />';
             }
         },
         getInsertList: function () {
