@@ -229,6 +229,8 @@ public class CmsContentAdminController {
                 if (null != parent) {
                     templateComponent.createContentFile(site, parent, category, null);
                 }
+            } else if (null != checked && !checked) {
+                deleteFile(site, entity, siteComponent);
             }
             if (null == entity.getParentId() && null == entity.getQuoteContentId()) {
                 Set<Serializable> categoryIdsSet = service.updateQuote(entity.getId(), contentParameters);

@@ -317,15 +317,17 @@ public class ExtendUtils {
     public static String getExtendString(@Nullable Map<String, String> map, @Nullable String sitePath,
             @Nullable BiConsumer<SysExtendField, String> searchableConsumer,
             @Nullable List<SysExtendField>... extendFieldListArrays) {
-        if (CommonUtils.notEmpty(extendFieldListArrays) && null != map) {
-            Set<String> notSafeKeys = new HashSet<>();
-            notSafeKeys.addAll(map.keySet());
-            for (List<SysExtendField> extendFieldList : extendFieldListArrays) {
-                decodeField(map, sitePath, notSafeKeys, searchableConsumer, extendFieldList);
-            }
-            if (!notSafeKeys.isEmpty()) {
-                for (String key : notSafeKeys) {
-                    map.remove(key);
+        if (null != map) {
+            if (CommonUtils.notEmpty(extendFieldListArrays)) {
+                Set<String> notSafeKeys = new HashSet<>();
+                notSafeKeys.addAll(map.keySet());
+                for (List<SysExtendField> extendFieldList : extendFieldListArrays) {
+                    decodeField(map, sitePath, notSafeKeys, searchableConsumer, extendFieldList);
+                }
+                if (!notSafeKeys.isEmpty()) {
+                    for (String key : notSafeKeys) {
+                        map.remove(key);
+                    }
                 }
             }
             try {
@@ -336,7 +338,7 @@ public class ExtendUtils {
         }
         return null;
     }
-    
+
     public static String getExtendString(@Nullable Map<String, String> map) {
         if (null != map) {
             try {
