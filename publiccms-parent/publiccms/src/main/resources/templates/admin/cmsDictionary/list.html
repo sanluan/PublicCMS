@@ -60,16 +60,16 @@
                 <td>${a.childDepth}</td>
                 <td class="wrap">
                 <#if a.childDepth gt 0>
-                    <a href="cmsDictionary/addChild.html?id=${a.id.id}" class="edit btnText blue" target="dialog" mask="true"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
+                    <a href="cmsDictionary/addChild.html?id=${a.id.id?url}" class="edit btnText blue" target="dialog" mask="true"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
                 <#else>
-                    <a href="cmsDictionary/add.html?id=${a.id.id}" class="edit btnText blue" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
+                    <a href="cmsDictionary/add.html?id=${a.id.id?url}" class="edit btnText blue" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
                 </#if>
                 <#if !site.parentId?has_content && authorizedMap['cmsDictionary/export']>
-                    <a href="cmsDictionary/export?id=${a.id.id}&_csrf=<@tools.csrfToken admin=true/>" class="edit btnText" target="_blank"><i class="bi bi-cloud-download"></i><@t.page "button.export"/></a>
+                    <a href="cmsDictionary/export?id=${a.id.id?url}&_csrf=<@tools.csrfToken admin=true/>" class="edit btnText" target="_blank"><i class="bi bi-cloud-download"></i><@t.page "button.export"/></a>
                 </#if>
-                <a href="cmsDictionary/excludeTree.html?id=${a.id.id}" class="btnText blue" target="navTab" rel="cmsDictionary/excludeTree" title="${a.name!}"><i class="bi bi-exclude"></i><@t.page 'dictionary.exclude'/></a>
+                <a href="cmsDictionary/excludeTree.html?id=${a.id.id?url}" class="btnText blue" target="navTab" rel="cmsDictionary/excludeTree" title="${a.name!}"><i class="bi bi-exclude"></i><@t.page 'dictionary.exclude'/></a>
                 <#if !site.parentId?has_content && authorizedMap['cmsDictionary/delete']>
-                    <a href="cmsDictionary/delete?ids=${a.id.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
+                    <a href="cmsDictionary/delete?ids=${a.id.id?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </#if>
                 </td>
             </tr>

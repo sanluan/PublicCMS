@@ -44,10 +44,10 @@
                 <td>${(a.description)!}</td>
                 <td class="wrap">
                 <#if authorizedMap['sysConfigData/edit']>
-                    <a href="sysConfigData/edit.html?code=${a.code!}" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a>
+                    <a href="sysConfigData/edit.html?code=${a.code?url}" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a>
                 </#if>
                 <#if authorizedMap['sysConfigData/export']>
-                    <a href="sysConfigData/export?code=${a.code}&_csrf=<@tools.csrfToken admin=true/>" class="edit btnText" target="_blank"><i class="bi bi-cloud-download"></i><@t.page "button.export"/></a>
+                    <a href="sysConfigData/export?code=${a.code?url}&_csrf=<@tools.csrfToken admin=true/>" class="edit btnText" target="_blank"><i class="bi bi-cloud-download"></i><@t.page "button.export"/></a>
                 </#if>
                 </td>
             </tr>

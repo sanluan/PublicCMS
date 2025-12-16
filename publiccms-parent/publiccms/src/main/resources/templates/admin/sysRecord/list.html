@@ -52,10 +52,10 @@
                 <td>${a.id.code!}</td>
                 <td>${a.createDate!}</td>
                 <td>${a.updateDate!}</td>
-                <td class="exclude-translate"><@t.cut a.data 60 '...<a href="sysRecord/view.html?id=${a.id.code}" class="btnText" target="dialog" rel="recordView">'?no_esc+t.pageMessage('button.view_more')+'</a>'?no_esc/></td>
+                <td class="exclude-translate"><@t.cut a.data 60 '...<a href="sysRecord/view.html?id=${a.id.code?url}" class="btnText" target="dialog" rel="recordView">'?no_esc+t.pageMessage('button.view_more')+'</a>'?no_esc/></td>
                 <td>
-                    <a href="sysRecord/add.html?id=${a.id.code}" class="edit btnText blue" target="navTab" rel="sysRecord/edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
-                    <a href="sysRecord/delete?ids=${a.id.code}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
+                    <a href="sysRecord/add.html?id=${a.id.code?url}" class="edit btnText blue" target="navTab" rel="sysRecord/edit"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
+                    <a href="sysRecord/delete?ids=${a.id.code?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>

@@ -28,6 +28,7 @@ import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -42,6 +43,7 @@ import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.dao.cms.CmsContentDao;
 import com.publiccms.logic.dao.cms.CmsContentSearchDao;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
@@ -118,6 +120,8 @@ public class CmsContentService extends BaseService<CmsContent> {
     private CmsContentAttributeService attributeService;
     @Resource
     private CmsContentRelatedService cmsContentRelatedService;
+    @Resource
+    protected FileUploadComponent fileUploadComponent;
 
     /**
      * @param queryEntity
@@ -935,6 +939,9 @@ public class CmsContentService extends BaseService<CmsContent> {
                     contentFile.setUserId(userId);
                     resultList.add(contentFile);
                 }
+                if(category.getSiteId() != site.getId()) {
+                    resultList.forEach(e -> e.setFilePath(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getFilePath())));
+                }
                 contentFileService.save(resultList);
             }
             @SuppressWarnings("unchecked")
@@ -949,6 +956,9 @@ public class CmsContentService extends BaseService<CmsContent> {
                     contentProduct.setContentId(entity.getId());
                     contentProduct.setUserId(userId);
                     resultList.add(contentProduct);
+                }
+                if(category.getSiteId() != site.getId()) {
+                    resultList.forEach(e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover())));
                 }
                 contentProductService.save(resultList);
             }

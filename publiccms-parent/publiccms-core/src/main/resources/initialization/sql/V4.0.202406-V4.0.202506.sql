@@ -341,3 +341,5 @@ INSERT INTO `sys_module_lang` VALUES ('place_import', 'zh', '导入');
 -- 2025-06-25 --
 DELETE FROM sys_module_lang WHERE module_id in ('myself_content_view','myself_process_view');
 UPDATE sys_module SET menu = 0 WHERE id = 'content_check';
+--2025-12-05 --
+UPDATE sys_module SET has_child = 1 WHERE id = 'myself_profile'; 

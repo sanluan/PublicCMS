@@ -973,7 +973,7 @@ INSERT INTO `sys_module` VALUES ('myself_device', 'myself/userDeviceList', 'sysA
 INSERT INTO `sys_module` VALUES ('myself_log_login', 'myself/logLogin', NULL, 'icon-signin', 'myself', 1, 0, 4);
 INSERT INTO `sys_module` VALUES ('myself_log_operate', 'myself/logOperate', NULL, 'icon-list-alt', 'myself', 1, 0, 3);
 INSERT INTO `sys_module` VALUES ('myself_password', 'myself/password', 'changePassword', NULL, 'myself_profile', 1, 0, 0);
-INSERT INTO `sys_module` VALUES ('myself_profile', 'myself/profile', 'sysUser/update,myself/otpsettings,otpSetting/bind,otpSetting/unbind,webauthn/attestation/options,webauthn/attestation/result,webauthn/getCredentials,webauthn/deleteCredential', 'icon-user', 'myself', 1, 0, 0);
+INSERT INTO `sys_module` VALUES ('myself_profile', 'myself/profile', 'sysUser/update,myself/otpsettings,otpSetting/bind,otpSetting/unbind,webauthn/attestation/options,webauthn/attestation/result,webauthn/getCredentials,webauthn/deleteCredential', 'icon-user', 'myself', 1, 1, 0);
 INSERT INTO `sys_module` VALUES ('myself_token', 'myself/userTokenList', 'sysUserToken/delete', 'icon-unlock-alt', 'myself', 1, 0, 5);
 INSERT INTO `sys_module` VALUES ('operation', NULL, NULL, 'bi bi-binoculars-fill', NULL, 1, 1, 7);
 INSERT INTO `sys_module` VALUES ('order_confirm', 'tradeOrder/confirmParameters', 'tradeOrder/confirm', NULL, 'order_list', 0, 0, 0);

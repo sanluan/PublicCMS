@@ -19,11 +19,11 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if parent?has_content>
-                <li><a href="sysModule/list.html?parentId=${parent.parentId!}" target="navTab" data-change-title="false" rel="sysModule/list"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
+                <li><a href="sysModule/list.html?parentId=${(parent.parentId?url)!}" target="navTab" data-change-title="false" rel="sysModule/list"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
             <#if !parent?has_content || parent.hasChild>
-                <li><a href="sysModule/add.html?parentId=${parentId!}" target="navTab" rel="sysModule/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'module.add'/></a></li>
+                <li><a href="sysModule/add.html?parentId=${(parentId?url)!}" target="navTab" rel="sysModule/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'module.add'/></a></li>
             </#if>
         </ul>
     </div>
@@ -47,10 +47,10 @@
                 <td>${a.url!}</td>
                 <td>${a.sort!}</td>
                 <td class="wrap">
-                    <a href="sysModule/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysModule/edit"><i class="icon-edit"></i><@t.page 'module.edit'/></a></li>
-                    <a href="sysModule/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a></li>
+                    <a href="sysModule/add.html?id=${a.id?url}" class="edit btnText blue" target="navTab" rel="sysModule/edit"><i class="icon-edit"></i><@t.page 'module.edit'/></a></li>
+                    <a href="sysModule/delete?id=${a.id?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i><@t.page 'button.delete'/></a></li>
                     <#if a?has_content && a.hasChild>
-                        <a href="sysModule/list.html?parentId=${a.id}" class="btnText" target="navTab" data-change-title="false" rel="sysModule/list"><@t.page 'module.child_management'/></a>
+                        <a href="sysModule/list.html?parentId=${a.id?url}" class="btnText" target="navTab" data-change-title="false" rel="sysModule/list"><@t.page 'module.child_management'/></a>
                     </#if>
                 </td>
             </tr>

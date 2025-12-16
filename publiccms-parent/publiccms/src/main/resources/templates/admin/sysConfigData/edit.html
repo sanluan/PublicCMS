@@ -7,13 +7,13 @@
     <div class="formBar card">
         <ul>
         <#if authorizedMap['sysConfig/add']>
-            <li><a class="button" href="sysConfig/add.html?code=${code}" target="navTab" rel="sysConfig/edit"><i class="icon-edit icon-large"></i><@t.page 'config.edit'/></a></li>
+            <li><a class="button" href="sysConfig/add.html?code=${code?url}" target="navTab" rel="sysConfig/edit"><i class="icon-edit icon-large"></i><@t.page 'config.edit'/></a></li>
         </#if>
         <#if authorizedMap['sysConfigData/delete']>
-            <li><a class="button" href="sysConfigData/delete?code=${code}&navTabId=sysConfigData/edit&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.clear_config'/>" target="ajaxTodo"><@t.page 'button.clear_config'/></a></li>
+            <li><a class="button" href="sysConfigData/delete?code=${code?url}&navTabId=sysConfigData/edit&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.clear_config'/>" target="ajaxTodo"><@t.page 'button.clear_config'/></a></li>
         </#if>
         <#if authorizedMap['sysConfigData/save']>
-            <li><button type="submit" class="buttonActive" title="ctrl+s" lock-url="common/lock?itemType=config&itemId=${code!}" close-url="common/unlock?itemType=config&itemId=${code!}"><@t.page 'button.save'/></button></li>
+            <li><button type="submit" class="buttonActive" title="ctrl+s" lock-url="common/lock?itemType=config&itemId=${(code?url)!}" close-url="common/unlock?itemType=config&itemId=${(code?url)!}"><@t.page 'button.save'/></button></li>
         </#if>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>

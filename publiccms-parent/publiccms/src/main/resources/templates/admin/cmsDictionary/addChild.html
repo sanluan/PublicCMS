@@ -3,7 +3,7 @@
     <@cms.dictionaryDataList dictionaryId=dictionaryId parentValue=parentValue>
         <#list list as d>
         <li>
-            <a href="cmsDictionary/add.html?id=${object.id.id}&parentValue=${d.id.value}" target="navTab" rel="cmsDictionary/edit" title="<@t.page 'dictionary.edit'/>">${d.id.value}:${d.text}</a>
+            <a href="cmsDictionary/add.html?id=${object.id.id?url}&parentValue=${d.id.value}?url" target="navTab" rel="cmsDictionary/edit" title="<@t.page 'dictionary.edit'/>">${d.id.value}:${d.text}</a>
             <#if depth gt 1>
                 <@dictionaryTree dictionaryId=dictionaryId parentValue=d.id.value depth=depth-1/>
             </#if>
@@ -15,12 +15,12 @@
 <div class="pageFormContent" layoutH>
 <@cms.dictionary id=id>
     <ul class="tree treeFolder">
-        <li><a href="cmsDictionary/add.html?id=${object.id.id}" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i><@t.page 'dictionary.edit'/></a></li>
+        <li><a href="cmsDictionary/add.html?id=${object.id.id?url}" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i><@t.page 'dictionary.edit'/></a></li>
         <#if object.childDepth gt 0>
 <@cms.dictionaryDataList dictionaryId=object.id.id>
     <#list list as d>
         <li>
-            <a href="cmsDictionary/add.html?id=${object.id.id}&parentValue=${d.id.value}" target="navTab" rel="cmsDictionary/edit" title="<@t.page 'dictionary.edit'/>"> ${d.id.value}:${d.text}</a>
+            <a href="cmsDictionary/add.html?id=${object.id.id?url}&parentValue=${d.id.value?url}" target="navTab" rel="cmsDictionary/edit" title="<@t.page 'dictionary.edit'/>"> ${d.id.value}:${d.text}</a>
             <#if object.childDepth gt 1>
                 <@dictionaryTree dictionaryId=id parentValue=d.id.value depth=object.childDepth-1/>
             </#if>

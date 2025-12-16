@@ -17,7 +17,7 @@
             <dl>
                 <dt><@t.page 'id'/>:</dt>
                 <dd>
-                    <input class="required" remote="sysModule/virify?oldId=${id!}" data-msg-remote="<@t.message 'verify.hasExist.module'/>" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}"/>
+                    <input class="required" remote="sysModule/virify?oldId=${(id?url)!}" data-msg-remote="<@t.message 'verify.hasExist.module'/>" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}"/>
                     <label><input name="menu" type="checkbox" class="form-check-input"<#if (!a?has_content||a.menu)> checked="checked"</#if>/><@t.page 'module.menu'/></label>
                     <label><input name="hasChild" type="checkbox" class="form-check-input"<#if (a.hasChild)?has_content&&a.hasChild> checked="checked"</#if>/><@t.page 'module.has_child'/></label>
                 </dd>

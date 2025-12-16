@@ -165,7 +165,6 @@ public class WebAuthnController {
             } else {
                 credentialRecordMap = new LinkedHashMap<>();
             }
-            @SuppressWarnings("deprecation")
             AttestedCredentialData attestedCredentialData = credentialRecord.toRecord(objectConverter)
                     .getAttestedCredentialData();
             credentialRecordMap.put(Base64.getUrlEncoder().encodeToString(attestedCredentialData.getCredentialId()),

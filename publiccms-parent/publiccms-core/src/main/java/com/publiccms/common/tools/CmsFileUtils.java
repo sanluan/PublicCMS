@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -25,6 +26,7 @@ import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.pdfbox.cos.COSArray;
 import org.apache.pdfbox.cos.COSBase;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
@@ -83,20 +85,25 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final String[] DOCUMENT_FILE_SUFFIXS = new String[] { ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf", ".txt", ".md", ".ofd" };
+    public static final String[] DOCUMENT_FILE_SUFFIXS = new String[] { ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf",
+            ".txt", ".md", ".ofd" };
     /**
      * 
      */
-    public static final String[] VIDEO_FILE_SUFFIXS = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm" };
+    public static final String[] VIDEO_FILE_SUFFIXS = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
+            ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm" };
     /**
      * 
      */
-    public static final String[] OTHER_FILE_SUFFIXS = new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso", ".psd" };
+    public static final String[] OTHER_FILE_SUFFIXS = new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso",
+            ".psd" };
     /**
      * 
      */
-    public static final String[] ALLOW_FILES = ArrayUtils
-            .addAll(ArrayUtils.addAll(ArrayUtils.addAll(ArrayUtils.addAll(AUDIO_FILE_SUFFIXS, VIDEO_FILE_SUFFIXS), IMAGE_FILE_SUFFIXS), DOCUMENT_FILE_SUFFIXS), OTHER_FILE_SUFFIXS);
+    public static final String[] ALLOW_FILES = ArrayUtils.addAll(
+            ArrayUtils.addAll(ArrayUtils.addAll(ArrayUtils.addAll(AUDIO_FILE_SUFFIXS, VIDEO_FILE_SUFFIXS), IMAGE_FILE_SUFFIXS),
+                    DOCUMENT_FILE_SUFFIXS),
+            OTHER_FILE_SUFFIXS);
     /**
      * 
      */
@@ -104,7 +111,8 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final String[] OTHER_FILETYPES = new String[] { CmsFileUtils.FILE_TYPE_VIDEO, CmsFileUtils.FILE_TYPE_AUDIO, CmsFileUtils.FILE_TYPE_DOCUMENT, CmsFileUtils.FILE_TYPE_OTHER };
+    public static final String[] OTHER_FILETYPES = new String[] { CmsFileUtils.FILE_TYPE_VIDEO, CmsFileUtils.FILE_TYPE_AUDIO,
+            CmsFileUtils.FILE_TYPE_DOCUMENT, CmsFileUtils.FILE_TYPE_OTHER };
 
     /**
      * 
@@ -256,7 +264,8 @@ public class CmsFileUtils {
                 Path fileNamePath = entry.getFileName();
                 if (null != fileNamePath) {
                     String fileName = fileNamePath.toString();
-                    if (!useFilter || !fileName.endsWith(".data") && !TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
+                    if (!useFilter
+                            || !fileName.endsWith(".data") && !TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
                         BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
                         fileList.add(new FileInfo(fileName, attrs.isDirectory(), attrs));
                     }
@@ -560,18 +569,44 @@ public class CmsFileUtils {
 
     private static boolean isSafe(List<COSObject> pdfObjects) {
         for (COSObject object : pdfObjects) {
-            COSBase realObject = object.getObject();
-            if (realObject instanceof COSDictionary) {
-                COSDictionary dic = (COSDictionary) realObject;
-                if (null != dic.getDictionaryObject(COSName.JS) || null != dic.getDictionaryObject(COSName.JAVA_SCRIPT)) {
-                    return false;
-                }
-            } else if (realObject instanceof COSName && (COSName.JS.equals(realObject) || COSName.JAVA_SCRIPT.equals(realObject))) {
+            if (isUnSafe(object)) {
                 return false;
-
             }
         }
         return true;
+    }
+
+    private static boolean isUnSafe(Collection<COSBase> pdfObjects) {
+        for (COSBase object : pdfObjects) {
+            if (isUnSafe(object)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isUnSafe(COSObject object) {
+        return isUnSafe(object.getObject());
+    }
+
+    private static boolean isUnSafe(COSBase realObject) {
+        if (realObject instanceof COSDictionary) {
+            COSDictionary dic = (COSDictionary) realObject;
+            if (null != dic.getDictionaryObject(COSName.JS) || null != dic.getDictionaryObject(COSName.JAVA_SCRIPT)) {
+                return true;
+            }
+            return isUnSafe(dic.getValues());
+        } else if (realObject instanceof COSArray) {
+            COSArray array = (COSArray) realObject;
+            for (COSBase object : array) {
+                if (isUnSafe(object)) {
+                    return true;
+                }
+            }
+        } else if (realObject instanceof COSName && (COSName.JS.equals(realObject) || COSName.JAVA_SCRIPT.equals(realObject))) {
+            return false;
+        }
+        return false;
     }
 
     /**
@@ -658,7 +693,8 @@ public class CmsFileUtils {
         if (null != originalFilename) {
             int index = originalFilename.lastIndexOf(Constants.DOT);
             if (-1 < index) {
-                return originalFilename.substring(originalFilename.lastIndexOf(Constants.DOT), originalFilename.length()).toLowerCase();
+                return originalFilename.substring(originalFilename.lastIndexOf(Constants.DOT), originalFilename.length())
+                        .toLowerCase();
             }
         }
         return null;
@@ -711,7 +747,8 @@ public class CmsFileUtils {
      * @throws IllegalStateException
      * @throws IOException
      */
-    public static String upload(byte[] data, String fileName, String originalName, String metadataPath) throws IllegalStateException, IOException {
+    public static String upload(byte[] data, String fileName, String originalName, String metadataPath)
+            throws IllegalStateException, IOException {
         File dest = new File(fileName);
         dest.getParentFile().mkdirs();
         FileUtils.writeByteArrayToFile(dest, data);

@@ -44,21 +44,21 @@
                 <td>${a.appKey!}</td>
                 <td>
                     <#if authorizedMap['sysApp/view']>
-                        <a href="sysApp/view.html?id=${a.id}" class="btnText" target="dialog" rel="sysApp"><@t.page 'app.view_secret'/></a>
+                        <a href="sysApp/view.html?id=${a.id?url}" class="btnText" target="dialog" rel="sysApp"><@t.page 'app.view_secret'/></a>
                     </#if>
                 </td>
                 <td>
                     <#if authorizedMap['sysApp/add']>
-                        <a href="sysApp/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysApp/edit"><i class="icon-edit icon-large"></i><@t.page 'app.edit'/></a></li>
+                        <a href="sysApp/add.html?id=${a.id?url}" class="edit btnText blue" target="navTab" rel="sysApp/edit"><i class="icon-edit icon-large"></i><@t.page 'app.edit'/></a></li>
                     </#if>
                     <#if authorizedMap['sysApp/issueParameters']>
-                        <a href="sysApp/issueParameters.html?id=${a.id}" class="btnText green" target="dialog" width="600" height="200" mask="true"><@t.page 'app.issue'/></a>
+                        <a href="sysApp/issueParameters.html?id=${a.id?url}" class="btnText green" target="dialog" width="600" height="200" mask="true"><@t.page 'app.issue'/></a>
                     </#if>
                     <#if authorizedMap['sysAppToken/list']>
-                        <a href="sysAppToken/list.html?appId=${a.id}" class="btnText" target="navTab" rel="sysAppToken/list"><@t.page 'app.token'/></a>
+                        <a href="sysAppToken/list.html?appId=${a.id?url}" class="btnText" target="navTab" rel="sysAppToken/list"><@t.page 'app.token'/></a>
                     </#if>
                     <#if authorizedMap['sysApp/delete']>
-                        <a href="sysApp/delete?id=${a.id}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
+                        <a href="sysApp/delete?id=${a.id?url}&_csrf=<@tools.csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i><@t.page 'button.delete'/></a></li>
                     </#if>
                 </td>
             </tr>

@@ -8,7 +8,7 @@
             <@cms.dictionaryExcludeValue dictionaryId=id excludeDictionaryId=excludeDictionaryId values=t.values><#assign excludeValueMap=map/></@cms.dictionaryExcludeValue>
             <#list list as d>
                 <li>
-                    <a href="cmsDictionary/excludeValue.html?id=${dictionaryId}&excludeDictionaryId=${excludeDictionaryId}&value=${d.id.value}&parentValue=${parentValue}" target="navTab" rel="cmsDictionary/excludeValue" title="<@t.page 'dictionary.exclude'/>">${d.id.value}:${d.text} <#if excludeValueMap[d.id.value]?has_content>(<@t.page 'dictionary.exclude_value'/>:<@cms.dictionaryData dictionaryId=excludeDictionaryId values=excludeValueMap[d.id.value].excludeValues><#list map as k,v>${v.text!}<#sep>,</#list></@cms.dictionaryData>)</#if></a>
+                    <a href="cmsDictionary/excludeValue.html?id=${dictionaryId?url}&excludeDictionaryId=${excludeDictionaryId?url}&value=${d.id.value?url}&parentValue=${parentValue?url}" target="navTab" rel="cmsDictionary/excludeValue" title="<@t.page 'dictionary.exclude'/>">${d.id.value}:${d.text} <#if excludeValueMap[d.id.value]?has_content>(<@t.page 'dictionary.exclude_value'/>:<@cms.dictionaryData dictionaryId=excludeDictionaryId values=excludeValueMap[d.id.value].excludeValues><#list map as k,v>${v.text!}<#sep>,</#list></@cms.dictionaryData>)</#if></a>
                     <@dictionaryTree dictionaryId=dictionaryId excludeDictionaryId=excludeDictionaryId parentValue=d.id.value depth=depth-1/>
                 </li>
             </#list>
@@ -27,7 +27,7 @@
         <ul class="tree treeFolder">
         <#if excludeDictionaryId?has_content>
             <li>
-                <a href="cmsDictionary/excludeTree.html?id=${object.id.id}" target="navTab" rel="cmsDictionary/excludeTree" title="<@t.page 'button.return'/>">
+                <a href="cmsDictionary/excludeTree.html?id=${object.id.id?url}" target="navTab" rel="cmsDictionary/excludeTree" title="<@t.page 'button.return'/>">
                     <@t.page 'button.return'/>
                 </a>
             </li>
@@ -38,7 +38,7 @@
                 <@cms.dictionaryExcludeValue dictionaryId=id excludeDictionaryId=excludeDictionaryId values=t.values><#assign excludeValueMap=map/></@cms.dictionaryExcludeValue>
                 <#list list as d>
             <li>
-                <a href="cmsDictionary/excludeValue.html?id=${object.id.id}&excludeDictionaryId=${excludeDictionaryId}&value=${d.id.value}" target="navTab" rel="cmsDictionary/excludeValue" title="<@t.page 'dictionary.exclude'/>"> ${d.id.value}:${d.text} <#if excludeValueMap[d.id.value]?has_content>(<@t.page 'dictionary.exclude_value'/>:<@cms.dictionaryData dictionaryId=excludeDictionaryId values=excludeValueMap[d.id.value].excludeValues><#list map as k,v>${v.text!}<#sep>,</#list></@cms.dictionaryData>)</#if></a>
+                <a href="cmsDictionary/excludeValue.html?id=${object.id.id?url}&excludeDictionaryId=${excludeDictionaryId?url}&value=${d.id.value?url}" target="navTab" rel="cmsDictionary/excludeValue" title="<@t.page 'dictionary.exclude'/>"> ${d.id.value}:${d.text} <#if excludeValueMap[d.id.value]?has_content>(<@t.page 'dictionary.exclude_value'/>:<@cms.dictionaryData dictionaryId=excludeDictionaryId values=excludeValueMap[d.id.value].excludeValues><#list map as k,v>${v.text!}<#sep>,</#list></@cms.dictionaryData>)</#if></a>
                 <#if object.childDepth gt 0>
                 <@dictionaryTree dictionaryId=id excludeDictionaryId=excludeDictionaryId parentValue=d.id.value depth=object.childDepth-1/>
                 </#if>
@@ -47,12 +47,12 @@
             </@cms.dictionaryDataList>
         <#else>
             <li>
-                <a href="cmsDictionary/exclude.html?id=${object.id.id}" target="navTab" rel="cmsDictionary/exclude"><i class="icon-edit"></i><@t.page 'dictionary.exclude'/></a>
+                <a href="cmsDictionary/exclude.html?id=${object.id.id?url}" target="navTab" rel="cmsDictionary/exclude"><i class="icon-edit"></i><@t.page 'dictionary.exclude'/></a>
             </li>
             <@cms.dictionaryExcludeList dictionaryId=object.id.id>
                 <#list list as d>
             <li>
-                <a href="cmsDictionary/excludeTree.html?id=${object.id.id}&excludeDictionaryId=${d.id.excludeDictionaryId}"  target="navTab" rel="cmsDictionary/excludeTree"> <@cms.dictionary id=d.id.excludeDictionaryId>${object.name}</@cms.dictionary></a>
+                <a href="cmsDictionary/excludeTree.html?id=${object.id.id?url}&excludeDictionaryId=${d.id.excludeDictionaryId?url}"  target="navTab" rel="cmsDictionary/excludeTree"> <@cms.dictionary id=d.id.excludeDictionaryId>${object.name}</@cms.dictionary></a>
             </li>
                 </#list>
             </@cms.dictionaryExcludeList>

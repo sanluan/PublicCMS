@@ -26,7 +26,7 @@
         <version.servlet>6.1.0</version.servlet>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- https://spring.io/projects/spring-framework -->
-        <version.spring>7.0.1</version.spring>
+        <version.spring>7.0.2</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://spring.io/projects/spring-boot -->
         <version.springBoot>4.0.0</version.springBoot>
@@ -34,18 +34,18 @@
         <version.juint>6.0.1</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>7.1.9.Final</version.hibernate>
+        <version.hibernate>7.2.0.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm -->
-        <version.hibernateTools>7.1.9.Final</version.hibernateTools>
+        <version.hibernateTools>7.1.11.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>8.1.2.Final</version.hibernateSearch>
+        <version.hibernateSearch>8.2.0.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <version.hibernateValidator>9.1.0.Final</version.hibernateValidator>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
         <version.mybatis>3.5.19</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
-        <version.mybatisSpring>3.0.5</version.mybatisSpring>
+        <version.mybatisSpring>4.0.0</version.mybatisSpring>
         <!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
         <version.mybatisGenerator>1.4.2</version.mybatisGenerator>
         <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
@@ -55,7 +55,7 @@
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.11.1</version.ehcache>
         <!-- https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind -->
-        <version.jackson>3.0.2</version.jackson>
+        <version.jackson>3.0.3</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.34</version.freemarker>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
@@ -64,7 +64,7 @@
         <!-- https://github.com/redis/jedis -->
         <version.jedis>7.1.0</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
-        <version.quartz>2.5.1</version.quartz>
+        <version.quartz>2.5.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
         <!-- https://github.com/brettwooldridge/HikariCP -->
         <version.hikariCP>7.0.2</version.hikariCP>
@@ -74,7 +74,7 @@
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.14</version.httpclient>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
-        <version.poi>5.5.0</version.poi>
+        <version.poi>5.5.1</version.poi>
         <!-- https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml -->
         <version.xhtmlConverter>2.1.0</version.xhtmlConverter>
         <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
@@ -86,7 +86,7 @@
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <version.io>2.21.0</version.io>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
-        <version.text>1.14.0</version.text>
+        <version.text>1.15.0</version.text>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
         <version.compress>1.28.0</version.compress>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
