@@ -9,9 +9,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "V5", "V4.0" ]
+    branches: [ "V6", "V5", "V4.0" ]
   pull_request:
-    branches: [ "V5", "V4.0" ]
+    branches: [ "V6", "V5", "V4.0" ]
 
 jobs:
   build:
@@ -22,10 +22,10 @@ jobs:
     - name: Checkout sources
       uses: actions/checkout@v4
 
-    - name: Set up JDK 17
+    - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
+        java-version: '21'
         distribution: 'temurin'
         cache: gradle
 
