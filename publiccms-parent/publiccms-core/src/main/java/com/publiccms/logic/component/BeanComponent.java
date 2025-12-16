@@ -5,6 +5,7 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.component.config.ConfigDataComponent;
+import com.publiccms.logic.component.site.DirectiveComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.task.ScheduledTask;
 import com.publiccms.logic.component.template.ModelComponent;
@@ -30,6 +31,7 @@ public class BeanComponent {
     private static CmsContentAttributeService contentAttributeService;
     private static TemplateComponent templateComponent;
     private static ModelComponent modelComponent;
+    private static DirectiveComponent directiveComponent;
 
     /**
      * @return the siteComponent
@@ -172,5 +174,20 @@ public class BeanComponent {
     @Resource
     public void setModelComponent(ModelComponent modelComponent) {
         BeanComponent.modelComponent = modelComponent;
+    }
+
+    /**
+     * @return the directiveComponent
+     */
+    public static DirectiveComponent getDirectiveComponent() {
+        return directiveComponent;
+    }
+
+    /**
+     * @param directiveComponent the directiveComponent to set
+     */
+    @Resource
+    public void setDirectiveComponent(DirectiveComponent directiveComponent) {
+        BeanComponent.directiveComponent = directiveComponent;
     }
 }
