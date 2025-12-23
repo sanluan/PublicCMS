@@ -12,7 +12,7 @@
     <div class="login_form clearfix">
         <form action="${base+adminContextPath}/login" method="post" onsubmit="encode()">
             <p class="logo">
-                <#if site.multiple || parentSite?has_content && parentSite.multiple>
+                <#if site.multiple || parentSite?has_content && domain.siteId == parentSite.id && parentSite.multiple>
                     <select onchange="change(this)">
                         <option value="${(parentSite!site).id}">${(parentSite!site).name}</option>
                         <@sys.siteList parentId=(parentSite!site).id pageSize=100>
