@@ -47,7 +47,7 @@ import com.publiccms.views.pojo.entities.UeditorConfig;
 @Controller
 @RequestMapping("ueditor")
 public class UeditorAdminController extends AbstractUeditorController {
-    
+
     /**
      * @param site
      * @return view name
@@ -137,8 +137,8 @@ public class UeditorAdminController extends AbstractUeditorController {
                 return getResultMap(false, e.getMessage());
             }
         } else {
-            return getResultMap(false,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
+            return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                    localeResolver.resolveLocale(request), "verify.notEmpty.file"));
         }
 
     }
@@ -153,12 +153,13 @@ public class UeditorAdminController extends AbstractUeditorController {
     @ResponseBody
     public Map<String, Object> catchimage(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
             HttpServletRequest request) {
-        try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(Constants.defaultRequestConfig)
-                .build()) {
-            String[] files = request.getParameterValues(FIELD_NAME + "[]");
-            if (CommonUtils.notEmpty(files)) {
-                List<Map<String, Object>> list = new ArrayList<>();
-                for (String image : files) {
+
+        String[] files = request.getParameterValues(FIELD_NAME + "[]");
+        if (CommonUtils.notEmpty(files)) {
+            List<Map<String, Object>> list = new ArrayList<>();
+            for (String image : files) {
+                try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(Constants.defaultRequestConfig)
+                        .build()) {
                     HttpGet httpget = new HttpGet(image);
                     CloseableHttpResponse response = httpclient.execute(httpget);
                     HttpEntity entity = response.getEntity();
@@ -191,26 +192,32 @@ public class UeditorAdminController extends AbstractUeditorController {
                             map.put("url", fileName);
                             map.put("source", image);
                             list.add(map);
+                        } else {
+                            Map<String, Object> result = getResultMap(false,
+                                    LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                                            localeResolver.resolveLocale(request), "verify.custom.fileType"));
+                            list.add(result);
                         }
                     }
                     EntityUtils.consume(entity);
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                    Map<String, Object> result = getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                            localeResolver.resolveLocale(request), "message.error"));
+                    list.add(result);
                 }
-                if (list.isEmpty()) {
-                    return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
-                            "verify.notEmpty.file"));
-                } else {
-                    Map<String, Object> map = getResultMap();
-                    map.put("list", list);
-                    return map;
-                }
-            } else {
-                return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request),
-                        "verify.notEmpty.file"));
             }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            return getResultMap(false,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, localeResolver.resolveLocale(request), "verify.notEmpty.file"));
+            if (list.isEmpty()) {
+                return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                        localeResolver.resolveLocale(request), "verify.notEmpty.file"));
+            } else {
+                Map<String, Object> map = getResultMap();
+                map.put("list", list);
+                return map;
+            }
+        } else {
+            return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                    localeResolver.resolveLocale(request), "verify.notEmpty.file"));
         }
     }
 
