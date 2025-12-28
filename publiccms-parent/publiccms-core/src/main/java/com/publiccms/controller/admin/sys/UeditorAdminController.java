@@ -193,18 +193,17 @@ public class UeditorAdminController extends AbstractUeditorController {
                             map.put("source", image);
                             list.add(map);
                         } else {
-                            Map<String, Object> result = getResultMap(false,
-                                    LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                                            localeResolver.resolveLocale(request), "verify.custom.fileType"));
-                            list.add(result);
+                            Map<String, Object> map = getResultMap(false,"FAIL");
+                            map.put("source", image);
+                            list.add(map);
                         }
+                        EntityUtils.consume(entity);
                     }
-                    EntityUtils.consume(entity);
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
-                    Map<String, Object> result = getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                            localeResolver.resolveLocale(request), "message.error"));
-                    list.add(result);
+                    Map<String, Object> map = getResultMap(false,"FAIL");
+                    map.put("source", image);
+                    list.add(map);
                 }
             }
             if (list.isEmpty()) {

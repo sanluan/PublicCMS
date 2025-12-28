@@ -206,7 +206,7 @@ public class CmsContentAdminController {
         if (null != category.getWorkflowId() && CmsContentService.STATUS_PEND == entity.getStatus()) {
             SysWorkflowProcessItem item = workflowProcessItemService.getEntity(
                     new SysWorkflowProcessItemId(SysWorkflowProcessService.ITEM_TYPE_CONTENT, String.valueOf(entity.getId())));
-            if (null == item || null!=oldEntity && CmsContentService.STATUS_NORMAL == oldEntity.getStatus()) {
+            if (null == item || null != oldEntity && CmsContentService.STATUS_NORMAL == oldEntity.getStatus()) {
                 SysWorkflowProcess process = workflowProcessService.createProcess(site.getId(), category.getWorkflowId(),
                         admin.getId(), entity.getTitle(), SysWorkflowProcessService.ITEM_TYPE_CONTENT,
                         String.valueOf(entity.getId()));
@@ -229,7 +229,8 @@ public class CmsContentAdminController {
                 if (null != parent) {
                     templateComponent.createContentFile(site, parent, category, null);
                 }
-            } else if (null != checked && !checked) {
+            } else if (null != oldEntity && (null == checked || !checked)) {
+                entity.setHasStatic(oldEntity.isHasStatic());
                 deleteFile(site, entity, siteComponent);
             }
             if (null == entity.getParentId() && null == entity.getQuoteContentId()) {
@@ -857,7 +858,7 @@ public class CmsContentAdminController {
                     }
 
                     if (0 != userId) {
-                        if(category.getSiteId() != site.getId()) {
+                        if (category.getSiteId() != site.getId()) {
                             CmsUrlUtils.initContentUrl(site, entity);
                             fileUploadComponent.initContentCover(site, entity);
                         }

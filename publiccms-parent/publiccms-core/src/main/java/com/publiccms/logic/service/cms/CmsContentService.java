@@ -631,6 +631,38 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
+     * @param ids
+     * @param category
+     */
+    public void saveQuote(Serializable[] ids, CmsCategory category) {
+        List<CmsContent> entitys = getEntitys(ids);
+        if (CommonUtils.notEmpty(entitys) && null != category) {
+            for (CmsContent entity : entitys) {
+                if (null == entity.getParentId() && null != entity.getQuoteContentId()) {
+                    entity = getEntity(entity.getQuoteContentId());
+                }
+                if (entity.getCategoryId() != category.getId()) {
+                    CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), category.getId(),
+                            entity.getModelId(), entity.isCopied(), true, entity.isHasImages(), entity.isHasFiles(),
+                            entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, BigDecimal.ZERO, 0, 0, 0,
+                            entity.getPublishDate(), entity.getCreateDate(), 0, entity.getStatus(), false);
+                    quote.setUrl(entity.getUrl());
+                    quote.setDescription(entity.getDescription());
+                    quote.setAuthor(entity.getAuthor());
+                    quote.setCover(entity.getCover());
+                    quote.setEditor(entity.getEditor());
+                    quote.setExpiryDate(entity.getExpiryDate());
+                    quote.setQuoteContentId(entity.getId());
+                    quote.setCheckUserId(entity.getCheckUserId());
+                    quote.setCheckDate(entity.getCheckDate());
+                    quote.setPublishDate(entity.getPublishDate());
+                    save(quote);
+                }
+            }
+        }
+    }
+
+    /**
      * @param id
      * @param categoryList
      * @param category

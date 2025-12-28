@@ -822,6 +822,7 @@ CREATE TABLE `sys_extend_field` (
   `default_value` varchar(50) default NULL COMMENT '默认值',
   `dictionary_id` varchar(20) default NULL COMMENT '数据字典',
   `multiple` tinyint(1) NOT NULL COMMENT '多选',
+  `multiple_lang` tinyint(1) NOT NULL DEFAULT 0 COMMENT '多语言',
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   PRIMARY KEY  (`extend_id`, `code`),
   KEY `sys_extend_field_input_type` (`extend_id`, `input_type`, `searchable`),
@@ -923,6 +924,7 @@ INSERT INTO `sys_module` VALUES ('content_list_view', 'cmsContent/content_list',
 INSERT INTO `sys_module` VALUES ('content_move', 'cmsContent/moveParameters', 'cmsContent/move', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_publish', NULL, 'cmsContent/publish', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_push', 'cmsContent/push', 'cmsPlace/push,cmsPlace/add,cmsPlace/save,cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_to_relation,cmsContent/related,cmsContent/unrelated,cmsPlace/delete', NULL, 'content_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('content_quote', 'cmsContent/quoteParameters', 'cmsContent/quote', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_recycle_delete', NULL, 'cmsContent/realDelete', NULL, 'content_recycle_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_recycle_list', 'cmsRecycleContent/list', NULL, NULL, 'content_list', 1, 1, 0);
 INSERT INTO `sys_module` VALUES ('content_recycle_recycle', NULL, 'cmsContent/recycle', NULL, 'content_recycle_list', 0, 0, 0);
@@ -1298,6 +1300,9 @@ INSERT INTO `sys_module_lang` VALUES ('content_publish', 'zh', '生成');
 INSERT INTO `sys_module_lang` VALUES ('content_push', 'en', 'Push');
 INSERT INTO `sys_module_lang` VALUES ('content_push', 'ja', 'おすすめ');
 INSERT INTO `sys_module_lang` VALUES ('content_push', 'zh', '推荐');
+INSERT INTO `sys_module_lang` VALUES ('content_quote', 'en', 'Quote');
+INSERT INTO `sys_module_lang` VALUES ('content_quote', 'ja', '引用');
+INSERT INTO `sys_module_lang` VALUES ('content_quote', 'zh', '引用');
 INSERT INTO `sys_module_lang` VALUES ('content_recycle_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('content_recycle_delete', 'ja', '削除');
 INSERT INTO `sys_module_lang` VALUES ('content_recycle_delete', 'zh', '删除');

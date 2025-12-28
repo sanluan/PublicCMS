@@ -122,6 +122,13 @@ public class SysExtendField implements java.io.Serializable {
     @GeneratorColumn(title = "多选")
     private boolean multiple;
     /**
+     * multiple lang
+
+     * 多语言
+     */
+    @GeneratorColumn(title = "多语言")
+    private boolean multipleLang;
+    /**
      * sort
 
      * 排序
@@ -150,7 +157,7 @@ public class SysExtendField implements java.io.Serializable {
 
     public SysExtendField(SysExtendFieldId id, boolean required, boolean searchable, String sortable, Integer maxlength,
             Integer width, Integer height, String name, String description, String inputType, String defaultValue,
-            String dictionaryId, boolean multiple, int sort) {
+            String dictionaryId, boolean multiple, boolean multipleLang, int sort) {
         this.id = id;
         this.required = required;
         this.searchable = searchable;
@@ -164,6 +171,7 @@ public class SysExtendField implements java.io.Serializable {
         this.defaultValue = defaultValue;
         this.dictionaryId = dictionaryId;
         this.multiple = multiple;
+        this.multipleLang = multipleLang;
         this.sort = sort;
     }
 
@@ -284,6 +292,16 @@ public class SysExtendField implements java.io.Serializable {
 
     public void setMultiple(boolean multiple) {
         this.multiple = multiple;
+    }
+    
+
+    @Column(name = "multiple_lang", nullable = false)
+    public boolean isMultipleLang() {
+        return this.multipleLang;
+    }
+
+    public void setMultipleLang(boolean multipleLang) {
+        this.multipleLang = multipleLang;
     }
 
     @Column(name = "sort", nullable = false)
