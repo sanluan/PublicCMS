@@ -136,7 +136,7 @@ public class OauthController {
                     String ip = RequestUtils.getIpAddress(request);
                     SysUser user = ControllerUtils.getUserFromSession(session);
                     if (null == user) {
-                        Date now = CommonUtils.getDate();
+                        Date now = CommonUtils.now();
                         if (null == appClient) {
                             OauthUser oauthUser = oauthGateway.getUserInfo(site.getId(), oauthAccess);
                             Map<String, String> oauthConfig = configDataComponent.getConfigData(site.getId(),
@@ -144,7 +144,7 @@ public class OauthController {
                             if (null != oauthUser && CommonUtils.notEmpty(oauthConfig)
                                     && CommonUtils.notEmpty(config.get(SiteConfigComponent.CONFIG_REGISTER_URL))) {
                                 appClient = new SysAppClient(site.getId(), channel, oauthAccess.getOpenId(),
-                                        CommonUtils.getDate(), false);
+                                        CommonUtils.now(), false);
                                 appClient.setClientVersion(CmsVersion.getVersion());
                                 appClient.setLastLoginIp(ip);
                                 appClientService.save(appClient);
@@ -175,7 +175,7 @@ public class OauthController {
                         }
                     } else {
                         if (null == appClient) {
-                            appClient = new SysAppClient(site.getId(), channel, oauthAccess.getOpenId(), CommonUtils.getDate(),
+                            appClient = new SysAppClient(site.getId(), channel, oauthAccess.getOpenId(), CommonUtils.now(),
                                     false);
                             appClient.setClientVersion(CmsVersion.getVersion());
                             appClient.setLastLoginIp(ip);

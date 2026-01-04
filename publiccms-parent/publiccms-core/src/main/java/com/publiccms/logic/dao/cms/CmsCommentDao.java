@@ -113,7 +113,7 @@ public class CmsCommentDao extends BaseDao<CmsComment> {
             entity.setId(getId());
         }
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

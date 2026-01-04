@@ -25,7 +25,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * categoryFileList 内容附件列表查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>fileTypes</code>:文件类型,【image:图片,video:视频,audio:音频,other:其他】
  * <li><code>image</code>:是否图片,当fileTypes为空时有效,【true,false】
@@ -37,13 +38,15 @@ import freemarker.template.TemplateException;
  * <li><code>pageIndex</code>:页码
  * <li><code>pageSize</code>:每页条数
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
  * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsContentFile}
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.contentFileList contentId=1 pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.filePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;
@@ -66,8 +69,8 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
         if (CommonUtils.empty(fileTypes) && handler.getBoolean("image", false)) {
             fileTypes = new String[] { CmsFileUtils.FILE_TYPE_IMAGE };
         }
-        PageHandler page = service.getPage(handler.getLong("contentId"), handler.getLong("userId"), fileTypes,
-                handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
+        PageHandler page = service.getPage(handler.getLong("contentId"), handler.getString("lang"), handler.getLong("userId"),
+                fileTypes, handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")
         List<CmsContentFile> list = (List<CmsContentFile>) page.getList();

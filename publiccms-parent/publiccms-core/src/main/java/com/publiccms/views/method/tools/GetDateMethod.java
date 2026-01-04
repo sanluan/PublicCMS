@@ -49,7 +49,7 @@ public class GetDateMethod extends BaseMethod {
         if (arguments.size() >= 2) {
             date = getDate(1, arguments);
         } else {
-            date = CommonUtils.getDate();
+            date = CommonUtils.now();
         }
         if (!arguments.isEmpty()) {
             String type = getString(0, arguments);

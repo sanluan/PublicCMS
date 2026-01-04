@@ -86,7 +86,7 @@ public class CmsContentPreviewAdminController {
             ModelMap model) {
         try {
             entity.setId(0L);
-            entity.setPublishDate(CommonUtils.getDate());
+            entity.setPublishDate(CommonUtils.now());
             AbstractFreemarkerView.exposeAttribute(model, request);
             templateComponent.initPreviewContentModel(site, entity, attribute, contentParameters, model);
             response.setContentType("text/html; charset=UTF-8");

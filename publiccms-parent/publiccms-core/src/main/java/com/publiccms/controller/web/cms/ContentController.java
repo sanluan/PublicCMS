@@ -127,7 +127,7 @@ public class ContentController {
                 || ControllerUtils.errorNotEmpty("model", cmsModel, model)) {
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
-        CmsContentService.initContent(entity, site, cmsModel, draft, false, attribute, false, CommonUtils.getDate());
+        CmsContentService.initContent(entity, site, cmsModel, draft, false, attribute, false, CommonUtils.now());
         CmsContent oldEntity = null;
         if (null != entity.getId()) {
             oldEntity = service.getEntity(entity.getId());
@@ -139,7 +139,7 @@ public class ContentController {
                     category.getExtendId(), attribute);
             statisticsComponent.removePlace(entity.getId());
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                    "update.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    "update.content", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         } else {
             entity.setDisabled(false);
             entity.setClicks(0);
@@ -152,7 +152,7 @@ public class ContentController {
             entity = service.saveTagAndAttribute(site, user.getId(), user.getDeptId(), entity, contentParameters, cmsModel,
                     category.getExtendId(), attribute);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                    "save.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    "save.content", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         if (null != category.getWorkflowId()) {
             SysWorkflowProcessItem item = workflowProcessItemService.getEntity(

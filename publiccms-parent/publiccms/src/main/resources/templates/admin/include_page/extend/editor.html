@@ -5,7 +5,7 @@
         <div>
             <a class="button" href="common/import.html?field=${inputName?url}" lookupGroup="" width="600" height="400"><@t.page 'import_doc'/></a>
             <#if itemType?has_content && itemId?has_content>
-                <a class="button" href="cmsEditorHistory/lookup.html?itemType=${itemType?url}&itemId=${itemId?url}&fieldName=${extend.id.code?url}" lookupGroup=""><@t.page 'history'/></a>
+                <a class="button" href="cmsEditorHistory/lookup.html?itemType=${itemType?url}&lang=${(lang?url)!}&itemId=${itemId?url}&fieldName=${extend.id.code?url}" lookupGroup=""><@t.page 'history'/></a>
             </#if>
         </div>
     </#if>

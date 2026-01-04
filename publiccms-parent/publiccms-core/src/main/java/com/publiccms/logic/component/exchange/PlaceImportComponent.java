@@ -89,7 +89,7 @@ public class PlaceImportComponent {
                 entity.setUserId(userId);
                 j++;
                 entity.setClicks(0);
-                Date now = CommonUtils.getDate();
+                Date now = CommonUtils.now();
                 try {
                     entity.setPublishDate(dateFormat.parse(XSSFWorkbookUtils.getCellValue(row.getCell(j++))));
                 } catch (ParseException e) {

@@ -52,7 +52,7 @@ public class CmsSurveyAdminController {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsSurvey", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         } else {
             entity.setSiteId(site.getId());
             entity.setUserId(admin.getId());
@@ -60,7 +60,7 @@ public class CmsSurveyAdminController {
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsSurvey", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -79,7 +79,7 @@ public class CmsSurveyAdminController {
             service.delete(ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsSurvey", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

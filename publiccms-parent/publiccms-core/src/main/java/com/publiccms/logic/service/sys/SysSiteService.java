@@ -75,7 +75,7 @@ public class SysSiteService extends BaseService<SysSite> {
         roleService.save(role);// 初始化角色
         String salt = UserPasswordUtils.getSalt();
         SysUser user = new SysUser(entity.getId(), userName, UserPasswordUtils.passwordEncode(password, salt, null, encoding),
-                true, userName, null, dept.getId(), 1, role.getId().toString(), null, false, true, CommonUtils.getDate());
+                true, userName, null, dept.getId(), 1, role.getId().toString(), null, false, true, CommonUtils.now());
         userService.save(user);// 初始化用户
         roleUserService.save(new SysRoleUser(new SysRoleUserId(role.getId(), user.getId())));// 初始化角色用户映射
         return user;

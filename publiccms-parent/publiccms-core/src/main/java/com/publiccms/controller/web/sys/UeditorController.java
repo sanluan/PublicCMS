@@ -144,7 +144,7 @@ public class UeditorController extends AbstractUeditorController {
                         (int) uploadResult.getFileSize() / 1024);
                 logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, Constants.BLANK,
                         false, CmsFileUtils.FILE_TYPE_IMAGE, data.length, uploadResult.getWidth(), uploadResult.getHeight(),
-                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        RequestUtils.getIpAddress(request), CommonUtils.now(), fileName));
                 Map<String, Object> map = getResultMap();
                 map.put("size", data.length);
                 map.put("title", fileName);

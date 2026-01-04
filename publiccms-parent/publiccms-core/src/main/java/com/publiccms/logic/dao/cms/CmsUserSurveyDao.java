@@ -68,7 +68,7 @@ public class CmsUserSurveyDao extends BaseDao<CmsUserSurvey> {
     @Override
     protected CmsUserSurvey init(CmsUserSurvey entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

@@ -14,13 +14,18 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
+import com.publiccms.entities.cms.CmsCategoryLang;
+import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
+import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
@@ -29,10 +34,12 @@ import freemarker.template.TemplateException;
 /**
  *
  * categoryList 分类列表查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>parentId</code>:父分类id
  * <li><code>typeId</code>:分类类型id
+ * <li><code>lang</code>:语言,当站点启用多语言时有效
  * <li><code>absoluteURL</code>:url处理为绝对路径, 默认为<code> true</code>
  * <li><code>queryAll</code>:查询全部,【true,false】,parentId为空时有效
  * <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
@@ -42,13 +49,15 @@ import freemarker.template.TemplateException;
  * <li><code>pageIndex</code>:页码
  * <li><code>pageSize</code>:每页条数
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
  * <li><code>page.list</code>:List类型 查询结果实体列表,顺序排序正序,id倒序
  * {@link com.publiccms.entities.cms.CmsCategory}
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.categoryList pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryList&gt;
@@ -63,6 +72,11 @@ import freemarker.template.TemplateException;
  */
 @Component
 public class CmsCategoryListDirective extends AbstractTemplateDirective {
+
+    @Resource
+    private CmsCategoryLangService langService;
+    @Resource
+    private SiteAttributeComponent siteAttributeComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
@@ -88,17 +102,31 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) page.getList();
         if (null != list) {
+            String lang = handler.getString("lang", siteAttributeComponent.getDefaultLanguage(site.getId()));
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             Integer[] ids = list.stream().map(CmsCategory::getId).toArray(Integer[]::new);
+            CmsCategoryLangId[] langIds = list.stream().map(e -> new CmsCategoryLangId(e.getId(), lang))
+                    .toArray(CmsCategoryLangId[]::new);
             Map<Integer, CmsCategoryAttribute> attributeMap = containsAttribute
                     ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getCategoryId())
                     : null;
+            Map<Integer, CmsCategoryLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
+                    k -> k.getId().getCategoryId());
             Consumer<CmsCategory> consumer = e -> {
+                CmsCategoryLang langEntity = null;
+                if (siteAttributeComponent.enableMultilingual(site.getId()) && !lang.equalsIgnoreCase(e.getLang())) {
+                    langEntity = langMap.get(e.getId());
+                    CmsLangUtils.initCategoryLang(e, langEntity);
+                }
                 if (absoluteURL) {
                     CmsUrlUtils.initCategoryUrl(site, e);
                 }
                 if (containsAttribute) {
-                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId())));
+                    CmsCategoryAttribute attribute = attributeMap.get(e.getId());
+                    if (!lang.equalsIgnoreCase(e.getLang())) {
+                        CmsLangUtils.initCategoryLang(attribute, langEntity);
+                    }
+                    e.setAttribute(ExtendUtils.getAttributeMap(attribute));
                 }
             };
             list.forEach(consumer);

@@ -1,4 +1,4 @@
-<#macro contentFiles image contentId='' copy=false>
+<#macro contentFiles image contentId='' copy=false lang=''>
     <#local name=image?then('images','files')/>
     <#local fileTypes=image?then('image','video,document,audio,other')/>
 <table class="list nowrap itemDetail ${name}" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_upload'/>" batchUrl="common/batchUpload.html?field=filePath&originalField=description<#if image>&fileTypes=image</#if>" width="100%">
@@ -15,11 +15,12 @@
     </thead>
     <tbody>
 <#if contentId?has_content>
-    <@cms.contentFileList contentId=contentId fileTypes=fileTypes absoluteURL=false pageSize=500>
+    <@cms.contentFileList contentId=contentId lang=lang fileTypes=fileTypes absoluteURL=false pageSize=500>
         <#list page.list as file>
             <tr>
                 <td>
                     <#if !copy><input type="hidden" name="${name}[${file?index}].id" value="${file.id}"/></#if>
+                    <input type="hidden" name="${name}[${file?index}].lang" value="${lang}"/>
                     <input type="text" name="${name}[${file?index}].filePath" value="${(file.filePath)!}" size="50" class="required preview"/>
                     <a class="btnAttach" lookupGroup="${name}[${file?index}]" href="common/upload.html?field=filePath&originalField=description${image?then('&fileTypes=image','')}" width="1000" height="600">${t.pageMessage(image?then('upload.image','upload.file'))}</a>
                 </td>

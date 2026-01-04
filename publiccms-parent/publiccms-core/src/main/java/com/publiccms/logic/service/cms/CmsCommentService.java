@@ -82,7 +82,7 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @return
      */
     public Set<CmsContent> check(short siteId, Serializable[] ids, long userId) {
-        Date now = CommonUtils.getDate();
+        Date now = CommonUtils.now();
         Set<CmsContent> contentSet = new HashSet<>();
         for (CmsComment entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_NORMAL != entity.getStatus()) {

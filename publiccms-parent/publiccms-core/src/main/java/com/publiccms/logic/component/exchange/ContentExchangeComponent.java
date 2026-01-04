@@ -273,7 +273,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
         }
         if (entity.isHasFiles() || entity.isHasImages()) {
             @SuppressWarnings("unchecked")
-            List<CmsContentFile> fileList = (List<CmsContentFile>) fileService.getPage(entity.getId(), null, null, null, null, null, null).getList();
+            List<CmsContentFile> fileList = (List<CmsContentFile>) fileService.getPage(entity.getId(), null, null, null, null, null, null, null).getList();
             data.setFileList(fileList);
             if (null != webfileList) {
                 for (CmsContentFile file : fileList) {

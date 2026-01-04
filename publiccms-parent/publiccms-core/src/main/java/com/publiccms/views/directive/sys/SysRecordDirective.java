@@ -3,6 +3,7 @@ package com.publiccms.views.directive.sys;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -21,14 +22,16 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysRecord 自定义记录查询写入指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>code</code>:记录编码,结果返回<code>object</code>
  * <li><code>data</code>:记录数据,不为空时记录该数据
  * {@link com.publiccms.entities.sys.SysRecord}
  * <li><code>codes</code>:多个记录编码,结果返回<code>map</code>(id,<code>object</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@sys.record code='site' data='data'&gt;${object.data}&lt;/@sys.record&gt;
  *
@@ -55,13 +58,7 @@ public class SysRecordDirective extends AbstractTemplateDirective {
                 handler.put("object", entity).render();
             }
         } else if (CommonUtils.notEmpty(codes)) {
-            SysRecordId[] ids = new SysRecordId[codes.length];
-            int i = 0;
-            for (String s : codes) {
-                if (CommonUtils.notEmpty(s)) {
-                    ids[i++] = new SysRecordId(site.getId(), s);
-                }
-            }
+            SysRecordId[] ids = Stream.of(codes).map(e -> new SysRecordId(site.getId(), e)).toArray(SysRecordId[]::new);
             Map<String, SysRecord> map = new LinkedHashMap<>();
             for (SysRecord entity : service.getEntitys(ids)) {
                 map.put(entity.getId().getCode(), entity);

@@ -38,6 +38,7 @@ public class CmsEditorHistoryService extends BaseService<CmsEditorHistory> {
      * @param itemType
      * @param itemId
      * @param fieldName
+     * @param lang 
      * @param userId
      * @param orderType
      * @param pageIndex
@@ -45,9 +46,9 @@ public class CmsEditorHistoryService extends BaseService<CmsEditorHistory> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(String itemType, String itemId, String fieldName, Long userId, String orderType, Integer pageIndex,
-            Integer pageSize) {
-        return dao.getPage(itemType, itemId, fieldName, userId, orderType, pageIndex, pageSize);
+    public PageHandler getPage(String itemType, String itemId, String fieldName, String lang, Long userId, String orderType,
+            Integer pageIndex, Integer pageSize) {
+        return dao.getPage(itemType, itemId, fieldName, lang, userId, orderType, pageIndex, pageSize);
     }
 
     /**
@@ -57,11 +58,12 @@ public class CmsEditorHistoryService extends BaseService<CmsEditorHistory> {
      * @param userId
      * @param itemType
      * @param itemId
+     * @param lang
      * @param oldMap
      * @param extendData
      * @param getExtendFieldList
      */
-    public void saveHistory(short siteId, long userId, String itemType, String itemId, Map<String, String> oldMap,
+    public void saveHistory(short siteId, long userId, String itemType, String itemId, String lang, Map<String, String> oldMap,
             Map<String, String> extendData, List<SysExtendField> getExtendFieldList) {
         if (CommonUtils.notEmpty(oldMap) && CommonUtils.notEmpty(getExtendFieldList)) {
             for (SysExtendField extendField : getExtendFieldList) {
@@ -69,8 +71,8 @@ public class CmsEditorHistoryService extends BaseService<CmsEditorHistory> {
                         && (CommonUtils.notEmpty(oldMap.get(extendField.getId().getCode()))
                                 && (CommonUtils.empty(extendData) || !oldMap.get(extendField.getId().getCode())
                                         .equals(extendData.get(extendField.getId().getCode()))))) {
-                    CmsEditorHistory history = new CmsEditorHistory(siteId, itemType, itemId, extendField.getId().getCode(),
-                            CommonUtils.getDate(), userId, oldMap.get(extendField.getId().getCode()));
+                    CmsEditorHistory history = new CmsEditorHistory(siteId, itemType, itemId, extendField.getId().getCode(), lang,
+                            CommonUtils.now(), userId, oldMap.get(extendField.getId().getCode()));
                     save(history);
 
                 }

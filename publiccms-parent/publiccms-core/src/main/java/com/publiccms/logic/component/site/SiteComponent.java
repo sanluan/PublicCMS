@@ -352,7 +352,7 @@ public class SiteComponent implements Cache {
         sb.append(getFullFileName(siteId, filepath));
         sb.append(Constants.SEPARATOR);
         if (newfile) {
-            sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+            sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.FILE_NAME_FORMAT_STRING).format(CommonUtils.now()));
         }
         return sb.toString();
     }
@@ -395,7 +395,7 @@ public class SiteComponent implements Cache {
         sb.append(getFullFileName(siteId, templatePath));
         sb.append(Constants.SEPARATOR);
         if (newfile) {
-            sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+            sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.FILE_NAME_FORMAT_STRING).format(CommonUtils.now()));
         }
         return sb.toString();
     }
@@ -430,7 +430,7 @@ public class SiteComponent implements Cache {
         sb.append(getFullFileName(siteId, templatePath));
         sb.append(Constants.SEPARATOR);
         if (newfile) {
-            sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+            sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.FILE_NAME_FORMAT_STRING).format(CommonUtils.now()));
         }
         return sb.toString();
     }

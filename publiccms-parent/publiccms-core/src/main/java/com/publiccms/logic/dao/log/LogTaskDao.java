@@ -94,7 +94,7 @@ public class LogTaskDao extends BaseDao<LogTask> {
     @Override
     protected LogTask init(LogTask entity) {
         if (null == entity.getBegintime()) {
-            entity.setBegintime(CommonUtils.getDate());
+            entity.setBegintime(CommonUtils.now());
         }
         if (CommonUtils.notEmpty(entity.getResult())) {
             entity.setResult(CommonUtils.keep(entity.getResult(), 65535));

@@ -5,6 +5,7 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -64,10 +65,8 @@ public class CmsUserCollectionDirective extends AbstractTemplateDirective {
             } else {
                 Long[] contentIds = handler.getLongArray("contentIds");
                 if (CommonUtils.notEmpty(contentIds)) {
-                    CmsUserCollectionId[] entityIds = new CmsUserCollectionId[contentIds.length];
-                    for (int i = 0; i < contentIds.length; i++) {
-                        entityIds[i] = new CmsUserCollectionId(userId, contentIds[i]);
-                    }
+                    CmsUserCollectionId[] entityIds = Stream.of(contentIds).map(e -> new CmsUserCollectionId(userId, e))
+                            .toArray(CmsUserCollectionId[]::new);
                     List<CmsUserCollection> entityList = service.getEntitys(entityIds);
                     Map<String, CmsUserCollection> map = CommonUtils.listToMapSorted(entityList,
                             k -> String.valueOf(k.getId().getContentId()), contentIds, e -> e.getId().getContentId());
@@ -77,10 +76,8 @@ public class CmsUserCollectionDirective extends AbstractTemplateDirective {
         } else if (null != contentId) {
             Long[] userIds = handler.getLongArray("userIds");
             if (CommonUtils.notEmpty(userIds)) {
-                CmsUserCollectionId[] entityIds = new CmsUserCollectionId[userIds.length];
-                for (int i = 0; i < userIds.length; i++) {
-                    entityIds[i] = new CmsUserCollectionId(userIds[i], contentId);
-                }
+                CmsUserCollectionId[] entityIds = Stream.of(userIds).map(e -> new CmsUserCollectionId(e, contentId))
+                        .toArray(CmsUserCollectionId[]::new);
                 List<CmsUserCollection> entityList = service.getEntitys(entityIds);
                 Map<String, CmsUserCollection> map = CommonUtils.listToMapSorted(entityList,
                         k -> String.valueOf(k.getId().getUserId()), userIds, e -> e.getId().getUserId());

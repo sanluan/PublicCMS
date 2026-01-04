@@ -86,13 +86,13 @@ public class CmsCommentAdminController {
             if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            entity.setUpdateDate(CommonUtils.getDate());
+            entity.setUpdateDate(CommonUtils.now());
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsComment", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         } else {
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setSiteId(site.getId());
             entity.setUserId(admin.getId());
             entity.setStatus(CmsCommentService.STATUS_NORMAL);
@@ -163,7 +163,7 @@ public class CmsCommentAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "check.cmsComment", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -197,7 +197,7 @@ public class CmsCommentAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "uncheck.cmsComment", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -231,7 +231,7 @@ public class CmsCommentAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsComment", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

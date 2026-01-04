@@ -47,7 +47,7 @@ class CmsContentTest {
     @Test
     @DisplayName("search and hightliter test case")
     void searchTest() {
-        Date now = CommonUtils.getDate();
+        Date now = CommonUtils.now();
         String text = "你好天津黑核科技有限公司";
         CmsContent entity = new CmsContent((short) 1, text, 1, 1, "1", false, false, false, false, 0, now, now, 0,
                 CmsContentService.STATUS_NORMAL);

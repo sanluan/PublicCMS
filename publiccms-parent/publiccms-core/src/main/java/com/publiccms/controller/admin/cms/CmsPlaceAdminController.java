@@ -151,7 +151,7 @@ public class CmsPlaceAdminController {
                 if (ControllerUtils.errorCustom("statusError", CmsPlaceService.STATUS_CHECKING == oldEntity.getStatus(), model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
-                entity.setUpdateDate(CommonUtils.getDate());
+                entity.setUpdateDate(CommonUtils.now());
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 if (null != entity) {
                     if (CmsPlaceService.STATUS_OFFSHELF == entity.getStatus()
@@ -161,7 +161,7 @@ public class CmsPlaceAdminController {
                     statisticsComponent.removePlace(entity.getId());
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.place", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), JsonUtils.getString(entity)));
+                            CommonUtils.now(), JsonUtils.getString(entity)));
                 }
             } else {
                 entity.setUserId(admin.getId());
@@ -171,7 +171,7 @@ public class CmsPlaceAdminController {
                 service.save(entity);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "save.place", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        CommonUtils.now(), JsonUtils.getString(entity)));
             }
             String filepath = siteComponent.getTemplateFilePath(site.getId(),
                     CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, entity.getPath()));
@@ -185,7 +185,7 @@ public class CmsPlaceAdminController {
             if (null != oldAttribute && CommonUtils.notEmpty(oldAttribute.getData())) {
                 Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
                 editorHistoryService.saveHistory(site.getId(), admin.getId(), CmsEditorHistoryService.ITEM_TYPE_PLACE_EXTEND,
-                        String.valueOf(entity.getId()), oldMap, map, metadata.getExtendList());
+                        String.valueOf(entity.getId()), null, oldMap, map, metadata.getExtendList());
             }
 
             if (null != metadata.getWorkflowId()) {
@@ -237,7 +237,7 @@ public class CmsPlaceAdminController {
             service.refresh(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "refresh.place", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
             staticPlace(site, path);
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -270,7 +270,7 @@ public class CmsPlaceAdminController {
         if (CommonUtils.notEmpty(ids)) {
             service.check(site.getId(), admin.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     StringUtils.join(ids, Constants.COMMA)));
             staticPlace(site, path);
         }
@@ -304,7 +304,7 @@ public class CmsPlaceAdminController {
         if (CommonUtils.notEmpty(ids)) {
             service.reject(site.getId(), admin.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     StringUtils.join(ids, Constants.COMMA)));
             staticPlace(site, path);
         }
@@ -338,7 +338,7 @@ public class CmsPlaceAdminController {
         if (CommonUtils.notEmpty(ids)) {
             service.uncheck(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     StringUtils.join(ids, Constants.COMMA)));
             staticPlace(site, path);
         }
@@ -418,7 +418,7 @@ public class CmsPlaceAdminController {
             service.delete(site.getId(), path);
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "clear.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                            "clear.place", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
             staticPlace(site, path);
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -452,7 +452,7 @@ public class CmsPlaceAdminController {
             service.delete(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.place", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
             staticPlace(site, path);
         }
         return CommonConstants.TEMPLATE_DONE;

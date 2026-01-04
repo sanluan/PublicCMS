@@ -60,7 +60,7 @@ public class CmsContentProductAdminController {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
                 logOperateService.save(new LogOperate(entity.getSiteId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "update.conentProduct", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                        "update.conentProduct", RequestUtils.getIpAddress(request), CommonUtils.now(),
                         JsonUtils.getString(entity)));
             }
         }

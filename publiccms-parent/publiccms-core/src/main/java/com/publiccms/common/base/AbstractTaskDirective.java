@@ -69,7 +69,7 @@ public abstract class AbstractTaskDirective extends BaseTemplateDirective {
             appToken = handler.getString(APP_TOKEN);
         }
         SysAppToken token = appTokenService.getEntity(appToken);
-        if (null != token && (null == token.getExpiryDate() || CommonUtils.getDate().before(token.getExpiryDate()))) {
+        if (null != token && (null == token.getExpiryDate() || CommonUtils.now().before(token.getExpiryDate()))) {
             SysApp app = appService.getEntity(token.getAppId());
             if (app.getSiteId() == getSite(handler).getId()) {
                 return app;

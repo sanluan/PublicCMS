@@ -97,12 +97,12 @@ public class SysModuleAdminController {
             sysModuleLangService.save(oldId, entity.getId(), moduleParameters.getLangList());
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.module", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         } else {
             service.save(entity);
             sysModuleLangService.save(null, entity.getId(), moduleParameters.getLangList());
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.module", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.module", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     JsonUtils.getString(entity)));
         }
         menuMessageComponent.clear();
@@ -152,7 +152,7 @@ public class SysModuleAdminController {
             dealRoleAuthorized(roleModuleList);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.module", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         }
         menuMessageComponent.clear();
         return CommonConstants.TEMPLATE_DONE;

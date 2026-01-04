@@ -11,13 +11,18 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
+import com.publiccms.entities.cms.CmsCategoryLang;
+import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
+import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 
 import freemarker.template.TemplateException;
@@ -31,6 +36,7 @@ import freemarker.template.TemplateException;
  * <li><code>id</code>:分类id,结果返回<code>object</code>
  * {@link com.publiccms.entities.cms.CmsCategory}
  * <li><code>code</code>:分类编码,当id为空时生效,结果返回<code>object</code>
+ * <li><code>lang</code>:语言,当id或code不为空且站点启用多语言时有效
  * <li><code>absoluteURL</code>:url处理为绝对路径 默认为<code>true</code>
  * <li><code>containsAttribute</code>默认为<code>false</code>,http请求时为高级选项,为true时<code>object.attribute</code>为分类扩展数据<code>map</code>(字段编码,<code>value</code>)
  * <li><code>ids</code>:
@@ -55,6 +61,11 @@ import freemarker.template.TemplateException;
 @Component
 public class CmsCategoryDirective extends AbstractTemplateDirective {
 
+    @Resource
+    private CmsCategoryLangService langService;
+    @Resource
+    private SiteAttributeComponent siteAttributeComponent;
+
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer id = handler.getInteger("id");
@@ -70,16 +81,29 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                 entity = service.getEntityByCode(site.getId(), code);
             }
             if (null != entity && site.getId() == entity.getSiteId()) {
+                CmsCategoryLang langEntity = null;
+                String lang = handler.getString("lang");
+                if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
+                    langEntity = langService.getEntity(new CmsCategoryLangId(entity.getId(), lang));
+                    CmsLangUtils.initCategoryLang(entity, langEntity);
+                }
+
                 if (absoluteURL) {
                     CmsUrlUtils.initCategoryUrl(site, entity);
                 }
                 if (containsAttribute) {
-                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(entity.getId())));
+                    CmsCategoryAttribute attribute = attributeService.getEntity(entity.getId());
+                    if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
+                        CmsLangUtils.initCategoryLang(attribute, langEntity);
+                    }
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attribute));
                 }
                 handler.put("object", entity);
                 handler.render();
             }
-        } else {
+        } else
+
+        {
             Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsCategory> entityList = service.getEntitys(ids);

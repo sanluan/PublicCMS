@@ -124,7 +124,7 @@ public class UeditorAdminController extends AbstractUeditorController {
                 FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, fileName, SCRAW_TYPE);
                 logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         Constants.BLANK, false, CmsFileUtils.FILE_TYPE_IMAGE, data.length, uploadResult.getWidth(),
-                        uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.now(), fileName));
                 Map<String, Object> map = getResultMap();
                 map.put("size", data.length);
                 map.put("title", fileName);
@@ -185,7 +185,7 @@ public class UeditorAdminController extends AbstractUeditorController {
                             logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                     Constants.BLANK, false, CmsFileUtils.getFileType(suffix), uploadResult.getFileSize(),
                                     uploadResult.getWidth(), uploadResult.getHeight(), RequestUtils.getIpAddress(request),
-                                    CommonUtils.getDate(), fileName));
+                                    CommonUtils.now(), fileName));
                             Map<String, Object> map = getResultMap();
                             map.put("size", uploadResult.getFileSize());
                             map.put("title", fileName);

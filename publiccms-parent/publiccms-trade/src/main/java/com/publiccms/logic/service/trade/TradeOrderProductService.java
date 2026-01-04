@@ -60,7 +60,7 @@ public class TradeOrderProductService extends BaseService<TradeOrderProduct> {
     public BigDecimal create(short siteId, long orderId, List<TradeOrderProduct> tradeOrderProductList) {
         BigDecimal amount = BigDecimal.ZERO;
         if (null != tradeOrderProductList && !tradeOrderProductList.isEmpty()) {
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             List<Serializable> contentIdsList = new ArrayList<>();
             List<Serializable> productIdsList = new ArrayList<>();
             for (TradeOrderProduct entity : tradeOrderProductList) {

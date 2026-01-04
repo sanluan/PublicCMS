@@ -77,7 +77,7 @@ public class TradeRefundService extends BaseService<TradeRefund> {
             entity.setAmount(amount);
             entity.setReason(reason);
             entity.setStatus(STATUS_PENDING);
-            entity.setUpdateDate(CommonUtils.getDate());
+            entity.setUpdateDate(CommonUtils.now());
             return true;
         }
         return false;
@@ -142,9 +142,9 @@ public class TradeRefundService extends BaseService<TradeRefund> {
             entity.setStatus(status);
             if (status == STATUS_REFUNDED || status == STATUS_FAIL) {
                 entity.setRefundUserId(refundUserId);
-                entity.setProcessingDate(CommonUtils.getDate());
+                entity.setProcessingDate(CommonUtils.now());
             }
-            entity.setUpdateDate(CommonUtils.getDate());
+            entity.setUpdateDate(CommonUtils.now());
             return true;
         }
         return false;

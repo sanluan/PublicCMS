@@ -84,7 +84,7 @@ public class SysDeptAdminController {
             if (null != entity) {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.dept", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        CommonUtils.now(), JsonUtils.getString(entity)));
             }
             sysDeptItemService.update(entity.getId(), SysDeptItemService.ITEM_TYPE_CATEGORY, categoryIds);
             sysDeptItemService.update(entity.getId(), SysDeptItemService.ITEM_TYPE_PAGE, pages);
@@ -94,7 +94,7 @@ public class SysDeptAdminController {
             service.save(entity);
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.dept", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                            "save.dept", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
             sysDeptItemService.save(entity.getId(), SysDeptItemService.ITEM_TYPE_CATEGORY, categoryIds);
             sysDeptItemService.save(entity.getId(), SysDeptItemService.ITEM_TYPE_PAGE, pages);
             sysDeptItemService.save(entity.getId(), SysDeptItemService.ITEM_TYPE_CONFIG, configs);
@@ -164,7 +164,7 @@ public class SysDeptAdminController {
                 roleUserService.dealRoleUsers(entity.getId(), roleIds);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.user", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        CommonUtils.now(), JsonUtils.getString(entity)));
             }
         } else {
             if (ControllerUtils.errorNotEmpty("password", entity.getPassword(), model)
@@ -188,7 +188,7 @@ public class SysDeptAdminController {
             }
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                            "save.user", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -226,7 +226,7 @@ public class SysDeptAdminController {
         if (null != entity) {
             sysDeptItemService.delete(entity.getId(), null, null);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.dept", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.dept", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -257,7 +257,7 @@ public class SysDeptAdminController {
             }
             userService.updateStatus(id, false);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "enable.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "enable.user", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -289,7 +289,7 @@ public class SysDeptAdminController {
             userService.updateStatus(id, true);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "disable.user", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

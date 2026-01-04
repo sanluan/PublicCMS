@@ -73,7 +73,7 @@ public class ScheduledTaskComponent {
     @Scheduled(fixedDelay = 10 * 60 * 1000L)
     public void clearAppToken() {
         if (CmsVersion.isMaster()) {
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             appTokenService.delete(now);
             emailTokenService.delete(now);
             userTokenService.delete(now);
@@ -161,13 +161,13 @@ public class ScheduledTaskComponent {
     @Scheduled(cron = "0 0 0 1 * ?")
     public void clearLog() {
         if (CmsVersion.isMaster()) {
-            Date date = DateUtils.addYears(CommonUtils.getDate(), -3);
+            Date date = DateUtils.addYears(CommonUtils.now(), -3);
             logLoginService.delete(null, date);
             logOperateService.delete(null, date);
             visitDayService.delete(date);
-            date = DateUtils.addMonths(CommonUtils.getDate(), -12);
+            date = DateUtils.addMonths(CommonUtils.now(), -12);
             logTaskService.delete(null, date);
-            date = DateUtils.addMonths(CommonUtils.getDate(), -3);
+            date = DateUtils.addMonths(CommonUtils.now(), -3);
             visitSessionService.delete(date);
             visitHistoryService.delete(date);
             visitItemService.delete(date);

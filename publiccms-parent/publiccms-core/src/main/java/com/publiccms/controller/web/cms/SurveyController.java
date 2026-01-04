@@ -109,7 +109,7 @@ public class SurveyController {
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
 
-        Date now = CommonUtils.getDate();
+        Date now = CommonUtils.now();
         if (!entity.isDisabled() && entity.getSiteId() == site.getId() && now.before(entity.getEndDate())
                 && now.after(entity.getStartDate())) {
             @SuppressWarnings("unchecked")

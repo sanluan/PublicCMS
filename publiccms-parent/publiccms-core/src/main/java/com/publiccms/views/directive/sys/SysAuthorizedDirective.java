@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -32,7 +33,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysAuthorized 角色url授权查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>roleIds</code>:多个角色id
  * <li><code>url</code>
@@ -40,7 +42,8 @@ import freemarker.template.TemplateException;
  * <li><code>urls</code>
  * 多个url,当roleIds存在,且url为空时生效,结果返回<code>map</code>(url,<code>true</code>或<code>false</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@sys.authorized roleIds='1,2,3'
  * url='cmsContent/list'&gt;${object}&lt;/@sys.authorized&gt;
@@ -92,10 +95,8 @@ public class SysAuthorizedDirective extends AbstractTemplateDirective {
                     && (null == excludeUrls || !excludeUrls.contains(url))) {
                 handler.put("object", true).render();
             } else if (CommonUtils.notEmpty(url) && (null == excludeUrls || !excludeUrls.contains(url))) {
-                SysRoleAuthorizedId[] ids = new SysRoleAuthorizedId[roleIds.length];
-                for (int i = 0; i < roleIds.length; i++) {
-                    ids[i] = new SysRoleAuthorizedId(roleIds[i], url);
-                }
+                SysRoleAuthorizedId[] ids = Stream.of(roleIds).map(e -> new SysRoleAuthorizedId(e, url))
+                        .toArray(SysRoleAuthorizedId[]::new);
                 if (CommonUtils.notEmpty(service.getEntitys(ids))) {
                     handler.put("object", true).render();
                 }

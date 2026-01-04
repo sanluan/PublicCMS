@@ -51,7 +51,7 @@ public class SysRecordService extends BaseService<SysRecord> {
                 save(entity);
             } else if (!data.equals(entity.getData())) {
                 entity.setData(data);
-                entity.setUpdateDate(CommonUtils.getDate());
+                entity.setUpdateDate(CommonUtils.now());
             }
         }
         return entity;

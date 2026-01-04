@@ -50,7 +50,7 @@ public class SysEmailTokenDao extends BaseDao<SysEmailToken> {
     @Override
     protected SysEmailToken init(SysEmailToken entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

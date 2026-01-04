@@ -87,7 +87,7 @@ public class SysRoleAdminController {
             if (null != entity) {
                 roleModuleService.updateRoleModules(entity.getId(), moduleIds);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "update.role", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        "update.role", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
             }
         } else {
             entity.setSiteId(site.getId());
@@ -100,7 +100,7 @@ public class SysRoleAdminController {
                 roleModuleService.save(list);
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.role",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         roleAuthorizedService.dealRoleModules(entity.getId(), entity.isShowAllModule(), moduleService.getEntitys(moduleIds),
                 entity.isShowAllModule() ? moduleService.getPageUrl(null) : null);
@@ -134,7 +134,7 @@ public class SysRoleAdminController {
             roleModuleService.deleteByRoleId(id);
             roleAuthorizedService.deleteByRoleId(id);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.role",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

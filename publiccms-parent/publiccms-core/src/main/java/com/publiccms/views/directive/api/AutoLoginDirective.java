@@ -74,7 +74,7 @@ public class AutoLoginDirective extends AbstractAppDirective {
                 if (null != user && !user.isDisabled() && username.equals(user.getName())) {
                     String authToken = UUID.randomUUID().toString();
                     String ip = RequestUtils.getIpAddress(handler.getRequest());
-                    Date now = CommonUtils.getDate();
+                    Date now = CommonUtils.now();
                     Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
                     int expiryMinutes = ConfigDataComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                             SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);

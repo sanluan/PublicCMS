@@ -5,8 +5,10 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -67,10 +69,8 @@ public class CmsUserSurveyQuestionDirective extends AbstractTemplateDirective {
             } else {
                 Long[] questionIds = handler.getLongArray("questionIds");
                 if (CommonUtils.notEmpty(questionIds)) {
-                    CmsUserSurveyQuestionId[] entityIds = new CmsUserSurveyQuestionId[questionIds.length];
-                    for (int i = 0; i < questionIds.length; i++) {
-                        entityIds[i] = new CmsUserSurveyQuestionId(userId, questionIds[i]);
-                    }
+                    CmsUserSurveyQuestionId[] entityIds = Stream.of(questionIds).map(e -> new CmsUserSurveyQuestionId(userId, e))
+                            .toArray(CmsUserSurveyQuestionId[]::new);
                     List<CmsUserSurveyQuestion> entityList = service.getEntitys(entityIds);
                     Map<String, CmsUserSurveyQuestion> map = CommonUtils.listToMapSorted(entityList,
                             k -> String.valueOf(k.getId().getQuestionId()), null, questionIds, e -> e.getId().getQuestionId(),
@@ -81,10 +81,8 @@ public class CmsUserSurveyQuestionDirective extends AbstractTemplateDirective {
         } else if (null != questionId) {
             Long[] userIds = handler.getLongArray("userIds");
             if (CommonUtils.notEmpty(userIds)) {
-                CmsUserSurveyQuestionId[] entityIds = new CmsUserSurveyQuestionId[userIds.length];
-                for (int i = 0; i < userIds.length; i++) {
-                    entityIds[i] = new CmsUserSurveyQuestionId(userIds[i], questionId);
-                }
+                CmsUserSurveyQuestionId[] entityIds = Stream.of(userIds).map(e -> new CmsUserSurveyQuestionId(e, questionId))
+                        .toArray(CmsUserSurveyQuestionId[]::new);
                 List<CmsUserSurveyQuestion> entityList = service.getEntitys(entityIds);
                 Map<String, CmsUserSurveyQuestion> map = CommonUtils.listToMapSorted(entityList,
                         k -> String.valueOf(k.getId().getUserId()), null, userIds, e -> e.getId().getUserId(),

@@ -9,6 +9,7 @@
 <@cms.category id=parentId><#assign category=object/></@cms.category>
 <@cms.categoryType id=typeId><#assign categoryType=object/></@cms.categoryType>
 <@sys.configData code='site'><#assign config=object/></@sys.configData>
+<@sys.configData code="siteAttribute"><#assign attributeConfig=object/></@sys.configData>
 <#assign modelIndex=-1/>
 <#macro childModel parent index=1>
     <#if parent.hasChild>
@@ -47,11 +48,14 @@
         </@cms.modelList>
     </#if>
 </#macro>
-<form method="post" autocomplete="off" action="cmsCategory/save?callbackType=closeCurrent&navTabId=cmsCategory/list<#if !id?has_content>&rel=page</#if>" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsCategory/save?<#if !id?has_content && 'true'=(attributeConfig.enable_multilingual)!>callbackType=forward&forwardUrl=cmsCategory/addLang.html<#else>callbackType=closeCurrent&navTabId=cmsCategory/list<#if !id?has_content>&rel=page</#if></#if>" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
         <ul>
+        <#if id?has_content && a?has_content && 'true'=(attributeConfig.enable_multilingual)!>
+            <li><a href="cmsCategory/addLang.html?id=${id!}" target="navTab" rel="cmsCategory/edit" class="button"><@t.page 'language.management'/></a></li>
+        </#if>
         <@sys.authorized roleIds=admin.roles url='cmsCategory/save'>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=category&itemId=${id!}" close-url="common/unlock?itemType=category&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
         </@sys.authorized>
@@ -84,6 +88,15 @@
                         <input name="typeName" readonly="readonly" type="text" size="10" value="${(categoryType.name)!}"/>
                     </dd>
                 </dl>
+                <#if 'true'=(attributeConfig.enable_multilingual)!>
+                    <dl>
+                        <dt><@t.page 'language'/>:</dt>
+                        <dd>
+                            <input name="lang" type="hidden" value="${(attributeConfig.default_language)!}"/>
+                            <@cms.language code=(attributeConfig.default_language)!>${object.name}</@cms.language>
+                        </dd>
+                    </dl>
+                </#if>
                 <div class="divider"></div>
                 <dl class="nowrap">
                     <dt><@t.page 'name'/>:</dt>

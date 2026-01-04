@@ -121,7 +121,7 @@ public class UserController {
             }
             model.addAttribute(CommonConstants.MESSAGE, CommonConstants.SUCCESS);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                    "changepassword", RequestUtils.getIpAddress(request), CommonUtils.getDate(), user.getPassword()));
+                    "changepassword", RequestUtils.getIpAddress(request), CommonUtils.now(), user.getPassword()));
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
     }
@@ -149,7 +149,7 @@ public class UserController {
         if (null != entity) {
             ControllerUtils.setUserToSession(request.getSession(), entity);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                    "update.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    "update.user", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
@@ -186,7 +186,7 @@ public class UserController {
             sysEmailToken.setUserId(user.getId());
             sysEmailToken.setAuthToken(UUID.randomUUID().toString());
             sysEmailToken.setEmail(email);
-            sysEmailToken.setExpiryDate(DateUtils.addMinutes(CommonUtils.getDate(), expiryMinutes));
+            sysEmailToken.setExpiryDate(DateUtils.addMinutes(CommonUtils.now(), expiryMinutes));
             sysEmailTokenService.save(sysEmailToken);
             try {
                 Map<String, Object> emailModel = new HashMap<>();
@@ -225,7 +225,7 @@ public class UserController {
             RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
-        if (null != sysEmailToken && CommonUtils.getDate().after(sysEmailToken.getExpiryDate())) {
+        if (null != sysEmailToken && CommonUtils.now().after(sysEmailToken.getExpiryDate())) {
             sysEmailToken = null;
         }
         if (ControllerUtils.errorNotEmpty("verifyEmail.authToken", authToken, model)

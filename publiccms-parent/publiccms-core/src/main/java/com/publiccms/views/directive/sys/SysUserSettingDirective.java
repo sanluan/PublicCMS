@@ -3,6 +3,7 @@ package com.publiccms.views.directive.sys;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -20,7 +21,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysUserSetting 配置数据查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>userId</code>:用户ID
  * <li><code>code</code>:配置编码,userId不为空时结果返回<code>string</code>
@@ -28,7 +30,8 @@ import freemarker.template.TemplateException;
  * <li><code>codes</code>:多个配置编码,userId不为空时结果返回<code>map</code>(code,<code>string</code>)
  * <li><code>userIds</code>:多个用户ID,code不为空时,结果返回<code>map</code>(userId,<code>string</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@sys.UserSetting userId=1
  * code='home_title'&gt;${object}&lt;/@sys.UserSetting&gt;
@@ -57,13 +60,8 @@ public class SysUserSettingDirective extends AbstractTemplateDirective {
                     handler.put("object", entity.getData()).render();
                 }
             } else if (CommonUtils.notEmpty(codes)) {
-                SysUserSettingId[] ids = new SysUserSettingId[codes.length];
-                int i = 0;
-                for (String s : codes) {
-                    if (CommonUtils.notEmpty(s)) {
-                        ids[i++] = new SysUserSettingId(userId, s);
-                    }
-                }
+                SysUserSettingId[] ids = Stream.of(codes).map(e -> new SysUserSettingId(userId, e))
+                        .toArray(SysUserSettingId[]::new);
                 Map<String, String> map = new LinkedHashMap<>();
                 for (SysUserSetting entity : service.getEntitys(ids)) {
                     map.put(entity.getId().getCode(), entity.getData());
@@ -73,13 +71,8 @@ public class SysUserSettingDirective extends AbstractTemplateDirective {
         } else {
             Long[] userIds = handler.getLongArray("userIds");
             if (null != userIds && CommonUtils.notEmpty(code)) {
-                SysUserSettingId[] ids = new SysUserSettingId[userIds.length];
-                int i = 0;
-                for (long uid : userIds) {
-                    if (CommonUtils.notEmpty(code)) {
-                        ids[i++] = new SysUserSettingId(uid, code);
-                    }
-                }
+                SysUserSettingId[] ids = Stream.of(userIds).map(e -> new SysUserSettingId(e, code))
+                        .toArray(SysUserSettingId[]::new);
                 Map<String, String> map = new LinkedHashMap<>();
                 for (SysUserSetting entity : service.getEntitys(ids)) {
                     map.put(String.valueOf(entity.getId().getUserId()), entity.getData());

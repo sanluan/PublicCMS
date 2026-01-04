@@ -201,7 +201,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
     @Override
     protected VisitHistory init(VisitHistory entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         if (CommonUtils.notEmpty(entity.getSessionId())) {
             entity.setSessionId(CommonUtils.keep(entity.getSessionId(), 50, null));

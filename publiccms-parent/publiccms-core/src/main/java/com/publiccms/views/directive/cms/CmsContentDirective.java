@@ -11,17 +11,22 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
+import com.publiccms.entities.cms.CmsContentLang;
+import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ContentConfigComponent;
 import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
+import com.publiccms.logic.service.cms.CmsContentLangService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 
@@ -35,6 +40,7 @@ import freemarker.template.TemplateException;
  * <ul>
  * <li><code>id</code>
  * 内容id,结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsContent}
+ * <li><code>lang</code>:语言,当id不为空时有效
  * <li><code>absoluteURL</code>:url处理为绝对路径 默认为<code> true</code>
  * <li><code>absoluteId</code>:id处理为引用内容的ID 默认为<code> true</code>
  * <li><code>containsAttribute</code>
@@ -68,6 +74,10 @@ public class CmsContentDirective extends AbstractTemplateDirective {
     protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
+    @Resource
+    private CmsContentLangService langService;
+    @Resource
+    private SiteAttributeComponent siteAttributeComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
@@ -79,6 +89,12 @@ public class CmsContentDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(id)) {
             CmsContent entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
+                CmsContentLang langEntity = null;
+                String lang = handler.getString("lang");
+                if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
+                    langEntity = langService.getEntity(new CmsContentLangId(entity.getId(), lang));
+                    CmsLangUtils.initContentLang(entity, langEntity);
+                }
                 ClickStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
                 if (null != statistics) {
                     entity.setClicks(entity.getClicks() + statistics.getClicks());
@@ -91,8 +107,12 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     fileUploadComponent.initContentCover(site, entity);
                 }
                 if (containsAttribute) {
-                    entity.setAttribute(ExtendUtils.getAttributeMap(attributeService.getEntity(id),
-                            contentConfigComponent.getKeywordsConfig(site.getId())));
+                    CmsContentAttribute attribute = attributeService.getEntity(entity.getId());
+                    if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
+                        CmsLangUtils.initContentLang(attribute, langEntity);
+                    }
+                    entity.setAttribute(
+                            ExtendUtils.getAttributeMap(attribute, contentConfigComponent.getKeywordsConfig(site.getId())));
                 }
                 handler.put("object", entity);
                 handler.render();

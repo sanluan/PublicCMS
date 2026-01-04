@@ -54,7 +54,7 @@ public class AppTokenDirective extends AbstractAppDirective {
         SysApp entity = appService.getEntity(handler.getString("appKey"));
         if (null != entity) {
             if (entity.getAppSecret().equalsIgnoreCase(handler.getString("appSecret"))) {
-                Date now = CommonUtils.getDate();
+                Date now = CommonUtils.now();
                 SysAppToken token = new SysAppToken(UUID.randomUUID().toString(), entity.getId(), now);
                 if (null != entity.getExpiryMinutes()) {
                     token.setExpiryDate(DateUtils.addMinutes(now, entity.getExpiryMinutes()));

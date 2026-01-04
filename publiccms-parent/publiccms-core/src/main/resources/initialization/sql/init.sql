@@ -9,6 +9,7 @@ CREATE TABLE `cms_category` (
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `parent_id` int(11) default NULL COMMENT '父分类',
+  `lang` varchar(20) default NULL COMMENT '语言',
   `type_id` varchar(20) default NULL COMMENT '分类类型',
   `child_ids` text COMMENT '所有子分类',
   `tag_type_ids` text default NULL COMMENT '标签分类',
@@ -77,6 +78,7 @@ CREATE TABLE `cms_comment` (
   `replies` int(11) NOT NULL default 0 COMMENT '回复数',
   `scores` int(11) NOT NULL default 0 COMMENT '分数',
   `content_id` bigint(20) NOT NULL COMMENT '文章内容',
+  `lang` varchar(20) default NULL COMMENT '语言',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `check_user_id` bigint(20) DEFAULT NULL COMMENT '审核用户',
   `check_date` datetime DEFAULT NULL COMMENT '审核日期',
@@ -105,6 +107,7 @@ CREATE TABLE `cms_content` (
   `category_id` int(11) NOT NULL COMMENT '分类',
   `model_id` varchar(20) NOT NULL COMMENT '模型',
   `parent_id` bigint(20) default NULL COMMENT '父内容',
+  `lang` varchar(20) default NULL COMMENT '语言',
   `quote_content_id` bigint(20) NULL COMMENT '引用内容(当父内容不为空时为顶级内容)',
   `copied` tinyint(1) NOT NULL default 0 COMMENT '是否转载',
   `author` varchar(50) default NULL COMMENT '作者',
@@ -168,6 +171,7 @@ DROP TABLE IF EXISTS `cms_content_file`;
 CREATE TABLE `cms_content_file` (
   `id` bigint(20) NOT NULL auto_increment,
   `content_id` bigint(20) NOT NULL COMMENT '内容',
+  `lang` varchar(20) default NULL COMMENT '语言',
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `file_path` varchar(255) NOT NULL COMMENT '文件路径',
   `file_type` varchar(20) NOT NULL COMMENT '文件类型',
@@ -292,12 +296,27 @@ CREATE TABLE `cms_editor_history` (
   `item_type` varchar(50) NOT NULL COMMENT '数据类型',
   `item_id` varchar(100) NOT NULL COMMENT '数据id',
   `field_name` varchar(50) NOT NULL COMMENT '字段名',
+  `lang` varchar(20) default NULL COMMENT '语言',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `user_id` bigint(20) NOT NULL COMMENT '修改用户',
   `text` longtext NOT NULL COMMENT '文本',
   PRIMARY KEY (`id`),
   KEY `cms_editor_history_item_id` (`site_id`, `item_type`, `item_id`, `field_name`, `create_date`)
 ) COMMENT='内容扩展';
+
+-- ----------------------------
+-- Table structure for cms_language
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_language`;
+CREATE TABLE `cms_language` (
+  `code` varchar(20) NOT NULL COMMENT '编码',
+  `site_id` smallint NOT NULL COMMENT '站点',
+  `name` varchar(100) NOT NULL COMMENT '名称',
+  `cover` varchar(255) DEFAULT NULL COMMENT '封面图',
+  `html_lang` varchar(20) DEFAULT NULL COMMENT '页面语言',
+  `sort` int NOT NULL DEFAULT '0' COMMENT '顺序',
+  PRIMARY KEY (`code`,`site_id`)
+) COMMENT='语言';
 
 -- ----------------------------
 -- Table structure for cms_place
@@ -311,6 +330,7 @@ CREATE TABLE `cms_place` (
   `check_user_id` bigint(20) default NULL COMMENT '审核用户',
   `item_type` varchar(50) default NULL COMMENT '推荐项目类型',
   `item_id` bigint(20) default NULL COMMENT '推荐项目',
+  `lang` varchar(20) default NULL COMMENT '语言'
   `title` varchar(255) NOT NULL COMMENT '标题',
   `url` varchar(1000) default NULL COMMENT '超链接',
   `description` varchar(300) default NULL COMMENT '简介',
@@ -325,7 +345,7 @@ CREATE TABLE `cms_place` (
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY  (`id`),
   KEY `cms_place_clicks` (`clicks`),
-  KEY `cms_place_site_id` (`site_id`, `path`, `status`, `disabled`),
+  KEY `cms_place_site_id` (`site_id`, `path`, `lang` ,`status`, `disabled`),
   KEY `cms_place_item_type` (`item_type`, `item_id`),
   KEY `cms_place_user_id` (`user_id`, `check_user_id`),
   KEY `cms_place_publish_date` (`publish_date`, `create_date`, `expiry_date`)
@@ -950,6 +970,9 @@ INSERT INTO `sys_module` VALUES ('file', NULL, NULL, 'bi bi-file-earmark-text', 
 INSERT INTO `sys_module` VALUES ('file_history', 'cmsFileHistory/list', 'cmsFileHistory/use,cmsFileHistory/compare', NULL, 'template_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('file_recycle', 'cmsFileBackup/list', 'cmsFileBackup/content,cmsFileBackup/recycle', NULL, 'template_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('file_upload', NULL, 'file/doUpload,file/doBatchUpload', NULL, 'common', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('lang_add', 'cmsLanguage/add', 'cmsLanguage/save', NULL, 'lang_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('lang_delete',  NULL,'cmsLanguage/delete', NULL, 'lang_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('lang_list', 'cmsLanguage/list', NULL, 'bi bi-globe', 'config', 1, 1, 5);
 INSERT INTO `sys_module` VALUES ('log_login', 'log/login', NULL, 'icon-signin', 'operation', 1, 0, 3);
 INSERT INTO `sys_module` VALUES ('log_operate', 'log/operate', NULL, 'icon-list-alt', 'operation', 1, 1, 2);
 INSERT INTO `sys_module` VALUES ('log_operate_view', 'log/operateView', NULL, NULL, 'log_operate', 0, 0, 0);
@@ -1378,6 +1401,15 @@ INSERT INTO `sys_module_lang` VALUES ('file_recycle', 'zh', '文件回收站');
 INSERT INTO `sys_module_lang` VALUES ('file_upload', 'en', 'File upload');
 INSERT INTO `sys_module_lang` VALUES ('file_upload', 'ja', 'ファイルのアップロードです');
 INSERT INTO `sys_module_lang` VALUES ('file_upload', 'zh', '文件上传');
+INSERT INTO `sys_module_lang` VALUES ('lang_add', 'en', 'Add/edit');
+INSERT INTO `sys_module_lang` VALUES ('lang_add', 'ja', '追加/変更');
+INSERT INTO `sys_module_lang` VALUES ('lang_add', 'zh', '增加/修改');
+INSERT INTO `sys_module_lang` VALUES ('lang_delete', 'en', 'Delete');
+INSERT INTO `sys_module_lang` VALUES ('lang_delete', 'ja', '削除');
+INSERT INTO `sys_module_lang` VALUES ('lang_delete', 'zh', '删除');
+INSERT INTO `sys_module_lang` VALUES ('lang_list', 'en', 'Language Management');
+INSERT INTO `sys_module_lang` VALUES ('lang_list', 'ja', '言語管理');
+INSERT INTO `sys_module_lang` VALUES ('lang_list', 'zh', '语言管理');
 INSERT INTO `sys_module_lang` VALUES ('log_login', 'en', 'Login log');
 INSERT INTO `sys_module_lang` VALUES ('log_login', 'ja', 'ログインログ');
 INSERT INTO `sys_module_lang` VALUES ('log_login', 'zh', '登录日志');

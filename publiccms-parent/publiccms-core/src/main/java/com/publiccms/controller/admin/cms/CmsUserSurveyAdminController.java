@@ -59,7 +59,7 @@ public class CmsUserSurveyAdminController {
         CmsUserSurvey userSurvey = service.updateScore(site.getId(), entity.getId(), socre);
         questionService.updateScore(userQuestionParameters.getAnswerList());
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "update.cmsUserSurveyQuestion", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                "update.cmsUserSurveyQuestion", RequestUtils.getIpAddress(request), CommonUtils.now(),
                 JsonUtils.getString(userSurvey)));
         return CommonConstants.TEMPLATE_DONE;
     }

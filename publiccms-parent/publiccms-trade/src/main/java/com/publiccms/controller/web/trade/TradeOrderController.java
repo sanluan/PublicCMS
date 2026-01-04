@@ -59,7 +59,7 @@ public class TradeOrderController {
         if (null != paymentGateway && paymentGateway.enabled(site.getId()) && null == order.getPaymentId()) {
             if (1 == order.getAmount().compareTo(BigDecimal.ZERO)) {
                 String ip = RequestUtils.getIpAddress(request);
-                Date now = CommonUtils.getDate();
+                Date now = CommonUtils.now();
                 TradePayment entity = new TradePayment(site.getId(), order.getUserId(), order.getAmount(),
                         ProductProcessorComponent.GRADE_TYPE, String.valueOf(orderId), accountType, ip,
                         TradePaymentService.STATUS_PENDING_PAY, false, now);

@@ -92,7 +92,7 @@ public class CmsWebFileAdminController {
                     if (CmsFileUtils.isSafe(filepath, suffix)) {
                         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                                 LogLoginService.CHANNEL_WEB_MANAGER, action, RequestUtils.getIpAddress(request),
-                                CommonUtils.getDate(), path));
+                                CommonUtils.now(), path));
                     } else {
                         CmsFileUtils.delete(filepath);
                         model.addAttribute(CommonConstants.ERROR, "verify.custom.file.unsafe");
@@ -180,7 +180,7 @@ public class CmsWebFileAdminController {
                                         LogLoginService.CHANNEL_WEB_MANAGER, originalName, privatefile,
                                         CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)), file.getSize(),
                                         uploadResult.getWidth(), uploadResult.getHeight(), RequestUtils.getIpAddress(request),
-                                        CommonUtils.getDate(), filepath));
+                                        CommonUtils.now(), filepath));
                             } else {
                                 CmsFileUtils.delete(fuleFilePath);
                                 model.addAttribute(CommonConstants.ERROR, "verify.custom.file.unsafe");
@@ -247,7 +247,7 @@ public class CmsWebFileAdminController {
                     FileUploadResult uploadResult = CmsFileUtils.getFileSize(fuleFilePath, originalName, suffix);
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             filename, false, CmsFileUtils.FILE_TYPE_IMAGE, uploadResult.getFileSize(), uploadResult.getWidth(),
-                            uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
+                            uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.now(), filepath));
                 }
             } catch (IOException e) {
                 CmsFileUtils.delete(fuleFilePath);
@@ -303,7 +303,7 @@ public class CmsWebFileAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.web.webfile", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(paths, Constants.COMMA)));
+                    CommonUtils.now(), StringUtils.join(paths, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -338,7 +338,7 @@ public class CmsWebFileAdminController {
             }
         }
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "zip.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                "zip.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
         return CommonConstants.TEMPLATE_DONE;
     }
 
@@ -387,7 +387,7 @@ public class CmsWebFileAdminController {
             }
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "unzip.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                            "unzip.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -410,7 +410,7 @@ public class CmsWebFileAdminController {
             CmsFileUtils.mkdirs(filepath);
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "createDirectory.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                            "createDirectory.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

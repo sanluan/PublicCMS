@@ -32,6 +32,7 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
 
     /**
      * @param contentId
+     * @param lang
      * @param userId
      * @param fileTypes
      * @param orderField
@@ -41,21 +42,21 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Long contentId, Long userId, String[] fileTypes, String orderField, String orderType,
+    public PageHandler getPage(Long contentId, String lang, Long userId, String[] fileTypes, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
-        return dao.getPage(contentId, userId, fileTypes, orderField, orderType, pageIndex, pageSize);
+        return dao.getPage(contentId, lang, userId, fileTypes, orderField, orderType, pageIndex, pageSize);
     }
-    
+
     /**
      * @param contentId
+     * @param lang 
      * @param fileTypes
      * @return results list
      */
     @Transactional(readOnly = true)
-    public List<CmsContentFile> getList(long contentId, String[] fileTypes) {
-        return dao.getList(contentId, fileTypes);
+    public List<CmsContentFile> getList(long contentId, String lang, String[] fileTypes) {
+        return dao.getList(contentId,lang, fileTypes);
     }
-    
 
     /**
      * @param entitys
@@ -72,16 +73,18 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
 
     /**
      * @param contentId
+     * @param lang
      * @param userId
      * @param files
      * @param images
      */
     @SuppressWarnings("unchecked")
-    public void update(long contentId, Long userId, List<CmsContentFile> files, List<CmsContentFile> images) {
+    public void update(long contentId, String lang, Long userId, List<CmsContentFile> files, List<CmsContentFile> images) {
         Set<Long> idList = new HashSet<>();
         if (CommonUtils.notEmpty(images)) {
             for (CmsContentFile entity : images) {
                 entity.setFileType(CmsFileUtils.getFileType(CmsFileUtils.getSuffix(entity.getFilePath())));
+                entity.setLang(lang);
                 if (null != entity.getId()) {
                     update(entity.getId(), entity, ignoreProperties);
                 } else {
@@ -98,6 +101,7 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
                 if (CmsFileUtils.FILE_TYPE_IMAGE.equals(entity.getFileType())) {
                     entity.setFileType(CmsFileUtils.FILE_TYPE_OTHER);
                 }
+                entity.setLang(lang);
                 if (null != entity.getId()) {
                     update(entity.getId(), entity, ignoreProperties);
                 } else {
@@ -108,13 +112,14 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
                 idList.add(entity.getId());
             }
         }
-        for (CmsContentFile file : (List<CmsContentFile>) getPage(contentId, null, null, null, null, null, null).getList()) {
+        for (CmsContentFile file : (List<CmsContentFile>) getPage(contentId, lang, null, null, null, null, null, null)
+                .getList()) {
             if (!idList.contains(file.getId())) {
                 delete(file.getId());
             }
         }
     }
-    
+
     /**
      * @param contentId
      */

@@ -113,7 +113,7 @@ public class LoginAdminController {
             if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
                     model)) {
                 logLoginService.save(new LogLogin(site.getId(), username, null == user ? null : user.getId(), ip,
-                        LogLoginService.CHANNEL_WEB_MANAGER, LogLoginService.METHOD_PASSWORD, false, CommonUtils.getDate(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, LogLoginService.METHOD_PASSWORD, false, CommonUtils.now(),
                         password));
                 return "login";
             }
@@ -126,7 +126,7 @@ public class LoginAdminController {
             model.addAttribute("returnUrl", returnUrl);
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), username, null, ip, LogLoginService.CHANNEL_WEB_MANAGER,
-                    LogLoginService.METHOD_PASSWORD, false, CommonUtils.getDate(), password));
+                    LogLoginService.METHOD_PASSWORD, false, CommonUtils.now(), password));
             return "login";
         }
         locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
@@ -140,7 +140,7 @@ public class LoginAdminController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB_MANAGER,
-                    LogLoginService.METHOD_PASSWORD, false, CommonUtils.getDate(), password));
+                    LogLoginService.METHOD_PASSWORD, false, CommonUtils.now(), password));
             return "login";
         }
 
@@ -155,13 +155,13 @@ public class LoginAdminController {
         if (safeConfigComponent.enableOtpLogin(site.getId()) || null != userSetting) {
             ControllerUtils.setOtpAdminToSession(request.getSession(), user);
             logLoginService.save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER,
-                    LogLoginService.METHOD_PASSWORD, true, CommonUtils.getDate(), null));
+                    LogLoginService.METHOD_PASSWORD, true, CommonUtils.now(), null));
             model.addAttribute("returnUrl", returnUrl);
             return "redirect:otp/login";
         } else {
             service.updateLoginStatus(user.getId(), ip);
             String authToken = UUID.randomUUID().toString();
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             Map<String, String> safeConfig = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
             int expiryMinutes = ConfigDataComponent.getInt(safeConfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
                     SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
@@ -170,7 +170,7 @@ public class LoginAdminController {
             sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     now, DateUtils.addMinutes(now, expiryMinutes), ip));
             logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER,
-                    LogLoginService.METHOD_PASSWORD, true, CommonUtils.getDate(), null));
+                    LogLoginService.METHOD_PASSWORD, true, CommonUtils.now(), null));
             String safeReturnUrl = safeConfig.get(SafeConfigComponent.CONFIG_RETURN_URL);
             if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
                 returnUrl = CommonConstants.getDefaultPage();
@@ -248,7 +248,7 @@ public class LoginAdminController {
         }
         sysUserTokenService.delete(user.getId());
         logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "changepassword", RequestUtils.getIpAddress(request), CommonUtils.getDate(), encodedOldPassword));
+                "changepassword", RequestUtils.getIpAddress(request), CommonUtils.now(), encodedOldPassword));
         return "common/ajaxTimeout";
     }
 

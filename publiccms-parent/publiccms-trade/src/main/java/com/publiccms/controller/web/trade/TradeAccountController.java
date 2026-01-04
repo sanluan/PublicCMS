@@ -59,7 +59,7 @@ public class TradeAccountController {
                 && paymentGateway.enabled(site.getId()) && null != change) {
             if (1 == change.compareTo(BigDecimal.ZERO)) {
                 String ip = RequestUtils.getIpAddress(request);
-                Date now = CommonUtils.getDate();
+                Date now = CommonUtils.now();
                 TradePayment entity = new TradePayment(site.getId(), user.getId(), change, RechargeProcessorComponent.GRADE_TYPE,
                         UUID.randomUUID().toString(), accountType, ip, TradePaymentService.STATUS_PENDING_PAY, false, now);
                 entity.setDescription("recharge");

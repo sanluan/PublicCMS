@@ -80,7 +80,7 @@ public class SysAppClientService extends BaseService<SysAppClient> {
         SysAppClient entity = getEntity(id);
         if (null != entity) {
             entity.setClientVersion(clientVersion);
-            entity.setLastLoginDate(CommonUtils.getDate());
+            entity.setLastLoginDate(CommonUtils.now());
             entity.setLastLoginIp(ip);
         }
         return entity;

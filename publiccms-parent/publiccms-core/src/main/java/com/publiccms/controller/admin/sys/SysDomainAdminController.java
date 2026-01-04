@@ -69,7 +69,7 @@ public class SysDomainAdminController {
             entity = service.update(oldName, entity);
             if (null != entity) {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "update.domain", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        "update.domain", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
             }
         } else {
             if (ControllerUtils.errorHasExist("domain", service.getEntity(entity.getName()), model)) {
@@ -80,7 +80,7 @@ public class SysDomainAdminController {
             }
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.domain",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         siteComponent.clear();
         if (!siteComponent.getSite(request.getServerName(), null).getId().equals(site.getId())) {
@@ -110,7 +110,7 @@ public class SysDomainAdminController {
             entity = service.update(entity.getName(), entity, ignoreProperties);
             if (null != entity) {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "update.domain", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        "update.domain", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
             }
             siteComponent.clear();
         }
@@ -156,7 +156,7 @@ public class SysDomainAdminController {
         if (null != entity) {
             service.delete(id);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "delete.domain", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    "delete.domain", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         siteComponent.clear();
         return CommonConstants.TEMPLATE_DONE;

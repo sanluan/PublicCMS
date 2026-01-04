@@ -10,10 +10,13 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategory;
+import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 
 import freemarker.template.TemplateException;
@@ -51,6 +54,7 @@ public class PublishCategoryDirective extends AbstractTaskDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer id = handler.getInteger("id");
+        String lang = handler.getString("lang");
         Integer pageIndex = handler.getInteger("pageIndex");
         Integer totalPage = handler.getInteger("totalPage");
         SysSite site = getSite(handler);
@@ -58,6 +62,7 @@ public class PublishCategoryDirective extends AbstractTaskDirective {
         if (CommonUtils.notEmpty(id)) {
             CmsCategory entity = service.getEntity(id);
             try {
+                CmsLangUtils.initCategoryLang(entity, categoryLangService.getEntity(new CmsCategoryLangId(id, lang)));
                 boolean result = templateComponent.createCategoryFile(site, entity, pageIndex, totalPage);
                 map.put(id.toString(), result);
             } catch (IOException | TemplateException e) {
@@ -88,5 +93,6 @@ public class PublishCategoryDirective extends AbstractTaskDirective {
     private TemplateComponent templateComponent;
     @Resource
     private CmsCategoryService service;
-
+    @Resource
+    private CmsCategoryLangService categoryLangService;
 }

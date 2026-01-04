@@ -3,6 +3,7 @@ package com.publiccms.views.directive.sys;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -22,15 +23,18 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysConfigData 配置数据查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>code</code>:配置编码,结果返回<code>object</code>
  * {@link com.publiccms.entities.sys.SysConfigData}
  * <li><code>codes</code>:多个配置编码,结果返回<code>map</code>(code,<code>object</code>)
  * </ul>
- * <p>使用示例
  * <p>
- * &lt;@sys.configData code='site'&gt;${object.register_url}&lt;/@sys.configData&gt;
+ * 使用示例
+ * <p>
+ * &lt;@sys.configData
+ * code='site'&gt;${object.register_url}&lt;/@sys.configData&gt;
  *
  * <pre>
 &lt;script&gt;
@@ -54,13 +58,8 @@ public class SysConfigDataDirective extends AbstractTemplateDirective {
                 handler.put("object", ExtendUtils.getExtendMap(entity.getData())).render();
             }
         } else if (CommonUtils.notEmpty(codes)) {
-            SysConfigDataId[] ids = new SysConfigDataId[codes.length];
-            int i = 0;
-            for (String s : codes) {
-                if (CommonUtils.notEmpty(s)) {
-                    ids[i++] = new SysConfigDataId(site.getId(), s);
-                }
-            }
+            SysConfigDataId[] ids = Stream.of(codes).map(e -> new SysConfigDataId(site.getId(), e))
+                    .toArray(SysConfigDataId[]::new);
             Map<String, Map<String, String>> map = new LinkedHashMap<>();
             for (SysConfigData entity : service.getEntitys(ids)) {
                 map.put(entity.getId().getCode(), ExtendUtils.getExtendMap(entity.getData()));

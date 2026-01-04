@@ -113,6 +113,14 @@ public class CmsContent extends EntityAttribute implements java.io.Serializable 
     @GenericField(aggregable = Aggregable.YES, projectable = Projectable.YES)
     private Long parentId;
     /**
+     * lang
+     * 
+     * 语言
+     */
+    @GeneratorColumn(title = "语言")
+    @Length(max = 20)
+    private String lang;
+    /**
      * quote content id
      * 
      * 引用内容ID
@@ -193,8 +201,7 @@ public class CmsContent extends EntityAttribute implements java.io.Serializable 
     @Length(max = 1000)
     private String url;
     /**
-     * description
-     * 描述
+     * description 描述
      */
     @GeneratorColumn(title = "描述")
     @FullTextField(analyzer = "cms", projectable = Projectable.YES)
@@ -338,19 +345,20 @@ public class CmsContent extends EntityAttribute implements java.io.Serializable 
 
     public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean onlyUrl, boolean hasImages,
             boolean hasFiles, boolean hasProducts, int childs, Date publishDate, Date createDate, int sort, int status) {
-        this(siteId, title, userId, categoryId, modelId, false, onlyUrl, hasImages, hasFiles, hasProducts, false, childs, 0, 0,
-                BigDecimal.ZERO, 0, 0, 0, publishDate, createDate, sort, status, false);
+        this(siteId, title, userId, categoryId, modelId, null, false, onlyUrl, hasImages, hasFiles, hasProducts, false, childs, 0,
+                0, BigDecimal.ZERO, 0, 0, 0, publishDate, createDate, sort, status, false);
     }
 
-    public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean copied, boolean onlyUrl,
-            boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, int childs, int scores, int scoreUsers,
-            BigDecimal score, int comments, int clicks, int collections, Date publishDate, Date createDate, int sort, int status,
-            boolean disabled) {
+    public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, String lang, boolean copied,
+            boolean onlyUrl, boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, int childs, int scores,
+            int scoreUsers, BigDecimal score, int comments, int clicks, int collections, Date publishDate, Date createDate,
+            int sort, int status, boolean disabled) {
         this.siteId = siteId;
         this.title = title;
         this.userId = userId;
         this.categoryId = categoryId;
         this.modelId = modelId;
+        this.lang = lang;
         this.copied = copied;
         this.onlyUrl = onlyUrl;
         this.hasImages = hasImages;
@@ -451,6 +459,15 @@ public class CmsContent extends EntityAttribute implements java.io.Serializable 
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
+    }
+
+    @Column(name = "lang", length = 20)
+    public String getLang() {
+        return this.lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     @Column(name = "quote_content_id")

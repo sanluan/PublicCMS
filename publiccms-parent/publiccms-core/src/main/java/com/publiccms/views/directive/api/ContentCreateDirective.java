@@ -60,7 +60,8 @@ import freemarker.template.TemplateException;
  *
  * contentCreate 内容创建接口
  *
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>id</code>:内容id,为空时新建内容
  * <li><code>categoryId</code>:分类id
@@ -86,13 +87,15 @@ import freemarker.template.TemplateException;
  * <li><code>imagePaths</code>:多个图片路径
  * <li><code>imageDescriptions</code>:多个图片描述
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>result</code>:结果【failed:失败,success:成功】
  * <li><code>contentId</code>:内容id,当result为success时有效
  * <li><code>error</code>:错误,当result为failed时有效
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  *
  * <pre>
 &lt;script&gt;
@@ -148,6 +151,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                 entity.setHasFiles(cmsModel.isHasFiles());
                 entity.setTitle(handler.getString("title"));
                 entity.setDescription(handler.getString("description"));
+                entity.setLang(handler.getString("lang"));
                 entity.setAuthor(handler.getString("author"));
                 entity.setEditor(handler.getString("editor"));
                 entity.setCopied(handler.getBoolean("copied", false));
@@ -193,7 +197,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                 attribute.setData(ExtendUtils.getExtendString(extendData, site.getSitePath(), cmsModel.getExtendList(),
                         categoryExtendList));
                 CmsContentService.initContent(entity, site, cmsModel, handler.getBoolean("draft"), checked, attribute, false,
-                        CommonUtils.getDate());
+                        CommonUtils.now());
                 String text = HtmlUtils.removeHtmlTag(attribute.getText());
                 attribute.setWordCount(text.length());
                 if (CommonUtils.empty(entity.getDescription())) {
@@ -217,7 +221,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                         }
                         if (null != entity.getId()) {
                             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
-                                    "update.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(),
+                                    "update.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.now(),
                                     JsonUtils.getString(entity)));
                         }
                     } else {
@@ -231,12 +235,12 @@ public class ContentCreateDirective extends AbstractAppDirective {
                             service.updateChilds(entity.getParentId(), 1);
                         }
                         logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
-                                "save.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(),
+                                "save.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.now(),
                                 JsonUtils.getString(entity)));
                     }
 
                     service.saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, site.getId(), entity.getId(),
-                            user.getId(), cmsModel.getExtendList(), categoryExtendList, extendData);
+                            entity.getLang(), user.getId(), cmsModel.getExtendList(), categoryExtendList, extendData);
 
                     attributeService.updateAttribute(entity.getId(), attribute);
                     if (entity.isHasImages() || entity.isHasFiles()) {
@@ -276,7 +280,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                                 }
                             }
                         }
-                        contentFileService.update(entity.getId(), user.getId(), files, images);// 更新保存图集,附件
+                        contentFileService.update(entity.getId(), entity.getLang(), user.getId(), files, images);// 更新保存图集,附件
                     }
                     if (null != checked && checked) {
                         service.check(site.getId(), user, entity.getId());

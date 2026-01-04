@@ -67,7 +67,7 @@ public class TradeAccountService extends BaseService<TradeAccount> {
             if (null != account) {
                 BigDecimal balance = change.add(account.getAmount());
                 if (0 <= balance.compareTo(BigDecimal.ZERO)) {
-                    Date now = CommonUtils.getDate();
+                    Date now = CommonUtils.now();
                     TradeAccountHistory history = new TradeAccountHistory(siteId, serialNumber, accountId, userId, change,
                             account.getAmount(), balance, status, description, now);
                     historyDao.save(history);

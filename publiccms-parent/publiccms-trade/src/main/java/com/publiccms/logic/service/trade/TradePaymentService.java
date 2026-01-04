@@ -74,7 +74,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setStatus(STATUS_PENDING_PAY);
             save(entity);
-            TradePaymentHistory history = new TradePaymentHistory(entity.getSiteId(), entity.getId(), CommonUtils.getDate(),
+            TradePaymentHistory history = new TradePaymentHistory(entity.getSiteId(), entity.getId(), CommonUtils.now(),
                     TradePaymentHistoryService.OPERATE_CREATE);
             historyDao.save(history);
             return true;
@@ -88,7 +88,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         if (null != entity && siteId == entity.getSiteId() && !entity.isProcessed()) {
             entity.setProcessed(true);
             entity.setProcessUserId(userId);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setProcessDate(now);
             entity.setUpdateDate(now);
             TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, now,
@@ -105,7 +105,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING_PAY) {
             entity.setStatus(STATUS_PAID);
             entity.setAccountSerialNumber(accountSerialNumber);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setPaymentDate(now);
             entity.setUpdateDate(now);
             TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, now, TradePaymentHistoryService.OPERATE_PAY);
@@ -120,7 +120,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING_PAY) {
             entity.setStatus(STATUS_CLOSE);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setPaymentDate(now);
             entity.setUpdateDate(now);
             TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, now, TradePaymentHistoryService.OPERATE_PAY);
@@ -136,7 +136,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         if (null != entity && siteId == entity.getSiteId()
                 && (entity.getStatus() == STATUS_PAID || entity.getStatus() == STATUS_REFUNDED)) {
             entity.setStatus(STATUS_PENDING_REFUND);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setUpdateDate(now);
             TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, now,
                     TradePaymentHistoryService.OPERATE_PENDING_REFUND);
@@ -151,7 +151,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_PENDING_REFUND)) {
             entity.setStatus(STATUS_REFUNDED);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setUpdateDate(now);
             TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, now,
                     TradePaymentHistoryService.OPERATE_REFUND);
@@ -166,7 +166,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_REFUNDED)) {
             entity.setStatus(STATUS_CLOSE);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setUpdateDate(now);
             TradePaymentHistory history = new TradePaymentHistory(siteId, paymentId, now,
                     TradePaymentHistoryService.OPERATE_CLOSE);

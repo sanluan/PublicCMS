@@ -29,14 +29,14 @@
             </li>
         </@sys.authorized>
             <li>
-                <a href="javascript:void(0)" class="langList">
-                    <img src="${base}/resource/images/${t.pageMessage("lang")}.png" alt="${langs[t.pageMessage("lang")]}" title="${langs[t.pageMessage("lang")]}"/>
+                <a href="javascript:void(0)" class="langList"> 
+                    <img src="${base}/resource/images/${t.pageMessage('management_system.lang')}.png" alt="${langs[t.pageMessage('management_system.lang')]}" title="${langs[t.pageMessage('management_system.lang')]}"/>
                 </a>
                 <ul class="langList">
                     <@sys.configData code="site"><#assign excludeLangs=(object.site_exclude_lang!'')?split(',')/></@sys.configData>
                     <#list langs as k,v>
                         <#if !(excludeLangs?has_content && excludeLangs?seq_contains(k))>
-                    <li<#if t.pageMessage("lang")=k> class="selected"</#if>>
+                    <li<#if t.pageMessage("management_system.lang")=k> class="selected"</#if>>
                         <a href="changeLocale?lang=${k}" target="ajaxTodo">
                             <img src="${base}/resource/images/${k}.png" alt="${v}" title="${v}"/> ${v}
                         </a>
@@ -127,7 +127,7 @@
         window.TIMYMCE_FILETYPES = "<@sys.configData code='safe'>${(object.allow_files?js_string)!}</@sys.configData>";
         window.CKEDITOR_BASEPATH = "${(parentSite!site).dynamicPath}resource/plugins/ckeditor/";
         window.CKEDITOR_LANGUAGE = "<@t.page 'ckeditor.lang'/>";
-        window.LANGUAGE = "<@t.page 'lang'/>";
+        window.FILEROBOT_LANGUAGE = "<@t.page 'filerobot.lang'/>";
         window.SPECTRUM_LANGUAGE = "<@t.page 'spectrum.lang'/>";
         window.LOADSCRIPTS_BASE = "${base}";
         window.FILE_UPLOAD_PREFIX = "${getFileUploadPrefix()}";

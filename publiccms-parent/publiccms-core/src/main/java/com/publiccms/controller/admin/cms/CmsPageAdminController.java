@@ -111,16 +111,16 @@ public class CmsPageAdminController {
                 pageMetadata = metadataComponent.getTemplateMetadata(filepath);
                 extendList = pageMetadata.getExtendList();
             }
-            
+
             ExtendUtils.decodeField(pageDate.getExtendData(), site.getSitePath(), extendList);
             CmsPageData olddata = metadataComponent.getTemplateData(filepath);
             metadataComponent.updateTemplateData(filepath, pageDate);
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "update.template.data", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                            "update.template.data", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
             if (null != olddata && null != olddata.getExtendData()) {
                 editorHistoryService.saveHistory(site.getId(), admin.getId(), CmsEditorHistoryService.ITEM_TYPE_METADATA_EXTEND,
-                        path, olddata.getExtendData(), pageDate.getExtendData(), extendList);
+                        path, null, olddata.getExtendData(), pageDate.getExtendData(), extendList);
             }
             if ("place".equalsIgnoreCase(type)) {
                 if (path.startsWith(TemplateComponent.INCLUDE_DIRECTORY)
@@ -172,7 +172,7 @@ public class CmsPageAdminController {
             templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site.getId(), path));
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "clear.pageCache", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                            "clear.pageCache", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

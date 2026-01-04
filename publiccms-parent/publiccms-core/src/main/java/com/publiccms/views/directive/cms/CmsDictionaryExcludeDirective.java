@@ -3,6 +3,7 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -67,10 +68,8 @@ public class CmsDictionaryExcludeDirective extends AbstractTemplateDirective {
             } else {
                 String[] excludeDictionaryIds = handler.getStringArray("excludeDictionaryIds");
                 if (CommonUtils.notEmpty(excludeDictionaryIds)) {
-                    CmsDictionaryExcludeId[] ids = new CmsDictionaryExcludeId[excludeDictionaryIds.length];
-                    for (int i = 0; i < excludeDictionaryIds.length; i++) {
-                        ids[i] = new CmsDictionaryExcludeId(dictionaryId, siteId, excludeDictionaryIds[i]);
-                    }
+                    CmsDictionaryExcludeId[] ids = Stream.of(excludeDictionaryIds)
+                            .map(e -> new CmsDictionaryExcludeId(dictionaryId, siteId, e)).toArray(CmsDictionaryExcludeId[]::new);
                     List<CmsDictionaryExclude> entityList = service.getEntitys(ids);
                     Map<String, CmsDictionaryExclude> map = CommonUtils.listToMapSorted(entityList,
                             k -> k.getId().getExcludeDictionaryId(), excludeDictionaryIds,

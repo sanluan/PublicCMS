@@ -5,8 +5,10 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -67,10 +69,8 @@ public class CmsCategoryModelDirective extends AbstractTemplateDirective {
             } else {
                 String[] modelIds = handler.getStringArray("modelIds");
                 if (CommonUtils.notEmpty(modelIds)) {
-                    CmsCategoryModelId[] entityIds = new CmsCategoryModelId[modelIds.length];
-                    for (int i = 0; i < modelIds.length; i++) {
-                        entityIds[i] = new CmsCategoryModelId(categoryId, modelIds[i]);
-                    }
+                    CmsCategoryModelId[] entityIds = Stream.of(modelIds).map(e -> new CmsCategoryModelId(categoryId, e))
+                            .toArray(CmsCategoryModelId[]::new);
                     List<CmsCategoryModel> entityList = service.getEntitys(entityIds);
                     Map<String, CmsCategoryModel> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().getModelId(),
                             modelIds, e -> e.getId().getModelId());
@@ -80,10 +80,8 @@ public class CmsCategoryModelDirective extends AbstractTemplateDirective {
         } else if (CommonUtils.notEmpty(modelId)) {
             Integer[] categoryIds = handler.getIntegerArray("categoryIds");
             if (CommonUtils.notEmpty(categoryIds)) {
-                CmsCategoryModelId[] entityIds = new CmsCategoryModelId[categoryIds.length];
-                for (int i = 0; i < categoryIds.length; i++) {
-                    entityIds[i] = new CmsCategoryModelId(categoryIds[i], modelId);
-                }
+                CmsCategoryModelId[] entityIds = Stream.of(categoryIds).map(e -> new CmsCategoryModelId(e, modelId))
+                        .toArray(CmsCategoryModelId[]::new);
                 List<CmsCategoryModel> entityList = service.getEntitys(entityIds);
                 Map<String, CmsCategoryModel> map = CommonUtils.listToMapSorted(entityList,
                         k -> String.valueOf(k.getId().getCategoryId()), categoryIds, e -> e.getId().getCategoryId());

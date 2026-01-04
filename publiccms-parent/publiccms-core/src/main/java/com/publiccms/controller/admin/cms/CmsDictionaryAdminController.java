@@ -106,13 +106,13 @@ public class CmsDictionaryAdminController {
                 }
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsDictionary", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        CommonUtils.now(), JsonUtils.getString(entity)));
             } else {
                 service.save(entity);
                 dataService.save(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList());
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsDictionary", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        CommonUtils.now(), JsonUtils.getString(entity)));
             }
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -156,7 +156,7 @@ public class CmsDictionaryAdminController {
         if (null != file) {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.cmsDictionary", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), file.getOriginalFilename()));
+                    CommonUtils.now(), file.getOriginalFilename()));
         }
         return SiteExchangeComponent.importData(site, admin.getId(), overwrite, "-dictionary.zip", exchangeComponent, file,
                 model);
@@ -218,7 +218,7 @@ public class CmsDictionaryAdminController {
             excludeValueService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsDictionary", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

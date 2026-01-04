@@ -143,7 +143,7 @@ public class TradePaymentController {
                     .collect(Collectors.toMap(Entry::getKey, e -> StringUtils.join(e.getValue(), ",")));
             if (Signer.verifyParams(params, config.get(AlipayGatewayComponent.CONFIG_ALIPAY_PUBLIC_KEY))) {
                 try {
-                    TradePaymentHistory history = new TradePaymentHistory(site.getId(), out_trade_no, CommonUtils.getDate(),
+                    TradePaymentHistory history = new TradePaymentHistory(site.getId(), out_trade_no, CommonUtils.now(),
                             TradePaymentHistoryService.OPERATE_NOTIFY, JsonUtils.getString(params));
                     historyService.save(history);
                     TradePayment payment = service.getEntity(out_trade_no);
@@ -207,7 +207,7 @@ public class TradePaymentController {
                         Map<String, Object> data = Constants.objectMapper.readValue(decodeResult, Constants.objectMapper
                                 .getTypeFactory().constructMapType(HashMap.class, String.class, Object.class));
                         long paymentId = Long.parseLong((String) data.get("out_trade_no"));
-                        TradePaymentHistory history = new TradePaymentHistory(site.getId(), paymentId, CommonUtils.getDate(),
+                        TradePaymentHistory history = new TradePaymentHistory(site.getId(), paymentId, CommonUtils.now(),
                                 TradePaymentHistoryService.OPERATE_NOTIFY, decodeResult);
                         historyService.save(history);
                         if ("REFUND.SUCCESS".equalsIgnoreCase((String) result.get("event_type"))) {

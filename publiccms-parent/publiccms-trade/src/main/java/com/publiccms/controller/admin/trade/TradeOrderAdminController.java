@@ -188,7 +188,7 @@ public class TradeOrderAdminController {
         if (null != entity && service.invalid(site.getId(), id)) {
             if (null != entity.getPaymentId()) {
                 TradeRefund refund = new TradeRefund(site.getId(), entity.getUserId(), entity.getPaymentId(), entity.getAmount(),
-                        TradeRefundService.STATUS_PENDING, CommonUtils.getDate());
+                        TradeRefundService.STATUS_PENDING, CommonUtils.now());
                 refundService.save(refund);
             }
         }

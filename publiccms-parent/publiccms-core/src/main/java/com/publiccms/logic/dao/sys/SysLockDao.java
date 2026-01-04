@@ -67,7 +67,7 @@ public class SysLockDao extends BaseDao<SysLock> {
     @Override
     protected SysLock init(SysLock entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

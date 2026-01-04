@@ -235,7 +235,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                         }
                     }
                 } catch (Exception e) {
-                    TradePaymentHistory history = new TradePaymentHistory(site.getId(), payment.getId(), CommonUtils.getDate(),
+                    TradePaymentHistory history = new TradePaymentHistory(site.getId(), payment.getId(), CommonUtils.now(),
                             TradePaymentHistoryService.OPERATE_PAYERROR, e.getMessage());
                     historyService.save(history);
                 }
@@ -286,7 +286,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     if (null != entity) {
                         String bodyAsString = EntityUtils.toString(entity, StandardCharsets.UTF_8);
                         log.info(CommonUtils.joinString("refund response: ", bodyAsString));
-                        TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
+                        TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.now(),
                                 TradePaymentHistoryService.OPERATE_REFUND_RESPONSE, bodyAsString);
                         historyService.save(history);
                         if (200 == res.getStatusLine().getStatusCode()) {
@@ -301,14 +301,14 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                                 return true;
                             } else {
                                 TradePaymentHistory history1 = new TradePaymentHistory(siteId, payment.getId(),
-                                        CommonUtils.getDate(), TradePaymentHistoryService.OPERATE_REFUNDERROR,
+                                        CommonUtils.now(), TradePaymentHistoryService.OPERATE_REFUNDERROR,
                                         CommonUtils.joinString("response result status: ", result.get("status")));
                                 historyService.save(history1);
                                 service.pendingRefund(siteId, payment.getId());
                             }
                         }
                     } else {
-                        TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
+                        TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.now(),
                                 TradePaymentHistoryService.OPERATE_REFUNDERROR,
                                 CommonUtils.joinString("response status error: ", res.getStatusLine().getStatusCode()));
                         historyService.save(history);
@@ -316,7 +316,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     }
                 }
             } catch (Exception e) {
-                TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
+                TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.now(),
                         TradePaymentHistoryService.OPERATE_REFUNDERROR, e.getMessage());
                 historyService.save(history);
                 e.printStackTrace();

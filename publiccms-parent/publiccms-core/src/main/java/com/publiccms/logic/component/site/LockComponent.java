@@ -237,7 +237,7 @@ public class LockComponent implements Config, SiteCache {
                 SysLock entity = service.getEntity(id);
                 if (null == entity) {
                     return false;
-                } else if (entity.getCreateDate().after(DateUtils.addMinutes(CommonUtils.getDate(), -expriy))) {
+                } else if (entity.getCreateDate().after(DateUtils.addMinutes(CommonUtils.now(), -expriy))) {
                     if (maxCount > 0) {
                         return entity.getCount() >= maxCount;
                     } else if (null == entity.getUserId()) {
@@ -270,7 +270,7 @@ public class LockComponent implements Config, SiteCache {
                     service.delete(id);
                 } else {
                     int expriy = getExpriy(siteId, itemType);
-                    if (entity.getCreateDate().before(DateUtils.addMinutes(CommonUtils.getDate(), -expriy))) {
+                    if (entity.getCreateDate().before(DateUtils.addMinutes(CommonUtils.now(), -expriy))) {
                         service.delete(id);
                     }
                 }
@@ -319,7 +319,7 @@ public class LockComponent implements Config, SiteCache {
                 service.save(entity);
             } else {
                 int expriy = getExpriy(siteId, itemType);
-                if (entity.getCreateDate().before(DateUtils.addMinutes(CommonUtils.getDate(), -expriy))) {
+                if (entity.getCreateDate().before(DateUtils.addMinutes(CommonUtils.now(), -expriy))) {
                     entity = service.updateCreateDate(id, 0 < counter ? counter : 1, userId);
                 } else if (null == entity.getUserId() || entity.getUserId().equals(userId)) {
                     if (0 < counter) {
@@ -437,7 +437,7 @@ public class LockComponent implements Config, SiteCache {
 
     @Override
     public void clear() {
-        Date now = CommonUtils.getDate();
+        Date now = CommonUtils.now();
         List<Short> list1 = service.getSiteIdListByItemTypes(ITEM_TYPE_LOGINS, null);
         if (CommonUtils.notEmpty(list1)) {
             for (Short siteId : list1) {
@@ -484,7 +484,7 @@ public class LockComponent implements Config, SiteCache {
 
     @Override
     public void clear(short siteId) {
-        Date now = CommonUtils.getDate();
+        Date now = CommonUtils.now();
         int expriy = getExpriy(siteId, ITEM_TYPE_LOGIN);
         service.deleteByItemTypes(ITEM_TYPE_LOGINS, null, DateUtils.addMinutes(now, -expriy));
         expriy = getExpriy(siteId, ITEM_TYPE_REGISTER);

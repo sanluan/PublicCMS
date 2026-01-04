@@ -90,7 +90,7 @@ public class LogLoginDao extends BaseDao<LogLogin> {
     @Override
     protected LogLogin init(LogLogin entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         if (CommonUtils.notEmpty(entity.getErrorPassword())) {
             entity.setErrorPassword(CommonUtils.keep(entity.getErrorPassword(), 255));

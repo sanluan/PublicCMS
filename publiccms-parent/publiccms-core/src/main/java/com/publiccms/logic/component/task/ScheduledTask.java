@@ -114,7 +114,7 @@ public class ScheduledTask {
      */
     public void create(SysSite site, Integer id, String cronExpression) {
         if (CommonUtils.notEmpty(id) && CommonUtils.notEmpty(cronExpression)) {
-            Date startTime = CommonUtils.getDate();
+            Date startTime = CommonUtils.now();
             String taskName = getTaskName(id);
             TriggerKey triggerKey = TriggerKey.triggerKey(taskName);
             try {
@@ -138,7 +138,7 @@ public class ScheduledTask {
                 }
             } catch (SchedulerException | ParseException e) {
                 if (service.updateStatus(id, TASK_STATUS_ERROR)) {
-                    logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
+                    logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.now(), false, e.getMessage()));
                 }
             }
         }
@@ -152,7 +152,7 @@ public class ScheduledTask {
      */
     public void runOnce(SysSite site, Integer id) {
         if (CommonUtils.notEmpty(id)) {
-            Date startTime = CommonUtils.getDate();
+            Date startTime = CommonUtils.now();
             try {
                 JobKey jobKey = JobKey.jobKey(getTaskName(id));
                 JobDetail job = scheduler.getJobDetail(jobKey);
@@ -169,7 +169,7 @@ public class ScheduledTask {
                 }
             } catch (SchedulerException e) {
                 service.updateStatus(id, TASK_STATUS_ERROR);
-                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
+                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.now(), false, e.getMessage()));
             }
         }
     }
@@ -182,12 +182,12 @@ public class ScheduledTask {
      */
     public void pause(SysSite site, Integer id) {
         if (CommonUtils.notEmpty(id)) {
-            Date startTime = CommonUtils.getDate();
+            Date startTime = CommonUtils.now();
             try {
                 scheduler.pauseJob(JobKey.jobKey(getTaskName(id)));
             } catch (SchedulerException e) {
                 service.updateStatus(id, TASK_STATUS_ERROR);
-                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
+                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.now(), false, e.getMessage()));
             }
         }
     }
@@ -200,12 +200,12 @@ public class ScheduledTask {
      */
     public void interrupt(SysSite site, Integer id) {
         if (CommonUtils.notEmpty(id)) {
-            Date startTime = CommonUtils.getDate();
+            Date startTime = CommonUtils.now();
             try {
                 scheduler.interrupt(JobKey.jobKey(getTaskName(id)));
             } catch (UnableToInterruptJobException e) {
                 service.updateStatus(id, TASK_STATUS_RUNNING);
-                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
+                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.now(), false, e.getMessage()));
             }
         }
     }
@@ -218,12 +218,12 @@ public class ScheduledTask {
      */
     public void resume(SysSite site, Integer id) {
         if (CommonUtils.notEmpty(id)) {
-            Date startTime = CommonUtils.getDate();
+            Date startTime = CommonUtils.now();
             try {
                 scheduler.resumeJob(JobKey.jobKey(getTaskName(id)));
             } catch (SchedulerException e) {
                 service.updateStatus(id, TASK_STATUS_ERROR);
-                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
+                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.now(), false, e.getMessage()));
             }
         }
     }

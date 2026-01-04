@@ -122,7 +122,7 @@ public class WebContextInterceptor implements HandlerInterceptor {
                 try {
                     Long userId = Long.parseLong(userData[0]);
                     SysUserToken userToken = sysUserTokenService.getEntity(userData[1]);
-                    Date now = CommonUtils.getDate();
+                    Date now = CommonUtils.now();
                     if (null != userToken && null != site && !site.isDisabled() && userToken.getSiteId() == site.getId()
                             && userToken.getUserId() == userId && channel.equals(userToken.getChannel())
                             && (null == userToken.getExpiryDate() || now.before(userToken.getExpiryDate()))

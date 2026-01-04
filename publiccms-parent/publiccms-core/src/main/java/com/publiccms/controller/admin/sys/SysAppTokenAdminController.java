@@ -60,11 +60,11 @@ public class SysAppTokenAdminController {
             if (ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             service.save(new SysAppToken(UUID.randomUUID().toString(), entity.getId(), now, expiryDate));
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "issue.apptoken", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), entity.getId().toString()));
+                    CommonUtils.now(), entity.getId().toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -91,7 +91,7 @@ public class SysAppTokenAdminController {
                 service.delete(authToken);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "delete.apptoken", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        CommonUtils.now(), JsonUtils.getString(entity)));
             }
         }
         return CommonConstants.TEMPLATE_DONE;

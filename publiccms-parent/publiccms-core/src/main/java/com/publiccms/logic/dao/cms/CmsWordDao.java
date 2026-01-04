@@ -87,7 +87,7 @@ public class CmsWordDao extends BaseDao<CmsWord> {
     @Override
     protected CmsWord init(CmsWord entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         if (CommonUtils.notEmpty(entity.getName())) {
             entity.setName(CommonUtils.keep(entity.getName(), 100));

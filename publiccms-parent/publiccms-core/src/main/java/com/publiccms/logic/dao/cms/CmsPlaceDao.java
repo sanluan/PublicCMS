@@ -108,10 +108,10 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
     @Override
     protected CmsPlace init(CmsPlace entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         if (null == entity.getPublishDate()) {
-            entity.setPublishDate(CommonUtils.getDate());
+            entity.setPublishDate(CommonUtils.now());
         }
         if (CommonUtils.empty(entity.getCover())) {
             entity.setCover(null);

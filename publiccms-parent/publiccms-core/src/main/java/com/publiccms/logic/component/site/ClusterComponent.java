@@ -46,7 +46,7 @@ public class ClusterComponent {
     public void heartbeat() {
         if (CmsVersion.isScheduled()) {
             SysCluster entity = service.getEntity(CmsVersion.getClusterId());
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             Date lastHeartbeatDate = null;
             if (null == entity) {
                 entity = new SysCluster(CmsVersion.getClusterId(), now, now, false, CmsVersion.getVersion(),

@@ -65,7 +65,7 @@ import com.publiccms.views.pojo.query.CmsContentSearchQuery;
 @Service
 @Transactional
 public class CmsContentService extends BaseService<CmsContent> {
-    private static final String[] DICTIONARY_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN,
+    protected static final String[] DICTIONARY_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN,
             Config.INPUTTYPE_USER, Config.INPUTTYPE_DEPT, Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY,
             Config.INPUTTYPE_DICTIONARY, Config.INPUTTYPE_CATEGORYTYPE, Config.INPUTTYPE_TAGTYPE };
 
@@ -248,7 +248,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     public CmsContent saveTagAndAttribute(SysSite site, Long userId, Integer deptId, CmsContent entity,
             CmsContentParameters contentParameters, CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
         if (null != entity.getId()) {
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setUpdateDate(now);
             entity.setUpdateUserId(userId);
             entity = update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
@@ -261,7 +261,8 @@ public class CmsContentService extends BaseService<CmsContent> {
         Set<Serializable> tagIds = tagService.update(site.getId(), contentParameters.getTags());
         entity.setTagIds(collectionToDelimitedString(tagIds, Constants.BLANK_SPACE));
         if (entity.isHasImages() || entity.isHasFiles()) {
-            contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
+            contentFileService.update(entity.getId(), entity.getLang(), userId,
+                    entity.isHasFiles() ? contentParameters.getFiles() : null,
                     entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
         }
         if (entity.isHasProducts()) {
@@ -279,8 +280,8 @@ public class CmsContentService extends BaseService<CmsContent> {
                 entity.isHasImages() ? contentParameters.getImages() : null,
                 entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
 
-        saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, site.getId(), entity.getId(), userId,
-                modelExtendList, categoryExtendList, contentParameters.getExtendData());// 保存编辑器字段历史记录
+        saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, site.getId(), entity.getId(), entity.getLang(),
+                userId, modelExtendList, categoryExtendList, contentParameters.getExtendData());// 保存编辑器字段历史记录
 
         attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
         cmsContentRelatedService.update(entity.getId(), userId, contentParameters.getContentRelateds());// 更新保存推荐内容
@@ -288,22 +289,23 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     public void saveEditorHistory(CmsContentAttribute oldAttribute, CmsContentAttribute attribute, short siteId, long contentId,
-            long userId, List<SysExtendField> modelExtendList, List<SysExtendField> categoryExtendList, Map<String, String> map) {
+            String lang, long userId, List<SysExtendField> modelExtendList, List<SysExtendField> categoryExtendList,
+            Map<String, String> map) {
         if (null != oldAttribute) {
             if (CommonUtils.notEmpty(oldAttribute.getText()) && !oldAttribute.getText().equals(attribute.getText())) {
                 CmsEditorHistory history = new CmsEditorHistory(siteId, CmsEditorHistoryService.ITEM_TYPE_CONTENT,
-                        String.valueOf(contentId), "text", CommonUtils.getDate(), userId, oldAttribute.getText());
+                        String.valueOf(contentId), "text", lang, CommonUtils.now(), userId, oldAttribute.getText());
                 editorHistoryService.save(history);
             }
             if (CommonUtils.notEmpty(oldAttribute.getData())) {
                 Map<String, String> oldMap = ExtendUtils.getExtendMap(oldAttribute.getData());
                 if (CommonUtils.notEmpty(modelExtendList)) {
                     editorHistoryService.saveHistory(siteId, userId, CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND,
-                            String.valueOf(contentId), oldMap, map, modelExtendList);
+                            String.valueOf(contentId), lang, oldMap, map, modelExtendList);
                 }
                 if (CommonUtils.notEmpty(categoryExtendList)) {
                     editorHistoryService.saveHistory(siteId, userId, CmsEditorHistoryService.ITEM_TYPE_CONTENT_EXTEND,
-                            String.valueOf(contentId), oldMap, map, categoryExtendList);
+                            String.valueOf(contentId), lang, oldMap, map, categoryExtendList);
                 }
             }
         }
@@ -350,16 +352,16 @@ public class CmsContentService extends BaseService<CmsContent> {
         List<CmsContentFile> images = null;
         List<CmsContentProduct> products = null;
         if (entity.isHasFiles()) {
-            files = contentFileService.getList(entity.getId(), CmsFileUtils.OTHER_FILETYPES);
+            files = contentFileService.getList(entity.getId(), entity.getLang(), CmsFileUtils.OTHER_FILETYPES);
         }
         if (entity.isHasImages()) {
-            images = contentFileService.getList(entity.getId(), CmsFileUtils.IMAGE_FILETYPES);
+            images = contentFileService.getList(entity.getId(), entity.getLang(), CmsFileUtils.IMAGE_FILETYPES);
         }
         if (entity.isHasProducts()) {
             products = contentProductService.getList(site.getId(), entity.getId());
         }
-        dealAttribute(entity, site, modelExtendList, categoryExtendList, ExtendUtils.getExtendMap(attribute.getData()),
-                cmsModel, files, images, products, attribute);
+        dealAttribute(entity, site, modelExtendList, categoryExtendList, ExtendUtils.getExtendMap(attribute.getData()), cmsModel,
+                files, images, products, attribute);
         attributeService.updateAttribute(entity.getId(), attribute);
     }
 
@@ -479,7 +481,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         for (CmsContent entity : list) {
             if (null != entity && STATUS_NORMAL == entity.getStatus() && siteId == entity.getSiteId()
                     && ControllerUtils.hasContentPermissions(user, entity)) {
-                Date now = CommonUtils.getDate();
+                Date now = CommonUtils.now();
                 if (now.after(entity.getPublishDate())) {
                     entity.setPublishDate(now);
                     entityList.add(entity);
@@ -501,7 +503,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         if (null != entity && siteId == entity.getSiteId() && STATUS_CHECKING == entity.getStatus()) {
             entity.setStatus(STATUS_NORMAL);
             entity.setCheckUserId(userId);
-            entity.setCheckDate(CommonUtils.getDate());
+            entity.setCheckDate(CommonUtils.now());
         }
         return entity;
     }
@@ -517,7 +519,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         if (null != entity && siteId == entity.getSiteId() && STATUS_CHECKING == entity.getStatus()) {
             entity.setStatus(STATUS_REJECT);
             entity.setCheckUserId(userId);
-            entity.setCheckDate(CommonUtils.getDate());
+            entity.setCheckDate(CommonUtils.now());
         }
         return entity;
     }
@@ -550,7 +552,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 && ControllerUtils.hasContentPermissions(user, entity)) {
             entity.setStatus(STATUS_NORMAL);
             entity.setCheckUserId(user.getId());
-            entity.setCheckDate(CommonUtils.getDate());
+            entity.setCheckDate(CommonUtils.now());
         }
         return entity;
     }
@@ -568,7 +570,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                     && ControllerUtils.hasContentPermissions(user, entity)) {
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckUserId(user.getId());
-                entity.setCheckDate(CommonUtils.getDate());
+                entity.setCheckDate(CommonUtils.now());
                 entityList.add(entity);
             }
         }
@@ -587,7 +589,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 && ControllerUtils.hasContentPermissions(user, entity)) {
             entity.setStatus(STATUS_REJECT);
             entity.setCheckUserId(user.getId());
-            entity.setCheckDate(CommonUtils.getDate());
+            entity.setCheckDate(CommonUtils.now());
         }
         return entity;
     }
@@ -605,7 +607,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                     && ControllerUtils.hasContentPermissions(user, entity)) {
                 entity.setStatus(STATUS_REJECT);
                 entity.setCheckUserId(user.getId());
-                entity.setCheckDate(CommonUtils.getDate());
+                entity.setCheckDate(CommonUtils.now());
                 entityList.add(entity);
             }
         }
@@ -643,8 +645,8 @@ public class CmsContentService extends BaseService<CmsContent> {
                 }
                 if (entity.getCategoryId() != category.getId()) {
                     CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), category.getId(),
-                            entity.getModelId(), entity.isCopied(), true, entity.isHasImages(), entity.isHasFiles(),
-                            entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, BigDecimal.ZERO, 0, 0, 0,
+                            entity.getModelId(), entity.getLang(), entity.isCopied(), true, entity.isHasImages(),
+                            entity.isHasFiles(), entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, BigDecimal.ZERO, 0, 0, 0,
                             entity.getPublishDate(), entity.getCreateDate(), 0, entity.getStatus(), false);
                     quote.setUrl(entity.getUrl());
                     quote.setDescription(entity.getDescription());
@@ -673,8 +675,8 @@ public class CmsContentService extends BaseService<CmsContent> {
             for (CmsCategory c : categoryList) {
                 if (null != c && !category.getId().equals(c.getId())) {
                     CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), c.getId(),
-                            entity.getModelId(), entity.isCopied(), true, entity.isHasImages(), entity.isHasFiles(),
-                            entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, BigDecimal.ZERO, 0, 0, 0,
+                            entity.getModelId(), entity.getLang(), entity.isCopied(), true, entity.isHasImages(),
+                            entity.isHasFiles(), entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, BigDecimal.ZERO, 0, 0, 0,
                             entity.getPublishDate(), entity.getCreateDate(), 0, entity.getStatus(), false);
                     quote.setUrl(entity.getUrl());
                     quote.setDescription(entity.getDescription());
@@ -928,7 +930,7 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     public CmsContent copy(SysSite site, CmsContent content, CmsCategory category, int status, Long userId) {
         if (null != content && null != category) {
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             CmsContent entity = new CmsContent();
             BeanUtils.copyProperties(content, entity, ignoreCopyProperties);
             entity.setSiteId(category.getSiteId());
@@ -961,7 +963,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             }
             @SuppressWarnings("unchecked")
             List<CmsContentFile> fileList = (List<CmsContentFile>) contentFileService
-                    .getPage(content.getId(), null, null, null, null, null, null).getList();
+                    .getPage(content.getId(), null, null, null, null, null, null, null).getList();
             if (CommonUtils.notEmpty(fileList)) {
                 List<CmsContentFile> resultList = new ArrayList<>();
                 for (CmsContentFile file : fileList) {
@@ -971,8 +973,9 @@ public class CmsContentService extends BaseService<CmsContent> {
                     contentFile.setUserId(userId);
                     resultList.add(contentFile);
                 }
-                if(category.getSiteId() != site.getId()) {
-                    resultList.forEach(e -> e.setFilePath(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getFilePath())));
+                if (category.getSiteId() != site.getId()) {
+                    resultList.forEach(
+                            e -> e.setFilePath(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getFilePath())));
                 }
                 contentFileService.save(resultList);
             }
@@ -989,7 +992,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                     contentProduct.setUserId(userId);
                     resultList.add(contentProduct);
                 }
-                if(category.getSiteId() != site.getId()) {
+                if (category.getSiteId() != site.getId()) {
                     resultList.forEach(e -> e.setCover(CmsUrlUtils.getUrl(fileUploadComponent.getPrefix(site), e.getCover())));
                 }
                 contentProductService.save(resultList);

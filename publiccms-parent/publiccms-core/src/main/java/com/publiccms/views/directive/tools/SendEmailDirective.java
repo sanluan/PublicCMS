@@ -26,7 +26,8 @@ import freemarker.template.TemplateException;
 
 /**
  * sendEmail 发送邮件指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>email</code>:多个邮件地址
  * <li><code>cc</code>:多个抄送地址
@@ -38,11 +39,13 @@ import freemarker.template.TemplateException;
  * <li><code>filePaths</code>:多个文件路径
  * <li><code>parameters</code>:参数map
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>result</code>:是否允许发送,【true,false】
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@tools.sendEmail email='master@puliccms.com' title='title'
  * content='content' parameters={"parameter1":"value1"}/&gt;

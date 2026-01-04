@@ -636,7 +636,7 @@ public class CmsFileUtils {
      */
     public static String getUploadFileName(String suffix) {
         StringBuilder sb = new StringBuilder(UPLOAD_PATH);
-        sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.UPLOAD_FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
+        sb.append(DateFormatUtils.getDateFormat(DateFormatUtils.UPLOAD_FILE_NAME_FORMAT_STRING).format(CommonUtils.now()));
         sb.append(Constants.random.nextInt());
         if (!suffix.contains(Constants.DOT)) {
             sb.append(Constants.DOT);

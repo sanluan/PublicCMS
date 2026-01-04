@@ -95,7 +95,7 @@ public class ContentCheckDirective extends AbstractAppDirective {
         }
         logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
                 uncheck ? "uncheck.content" : "check.content", RequestUtils.getIpAddress(handler.getRequest()),
-                CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
         handler.render();
     }
 

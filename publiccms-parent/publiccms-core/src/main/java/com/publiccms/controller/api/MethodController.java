@@ -79,7 +79,7 @@ public class MethodController {
                         appToken = request.getParameter(AbstractTemplateDirective.APP_TOKEN);
                     }
                     SysAppToken token = appTokenService.getEntity(appToken);
-                    if (null == token || null != token.getExpiryDate() && CommonUtils.getDate().after(token.getExpiryDate())) {
+                    if (null == token || null != token.getExpiryDate() && CommonUtils.now().after(token.getExpiryDate())) {
                         return NEED_APP_TOKEN_MAP;
                     }
                     SysApp app = appService.getEntity(token.getAppId());
