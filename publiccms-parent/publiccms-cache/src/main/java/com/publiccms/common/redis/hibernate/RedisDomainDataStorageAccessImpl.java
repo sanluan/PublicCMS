@@ -5,8 +5,8 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.cache.spi.support.DomainDataStorageAccess;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 
-import com.publiccms.common.redis.RedisClient;
 import com.publiccms.common.redis.RedisCacheEntity;
+import com.publiccms.common.redis.RedisClientOperational;
 
 /**
  * Redis 访问实现
@@ -16,10 +16,10 @@ import com.publiccms.common.redis.RedisCacheEntity;
  */
 public class RedisDomainDataStorageAccessImpl implements DomainDataStorageAccess {
     protected final Log log = LogFactory.getLog(getClass());
-    protected final RedisClient redisClient;
+    protected final RedisClientOperational redisClient;
     protected final RedisCacheEntity<Object, Object> cache;
 
-    public RedisDomainDataStorageAccessImpl(RedisClient redisClient, RedisCacheEntity<Object, Object> cache) {
+    public RedisDomainDataStorageAccessImpl(RedisClientOperational redisClient, RedisCacheEntity<Object, Object> cache) {
         this.redisClient = redisClient;
         this.cache = cache;
     }

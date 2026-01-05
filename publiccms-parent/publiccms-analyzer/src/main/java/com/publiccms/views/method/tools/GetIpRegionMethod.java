@@ -50,7 +50,7 @@ public class GetIpRegionMethod extends BaseMethod {
 
     private void init() {
         if (null == ip2Region) {
-            synchronized (ip2Region) {
+            synchronized (GetIpRegionMethod.class) {
                 try {
                     if (null == ip2Region) {
                         Config v4Config = null;

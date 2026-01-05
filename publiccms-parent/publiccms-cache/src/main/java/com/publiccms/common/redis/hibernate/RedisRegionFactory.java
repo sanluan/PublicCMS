@@ -23,9 +23,11 @@ import org.hibernate.cache.spi.support.StorageAccess;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import com.publiccms.common.redis.RedisClient;
 import com.publiccms.common.redis.RedisCacheEntity;
+import com.publiccms.common.redis.RedisClientOperational;
 import com.publiccms.common.tools.RedisUtils;
+
+import redis.clients.jedis.RedisClient;
 
 /**
  * Redis领域工厂
@@ -34,17 +36,17 @@ import com.publiccms.common.tools.RedisUtils;
  * 
  */
 public class RedisRegionFactory extends RegionFactoryTemplate {
-    protected final Log log = LogFactory.getLog(getClass());
+    protected final transient Log log = LogFactory.getLog(getClass());
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
 
-    private final CacheKeysFactory cacheKeysFactory;
+    private final transient CacheKeysFactory cacheKeysFactory;
     /**
      * {@link RedisClient} instance.
      */
-    protected volatile RedisClient redisClient;
+    protected transient RedisClientOperational redisClient;
 
     public RedisRegionFactory() {
         this(DefaultCacheKeysFactory.INSTANCE);
@@ -118,6 +120,7 @@ public class RedisRegionFactory extends RegionFactoryTemplate {
         return null != redisClient.createOrGetCache(qualifiedRegionName);
     }
 
+    @Override
     protected boolean isStarted() {
         return super.isStarted() && null != redisClient;
     }
@@ -135,11 +138,11 @@ public class RedisRegionFactory extends RegionFactoryTemplate {
         }
     }
 
-    protected RedisClient resolveRedisClient(@SuppressWarnings("rawtypes") Map configValues) throws IOException {
+    protected RedisClientOperational resolveRedisClient(@SuppressWarnings("rawtypes") Map configValues) throws IOException {
         String configurationResourceName = (String) configValues.get("hibernate.redis.configurationResourceName");
         if (null != configurationResourceName) {
             Properties redisProperties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName);
-            return new RedisClient(RedisUtils.createOrGetJedisPool(redisProperties));
+            return new RedisClientOperational(RedisUtils.createOrGetJedisPool(redisProperties));
         } else {
             return null;
         }
@@ -149,7 +152,7 @@ public class RedisRegionFactory extends RegionFactoryTemplate {
     protected void releaseFromUse() {
         if (null != redisClient) {
             try {
-                redisClient.shutdown();
+                redisClient.close();
                 redisClient = null;
                 log.info("RedisRegionFactory is stopped.");
             } catch (Exception ignored) {
