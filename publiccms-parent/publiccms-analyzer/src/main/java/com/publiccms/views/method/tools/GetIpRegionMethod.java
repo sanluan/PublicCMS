@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import javax.annotation.PreDestroy;
-
 import org.apache.commons.lang3.StringUtils;
 import org.lionsoul.ip2region.service.Config;
 import org.lionsoul.ip2region.service.InvalidConfigException;
@@ -21,6 +19,7 @@ import com.publiccms.views.pojo.entities.IpRegion;
 
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+import jakarta.annotation.PreDestroy;
 
 /**
  *
@@ -50,7 +49,7 @@ public class GetIpRegionMethod extends BaseMethod {
 
     private void init() {
         if (null == ip2Region) {
-            synchronized (ip2Region) {
+            synchronized (GetIpRegionMethod.class) {
                 try {
                     if (null == ip2Region) {
                         Config v4Config = null;

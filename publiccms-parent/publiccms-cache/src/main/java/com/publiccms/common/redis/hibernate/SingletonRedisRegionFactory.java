@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-import com.publiccms.common.redis.RedisClient;
+import com.publiccms.common.redis.RedisClientOperational;
 import com.publiccms.common.tools.RedisUtils;
 
 /**
@@ -23,13 +23,13 @@ public class SingletonRedisRegionFactory extends RedisRegionFactory {
     private static final long serialVersionUID = 1L;
     private final AtomicInteger referenceCount = new AtomicInteger();
 
-    protected RedisClient resolveRedisClient(@SuppressWarnings("rawtypes") Map configValues) throws IOException {
+    protected RedisClientOperational resolveRedisClient(@SuppressWarnings("rawtypes") Map configValues) throws IOException {
         String configurationResourceName = (String) configValues.get("hibernate.redis.configurationResourceName");
         if (null != configurationResourceName) {
             try {
                 referenceCount.incrementAndGet();
                 Properties redisProperties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName);
-                return new RedisClient(RedisUtils.createOrGetJedisPool(redisProperties));
+                return new RedisClientOperational(RedisUtils.createOrGetJedisPool(redisProperties));
             } catch (RuntimeException e) {
                 referenceCount.decrementAndGet();
                 throw e;

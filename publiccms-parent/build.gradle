@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:4.0.0"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:4.0.1"
     }
 }
 
@@ -35,17 +35,17 @@ subprojects {
         springVersion = "7.0.2"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "4.0.0"
+        springBootVersion = "4.0.1"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
         junitVersion = "6.0.1"
         // http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "7.2.0.Final"
         // http://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm
-        hibernateToolsVersion = "7.1.11.Final"
+        hibernateToolsVersion = "7.2.0.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "8.2.0.Final"
+        hibernateSearchVersion = "8.2.1.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
         hibernateValidatorVersion = "9.1.0.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache

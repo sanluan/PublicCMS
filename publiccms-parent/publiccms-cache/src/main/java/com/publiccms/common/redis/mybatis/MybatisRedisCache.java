@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.apache.ibatis.cache.Cache;
 
-import com.publiccms.common.redis.RedisClient;
+import com.publiccms.common.redis.RedisClientOperational;
 
 /**
  *
@@ -16,7 +16,7 @@ public class MybatisRedisCache implements Cache {
 
     private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
-    protected RedisClient redisClient;
+    protected RedisClientOperational redisClient;
 
     private String id;
 

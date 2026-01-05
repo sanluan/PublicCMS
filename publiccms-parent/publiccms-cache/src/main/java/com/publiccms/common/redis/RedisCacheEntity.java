@@ -13,8 +13,7 @@ import com.publiccms.common.redis.serializer.ValueSerializer;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.RedisUtils;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.RedisClient;
 
 /**
  *
@@ -29,7 +28,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
      *
      */
     private static final long serialVersionUID = 1L;
-    private JedisPool jedisPool;
+    private RedisClient redisClient;
     private String region;
     private static final StringSerializer stringSerializer = new StringSerializer();
     private final Serializer<V> valueSerializer = new ValueSerializer<>();
@@ -38,38 +37,29 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
 
     @Override
     public List<V> put(K key, V value) {
-        Jedis jedis = jedisPool.getResource();
-        jedis.set(getKey(key), valueSerializer.serialize(value));
-        jedis.close();
+        redisClient.set(getKey(key), valueSerializer.serialize(value));
         return null;
     }
 
     @Override
     public void put(K key, V value, Long expiryInSeconds) {
-        Jedis jedis = jedisPool.getResource();
         if (null == expiryInSeconds) {
-            jedis.set(getKey(key), valueSerializer.serialize(value));
+            redisClient.set(getKey(key), valueSerializer.serialize(value));
         } else {
-            jedis.setex(getKey(key), expiryInSeconds, valueSerializer.serialize(value));
+            redisClient.setex(getKey(key), expiryInSeconds, valueSerializer.serialize(value));
         }
-        jedis.close();
     }
 
     @Override
     public V get(K key) {
-        Jedis jedis = jedisPool.getResource();
-        V value = valueSerializer.deserialize(jedis.get(getKey(key)));
-        jedis.close();
-        return value;
+        return valueSerializer.deserialize(redisClient.get(getKey(key)));
     }
 
     @Override
     public V remove(K key) {
-        Jedis jedis = jedisPool.getResource();
         byte[] byteKey = getKey(key);
-        V value = valueSerializer.deserialize(jedis.get(byteKey));
-        jedis.del(byteKey);
-        jedis.close();
+        V value = valueSerializer.deserialize(redisClient.get(byteKey));
+        redisClient.del(byteKey);
         return value;
     }
 
@@ -77,34 +67,28 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     public List<V> clear(boolean recycling) {
         if (recycling) {
             List<V> list = new ArrayList<>();
-            Jedis jedis = jedisPool.getResource();
-            Set<String> keyList = jedis.keys(CommonUtils.joinString(region, Constants.COLON, "*"));
+            Set<String> keyList = redisClient.keys(CommonUtils.joinString(region, Constants.COLON, "*"));
             keyList.forEach(k -> {
                 byte[] byteKey = stringSerializer.serialize(k);
-                V value = valueSerializer.deserialize(jedis.get(byteKey));
-                if (0 < jedis.del(k)) {
+                V value = valueSerializer.deserialize(redisClient.get(byteKey));
+                if (0 < redisClient.del(k)) {
                     list.add(value);
                 }
             });
-            jedis.close();
+            redisClient.close();
             return list;
         } else {
-            Jedis jedis = jedisPool.getResource();
-            Set<String> keyList = jedis.keys(CommonUtils.joinString(region, Constants.COLON, "*"));
+            Set<String> keyList = redisClient.keys(CommonUtils.joinString(region, Constants.COLON, "*"));
             keyList.forEach(k -> {
-                jedis.del(k);
+                redisClient.del(k);
             });
-            jedis.close();
             return null;
         }
     }
 
     @Override
     public boolean contains(K key) {
-        Jedis jedis = jedisPool.getResource();
-        boolean exits = jedis.exists(getKey(key));
-        jedis.close();
-        return exits;
+        return redisClient.exists(getKey(key));
     }
 
     private byte[] getKey(K key) {
@@ -116,9 +100,9 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
         return init(region, RedisUtils.createOrGetJedisPool(properties));
     }
 
-    public RedisCacheEntity<K, V> init(String region, JedisPool pool) {
+    public RedisCacheEntity<K, V> init(String region, RedisClient redisClient) {
         this.region = region;
-        this.jedisPool = pool;
+        this.redisClient = redisClient;
         return this;
     }
 
