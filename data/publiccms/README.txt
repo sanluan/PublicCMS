@@ -2,7 +2,7 @@
     删除文件备份,由系统自动创建
 
 dict
-    自定义分词文件目录
+    自定义分词文件目录,ip2region_v4.xdb,ip2region_v6.xdb存放在这里
 
 history
    文件修改历史,由系统自动创建
