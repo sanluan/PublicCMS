@@ -130,7 +130,7 @@ subprojects {
         // https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc
         therapiJavadocVersion = "0.15.0"
         // https://mvnrepository.com/artifact/org.jsoup/jsoup
-        jsoupVersion = "1.21.1"
+        jsoupVersion = "1.22.1"
         // https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api
         annotationVersion = "1.3.5"
         // https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api

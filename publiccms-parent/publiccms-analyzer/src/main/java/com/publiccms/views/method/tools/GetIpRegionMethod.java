@@ -1,19 +1,22 @@
 package com.publiccms.views.method.tools;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
-import org.apache.commons.io.IOUtils;
+import javax.annotation.PreDestroy;
+
 import org.apache.commons.lang3.StringUtils;
-import org.lionsoul.ip2region.xdb.LongByteArray;
-import org.lionsoul.ip2region.xdb.Searcher;
-import org.lionsoul.ip2region.xdb.Version;
+import org.lionsoul.ip2region.service.Config;
+import org.lionsoul.ip2region.service.InvalidConfigException;
+import org.lionsoul.ip2region.service.Ip2Region;
+import org.lionsoul.ip2region.xdb.XdbException;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.AnalyzerDictUtils;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.IpUtils;
 import com.publiccms.views.pojo.entities.IpRegion;
 
 import freemarker.template.TemplateModel;
@@ -43,34 +46,51 @@ console.log(data);
  */
 @Component
 public class GetIpRegionMethod extends BaseMethod {
-    private static LongByteArray longByteArray;
+    private static Ip2Region ip2Region = null;
 
-    public GetIpRegionMethod() {
-        try (InputStream inputStream = GetIpRegionMethod.class.getResourceAsStream("/ip2region_v4.xdb")) {
-            longByteArray = new LongByteArray(IOUtils.toByteArray(inputStream));
-        } catch (IOException e) {
-            e.printStackTrace();
-            longByteArray = null;
+    private void init() {
+        if (null == ip2Region) {
+            synchronized (ip2Region) {
+                try {
+                    if (null == ip2Region) {
+                        Config v4Config = null;
+                        File ipv4 = getFilePath("ip2region_v4.xdb");
+                        File ipv6 = getFilePath("ip2region_v6.xdb");
+                        if (ipv4.exists()) {
+                            Config.custom().setCachePolicy(Config.VIndexCache).setSearchers(20).setXdbFile(ipv4).asV4();
+                        } else {
+                            Config.custom().setCachePolicy(Config.BufferCache)
+                                    .setXdbInputStream(GetIpRegionMethod.class.getResourceAsStream("/ip2region_v4.xdb")).asV4();
+                        }
+                        Config v6Config = null;
+                        if (ipv6.exists()) {
+                            v6Config = Config.custom().setCachePolicy(Config.VIndexCache).setSearchers(20).setXdbFile(ipv6)
+                                    .asV6();
+                        }
+                        ip2Region = Ip2Region.create(v4Config, v6Config);
+                    }
+                } catch (IOException | XdbException | InvalidConfigException e) {
+                }
+            }
         }
+    }
+
+    private File getFilePath(String path) {
+        File file = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, AnalyzerDictUtils.DIR_DICT, path));
+        return file;
     }
 
     @Override
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String ip = getString(0, arguments);
-        if (CommonUtils.notEmpty(ip) && IpUtils.isIpv4(ip) && null != longByteArray) {
-            Searcher searcher = null;
+        if (CommonUtils.notEmpty(ip)) {
             try {
-                searcher = Searcher.newWithBuffer(Version.IPv4, longByteArray);
-                return getIpRegion(searcher.search(ip));
+                init();
+                if (null != ip2Region) {
+                    return getIpRegion(ip2Region.search(ip));
+                }
             } catch (Exception e) {
                 log.error(e.getMessage());
-            } finally {
-                if (null != searcher) {
-                    try {
-                        searcher.close();
-                    } catch (IOException e) {
-                    }
-                }
             }
         }
         return null;
@@ -104,4 +124,13 @@ public class GetIpRegionMethod extends BaseMethod {
         return ipRegion;
     }
 
+    @PreDestroy
+    public void destroy() {
+        if (null != ip2Region) {
+            try {
+                ip2Region.close();
+            } catch (InterruptedException e) {
+            }
+        }
+    }
 }
