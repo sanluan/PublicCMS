@@ -10,7 +10,7 @@
 <@cms.category id=categoryId!><#assign category=object/></@cms.category>
 <@cms.model id=modelId!><#assign model=object/></@cms.model>
 <@sys.dept id=admin.deptId!><#assign dept=object/></@sys.dept>
-<form method="post" autocomplete="off" action="cmsContent/save?<#if !id?has_content && (siteAttribute.default_language)?has_content>callbackType=forward&forwardUrl=cmsContent/addLang.html<#else>callbackType=closeCurrent&navTabId=cmsContent/list</#if>" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsContent/save?<#if !id?has_content && 'true'=(siteAttribute.enable_multilingual)!>callbackType=forward&forwardUrl=cmsContent/addLang.html<#else>callbackType=closeCurrent&navTabId=cmsContent/list</#if>" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}"/>
     <input name="parentId" type="hidden" value="${parentId!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
@@ -36,7 +36,7 @@
             <#if a?has_content && model?has_content && model.hasChild>
                 <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list" data-change-title="false"><@t.page 'content.child_management'/></a></li>
             </#if>
-            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=content&itemId=${id!}" close-url="common/unlock?itemType=content&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=content&itemId=${id!}" close-url="common/unlock?itemType=content&itemId=${id!}"</#if>><#if !id?has_content && 'true'=(siteAttribute.enable_multilingual)!><@t.page 'next_step'/><#else><@t.page 'button.save'/></#if></button></li>
         <@sys.authorized roleIds=admin.roles url='cmsContent/previewBeforeSave'>
             <li><button type="button" class="button" onclick="var $form = $('form',navTab.getCurrentPanel()).clone().hide().appendTo($(body));$form.attr('action','cmsContent/previewBeforeSave');$form.attr('target','_blank');$form.attr('onsubmit','');$form.submit();$form.remove();"><@t.page 'button.preview'/></button></li>
         </@sys.authorized>

@@ -56,7 +56,7 @@
             <li><a href="cmsCategory/addLang.html?id=${id!}" target="navTab" rel="cmsCategory/edit" class="button"><@t.page 'language.management'/></a></li>
         </#if>
         <@sys.authorized roleIds=admin.roles url='cmsCategory/save'>
-            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=category&itemId=${id!}" close-url="common/unlock?itemType=category&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=category&itemId=${id!}" close-url="common/unlock?itemType=category&itemId=${id!}"</#if>><#if !id?has_content && 'true'=(siteAttribute.enable_multilingual)!><@t.page 'next_step'/><#else><@t.page 'button.save'/></#if></button></li>
         </@sys.authorized>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
