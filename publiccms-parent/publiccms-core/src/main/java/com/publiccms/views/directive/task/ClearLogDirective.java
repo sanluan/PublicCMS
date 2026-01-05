@@ -52,7 +52,7 @@ public class ClearLogDirective extends AbstractTaskDirective {
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         Date date = handler.getDate("clearDate");
         if (null == date) {
-            date = DateUtils.addMonths(CommonUtils.getDate(), -3);
+            date = DateUtils.addMonths(CommonUtils.now(), -3);
         }
         SysSite site = getSite(handler);
         Map<String, Integer> map = new HashMap<>();

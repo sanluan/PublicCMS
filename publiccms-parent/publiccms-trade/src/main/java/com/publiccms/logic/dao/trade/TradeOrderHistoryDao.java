@@ -55,7 +55,7 @@ public class TradeOrderHistoryDao extends BaseDao<TradeOrderHistory> {
     @Override
     protected TradeOrderHistory init(TradeOrderHistory entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

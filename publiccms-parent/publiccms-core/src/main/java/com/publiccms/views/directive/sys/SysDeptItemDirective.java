@@ -3,6 +3,7 @@ package com.publiccms.views.directive.sys;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,8 @@ import freemarker.template.TemplateException;
 /**
  *
  * sysDeptItem 数据授权查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>deptId</code>:部门id
  * <li><code>ItemId</code>
@@ -29,7 +31,8 @@ import freemarker.template.TemplateException;
  * <li><code>ItemIds</code>
  * 多个分类id,当deptId存在,且ItemId为空时生效,结果返回<code>map</code>(分类id,<code>true</code>或<code>false</code>)
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@sys.deptItem deptId=1 ItemId=1&gt;${object}&lt;/@sys.deptItem&gt;
  * <p>
@@ -74,11 +77,8 @@ public class SysDeptItemDirective extends AbstractTemplateDirective {
                                 map.put(id, true);
                             }
                         } else {
-                            SysDeptItemId[] ids = new SysDeptItemId[itemIds.length];
-                            for (int i = 0; i < itemIds.length; i++) {
-                                map.put(itemIds[i], false);
-                                ids[i] = new SysDeptItemId(deptId, itemType, itemIds[i]);
-                            }
+                            SysDeptItemId[] ids = Stream.of(itemIds).map(e -> new SysDeptItemId(deptId, itemType, e))
+                                    .toArray(SysDeptItemId[]::new);
                             for (SysDeptItem e : service.getEntitys(ids)) {
                                 map.put(e.getId().getItemId(), true);
                             }

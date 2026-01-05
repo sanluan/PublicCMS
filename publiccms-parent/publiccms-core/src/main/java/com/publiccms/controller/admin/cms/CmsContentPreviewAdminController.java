@@ -2,10 +2,6 @@ package com.publiccms.controller.admin.cms;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,6 +21,10 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.model.CmsContentParameters;
+
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -86,7 +86,7 @@ public class CmsContentPreviewAdminController {
             ModelMap model) {
         try {
             entity.setId(0L);
-            entity.setPublishDate(CommonUtils.getDate());
+            entity.setPublishDate(CommonUtils.now());
             AbstractFreemarkerView.exposeAttribute(model, request);
             templateComponent.initPreviewContentModel(site, entity, attribute, contentParameters, model);
             response.setContentType("text/html; charset=UTF-8");

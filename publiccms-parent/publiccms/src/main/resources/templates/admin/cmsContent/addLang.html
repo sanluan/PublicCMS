@@ -1,0 +1,184 @@
+<@cms.content id=id absoluteURL=false absoluteId=true><#assign content=object/><#assign attribute=getContentAttribute(content.id)/></@cms.content>
+<@cms.category id=content.categoryId!><#assign category=object/></@cms.category>
+<@cms.model id=content.modelId!><#assign model=object/></@cms.model>
+<form method="post" autocomplete="off" action="cmsContentLang/save?callbackType=closeCurrent&navTabId=cmsContent/list" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+    <input name="contentId" type="hidden" value="${(content.id)!}"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <div class="formBar card">
+        <ul>
+            <li><a href="cmsContent/add.html?id=${id!}" target="navTab" rel="cmsContent/edit" class="button"><@t.page 'content.edit'/></a></li>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=contentLang&itemId=${id!}" close-url="common/unlock?itemType=contentLang&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="tabs card">
+        <@cms.languageList>
+        <div class="tabsHeader">
+            <ul>
+                <#list list as lang>
+                    <li><a href="javascript:;" onclick="return false;">${lang.name}</a></li>
+                </#list>
+            </ul>
+        </div>
+        <div class="tabsContent unitBox">
+            <#include "../include_page/extendData.html"/>
+            <#include "../include_page/contentFiles.html"/>
+            <#assign index=0/>
+            <#assign fieldList=model.fieldList![]/>
+            <#assign requiredFieldList=model.requiredFieldList![]/>
+            <#if category?has_content&&category.extendId?has_content>
+                 <@sys.extendFieldList extendId=category.extendId lang=lang><#assign categoryExtendList=list/></@sys.extendFieldList>
+            </#if>
+            <#list list as lang>
+                <div class="pageFormContent" layoutH>
+                    <#if lang.id.code = (siteAttribute.default_language)!>
+                        <dl class="nowrap">
+                            <dt><@t.message 'config.siteAttribute.default_language'/>:</dt>
+                            <dd>
+                                <a href="cmsContent/add.html?id=${id!}" target="navTab" rel="cmsContent/edit" class="button"><@t.page 'content.edit'/></a>
+                            </dd>
+                        </dl>
+                        <dl class="nowrap">
+                            <dt>${(model.fieldTextMap['title'])!}:</dt>
+                            <dd>
+                                <input type="hidden" name="contentLangList[${index}].entity.id.lang" value="${lang.id.code}"/>
+                                <input readonly="readonly" name="contentLangList[${index}].entity.title" type="text" maxlength="250" size="60" value="${(content.title)!}"/>
+                            </dd>
+                        </dl>
+                        <#if fieldList?seq_contains('author')>
+                            <dl>
+                                <dt>${(model.fieldTextMap['author'])!}:</dt>
+                                <dd><input name="contentLangList[${index}].entity.author" readonly="readonly" autocomplete="on" type="text" maxlength="50" size="20" value="${(content.author)!}"/></dd>
+                            </dl>
+                        </#if>
+                        <#if fieldList?seq_contains('editor')>
+                            <dl>
+                                <dt>${(model.fieldTextMap['editor'])!}:</dt>
+                                <dd><input name="contentLangList[${index}].entity.editor" readonly="readonly"  autocomplete="on" type="text" maxlength="50" size="20" value="${(content.editor)!}"/></dd>
+                            </dl>
+                        </#if>
+                        <#if categoryExtendList?has_content>
+                            <@extendData inputNamePrefix="contentLangList["+index+"]." type="view" extendList=categoryExtendList lang=lang.id.code extendValues=(attribute!{}) historyItemType='contentExtend' historyItemId=id/>
+                        </#if>                 
+                        <@extendData inputNamePrefix="contentLangList["+index+"]." type="view" extendList=model.extendList lang=lang.id.code extendValues=(attribute!{}) historyItemType='contentExtend' historyItemId=id/>
+                        <#if fieldList?seq_contains('cover')>
+                            <dl class="nowrap">
+                                <dt>${(model.fieldTextMap['cover'])!}:</dt>
+                                <dd>
+                                    <input name="contentLangList[${index}].entity.cover" readonly="readonly" class="preview" value="${(content.cover)!}" maxlength="300" size="50" type="text"/>
+                                    <a class="view icon-eye-open" ref="cover" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                                    <#if (model.coverWidth)?has_content && (model.coverHeight)?has_content><span class="info">${(model.coverWidth)!}*${(model.coverHeight)!}</span></#if>
+                                </dd>
+                            </dl>
+                        </#if>
+                        <#if fieldList?seq_contains('description')>
+                            <dl class="nowrap">
+                                <dt>${(model.fieldTextMap['description'])!}:</dt>
+                                <dd>
+                                    <textarea name="contentLangList[${index}].entity.description" readonly="readonly" maxlength="300" cols="80" rows="4">${(content.description)!}</textarea>
+                                </dd>
+                            </dl>
+                        </#if>
+                        <#if fieldList?seq_contains('content')>
+                            <dl class="nowrap">
+                                <dt>${(model.fieldTextMap['content'])!}:</dt>
+                                <dd>
+                                    <textarea name="contentLangList[${index}].entity.text" class="editor" readonly="readonly" escape="true" editorType="${model.editorType!}">${(attribute.text)!}</textarea>
+                                </dd>
+                            </dl>
+                        </#if>
+                        <#if model.hasImages||model.hasFiles>
+                            <#if model.hasImages>
+                                <fieldset>
+                                    <legend><@t.page 'seo'/></legend>
+                                    <@contentFiles true id false lang.id.code/>
+                                </fieldset>
+                            </#if>
+                            <#if model.hasFiles>
+                                <fieldset>
+                                    <legend><@t.page 'seo'/></legend>
+                                    <@contentFiles false id false lang.id.code/>
+                                </fieldset>
+                            </#if>
+                        </#if>
+                    <#else>
+                        <#assign a={}/>
+                        <@cms.contentLang id=id lang=lang.id.code><#assign a=object/></@cms.contentLang>
+                        <dl class="nowrap">
+                            <dt>${(model.fieldTextMap['title'])!}:</dt>
+                            <dd>
+                                <input type="hidden" name="contentLangList[${index}].entity.id.lang" value="${lang.id.code}"/>
+                                <input class="required" name="contentLangList[${index}].entity.title" type="text" maxlength="250" size="60" value="${(a.title)!}"/>
+                            </dd>
+                        </dl>
+                        <#if fieldList?seq_contains('author')>
+                            <dl>
+                                <dt>${(model.fieldTextMap['author'])!}:</dt>
+                                <dd><input name="contentLangList[${index}].entity.author"<#if requiredFieldList?seq_contains('author')> class="required"</#if> autocomplete="on" type="text" maxlength="50" size="20" value="${(a.author)!}"/></dd>
+                            </dl>
+                        </#if>
+                        <#if fieldList?seq_contains('editor')>
+                            <dl>
+                                <dt>${(model.fieldTextMap['editor'])!}:</dt>
+                                <dd><input name="contentLangList[${index}].entity.editor"<#if requiredFieldList?seq_contains('editor')> class="required"</#if> autocomplete="on" type="text" maxlength="50" size="20" value="${(a.editor)!}"/></dd>
+                            </dl>
+                        </#if>
+                        <#if categoryExtendList?has_content>
+                            <@extendData inputNamePrefix="contentLangList["+index+"]." extendList=categoryExtendList lang=lang.id.code extendValues=((a.attribute)!attribute!{}) historyItemType='contentExtend' historyItemId=id/>
+                        </#if>                 
+                        <@extendData inputNamePrefix="contentLangList["+index+"]." extendList=model.extendList lang=lang.id.code extendValues=((a.attribute)!attribute!{}) historyItemType='contentExtend' historyItemId=id/>
+                        <#if fieldList?seq_contains('cover')>
+                            <dl class="nowrap">
+                                <dt>${(model.fieldTextMap['cover'])!}:</dt>
+                                <dd>
+                                    <input name="contentLangList[${index}].entity.cover" class="preview<#if requiredFieldList?seq_contains('cover')> required</#if>" value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
+                                    <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image&width=${(model.coverWidth)!}&height=${(model.coverHeight)!}" lookupGroup="" width="1000" height="600">${(model.fieldTextMap['cover'])!}</a>
+                                    <a class="view icon-eye-open" ref="cover" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                                    <#if (model.coverWidth)?has_content && (model.coverHeight)?has_content><span class="info">${(model.coverWidth)!}*${(model.coverHeight)!}</span></#if>
+                                </dd>
+                            </dl>
+                        </#if>
+                        <#if fieldList?seq_contains('description')>
+                            <dl class="nowrap">
+                                <dt>${(model.fieldTextMap['description'])!}:</dt>
+                                <dd>
+                                    <textarea name="contentLangList[${index}].entity.description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="300" cols="80" rows="4">${(a.description)!}</textarea>
+                                </dd>
+                            </dl>
+                        </#if>
+                        <#if fieldList?seq_contains('content')>
+                            <dl class="nowrap">
+                                <dt>${(model.fieldTextMap['content'])!}:</dt>
+                                <dd>
+                                    <div>
+                                        <a class="button" href="common/import.html" lookupGroup="" width="600" height="400"><@t.page 'import_doc'/></a>
+                                    <#if a?has_content>
+                                        <a class="button" href="cmsEditorHistory/lookup.html?itemType=content&itemId=${content.id}&fieldName=text&lang=${lang.id.code?url}" lookupGroup=""><@t.page 'history'/></a>
+                                    </#if>
+                                    </div>
+                                    <textarea name="contentLangList[${index}].entity.text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(a.text)!}</textarea>
+                                </dd>
+                            </dl>
+                        </#if>
+                        <#if model.hasImages||model.hasFiles>
+                            <#if model.hasImages>
+                                <fieldset>
+                                    <legend><@t.page 'seo'/></legend>
+                                    <@contentFiles true id false lang.id.code/>
+                                </fieldset>
+                            </#if>
+                            <#if model.hasFiles>
+                                <fieldset>
+                                    <legend><@t.page 'seo'/></legend>
+                                    <@contentFiles false id false lang.id.code/>
+                                </fieldset>
+                            </#if>
+                        </#if>
+                    </#if>
+                    <#assign index++/>
+                </div>
+            </#list>
+        </div>
+        </@cms.languageList>
+    </div>
+</form>

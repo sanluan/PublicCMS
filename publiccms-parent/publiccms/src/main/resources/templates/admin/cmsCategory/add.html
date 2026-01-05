@@ -47,13 +47,16 @@
         </@cms.modelList>
     </#if>
 </#macro>
-<form method="post" autocomplete="off" action="cmsCategory/save?callbackType=closeCurrent&navTabId=cmsCategory/list<#if !id?has_content>&rel=page</#if>" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsCategory/save?<#if !id?has_content && 'true'=(siteAttribute.enable_multilingual)!>callbackType=forward&forwardUrl=cmsCategory/addLang.html<#else>callbackType=closeCurrent&navTabId=cmsCategory/list<#if !id?has_content>&rel=page</#if></#if>" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
         <ul>
+        <#if id?has_content && a?has_content && 'true'=(siteAttribute.enable_multilingual)!>
+            <li><a href="cmsCategory/addLang.html?id=${id!}" target="navTab" rel="cmsCategory/edit" class="button"><@t.page 'language.management'/></a></li>
+        </#if>
         <@sys.authorized roleIds=admin.roles url='cmsCategory/save'>
-            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=category&itemId=${id!}" close-url="common/unlock?itemType=category&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=category&itemId=${id!}" close-url="common/unlock?itemType=category&itemId=${id!}"</#if>><#if !id?has_content && 'true'=(siteAttribute.enable_multilingual)!><@t.page 'next_step'/><#else><@t.page 'button.save'/></#if></button></li>
         </@sys.authorized>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
@@ -84,6 +87,15 @@
                         <input name="typeName" readonly="readonly" type="text" size="10" value="${(categoryType.name)!}"/>
                     </dd>
                 </dl>
+                <#if 'true'=(siteAttribute.enable_multilingual)!>
+                    <dl>
+                        <dt><@t.page 'language'/>:</dt>
+                        <dd>
+                            <input name="lang" type="hidden" value="${(siteAttribute.default_language)!}"/>
+                            <@cms.language code=(siteAttribute.default_language)!>${object.name}</@cms.language>
+                        </dd>
+                    </dl>
+                </#if>
                 <div class="divider"></div>
                 <dl class="nowrap">
                     <dt><@t.page 'name'/>:</dt>

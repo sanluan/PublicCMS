@@ -56,7 +56,7 @@ public class OSSFileAdminController {
         String suffix = CmsFileUtils.getSuffix(filepath);
         String fileType = CmsFileUtils.getFileType(suffix);
         logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, originalName,
-                privatefile, fileType, 0, 0, 0, RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
+                privatefile, fileType, 0, 0, 0, RequestUtils.getIpAddress(request), CommonUtils.now(), filepath));
         return "common/uploadresult";
     }
 

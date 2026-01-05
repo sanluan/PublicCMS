@@ -6,14 +6,21 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsContentLang;
+import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsContentLangService;
 import com.publiccms.logic.service.cms.CmsContentService;
 
 import freemarker.template.TemplateException;
@@ -21,16 +28,19 @@ import freemarker.template.TemplateException;
 /**
  *
  * publishContent 发布分类静态页面指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>id</code>:内容id
  * <li><code>ids</code>:多个内容id,id为空时有效
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>map</code>map类型,键值内容id,值为生成结果
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@task.publishContent id=1&gt;&lt;#list map as
  * k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@task.publishContent&gt;
@@ -46,14 +56,22 @@ import freemarker.template.TemplateException;
 @Component
 public class PublishContentDirective extends AbstractTaskDirective {
 
+    @Resource
+    private SiteAttributeComponent siteAttributeComponent;
+
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
+        String lang = handler.getString("lang");
         SysSite site = getSite(handler);
         Map<String, Boolean> map = new LinkedHashMap<>();
+        String defaultLanguage = siteAttributeComponent.getDefaultLanguage(site.getId());
         if (CommonUtils.notEmpty(id)) {
             try {
-                map.put(id.toString(), templateComponent.createContentFile(site, service.getEntity(id), null, null));
+                CmsContent entity = service.getEntity(id);
+                CmsLangUtils.initLang(entity, langService.getEntity(new CmsContentLangId(id, lang)));
+                map.put(id.toString(), templateComponent.createContentFile(site, entity, null, null,
+                        null != defaultLanguage && defaultLanguage.equalsIgnoreCase(lang)));
             } catch (IOException | TemplateException e) {
                 handler.getWriter().append(e.getMessage());
                 map.put(id.toString(), false);
@@ -62,9 +80,15 @@ public class PublishContentDirective extends AbstractTaskDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
+                CmsCategoryLangId[] langIds = entityList.stream().map(e -> new CmsContentLangId(e.getId(), lang))
+                        .toArray(CmsCategoryLangId[]::new);
+                Map<Long, CmsContentLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
+                        k -> k.getId().getContentId());
                 for (CmsContent entity : entityList) {
                     try {
-                        map.put(entity.getId().toString(), templateComponent.createContentFile(site, entity, null, null));
+                        CmsLangUtils.initLang(entity, langMap.get(entity.getId()));
+                        map.put(entity.getId().toString(), templateComponent.createContentFile(site, entity, null, null,
+                                null != defaultLanguage && defaultLanguage.equalsIgnoreCase(lang)));
                     } catch (IOException | TemplateException e) {
                         handler.getWriter().append(e.getMessage());
                         handler.getWriter().append("\n");
@@ -80,5 +104,7 @@ public class PublishContentDirective extends AbstractTaskDirective {
     private TemplateComponent templateComponent;
     @Resource
     private CmsContentService service;
+    @Resource
+    private CmsContentLangService langService;
 
 }

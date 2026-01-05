@@ -26,7 +26,7 @@ public abstract class AbstractPaymentGateway implements PaymentGateway {
             service.processed(siteId, payment.getId(), payment.getUserId());
             return true;
         } else {
-            TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
+            TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.now(),
                     TradePaymentHistoryService.OPERATE_PROCESS_ERROR);
             historyService.save(history);
         }

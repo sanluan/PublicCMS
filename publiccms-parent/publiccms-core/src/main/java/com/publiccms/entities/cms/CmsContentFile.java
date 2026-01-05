@@ -30,61 +30,79 @@ public class CmsContentFile implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private Long id;
     /**
-     * content id<p>
+     * content id
+     * <p>
      * 内容id
      */
     @GeneratorColumn(title = "内容", condition = true)
     private long contentId;
     /**
-     * upload user id<p>
+     * lang
+     * 
+     * 语言
+     */
+    @GeneratorColumn(title = "语言", condition = true)
+    @Length(max = 20)
+    private String lang;
+    /**
+     * upload user id
+     * <p>
      * 上传用户id
      */
     @GeneratorColumn(title = "上传用户", condition = true)
     private long userId;
     /**
-     * file path<p>
+     * file path
+     * <p>
      * 文件路径
      */
     @GeneratorColumn(title = "文件路径")
     private String filepath;
     /**
-     * file type<p>
+     * file type
+     * <p>
      * 文件类型
      */
     @GeneratorColumn(title = "文件类型", condition = true)
     private String fileType;
     /**
-     * file size<p>
+     * file size
+     * <p>
      * 文件大小
      */
     @GeneratorColumn(title = "文件大小", order = true)
     private Long fileSize;
     /**
-     * width<p>
+     * width
+     * <p>
      * 宽
      */
     @GeneratorColumn(title = "宽度")
     private Integer width;
     /**
-     * height<p>
+     * height
+     * <p>
      * 高
      */
     @GeneratorColumn(title = "高度")
     private Integer height;
     /**
-     * clicks<p>
+     * clicks
+     * <p>
      * 点击数
      */
     @GeneratorColumn(title = "点击", order = true)
     private int clicks;
     /**
-     * sort<p>
+     * sort
+     * <p>
      * 排序
      */
     @GeneratorColumn(title = "排序")
     private int sort;
     /**
-     * description<p>
+     * description
+     * <p>
      * 描述
      */
     @GeneratorColumn(title = "描述")
@@ -103,9 +121,10 @@ public class CmsContentFile implements java.io.Serializable {
         this.sort = sort;
     }
 
-    public CmsContentFile(long contentId, long userId, String filepath, String fileType, Long fileSize, Integer width,
-            Integer height, int clicks, int sort, String description) {
+    public CmsContentFile(long contentId, String lang, long userId, String filepath, String fileType, Long fileSize,
+            Integer width, Integer height, int clicks, int sort, String description) {
         this.contentId = contentId;
+        this.lang = lang;
         this.userId = userId;
         this.filepath = filepath;
         this.fileType = fileType;
@@ -135,6 +154,15 @@ public class CmsContentFile implements java.io.Serializable {
 
     public void setContentId(long contentId) {
         this.contentId = contentId;
+    }
+
+    @Column(name = "lang", length = 20)
+    public String getLang() {
+        return this.lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     @Column(name = "user_id", nullable = false)

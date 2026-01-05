@@ -73,7 +73,7 @@ public class SimpleAiAdminController {
                         .get(simpleAiMessageParameters.getMessages().size() - 1).getContent());
                 logContent.put("output", result);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, CommonUtils.joinString("ai.chat.", scene), ip, CommonUtils.getDate(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, CommonUtils.joinString("ai.chat.", scene), ip, CommonUtils.now(),
                         JsonUtils.getString(logContent)));
             });
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(emitter);

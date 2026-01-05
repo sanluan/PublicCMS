@@ -44,11 +44,11 @@ public class MetadataComponent implements Cache {
     /**
      * 获取推荐位元数据
      *
-     * @param filepath
+     * @param realFilepath
      * @return place metadata
      */
-    public CmsPlaceMetadata getPlaceMetadata(String filepath) {
-        File file = new File(filepath);
+    public CmsPlaceMetadata getPlaceMetadata(String realFilepath) {
+        File file = new File(realFilepath);
         CmsPlaceMetadata pageMetadata = getPlaceMetadataMap(file.getParent()).get(file.getName());
         if (null != pageMetadata) {
             return pageMetadata;
@@ -59,11 +59,11 @@ public class MetadataComponent implements Cache {
     /**
      * 获取模板元数据
      *
-     * @param filepath
+     * @param realFilepath
      * @return template metadata
      */
-    public CmsPageMetadata getTemplateMetadata(String filepath) {
-        File file = new File(filepath);
+    public CmsPageMetadata getTemplateMetadata(String realFilepath) {
+        File file = new File(realFilepath);
         CmsPageMetadata pageMetadata = getTemplateMetadataMap(file.getParent()).get(file.getName());
         if (null == pageMetadata) {
             pageMetadata = new CmsPageMetadata();
@@ -73,14 +73,15 @@ public class MetadataComponent implements Cache {
     }
 
     /**
-     * 获取模板元数据
+     * 获取模板数据
      *
-     * @param filepath
+     * @param realFilepath
+     * @param lang 
      * @return template metadata
      */
-    public CmsPageData getTemplateData(String filepath) {
-        File file = new File(filepath);
-        CmsPageData pageMetadata = getTemplateDataMap(file.getParent()).get(file.getName());
+    public CmsPageData getTemplateData(String realFilepath, String lang) {
+        File file = new File(realFilepath);
+        CmsPageData pageMetadata = getTemplateDataMap(file.getParent(), lang).get(file.getName());
         if (null == pageMetadata) {
             pageMetadata = new CmsPageData();
         }
@@ -90,12 +91,12 @@ public class MetadataComponent implements Cache {
     /**
      * 更新模板元数据
      *
-     * @param filepath
+     * @param realFilepath
      * @param metadata
      * @return whether the update is successful
      */
-    public boolean updateTemplateMetadata(String filepath, CmsPageMetadata metadata) {
-        File file = new File(filepath);
+    public boolean updateTemplateMetadata(String realFilepath, CmsPageMetadata metadata) {
+        File file = new File(realFilepath);
         String dirPath = file.getParent();
         Map<String, CmsPageMetadata> metadataMap = getTemplateMetadataMap(dirPath);
         metadataMap.put(file.getName(), metadata);
@@ -110,14 +111,15 @@ public class MetadataComponent implements Cache {
     /**
      * 更新模板元数据
      *
-     * @param filepath
+     * @param realFilepath
+     * @param lang 
      * @param data
      * @return whether the update is successful
      */
-    public boolean updateTemplateData(String filepath, CmsPageData data) {
-        File file = new File(filepath);
+    public boolean updateTemplateData(String realFilepath, String lang, CmsPageData data) {
+        File file = new File(realFilepath);
         String dirPath = file.getParent();
-        Map<String, CmsPageData> dataMap = getTemplateDataMap(dirPath);
+        Map<String, CmsPageData> dataMap = getTemplateDataMap(dirPath, lang);
         dataMap.put(file.getName(), data);
         try {
             saveTemplateData(dirPath, dataMap);
@@ -130,12 +132,12 @@ public class MetadataComponent implements Cache {
     /**
      * 更新推荐位元数据
      *
-     * @param filepath
+     * @param realFilepath
      * @param metadata
      * @return whether the update is successful
      */
-    public boolean updatePlaceMetadata(String filepath, CmsPlaceMetadata metadata) {
-        File file = new File(filepath);
+    public boolean updatePlaceMetadata(String realFilepath, CmsPlaceMetadata metadata) {
+        File file = new File(realFilepath);
         String dirPath = file.getParent();
         placeCache.remove(dirPath);
         Map<String, CmsPlaceMetadata> metadataMap = getPlaceMetadataMap(dirPath);
@@ -151,13 +153,14 @@ public class MetadataComponent implements Cache {
     /**
      * 删除模板数据
      *
-     * @param filepath
+     * @param realFilepath
+     * @param lang
      * @return whether the delete is successful
      */
-    public boolean deleteTemplateData(String filepath) {
-        File file = new File(filepath);
+    public boolean deleteTemplateData(String realFilepath, String lang) {
+        File file = new File(realFilepath);
         String dirPath = file.getParent();
-        Map<String, CmsPageData> dataMap = getTemplateDataMap(dirPath);
+        Map<String, CmsPageData> dataMap = getTemplateDataMap(dirPath, lang);
         dataMap.remove(file.getName());
         try {
             saveTemplateData(dirPath, dataMap);
@@ -170,11 +173,11 @@ public class MetadataComponent implements Cache {
     /**
      * 删除模板元数据
      *
-     * @param filepath
+     * @param realFilepath
      * @return whether the delete is successful
      */
-    public boolean deleteTemplateMetadata(String filepath) {
-        File file = new File(filepath);
+    public boolean deleteTemplateMetadata(String realFilepath) {
+        File file = new File(realFilepath);
         String dirPath = file.getParent();
         Map<String, CmsPageMetadata> metadataMap = getTemplateMetadataMap(dirPath);
         metadataMap.remove(file.getName());
@@ -189,11 +192,11 @@ public class MetadataComponent implements Cache {
     /**
      * 删除推荐位元数据
      *
-     * @param filepath
+     * @param realFilepath
      * @return whether the delete is successful
      */
-    public boolean deletePlaceMetadata(String filepath) {
-        File file = new File(filepath);
+    public boolean deletePlaceMetadata(String realFilepath) {
+        File file = new File(realFilepath);
         String dirPath = file.getParent();
         Map<String, CmsPlaceMetadata> metadataMap = getPlaceMetadataMap(dirPath);
         metadataMap.remove(file.getName());
@@ -259,12 +262,19 @@ public class MetadataComponent implements Cache {
      * 获取目录数据
      *
      * @param dirPath
+     * @param lang
      * @return template metadata map
      */
-    private Map<String, CmsPageData> getTemplateDataMap(String dirPath) {
+    private Map<String, CmsPageData> getTemplateDataMap(String dirPath, String lang) {
         Map<String, CmsPageData> dataMap = pageDataCache.get(dirPath);
         if (null == dataMap) {
-            File file = new File(CommonUtils.joinString(dirPath, Constants.SEPARATOR, DATA_FILE));
+            String fileName = null;
+            if (CommonUtils.notEmpty(lang)) {
+                fileName = CommonUtils.joinString(dirPath, Constants.SEPARATOR, lang, Constants.UNDERLINE, DATA_FILE);
+            } else {
+                fileName = CommonUtils.joinString(dirPath, Constants.SEPARATOR, DATA_FILE);
+            }
+            File file = new File(fileName);
             if (CommonUtils.notEmpty(file)) {
                 try {
                     dataMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()

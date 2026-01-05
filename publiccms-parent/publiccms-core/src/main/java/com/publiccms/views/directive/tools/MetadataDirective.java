@@ -19,16 +19,20 @@ import freemarker.template.TemplateException;
 
 /**
  * metadata 模板元数据获取指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>path</code>:模板路径
+ * <li><code>lang</code>:语言
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>object</code>:
  * 元数据{@link com.publiccms.views.pojo.entities.CmsPageMetadata}
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@tools.metadata
  * path='index.html'&gt;${object.alias}&lt;/@tools.metadata&gt;
@@ -48,11 +52,12 @@ public class MetadataDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
+        String lang = handler.getString("lang");
         if (CommonUtils.notEmpty(path) && !path.endsWith(Constants.SEPARATOR)) {
             SysSite site = getSite(handler);
             String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
-            CmsPageData data = metadataComponent.getTemplateData(filepath);
+            CmsPageData data = metadataComponent.getTemplateData(filepath, lang);
             handler.put("object", metadata.getAsMap(data)).render();
         }
     }

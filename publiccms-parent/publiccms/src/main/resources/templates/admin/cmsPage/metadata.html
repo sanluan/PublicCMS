@@ -71,8 +71,26 @@
             </dl>
             </#if>
         </@tools.templatePlaceList>
-            <#include "../include_page/extendData.html"/>
-            <@extendData extendList=metadata.extendList extendValues=metadata.extendData historyItemType='metadataExtend' historyItemId=path/>
+            <#if (metadata.extendList)?has_content>
+                 <#if (a.enableMultilingual)?has_content&&a.enableMultilingual>
+                    <dl class="nowrap">
+                        <dt><@t.page 'language'/></dt>
+                        <dd>
+                            <select class="combox" name="lang">
+                                <@cms.languageList>
+                                <#list list as language>
+                                    <#if language.id.code = siteAttribute.default_language><#assign value=""/><#else><#assign value=language.id.code/></#if>
+                                    <option value="${value}"${(value=lang!)?then(' selected="true"','')?no_esc}>${(language.name)!}</option>
+                                </#list>
+                                </@cms.languageList>
+                            </select>
+                        </dd>
+                    </dl>
+                </#if>
+                <#include "../include_page/extendData.html"/>
+                <@extendData extendList=metadata.extendList extendValues=metadata.extendData historyItemType='metadataExtend' historyItemId=path/>
+            
+            </#if>
         </div>
     </div>
 </form>

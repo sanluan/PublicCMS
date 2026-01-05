@@ -19,7 +19,7 @@ public class SysUserSettingDao extends BaseDao<SysUserSetting> {
     @Override
     protected SysUserSetting init(SysUserSetting entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

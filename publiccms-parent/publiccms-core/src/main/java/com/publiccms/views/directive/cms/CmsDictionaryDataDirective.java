@@ -3,8 +3,10 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -64,10 +66,8 @@ public class CmsDictionaryDataDirective extends AbstractTemplateDirective {
             } else {
                 String[] values = handler.getStringArray("values");
                 if (CommonUtils.notEmpty(values)) {
-                    CmsDictionaryDataId[] ids = new CmsDictionaryDataId[values.length];
-                    for (int i = 0; i < values.length; i++) {
-                        ids[i] = new CmsDictionaryDataId(dictionaryId, siteId, values[i]);
-                    }
+                    CmsDictionaryDataId[] ids = Stream.of(values).map(e -> new CmsDictionaryDataId(dictionaryId, siteId, e))
+                            .toArray(CmsDictionaryDataId[]::new);
                     List<CmsDictionaryData> entityList = service.getEntitys(ids);
                     Map<String, CmsDictionaryData> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().getValue(),
                             values, e -> e.getId().getValue());

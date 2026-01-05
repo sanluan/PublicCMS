@@ -74,7 +74,7 @@ public class SysWorkflowProcessService extends BaseService<SysWorkflowProcess> {
             SysWorkflowStep step = workflowStepService.getEntity(workflow.getStartStepId());
             if (null != step) {
                 SysWorkflowProcess entity = new SysWorkflowProcess(siteId, workflowId, title, itemType, itemId, step.getId(),
-                        false, userId, CommonUtils.getDate());
+                        false, userId, CommonUtils.now());
                 entity.setRoleId(step.getRoleId());
                 entity.setDeptId(step.getDeptId());
                 entity.setUserId(step.getUserId());
@@ -113,18 +113,18 @@ public class SysWorkflowProcessService extends BaseService<SysWorkflowProcess> {
             if (SysWorkflowProcessHistoryService.OPERATE_AGREE.equalsIgnoreCase(history.getOperate())) {
                 SysWorkflowStep step = workflowStepService.getEntity(entity.getStepId());
                 if (null == step) {
-                    entity.setUpdateDate(CommonUtils.getDate());
+                    entity.setUpdateDate(CommonUtils.now());
                     entity.setClosed(true);
                     entity = createProcess(site.getId(), entity.getWorkflowId(), user.getId(), entity.getTitle(),
                             entity.getItemType(), entity.getItemId());
                 } else {
                     SysWorkflowStep nextStep = workflowStepService.getEntity(step.getNextStepId());
                     if (null == nextStep) {
-                        entity.setUpdateDate(CommonUtils.getDate());
+                        entity.setUpdateDate(CommonUtils.now());
                         entity.setClosed(true);
                         processComponent.finishProcess(site, entity, user, history);
                     } else {
-                        entity.setUpdateDate(CommonUtils.getDate());
+                        entity.setUpdateDate(CommonUtils.now());
                         entity.setStepId(step.getNextStepId());
                         entity.setRoleId(nextStep.getRoleId());
                         entity.setDeptId(nextStep.getDeptId());
@@ -136,7 +136,7 @@ public class SysWorkflowProcessService extends BaseService<SysWorkflowProcess> {
                     }
                 }
             } else if (SysWorkflowProcessHistoryService.OPERATE_REJECT.equalsIgnoreCase(history.getOperate())) {
-                entity.setUpdateDate(CommonUtils.getDate());
+                entity.setUpdateDate(CommonUtils.now());
                 entity.setClosed(true);
                 processComponent.reject(site, entity, user, history);
             }

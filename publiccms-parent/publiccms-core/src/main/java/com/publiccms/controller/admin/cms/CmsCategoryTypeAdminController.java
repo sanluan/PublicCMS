@@ -70,14 +70,14 @@ public class CmsCategoryTypeAdminController {
             modelComponent.saveCategoryType(site.getId(), categoryTypeMap);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.categoryType", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         } else {
             Map<String, CmsCategoryType> categoryTypeMap = modelComponent.getCategoryTypeMap(site.getId());
             categoryTypeMap.put(entity.getId(), entity);
             modelComponent.saveCategoryType(site.getId(), categoryTypeMap);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.categoryType", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -98,7 +98,7 @@ public class CmsCategoryTypeAdminController {
             modelComponent.saveCategoryType(site.getId(), categoryTypeMap);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.categoryType", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

@@ -41,6 +41,21 @@
                     </#if>
                 </dd>
             </dl>
+        <#if (metadata.enableMultilingual)?has_content&&metadata.enableMultilingual>
+            <dl>
+                <dt><@t.page 'language'/></dt>
+                <dd>
+                    <select class="combox" name="lang">
+                        <@cms.languageList>
+                        <#list list as lang>
+                            <#if lang.id.code = siteAttribute.default_language><#assign value=""/><#else><#assign value=lang.id.code/></#if>
+                            <option value="${value}"${(value=(a.lang)!)?then(' selected="true"','')?no_esc}>${(lang.name)!}</option>
+                        </#list>
+                        </@cms.languageList>
+                    </select>
+                </dd>
+            </dl>
+        </#if>
         <#if fieldList?seq_contains('url')>
             <dl class="nowrap">
                 <dt>${(metadata.fieldTextMap['url'])}:</dt>

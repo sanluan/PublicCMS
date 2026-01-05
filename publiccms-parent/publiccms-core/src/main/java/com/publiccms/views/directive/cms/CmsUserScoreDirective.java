@@ -5,8 +5,10 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -66,10 +68,8 @@ public class CmsUserScoreDirective extends AbstractTemplateDirective {
             } else {
                 Long[] itemIds = handler.getLongArray("itemIds");
                 if (CommonUtils.notEmpty(itemIds)) {
-                    CmsUserScoreId[] entityIds = new CmsUserScoreId[itemIds.length];
-                    for (int i = 0; i < itemIds.length; i++) {
-                        entityIds[i] = new CmsUserScoreId(userId, itemType, itemIds[i]);
-                    }
+                    CmsUserScoreId[] entityIds =  Stream.of(itemIds).map(e -> new CmsUserScoreId(userId, itemType, e))
+                            .toArray(CmsUserScoreId[]::new);
                     List<CmsUserScore> entityList = service.getEntitys(entityIds);
                     Map<String, CmsUserScore> map = CommonUtils.listToMapSorted(entityList,
                             k -> String.valueOf(k.getId().getItemId()), itemIds, e -> e.getId().getItemId());

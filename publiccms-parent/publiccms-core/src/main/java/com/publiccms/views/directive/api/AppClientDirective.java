@@ -45,7 +45,7 @@ public class AppClientDirective extends AbstractAppDirective {
             SysSite site = getSite(handler);
             SysAppClient appClient = appClientService.getEntity(site.getId(), app.getChannel(), uuid);
             if (null == appClient) {
-                appClient = new SysAppClient(site.getId(), app.getChannel(), uuid, CommonUtils.getDate(), false);
+                appClient = new SysAppClient(site.getId(), app.getChannel(), uuid, CommonUtils.now(), false);
                 appClient.setClientVersion(clientVersion);
                 appClient.setLastLoginIp(RequestUtils.getIpAddress(handler.getRequest()));
                 appClientService.save(appClient);

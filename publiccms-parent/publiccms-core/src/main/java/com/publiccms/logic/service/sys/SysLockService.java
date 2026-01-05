@@ -71,7 +71,7 @@ public class SysLockService extends BaseService<SysLock> {
         SysLock entity = getEntity(id);
         if (null != entity) {
             entity.setCount(entity.getCount() + counter);
-            entity.setUpdateDate(CommonUtils.getDate());
+            entity.setUpdateDate(CommonUtils.now());
         }
         return entity;
     }
@@ -86,10 +86,10 @@ public class SysLockService extends BaseService<SysLock> {
     public SysLock updateCreateDate(Serializable id, int count, Long userId) {
         SysLock entity = getEntity(id);
         if (null != entity) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
             entity.setUserId(userId);
             entity.setCount(count);
-            entity.setUpdateDate(CommonUtils.getDate());
+            entity.setUpdateDate(CommonUtils.now());
         }
         return entity;
     }

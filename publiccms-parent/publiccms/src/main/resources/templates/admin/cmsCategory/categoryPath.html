@@ -2,10 +2,17 @@
 <div class="pageFormContent" layoutH>
     <ul class="tree treeFolder">
         <#if site.useStatic>
-            <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>category/${category.code}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'category.code'/>}.html</a></li>
-            <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse><@cms.category id=category.parentId>${object.code}/</@cms.category>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.parent'/>}/{<@t.page 'category.code'/>}/</a></li>
-            <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.code'/>}/</a></li>
-            <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>category/${category.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'category.id'/>}.html</a></li>
+            <#if 'true'=(siteAttribute.enable_multilingual)!>
+                <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>${category.lang!}/category/${category.code}.html</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'language'/>}/category/{<@t.page 'category.code'/>}.html</a></li>
+                <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>${category.lang!}/<@cms.category id=category.parentId>${object.code}/</@cms.category>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'language'/>}/{<@t.page 'category.parent'/>}/{<@t.page 'category.code'/>}/</a></li>
+                <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>${category.lang!}/${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'language'/>}/{<@t.page 'category.code'/>}/</a></li>
+                <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>${category.lang!}/category/${category.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'language'/>}/category/{<@t.page 'category.id'/>}.html</a></li>
+            <#else>
+                <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>category/${category.code}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'category.code'/>}.html</a></li>
+                <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse><@cms.category id=category.parentId>${object.code}/</@cms.category>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.parent'/>}/{<@t.page 'category.code'/>}/</a></li>
+                <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.code'/>}/</a></li>
+                <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>category/${category.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'category.id'/>}.html</a></li>
+            </#if>
         </#if>
         <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>category/category.html?id=${category.id}</#noparse>','templatePath':''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template_path'/>?id={<@t.page 'category.id'/>}</a></li>
         <li><a href="javascript:;" onclick="$.bringBack({'${field!'path'}':'<#noparse>category/category/${category.id}</#noparse>','templatePath':''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>/{<@t.page 'category.id'/>}</a></li>

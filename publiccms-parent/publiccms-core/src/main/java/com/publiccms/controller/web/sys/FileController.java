@@ -142,7 +142,7 @@ public class FileController {
                     result.put("fileSize", uploadResult.getFileSize());
                     logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB,
                             originalName, privatefile, fileType, uploadResult.getFileSize(), uploadResult.getWidth(),
-                            uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                            uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.now(),
                             uploadResult.getFilename()));
                 } catch (IOException e) {
                     log.error(e.getMessage(), e);

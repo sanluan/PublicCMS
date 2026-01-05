@@ -5,5 +5,5 @@
     "navTabId":"${navTabId!}",
     "rel":"${rel!}",
     "callbackType":"${callbackType!}",
-    "forwardUrl":"${forwardUrl!}"
+    "forwardUrl":"${forwardUrl!}<#if forwardUrl?has_content && id?has_content><#if forwardUrl?contains("?")>&<#else>?</#if>id=${id}</#if>"
 }

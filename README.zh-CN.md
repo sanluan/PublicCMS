@@ -21,17 +21,17 @@ https://github.com/sanluan/PublicCMS
 
 ## 参与开发
 
-切换到V4.0-develop,V5-develop分支,免费版本切换到V2021分支
+切换到develop分支,免费版本切换到V2021分支
 ![](doc/images/commits.jpg)
 
 ## 授权协议
 
-* 版本:V4.0,V5 个人免费,企事业单位付费 授权协议:详情参见LICENSE
+* 版本:V4.0,V5,V6 个人免费,企事业单位付费 授权协议:详情参见LICENSE
 * 版本:V1.0,V2016,V2017,V2019,V2021 完全免费 授权协议:MIT
 
 ## 环境要求
 
-* V4.0 jdk或jre 1.8 及以上,V5 Java17及以上
+* V4.0 jdk或jre 1.8 及以上,V5 Java17及以上,V6 Java21及以上
 * mysql 5.5 及以上
 
 ## 目录说明

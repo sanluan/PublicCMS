@@ -29,7 +29,7 @@
     };
     window.imageEditor = {
         base:window.LOADSCRIPTS_BASE + "/resource/plugins/filerobot-image-editor/",
-        resources: ["filerobot-image-editor.min.js","config.js","lang/" + window.LANGUAGE+".js"],
+        resources: ["filerobot-image-editor.min.js","config.js","lang/" + window.FILEROBOT_LANGUAGE+".js"],
         initd: false,
         index: 0
     };

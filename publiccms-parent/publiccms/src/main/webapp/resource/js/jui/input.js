@@ -121,7 +121,9 @@
                     selector.text($this.text());
                     var $input = $("select", box);
                     if ($input.val() != unEscapeHtml($this.attr("value")) ) {
-                        $input.val(unEscapeHtml($this.attr("value"))).trigger("change");
+                        $input.find('option').removeAttr('selected');
+                        $input.find('option[value="'+unEscapeHtml($this.attr("value"))+'"]').attr('selected', 'selected');
+                        $input.trigger("change");
                     }
                 });
             });

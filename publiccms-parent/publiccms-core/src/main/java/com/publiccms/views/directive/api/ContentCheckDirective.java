@@ -90,11 +90,11 @@ public class ContentCheckDirective extends AbstractAppDirective {
             }
         }
         for (CmsCategory category : categoryService.getEntitys(categoryIdSet)) {
-            templateComponent.createCategoryFile(site, category, null, null);
+            templateComponent.createCategoryFile(site, category, true, null, null);
         }
         logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
                 uncheck ? "uncheck.content" : "check.content", RequestUtils.getIpAddress(handler.getRequest()),
-                CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
         handler.render();
     }
 
@@ -103,7 +103,7 @@ public class ContentCheckDirective extends AbstractAppDirective {
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
         if (null != categoryModel && ControllerUtils.hasContentPermissions(user, entity) && !entity.isOnlyUrl()) {
             try {
-                return templateComponent.createContentFile(site, entity, null, categoryModel);
+                return templateComponent.createContentFile(site, entity, null, categoryModel, true);
             } catch (IOException | TemplateException e) {
                 return false;
             }

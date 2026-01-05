@@ -27,15 +27,19 @@ import jakarta.annotation.Resource;
 /**
  *
  * publishPage 页面静态化指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>path</code>:页面路径,默认值"/"
+ * <li><code>lang</code>:语言
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>map</code>map类型,键值页面路径,值为生成结果
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@task.publishPage&gt;&lt;#list map as
  * k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@task.publishPage&gt;
@@ -54,6 +58,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path", Constants.SEPARATOR);
+        String lang = handler.getString("lang");
         SysSite site = getSite(handler);
         String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
         if (CmsFileUtils.isFile(filepath)) {
@@ -61,9 +66,9 @@ public class PublishPageDirective extends AbstractTaskDirective {
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
             if (CommonUtils.notEmpty(metadata.getPublishPath())) {
                 try {
-                    CmsPageData data = metadataComponent.getTemplateData(filepath);
+                    CmsPageData data = metadataComponent.getTemplateData(filepath, lang);
                     templateComponent.createStaticFile(site, SiteComponent.getFullTemplatePath(site.getId(), path),
-                            metadata.getPublishPath(), null, metadata.getAsMap(data), null, null);
+                            metadata.getPublishPath(), lang, null, metadata.getAsMap(data), null, null);
                     map.put(path, true);
                 } catch (IOException | TemplateException e) {
                     handler.getWriter().append(e.getMessage());
@@ -72,26 +77,26 @@ public class PublishPageDirective extends AbstractTaskDirective {
                 handler.put("map", map).render();
             }
         } else if (CmsFileUtils.isDirectory(filepath)) {
-            handler.put("map", deal(site, handler, path)).render();
+            handler.put("map", deal(site, handler, path, lang)).render();
         }
     }
 
-    private Map<String, Boolean> deal(SysSite site, RenderHandler handler, String path) throws IOException {
+    private Map<String, Boolean> deal(SysSite site, RenderHandler handler, String path, String lang) throws IOException {
         path = path.replace("\\", Constants.SEPARATOR).replace("//", Constants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
         List<FileInfo> list = CmsFileUtils.getFileList(siteComponent.getTemplateFilePath(site.getId(), path), null);
         for (FileInfo fileInfo : list) {
             String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
             if (fileInfo.isDirectory()) {
-                map.putAll(deal(site, handler, CommonUtils.joinString(filepath, Constants.SEPARATOR)));
+                map.putAll(deal(site, handler, CommonUtils.joinString(filepath, Constants.SEPARATOR), lang));
             } else {
                 String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), filepath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
                 if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
                     try {
                         String templatePath = SiteComponent.getFullTemplatePath(site.getId(), filepath);
-                        CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
-                        templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null,
+                        CmsPageData data = metadataComponent.getTemplateData(realTemplatePath, lang);
+                        templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), lang, null,
                                 metadata.getAsMap(data), null, null);
                         map.put(filepath, true);
                     } catch (IOException | TemplateException e) {

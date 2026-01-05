@@ -77,12 +77,12 @@
     /* 初始化视频标签 */
     function initVideo(){
         createAlignButton( ["videoFloat", "upload_alignment"] );
-        addUrlChangeListener($G("videoUrl"), $G("posterUrl"), $G("autoplay"));
+        addUrlChangeListener($G("videoUrl"), $G("posterUrl"), $G("autoplay"), $G("loop"));
         addOkListener();
 
         //编辑视频时初始化相关信息
         (function(){
-            var img = editor.selection.getRange().getClosedNode(),url,poster,autoplay;
+            var img = editor.selection.getRange().getClosedNode(),url,poster,autoplay,loop;
             if(img && img.className){
                 var hasFakedClass = (img.className == "edui-faked-video"),
                     hasUploadClass = img.className.indexOf("edui-upload-video")!=-1;
@@ -92,6 +92,7 @@
                     $G("videoWidth").value = img.width;
                     $G("videoHeight").value = img.height;
                     $G("autoplay").checked = autoplay = img.getAttribute("autoplay")||false;
+                    $G("loop").checked = loop = img.getAttribute("loop")||false;
                     var align = domUtils.getComputedStyle(img,"float"),
                         parentAlign = domUtils.getComputedStyle(img.parentNode,"text-align");
                     updateAlignButton(parentAlign==="center"?"center":align);
@@ -100,7 +101,7 @@
                     isModifyUploadVideo = false;
                 }
             }
-            createPreviewVideo(url,poster,autoplay);
+            createPreviewVideo(url,poster,autoplay,loop);
         })();
     }
 
@@ -162,7 +163,8 @@
             url = $G('videoUrl').value,
             align = findFocus("videoFloat","name"),
             poster = $G('posterUrl').value,
-            autoplay = $G('autoplay').checked ;
+            autoplay = $G('autoplay').checked ,
+            loop = $G('loop').checked ;
         if(!url) return false;
         if ( !checkNum( [width, height] ) ) return false;
         editor.execCommand('insertvideo', {
@@ -171,7 +173,8 @@
             height: height.value,
             align: align,
             poster : poster,
-            autoplay : autoplay
+            autoplay : autoplay,
+            loop : loop
         }, isModifyUploadVideo ? 'upload':null);
     }
 
@@ -183,6 +186,7 @@
             height = parseInt($G('upload_height').value, 10) || 480,
             align = findFocus("upload_alignment","name") || 'center',
             autoplay = $G('autoplay').checked,
+            loop = $G('loop').checked,
             poster = $G('posterUrl').value;
         var imageList=[];
 
@@ -224,7 +228,8 @@
                 height:height,
                 align:align,
                 poster:poster,
-                autoplay:autoplay
+                autoplay:autoplay,
+                loop:loop
             });
             autoplay=false;
         }
@@ -331,15 +336,18 @@
      * @param url
      * @param poster
      */
-    function addUrlChangeListener(url, poster, autoplay){
+    function addUrlChangeListener(url, poster, autoplay, loop){
         url.addEventListener( "input", function () {
-            createPreviewVideo( this.value, poster.value, autoplay.checked );
+            createPreviewVideo( this.value, poster.value, autoplay.checked, loop.checked );
         }, false );
         poster.addEventListener( "input", function () {
-            createPreviewVideo( url.value, this.value, autoplay.checked );
+            createPreviewVideo( url.value, this.value, autoplay.checked, loop.checked );
         }, false );
         autoplay.addEventListener( "change", function () {
-            createPreviewVideo( url.value, poster.value, this.checked);
+            createPreviewVideo( url.value, poster.value, this.checked, loop.checked );
+        }, false );
+        loop.addEventListener( "change", function () {
+            createPreviewVideo( url.value, poster.value, autoplay.checked, loop.checked );
         }, false );
     }
 
@@ -348,7 +356,7 @@
      * @param url
      * @param poster
      */
-    function createPreviewVideo(url, poster , autoplay){
+    function createPreviewVideo(url, poster, autoplay, loop){
         if ( !url )return;
 
         var conUrl = convert_url(url);
@@ -358,7 +366,7 @@
         var ext = url.substr(url.lastIndexOf('.') + 1);
         if(ext == 'ogv') ext = 'ogg';
         $G("preview").innerHTML = '<div class="previewMsg"><span>'+lang.urlError+'</span></div>'+
-        '<video class="previewVideo video-js" controls preload="none" ' + (poster ? ' poster="' + poster + '"': '') + (autoplay ? ' autoplay="' + autoplay + '"': '') +
+        '<video class="previewVideo video-js" controls preload="none" ' + (poster ? ' poster="' + poster + '"': '') + (autoplay ? ' autoplay="' + autoplay + '"': '') + (loop ? ' loop="' + loop + '"': '') +
             ' src="' + conUrl + '"' +
             ' width="' + 420  + '"' +
             ' height="' + 280  + '">' +

@@ -50,7 +50,7 @@ public class SysAppTokenDao extends BaseDao<SysAppToken> {
     @Override
     protected SysAppToken init(SysAppToken entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

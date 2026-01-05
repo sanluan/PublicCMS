@@ -5,6 +5,7 @@ package com.publiccms.views.directive.sys;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Component;
 
@@ -42,10 +43,8 @@ public class SysWorkflowProcessItemDirective extends AbstractTemplateDirective {
             } else {
                 String[] itemIds = handler.getStringArray("itemIds");
                 if (CommonUtils.notEmpty(itemIds)) {
-                    SysWorkflowProcessItemId[] entityIds = new SysWorkflowProcessItemId[itemIds.length];
-                    for (int i = 0; i < itemIds.length; i++) {
-                        entityIds[i] = new SysWorkflowProcessItemId(itemType, itemIds[i]);
-                    }
+                    SysWorkflowProcessItemId[] entityIds = Stream.of(itemIds).map(e -> new SysWorkflowProcessItemId(itemType, e))
+                            .toArray(SysWorkflowProcessItemId[]::new);
                     List<SysWorkflowProcessItem> entityList = workflowProcessItemService.getEntitys(entityIds);
                     Map<String, SysWorkflowProcessItem> map = CommonUtils.listToMapSorted(entityList,
                             k -> String.valueOf(k.getId().getItemId()), itemIds, e -> e.getId());

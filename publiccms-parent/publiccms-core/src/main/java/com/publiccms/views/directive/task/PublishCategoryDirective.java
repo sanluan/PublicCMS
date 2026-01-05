@@ -7,14 +7,20 @@ import java.util.Map;
 
 import jakarta.annotation.Resource;
 
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategory;
+import com.publiccms.entities.cms.CmsCategoryLang;
+import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 
 import freemarker.template.TemplateException;
@@ -22,18 +28,21 @@ import freemarker.template.TemplateException;
 /**
  *
  * publishCategory 发布分类静态页面指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>id</code>:分类id
  * <li><code>ids</code>:多个分类id
  * <li><code>pageIndex</code>:当前页码,默认值1
  * <li><code>totalPage</code>:最大页码,为空时则只生成当前页
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>map</code>map类型,键值内容id,值为生成结果
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@task.publishCategory id=1&gt;&lt;#list map as
  * k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@task.publishCategory&gt;
@@ -48,18 +57,24 @@ import freemarker.template.TemplateException;
  */
 @Component
 public class PublishCategoryDirective extends AbstractTaskDirective {
+    @Resource
+    private SiteAttributeComponent siteAttributeComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer id = handler.getInteger("id");
+        String lang = handler.getString("lang");
         Integer pageIndex = handler.getInteger("pageIndex");
         Integer totalPage = handler.getInteger("totalPage");
         SysSite site = getSite(handler);
         Map<String, Boolean> map = new LinkedHashMap<>();
+        String defaultLanguage = siteAttributeComponent.getDefaultLanguage(site.getId());
         if (CommonUtils.notEmpty(id)) {
             CmsCategory entity = service.getEntity(id);
             try {
-                boolean result = templateComponent.createCategoryFile(site, entity, pageIndex, totalPage);
+                CmsLangUtils.initLang(entity, langService.getEntity(new CmsCategoryLangId(id, lang)));
+                boolean result = templateComponent.createCategoryFile(site, entity,
+                        null != defaultLanguage && defaultLanguage.equalsIgnoreCase(lang), pageIndex, totalPage);
                 map.put(id.toString(), result);
             } catch (IOException | TemplateException e) {
                 handler.getWriter().append(e.getMessage());
@@ -69,9 +84,16 @@ public class PublishCategoryDirective extends AbstractTaskDirective {
             Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsCategory> entityList = service.getEntitys(ids);
+                CmsCategoryLangId[] langIds = entityList.stream().map(e -> new CmsCategoryLangId(e.getId(), lang))
+                        .toArray(CmsCategoryLangId[]::new);
+                Map<Integer, CmsCategoryLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
+                        k -> k.getId().getCategoryId());
+
                 for (CmsCategory entity : entityList) {
                     try {
-                        boolean result = templateComponent.createCategoryFile(site, entity, pageIndex, totalPage);
+                        CmsLangUtils.initLang(entity, langMap.get(entity.getId()));
+                        boolean result = templateComponent.createCategoryFile(site, entity,
+                                null != defaultLanguage && defaultLanguage.equalsIgnoreCase(lang), pageIndex, totalPage);
                         map.put(entity.getId().toString(), result);
                     } catch (IOException | TemplateException e) {
                         handler.getWriter().append(e.getMessage());
@@ -89,5 +111,6 @@ public class PublishCategoryDirective extends AbstractTaskDirective {
     private TemplateComponent templateComponent;
     @Resource
     private CmsCategoryService service;
-
+    @Resource
+    private CmsCategoryLangService langService;
 }

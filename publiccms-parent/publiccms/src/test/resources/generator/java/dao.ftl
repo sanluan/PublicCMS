@@ -32,7 +32,7 @@ public class ${entityName}${daoSuffix} extends BaseDao<${entityName}> {
     protected ${entityName} init(${entityName} entity) {
         <#if createDate?has_content && createDate>
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         </#if>
         return entity;

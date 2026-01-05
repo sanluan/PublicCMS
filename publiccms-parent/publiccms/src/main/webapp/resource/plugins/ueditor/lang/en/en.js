@@ -358,6 +358,7 @@ UE.I18N['en'] = {
             'lang_videoH':"Height",
             'lang_alignment':"Alignment",
             'lang_input_autoplay':"Auto play",
+            'lang_input_loop':"loop",
             'lang_input_fileStatus':' No file uploaded!',
             'startUpload':{'style':"background:url(upload.png) no-repeat;"},
             'lang_videoLoading':"　Loading...",

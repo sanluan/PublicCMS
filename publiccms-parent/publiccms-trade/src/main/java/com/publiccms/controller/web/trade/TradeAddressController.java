@@ -51,12 +51,12 @@ public class TradeAddressController {
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                    "update.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    "update.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     JsonUtils.getString(entity)));
         } else {
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                    "save.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    "save.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -74,7 +74,7 @@ public class TradeAddressController {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(ids);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                    "delete.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    "delete.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;

@@ -85,13 +85,13 @@ public class CmsCommentAdminController {
             if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            entity.setUpdateDate(CommonUtils.getDate());
+            entity.setUpdateDate(CommonUtils.now());
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsComment", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         } else {
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setSiteId(site.getId());
             entity.setUserId(admin.getId());
             entity.setStatus(CmsCommentService.STATUS_NORMAL);
@@ -122,7 +122,7 @@ public class CmsCommentAdminController {
             CmsContent content = contentService.getEntity(entity.getContentId());
             if (null != content && !content.isDisabled()) {
                 try {
-                    templateComponent.createContentFile(site, content, null, null);
+                    templateComponent.createContentFile(site, content, null, null, true);
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
@@ -152,7 +152,7 @@ public class CmsCommentAdminController {
             if (needStatic) {
                 try {
                     for (CmsContent content : contentSet) {
-                        templateComponent.createContentFile(site, content, null, null);
+                        templateComponent.createContentFile(site, content, null, null, true);
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -162,7 +162,7 @@ public class CmsCommentAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "check.cmsComment", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -186,7 +186,7 @@ public class CmsCommentAdminController {
             if (needStatic) {
                 try {
                     for (CmsContent content : contentSet) {
-                        templateComponent.createContentFile(site, content, null, null);// 静态化
+                        templateComponent.createContentFile(site, content, null, null, true);// 静态化
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -196,7 +196,7 @@ public class CmsCommentAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "uncheck.cmsComment", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -220,7 +220,7 @@ public class CmsCommentAdminController {
             if (needStatic) {
                 try {
                     for (CmsContent content : contentSet) {
-                        templateComponent.createContentFile(site, content, null, null);// 静态化
+                        templateComponent.createContentFile(site, content, null, null, true);// 静态化
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -230,7 +230,7 @@ public class CmsCommentAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsComment", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

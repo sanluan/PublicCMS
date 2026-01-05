@@ -75,7 +75,7 @@ public class VoteController {
         if (null != item) {
             CmsVote cmsVote = service.getEntity(item.getVoteId());
             SysUser user = ControllerUtils.getUserFromSession(session);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             if (null != cmsVote && !cmsVote.isDisabled() && cmsVote.getSiteId() == siteId && now.before(cmsVote.getEndDate())
                     && now.after(cmsVote.getStartDate())
                     && (null != user && null != _csrf && _csrf.equals(ControllerUtils.getWebToken(request))

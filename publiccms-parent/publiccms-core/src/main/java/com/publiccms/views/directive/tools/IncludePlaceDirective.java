@@ -12,6 +12,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.views.pojo.entities.CmsPageData;
@@ -21,19 +22,23 @@ import freemarker.template.TemplateException;
 
 /**
  * includePlace 包含页面片段指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>path</code>:路径
+ * <li><code>lang</code>:语言
  * </ul>
  * <p>
  * 打印包含结果
- * <p>使用示例
  * <p>
- * &lt;@tools.includePlace path='00000000-0000-0000-0000-000000000000'/&gt;
+ * 使用示例
+ * <p>
+ * &lt;@tools.includePlace path='/00000000-0000-0000-0000-000000000000'
+ * lang='cn'/&gt;
  *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/includePlace?path=00000000-0000-0000-0000-000000000000.html&amp;appToken=接口访问授权Token', function(data){
+ $.getJSON('${site.dynamicPath}api/directive/tools/includePlace?path=/00000000-0000-0000-0000-000000000000.html&amp;appToken=接口访问授权Token', function(data){
    console.log(data);
  });
  &lt;/script&gt;
@@ -43,29 +48,47 @@ import freemarker.template.TemplateException;
 @Component
 public class IncludePlaceDirective extends AbstractTemplateDirective {
 
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
+
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
+        String lang = handler.getString("lang");
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(handler);
-            String filepath = siteComponent.getTemplateFilePath(site.getId(),
-                    CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
-            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
+            String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+            if (CommonUtils.notEmpty(lang) && lang.equalsIgnoreCase(defaultLang)) {
+                lang = null;
+            }
+
             if (site.isUseSsi()) {
                 StringBuilder sb = new StringBuilder("<!--#include virtual=\"/");
                 if (null != site.getParentId() && CommonUtils.notEmpty(site.getDirectory())) {
                     sb.append(site.getDirectory()).append(Constants.SEPARATOR);
                 }
-                sb.append(TemplateComponent.INCLUDE_DIRECTORY).append(path).append("\"-->");
+                sb.append(TemplateComponent.INCLUDE_DIRECTORY);
+                if (CommonUtils.notEmpty(lang)) {
+                    sb.append(Constants.SEPARATOR).append(lang);
+                }
+                sb.append(path).append("\"-->");
                 handler.print(sb.toString());
             } else {
-                String webfilepath = siteComponent.getWebFilePath(site.getId(),
-                        CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
+                String includePath = null;
+                if (CommonUtils.notEmpty(lang)) {
+                    includePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, Constants.SEPARATOR, lang, path);
+                } else {
+                    includePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
+                }
+                String webfilepath = siteComponent.getWebFilePath(site.getId(), includePath);
                 if (CmsFileUtils.exists(webfilepath)) {
                     handler.print(CmsFileUtils.getFileContent(webfilepath));
                 } else {
-                    CmsPageData data = metadataComponent.getTemplateData(filepath);
-                    templateComponent.printPlace(handler.getWriter(), site, path, metadata, data);
+                    String filepath = siteComponent.getTemplateFilePath(site.getId(),
+                            CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
+                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
+                    CmsPageData data = metadataComponent.getTemplateData(filepath, lang);
+                    templateComponent.printPlace(handler.getWriter(), site, path, lang, metadata, data);
                 }
             }
         }

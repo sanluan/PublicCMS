@@ -73,7 +73,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public Long create(short siteId, long userId, TradeOrder entity, String ip, List<TradeOrderProduct> tradeOrderProductList) {
         if (null != entity) {
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setId(null);
             entity.setSiteId(siteId);
             entity.setUserId(userId);
@@ -89,7 +89,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
             entity.setUpdateDate(null);
             entity.setIp(ip);
             save(entity);
-            TradeOrderHistory history = new TradeOrderHistory(entity.getSiteId(), entity.getId(), CommonUtils.getDate(),
+            TradeOrderHistory history = new TradeOrderHistory(entity.getSiteId(), entity.getId(), CommonUtils.now(),
                     TradeOrderHistoryService.OPERATE_CREATE);
             historyDao.save(history);
             BigDecimal amount = tradeOrderProductService.create(siteId, entity.getId(), tradeOrderProductList);
@@ -110,7 +110,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && !entity.isConfirmed()
                 && (entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_PAID)) {
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setConfirmed(true);
             entity.setUpdateDate(now);
             productService.deduction(siteId, tradeOrderProductService.getList(siteId, orderId));
@@ -128,7 +128,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         if (null != entity && siteId == entity.getSiteId()
                 && (entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_PAID)) {
             entity.setStatus(STATUS_INVALID);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setUpdateDate(now);
             TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now,
                     TradeOrderHistoryService.OPERATE_INVALID);
@@ -143,7 +143,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setPaymentId(paymentId);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setUpdateDate(now);
             TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now,
                     TradeOrderHistoryService.OPERATE_PAY);
@@ -158,7 +158,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setPaymentId(null);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setUpdateDate(now);
             TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_CANCELPAY);
             historyDao.save(history);
@@ -174,7 +174,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
             entity.setProcessed(true);
             entity.setProcessUserId(userId);
             entity.setProcessInfo(processInfo);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setProcessDate(now);
             entity.setUpdateDate(now);
             TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_PROCESSED);
@@ -189,7 +189,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING) {
             entity.setStatus(STATUS_PAID);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setPaymentDate(now);
             entity.setUpdateDate(now);
             TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_PAID);
@@ -204,7 +204,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_PAID)) {
             entity.setStatus(STATUS_REFUNDED);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setUpdateDate(now);
             TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_REFUND);
             historyDao.save(history);
@@ -219,7 +219,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
         if (null != entity && siteId == entity.getSiteId() && (null == userId || entity.getUserId() == userId)
                 && (entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_INVALID)) {
             entity.setStatus(STATUS_CLOSE);
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             entity.setUpdateDate(now);
             TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_CLOSE);
             historyDao.save(history);

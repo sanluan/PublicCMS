@@ -57,7 +57,7 @@ public class CmsVoteAdminController {
             voteItemService.update(entity.getId(), voteParameters.getItemList(), itemIgnoreProperties);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsVote", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
@@ -67,7 +67,7 @@ public class CmsVoteAdminController {
             voteItemService.save(voteParameters.getItemList());
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsVote", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -88,7 +88,7 @@ public class CmsVoteAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsVote", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), CommonUtils.joinString(ids, ',')));
+                    CommonUtils.now(), CommonUtils.joinString(ids, ',')));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

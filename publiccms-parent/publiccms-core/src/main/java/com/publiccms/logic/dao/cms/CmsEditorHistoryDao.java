@@ -22,13 +22,14 @@ public class CmsEditorHistoryDao extends BaseDao<CmsEditorHistory> {
      * @param itemType
      * @param itemId
      * @param fieldName
+     * @param lang
      * @param userId
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(String itemType, String itemId, String fieldName, Long userId, String orderType,
+    public PageHandler getPage(String itemType, String itemId, String fieldName, String lang, Long userId, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new CmsEditorHistory(id, siteId, itemType, itemId, fieldName, createDate, userId) from CmsEditorHistory bean");
@@ -40,6 +41,9 @@ public class CmsEditorHistoryDao extends BaseDao<CmsEditorHistory> {
         }
         if (CommonUtils.notEmpty(fieldName)) {
             queryHandler.condition("bean.fieldName = :fieldName").setParameter("fieldName", fieldName);
+        }
+        if (CommonUtils.notEmpty(lang)) {
+            queryHandler.condition("bean.lang = :lang or bean.lang is null").setParameter("lang", lang);
         }
         if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
@@ -54,7 +58,7 @@ public class CmsEditorHistoryDao extends BaseDao<CmsEditorHistory> {
     @Override
     protected CmsEditorHistory init(CmsEditorHistory entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

@@ -81,13 +81,13 @@ public class TaskTemplateAdminController {
                 if (CmsFileUtils.createFile(filepath, content)) {
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                    "save.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                                    "save.task.template", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
                 } else {
                     String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site.getId(), path, true);
                     CmsFileUtils.updateFile(filepath, historyFilePath, content);
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                    "update.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                                    "update.task.template", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
                 }
                 templateComponent.clearTaskTemplateCache();
             } catch (IOException e) {
@@ -137,7 +137,7 @@ public class TaskTemplateAdminController {
                     templateComponent.clearTaskTemplateCache();
                     logOperateService.save(
                             new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                    "upload.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), filepath));
+                                    "upload.task.template", RequestUtils.getIpAddress(request), CommonUtils.now(), filepath));
                 }
             } catch (IOException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -194,7 +194,7 @@ public class TaskTemplateAdminController {
             templateComponent.clearTaskTemplateCache();
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "delete.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                            "delete.task.template", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

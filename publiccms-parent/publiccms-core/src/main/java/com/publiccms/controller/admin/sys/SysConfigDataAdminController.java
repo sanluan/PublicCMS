@@ -130,18 +130,18 @@ public class SysConfigDataAdminController {
             Map<String, String> map = extendDataParameters.getExtendData();
             entity.setData(ExtendUtils.getExtendString(map, site.getSitePath(), fieldList));
             if (null != oldEntity) {
-                entity.setUpdateDate(CommonUtils.getDate());
+                entity.setUpdateDate(CommonUtils.now());
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
                 if (null != entity) {
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.configData", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
+                            CommonUtils.now(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
                 }
 
                 if (CommonUtils.notEmpty(oldEntity.getData()) && CommonUtils.notEmpty(fieldList)) {
                     Map<String, String> oldMap = ExtendUtils.getExtendMap(oldEntity.getData());
                     editorHistoryService.saveHistory(site.getId(), admin.getId(), CmsEditorHistoryService.ITEM_TYPE_CONFIG_DATA,
-                            entity.getId().getCode(), oldMap, map, fieldList);
+                            entity.getId().getCode(), null, oldMap, map, fieldList);
                 }
 
             } else {
@@ -149,7 +149,7 @@ public class SysConfigDataAdminController {
                 service.save(entity);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "save.configData", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
+                        CommonUtils.now(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
             }
 
             configDataComponent.removeCache(site.getId(), entity.getId().getCode());
@@ -222,7 +222,7 @@ public class SysConfigDataAdminController {
         if (null != file) {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "import.configData", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), file.getOriginalFilename()));
+                    CommonUtils.now(), file.getOriginalFilename()));
         }
         return SiteExchangeComponent.importData(site, admin.getId(), overwrite, "-config.zip", exchangeComponent, file, model);
     }
@@ -254,7 +254,7 @@ public class SysConfigDataAdminController {
             sysDeptItemService.delete(null, SysDeptItemService.ITEM_TYPE_CONFIG, code);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.configData", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
+                    CommonUtils.now(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
             configDataComponent.removeCache(site.getId(), entity.getId().getCode());
         }
         return CommonConstants.TEMPLATE_DONE;

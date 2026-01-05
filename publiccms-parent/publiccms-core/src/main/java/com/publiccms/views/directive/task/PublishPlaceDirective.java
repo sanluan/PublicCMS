@@ -26,15 +26,19 @@ import jakarta.annotation.Resource;
 /**
  *
  * publishPlace 页面片段静态化指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>path</code>:页面路径,默认值"/"
+ * <li><code>lang</code>:语言
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>map</code>map类型,键值页面路径,值为生成结果
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@task.publishPlace&gt;&lt;#list map as
  * k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@task.publishPlace&gt;
@@ -53,6 +57,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path", Constants.SEPARATOR);
+        String lang = handler.getString("lang");
         SysSite site = getSite(handler);
         String filepath = siteComponent.getTemplateFilePath(site.getId(),
                 CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
@@ -60,8 +65,8 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
             Map<String, Boolean> map = new LinkedHashMap<>();
             try {
                 CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
-                CmsPageData data = metadataComponent.getTemplateData(filepath);
-                templateComponent.staticPlace(site, path, metadata, data);
+                CmsPageData data = metadataComponent.getTemplateData(filepath, lang);
+                templateComponent.staticPlace(site, path, lang, metadata, data);
                 map.put(path, true);
             } catch (IOException | TemplateException e) {
                 handler.getWriter().append(e.getMessage());
@@ -69,11 +74,11 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
             }
             handler.put("map", map).render();
         } else if (CmsFileUtils.isDirectory(filepath)) {
-            handler.put("map", dealDir(site, handler, path)).render();
+            handler.put("map", dealDir(site, handler, path, lang)).render();
         }
     }
 
-    private Map<String, Boolean> dealDir(SysSite site, RenderHandler handler, String path) throws IOException {
+    private Map<String, Boolean> dealDir(SysSite site, RenderHandler handler, String path, String lang) throws IOException {
         path = path.replace("\\", Constants.SEPARATOR).replace("//", Constants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
         String realPath = siteComponent.getTemplateFilePath(site.getId(),
@@ -82,14 +87,14 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         for (FileInfo fileInfo : list) {
             String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
             if (fileInfo.isDirectory()) {
-                map.putAll(dealDir(site, handler, CommonUtils.joinString(filepath, Constants.SEPARATOR)));
+                map.putAll(dealDir(site, handler, CommonUtils.joinString(filepath, Constants.SEPARATOR), lang));
             } else {
                 try {
                     String realfilepath = siteComponent.getTemplateFilePath(site.getId(),
                             CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, filepath));
                     CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(realfilepath);
-                    CmsPageData data = metadataComponent.getTemplateData(realfilepath);
-                    templateComponent.staticPlace(site, filepath, metadata, data);
+                    CmsPageData data = metadataComponent.getTemplateData(realfilepath, lang);
+                    templateComponent.staticPlace(site, filepath, lang, metadata, data);
                     map.put(filepath, true);
                 } catch (IOException | TemplateException e) {
                     handler.getWriter().append(e.getMessage());

@@ -42,7 +42,7 @@ public class CmsUserScoreDao extends BaseDao<CmsUserScore> {
     @Override
     protected CmsUserScore init(CmsUserScore entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

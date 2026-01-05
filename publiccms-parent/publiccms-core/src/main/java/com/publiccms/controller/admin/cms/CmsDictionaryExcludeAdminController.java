@@ -58,7 +58,7 @@ public class CmsDictionaryExcludeAdminController {
             service.update(site.getId(), id, parameters.getExcludeList());
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsDictionaryExclude", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(parameters)));
+                    CommonUtils.now(), JsonUtils.getString(parameters)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

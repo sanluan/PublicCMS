@@ -96,7 +96,7 @@ public class SysAppClientDao extends BaseDao<SysAppClient> {
     @Override
     protected SysAppClient init(SysAppClient entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

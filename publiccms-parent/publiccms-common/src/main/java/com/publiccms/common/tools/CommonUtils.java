@@ -226,7 +226,7 @@ public class CommonUtils {
     /**
      * @return 当前日期
      */
-    public static Date getDate() {
+    public static Date now() {
         return new Date();
     }
 
