@@ -53,19 +53,22 @@ public class GetIpRegionMethod extends BaseMethod {
             synchronized (GetIpRegionMethod.class) {
                 try {
                     if (null == ip2Region) {
-                        Config v4Config = null;
+
                         File ipv4 = getFilePath("ip2region_v4.xdb");
                         File ipv6 = getFilePath("ip2region_v6.xdb");
+                        Config v4Config = null;
                         if (ipv4.exists()) {
-                            Config.custom().setCachePolicy(Config.VIndexCache).setSearchers(20).setXdbFile(ipv4).asV4();
+                            v4Config = Config.custom().setCachePolicy(Config.VIndexCache).setSearchers(20)
+                                    .setCacheSliceBytes(20 * 1024 * 1024).setXdbFile(ipv4).asV4();
                         } else {
-                            Config.custom().setCachePolicy(Config.BufferCache)
-                                    .setXdbInputStream(GetIpRegionMethod.class.getResourceAsStream("/ip2region_v4.xdb")).asV4();
+                            v4Config = Config.custom().setCachePolicy(Config.BufferCache)
+                                    .setXdbInputStream(GetIpRegionMethod.class.getResourceAsStream("/ip2region_v4.xdb"))
+                                    .setCacheSliceBytes(20 * 1024 * 1024).asV4();
                         }
                         Config v6Config = null;
                         if (ipv6.exists()) {
-                            v6Config = Config.custom().setCachePolicy(Config.VIndexCache).setSearchers(20).setXdbFile(ipv6)
-                                    .asV6();
+                            v6Config = Config.custom().setCachePolicy(Config.VIndexCache).setSearchers(20)
+                                    .setCacheSliceBytes(50 * 1024 * 1024).setXdbFile(ipv6).asV6();
                         }
                         ip2Region = Ip2Region.create(v4Config, v6Config);
                     }
