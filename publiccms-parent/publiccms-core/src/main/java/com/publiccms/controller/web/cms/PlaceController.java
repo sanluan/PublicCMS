@@ -229,8 +229,8 @@ public class PlaceController {
                         "delete.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
                 if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
                     try {
-                        CmsPageData data = metadataComponent.getTemplateData(filepath);
-                        templateComponent.staticPlace(site, entity.getPath(), metadata, data);
+                        CmsPageData data = metadataComponent.getTemplateData(filepath, entity.getLang());
+                        templateComponent.staticPlace(site, entity.getPath(), entity.getLang(), metadata, data);
                     } catch (IOException | TemplateException e) {
                         model.addAttribute(CommonConstants.ERROR, e.getMessage());
                         log.error(e.getMessage(), e);
@@ -269,8 +269,8 @@ public class PlaceController {
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
                 if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
                     try {
-                        CmsPageData data = metadataComponent.getTemplateData(filepath);
-                        templateComponent.staticPlace(site, entity.getPath(), metadata, data);
+                        CmsPageData data = metadataComponent.getTemplateData(filepath,entity.getLang());
+                        templateComponent.staticPlace(site, entity.getPath(),entity.getLang(), metadata, data);
                     } catch (IOException | TemplateException e) {
                         model.addAttribute(CommonConstants.ERROR, e.getMessage());
                         log.error(e.getMessage(), e);
@@ -280,7 +280,7 @@ public class PlaceController {
         }
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
-    
+
     /**
      * @param site
      * @param id
@@ -309,8 +309,8 @@ public class PlaceController {
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
                 if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
                     try {
-                        CmsPageData data = metadataComponent.getTemplateData(filepath);
-                        templateComponent.staticPlace(site, entity.getPath(), metadata, data);
+                        CmsPageData data = metadataComponent.getTemplateData(filepath,entity.getLang());
+                        templateComponent.staticPlace(site, entity.getPath(),entity.getLang(), metadata, data);
                     } catch (IOException | TemplateException e) {
                         model.addAttribute(CommonConstants.ERROR, e.getMessage());
                         log.error(e.getMessage(), e);
@@ -349,8 +349,8 @@ public class PlaceController {
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
                 if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
                     try {
-                        CmsPageData data = metadataComponent.getTemplateData(filepath);
-                        templateComponent.staticPlace(site, entity.getPath(), metadata, data);
+                        CmsPageData data = metadataComponent.getTemplateData(filepath,entity.getLang());
+                        templateComponent.staticPlace(site, entity.getPath(),entity.getLang(), metadata, data);
                     } catch (IOException | TemplateException e) {
                         model.addAttribute(CommonConstants.ERROR, e.getMessage());
                         log.error(e.getMessage(), e);

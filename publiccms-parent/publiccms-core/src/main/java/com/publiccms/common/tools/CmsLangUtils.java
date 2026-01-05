@@ -17,7 +17,7 @@ public class CmsLangUtils {
      * @param langEntity
      * @return
      */
-    public static CmsCategory initCategoryLang(CmsCategory entity, CmsCategoryLang langEntity) {
+    public static CmsCategory initLang(CmsCategory entity, CmsCategoryLang langEntity) {
         if (null != langEntity && null != langEntity.getId().getLang()
                 && !langEntity.getId().getLang().equalsIgnoreCase(entity.getLang())) {
             BeanUtils.copyProperties(langEntity, entity, ignoreProperties);
@@ -28,11 +28,12 @@ public class CmsLangUtils {
 
     /**
      * @param entity
+     * @param lang
      * @param langEntity
      * @return
      */
-    public static CmsCategoryAttribute initCategoryLang(CmsCategoryAttribute entity, CmsCategoryLang langEntity) {
-        if (null != langEntity) {
+    public static CmsCategoryAttribute initLang(CmsCategoryAttribute entity, String lang, CmsCategoryLang langEntity) {
+        if (null != langEntity && null != langEntity.getId().getLang() && !langEntity.getId().getLang().equalsIgnoreCase(lang)) {
             BeanUtils.copyProperties(langEntity, entity, ignoreProperties);
         }
         return entity;
@@ -43,7 +44,7 @@ public class CmsLangUtils {
      * @param langEntity
      * @return
      */
-    public static CmsContent initContentLang(CmsContent entity, CmsContentLang langEntity) {
+    public static CmsContent initLang(CmsContent entity, CmsContentLang langEntity) {
         if (null != langEntity && null != langEntity.getId().getLang()
                 && !langEntity.getId().getLang().equalsIgnoreCase(entity.getLang())) {
             BeanUtils.copyProperties(langEntity, entity, ignoreProperties);
@@ -54,11 +55,12 @@ public class CmsLangUtils {
 
     /**
      * @param entity
+     * @param lang
      * @param langEntity
      * @return
      */
-    public static CmsContentAttribute initContentLang(CmsContentAttribute entity, CmsContentLang langEntity) {
-        if (null != langEntity) {
+    public static CmsContentAttribute initLang(CmsContentAttribute entity, String lang, CmsContentLang langEntity) {
+        if (null != langEntity && null != langEntity.getId().getLang() && !langEntity.getId().getLang().equalsIgnoreCase(lang)) {
             BeanUtils.copyProperties(langEntity, entity, ignoreProperties);
         }
         return entity;

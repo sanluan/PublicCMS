@@ -33,6 +33,7 @@ import freemarker.template.TemplateException;
  * <li><code>cc</code>:多个抄送地址
  * <li><code>bcc</code>:多个密送地址
  * <li><code>title</code>:标题
+ * <li><code>lang</code>:语言
  * <li><code>templatePath</code>:内容模板路径
  * <li><code>content</code>:邮件内容,templatePath为空时有效
  * <li><code>fileNames</code>:多个附件名称
@@ -68,6 +69,7 @@ public class SendEmailDirective extends AbstractTemplateDirective {
         String[] cc = handler.getStringArray("cc");
         String[] bcc = handler.getStringArray("bcc");
         String title = handler.getString("title");
+        String lang = handler.getString("lang");
         String templatePath = handler.getString("templatePath");
         String[] fileNames = handler.getStringArray("fileNames");
         String[] filePaths = handler.getStringArray("filePaths");
@@ -87,7 +89,7 @@ public class SendEmailDirective extends AbstractTemplateDirective {
                 expose(handler, model);
                 String filepath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
-                CmsPageData data = metadataComponent.getTemplateData(filepath);
+                CmsPageData data = metadataComponent.getTemplateData(filepath, lang);
                 Map<String, String> parameters = handler.getMap("parameters");
                 if (!parameters.isEmpty()) {
                     model.putAll(parameters);

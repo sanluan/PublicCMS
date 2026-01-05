@@ -44,7 +44,8 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
     private SiteComponent siteComponent;
 
     @Override
-    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream, ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
+    public void exportAll(SysSite site, String directory, ByteArrayOutputStream outputStream,
+            ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         dealDir(site, directory, "", outputStream, archiveOutputStream);
     }
 
@@ -56,7 +57,8 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
         for (FileInfo fileInfo : list) {
             String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
             if (fileInfo.isDirectory()) {
-                dealDir(site, directory, CommonUtils.joinString(filepath, Constants.SEPARATOR), outputStream, archiveOutputStream);
+                dealDir(site, directory, CommonUtils.joinString(filepath, Constants.SEPARATOR), outputStream,
+                        archiveOutputStream);
             } else {
                 exportEntity(site, directory, filepath, outputStream, archiveOutputStream);
             }
@@ -67,7 +69,7 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
     public void exportEntity(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
             ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         PageHandler page = service.getPage(site.getId(), null, CommonUtils.joinString(Constants.SEPARATOR, path), null, null,
-                null, null, null, null, false, null, null, null, PageHandler.MAX_PAGE_SIZE);
+                null, null, null, null, null, false, null, null, null, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<CmsPlace> list = (List<CmsPlace>) page.getList();
         if (0 < page.getTotalCount()) {
@@ -107,8 +109,8 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
     @Override
     public void save(SysSite site, long userId, boolean overwrite, Place data) {
         if (null != data.getDatalist()) {
-            PageHandler page = service.getPage(site.getId(), null, data.getPath(), null, null, null, null, null, null, false,
-                    null, null, null, 0);
+            PageHandler page = service.getPage(site.getId(), null, data.getPath(), null, null, null, null, null, null, null,
+                    false, null, null, null, 0);
             if (0 == page.getTotalCount() || overwrite) {
                 for (PlaceData placeData : data.getDatalist()) {
                     CmsPlace entity = placeData.getEntity();

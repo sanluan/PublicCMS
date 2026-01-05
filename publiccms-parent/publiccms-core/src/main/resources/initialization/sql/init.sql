@@ -330,7 +330,7 @@ CREATE TABLE `cms_place` (
   `check_user_id` bigint(20) default NULL COMMENT '审核用户',
   `item_type` varchar(50) default NULL COMMENT '推荐项目类型',
   `item_id` bigint(20) default NULL COMMENT '推荐项目',
-  `lang` varchar(20) default NULL COMMENT '语言'
+  `lang` varchar(20) default NULL COMMENT '语言',
   `title` varchar(255) NOT NULL COMMENT '标题',
   `url` varchar(1000) default NULL COMMENT '超链接',
   `description` varchar(300) default NULL COMMENT '简介',

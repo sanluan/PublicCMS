@@ -3,16 +3,22 @@ package com.publiccms.views.directive.tools;
 import java.io.IOException;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategory;
+import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
+import com.publiccms.logic.service.cms.CmsContentLangService;
 import com.publiccms.logic.service.cms.CmsContentService;
 
 import freemarker.template.TemplateException;
@@ -20,18 +26,22 @@ import freemarker.template.TemplateException;
 /**
  *
  * createContentFile 创建内容静态文件指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>id</code>:内容id
+ * <li><code>lang</code>:语言
  * <li><code>templatePath</code>:模板路径
  * <li><code>filePath</code>:静态文件路径
  * <li><code>pageIndex</code>:当前页码,默认为1
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>url</code>:静态文件路径
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@tools.createContentFile id=1 templatePath='content.html'
  * filePath='content/'+1+'.html'&gt;${url}&lt;/@tools.createContentFile&gt;
@@ -50,6 +60,7 @@ public class CreateContentFileDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
+        String lang = handler.getString("lang");
         String templatePath = handler.getString("templatePath");
         String filepath = handler.getString("filePath");
         Integer pageIndex = handler.getInteger("pageIndex");
@@ -58,7 +69,14 @@ public class CreateContentFileDirective extends AbstractTemplateDirective {
             try {
                 CmsContent content = contentService.getEntity(id);
                 if (null != content && site.getId() == content.getSiteId()) {
+                    if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(content.getLang())) {
+                        CmsLangUtils.initLang(content, contentLangService.getEntity(new CmsContentLangId(id, lang)));
+                    }
                     CmsCategory category = categoryService.getEntity(content.getCategoryId());
+                    if (null != category && CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(category.getLang())) {
+                        CmsLangUtils.initLang(category,
+                                categoryLangService.getEntity(new CmsCategoryLangId(content.getCategoryId(), lang)));
+                    }
                     handler.put("url", templateComponent.createContentFile(site, content, category, false, templatePath, filepath,
                             pageIndex)).render();
                 }
@@ -79,5 +97,9 @@ public class CreateContentFileDirective extends AbstractTemplateDirective {
     private CmsCategoryService categoryService;
     @Resource
     private CmsContentService contentService;
+    @Resource
+    private CmsCategoryLangService categoryLangService;
+    @Resource
+    private CmsContentLangService contentLangService;
 
 }

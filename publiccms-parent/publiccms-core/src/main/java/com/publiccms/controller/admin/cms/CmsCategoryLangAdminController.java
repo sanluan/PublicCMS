@@ -80,7 +80,7 @@ public class CmsCategoryLangAdminController {
                     modelComponent.getCategoryType(site.getId(), category.getTypeId()), categoryLangListParameters);
             try {
                 for (CmsCategoryLang lang : entityList) {
-                    templateComponent.createCategoryFile(site, CmsLangUtils.initCategoryLang(category, lang), null, null);
+                    templateComponent.createCategoryFile(site, CmsLangUtils.initLang(category, lang), false, null, null);
                 }
             } catch (IOException | TemplateException e) {
                 log.error(e.getMessage(), e);

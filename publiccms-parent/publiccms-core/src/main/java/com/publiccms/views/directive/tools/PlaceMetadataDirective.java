@@ -22,6 +22,7 @@ import freemarker.template.TemplateException;
  * <p>参数列表
  * <ul>
  * <li><code>path</code>:模板路径
+ * <li><code>lang</code>:语言
  * </ul>
  * <p>返回结果
  * <ul>
@@ -48,11 +49,12 @@ public class PlaceMetadataDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
+        String lang = handler.getString("lang");
         if (CommonUtils.notEmpty(path) && !path.endsWith(Constants.SEPARATOR)) {
             String filepath = siteComponent.getTemplateFilePath(getSite(handler).getId(),
                     CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
-            CmsPageData data = metadataComponent.getTemplateData(filepath);
+            CmsPageData data = metadataComponent.getTemplateData(filepath,lang);
             handler.put("object", metadata.getAsMap(data)).render();
         }
     }

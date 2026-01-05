@@ -220,7 +220,7 @@
                 </#list>
             </#if>
             <#break>
-        <#case 'lang'>
+        <#case 'management_system.lang'>
             <#if value?has_content>
                 <#local values=value?split(',')/>
             </#if>
@@ -245,6 +245,7 @@
             <#else>
                 <@cms.languageList>
                 <select class="combox<#if extend.required> required</#if>" name="${inputName}">
+                    <option value${(!value?has_content)?then(' selected="true"','')?no_esc}><@t.page 'please_select'/></option>
                     <#list list as s>
                         <option value="${s.id.code}"${(value?has_content&&s.id.code=value)?then(' selected="true"','')?no_esc}>${s.name}</option>
                     </#list>

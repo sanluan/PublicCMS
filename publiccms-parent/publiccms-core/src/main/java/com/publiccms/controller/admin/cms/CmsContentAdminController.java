@@ -224,10 +224,10 @@ public class CmsContentAdminController {
         try {
             if (null != checked && checked) {
                 entity = service.check(site.getId(), admin, entity.getId());
-                templateComponent.createContentFile(site, entity, category, categoryModel); // 静态化
-                templateComponent.createCategoryFile(site, category, null, null);
+                templateComponent.createContentFile(site, entity, category, categoryModel, true); // 静态化
+                templateComponent.createCategoryFile(site, category, true, null, null);
                 if (null != parent) {
-                    templateComponent.createContentFile(site, parent, category, null);
+                    templateComponent.createContentFile(site, parent, category, null, true);
                 }
             } else if (null != oldEntity && (null == checked || !checked)) {
                 entity.setHasStatic(oldEntity.isHasStatic());
@@ -244,7 +244,7 @@ public class CmsContentAdminController {
                             categoryList.addAll(categoryService.getEntitys(categoryIdsSet));
                         }
                         for (CmsCategory c : categoryList) {
-                            templateComponent.createCategoryFile(site, c, null, null);
+                            templateComponent.createCategoryFile(site, c, true, null, null);
                         }
                     }
                 }
@@ -287,8 +287,8 @@ public class CmsContentAdminController {
         if (CommonUtils.notEmpty(ids)) {
             service.reject(site.getId(), admin, ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "reject.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "reject.content", RequestUtils.getIpAddress(request), CommonUtils.now(),
+                    StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -328,16 +328,16 @@ public class CmsContentAdminController {
                         if (uncheck) {
                             deleteFile(site, entity, siteComponent);
                         } else {
-                            templateComponent.createContentFile(site, entity, null, null);
+                            templateComponent.createContentFile(site, entity, null, null, true);
                         }
                         categoryIdSet.add(entity.getCategoryId());
                     }
                 }
                 for (CmsContent parent : service.getEntitys(parentIdSet)) {
-                    templateComponent.createContentFile(site, parent, null, null);
+                    templateComponent.createContentFile(site, parent, null, null, true);
                 }
                 for (CmsCategory category : categoryService.getEntitys(categoryIdSet)) {
-                    templateComponent.createCategoryFile(site, category, null, null);
+                    templateComponent.createCategoryFile(site, category, true, null, null);
                 }
             } catch (IOException | TemplateException e) {
                 log.error(e.getMessage(), e);
@@ -371,7 +371,7 @@ public class CmsContentAdminController {
             if (!categoryIdSet.isEmpty()) {
                 try {
                     for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
-                        templateComponent.createCategoryFile(site, entity, null, null);
+                        templateComponent.createCategoryFile(site, entity, true, null, null);
                     }
                 } catch (IOException | TemplateException e) {
                     log.error(e.getMessage(), e);
@@ -380,8 +380,8 @@ public class CmsContentAdminController {
                 }
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "refresh.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "refresh.content", RequestUtils.getIpAddress(request), CommonUtils.now(),
+                    StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -415,15 +415,15 @@ public class CmsContentAdminController {
             entity.setUserId(admin.getId());
             cmsContentRelatedService.save(entity);
             try {
-                templateComponent.createContentFile(site, content, null, null);
+                templateComponent.createContentFile(site, content, null, null, true);
             } catch (IOException | TemplateException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
                 return CommonConstants.TEMPLATE_ERROR;
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "related.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), JsonUtils.getString(related)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "related.content", RequestUtils.getIpAddress(request), CommonUtils.now(),
+                    JsonUtils.getString(related)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -449,7 +449,7 @@ public class CmsContentAdminController {
                 }
                 cmsContentRelatedService.delete(id);
                 try {
-                    templateComponent.createContentFile(site, content, null, null);
+                    templateComponent.createContentFile(site, content, null, null, true);
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
@@ -520,7 +520,7 @@ public class CmsContentAdminController {
                 categoryIdSet.add(categoryId);
                 try {
                     for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
-                        templateComponent.createCategoryFile(site, entity, null, null);
+                        templateComponent.createCategoryFile(site, entity, true, null, null);
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -543,7 +543,7 @@ public class CmsContentAdminController {
         CmsCategoryModel categoryModel = categoryModelService.getEntity(new CmsCategoryModelId(categoryId, entity.getModelId()));
         if (null != categoryModel) {
             entity = service.updateCategoryId(entity.getSiteId(), entity.getId(), categoryId);
-            templateComponent.createContentFile(site, entity, null, categoryModel);
+            templateComponent.createContentFile(site, entity, null, categoryModel, true);
             return true;
         }
         return false;
@@ -611,13 +611,13 @@ public class CmsContentAdminController {
             }
             CmsContent entity = service.sort(site.getId(), id, sort);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "sort.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), new StringBuilder().append(entity.getId()).append(":").append(entity.getTitle())
-                            .append(" to ").append(sort).toString()));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "sort.content", RequestUtils.getIpAddress(request), CommonUtils.now(),
+                    new StringBuilder().append(entity.getId()).append(":").append(entity.getTitle()).append(" to ").append(sort)
+                            .toString()));
             CmsCategory category = categoryService.getEntity(entity.getCategoryId());
             if (null != category) {
                 try {
-                    templateComponent.createCategoryFile(site, category, null, null);
+                    templateComponent.createCategoryFile(site, category, true, null, null);
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
@@ -673,7 +673,7 @@ public class CmsContentAdminController {
 
     private boolean publish(SysSite site, CmsContent entity, SysUser admin) throws IOException, TemplateException {
         if (ControllerUtils.hasContentPermissions(admin, entity)) {
-            return templateComponent.createContentFile(site, entity, null, null);
+            return templateComponent.createContentFile(site, entity, null, null, true);
         }
         return false;
     }
@@ -692,9 +692,9 @@ public class CmsContentAdminController {
     public String doImport(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, boolean overwrite,
             HttpServletRequest request, ModelMap model) {
         if (null != file) {
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "import.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), file.getOriginalFilename()));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "import.content", RequestUtils.getIpAddress(request), CommonUtils.now(), file.getOriginalFilename()));
         }
         return SiteExchangeComponent.importData(site, admin.getId(), overwrite, "-content.zip", exchangeComponent, file, model);
     }
@@ -812,12 +812,12 @@ public class CmsContentAdminController {
                 deleteFile(site, entity, siteComponent);
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.content", RequestUtils.getIpAddress(request), CommonUtils.now(),
+                    StringUtils.join(ids, Constants.COMMA)));
             if (!categoryIdSet.isEmpty()) {
                 try {
                     for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
-                        templateComponent.createCategoryFile(site, entity, null, null);
+                        templateComponent.createCategoryFile(site, entity, true, null, null);
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -866,9 +866,9 @@ public class CmsContentAdminController {
                         CmsContent content = service.copy(site, entity, category, status, userId);
                         if (null != content) {
                             try {
-                                templateComponent.createContentFile(site, service.getEntity(content.getId()), category, null);
-                                templateComponent.createCategoryFile(siteService.getEntity(category.getSiteId()), category, null,
-                                        null);
+                                templateComponent.createContentFile(site, service.getEntity(content.getId()), category, null, true);
+                                templateComponent.createCategoryFile(siteService.getEntity(category.getSiteId()), category, true,
+                                        null, null);
                             } catch (IOException | TemplateException e) {
                                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                                 log.error(e.getMessage(), e);
@@ -879,8 +879,8 @@ public class CmsContentAdminController {
                 }
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "copy.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), StringUtils.join(categoryIds, Constants.COMMA)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "copy.content", RequestUtils.getIpAddress(request), CommonUtils.now(),
+                    StringUtils.join(categoryIds, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -902,11 +902,11 @@ public class CmsContentAdminController {
                 Set<Serializable> categoryIdSet = new HashSet<>();
                 for (CmsContent entity : service.recycle(site.getId(), ids)) {
                     categoryIdSet.add(entity.getCategoryId());
-                    templateComponent.createContentFile(site, entity, null, null);
+                    templateComponent.createContentFile(site, entity, null, null, true);
                 }
                 if (!categoryIdSet.isEmpty()) {
                     for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
-                        templateComponent.createCategoryFile(site, entity, null, null);
+                        templateComponent.createCategoryFile(site, entity, true, null, null);
                     }
                 }
             } catch (IOException | TemplateException e) {
@@ -915,8 +915,8 @@ public class CmsContentAdminController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "recycle.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "recycle.content", RequestUtils.getIpAddress(request), CommonUtils.now(),
+                    StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

@@ -80,6 +80,12 @@ public class CmsPageMetadata implements java.io.Serializable {
      * 参数类型表
      */
     private Map<String, ParameterType> parameterTypeMap;
+    /**
+     * enable multilingual
+     * <p>
+     * 启用多语言
+     */
+    private boolean enableMultilingual;
 
     /**
      * @return alias
@@ -222,6 +228,20 @@ public class CmsPageMetadata implements java.io.Serializable {
     public void setParameterTypeMap(Map<String, ParameterType> parameterTypeMap) {
         this.parameterTypeMap = parameterTypeMap;
     }
+    
+    /**
+     * @return the enableMultilingual
+     */
+    public boolean isEnableMultilingual() {
+        return enableMultilingual;
+    }
+
+    /**
+     * @param enableMultilingual the enableMultilingual to set
+     */
+    public void setEnableMultilingual(boolean enableMultilingual) {
+        this.enableMultilingual = enableMultilingual;
+    }
 
     @JsonIgnore
     public Map<String, Object> getAsMap(CmsPageData data) {
@@ -237,6 +257,7 @@ public class CmsPageMetadata implements java.io.Serializable {
         map.put("extendList", getExtendList());
         map.put("extendData", data.getExtendData());
         map.put("parameterTypeMap", getParameterTypeMap());
+        map.put("enableMultilingual", isEnableMultilingual());
         return map;
     }
 }

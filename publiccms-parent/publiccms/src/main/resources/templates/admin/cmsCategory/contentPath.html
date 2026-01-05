@@ -1,9 +1,8 @@
 <p class="contentTitle"><#if site.useStatic><@t.page 'content.static_path.description'/><#else><@t.page 'content.dynamic_path.description'/></#if></p>
 <div class="pageFormContent" layoutH>
     <ul class="tree treeFolder">
-        <@sys.configData code="siteAttribute"><#assign config=object/></@sys.configData>
         <#if site.useStatic>
-            <#if 'true'=(config.enable_multilingual)!>
+            <#if 'true'=(siteAttribute.enable_multilingual)!>
                 <li><a href="javascript:;" onclick="$.bringBack({'${field!'contentPath'}':'<#noparse>${content.lang!}/content/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'language'/>}/content/{<@t.page 'year'/>}/{<@t.page 'month'/>-<@t.page 'day'/>}/{<@t.page 'content.id'/>}.html</a></li>
                 <li><a href="javascript:;" onclick="$.bringBack({'${field!'contentPath'}':'<#noparse>${content.lang!}/${content.modelId}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'language'/>}/{<@t.page 'model.id'/>}/{<@t.page 'year'/>}/{<@t.page 'month'/>-<@t.page 'day'/>}/{<@t.page 'content.id'/>}.html</a></li>
                 <li><a href="javascript:;" onclick="$.bringBack({'${field!'contentPath'}':'<#noparse>${content.lang!}/${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'language'/>}/{<@t.page 'category.code'/>}/{<@t.page 'year'/>}/{<@t.page 'month'/>-<@t.page 'day'/>}/{<@t.page 'content.id'/>}.html</a></li>

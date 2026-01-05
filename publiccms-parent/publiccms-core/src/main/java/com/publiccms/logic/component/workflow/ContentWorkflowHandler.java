@@ -41,14 +41,14 @@ public class ContentWorkflowHandler extends AbstractLongWorkflowHandler {
         CmsContent content = service.checkInProcess(entity.getSiteId(), user.getId(), itemId);
         try {
             CmsCategory category = categoryService.getEntity(content.getCategoryId());
-            templateComponent.createContentFile(site, content, category, null);
+            templateComponent.createContentFile(site, content, category, null, true);
             if (null != category) {
-                templateComponent.createCategoryFile(site, category, null, null);
+                templateComponent.createCategoryFile(site, category, true, null, null);
             }
             if (null != content.getParentId()) {
                 CmsContent parent = service.getEntity(content.getParentId());
                 if (null != parent) {
-                    templateComponent.createContentFile(site, parent, category, null);
+                    templateComponent.createContentFile(site, parent, category, null, true);
                 }
             }
         } catch (IOException | TemplateException e) {

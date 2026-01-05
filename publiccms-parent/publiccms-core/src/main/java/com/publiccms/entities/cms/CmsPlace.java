@@ -79,6 +79,15 @@ public class CmsPlace extends EntityAttribute implements java.io.Serializable {
     @GeneratorColumn(title = "项目", condition = true)
     private Long itemId;
     /**
+     * lang
+     * 
+     * 语言
+     */
+    @GeneratorColumn(title = "语言", condition = true)
+    @Length(max = 20)
+    private String lang;
+
+    /**
      * title
      * 
      * 标题
@@ -96,8 +105,7 @@ public class CmsPlace extends EntityAttribute implements java.io.Serializable {
     @Length(max = 1000)
     private String url;
     /**
-     * description
-     * 描述
+     * description 描述
      */
     @GeneratorColumn(title = "描述")
     @Length(max = 300)
@@ -181,15 +189,16 @@ public class CmsPlace extends EntityAttribute implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public CmsPlace(short siteId, String path, Long userId, Long checkUserId, String itemType, Long itemId, String title,
-            String url, String cover, Date createDate, Date publishDate, Date expiryDate, int status, int clicks, int maxClicks,
-            Date updateDate, boolean disabled) {
+    public CmsPlace(short siteId, String path, Long userId, Long checkUserId, String itemType, Long itemId, String lang,
+            String title, String url, String cover, Date createDate, Date publishDate, Date expiryDate, int status, int clicks,
+            int maxClicks, Date updateDate, boolean disabled) {
         this.siteId = siteId;
         this.path = path;
         this.userId = userId;
         this.checkUserId = checkUserId;
         this.itemType = itemType;
         this.itemId = itemId;
+        this.lang = lang;
         this.title = title;
         this.url = url;
         this.cover = cover;
@@ -267,6 +276,15 @@ public class CmsPlace extends EntityAttribute implements java.io.Serializable {
 
     public void setItemId(Long itemId) {
         this.itemId = itemId;
+    }
+
+    @Column(name = "lang", length = 20)
+    public String getLang() {
+        return this.lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     @Column(name = "title", nullable = false)

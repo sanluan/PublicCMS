@@ -1,8 +1,10 @@
 package com.publiccms.logic.service.cms;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -74,6 +76,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param path
      * @param itemType
      * @param itemId
+     * @param lang
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -86,11 +89,11 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId, Date startPublishDate,
-            Date endPublishDate, Date expiryDate, Integer[] status, Boolean disabled, String orderField, String orderType,
-            Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, userId, path, itemType, itemId, startPublishDate, endPublishDate, expiryDate, status, disabled,
-                orderField, orderType, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId, String lang,
+            Date startPublishDate, Date endPublishDate, Date expiryDate, Integer[] status, Boolean disabled, String orderField,
+            String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, userId, path, itemType, itemId, lang, startPublishDate, endPublishDate, expiryDate, status,
+                disabled, orderField, orderType, pageIndex, pageSize);
     }
 
     /**
@@ -134,7 +137,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
         }
         return entity;
     }
-    
+
     /**
      * @param siteId
      * @param userId
@@ -153,7 +156,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
 
     /**
      * @param siteId
-     * @param userId 
+     * @param userId
      * @param id
      * @return results list
      */
@@ -212,21 +215,25 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param userId
      * @param ids
      * @param path
+     * @return 
      */
-    public void check(short siteId, Long userId, Serializable[] ids, String path) {
+    public List<CmsPlace> check(short siteId, Long userId, Serializable[] ids, String path) {
+        List<CmsPlace> entityList = new ArrayList<>();
         for (CmsPlace entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus() && path.equals(entity.getPath())) {
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckUserId(userId);
+                entityList.add(entity);
             }
         }
+        return entityList;
     }
 
     /**
      * @param siteId
      * @param userId
-     * @param ids 
-     * @param path 
+     * @param ids
+     * @param path
      */
     public void reject(short siteId, Long userId, Serializable[] ids, String path) {
         for (CmsPlace entity : getEntitys(ids)) {
@@ -241,28 +248,36 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param siteId
      * @param ids
      * @param path
+     * @return 
      */
-    public void uncheck(short siteId, Serializable[] ids, String path) {
+    public List<CmsPlace> uncheck(short siteId, Serializable[] ids, String path) {
+        List<CmsPlace> entityList = new ArrayList<>();
         for (CmsPlace entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus() && path.equals(entity.getPath())) {
                 entity.setStatus(STATUS_PEND);
+                entityList.add(entity);
             }
         }
+        return entityList;
     }
 
     /**
      * @param siteId
      * @param ids
      * @param path
+     * @return 
      */
-    public void refresh(short siteId, Serializable[] ids, String path) {
+    public List<CmsPlace> refresh(short siteId, Serializable[] ids, String path) {
         Date now = CommonUtils.now();
+        List<CmsPlace> entityList = new ArrayList<>();
         for (CmsPlace entity : getEntitys(ids)) {
             if (null != entity && siteId == entity.getSiteId() && path.equals(entity.getPath())
                     && now.after(entity.getPublishDate())) {
                 entity.setPublishDate(now);
+                entityList.add(entity);
             }
         }
+        return entityList;
     }
 
     @Override
@@ -277,13 +292,17 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param siteId
      * @param ids
      * @param path
+     * @return 
      */
-    public void delete(short siteId, Serializable[] ids, String path) {
+    public List<CmsPlace> delete(short siteId, Serializable[] ids, String path) {
+        List<CmsPlace> entityList = new ArrayList<>();
         for (CmsPlace entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && !entity.isDisabled() && path.equals(entity.getPath())) {
                 entity.setDisabled(true);
+                entityList.add(entity);
             }
         }
+        return entityList;
     }
 
     /**

@@ -65,7 +65,9 @@ public class CreateCategoryFileDirective extends AbstractTemplateDirective {
             try {
                 CmsCategory category = categoryService.getEntity(id);
                 if (null != category && site.getId() == category.getSiteId()) {
-                    CmsLangUtils.initCategoryLang(category, categoryLangService.getEntity(new CmsCategoryLangId(id, lang)));
+                    if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(category.getLang())) {
+                        CmsLangUtils.initLang(category, categoryLangService.getEntity(new CmsCategoryLangId(id, lang)));
+                    }
                     handler.put("url", templateComponent.createCategoryFile(site, category, templatePath, filepath, pageIndex,
                             handler.getInteger("totalPage"))).render();
                 }

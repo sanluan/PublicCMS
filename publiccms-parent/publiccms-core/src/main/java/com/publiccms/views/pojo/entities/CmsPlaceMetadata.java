@@ -108,6 +108,12 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      * 元数据扩展字段列表
      */
     private List<SysExtendField> metadataExtendList;
+    /**
+     * enable multilingual
+     * <p>
+     * 启用多语言
+     */
+    private boolean enableMultilingual;
 
     /**
      * @return alias
@@ -313,6 +319,21 @@ public class CmsPlaceMetadata implements java.io.Serializable {
         this.metadataExtendList = metadataExtendList;
     }
 
+    /**
+     * @return the enableMultilingual
+     */
+    public boolean isEnableMultilingual() {
+        return enableMultilingual;
+    }
+
+    /**
+     * @param enableMultilingual
+     *            the enableMultilingual to set
+     */
+    public void setEnableMultilingual(boolean enableMultilingual) {
+        this.enableMultilingual = enableMultilingual;
+    }
+
     @JsonIgnore
     public Map<String, Object> getAsMap(CmsPageData data) {
         Map<String, Object> map = new HashMap<>();
@@ -330,6 +351,7 @@ public class CmsPlaceMetadata implements java.io.Serializable {
         map.put("requiredFieldList", getRequiredFieldList());
         map.put("fieldTextMap", getFieldTextMap());
         map.put("metadataExtendList", getMetadataExtendList());
+        map.put("enableMultilingual", isEnableMultilingual());
         return map;
     }
 }

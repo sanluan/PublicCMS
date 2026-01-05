@@ -123,7 +123,7 @@ public class CmsCommentAdminController {
             CmsContent content = contentService.getEntity(entity.getContentId());
             if (null != content && !content.isDisabled()) {
                 try {
-                    templateComponent.createContentFile(site, content, null, null);
+                    templateComponent.createContentFile(site, content, null, null, true);
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
@@ -153,7 +153,7 @@ public class CmsCommentAdminController {
             if (needStatic) {
                 try {
                     for (CmsContent content : contentSet) {
-                        templateComponent.createContentFile(site, content, null, null);
+                        templateComponent.createContentFile(site, content, null, null, true);
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -187,7 +187,7 @@ public class CmsCommentAdminController {
             if (needStatic) {
                 try {
                     for (CmsContent content : contentSet) {
-                        templateComponent.createContentFile(site, content, null, null);// 静态化
+                        templateComponent.createContentFile(site, content, null, null, true);// 静态化
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -221,7 +221,7 @@ public class CmsCommentAdminController {
             if (needStatic) {
                 try {
                     for (CmsContent content : contentSet) {
-                        templateComponent.createContentFile(site, content, null, null);// 静态化
+                        templateComponent.createContentFile(site, content, null, null, true);// 静态化
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());

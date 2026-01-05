@@ -23,7 +23,6 @@ import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.cms.CmsCategoryLang;
 import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
@@ -39,7 +38,7 @@ import freemarker.template.TemplateException;
  * <ul>
  * <li><code>parentId</code>:父分类id
  * <li><code>typeId</code>:分类类型id
- * <li><code>lang</code>:语言,当站点启用多语言时有效
+ * <li><code>lang</code>:语言
  * <li><code>absoluteURL</code>:url处理为绝对路径, 默认为<code> true</code>
  * <li><code>queryAll</code>:查询全部,【true,false】,parentId为空时有效
  * <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
@@ -75,8 +74,6 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsCategoryLangService langService;
-    @Resource
-    private SiteAttributeComponent siteAttributeComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
@@ -102,30 +99,28 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) page.getList();
         if (null != list) {
-            String lang = handler.getString("lang", siteAttributeComponent.getDefaultLanguage(site.getId()));
+            String lang = handler.getString("lang");
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             Integer[] ids = list.stream().map(CmsCategory::getId).toArray(Integer[]::new);
-            CmsCategoryLangId[] langIds = list.stream().map(e -> new CmsCategoryLangId(e.getId(), lang))
-                    .toArray(CmsCategoryLangId[]::new);
             Map<Integer, CmsCategoryAttribute> attributeMap = containsAttribute
                     ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getCategoryId())
                     : null;
+
+            CmsCategoryLangId[] langIds = list.stream().map(e -> new CmsCategoryLangId(e.getId(), lang))
+                    .toArray(CmsCategoryLangId[]::new);
             Map<Integer, CmsCategoryLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
                     k -> k.getId().getCategoryId());
+
             Consumer<CmsCategory> consumer = e -> {
-                CmsCategoryLang langEntity = null;
-                if (siteAttributeComponent.enableMultilingual(site.getId()) && !lang.equalsIgnoreCase(e.getLang())) {
-                    langEntity = langMap.get(e.getId());
-                    CmsLangUtils.initCategoryLang(e, langEntity);
-                }
+                CmsCategoryLang langEntity = langMap.get(e.getId());
+                CmsLangUtils.initLang(e, langEntity);
+
                 if (absoluteURL) {
                     CmsUrlUtils.initCategoryUrl(site, e);
                 }
                 if (containsAttribute) {
                     CmsCategoryAttribute attribute = attributeMap.get(e.getId());
-                    if (!lang.equalsIgnoreCase(e.getLang())) {
-                        CmsLangUtils.initCategoryLang(attribute, langEntity);
-                    }
+                    CmsLangUtils.initLang(attribute, lang, langEntity);
                     e.setAttribute(ExtendUtils.getAttributeMap(attribute));
                 }
             };

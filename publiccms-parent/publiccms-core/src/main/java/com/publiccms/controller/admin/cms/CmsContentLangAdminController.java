@@ -128,13 +128,13 @@ public class CmsContentLangAdminController {
         try {
             if (CmsContentService.STATUS_NORMAL == content.getStatus()) {
                 for (CmsContentLang lang : entityList) {
-                    CmsLangUtils.initContentLang(content, lang);
+                    CmsLangUtils.initLang(content, lang);
                     CmsCategoryLang categoryLang = categoryLangService
                             .getEntity(new CmsCategoryLangId(category.getId(), lang.getId().getLang()));
-                    CmsLangUtils.initCategoryLang(category, categoryLang);
-                    templateComponent.createContentFile(site, content, category, categoryModel); // 静态化
+                    CmsLangUtils.initLang(category, categoryLang);
+                    templateComponent.createContentFile(site, content, category, categoryModel, false); // 静态化
                     if (null != categoryLang) {
-                        templateComponent.createCategoryFile(site, category, null, null);
+                        templateComponent.createCategoryFile(site, category, false, null, null);
                     }
                 }
             }

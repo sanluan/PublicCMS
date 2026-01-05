@@ -163,7 +163,7 @@ public interface Config {
     /**
      * 
      */
-    public static final String INPUTTYPE_LANG = "lang";
+    public static final String INPUTTYPE_LANG = "management_system.lang";
     /**
      * 
      */

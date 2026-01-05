@@ -3,12 +3,11 @@
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <div class="searchBar">
             <ul class="searchContent">
-                <@sys.configData code="siteAttribute"><#assign config=object/></@sys.configData>
                 <li>
-                    <label><@t.message 'config.siteAttribute.enable_multilingual'/>:</label><label><#if 'true'=(config.enable_multilingual)!><@t.page 'yes'/><#else><@t.page 'no'/></#if></label>
+                    <label><@t.message 'config.siteAttribute.enable_multilingual'/>:</label><label><#if 'true'=(siteAttribute.enable_multilingual)!><@t.page 'yes'/><#else><@t.page 'no'/></#if></label>
                 </li>
                 <li>
-                    <label><@t.message 'config.siteAttribute.default_language'/>:</label><label><@cms.language code=(config.default_language)!>${object.name}</@cms.language></label>
+                    <label><@t.message 'config.siteAttribute.default_language'/>:</label><label><@cms.language code=(siteAttribute.default_language)!>${object.name}</@cms.language></label>
                 </li>
                 <li>
                     <a href="sysConfigData/edit.html?code=siteAttribute" class="button" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i><@t.page 'config_data.edit'/></a>

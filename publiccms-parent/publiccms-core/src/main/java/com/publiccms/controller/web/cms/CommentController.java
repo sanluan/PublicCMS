@@ -172,7 +172,7 @@ public class CommentController {
                 }
                 if (null != content && !content.isDisabled()) {
                     try {
-                        templateComponent.createContentFile(site, content, null, null);
+                        templateComponent.createContentFile(site, content, null, null, true);
                     } catch (IOException | TemplateException e) {
                         log.error(e.getMessage(), e);
                     }

@@ -10,8 +10,7 @@
 <@cms.category id=categoryId!><#assign category=object/></@cms.category>
 <@cms.model id=modelId!><#assign model=object/></@cms.model>
 <@sys.dept id=admin.deptId!><#assign dept=object/></@sys.dept>
-<@sys.configData code="siteAttribute"><#assign attributeConfig=object/></@sys.configData>
-<form method="post" autocomplete="off" action="cmsContent/save?<#if !id?has_content && 'true'=(attributeConfig.enable_multilingual)!>callbackType=forward&forwardUrl=cmsContent/addLang.html<#else>callbackType=closeCurrent&navTabId=cmsContent/list</#if>" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsContent/save?<#if !id?has_content && (siteAttribute.default_language)?has_content>callbackType=forward&forwardUrl=cmsContent/addLang.html<#else>callbackType=closeCurrent&navTabId=cmsContent/list</#if>" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}"/>
     <input name="parentId" type="hidden" value="${parentId!}"/>
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
@@ -31,7 +30,7 @@
             </li>
         </@sys.authorized>
             </#if>
-            <#if id?has_content && a?has_content && 'true'=(attributeConfig.enable_multilingual)!>
+            <#if id?has_content && a?has_content && 'true'=(siteAttribute.enable_multilingual)!>
                 <li><a href="cmsContent/addLang.html?id=${id!}" target="navTab" rel="cmsContent/edit" class="button"><@t.page 'language.management'/></a></li>
             </#if>
             <#if a?has_content && model?has_content && model.hasChild>
@@ -113,12 +112,12 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                         ${(model.name)!}
                     </dd>
                 </dl>
-                <#if 'true'=(attributeConfig.enable_multilingual)!>
+                <#if 'true'=(siteAttribute.enable_multilingual)!>
                     <dl>
                         <dt><@t.page 'language'/>:</dt>
                         <dd>
-                            <input name="lang" type="hidden" value="${(attributeConfig.default_language)!}"/>
-                            <@cms.language code=(attributeConfig.default_language)!>${object.name}</@cms.language>
+                            <input name="lang" type="hidden" value="${(siteAttribute.default_language)!}"/>
+                            <@cms.language code=(siteAttribute.default_language)!>${object.name}</@cms.language>
                         </dd>
                     </dl>
                 </#if>

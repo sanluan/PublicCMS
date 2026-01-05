@@ -77,6 +77,7 @@ public class CmsPageAdminController {
      * @param site
      * @param admin
      * @param path
+     * @param lang
      * @param type
      * @param pageDate
      * @param request
@@ -85,8 +86,8 @@ public class CmsPageAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String type,
-            @ModelAttribute CmsPageData pageDate, HttpServletRequest request, ModelMap model) {
+    public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String lang,
+            String type, @ModelAttribute CmsPageData pageDate, HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (!path.startsWith(Constants.SEPARATOR)) {
             path = CommonUtils.joinString(Constants.SEPARATOR, path);
@@ -113,8 +114,10 @@ public class CmsPageAdminController {
             }
 
             ExtendUtils.decodeField(pageDate.getExtendData(), site.getSitePath(), extendList);
-            CmsPageData olddata = metadataComponent.getTemplateData(filepath);
-            metadataComponent.updateTemplateData(filepath, pageDate);
+
+            CmsPageData olddata = metadataComponent.getTemplateData(filepath, lang);
+            metadataComponent.updateTemplateData(filepath, lang, pageDate);
+
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "update.template.data", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
@@ -123,11 +126,15 @@ public class CmsPageAdminController {
                         path, null, olddata.getExtendData(), pageDate.getExtendData(), extendList);
             }
             if ("place".equalsIgnoreCase(type)) {
-                if (path.startsWith(TemplateComponent.INCLUDE_DIRECTORY)
-                        && (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), path)))) {
+                if (path.startsWith(TemplateComponent.INCLUDE_DIRECTORY) && (site.isUseSsi())) {
                     try {
-                        templateComponent.staticPlace(site, path.substring(TemplateComponent.INCLUDE_DIRECTORY.length()),
-                                placeMetadata, pageDate);
+                        String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY,
+                                CommonUtils.notEmpty(lang) ? Constants.SEPARATOR : null, lang,
+                                path.substring(TemplateComponent.INCLUDE_DIRECTORY.length()));
+                        if (CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
+                            templateComponent.staticPlace(site, path.substring(TemplateComponent.INCLUDE_DIRECTORY.length()),
+                                    lang, placeMetadata, pageDate);
+                        }
                     } catch (IOException | TemplateException e) {
                         log.error(e.getMessage(), e);
                     }
@@ -136,7 +143,7 @@ public class CmsPageAdminController {
                 if (site.isUseStatic() && null != pageMetadata && CommonUtils.notEmpty(pageMetadata.getPublishPath())) {
                     String templatePath = SiteComponent.getFullTemplatePath(site.getId(), path);
                     try {
-                        templateComponent.createStaticFile(site, templatePath, pageMetadata.getPublishPath(), null,
+                        templateComponent.createStaticFile(site, templatePath, pageMetadata.getPublishPath(), lang, null,
                                 pageMetadata.getAsMap(pageDate), null, null);
                     } catch (IOException | TemplateException e) {
                         log.error(e.getMessage(), e);

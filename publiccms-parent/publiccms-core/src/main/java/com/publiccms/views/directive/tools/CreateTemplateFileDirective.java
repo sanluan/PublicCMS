@@ -22,18 +22,22 @@ import freemarker.template.TemplateException;
 /**
  *
  * createTemplateFile 创建静态文件指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>templatePath</code>:模板路径
  * <li><code>filePath</code>:静态文件路径
+ * <li><code>lang</code>:语言
  * <li><code>pageIndex</code>:当前页码,默认为1
  * <li><code>parameters</code>:参数map
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>url</code>:静态文件路径
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@tools.createTemplateFile templatePath='template.html'
  * filePath='page/'+1+'.html'
@@ -54,6 +58,7 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String templatePath = handler.getString("templatePath");
         String filepath = handler.getString("filePath");
+        String lang = handler.getString("lang");
         Integer pageIndex = handler.getInteger("pageIndex");
         if (CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(filepath)) {
             SysSite site = getSite(handler);
@@ -66,11 +71,10 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
                 }
                 String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
-                CmsPageData data = metadataComponent.getTemplateData(realTemplatePath);
+                CmsPageData data = metadataComponent.getTemplateData(realTemplatePath, lang);
                 Map<String, Object> metadataMap = metadata.getAsMap(data);
-                handler.put("url",
-                        templateComponent.createStaticFile(site, templateFullPath, filepath, pageIndex, metadataMap, model, null))
-                        .render();
+                handler.put("url", templateComponent.createStaticFile(site, templateFullPath, filepath, lang, pageIndex,
+                        metadataMap, model, null)).render();
             } catch (IOException | TemplateException e) {
                 handler.print(e.getMessage());
             }

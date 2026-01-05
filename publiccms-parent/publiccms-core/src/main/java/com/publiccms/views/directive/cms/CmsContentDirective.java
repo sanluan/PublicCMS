@@ -22,7 +22,6 @@ import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ContentConfigComponent;
 import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
-import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
@@ -40,7 +39,7 @@ import freemarker.template.TemplateException;
  * <ul>
  * <li><code>id</code>
  * 内容id,结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsContent}
- * <li><code>lang</code>:语言,当id不为空时有效
+ * <li><code>lang</code>:语言
  * <li><code>absoluteURL</code>:url处理为绝对路径 默认为<code> true</code>
  * <li><code>absoluteId</code>:id处理为引用内容的ID 默认为<code> true</code>
  * <li><code>containsAttribute</code>
@@ -76,8 +75,6 @@ public class CmsContentDirective extends AbstractTemplateDirective {
     private StatisticsComponent statisticsComponent;
     @Resource
     private CmsContentLangService langService;
-    @Resource
-    private SiteAttributeComponent siteAttributeComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
@@ -86,14 +83,14 @@ public class CmsContentDirective extends AbstractTemplateDirective {
         boolean absoluteId = handler.getBoolean("absoluteId", true);
         boolean containsAttribute = handler.getBoolean("containsAttribute", false) && (!handler.inHttp() || getAdvanced(handler));
         SysSite site = getSite(handler);
+        String lang = handler.getString("lang");
         if (CommonUtils.notEmpty(id)) {
             CmsContent entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 CmsContentLang langEntity = null;
-                String lang = handler.getString("lang");
                 if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
                     langEntity = langService.getEntity(new CmsContentLangId(entity.getId(), lang));
-                    CmsLangUtils.initContentLang(entity, langEntity);
+                    CmsLangUtils.initLang(entity, langEntity);
                 }
                 ClickStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
                 if (null != statistics) {
@@ -108,9 +105,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 }
                 if (containsAttribute) {
                     CmsContentAttribute attribute = attributeService.getEntity(entity.getId());
-                    if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
-                        CmsLangUtils.initContentLang(attribute, langEntity);
-                    }
+                    CmsLangUtils.initLang(attribute, lang, langEntity);
                     entity.setAttribute(
                             ExtendUtils.getAttributeMap(attribute, contentConfigComponent.getKeywordsConfig(site.getId())));
                 }
@@ -125,6 +120,15 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 Map<Long, CmsContentAttribute> attributeMap = containsAttribute
                         ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getContentId())
                         : null;
+
+                CmsContentLangId[] langIds = entityList.stream()
+                        .map(e -> new CmsContentLangId(
+                                (null == e.getParentId() && null != e.getQuoteContentId()) ? e.getQuoteContentId() : e.getId(),
+                                lang))
+                        .toArray(CmsContentLangId[]::new);
+                Map<Long, CmsContentLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
+                        k -> k.getId().getContentId());
+
                 UnaryOperator<CmsContent> valueMapper = e -> {
                     ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
                     if (null != statistics) {
@@ -133,12 +137,18 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
                         e.setId(e.getQuoteContentId());
                     }
+                    CmsContentLang langEntity = langMap
+                            .get((null == e.getParentId() && null != e.getQuoteContentId()) ? e.getQuoteContentId() : e.getId());
+                    CmsLangUtils.initLang(e, langEntity);
+
                     if (absoluteURL) {
                         CmsUrlUtils.initContentUrl(site, e);
                         fileUploadComponent.initContentCover(site, e);
                     }
                     if (containsAttribute) {
-                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()), config));
+                        CmsContentAttribute attribute = attributeMap.get(e.getId());
+                        CmsLangUtils.initLang(attribute, lang, langEntity);
+                        e.setAttribute(ExtendUtils.getAttributeMap(attribute, config));
                     }
                     return e;
                 };
