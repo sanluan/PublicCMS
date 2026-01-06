@@ -75,7 +75,7 @@ public class MetadataComponent implements Cache {
      * 获取模板数据
      *
      * @param realFilepath
-     * @param lang 
+     * @param lang
      * @return template metadata
      */
     public CmsPageData getTemplateData(String realFilepath, String lang) {
@@ -111,7 +111,7 @@ public class MetadataComponent implements Cache {
      * 更新模板元数据
      *
      * @param realFilepath
-     * @param lang 
+     * @param lang
      * @param data
      * @return whether the update is successful
      */
@@ -121,7 +121,7 @@ public class MetadataComponent implements Cache {
         Map<String, CmsPageData> dataMap = getTemplateDataMap(dirPath, lang);
         dataMap.put(file.getName(), data);
         try {
-            saveTemplateData(dirPath, dataMap);
+            saveTemplateData(dirPath, lang, dataMap);
             return true;
         } catch (IOException e) {
             return false;
@@ -162,7 +162,7 @@ public class MetadataComponent implements Cache {
         Map<String, CmsPageData> dataMap = getTemplateDataMap(dirPath, lang);
         dataMap.remove(file.getName());
         try {
-            saveTemplateData(dirPath, dataMap);
+            saveTemplateData(dirPath, lang, dataMap);
             return true;
         } catch (IOException e) {
             return false;
@@ -296,8 +296,14 @@ public class MetadataComponent implements Cache {
      * @param dataMap
      * @throws IOException
      */
-    private void saveTemplateData(String dirPath, Map<String, CmsPageData> dataMap) throws IOException {
-        File file = new File(CommonUtils.joinString(dirPath, Constants.SEPARATOR, DATA_FILE));
+    private void saveTemplateData(String dirPath, String lang, Map<String, CmsPageData> dataMap) throws IOException {
+        String fileName = null;
+        if (CommonUtils.notEmpty(lang)) {
+            fileName = CommonUtils.joinString(dirPath, Constants.SEPARATOR, lang, Constants.UNDERLINE, DATA_FILE);
+        } else {
+            fileName = CommonUtils.joinString(dirPath, Constants.SEPARATOR, DATA_FILE);
+        }
+        File file = new File(fileName);
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
