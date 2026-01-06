@@ -23,7 +23,15 @@ public class CmsContentLang extends EntityAttribute implements java.io.Serializa
 
     private static final long serialVersionUID = 1L;
     private CmsContentLangId id;
-    @GeneratorColumn(title = "标题", condition = true, like = true, or = true)
+    /**
+     * url
+     * 
+     * 链接地址
+     */
+    @GeneratorColumn(title = "地址")
+    @Length(max = 1000)
+    private String url;
+    @GeneratorColumn(title = "标题")
     @NotBlank
     @Length(max = 255)
     private String title;
@@ -48,9 +56,10 @@ public class CmsContentLang extends EntityAttribute implements java.io.Serializa
         this.id = id;
     }
 
-    public CmsContentLang(CmsContentLangId id, String title, String author, String editor, String description, String cover,
+    public CmsContentLang(CmsContentLangId id, String url, String title, String author, String editor, String description, String cover,
             String data, String text) {
         this.id = id;
+        this.url = url;
         this.title = title;
         this.author = author;
         this.editor = editor;
@@ -70,6 +79,15 @@ public class CmsContentLang extends EntityAttribute implements java.io.Serializa
 
     public void setId(CmsContentLangId id) {
         this.id = id;
+    }
+
+    @Column(name = "url", length = 1000)
+    public String getUrl() {
+        return this.url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Column(name = "title")

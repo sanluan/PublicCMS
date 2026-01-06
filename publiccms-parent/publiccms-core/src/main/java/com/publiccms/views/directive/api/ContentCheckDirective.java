@@ -4,9 +4,7 @@ package com.publiccms.views.directive.api;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -16,20 +14,25 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
+import com.publiccms.entities.cms.CmsCategoryLang;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsContentLang;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
+import com.publiccms.logic.service.cms.CmsContentLangService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogOperateService;
 
@@ -38,15 +41,18 @@ import freemarker.template.TemplateException;
 /**
  *
  * contentCheck 内容审核接口
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>ids</code>:多个内容id
  * <li><code>uncheck</code>:取消审核, 【true,false】,默认为<code>false</code>
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  *
  * <pre>
 &lt;script&gt;
@@ -62,6 +68,10 @@ public class ContentCheckDirective extends AbstractAppDirective {
     private CmsContentService service;
     @Resource
     private CmsCategoryService categoryService;
+    @Resource
+    private CmsContentLangService langService;
+    @Resource
+    private CmsCategoryLangService categoryLangService;
     @Resource
     protected LogOperateService logOperateService;
     @Resource
@@ -80,31 +90,48 @@ public class ContentCheckDirective extends AbstractAppDirective {
         } else {
             entityList = service.check(site.getId(), user, ids);
         }
-        Set<Serializable> categoryIdSet = new HashSet<>();
         for (CmsContent entity : entityList) {
+            handler.put(entity.getId().toString(), false);
             if (null != entity && site.getId() == entity.getSiteId()) {
-                if (CommonUtils.notEmpty(entity.getParentId())) {
-                    publish(site, entity, user);
+                CmsCategory category = categoryService.getEntity(entity.getCategoryId());
+                if (null != category && publish(site, entity, category, user)) {
+                    if (null != entity.getParentId()) {
+                        CmsContent parent = service.getEntity(entity.getParentId());
+                        if (null != parent) {
+                            publish(site, parent, category, user);
+                        }
+                    } else {
+                        templateComponent.createCategoryFile(site, category, null, null, null);
+                        List<CmsCategoryLang> langList = categoryLangService.getList(category.getId());
+                        for (CmsCategoryLang lang : langList) {
+                            if (CmsLangUtils.initLang(category, lang)) {
+                                templateComponent.createCategoryFile(site, category, lang, null, null);
+                            }
+                        }
+                    }
+                    handler.put(entity.getId().toString(), true);
                 }
-                handler.put(entity.getId().toString(), publish(site, entity, user));
-                categoryIdSet.add(entity.getCategoryId());
             }
         }
-        for (CmsCategory category : categoryService.getEntitys(categoryIdSet)) {
-            templateComponent.createCategoryFile(site, category, true, null, null);
-        }
         logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
-                uncheck ? "uncheck.content" : "check.content", RequestUtils.getIpAddress(handler.getRequest()),
-                CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
+                uncheck ? "uncheck.content" : "check.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.now(),
+                StringUtils.join(ids, Constants.COMMA)));
         handler.render();
     }
 
-    private boolean publish(SysSite site, CmsContent entity, SysUser user) {
+    private boolean publish(SysSite site, CmsContent entity, CmsCategory category, SysUser user) {
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
         if (null != categoryModel && ControllerUtils.hasContentPermissions(user, entity) && !entity.isOnlyUrl()) {
             try {
-                return templateComponent.createContentFile(site, entity, null, categoryModel, true);
+                boolean flag = templateComponent.createContentFile(site, entity, null, category, categoryModel);
+                List<CmsContentLang> langList = langService.getList(entity.getId());
+                for (CmsContentLang lang : langList) {
+                    if (CmsLangUtils.initLang(entity, lang)) {
+                        templateComponent.createContentFile(site, entity, lang, category, categoryModel);
+                    }
+                }
+                return flag;
             } catch (IOException | TemplateException e) {
                 return false;
             }

@@ -38,7 +38,6 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
-import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -73,13 +72,13 @@ import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
+import com.publiccms.logic.service.cms.CmsContentLangService;
 import com.publiccms.logic.service.cms.CmsContentRelatedService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptItemService;
 import com.publiccms.logic.service.sys.SysDeptService;
-import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysWorkflowProcessItemService;
 import com.publiccms.logic.service.sys.SysWorkflowProcessService;
@@ -101,6 +100,8 @@ public class CmsContentAdminController {
     @Resource
     private CmsContentService service;
     @Resource
+    private CmsContentLangService langService;
+    @Resource
     private SysDeptItemService sysDeptItemService;
     @Resource
     private SysDeptService sysDeptService;
@@ -120,8 +121,6 @@ public class CmsContentAdminController {
     protected SiteComponent siteComponent;
     @Resource
     protected ConfigDataComponent configDataComponent;
-    @Resource
-    private SysSiteService siteService;
     @Resource
     private ContentExchangeComponent exchangeComponent;
     @Resource
@@ -224,14 +223,18 @@ public class CmsContentAdminController {
         try {
             if (null != checked && checked) {
                 entity = service.check(site.getId(), admin, entity.getId());
-                templateComponent.createContentFile(site, entity, category, categoryModel, true); // 静态化
-                templateComponent.createCategoryFile(site, category, true, null, null);
+                templateComponent.publish(site, entity, category, categoryModel); // 静态化
                 if (null != parent) {
-                    templateComponent.createContentFile(site, parent, category, null, true);
+                    templateComponent.publish(site, parent, category);
+                } else {
+                    templateComponent.publish(site, category, null);
                 }
             } else if (null != oldEntity && (null == checked || !checked)) {
                 entity.setHasStatic(oldEntity.isHasStatic());
-                deleteFile(site, entity, siteComponent);
+                if (!entity.isOnlyUrl() && entity.isHasStatic() && null == entity.getQuoteContentId()
+                        && CommonUtils.notEmpty(entity.getUrl())) {
+                    templateComponent.deleteStaticFile(site.getId(), entity);
+                }
             }
             if (null == entity.getParentId() && null == entity.getQuoteContentId()) {
                 Set<Serializable> categoryIdsSet = service.updateQuote(entity.getId(), contentParameters);
@@ -244,7 +247,7 @@ public class CmsContentAdminController {
                             categoryList.addAll(categoryService.getEntitys(categoryIdsSet));
                         }
                         for (CmsCategory c : categoryList) {
-                            templateComponent.createCategoryFile(site, c, true, null, null);
+                            templateComponent.createCategoryFile(site, c, null, null, null);
                         }
                     }
                 }
@@ -317,27 +320,13 @@ public class CmsContentAdminController {
             } else {
                 entityList = service.check(site.getId(), admin, ids);
             }
-            Set<Serializable> categoryIdSet = new HashSet<>();
-            Set<Serializable> parentIdSet = new HashSet<>();
             try {
                 for (CmsContent entity : entityList) {
-                    if (null != entity && site.getId() == entity.getSiteId()) {
-                        if (CommonUtils.notEmpty(entity.getParentId())) {
-                            parentIdSet.add(entity.getParentId());
-                        }
-                        if (uncheck) {
-                            deleteFile(site, entity, siteComponent);
-                        } else {
-                            templateComponent.createContentFile(site, entity, null, null, true);
-                        }
-                        categoryIdSet.add(entity.getCategoryId());
+                    if (uncheck) {
+                        templateComponent.deleteStaticFile(site.getId(), entity);
+                    } else {
+                        templateComponent.publish(site, entity);
                     }
-                }
-                for (CmsContent parent : service.getEntitys(parentIdSet)) {
-                    templateComponent.createContentFile(site, parent, null, null, true);
-                }
-                for (CmsCategory category : categoryService.getEntitys(categoryIdSet)) {
-                    templateComponent.createCategoryFile(site, category, true, null, null);
                 }
             } catch (IOException | TemplateException e) {
                 log.error(e.getMessage(), e);
@@ -371,7 +360,7 @@ public class CmsContentAdminController {
             if (!categoryIdSet.isEmpty()) {
                 try {
                     for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
-                        templateComponent.createCategoryFile(site, entity, true, null, null);
+                        templateComponent.publish(site, entity, null);
                     }
                 } catch (IOException | TemplateException e) {
                     log.error(e.getMessage(), e);
@@ -415,7 +404,7 @@ public class CmsContentAdminController {
             entity.setUserId(admin.getId());
             cmsContentRelatedService.save(entity);
             try {
-                templateComponent.createContentFile(site, content, null, null, true);
+                templateComponent.publish(site, content);
             } catch (IOException | TemplateException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
@@ -449,7 +438,7 @@ public class CmsContentAdminController {
                 }
                 cmsContentRelatedService.delete(id);
                 try {
-                    templateComponent.createContentFile(site, content, null, null, true);
+                    templateComponent.publish(site, content);
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
@@ -520,7 +509,7 @@ public class CmsContentAdminController {
                 categoryIdSet.add(categoryId);
                 try {
                     for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
-                        templateComponent.createCategoryFile(site, entity, true, null, null);
+                        templateComponent.createCategoryFile(site, entity, null, null, null);
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -543,7 +532,7 @@ public class CmsContentAdminController {
         CmsCategoryModel categoryModel = categoryModelService.getEntity(new CmsCategoryModelId(categoryId, entity.getModelId()));
         if (null != categoryModel) {
             entity = service.updateCategoryId(entity.getSiteId(), entity.getId(), categoryId);
-            templateComponent.createContentFile(site, entity, null, categoryModel, true);
+            templateComponent.createContentFile(site, entity, null, null, categoryModel);
             return true;
         }
         return false;
@@ -617,7 +606,7 @@ public class CmsContentAdminController {
             CmsCategory category = categoryService.getEntity(entity.getCategoryId());
             if (null != category) {
                 try {
-                    templateComponent.createCategoryFile(site, category, true, null, null);
+                    templateComponent.createCategoryFile(site, category, null, null, null);
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
@@ -642,16 +631,17 @@ public class CmsContentAdminController {
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             StringBuilder sb = new StringBuilder();
-            try {
-                for (CmsContent entity : service.getEntitys(ids)) {
-                    if (!publish(site, entity, admin)) {
+            for (CmsContent entity : service.getEntitys(ids)) {
+                if (ControllerUtils.hasContentPermissions(admin, entity)) {
+                    try {
+                        templateComponent.publish(site, entity);
+                    } catch (IOException | TemplateException e) {
+                        log.error(e.getMessage(), e);
                         sb.append(entity.getTitle()).append(Constants.COMMA);
                     }
+                } else {
+                    sb.append(entity.getTitle()).append(Constants.COMMA);
                 }
-            } catch (IOException | TemplateException e) {
-                model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                log.error(e.getMessage(), e);
-                return CommonConstants.TEMPLATE_ERROR;
             }
             if (sb.length() > 0) {
                 sb.setLength(sb.length() - 1);
@@ -669,13 +659,6 @@ public class CmsContentAdminController {
             }
         }
         return CommonConstants.TEMPLATE_DONE;
-    }
-
-    private boolean publish(SysSite site, CmsContent entity, SysUser admin) throws IOException, TemplateException {
-        if (ControllerUtils.hasContentPermissions(admin, entity)) {
-            return templateComponent.createContentFile(site, entity, null, null, true);
-        }
-        return false;
     }
 
     /**
@@ -779,20 +762,6 @@ public class CmsContentAdminController {
         return exportComponent.exportWorkload(site, status, startCreateDate, endCreateDate, workloadType, dateField, locale);
     }
 
-    public static void deleteFile(SysSite site, CmsContent entity, SiteComponent siteComponent) {
-        if (!entity.isOnlyUrl() && entity.isHasStatic() && null == entity.getQuoteContentId()
-                && CommonUtils.notEmpty(entity.getUrl())) {
-            String filepath = siteComponent.getWebFilePath(site.getId(), entity.getUrl());
-            if (entity.getUrl().endsWith(Constants.SEPARATOR)) {
-                filepath = CommonUtils.joinString(filepath, CommonConstants.getDefaultPage());
-            }
-            if (CmsFileUtils.isFile(filepath)) {
-                String backupFilePath = siteComponent.getWebBackupFilePath(site.getId(), entity.getUrl());
-                CmsFileUtils.moveFile(filepath, backupFilePath);
-            }
-        }
-    }
-
     /**
      * @param site
      * @param admin
@@ -809,7 +778,7 @@ public class CmsContentAdminController {
             Set<Serializable> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.delete(site.getId(), admin, ids)) {
                 categoryIdSet.add(entity.getCategoryId());
-                deleteFile(site, entity, siteComponent);
+                templateComponent.deleteStaticFile(site.getId(), entity);
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.content", RequestUtils.getIpAddress(request), CommonUtils.now(),
@@ -817,7 +786,7 @@ public class CmsContentAdminController {
             if (!categoryIdSet.isEmpty()) {
                 try {
                     for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
-                        templateComponent.createCategoryFile(site, entity, true, null, null);
+                        templateComponent.publish(site, entity, null);
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -858,22 +827,21 @@ public class CmsContentAdminController {
                         userId = ConfigDataComponent.getLong(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_USER), 0);
                     }
 
-                    if (0 != userId) {
-                        if (category.getSiteId() != site.getId()) {
-                            CmsUrlUtils.initContentUrl(site, entity);
-                            fileUploadComponent.initContentCover(site, entity);
-                        }
-                        CmsContent content = service.copy(site, entity, category, status, userId);
-                        if (null != content) {
-                            try {
-                                templateComponent.createContentFile(site, service.getEntity(content.getId()), category, null, true);
-                                templateComponent.createCategoryFile(siteService.getEntity(category.getSiteId()), category, true,
-                                        null, null);
-                            } catch (IOException | TemplateException e) {
-                                model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                                log.error(e.getMessage(), e);
-                                return CommonConstants.TEMPLATE_ERROR;
-                            }
+                    if (category.getSiteId() != site.getId()) {
+                        CmsUrlUtils.initContentUrl(site, entity);
+                        fileUploadComponent.initContentCover(site, entity);
+                    }
+                    CmsContent content = service.copy(site, entity, category, status, userId);
+                    if (null != content) {
+                        try {
+                            SysSite newSite = siteComponent.getSiteById(category.getSiteId());
+                            templateComponent.createContentFile(newSite, service.getEntity(content.getId()), null, category,
+                                    null);
+                            templateComponent.createCategoryFile(newSite, category, null, null, null);
+                        } catch (IOException | TemplateException e) {
+                            model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                            log.error(e.getMessage(), e);
+                            return CommonConstants.TEMPLATE_ERROR;
                         }
                     }
                 }
@@ -902,11 +870,11 @@ public class CmsContentAdminController {
                 Set<Serializable> categoryIdSet = new HashSet<>();
                 for (CmsContent entity : service.recycle(site.getId(), ids)) {
                     categoryIdSet.add(entity.getCategoryId());
-                    templateComponent.createContentFile(site, entity, null, null, true);
+                    templateComponent.publish(site, entity);
                 }
                 if (!categoryIdSet.isEmpty()) {
                     for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
-                        templateComponent.createCategoryFile(site, entity, true, null, null);
+                        templateComponent.publish(site, entity, null);
                     }
                 }
             } catch (IOException | TemplateException e) {

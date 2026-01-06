@@ -284,8 +284,8 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     }
                     if (null != checked && checked) {
                         service.check(site.getId(), user, entity.getId());
-                        templateComponent.createContentFile(site, entity, category, categoryModel, true);
-                        templateComponent.createCategoryFile(site, category, true, null, null);
+                        templateComponent.createContentFile(site, entity, null, category, categoryModel);
+                        templateComponent.createCategoryFile(site, category, null, null, null);
                     }
                     handler.put("contentId", entity.getId());
                     handler.put("result", "success");

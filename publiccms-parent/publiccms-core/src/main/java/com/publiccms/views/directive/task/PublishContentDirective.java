@@ -65,13 +65,15 @@ public class PublishContentDirective extends AbstractTaskDirective {
         String lang = handler.getString("lang");
         SysSite site = getSite(handler);
         Map<String, Boolean> map = new LinkedHashMap<>();
-        String defaultLanguage = siteAttributeComponent.getDefaultLanguage(site.getId());
         if (CommonUtils.notEmpty(id)) {
             try {
                 CmsContent entity = service.getEntity(id);
-                CmsLangUtils.initLang(entity, langService.getEntity(new CmsContentLangId(id, lang)));
-                map.put(id.toString(), templateComponent.createContentFile(site, entity, null, null,
-                        null != defaultLanguage && defaultLanguage.equalsIgnoreCase(lang)));
+                CmsContentLang langEntity = null;
+                if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
+                    langEntity = langService.getEntity(new CmsContentLangId(id, lang));
+                    CmsLangUtils.initLang(entity, langEntity);
+                }
+                map.put(id.toString(), templateComponent.createContentFile(site, entity, langEntity, null, null));
             } catch (IOException | TemplateException e) {
                 handler.getWriter().append(e.getMessage());
                 map.put(id.toString(), false);
@@ -86,9 +88,13 @@ public class PublishContentDirective extends AbstractTaskDirective {
                         k -> k.getId().getContentId());
                 for (CmsContent entity : entityList) {
                     try {
-                        CmsLangUtils.initLang(entity, langMap.get(entity.getId()));
-                        map.put(entity.getId().toString(), templateComponent.createContentFile(site, entity, null, null,
-                                null != defaultLanguage && defaultLanguage.equalsIgnoreCase(lang)));
+                        CmsContentLang langEntity = null;
+                        if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
+                            langEntity = langMap.get(entity.getId());
+                            CmsLangUtils.initLang(entity, langEntity);
+                        }
+                        map.put(entity.getId().toString(),
+                                templateComponent.createContentFile(site, entity, langEntity, null, null));
                     } catch (IOException | TemplateException e) {
                         handler.getWriter().append(e.getMessage());
                         handler.getWriter().append("\n");

@@ -33,7 +33,6 @@ import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
-import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
@@ -51,6 +50,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
+import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
@@ -74,6 +74,8 @@ public class CmsCategoryAdminController {
     protected final Log log = LogFactory.getLog(getClass());
     @Resource
     private CmsCategoryService service;
+    @Resource
+    private CmsCategoryLangService langService;
     @Resource
     private CmsContentService contentService;
     @Resource
@@ -120,7 +122,7 @@ public class CmsCategoryAdminController {
                 operate, RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
 
         try {
-            publish(site, entity.getId(), null);
+            templateComponent.publish(site, entity, null);
         } catch (IOException | TemplateException e) {
             log.error(e.getMessage(), e);
             model.put(CommonConstants.ERROR, e.getMessage());
@@ -151,7 +153,7 @@ public class CmsCategoryAdminController {
                 }
                 service.copy(site.getId(), entity, copy);
                 try {
-                    templateComponent.createCategoryFile(site, entity, true, null, null);
+                    templateComponent.createCategoryFile(site, entity, null, null, null);
                 } catch (IOException | TemplateException e) {
                 }
             }
@@ -255,7 +257,7 @@ public class CmsCategoryAdminController {
         if (CommonUtils.notEmpty(ids)) {
             try {
                 for (Integer id : ids) {
-                    publish(site, id, max);
+                    templateComponent.publish(site, service.getEntity(id), max);
                 }
             } catch (IOException | TemplateException e) {
                 log.error(e.getMessage(), e);
@@ -289,20 +291,6 @@ public class CmsCategoryAdminController {
                     CommonUtils.now(), CommonUtils.joinString(id, " to ", typeId)));
         }
         return CommonConstants.TEMPLATE_DONE;
-    }
-
-    /**
-     * @param site
-     * @param id
-     * @param max
-     * @throws IOException
-     * @throws TemplateException
-     */
-    private void publish(SysSite site, Integer id, Integer max) throws IOException, TemplateException {
-        CmsCategory entity = service.getEntity(id);
-        if (null != site && null != entity && site.getId() == entity.getSiteId()) {
-            templateComponent.createCategoryFile(site, entity, true, null, max);
-        }
     }
 
     /**
@@ -352,16 +340,7 @@ public class CmsCategoryAdminController {
             HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             for (CmsCategory entity : service.delete(site.getId(), ids)) {
-                if (entity.isHasStatic() && CommonUtils.notEmpty(entity.getUrl())) {
-                    String filepath = siteComponent.getWebFilePath(site.getId(), entity.getUrl());
-                    if (entity.getUrl().endsWith(Constants.SEPARATOR)) {
-                        filepath = CommonUtils.joinString(filepath, CommonConstants.getDefaultPage());
-                    }
-                    if (CmsFileUtils.isFile(filepath)) {
-                        String backupFilePath = siteComponent.getWebBackupFilePath(site.getId(), entity.getUrl());
-                        CmsFileUtils.moveFile(filepath, backupFilePath);
-                    }
-                }
+                templateComponent.deleteStaticFile(site.getId(), entity);
                 categoryModelService.delete(site.getId(), null, entity.getId());
             }
             contentService.deleteByCategoryIds(site.getId(), ids);
@@ -370,6 +349,7 @@ public class CmsCategoryAdminController {
                     StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
+
     }
 
     /**
