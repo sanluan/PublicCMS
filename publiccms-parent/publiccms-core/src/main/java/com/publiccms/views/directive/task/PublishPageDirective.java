@@ -16,11 +16,8 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CmsFileUtils.FileInfo;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.views.pojo.entities.CmsPageData;
-import com.publiccms.views.pojo.entities.CmsPageMetadata;
 
 import freemarker.template.TemplateException;
 
@@ -63,19 +60,13 @@ public class PublishPageDirective extends AbstractTaskDirective {
         String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
         if (CmsFileUtils.isFile(filepath)) {
             Map<String, Boolean> map = new LinkedHashMap<>();
-            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
-            if (CommonUtils.notEmpty(metadata.getPublishPath())) {
-                try {
-                    CmsPageData data = metadataComponent.getTemplateData(filepath, lang);
-                    templateComponent.createStaticFile(site, SiteComponent.getFullTemplatePath(site.getId(), path),
-                            metadata.getPublishPath(), lang, null, metadata.getAsMap(data), null, null);
-                    map.put(path, true);
-                } catch (IOException | TemplateException e) {
-                    handler.getWriter().append(e.getMessage());
-                    map.put(path, false);
-                }
-                handler.put("map", map).render();
+            try {
+                map.put(path, templateComponent.publishPage(site, path, lang));
+            } catch (IOException | TemplateException e) {
+                handler.getWriter().append(e.getMessage()).append("\n");
+                map.put(path, false);
             }
+            handler.put("map", map).render();
         } else if (CmsFileUtils.isDirectory(filepath)) {
             handler.put("map", deal(site, handler, path, lang)).render();
         }
@@ -90,20 +81,12 @@ public class PublishPageDirective extends AbstractTaskDirective {
             if (fileInfo.isDirectory()) {
                 map.putAll(deal(site, handler, CommonUtils.joinString(filepath, Constants.SEPARATOR), lang));
             } else {
-                String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), filepath);
-                CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
-                if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
-                    try {
-                        String templatePath = SiteComponent.getFullTemplatePath(site.getId(), filepath);
-                        CmsPageData data = metadataComponent.getTemplateData(realTemplatePath, lang);
-                        templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), lang, null,
-                                metadata.getAsMap(data), null, null);
-                        map.put(filepath, true);
-                    } catch (IOException | TemplateException e) {
-                        handler.getWriter().append(e.getMessage());
-                        handler.getWriter().append("\n");
-                        map.put(filepath, false);
-                    }
+                try {
+                    templateComponent.publishPage(site, path, lang);
+                    map.put(filepath, true);
+                } catch (IOException | TemplateException e) {
+                    handler.getWriter().append(e.getMessage()).append("\n");
+                    map.put(filepath, false);
                 }
             }
         }

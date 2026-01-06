@@ -135,7 +135,7 @@ public class CmsTemplateAdminController {
                 }
                 templateComponent.clearTemplateCache();
                 cacheComponent.clearViewCache();
-                templateComponent.createStaticFile(site, path);
+                templateComponent.publishPage(site, path);
             } catch (IOException | TemplateException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
@@ -173,7 +173,7 @@ public class CmsTemplateAdminController {
                 }
                 templateComponent.clearTemplateCache();
                 cacheComponent.clearViewCache();
-                templateComponent.createStaticFile(site, path);
+                templateComponent.publishPage(site, path);
             } catch (IOException | TemplateException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
@@ -232,7 +232,7 @@ public class CmsTemplateAdminController {
                                     "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
                 }
                 templateComponent.clearTemplateCache();
-                templateComponent.staticPlace(site, path, true);
+                templateComponent.publishPlace(site, path, true);
             } catch (IOException | TemplateException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
@@ -266,7 +266,7 @@ public class CmsTemplateAdminController {
                         .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 "update.place.template", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
                 templateComponent.clearTemplateCache();
-                templateComponent.staticPlace(site, path, true);
+                templateComponent.publishPlace(site, path, true);
             } catch (IOException | TemplateException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
@@ -546,7 +546,7 @@ public class CmsTemplateAdminController {
             HttpServletRequest request, ModelMap model) {
         try {
             if (CommonUtils.notEmpty(path)) {
-                templateComponent.staticPlace(site, path, false);
+                templateComponent.publishPlace(site, path, false);
                 logOperateService
                         .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 "static", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
@@ -569,7 +569,7 @@ public class CmsTemplateAdminController {
     @Csrf
     public String publish(@RequestAttribute SysSite site, String path, ModelMap model) {
         try {
-            templateComponent.createStaticFile(site, path);
+            templateComponent.publishPage(site, path);
             return CommonConstants.TEMPLATE_DONE;
         } catch (IOException | TemplateException e) {
             model.addAttribute(CommonConstants.ERROR, e.getMessage());

@@ -206,7 +206,7 @@ public class CmsPlaceAdminController {
             }
 
             try {
-                templateComponent.staticPlace(site, entity.getPath(), entity.getLang(), true);
+                templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
             } catch (IOException | TemplateException e) {
                 log.error(e.getMessage(), e);
             }
@@ -246,7 +246,7 @@ public class CmsPlaceAdminController {
             Set<String> set = entityList.stream().map(e -> e.getLang()).collect(Collectors.toSet());
             for (String lang : set) {
                 try {
-                    templateComponent.staticPlace(site, path, lang, true);
+                    templateComponent.publishPlace(site, path, lang, true);
                 } catch (IOException | TemplateException e) {
                     log.error(e.getMessage(), e);
                 }
@@ -287,7 +287,7 @@ public class CmsPlaceAdminController {
             Set<String> set = entityList.stream().map(e -> e.getLang()).collect(Collectors.toSet());
             for (String lang : set) {
                 try {
-                    templateComponent.staticPlace(site, path, lang, true);
+                    templateComponent.publishPlace(site, path, lang, true);
                 } catch (IOException | TemplateException e) {
                     log.error(e.getMessage(), e);
                 }
@@ -361,7 +361,7 @@ public class CmsPlaceAdminController {
             Set<String> set = entityList.stream().map(e -> e.getLang()).collect(Collectors.toSet());
             for (String lang : set) {
                 try {
-                    templateComponent.staticPlace(site, path, lang, true);
+                    templateComponent.publishPlace(site, path, lang, true);
                 } catch (IOException | TemplateException e) {
                     log.error(e.getMessage(), e);
                 }
@@ -447,7 +447,7 @@ public class CmsPlaceAdminController {
                             "clear.place", RequestUtils.getIpAddress(request), CommonUtils.now(), path));
             if (site.isUseSsi()) {
                 try {
-                    templateComponent.staticPlace(site, path, true);
+                    templateComponent.publishPlace(site, path, true);
                 } catch (IOException | TemplateException e) {
                     log.error(e.getMessage(), e);
                 }
@@ -488,7 +488,7 @@ public class CmsPlaceAdminController {
             Set<String> set = entityList.stream().map(e -> e.getLang()).collect(Collectors.toSet());
             for (String lang : set) {
                 try {
-                    templateComponent.staticPlace(site, path, lang, true);
+                    templateComponent.publishPlace(site, path, lang, true);
                 } catch (IOException | TemplateException e) {
                     log.error(e.getMessage(), e);
                 }

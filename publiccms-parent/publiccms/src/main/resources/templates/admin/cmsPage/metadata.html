@@ -1,4 +1,4 @@
-<@tools.metadata path=path><#assign metadata=object/></@tools.metadata>
+<@tools.metadata path=path lang=lang><#assign metadata=object/></@tools.metadata>
 <form method="post" autocomplete="off" action="cmsPage/save?rel=${rel!'pageBox'}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="type" value="page"/>
@@ -72,24 +72,26 @@
             </#if>
         </@tools.templatePlaceList>
             <#if (metadata.extendList)?has_content>
-                 <#if (a.enableMultilingual)?has_content&&a.enableMultilingual>
+                 <#if (metadata.enableMultilingual)?has_content&&metadata.enableMultilingual>
                     <dl class="nowrap">
                         <dt><@t.page 'language'/></dt>
                         <dd>
-                            <select class="combox" name="lang">
-                                <@cms.languageList>
-                                <#list list as language>
-                                    <#if language.id.code = siteAttribute.default_language><#assign value=""/><#else><#assign value=language.id.code/></#if>
-                                    <option value="${value}"${(value=lang!)?then(' selected="true"','')?no_esc}>${(language.name)!}</option>
-                                </#list>
-                                </@cms.languageList>
-                            </select>
+                            <input name="lang" type="hidden" value="${lang!}"/>
+                            <@cms.languageList>
+                            <#list list as language>
+                                <#if lang?has_content && language.id.code =lang || !lang?has_content && language.id.code=siteAttribute.default_language>
+                                ${language.name!}
+                                <#else>
+                                <a href="cmsPage/metadata.html?path=${(path?url)!}<#if language.id.code != siteAttribute.default_language>&lang=${language.id.code}</#if>" target="ajax" rel="pageBox"/>${language.name!}</a>
+                                </#if>
+                            </#list>
+                            </@cms.languageList>
                         </dd>
                     </dl>
                 </#if>
                 <#include "../include_page/extendData.html"/>
                 <@extendData extendList=metadata.extendList extendValues=metadata.extendData historyItemType='metadataExtend' historyItemId=path/>
-            
+
             </#if>
         </div>
     </div>

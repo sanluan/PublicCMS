@@ -1,4 +1,4 @@
-<@tools.placeMetadata path=path><#assign a=object/></@tools.placeMetadata>
+<@tools.placeMetadata path=path lang=lang><#assign metadata=object/></@tools.placeMetadata>
 <form method="post" autocomplete="off" action="cmsPage/save?rel=${rel!'placeBox'}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="type" value="place"/>
@@ -12,7 +12,7 @@
                     <li><a class="button" href="placeTemplate/list.html?path=${(path?url)!}&editType=metadata" target="navTab" rel="placeTemplate/list"><@t.page 'metadata'/></a></li>
                     <li><a class="button" href="placeTemplate/list.html?path=${(path?url)!}" target="navTab" rel="placeTemplate/list"><@t.page 'template.content'/></a></li>
                 </@sys.authorized>
-                <#if (a.metadataExtendList)?has_content><li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li></#if>
+                <#if (metadata.metadataExtendList)?has_content><li><button type="submit" class="buttonActive" title="ctrl+s"><@t.page 'button.save'/></button></li></#if>
             </li>
         </ul>
     </div>
@@ -22,14 +22,14 @@
             <dl class="nowrap">
                 <dt><@t.page 'alias'/>:</dt>
                 <dd>
-                    ${(a.alias)!}
+                    ${(metadata.alias)!}
                 </dd>
             </dl>
-            <#if (a.size?has_content) && 0 lt a.size>
+            <#if (metadata.size?has_content) && 0 lt metadata.size>
             <dl class="nowrap">
                 <dt><@t.page 'operate'/>:</dt>
                 <dd>
-                    <a class="button" href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>:${(a.alias)!}(${a.size})</a>
+                    <a class="button" href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList"><i class="bi bi-layout-text-sidebar-reverse"></i><@t.page 'place_data'/>:${(metadata.alias)!}(${metadata.size})</a>
                     <a class="button" href="cmsPlace/clear?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" title="<@t.page 'confirm.clear_all'/>" target="ajaxTodo"><i class="icon-wrench icon-large"></i><@t.page 'button.clear_all'/></a>
                 </dd>
             </dl>
@@ -67,25 +67,27 @@
             </dl>
             </#if>
         </@tools.templateRegionList>
-        <#if (a.metadataExtendList)?has_content>
-            <#if (a.enableMultilingual)?has_content&&a.enableMultilingual>
+        <#if (metadata.metadataExtendList)?has_content>
+            <#if (metadata.enableMultilingual)?has_content&&metadata.enableMultilingual>
                 <dl class="nowrap">
                     <dt><@t.page 'language'/></dt>
                     <dd>
-                        <select class="combox" name="lang">
-                            <@cms.languageList>
-                            <#list list as language>
-                                <#if language.id.code = siteAttribute.default_language><#assign value=""/><#else><#assign value=language.id.code/></#if>
-                                <option value="${value}"${(value=lang!)?then(' selected="true"','')?no_esc}>${(language.name)!}</option>
-                            </#list>
-                            </@cms.languageList>
-                        </select>
+                        <input name="lang" type="hidden" value="${lang!}"/>
+                        <@cms.languageList>
+                        <#list list as language>
+                            <#if lang?has_content && language.id.code =lang || !lang?has_content && language.id.code=siteAttribute.default_language>
+                                ${language.name!}
+                            <#else>
+                                <a href="cmsPlace/metadata.html?path=${(path?url)!}<#if language.id.code != siteAttribute.default_language>&lang=${language.id.code}</#if>" target="ajax" rel="placeBox"/>${language.name!}</a>
+                            </#if>
+                        </#list>
+                        </@cms.languageList>
                     </dd>
                 </dl>
             </#if>
             <#include "../include_page/extendData.html"/>
-            <#assign extendList=(a.metadataExtendList)![]/>
-            <#assign attribute=(a.extendData)!{}/>
+            <#assign extendList=(metadata.metadataExtendList)![]/>
+            <#assign attribute=(metadata.extendData)!{}/>
             <@extendData extendList=extendList extendValues=attribute historyItemType='metadataExtend' historyItemId='include'+path/>
         </#if>
         </div>
