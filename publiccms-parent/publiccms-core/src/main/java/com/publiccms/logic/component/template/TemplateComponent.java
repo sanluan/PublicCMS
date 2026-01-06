@@ -541,7 +541,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                 String oldUrl = entity.getUrl();
                 String filepath = createCategoryFile(site, entity, templatePath, categoryPath, pageIndex, totalPage);
                 if (null != lang) {
-                    categoryLangService.updateUrl(entity.getId(), filepath);
+                    categoryLangService.updateUrl(lang.getId(), filepath);
                 } else if (!entity.isHasStatic() || null == oldUrl || !oldUrl.equals(filepath)) {
                     categoryService.updateUrl(entity.getId(), filepath, true);
                 }
