@@ -11,12 +11,8 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.handler.RenderHandler;
-import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.cms.CmsContent;
-import com.publiccms.entities.cms.CmsContentLang;
-import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -62,18 +58,12 @@ public class PublishContentDirective extends AbstractTaskDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
-        String lang = handler.getString("lang");
         SysSite site = getSite(handler);
         Map<String, Boolean> map = new LinkedHashMap<>();
         if (CommonUtils.notEmpty(id)) {
             try {
                 CmsContent entity = service.getEntity(id);
-                CmsContentLang langEntity = null;
-                if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
-                    langEntity = langService.getEntity(new CmsContentLangId(id, lang));
-                    CmsLangUtils.initLang(entity, langEntity);
-                }
-                map.put(id.toString(), templateComponent.createContentFile(site, entity, langEntity, null, null));
+                map.put(id.toString(), templateComponent.publish(site, entity, null, null));
             } catch (IOException | TemplateException e) {
                 handler.getWriter().append(e.getMessage());
                 map.put(id.toString(), false);
@@ -82,19 +72,9 @@ public class PublishContentDirective extends AbstractTaskDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
-                CmsCategoryLangId[] langIds = entityList.stream().map(e -> new CmsContentLangId(e.getId(), lang))
-                        .toArray(CmsCategoryLangId[]::new);
-                Map<Long, CmsContentLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
-                        k -> k.getId().getContentId());
                 for (CmsContent entity : entityList) {
                     try {
-                        CmsContentLang langEntity = null;
-                        if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
-                            langEntity = langMap.get(entity.getId());
-                            CmsLangUtils.initLang(entity, langEntity);
-                        }
-                        map.put(entity.getId().toString(),
-                                templateComponent.createContentFile(site, entity, langEntity, null, null));
+                        map.put(entity.getId().toString(), templateComponent.publish(site, entity, null, null));
                     } catch (IOException | TemplateException e) {
                         handler.getWriter().append(e.getMessage());
                         handler.getWriter().append("\n");

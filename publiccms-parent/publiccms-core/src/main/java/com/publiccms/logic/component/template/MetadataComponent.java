@@ -53,6 +53,29 @@ public class MetadataComponent implements Cache {
         if (null != pageMetadata) {
             return pageMetadata;
         }
+
+        return new CmsPlaceMetadata();
+    }
+
+    /**
+     * 获取推荐位元数据
+     *
+     * @param realFilepath
+     * @param lang
+     * @param defaultLang
+     * @return place metadata
+     */
+    public CmsPlaceMetadata getPlaceMetadata(String realFilepath, String lang, String defaultLang) {
+        File file = new File(realFilepath);
+        CmsPlaceMetadata pageMetadata = getPlaceMetadataMap(file.getParent()).get(file.getName());
+        if (null != pageMetadata) {
+            CmsPageData pagedata = getPageDataMap(file.getParent(), lang, defaultLang).get(file.getName());
+            if (null != pagedata) {
+                pageMetadata.setExtendData(pagedata.getExtendData());
+            }
+            return pageMetadata;
+        }
+
         return new CmsPlaceMetadata();
     }
 
@@ -73,15 +96,39 @@ public class MetadataComponent implements Cache {
     }
 
     /**
-     * 获取模板数据
+     * 获取模板元数据
      *
      * @param realFilepath
      * @param lang
+     * @param defaultLang
      * @return template metadata
      */
-    public CmsPageData getTemplateData(String realFilepath, String lang) {
+    public CmsPageMetadata getTemplateMetadata(String realFilepath, String lang, String defaultLang) {
         File file = new File(realFilepath);
-        CmsPageData pageMetadata = getTemplateDataMap(file.getParent(), lang).get(file.getName());
+        CmsPageMetadata pageMetadata = getTemplateMetadataMap(file.getParent()).get(file.getName());
+        if (null != pageMetadata) {
+            CmsPageData pagedata = getPageDataMap(file.getParent(), lang, defaultLang).get(file.getName());
+            if (null != pagedata) {
+                pageMetadata.setExtendData(pagedata.getExtendData());
+            }
+            return pageMetadata;
+        }
+        pageMetadata = new CmsPageMetadata();
+        pageMetadata.setUseDynamic(true);
+        return pageMetadata;
+    }
+
+    /**
+     * 获取页面数据
+     *
+     * @param realFilepath
+     * @param lang
+     * @param defaultLang
+     * @return template metadata
+     */
+    public CmsPageData getPageData(String realFilepath, String lang, String defaultLang) {
+        File file = new File(realFilepath);
+        CmsPageData pageMetadata = getPageDataMap(file.getParent(), lang, defaultLang).get(file.getName());
         if (null == pageMetadata) {
             pageMetadata = new CmsPageData();
         }
@@ -109,20 +156,21 @@ public class MetadataComponent implements Cache {
     }
 
     /**
-     * 更新模板元数据
+     * 更新页面数据
      *
      * @param realFilepath
      * @param lang
+     * @param defaultLang
      * @param data
      * @return whether the update is successful
      */
-    public boolean updateTemplateData(String realFilepath, String lang, CmsPageData data) {
+    public boolean updatePageData(String realFilepath, String lang, String defaultLang, CmsPageData data) {
         File file = new File(realFilepath);
         String dirPath = file.getParent();
-        Map<String, CmsPageData> dataMap = getTemplateDataMap(dirPath, lang);
+        Map<String, CmsPageData> dataMap = getPageDataMap(dirPath, lang, defaultLang);
         dataMap.put(file.getName(), data);
         try {
-            saveTemplateData(dirPath, lang, dataMap);
+            saveTemplateData(dirPath, lang, defaultLang, dataMap);
             return true;
         } catch (IOException e) {
             return false;
@@ -151,19 +199,20 @@ public class MetadataComponent implements Cache {
     }
 
     /**
-     * 删除模板数据
+     * 删除页面数据
      *
      * @param realFilepath
      * @param lang
+     * @param defaultLang
      * @return whether the delete is successful
      */
-    public boolean deleteTemplateData(String realFilepath, String lang) {
+    public boolean deletePageData(String realFilepath, String lang, String defaultLang) {
         File file = new File(realFilepath);
         String dirPath = file.getParent();
-        Map<String, CmsPageData> dataMap = getTemplateDataMap(dirPath, lang);
+        Map<String, CmsPageData> dataMap = getPageDataMap(dirPath, lang, defaultLang);
         dataMap.remove(file.getName());
         try {
-            saveTemplateData(dirPath, lang, dataMap);
+            saveTemplateData(dirPath, lang, defaultLang, dataMap);
             return true;
         } catch (IOException e) {
             return false;
@@ -265,15 +314,15 @@ public class MetadataComponent implements Cache {
      * @param lang
      * @return template metadata map
      */
-    private Map<String, CmsPageData> getTemplateDataMap(String dirPath, String lang) {
+    private Map<String, CmsPageData> getPageDataMap(String dirPath, String lang, String defaultLang) {
         String cacheKey = CommonUtils.joinString(dirPath, Constants.SEPARATOR, lang);
         Map<String, CmsPageData> dataMap = pageDataCache.get(cacheKey);
         if (null == dataMap) {
             String fileName = null;
-            if (CommonUtils.notEmpty(lang)) {
-                fileName = CommonUtils.joinString(dirPath, Constants.SEPARATOR, lang, Constants.UNDERLINE, DATA_FILE);
-            } else {
+            if (CommonUtils.empty(lang) || lang.equalsIgnoreCase(defaultLang)) {
                 fileName = CommonUtils.joinString(dirPath, Constants.SEPARATOR, DATA_FILE);
+            } else {
+                fileName = CommonUtils.joinString(dirPath, Constants.SEPARATOR, lang, Constants.UNDERLINE, DATA_FILE);
             }
             File file = new File(fileName);
             if (CommonUtils.notEmpty(file)) {
@@ -298,12 +347,13 @@ public class MetadataComponent implements Cache {
      * @param dataMap
      * @throws IOException
      */
-    private void saveTemplateData(String dirPath, String lang, Map<String, CmsPageData> dataMap) throws IOException {
+    private void saveTemplateData(String dirPath, String lang, String defaultLang, Map<String, CmsPageData> dataMap)
+            throws IOException {
         String fileName = null;
-        if (CommonUtils.notEmpty(lang)) {
-            fileName = CommonUtils.joinString(dirPath, Constants.SEPARATOR, lang, Constants.UNDERLINE, DATA_FILE);
-        } else {
+        if (CommonUtils.empty(lang) || lang.equalsIgnoreCase(defaultLang)) {
             fileName = CommonUtils.joinString(dirPath, Constants.SEPARATOR, DATA_FILE);
+        } else {
+            fileName = CommonUtils.joinString(dirPath, Constants.SEPARATOR, lang, Constants.UNDERLINE, DATA_FILE);
         }
         File file = new File(fileName);
         if (CommonUtils.empty(file)) {

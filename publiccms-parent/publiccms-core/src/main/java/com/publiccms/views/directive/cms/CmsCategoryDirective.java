@@ -80,7 +80,6 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
             }
             if (null != entity && site.getId() == entity.getSiteId()) {
                 CmsCategoryLang langEntity = null;
-
                 if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
                     langEntity = langService.getEntity(new CmsCategoryLangId(entity.getId(), lang));
                     CmsLangUtils.initLang(entity, langEntity);
@@ -91,7 +90,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                 }
                 if (containsAttribute) {
                     CmsCategoryAttribute attribute = attributeService.getEntity(entity.getId());
-                    CmsLangUtils.initLang(attribute, lang, langEntity);
+                    CmsLangUtils.initLang(attribute, langEntity);
                     entity.setAttribute(ExtendUtils.getAttributeMap(attribute));
                 }
                 handler.put("object", entity);
@@ -112,20 +111,23 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                 Map<Integer, CmsCategoryLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
                         k -> k.getId().getCategoryId());
 
-                UnaryOperator<CmsCategory> valueMapper = e -> {
+                UnaryOperator<CmsCategory> valueMapper = entity -> {
 
-                    CmsCategoryLang langEntity = langMap.get(e.getId());
-                    CmsLangUtils.initLang(e, langEntity);
+                    CmsCategoryLang langEntity = null;
+                    if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
+                        langEntity = langMap.get(entity.getId());
+                        CmsLangUtils.initLang(entity, langEntity);
+                    }
 
                     if (absoluteURL) {
-                        CmsUrlUtils.initCategoryUrl(site, e);
+                        CmsUrlUtils.initCategoryUrl(site, entity);
                     }
                     if (containsAttribute) {
-                        CmsCategoryAttribute attribute = attributeMap.get(e.getId());
-                        CmsLangUtils.initLang(attribute, lang, langEntity);
-                        e.setAttribute(ExtendUtils.getAttributeMap(attribute));
+                        CmsCategoryAttribute attribute = attributeMap.get(entity.getId());
+                        CmsLangUtils.initLang(attribute, langEntity);
+                        entity.setAttribute(ExtendUtils.getAttributeMap(attribute));
                     }
-                    return e;
+                    return entity;
                 };
                 Map<String, CmsCategory> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().toString(), valueMapper,
                         ids, e -> e.getId(), entity -> site.getId() == entity.getSiteId());

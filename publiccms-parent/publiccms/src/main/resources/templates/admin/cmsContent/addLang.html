@@ -108,19 +108,19 @@
                             <dt>${(model.fieldTextMap['title'])!}:</dt>
                             <dd>
                                 <input type="hidden" name="contentLangList[${index}].entity.id.lang" value="${lang.id.code}"/>
-                                <input class="required" name="contentLangList[${index}].entity.title" type="text" maxlength="250" size="60" value="${(a.title)!}"/>
+                                <input class="required" name="contentLangList[${index}].entity.title" type="text" maxlength="250" size="60" value="${(a.title)!(content.title)!}"/>
                             </dd>
                         </dl>
                         <#if fieldList?seq_contains('author')>
                             <dl>
                                 <dt>${(model.fieldTextMap['author'])!}:</dt>
-                                <dd><input name="contentLangList[${index}].entity.author"<#if requiredFieldList?seq_contains('author')> class="required"</#if> autocomplete="on" type="text" maxlength="50" size="20" value="${(a.author)!}"/></dd>
+                                <dd><input name="contentLangList[${index}].entity.author"<#if requiredFieldList?seq_contains('author')> class="required"</#if> autocomplete="on" type="text" maxlength="50" size="20" value="${(a.author)!(content.author)!}"/></dd>
                             </dl>
                         </#if>
                         <#if fieldList?seq_contains('editor')>
                             <dl>
                                 <dt>${(model.fieldTextMap['editor'])!}:</dt>
-                                <dd><input name="contentLangList[${index}].entity.editor"<#if requiredFieldList?seq_contains('editor')> class="required"</#if> autocomplete="on" type="text" maxlength="50" size="20" value="${(a.editor)!}"/></dd>
+                                <dd><input name="contentLangList[${index}].entity.editor"<#if requiredFieldList?seq_contains('editor')> class="required"</#if> autocomplete="on" type="text" maxlength="50" size="20" value="${(a.editor)!(content.editor)!}"/></dd>
                             </dl>
                         </#if>
                         <#if categoryExtendList?has_content>
@@ -131,7 +131,7 @@
                             <dl class="nowrap">
                                 <dt>${(model.fieldTextMap['cover'])!}:</dt>
                                 <dd>
-                                    <input name="contentLangList[${index}].entity.cover" class="preview<#if requiredFieldList?seq_contains('cover')> required</#if>" value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
+                                    <input name="contentLangList[${index}].entity.cover" class="preview<#if requiredFieldList?seq_contains('cover')> required</#if>" value="${(a.cover)!(content.cover)!}" maxlength="300" size="50" type="text"/>
                                     <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image&width=${(model.coverWidth)!}&height=${(model.coverHeight)!}" lookupGroup="" width="1000" height="600">${(model.fieldTextMap['cover'])!}</a>
                                     <a class="view icon-eye-open" ref="cover" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                                     <#if (model.coverWidth)?has_content && (model.coverHeight)?has_content><span class="info">${(model.coverWidth)!}*${(model.coverHeight)!}</span></#if>
@@ -142,7 +142,7 @@
                             <dl class="nowrap">
                                 <dt>${(model.fieldTextMap['description'])!}:</dt>
                                 <dd>
-                                    <textarea name="contentLangList[${index}].entity.description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="300" cols="80" rows="4">${(a.description)!}</textarea>
+                                    <textarea name="contentLangList[${index}].entity.description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="300" cols="80" rows="4">${(a.description)!(content.description)!}</textarea>
                                 </dd>
                             </dl>
                         </#if>
@@ -156,7 +156,7 @@
                                         <a class="button" href="cmsEditorHistory/lookup.html?itemType=content&itemId=${content.id}&fieldName=text&lang=${lang.id.code?url}" lookupGroup=""><@t.page 'history'/></a>
                                     </#if>
                                     </div>
-                                    <textarea name="contentLangList[${index}].entity.text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(a.text)!}</textarea>
+                                    <textarea name="contentLangList[${index}].entity.text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(a.text)!(attribute.text)!}</textarea>
                                 </dd>
                             </dl>
                         </#if>

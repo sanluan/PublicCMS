@@ -30,14 +30,14 @@
                     <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
-                <#if (metadata.enableMultilingual)?has_content&&metadata.enableMultilingual>
+                <#if 'true'=(siteAttribute.enable_multilingual)!>
                 <li>
                     <label><@t.page 'language'/></label>
                     <select class="combox" name="lang">
+                        <option value><@t.page 'please_select'/></option>
                         <@cms.languageList>
                         <#list list as l>
-                            <#if l.id.code = siteAttribute.default_language><#assign value=""/><#else><#assign value=l.id.code/></#if>
-                            <option value="${value}"${(value=lang!)?then(' selected="true"','')?no_esc}>${(l.name)!}</option>
+                            <option value="${l.id.code}"${(l.id.code=lang!)?then(' selected="true"','')?no_esc}>${(l.name)!}</option>
                         </#list>
                         </@cms.languageList>
                     </select>
@@ -93,7 +93,7 @@
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30"><@t.page 'id'/></th>
                 <th width="150"><@t.page 'title'/></th>
-                <#if (metadata.enableMultilingual)?has_content&&metadata.enableMultilingual>
+                <#if 'true'=(siteAttribute.enable_multilingual)!>
                     <th width="150"><@t.page 'language'/></th>
                 </#if>
                 <th width="70" orderField="publishDate"><@t.page 'publish_date'/></th>
@@ -145,7 +145,7 @@
                         </h3>
                     </div>
                 </td>
-                <#if (metadata.enableMultilingual)?has_content&&metadata.enableMultilingual>
+                <#if 'true'=(siteAttribute.enable_multilingual)!>
                     <td>${(langMap[a.lang!siteAttribute.default_language].name)!}</td>
                 </#if>
                 <td>${a.publishDate}</td>

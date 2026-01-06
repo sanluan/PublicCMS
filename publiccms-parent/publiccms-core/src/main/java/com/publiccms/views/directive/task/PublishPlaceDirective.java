@@ -28,7 +28,6 @@ import jakarta.annotation.Resource;
  * 参数列表
  * <ul>
  * <li><code>path</code>:页面路径,默认值"/"
- * <li><code>lang</code>:语言
  * </ul>
  * <p>
  * 返回结果
@@ -55,14 +54,13 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path", Constants.SEPARATOR);
-        String lang = handler.getString("lang");
         SysSite site = getSite(handler);
         String filepath = siteComponent.getTemplateFilePath(site.getId(),
                 CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
         if (CmsFileUtils.isFile(filepath)) {
             Map<String, Boolean> map = new LinkedHashMap<>();
             try {
-                templateComponent.publishPlace(site, path, lang, false);
+                templateComponent.publishPlace(site, path, false);
                 map.put(path, true);
             } catch (IOException | TemplateException e) {
                 handler.getWriter().append(e.getMessage());
@@ -70,11 +68,11 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
             }
             handler.put("map", map).render();
         } else if (CmsFileUtils.isDirectory(filepath)) {
-            handler.put("map", dealDir(site, handler, path, lang)).render();
+            handler.put("map", dealDir(site, handler, path)).render();
         }
     }
 
-    private Map<String, Boolean> dealDir(SysSite site, RenderHandler handler, String path, String lang) throws IOException {
+    private Map<String, Boolean> dealDir(SysSite site, RenderHandler handler, String path) throws IOException {
         path = path.replace("\\", Constants.SEPARATOR).replace("//", Constants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
         String realPath = siteComponent.getTemplateFilePath(site.getId(),
@@ -83,10 +81,10 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         for (FileInfo fileInfo : list) {
             String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
             if (fileInfo.isDirectory()) {
-                map.putAll(dealDir(site, handler, CommonUtils.joinString(filepath, Constants.SEPARATOR), lang));
+                map.putAll(dealDir(site, handler, CommonUtils.joinString(filepath, Constants.SEPARATOR)));
             } else {
                 try {
-                    templateComponent.publishPlace(site, filepath, lang, false);
+                    templateComponent.publishPlace(site, filepath, false);
                     map.put(filepath, true);
                 } catch (IOException | TemplateException e) {
                     handler.getWriter().append(e.getMessage());

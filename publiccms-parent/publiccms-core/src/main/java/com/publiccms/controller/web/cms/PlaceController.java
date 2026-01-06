@@ -22,7 +22,6 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
-import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -49,7 +48,6 @@ import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysWorkflowProcessItemService;
 import com.publiccms.logic.service.sys.SysWorkflowProcessService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
-import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import com.publiccms.views.pojo.model.ExtendDataParameters;
 
@@ -227,14 +225,11 @@ public class PlaceController {
                 service.delete(id);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "delete.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
-                    try {
-                        CmsPageData data = metadataComponent.getTemplateData(filepath, entity.getLang());
-                        templateComponent.staticPlace(site, entity.getPath(), entity.getLang(), metadata, data);
-                    } catch (IOException | TemplateException e) {
-                        model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                        log.error(e.getMessage(), e);
-                    }
+                try {
+                    templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
+                } catch (IOException | TemplateException e) {
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                    log.error(e.getMessage(), e);
                 }
             }
         }
@@ -267,14 +262,11 @@ public class PlaceController {
                 service.check(site.getId(), id, user.getId());
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
-                    try {
-                        CmsPageData data = metadataComponent.getTemplateData(filepath,entity.getLang());
-                        templateComponent.staticPlace(site, entity.getPath(),entity.getLang(), metadata, data);
-                    } catch (IOException | TemplateException e) {
-                        model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                        log.error(e.getMessage(), e);
-                    }
+                try {
+                    templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
+                } catch (IOException | TemplateException e) {
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                    log.error(e.getMessage(), e);
                 }
             }
         }
@@ -307,14 +299,11 @@ public class PlaceController {
                 service.reject(site.getId(), id, user.getId());
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
-                    try {
-                        CmsPageData data = metadataComponent.getTemplateData(filepath,entity.getLang());
-                        templateComponent.staticPlace(site, entity.getPath(),entity.getLang(), metadata, data);
-                    } catch (IOException | TemplateException e) {
-                        model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                        log.error(e.getMessage(), e);
-                    }
+                try {
+                    templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
+                } catch (IOException | TemplateException e) {
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                    log.error(e.getMessage(), e);
                 }
             }
         }
@@ -347,14 +336,11 @@ public class PlaceController {
                 service.uncheck(site.getId(), id);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
-                    try {
-                        CmsPageData data = metadataComponent.getTemplateData(filepath,entity.getLang());
-                        templateComponent.staticPlace(site, entity.getPath(),entity.getLang(), metadata, data);
-                    } catch (IOException | TemplateException e) {
-                        model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                        log.error(e.getMessage(), e);
-                    }
+                try {
+                    templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
+                } catch (IOException | TemplateException e) {
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                    log.error(e.getMessage(), e);
                 }
             }
         }

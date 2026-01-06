@@ -5,16 +5,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.annotation.Resource;
+
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 
 import freemarker.template.TemplateException;
@@ -70,11 +72,12 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
                     model.putAll(parameters);
                 }
                 String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
-                CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
-                CmsPageData data = metadataComponent.getTemplateData(realTemplatePath, lang);
-                Map<String, Object> metadataMap = metadata.getAsMap(data);
-                handler.put("url", templateComponent.createStaticFile(site, templateFullPath, filepath, lang, pageIndex,
-                        metadataMap, model, null)).render();
+                String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath, lang, defaultLang);
+                String fullStaticFilePath = CmsLangUtils.getFullFilepath(templateComponent.generateFilepath(filepath, model), lang, defaultLang);
+
+                handler.put("url", templateComponent.createStaticFile(site, templateFullPath, fullStaticFilePath, lang, pageIndex,
+                        metadata, model, null)).render();
             } catch (IOException | TemplateException e) {
                 handler.print(e.getMessage());
             }
@@ -90,4 +93,6 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
     private TemplateComponent templateComponent;
     @Resource
     private MetadataComponent metadataComponent;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 }

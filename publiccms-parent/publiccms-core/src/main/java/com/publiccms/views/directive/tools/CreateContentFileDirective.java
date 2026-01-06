@@ -13,6 +13,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsContentLang;
 import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -69,16 +70,18 @@ public class CreateContentFileDirective extends AbstractTemplateDirective {
             try {
                 CmsContent content = contentService.getEntity(id);
                 if (null != content && site.getId() == content.getSiteId()) {
+                    CmsContentLang langEntity = null;
                     if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(content.getLang())) {
-                        CmsLangUtils.initLang(content, contentLangService.getEntity(new CmsContentLangId(id, lang)));
+                        langEntity = contentLangService.getEntity(new CmsContentLangId(id, lang));
+                        CmsLangUtils.initLang(content, langEntity);
                     }
                     CmsCategory category = categoryService.getEntity(content.getCategoryId());
                     if (null != category && CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(category.getLang())) {
                         CmsLangUtils.initLang(category,
                                 categoryLangService.getEntity(new CmsCategoryLangId(content.getCategoryId(), lang)));
                     }
-                    handler.put("url", templateComponent.createContentFile(site, content, category, false, templatePath, filepath,
-                            pageIndex)).render();
+                    handler.put("url", templateComponent.createContentFile(site, content, langEntity, category, false,
+                            templatePath, filepath, pageIndex)).render();
                 }
             } catch (IOException | TemplateException e) {
                 handler.print(e.getMessage());

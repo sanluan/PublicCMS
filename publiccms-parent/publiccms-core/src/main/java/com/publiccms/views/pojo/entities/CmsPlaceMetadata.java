@@ -109,11 +109,12 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      */
     private List<SysExtendField> metadataExtendList;
     /**
-     * enable multilingual
+     * pagedata
      * <p>
-     * 启用多语言
+     * 页面数据
      */
-    private boolean enableMultilingual;
+    @JsonIgnore
+    private Map<String, String> extendData;
 
     /**
      * @return alias
@@ -320,22 +321,22 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     }
 
     /**
-     * @return the enableMultilingual
+     * @param extendData
+     *            the extendData to set
      */
-    public boolean isEnableMultilingual() {
-        return enableMultilingual;
+    public void setExtendData(Map<String, String> extendData) {
+        this.extendData = extendData;
     }
 
     /**
-     * @param enableMultilingual
-     *            the enableMultilingual to set
+     * @return the extendData
      */
-    public void setEnableMultilingual(boolean enableMultilingual) {
-        this.enableMultilingual = enableMultilingual;
+    public Map<String, String> getExtendData() {
+        return extendData;
     }
 
     @JsonIgnore
-    public Map<String, Object> getAsMap(CmsPageData data) {
+    public Map<String, Object> getAsMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("alias", getAlias());
         map.put("size", getSize());
@@ -346,12 +347,11 @@ public class CmsPlaceMetadata implements java.io.Serializable {
         map.put("acceptItemTypes", getAcceptItemTypes());
         map.put("extendList", getExtendList());
         map.put("adminIds", getAdminIds());
-        map.put("extendData", data.getExtendData());
+        map.put("extendData", getExtendData());
         map.put("fieldList", getFieldList());
         map.put("requiredFieldList", getRequiredFieldList());
         map.put("fieldTextMap", getFieldTextMap());
         map.put("metadataExtendList", getMetadataExtendList());
-        map.put("enableMultilingual", isEnableMultilingual());
         return map;
     }
 }

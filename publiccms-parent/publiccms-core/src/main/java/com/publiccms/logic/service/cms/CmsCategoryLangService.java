@@ -1,7 +1,6 @@
 package com.publiccms.logic.service.cms;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,12 +47,10 @@ public class CmsCategoryLangService extends BaseService<CmsCategoryLang> {
      * @param userId
      * @param categoryType
      * @param categoryLangListParameters
-     * @return
      */
-    public List<CmsCategoryLang> save(short siteId, String sitePath, Integer categoryId, Long userId,
-            CmsCategoryType categoryType, CmsCategoryLangListParameters categoryLangListParameters) {
+    public void save(short siteId, String sitePath, Integer categoryId, Long userId, CmsCategoryType categoryType,
+            CmsCategoryLangListParameters categoryLangListParameters) {
         if (null != categoryLangListParameters && null != categoryLangListParameters.getCategoryLangList()) {
-            List<CmsCategoryLang> entityList = new ArrayList<>();
             for (CmsCategoryLangParameters langParameter : categoryLangListParameters.getCategoryLangList()) {
                 CmsCategoryLang entity = langParameter.getEntity();
                 entity.getId().setCategoryId(categoryId);
@@ -70,13 +67,10 @@ public class CmsCategoryLangService extends BaseService<CmsCategoryLang> {
                 } else {
                     save(entity);
                 }
-                entityList.add(entity);
                 saveEditorHistory(oldEntity, siteId, entity.getId().getCategoryId(), entity.getId().getLang(), userId,
                         categoryType, langParameter.getExtendData());
             }
-            return entityList;
         }
-        return null;
     }
 
     /**

@@ -111,17 +111,20 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
             Map<Integer, CmsCategoryLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
                     k -> k.getId().getCategoryId());
 
-            Consumer<CmsCategory> consumer = e -> {
-                CmsCategoryLang langEntity = langMap.get(e.getId());
-                CmsLangUtils.initLang(e, langEntity);
+            Consumer<CmsCategory> consumer = entity -> {
+                CmsCategoryLang langEntity = null;
+                if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
+                    langEntity = langMap.get(entity.getId());
+                    CmsLangUtils.initLang(entity, langEntity);
+                }
 
                 if (absoluteURL) {
-                    CmsUrlUtils.initCategoryUrl(site, e);
+                    CmsUrlUtils.initCategoryUrl(site, entity);
                 }
                 if (containsAttribute) {
-                    CmsCategoryAttribute attribute = attributeMap.get(e.getId());
-                    CmsLangUtils.initLang(attribute, lang, langEntity);
-                    e.setAttribute(ExtendUtils.getAttributeMap(attribute));
+                    CmsCategoryAttribute attribute = attributeMap.get(entity.getId());
+                    CmsLangUtils.initLang(attribute, langEntity);
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attribute));
                 }
             };
             list.forEach(consumer);

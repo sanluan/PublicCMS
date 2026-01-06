@@ -21,6 +21,12 @@
 #content img,#content video{max-width:100%;}
 </style>
 <div class="pageFormContent" layoutH>
+    <dl>
+        <dt><@t.page 'language'/>:</dt>
+        <dd>
+            <@cms.language code=(a.lang)!(siteAttribute.default_language)!>${object.name}</@cms.language>
+        </dd>
+    </dl>
     <#if model?has_content>
         <#assign fieldList=model.fieldList![]/>
         <@cms.content id=parentId>

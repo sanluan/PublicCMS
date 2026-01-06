@@ -17,19 +17,22 @@ import freemarker.template.TemplateException;
 
 /**
  * fileBackupList 文件回收站列表获取指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>type</code>:文件类型【file,task,template】,默认template
  * <li><code>path</code>:文件路径
  * <li><code>orderField</code>:
  * 排序类型【fileName,fileSize,modifiedDate,createDate】,默认fileName
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>list</code>:文件列表
  * {@link com.publiccms.common.tools.CmsFileUtils$FileInfo}
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@tools.fileBackupList path='/'&gt;&lt;#list list as
  * a&gt;${a.fileName}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.fileBackupList&gt;
@@ -67,7 +70,7 @@ public class FileBackupListDirective extends AbstractTemplateDirective {
         } else {
             realpath = siteComponent.getTemplateBackupFilePath(site.getId(), path);
         }
-        handler.put("list", CmsFileUtils.getFileList(realpath, handler.getString("orderField"))).render();
+        handler.put("list", CmsFileUtils.getFileList(realpath, false, handler.getString("orderField"))).render();
     }
 
     @Override

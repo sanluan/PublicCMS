@@ -71,7 +71,7 @@
                             <dt><@t.page 'name'/>:</dt>
                             <dd>
                                 <input type="hidden" name="categoryLangList[${index}].entity.id.lang" value="${lang.id.code}"/>
-                                <input class="required" name="categoryLangList[${index}].entity.name" type="text" maxlength="50" size="20" value="${(a.name)!}"/>
+                                <input class="required" name="categoryLangList[${index}].entity.name" type="text" maxlength="50" size="20" value="${(a.name)!(category.name)!}"/>
                             </dd>
                         </dl>
                         <#if categoryType?has_content && categoryType.extendList?has_content>
@@ -82,19 +82,19 @@
                                 <legend><@t.page 'seo'/></legend>
                                 <dl class="nowrap">
                                     <dt><@t.page 'title'/>:</dt>
-                                    <dd><input name="categoryLangList[${index}].entity.title" type="text" maxlength="80" size="50" value="${(a.title)!}"/></dd>
+                                    <dd><input name="categoryLangList[${index}].entity.title" type="text" maxlength="80" size="50" value="${(a.title)!(attribute.title)!}"/></dd>
                                 </dl>
                                 <dl class="nowrap">
                                     <dt><@t.page 'keywords'/>:</dt>
                                     <dd>
-                                        <textarea name="categoryLangList[${index}].entity.keywords" maxlength="100" cols="80" rows="2">${(a.keywords)!}</textarea>
+                                        <textarea name="categoryLangList[${index}].entity.keywords" maxlength="100" cols="80" rows="2">${(a.keywords)!(attribute.keywords)!}</textarea>
                                         <span class="info"><@t.page 'category.keywords.description'/></span>
                                     </dd>
                                 </dl>
                                 <dl class="nowrap">
                                     <dt><@t.page 'description'/>:</dt>
                                     <dd>
-                                        <textarea name="categoryLangList[${index}].entity.description" maxlength="150" cols="80" rows="2">${(a.description)!}</textarea>
+                                        <textarea name="categoryLangList[${index}].entity.description" maxlength="150" cols="80" rows="2">${(a.description)!(attribute.description)!}</textarea>
                                         <span class="info"><@t.page 'category.description.description'/></span>
                                     </dd>
                                 </dl>

@@ -52,7 +52,7 @@ import jakarta.annotation.Resource;
 @Component
 public class TemplatePlaceListDirective extends AbstractTemplateDirective {
     public static final Pattern PLACE_PATTERN = Pattern
-            .compile("<@[_a-z\\.]*includePlace[ ]+path=[\"|\']([^\"\']*)[\"|\'][ ]*/>");
+            .compile("<@[_a-z\\.]*includePlace[ ]+path=[\"|\']([^\"\']*)[\"|\'].*/>");
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {

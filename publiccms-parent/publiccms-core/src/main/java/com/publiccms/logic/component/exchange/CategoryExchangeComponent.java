@@ -253,7 +253,7 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
                 }
             }
             try {
-                templateComponent.createCategoryFile(site, entity, null, null, null);
+                templateComponent.publish(site, entity, null, null);
             } catch (IOException | TemplateException e) {
             }
         }

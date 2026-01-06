@@ -163,25 +163,31 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             Map<Long, CmsContentLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
                     k -> k.getId().getContentId());
 
-            Consumer<CmsContent> consumer = e -> {
-                ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+            Consumer<CmsContent> consumer = entity -> {
+                ClickStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
                 if (null != statistics) {
-                    e.setClicks(e.getClicks() + statistics.getClicks());
+                    entity.setClicks(entity.getClicks() + statistics.getClicks());
                 }
-                if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
-                    e.setId(e.getQuoteContentId());
+                if (absoluteId && null == entity.getParentId() && null != entity.getQuoteContentId()) {
+                    entity.setId(entity.getQuoteContentId());
                 }
-                CmsContentLang langEntity = langMap
-                        .get((null == e.getParentId() && null != e.getQuoteContentId()) ? e.getQuoteContentId() : e.getId());
-                CmsLangUtils.initLang(e, langEntity);
+
+                CmsContentLang langEntity = null;
+                if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
+                    langEntity = langMap
+                            .get((null == entity.getParentId() && null != entity.getQuoteContentId()) ? entity.getQuoteContentId()
+                                    : entity.getId());
+                    CmsLangUtils.initLang(entity, langEntity);
+                }
+
                 if (absoluteURL) {
-                    CmsUrlUtils.initContentUrl(site, e);
-                    fileUploadComponent.initContentCover(site, e);
+                    CmsUrlUtils.initContentUrl(site, entity);
+                    fileUploadComponent.initContentCover(site, entity);
                 }
                 if (containsAttribute) {
-                    CmsContentAttribute attribute = attributeMap.get(e.getId());
-                    CmsLangUtils.initLang(attribute, lang, langEntity);
-                    e.setAttribute(ExtendUtils.getAttributeMap(attribute, config));
+                    CmsContentAttribute attribute = attributeMap.get(entity.getId());
+                    CmsLangUtils.initLang(attribute, langEntity);
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attribute, config));
                 }
             };
             list.forEach(consumer);
