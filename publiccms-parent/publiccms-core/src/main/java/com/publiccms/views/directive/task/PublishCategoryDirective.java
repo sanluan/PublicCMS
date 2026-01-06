@@ -11,14 +11,10 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.handler.RenderHandler;
-import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategory;
-import com.publiccms.entities.cms.CmsCategoryLang;
-import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 
 import freemarker.template.TemplateException;
@@ -59,7 +55,6 @@ public class PublishCategoryDirective extends AbstractTaskDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         Integer id = handler.getInteger("id");
-        String lang = handler.getString("lang");
         Integer pageIndex = handler.getInteger("pageIndex");
         Integer totalPage = handler.getInteger("totalPage");
         SysSite site = getSite(handler);
@@ -67,13 +62,7 @@ public class PublishCategoryDirective extends AbstractTaskDirective {
         if (CommonUtils.notEmpty(id)) {
             CmsCategory entity = service.getEntity(id);
             try {
-                CmsCategoryLang langEntity = null;
-                if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
-                    langEntity = langService.getEntity(new CmsCategoryLangId(id, lang));
-                    CmsLangUtils.initLang(entity, langEntity);
-                }
-                boolean result = templateComponent.createCategoryFile(site, entity, langEntity, pageIndex, totalPage);
-                map.put(id.toString(), result);
+                map.put(id.toString(), templateComponent.publish(site, entity, pageIndex, totalPage));
             } catch (IOException | TemplateException e) {
                 handler.getWriter().append(e.getMessage());
                 map.put(id.toString(), false);
@@ -82,20 +71,10 @@ public class PublishCategoryDirective extends AbstractTaskDirective {
             Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsCategory> entityList = service.getEntitys(ids);
-                CmsCategoryLangId[] langIds = entityList.stream().map(e -> new CmsCategoryLangId(e.getId(), lang))
-                        .toArray(CmsCategoryLangId[]::new);
-                Map<Integer, CmsCategoryLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
-                        k -> k.getId().getCategoryId());
 
                 for (CmsCategory entity : entityList) {
                     try {
-                        CmsCategoryLang langEntity = null;
-                        if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
-                            langEntity = langMap.get(entity.getId());
-                            CmsLangUtils.initLang(entity, langEntity);
-                        }
-                        boolean result = templateComponent.createCategoryFile(site, entity, langEntity, pageIndex, totalPage);
-                        map.put(entity.getId().toString(), result);
+                        map.put(entity.getId().toString(), templateComponent.publish(site, entity, pageIndex, totalPage));
                     } catch (IOException | TemplateException e) {
                         handler.getWriter().append(e.getMessage());
                         handler.getWriter().append("\n");
@@ -112,6 +91,4 @@ public class PublishCategoryDirective extends AbstractTaskDirective {
     private TemplateComponent templateComponent;
     @Resource
     private CmsCategoryService service;
-    @Resource
-    private CmsCategoryLangService langService;
 }

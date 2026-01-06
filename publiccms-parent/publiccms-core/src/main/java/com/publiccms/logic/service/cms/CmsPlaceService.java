@@ -28,7 +28,6 @@ import com.publiccms.views.pojo.entities.PlaceClickStatistics;
 @Service
 @Transactional
 public class CmsPlaceService extends BaseService<CmsPlace> {
-
     /**
      * 
      */
@@ -77,6 +76,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param itemType
      * @param itemId
      * @param lang
+     * @param defaultLang 
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -90,10 +90,10 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId, String lang,
-            Date startPublishDate, Date endPublishDate, Date expiryDate, Integer[] status, Boolean disabled, String orderField,
-            String orderType, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, userId, path, itemType, itemId, lang, startPublishDate, endPublishDate, expiryDate, status,
-                disabled, orderField, orderType, pageIndex, pageSize);
+            String defaultLang, Date startPublishDate, Date endPublishDate, Date expiryDate, Integer[] status, Boolean disabled,
+            String orderField, String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, userId, path, itemType, itemId, lang, defaultLang, startPublishDate, endPublishDate,
+                expiryDate, status, disabled, orderField, orderType, pageIndex, pageSize);
     }
 
     /**
@@ -215,7 +215,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param userId
      * @param ids
      * @param path
-     * @return 
+     * @return
      */
     public List<CmsPlace> check(short siteId, Long userId, Serializable[] ids, String path) {
         List<CmsPlace> entityList = new ArrayList<>();
@@ -248,7 +248,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param siteId
      * @param ids
      * @param path
-     * @return 
+     * @return
      */
     public List<CmsPlace> uncheck(short siteId, Serializable[] ids, String path) {
         List<CmsPlace> entityList = new ArrayList<>();
@@ -265,7 +265,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param siteId
      * @param ids
      * @param path
-     * @return 
+     * @return
      */
     public List<CmsPlace> refresh(short siteId, Serializable[] ids, String path) {
         Date now = CommonUtils.now();
@@ -292,7 +292,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param siteId
      * @param ids
      * @param path
-     * @return 
+     * @return
      */
     public List<CmsPlace> delete(short siteId, Serializable[] ids, String path) {
         List<CmsPlace> entityList = new ArrayList<>();

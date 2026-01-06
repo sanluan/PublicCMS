@@ -15,11 +15,11 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.site.EmailComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 
 import freemarker.template.TemplateException;
@@ -88,13 +88,15 @@ public class SendEmailDirective extends AbstractTemplateDirective {
                 Map<String, Object> model = new HashMap<>();
                 expose(handler, model);
                 String filepath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
-                CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
-                CmsPageData data = metadataComponent.getTemplateData(filepath, lang);
+
+                String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath, lang, defaultLang);
+
                 Map<String, String> parameters = handler.getMap("parameters");
                 if (!parameters.isEmpty()) {
                     model.putAll(parameters);
                 }
-                model.put("metadata", metadata.getAsMap(data));
+                model.put("metadata", metadata);
                 String content = FreeMarkerUtils.generateStringByFile(
                         SiteComponent.getFullTemplatePath(site.getId(), templatePath), templateComponent.getWebConfiguration(),
                         model);
@@ -132,4 +134,6 @@ public class SendEmailDirective extends AbstractTemplateDirective {
     private TemplateComponent templateComponent;
     @Resource
     private MetadataComponent metadataComponent;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 }

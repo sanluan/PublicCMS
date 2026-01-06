@@ -26,6 +26,7 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
      * @param itemType
      * @param itemId
      * @param lang
+     * @param defaultLang
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -38,8 +39,8 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
      * @return results page
      */
     public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId, String lang,
-            Date startPublishDate, Date endPublishDate, Date expiryDate, Integer[] status, Boolean disabled, String orderField,
-            String orderType, Integer pageIndex, Integer pageSize) {
+            String defaultLang, Date startPublishDate, Date endPublishDate, Date expiryDate, Integer[] status, Boolean disabled,
+            String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsPlace bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -57,9 +58,11 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
             queryHandler.condition("bean.itemId = :itemId").setParameter("itemId", itemId);
         }
         if (CommonUtils.notEmpty(lang)) {
-            queryHandler.condition("bean.lang = :lang").setParameter("lang", lang);
-        } else {
-            queryHandler.condition("bean.lang is null");
+            if (lang.equalsIgnoreCase(defaultLang)) {
+                queryHandler.condition("(bean.lang is null or bean.lang = :lang)").setParameter("lang", lang);
+            } else {
+                queryHandler.condition("bean.lang = :lang").setParameter("lang", lang);
+            }
         }
         if (null != startPublishDate) {
             queryHandler.condition("bean.publishDate > :startPublishDate").setParameter("startPublishDate", startPublishDate);

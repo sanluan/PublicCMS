@@ -14,25 +14,17 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
-import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
-import com.publiccms.entities.cms.CmsCategoryLang;
-import com.publiccms.entities.cms.CmsCategoryModel;
-import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
-import com.publiccms.entities.cms.CmsContentLang;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.logic.service.cms.CmsCategoryLangService;
-import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentLangService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogOperateService;
 
@@ -69,13 +61,7 @@ public class ContentCheckDirective extends AbstractAppDirective {
     @Resource
     private CmsCategoryService categoryService;
     @Resource
-    private CmsContentLangService langService;
-    @Resource
-    private CmsCategoryLangService categoryLangService;
-    @Resource
     protected LogOperateService logOperateService;
-    @Resource
-    private CmsCategoryModelService categoryModelService;
     @Resource
     private TemplateComponent templateComponent;
 
@@ -94,22 +80,23 @@ public class ContentCheckDirective extends AbstractAppDirective {
             handler.put(entity.getId().toString(), false);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 CmsCategory category = categoryService.getEntity(entity.getCategoryId());
-                if (null != category && publish(site, entity, category, user)) {
-                    if (null != entity.getParentId()) {
-                        CmsContent parent = service.getEntity(entity.getParentId());
-                        if (null != parent) {
-                            publish(site, parent, category, user);
-                        }
-                    } else {
-                        templateComponent.createCategoryFile(site, category, null, null, null);
-                        List<CmsCategoryLang> langList = categoryLangService.getList(category.getId());
-                        for (CmsCategoryLang lang : langList) {
-                            if (CmsLangUtils.initLang(category, lang)) {
-                                templateComponent.createCategoryFile(site, category, lang, null, null);
+                try {
+                    if (null != category && ControllerUtils.hasContentPermissions(user, entity)
+                            && templateComponent.publish(site, entity, category, null)) {
+                        if (null != entity.getParentId()) {
+                            CmsContent parent = service.getEntity(entity.getParentId());
+                            if (null != parent) {
+                                try {
+                                    templateComponent.publish(site, parent, category, null);
+                                } catch (IOException | TemplateException e) {
+                                }
                             }
+                        } else {
+                            templateComponent.publish(site, category, null, null);
                         }
+                        handler.put(entity.getId().toString(), true);
                     }
-                    handler.put(entity.getId().toString(), true);
+                } catch (IOException | TemplateException e) {
                 }
             }
         }
@@ -117,26 +104,6 @@ public class ContentCheckDirective extends AbstractAppDirective {
                 uncheck ? "uncheck.content" : "check.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.now(),
                 StringUtils.join(ids, Constants.COMMA)));
         handler.render();
-    }
-
-    private boolean publish(SysSite site, CmsContent entity, CmsCategory category, SysUser user) {
-        CmsCategoryModel categoryModel = categoryModelService
-                .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
-        if (null != categoryModel && ControllerUtils.hasContentPermissions(user, entity) && !entity.isOnlyUrl()) {
-            try {
-                boolean flag = templateComponent.createContentFile(site, entity, null, category, categoryModel);
-                List<CmsContentLang> langList = langService.getList(entity.getId());
-                for (CmsContentLang lang : langList) {
-                    if (CmsLangUtils.initLang(entity, lang)) {
-                        templateComponent.createContentFile(site, entity, lang, category, categoryModel);
-                    }
-                }
-                return flag;
-            } catch (IOException | TemplateException e) {
-                return false;
-            }
-        }
-        return false;
     }
 
     @Override

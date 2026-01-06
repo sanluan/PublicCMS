@@ -1,7 +1,6 @@
 package com.publiccms.controller.admin.cms;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -16,18 +15,14 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
-import com.publiccms.entities.cms.CmsCategoryLang;
-import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
-import com.publiccms.entities.cms.CmsContentLang;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptItemId;
@@ -118,8 +113,7 @@ public class CmsContentLangAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
 
-        List<CmsContentLang> entityList = service.save(site, contentId, content, contentLangListParameters, cmsModel,
-                category.getExtendId());
+        service.save(site, contentId, content, contentLangListParameters, cmsModel, category.getExtendId());
 
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                 "save.contentLang", RequestUtils.getIpAddress(request), CommonUtils.now(),
@@ -127,16 +121,8 @@ public class CmsContentLangAdminController {
 
         try {
             if (CmsContentService.STATUS_NORMAL == content.getStatus()) {
-                for (CmsContentLang lang : entityList) {
-                    if (CmsLangUtils.initLang(content, lang)) {
-                        templateComponent.createContentFile(site, content, lang, category, categoryModel); // 静态化
-                    }
-                    CmsCategoryLang categoryLang = categoryLangService
-                            .getEntity(new CmsCategoryLangId(category.getId(), lang.getId().getLang()));
-                    if (CmsLangUtils.initLang(category, categoryLang)) {
-                        templateComponent.createCategoryFile(site, category, categoryLang, null, null);
-                    }
-                }
+                templateComponent.publish(site, content, category, categoryModel); // 静态化
+                templateComponent.publish(site, category, null, null);
             }
         } catch (IOException | TemplateException e) {
             log.error(e.getMessage(), e);

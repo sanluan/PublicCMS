@@ -28,7 +28,6 @@ import freemarker.template.TemplateException;
  * 参数列表
  * <ul>
  * <li><code>path</code>:页面路径,默认值"/"
- * <li><code>lang</code>:语言
  * </ul>
  * <p>
  * 返回结果
@@ -55,34 +54,34 @@ public class PublishPageDirective extends AbstractTaskDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path", Constants.SEPARATOR);
-        String lang = handler.getString("lang");
         SysSite site = getSite(handler);
         String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
         if (CmsFileUtils.isFile(filepath)) {
             Map<String, Boolean> map = new LinkedHashMap<>();
             try {
-                map.put(path, templateComponent.publishPage(site, path, lang));
+                templateComponent.publishPage(site, path);
+                map.put(filepath, true);
             } catch (IOException | TemplateException e) {
                 handler.getWriter().append(e.getMessage()).append("\n");
                 map.put(path, false);
             }
             handler.put("map", map).render();
         } else if (CmsFileUtils.isDirectory(filepath)) {
-            handler.put("map", deal(site, handler, path, lang)).render();
+            handler.put("map", deal(site, handler, path)).render();
         }
     }
 
-    private Map<String, Boolean> deal(SysSite site, RenderHandler handler, String path, String lang) throws IOException {
+    private Map<String, Boolean> deal(SysSite site, RenderHandler handler, String path) throws IOException {
         path = path.replace("\\", Constants.SEPARATOR).replace("//", Constants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
         List<FileInfo> list = CmsFileUtils.getFileList(siteComponent.getTemplateFilePath(site.getId(), path), null);
         for (FileInfo fileInfo : list) {
             String filepath = CommonUtils.joinString(path, fileInfo.getFileName());
             if (fileInfo.isDirectory()) {
-                map.putAll(deal(site, handler, CommonUtils.joinString(filepath, Constants.SEPARATOR), lang));
+                map.putAll(deal(site, handler, CommonUtils.joinString(filepath, Constants.SEPARATOR)));
             } else {
                 try {
-                    templateComponent.publishPage(site, path, lang);
+                    templateComponent.publishPage(site, path);
                     map.put(filepath, true);
                 } catch (IOException | TemplateException e) {
                     handler.getWriter().append(e.getMessage()).append("\n");

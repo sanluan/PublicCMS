@@ -72,7 +72,6 @@ import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentLangService;
 import com.publiccms.logic.service.cms.CmsContentRelatedService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -99,8 +98,6 @@ public class CmsContentAdminController {
     protected final Log log = LogFactory.getLog(getClass());
     @Resource
     private CmsContentService service;
-    @Resource
-    private CmsContentLangService langService;
     @Resource
     private SysDeptItemService sysDeptItemService;
     @Resource
@@ -227,7 +224,7 @@ public class CmsContentAdminController {
                 if (null != parent) {
                     templateComponent.publish(site, parent, category);
                 } else {
-                    templateComponent.publish(site, category, null);
+                    templateComponent.publish(site, category, null, null);
                 }
             } else if (null != oldEntity && (null == checked || !checked)) {
                 entity.setHasStatic(oldEntity.isHasStatic());
@@ -247,7 +244,7 @@ public class CmsContentAdminController {
                             categoryList.addAll(categoryService.getEntitys(categoryIdsSet));
                         }
                         for (CmsCategory c : categoryList) {
-                            templateComponent.createCategoryFile(site, c, null, null, null);
+                            templateComponent.publish(site, c, null, null);
                         }
                     }
                 }
@@ -360,7 +357,7 @@ public class CmsContentAdminController {
             if (!categoryIdSet.isEmpty()) {
                 try {
                     for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
-                        templateComponent.publish(site, entity, null);
+                        templateComponent.publish(site, entity, null, null);
                     }
                 } catch (IOException | TemplateException e) {
                     log.error(e.getMessage(), e);
@@ -509,7 +506,7 @@ public class CmsContentAdminController {
                 categoryIdSet.add(categoryId);
                 try {
                     for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
-                        templateComponent.createCategoryFile(site, entity, null, null, null);
+                        templateComponent.publish(site, entity, null, null);
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -532,7 +529,7 @@ public class CmsContentAdminController {
         CmsCategoryModel categoryModel = categoryModelService.getEntity(new CmsCategoryModelId(categoryId, entity.getModelId()));
         if (null != categoryModel) {
             entity = service.updateCategoryId(entity.getSiteId(), entity.getId(), categoryId);
-            templateComponent.createContentFile(site, entity, null, null, categoryModel);
+            templateComponent.publish(site, entity, null, categoryModel);
             return true;
         }
         return false;
@@ -606,7 +603,7 @@ public class CmsContentAdminController {
             CmsCategory category = categoryService.getEntity(entity.getCategoryId());
             if (null != category) {
                 try {
-                    templateComponent.createCategoryFile(site, category, null, null, null);
+                    templateComponent.publish(site, category, null, null);
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
@@ -786,7 +783,7 @@ public class CmsContentAdminController {
             if (!categoryIdSet.isEmpty()) {
                 try {
                     for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
-                        templateComponent.publish(site, entity, null);
+                        templateComponent.publish(site, entity, null, null);
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -835,9 +832,8 @@ public class CmsContentAdminController {
                     if (null != content) {
                         try {
                             SysSite newSite = siteComponent.getSiteById(category.getSiteId());
-                            templateComponent.createContentFile(newSite, service.getEntity(content.getId()), null, category,
-                                    null);
-                            templateComponent.createCategoryFile(newSite, category, null, null, null);
+                            templateComponent.publish(newSite, service.getEntity(content.getId()), category, null);
+                            templateComponent.publish(newSite, category, null, null);
                         } catch (IOException | TemplateException e) {
                             model.addAttribute(CommonConstants.ERROR, e.getMessage());
                             log.error(e.getMessage(), e);
@@ -874,7 +870,7 @@ public class CmsContentAdminController {
                 }
                 if (!categoryIdSet.isEmpty()) {
                     for (CmsCategory entity : categoryService.getEntitys(categoryIdSet)) {
-                        templateComponent.publish(site, entity, null);
+                        templateComponent.publish(site, entity, null, null);
                     }
                 }
             } catch (IOException | TemplateException e) {

@@ -28,6 +28,7 @@ import com.publiccms.entities.sys.SysDeptItemId;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.DiyComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
@@ -71,6 +72,8 @@ public class CmsPageAdminController {
     protected TemplateComponent templateComponent;
     @Resource
     private CmsEditorHistoryService editorHistoryService;
+    @Resource
+    private SiteAttributeComponent siteAttributeComponent;
 
     /**
      * @param site
@@ -114,8 +117,9 @@ public class CmsPageAdminController {
 
             ExtendUtils.decodeField(pageDate.getExtendData(), site.getSitePath(), extendList);
 
-            CmsPageData olddata = metadataComponent.getTemplateData(filepath, lang);
-            metadataComponent.updateTemplateData(filepath, lang, pageDate);
+            String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+            CmsPageData olddata = metadataComponent.getPageData(filepath, lang, defaultLang);
+            metadataComponent.updatePageData(filepath, lang, defaultLang, pageDate);
 
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,

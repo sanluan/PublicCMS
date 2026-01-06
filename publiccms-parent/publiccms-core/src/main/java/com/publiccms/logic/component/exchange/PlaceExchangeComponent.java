@@ -69,7 +69,7 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
     public void exportEntity(SysSite site, String directory, String path, ByteArrayOutputStream outputStream,
             ArchiveOutputStream<ZipArchiveEntry> archiveOutputStream) {
         PageHandler page = service.getPage(site.getId(), null, CommonUtils.joinString(Constants.SEPARATOR, path), null, null,
-                null, null, null, null, null, false, null, null, null, PageHandler.MAX_PAGE_SIZE);
+                null, null, null, null, null, null, false, null, null, null, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<CmsPlace> list = (List<CmsPlace>) page.getList();
         if (0 < page.getTotalCount()) {
@@ -109,7 +109,7 @@ public class PlaceExchangeComponent extends AbstractDataExchange<String, Place> 
     @Override
     public void save(SysSite site, long userId, boolean overwrite, Place data) {
         if (null != data.getDatalist()) {
-            PageHandler page = service.getPage(site.getId(), null, data.getPath(), null, null, null, null, null, null, null,
+            PageHandler page = service.getPage(site.getId(), null, data.getPath(), null, null, null, null, null, null, null, null,
                     false, null, null, null, 0);
             if (0 == page.getTotalCount() || overwrite) {
                 for (PlaceData placeData : data.getDatalist()) {

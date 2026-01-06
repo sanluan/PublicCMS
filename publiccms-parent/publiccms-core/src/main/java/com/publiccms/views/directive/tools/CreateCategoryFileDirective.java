@@ -11,6 +11,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategory;
+import com.publiccms.entities.cms.CmsCategoryLang;
 import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -65,11 +66,13 @@ public class CreateCategoryFileDirective extends AbstractTemplateDirective {
             try {
                 CmsCategory category = categoryService.getEntity(id);
                 if (null != category && site.getId() == category.getSiteId()) {
+                    CmsCategoryLang langEntity = null;
                     if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(category.getLang())) {
-                        CmsLangUtils.initLang(category, categoryLangService.getEntity(new CmsCategoryLangId(id, lang)));
+                        langEntity = categoryLangService.getEntity(new CmsCategoryLangId(id, lang));
+                        CmsLangUtils.initLang(category, langEntity);
                     }
-                    handler.put("url", templateComponent.createCategoryFile(site, category, templatePath, filepath, pageIndex,
-                            handler.getInteger("totalPage"))).render();
+                    handler.put("url", templateComponent.createCategoryFile(site, category, langEntity, templatePath, filepath,
+                            pageIndex, handler.getInteger("totalPage"))).render();
                 }
             } catch (IOException | TemplateException e) {
                 handler.print(e.getMessage());
@@ -88,5 +91,4 @@ public class CreateCategoryFileDirective extends AbstractTemplateDirective {
     private CmsCategoryService categoryService;
     @Resource
     private CmsCategoryLangService categoryLangService;
-
 }

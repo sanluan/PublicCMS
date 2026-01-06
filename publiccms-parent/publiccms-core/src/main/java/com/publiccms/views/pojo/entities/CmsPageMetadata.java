@@ -1,6 +1,5 @@
 package com.publiccms.views.pojo.entities;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,11 +80,12 @@ public class CmsPageMetadata implements java.io.Serializable {
      */
     private Map<String, ParameterType> parameterTypeMap;
     /**
-     * enable multilingual
+     * pagedata
      * <p>
-     * 启用多语言
+     * 页面数据
      */
-    private boolean enableMultilingual;
+    @JsonIgnore
+    private Map<String, String> extendData;
 
     /**
      * @return alias
@@ -228,36 +228,20 @@ public class CmsPageMetadata implements java.io.Serializable {
     public void setParameterTypeMap(Map<String, ParameterType> parameterTypeMap) {
         this.parameterTypeMap = parameterTypeMap;
     }
-    
+
     /**
-     * @return the enableMultilingual
+     * @param extendData
+     *            the extendData to set
      */
-    public boolean isEnableMultilingual() {
-        return enableMultilingual;
+    public void setExtendData(Map<String, String> extendData) {
+        this.extendData = extendData;
     }
 
     /**
-     * @param enableMultilingual the enableMultilingual to set
+     * @return the extendData
      */
-    public void setEnableMultilingual(boolean enableMultilingual) {
-        this.enableMultilingual = enableMultilingual;
+    public Map<String, String> getExtendData() {
+        return extendData;
     }
 
-    @JsonIgnore
-    public Map<String, Object> getAsMap(CmsPageData data) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("alias", getAlias());
-        map.put("publishPath", getPublishPath());
-        map.put("useDynamic", isUseDynamic());
-        map.put("needLogin", isNeedLogin());
-        map.put("needBody", isNeedBody());
-        map.put("acceptParameters", getAcceptParameters());
-        map.put("cacheTime", getCacheTime());
-        map.put("contentType", getContentType());
-        map.put("extendList", getExtendList());
-        map.put("extendData", data.getExtendData());
-        map.put("parameterTypeMap", getParameterTypeMap());
-        map.put("enableMultilingual", isEnableMultilingual());
-        return map;
-    }
 }

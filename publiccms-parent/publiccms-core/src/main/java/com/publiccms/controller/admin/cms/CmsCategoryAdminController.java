@@ -50,7 +50,6 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
-import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
@@ -74,8 +73,6 @@ public class CmsCategoryAdminController {
     protected final Log log = LogFactory.getLog(getClass());
     @Resource
     private CmsCategoryService service;
-    @Resource
-    private CmsCategoryLangService langService;
     @Resource
     private CmsContentService contentService;
     @Resource
@@ -115,6 +112,7 @@ public class CmsCategoryAdminController {
             if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
+            entity.setSiteId(oldEntity.getSiteId());
         }
         service.saveTagAndAttribute(site.getId(), site.getSitePath(), entity, oldEntity, admin.getId(), attribute,
                 modelComponent.getCategoryType(site.getId(), entity.getTypeId()), categoryParameters);
@@ -122,7 +120,7 @@ public class CmsCategoryAdminController {
                 operate, RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
 
         try {
-            templateComponent.publish(site, entity, null);
+            templateComponent.publish(site, entity, null, null);
         } catch (IOException | TemplateException e) {
             log.error(e.getMessage(), e);
             model.put(CommonConstants.ERROR, e.getMessage());
@@ -153,7 +151,7 @@ public class CmsCategoryAdminController {
                 }
                 service.copy(site.getId(), entity, copy);
                 try {
-                    templateComponent.createCategoryFile(site, entity, null, null, null);
+                    templateComponent.publish(site, entity, null, null);
                 } catch (IOException | TemplateException e) {
                 }
             }
@@ -257,7 +255,7 @@ public class CmsCategoryAdminController {
         if (CommonUtils.notEmpty(ids)) {
             try {
                 for (Integer id : ids) {
-                    templateComponent.publish(site, service.getEntity(id), max);
+                    templateComponent.publish(site, service.getEntity(id), null, max);
                 }
             } catch (IOException | TemplateException e) {
                 log.error(e.getMessage(), e);

@@ -27,6 +27,7 @@ import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -51,6 +52,8 @@ public class PlaceExportComponent {
     private MetadataComponent metadataComponent;
     @Resource
     private SiteComponent siteComponent;
+    @Resource
+    private SiteAttributeComponent siteAttributeComponent;
 
     /**
      * @param site
@@ -72,9 +75,9 @@ public class PlaceExportComponent {
         String filepath = siteComponent.getTemplateFilePath(site.getId(),
                 CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
         CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
-
-        PageHandler page = service.getPage(site.getId(), userId, path, itemType, itemId, lang, startPublishDate, endPublishDate,
-                CommonUtils.getMinuteDate(), status, false, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
+        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+        PageHandler page = service.getPage(site.getId(), userId, path, itemType, itemId, lang, defaultLang, startPublishDate,
+                endPublishDate, CommonUtils.getMinuteDate(), status, false, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<CmsPlace> entityList = (List<CmsPlace>) page.getList();
         Map<String, List<Serializable>> pksMap = new HashMap<>();

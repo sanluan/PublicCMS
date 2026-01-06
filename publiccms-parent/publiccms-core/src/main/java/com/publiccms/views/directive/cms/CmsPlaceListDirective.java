@@ -20,6 +20,7 @@ import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
@@ -100,9 +101,10 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(path)) {
             path = path.replace("//", Constants.SEPARATOR);
         }
+        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
         PageHandler page = service.getPage(site.getId(), handler.getLong("userId"), path, handler.getString("itemType"),
-                handler.getLong("itemId"), handler.getString("lang"), handler.getDate("startPublishDate"), endPublishDate,
-                expiryDate, status, disabled, handler.getString("orderField"), handler.getString("orderType"),
+                handler.getLong("itemId"), handler.getString("lang"), defaultLang, handler.getDate("startPublishDate"),
+                endPublishDate, expiryDate, status, disabled, handler.getString("orderField"), handler.getString("orderType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")
         List<CmsPlace> list = (List<CmsPlace>) page.getList();
@@ -148,5 +150,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
     protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
+    @Resource
+    private SiteAttributeComponent siteAttributeComponent;
 
 }

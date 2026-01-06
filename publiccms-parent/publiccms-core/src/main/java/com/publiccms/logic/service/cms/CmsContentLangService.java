@@ -2,7 +2,6 @@ package com.publiccms.logic.service.cms;
 
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -50,10 +49,9 @@ public class CmsContentLangService extends BaseService<CmsContentLang> {
         return dao.getList(contentId);
     }
 
-    public List<CmsContentLang> save(SysSite site, Long userId, CmsContent content,
-            CmsContentLangListParameters contentLangListParameters, CmsModel cmsModel, Integer extendId) {
+    public void save(SysSite site, Long userId, CmsContent content, CmsContentLangListParameters contentLangListParameters,
+            CmsModel cmsModel, Integer extendId) {
         if (null != contentLangListParameters && null != contentLangListParameters.getContentLangList()) {
-            List<CmsContentLang> entityList = new ArrayList<>();
             for (CmsContentLangParameters langParameter : contentLangListParameters.getContentLangList()) {
                 CmsContentLang entity = langParameter.getEntity();
                 entity.getId().setContentId(content.getId());
@@ -80,14 +78,11 @@ public class CmsContentLangService extends BaseService<CmsContentLang> {
                 } else {
                     save(entity);
                 }
-                entityList.add(entity);
 
                 saveEditorHistory(getEntity(entity.getId()), entity, site.getId(), entity.getId().getContentId(),
                         entity.getId().getLang(), userId, modelExtendList, categoryExtendList, langParameter.getExtendData());// 保存编辑器字段历史记录
             }
-            return entityList;
         }
-        return null;
     }
 
     /**
@@ -141,7 +136,7 @@ public class CmsContentLangService extends BaseService<CmsContentLang> {
             }
         }
     }
-    
+
     @Resource
     private CmsContentLangDao dao;
 }

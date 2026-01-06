@@ -1,7 +1,6 @@
 package com.publiccms.controller.admin.cms;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -17,13 +16,11 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
-import com.publiccms.entities.cms.CmsCategoryLang;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -76,14 +73,10 @@ public class CmsCategoryLangAdminController {
             if (ControllerUtils.errorNotEquals("siteId", site.getId(), category.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            List<CmsCategoryLang> entityList = service.save(site.getId(), site.getSitePath(), categoryId, admin.getId(),
+            service.save(site.getId(), site.getSitePath(), categoryId, admin.getId(),
                     modelComponent.getCategoryType(site.getId(), category.getTypeId()), categoryLangListParameters);
             try {
-                for (CmsCategoryLang lang : entityList) {
-                    if (CmsLangUtils.initLang(category, lang)) {
-                        templateComponent.createCategoryFile(site, category, lang, null, null);
-                    }
-                }
+                templateComponent.publish(site, category, null, null);
             } catch (IOException | TemplateException e) {
                 log.error(e.getMessage(), e);
                 model.put(CommonConstants.ERROR, e.getMessage());

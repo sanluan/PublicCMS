@@ -39,7 +39,6 @@ import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
-import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.ParameterType;
 
@@ -79,11 +78,14 @@ public class TemplateCacheComponent implements Cache {
 
     public String getViewName(LocaleResolver localeResolver, SysSite site, Long id, Integer pageIndex, String requestPath,
             String body, String lang, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+
         requestPath = siteComponent.getPath(site, requestPath);
         SysDomain domain = siteComponent.getDomain(request.getServerName());
         String fullRequestPath = siteComponent.getViewName(site.getId(), domain, requestPath);
         String templatePath = CommonUtils.joinString(siteComponent.getTemplateFilePath(), fullRequestPath);
-        CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath);
+        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+        CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath, lang, defaultLang);
+
         if (metadata.isUseDynamic()) {
             if (metadata.isNeedLogin() && null == ControllerUtils.getUserFromSession(request.getSession())) {
                 Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
@@ -115,11 +117,8 @@ public class TemplateCacheComponent implements Cache {
                 }
                 return requestPath;
             }
-            if (null == lang) {
-                lang = siteAttributeComponent.getDefaultLanguage(site.getId());
-            }
-            CmsPageData data = metadataComponent.getTemplateData(templatePath, lang);
-            model.addAttribute("metadata", metadata.getAsMap(data));
+
+            model.addAttribute("metadata", metadata);
             if (metadata.isNeedBody()) {
                 model.addAttribute("body", body);
             }
@@ -261,7 +260,6 @@ public class TemplateCacheComponent implements Cache {
         if (CommonUtils.notEmpty(lang)) {
             sb.append(Constants.SEPARATOR);
             sb.append(lang);
-            sb.append(Constants.UNDERLINE);
         }
         if (CommonUtils.notEmpty(locale.getLanguage())) {
             sb.append("/default");

@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -43,17 +44,20 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.StreamUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.common.tools.ZipUtils;
+import com.publiccms.entities.cms.CmsLanguage;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.cache.CacheComponent;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.exchange.SiteExchangeComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsLanguageService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
@@ -93,6 +97,10 @@ public class CmsTemplateAdminController {
     protected SiteComponent siteComponent;
     @Resource
     protected SiteExchangeComponent siteExchangeComponent;
+    @Resource
+    private CmsLanguageService languageService;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 
     /**
      * @param site
@@ -486,11 +494,16 @@ public class CmsTemplateAdminController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             metadataComponent.deleteTemplateMetadata(filepath);
-            if (metadata.isEnableMultilingual()) {
-
-                metadataComponent.deleteTemplateData(filepath, null);
+            if (siteAttributeComponent.enableMultilingual(site.getId())) {
+                List<CmsLanguage> languageList = languageService.getList(site.getId());
+                if (null != languageList) {
+                    String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                    for (CmsLanguage lang : languageList) {
+                        metadataComponent.deletePageData(filepath, lang.getId().getCode(), defaultLang);
+                    }
+                }
             } else {
-                metadataComponent.deleteTemplateData(filepath, null);
+                metadataComponent.deletePageData(filepath, null, null);
             }
 
             sysDeptItemService.delete(null, "page", path);
@@ -523,6 +536,17 @@ public class CmsTemplateAdminController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             metadataComponent.deletePlaceMetadata(filepath);
+            if (siteAttributeComponent.enableMultilingual(site.getId())) {
+                List<CmsLanguage> languageList = languageService.getList(site.getId());
+                if (null != languageList) {
+                    String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                    for (CmsLanguage lang : languageList) {
+                        metadataComponent.deletePageData(filepath, lang.getId().getCode(), defaultLang);
+                    }
+                }
+            } else {
+                metadataComponent.deletePageData(filepath, null, null);
+            }
             cmsPlaceService.delete(site.getId(), path);
             templateComponent.clearTemplateCache();
             logOperateService

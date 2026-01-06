@@ -10,12 +10,12 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 
 import freemarker.template.TemplateException;
@@ -58,9 +58,6 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(handler);
             String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
-            if (CommonUtils.notEmpty(lang) && lang.equalsIgnoreCase(defaultLang)) {
-                lang = null;
-            }
 
             if (site.isUseSsi()) {
                 StringBuilder sb = new StringBuilder("<!--#include virtual=\"/");
@@ -68,27 +65,22 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
                     sb.append(site.getDirectory()).append(Constants.SEPARATOR);
                 }
                 sb.append(TemplateComponent.INCLUDE_DIRECTORY);
-                if (CommonUtils.notEmpty(lang)) {
+                if (CommonUtils.empty(lang) || lang.equalsIgnoreCase(defaultLang)) {
                     sb.append(Constants.SEPARATOR).append(lang);
                 }
                 sb.append(path).append("\"-->");
                 handler.print(sb.toString());
             } else {
-                String includePath = null;
-                if (CommonUtils.notEmpty(lang)) {
-                    includePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, Constants.SEPARATOR, lang, path);
-                } else {
-                    includePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path);
-                }
+                String includePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY,
+                        CmsLangUtils.getPlaceFilepath(path, lang, defaultLang));
                 String webfilepath = siteComponent.getWebFilePath(site.getId(), includePath);
                 if (CmsFileUtils.exists(webfilepath)) {
                     handler.print(CmsFileUtils.getFileContent(webfilepath));
                 } else {
                     String filepath = siteComponent.getTemplateFilePath(site.getId(),
                             CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
-                    CmsPageData data = metadataComponent.getTemplateData(filepath, lang);
-                    templateComponent.printPlace(handler.getWriter(), site, path, lang, metadata, data);
+                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath, lang, defaultLang);
+                    templateComponent.printPlace(handler.getWriter(), site, path, lang, defaultLang, metadata);
                 }
             }
         }
