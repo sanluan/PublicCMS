@@ -50,7 +50,7 @@ DROP TABLE IF EXISTS `cms_category_lang`;
 CREATE TABLE `cms_category_lang` (
   `category_id` int(11) NOT NULL,
   `lang` varchar(20) NOT NULL COMMENT '语言',
-  `url` varchar(50) NOT NULL COMMENT '链接地址',
+  `url` varchar(1000) DEFAULT NULL COMMENT '链接地址',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `title` varchar(80) DEFAULT NULL COMMENT '标题',
   `keywords` varchar(100) DEFAULT NULL COMMENT '关键词',
@@ -66,7 +66,7 @@ DROP TABLE IF EXISTS `cms_content_lang`;
 CREATE TABLE `cms_content_lang` (
   `content_id` bigint(20) NOT NULL,
   `lang` varchar(50) NOT NULL COMMENT '语言',
-  `url` varchar(50) NOT NULL COMMENT '链接地址',
+  `url` varchar(1000) DEFAULT NULL COMMENT '链接地址',
   `title` varchar(255) DEFAULT NULL COMMENT '标题',
   `author` varchar(50) DEFAULT NULL COMMENT '作者',
   `editor` varchar(50) DEFAULT NULL COMMENT '编辑',
