@@ -266,7 +266,8 @@ public class MetadataComponent implements Cache {
      * @return template metadata map
      */
     private Map<String, CmsPageData> getTemplateDataMap(String dirPath, String lang) {
-        Map<String, CmsPageData> dataMap = pageDataCache.get(dirPath);
+        String cacheKey = CommonUtils.joinString(dirPath, Constants.SEPARATOR, lang);
+        Map<String, CmsPageData> dataMap = pageDataCache.get(cacheKey);
         if (null == dataMap) {
             String fileName = null;
             if (CommonUtils.notEmpty(lang)) {
@@ -285,7 +286,7 @@ public class MetadataComponent implements Cache {
             } else {
                 dataMap = new CaseInsensitiveMap<>();
             }
-            pageDataCache.put(dirPath, dataMap);
+            pageDataCache.put(cacheKey, dataMap);
         }
         return dataMap;
     }
