@@ -248,7 +248,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
             }
             service.rebuildSearchText(site, cmsModel, categoryExtendList, entity);
             try {
-                templateComponent.createContentFile(site, entity, category, null, true);
+                templateComponent.createContentFile(site, entity, null, category, null);
             } catch (IOException | TemplateException e) {
             }
         }

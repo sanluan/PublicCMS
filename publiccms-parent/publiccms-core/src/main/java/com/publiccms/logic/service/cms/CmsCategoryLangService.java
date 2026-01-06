@@ -1,5 +1,6 @@
 package com.publiccms.logic.service.cms;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsCategoryLang;
+import com.publiccms.logic.dao.cms.CmsCategoryLangDao;
 import com.publiccms.views.pojo.entities.CmsCategoryType;
 import com.publiccms.views.pojo.model.CmsCategoryLangListParameters;
 import com.publiccms.views.pojo.model.CmsCategoryLangParameters;
@@ -32,16 +34,24 @@ public class CmsCategoryLangService extends BaseService<CmsCategoryLang> {
     private CmsEditorHistoryService editorHistoryService;
 
     /**
+     * @param categoryId
+     * @return data list
+     */
+    public List<CmsCategoryLang> getList(Integer categoryId) {
+        return dao.getList(categoryId);
+    }
+
+    /**
      * @param siteId
      * @param sitePath
      * @param categoryId
      * @param userId
      * @param categoryType
      * @param categoryLangListParameters
-     * @return 
+     * @return
      */
-    public List<CmsCategoryLang> save(short siteId, String sitePath, Integer categoryId, Long userId, CmsCategoryType categoryType,
-            CmsCategoryLangListParameters categoryLangListParameters) {
+    public List<CmsCategoryLang> save(short siteId, String sitePath, Integer categoryId, Long userId,
+            CmsCategoryType categoryType, CmsCategoryLangListParameters categoryLangListParameters) {
         if (null != categoryLangListParameters && null != categoryLangListParameters.getCategoryLangList()) {
             List<CmsCategoryLang> entityList = new ArrayList<>();
             for (CmsCategoryLangParameters langParameter : categoryLangListParameters.getCategoryLangList()) {
@@ -69,6 +79,17 @@ public class CmsCategoryLangService extends BaseService<CmsCategoryLang> {
         return null;
     }
 
+    /**
+     * @param id
+     * @param url
+     */
+    public void updateUrl(Serializable id, String url) {
+        CmsCategoryLang entity = getEntity(id);
+        if (null != entity) {
+            entity.setUrl(url);
+        }
+    }
+
     private void saveEditorHistory(CmsCategoryLang oldEntity, short siteId, int entityId, String lang, long userId,
             CmsCategoryType categoryType, Map<String, String> map) {
         if (null != oldEntity && (CommonUtils.notEmpty(oldEntity.getData()) && null != categoryType
@@ -78,4 +99,7 @@ public class CmsCategoryLangService extends BaseService<CmsCategoryLang> {
                     String.valueOf(entityId), lang, oldMap, map, categoryType.getExtendList());
         }
     }
+
+    @Resource
+    private CmsCategoryLangDao dao;
 }

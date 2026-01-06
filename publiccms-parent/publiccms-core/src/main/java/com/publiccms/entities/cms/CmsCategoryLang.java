@@ -24,6 +24,14 @@ public class CmsCategoryLang extends EntityAttribute implements java.io.Serializ
 
     private static final long serialVersionUID = 1L;
     private CmsCategoryLangId id;
+    /**
+     * url
+     * 
+     * 链接地址
+     */
+    @GeneratorColumn(title = "地址")
+    @Length(max = 1000)
+    private String url;
     @GeneratorColumn(title = "名称")
     @Length(max = 50)
     private String name;
@@ -47,8 +55,9 @@ public class CmsCategoryLang extends EntityAttribute implements java.io.Serializ
         this.name = name;
     }
 
-    public CmsCategoryLang(CmsCategoryLangId id, String name, String title, String keywords, String description, String data) {
+    public CmsCategoryLang(CmsCategoryLangId id, String url, String name, String title, String keywords, String description, String data) {
         this.id = id;
+        this.url = url;
         this.name = name;
         this.title = title;
         this.keywords = keywords;
@@ -66,6 +75,15 @@ public class CmsCategoryLang extends EntityAttribute implements java.io.Serializ
 
     public void setId(CmsCategoryLangId id) {
         this.id = id;
+    }
+
+    @Column(name = "url", length = 1000)
+    public String getUrl() {
+        return this.url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Column(name = "name", nullable = false, length = 50)

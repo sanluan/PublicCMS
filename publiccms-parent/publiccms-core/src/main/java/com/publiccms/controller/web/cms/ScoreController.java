@@ -107,7 +107,7 @@ public class ScoreController {
                         }
                         if (needStatic) {
                             try {
-                                templateComponent.createContentFile(site, content, null, null, true);
+                                templateComponent.createContentFile(site, content, null, null, null);
                             } catch (IOException | TemplateException e) {
                                 log.error(e.getMessage(), e);
                             }
@@ -132,7 +132,7 @@ public class ScoreController {
                         if (needStatic) {
                             try {
                                 templateComponent.createContentFile(site, contentService.getEntity(comment.getContentId()), null,
-                                        null, true);
+                                        null, null);
                             } catch (IOException | TemplateException e) {
                                 log.error(e.getMessage(), e);
                             }

@@ -122,7 +122,7 @@ public class CmsCommentAdminController {
             CmsContent content = contentService.getEntity(entity.getContentId());
             if (null != content && !content.isDisabled()) {
                 try {
-                    templateComponent.createContentFile(site, content, null, null, true);
+                    templateComponent.createContentFile(site, content, null, null, null);
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
@@ -148,11 +148,12 @@ public class CmsCommentAdminController {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.check(site.getId(), ids, admin.getId());
             Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
-            boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+            boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT),
+                    false);
             if (needStatic) {
                 try {
                     for (CmsContent content : contentSet) {
-                        templateComponent.createContentFile(site, content, null, null, true);
+                        templateComponent.createContentFile(site, content, null, null, null);
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -182,11 +183,12 @@ public class CmsCommentAdminController {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.uncheck(site.getId(), ids);
             Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
-            boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+            boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT),
+                    false);
             if (needStatic) {
                 try {
                     for (CmsContent content : contentSet) {
-                        templateComponent.createContentFile(site, content, null, null, true);// 静态化
+                        templateComponent.createContentFile(site, content, null, null, null);// 静态化
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -216,11 +218,12 @@ public class CmsCommentAdminController {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.delete(site.getId(), ids);
             Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
-            boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+            boolean needStatic = ConfigDataComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT),
+                    false);
             if (needStatic) {
                 try {
                     for (CmsContent content : contentSet) {
-                        templateComponent.createContentFile(site, content, null, null, true);// 静态化
+                        templateComponent.createContentFile(site, content, null, null, null);// 静态化
                     }
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());

@@ -1,5 +1,6 @@
 package com.publiccms.logic.service.cms;
 
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.publiccms.entities.cms.CmsContentLang;
 import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.dao.cms.CmsContentLangDao;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.entities.CmsModel;
@@ -36,8 +38,6 @@ import jakarta.annotation.Resource;
 public class CmsContentLangService extends BaseService<CmsContentLang> {
     private String[] ignoreProperties = new String[] { "id" };
     @Resource
-    private CmsContentService contentService;
-    @Resource
     private SysExtendService extendService;
     @Resource
     private SysExtendFieldService extendFieldService;
@@ -45,6 +45,10 @@ public class CmsContentLangService extends BaseService<CmsContentLang> {
     private CmsContentFileService contentFileService;
     @Resource
     private CmsEditorHistoryService editorHistoryService;
+
+    public List<CmsContentLang> getList(Long contentId) {
+        return dao.getList(contentId);
+    }
 
     public List<CmsContentLang> save(SysSite site, Long userId, CmsContent content,
             CmsContentLangListParameters contentLangListParameters, CmsModel cmsModel, Integer extendId) {
@@ -86,6 +90,19 @@ public class CmsContentLangService extends BaseService<CmsContentLang> {
         return null;
     }
 
+    /**
+     * @param id
+     * @param url
+     * @return result
+     */
+    public CmsContentLang updateUrl(Serializable id, String url) {
+        CmsContentLang entity = getEntity(id);
+        if (null != entity) {
+            entity.setUrl(url);
+        }
+        return entity;
+    }
+
     private void dealAttribute(CmsContentLang entity, SysSite site, List<SysExtendField> modelExtendList,
             List<SysExtendField> categoryExtendList, Map<String, String> map) {
         String text = HtmlUtils.removeHtmlTag(entity.getText());
@@ -102,7 +119,7 @@ public class CmsContentLangService extends BaseService<CmsContentLang> {
         }
     }
 
-    public void saveEditorHistory(CmsContentLang oldAttribute, CmsContentLang attribute, short siteId, long contentId,
+    private void saveEditorHistory(CmsContentLang oldAttribute, CmsContentLang attribute, short siteId, long contentId,
             String lang, long userId, List<SysExtendField> modelExtendList, List<SysExtendField> categoryExtendList,
             Map<String, String> map) {
         if (null != oldAttribute) {
@@ -124,4 +141,7 @@ public class CmsContentLangService extends BaseService<CmsContentLang> {
             }
         }
     }
+    
+    @Resource
+    private CmsContentLangDao dao;
 }

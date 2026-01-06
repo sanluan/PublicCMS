@@ -5,8 +5,6 @@ import java.io.IOException;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractLongWorkflowHandler;
-import com.publiccms.controller.admin.cms.CmsContentAdminController;
-import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -14,7 +12,9 @@ import com.publiccms.entities.sys.SysWorkflowProcess;
 import com.publiccms.entities.sys.SysWorkflowProcessHistory;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
+import com.publiccms.logic.service.cms.CmsContentLangService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.sys.SysWorkflowProcessService;
 
@@ -29,6 +29,8 @@ public class ContentWorkflowHandler extends AbstractLongWorkflowHandler {
     protected SiteComponent siteComponent;
     @Resource
     private CmsCategoryService categoryService;
+    @Resource
+    private CmsCategoryLangService categoryLangService;
 
     @Override
     public String getItemType() {
@@ -39,17 +41,7 @@ public class ContentWorkflowHandler extends AbstractLongWorkflowHandler {
     public void finish(SysSite site, SysWorkflowProcess entity, SysUser user, SysWorkflowProcessHistory history, Long itemId) {
         CmsContent content = service.checkInProcess(entity.getSiteId(), user.getId(), itemId);
         try {
-            CmsCategory category = categoryService.getEntity(content.getCategoryId());
-            templateComponent.createContentFile(site, content, category, null, true);
-            if (null != category) {
-                templateComponent.createCategoryFile(site, category, true, null, null);
-            }
-            if (null != content.getParentId()) {
-                CmsContent parent = service.getEntity(content.getParentId());
-                if (null != parent) {
-                    templateComponent.createContentFile(site, parent, category, null, true);
-                }
-            }
+            templateComponent.publish(site, content);
         } catch (IOException | TemplateException e) {
         }
     }
@@ -57,9 +49,11 @@ public class ContentWorkflowHandler extends AbstractLongWorkflowHandler {
     @Override
     public void interrupt(SysSite site, SysWorkflowProcess entity, SysUser user, SysWorkflowProcessHistory history, Long itemId) {
         CmsContent content = service.rejectInProcess(entity.getSiteId(), user.getId(), itemId);
-        CmsContentAdminController.deleteFile(site, content, siteComponent);
+        templateComponent.deleteStaticFile(site.getId(), content);
     }
 
     @Resource
     private CmsContentService service;
+    @Resource
+    private CmsContentLangService langService;
 }
