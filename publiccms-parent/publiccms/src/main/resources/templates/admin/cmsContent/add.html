@@ -16,7 +16,7 @@
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
         <ul>
-            
+
             <li>
                 <label><input type="checkbox" name="draft" class="form-check-input"/><@t.page 'draft'/></label>
             </li>
@@ -239,12 +239,12 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                 <#include "../include_page/contentFiles.html"/>
                 <#if model.hasImages>
                 <div class="pageFormContent" layoutH>
-                    <@contentFiles true id!copyId copy lang.id.code/>
+                    <@contentFiles true id!copyId copy/>
                 </div>
                 </#if>
                 <#if model.hasFiles>
                 <div class="pageFormContent" layoutH>
-                    <@contentFiles false id!copyId copy lang.id.code/>
+                    <@contentFiles false id!copyId copy/>
                 </div>
                 </#if>
             </#if>

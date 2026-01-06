@@ -34,7 +34,7 @@ public class PlaceWorkflowHandler extends AbstractLongWorkflowHandler {
     public void finish(SysSite site, SysWorkflowProcess entity, SysUser user, SysWorkflowProcessHistory history, Long itemId) {
         CmsPlace place = service.checkInProcess(entity.getSiteId(), user.getId(), itemId);
         try {
-            templateComponent.staticPlace(site, place.getPath(), true);
+            templateComponent.publishPlace(site, place.getPath(), true);
         } catch (IOException | TemplateException e) {
             log.error(e.getMessage(), e);
         }

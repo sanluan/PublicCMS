@@ -143,7 +143,7 @@ public class StatisticsComponent implements Cache {
                     CmsPlace entity = placeService.getEntity(id);
                     if (null != entity) {
                         try {
-                            BeanComponent.getTemplateComponent().staticPlace(site, entity.getPath(), true);
+                            BeanComponent.getTemplateComponent().publishPlace(site, entity.getPath(), true);
                         } catch (IOException | TemplateException e) {
                             log.error(e.getMessage(), e);
                         }

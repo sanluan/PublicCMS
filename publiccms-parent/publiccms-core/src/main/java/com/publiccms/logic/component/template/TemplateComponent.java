@@ -776,7 +776,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
      * @throws IOException
      * @throws TemplateException
      */
-    public void staticPlace(SysSite site, String templatePath, boolean checkExists) throws IOException, TemplateException {
+    public void publishPlace(SysSite site, String templatePath, boolean checkExists) throws IOException, TemplateException {
         if (CommonUtils.notEmpty(templatePath) && site.isUseSsi()) {
             String fullTemplatePath = CommonUtils.joinString(INCLUDE_DIRECTORY, templatePath);
             String realFilepath = siteComponent.getTemplateFilePath(site.getId(), fullTemplatePath);
@@ -786,16 +786,13 @@ public class TemplateComponent implements Cache, AdminContextPath {
                 if (null != languageList) {
                     String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
                     for (CmsLanguage lang : languageList) {
-                        String fullStaticFilePath = CommonUtils.joinString(INCLUDE_DIRECTORY,
-                                lang.getId().getCode().equalsIgnoreCase(defaultLang) ? null : Constants.SEPARATOR,
-                                lang.getId().getCode().equalsIgnoreCase(defaultLang) ? null : lang.getId().getCode(),
-                                templatePath);
+                        boolean flag = lang.getId().getCode().equalsIgnoreCase(defaultLang);
+                        String fullStaticFilePath = CommonUtils.joinString(INCLUDE_DIRECTORY, flag ? null : Constants.SEPARATOR,
+                                flag ? null : lang.getId().getCode(), templatePath);
                         if (!checkExists || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), fullStaticFilePath))) {
                             CmsPageData data = metadataComponent.getTemplateData(realFilepath,
-                                    lang.getId().getCode().equalsIgnoreCase(defaultLang) ? null : lang.getId().getCode());
-                            staticPlace(site, templatePath,
-                                    lang.getId().getCode().equalsIgnoreCase(defaultLang) ? null : lang.getId().getCode(),
-                                    metadata, data);
+                                    flag ? null : lang.getId().getCode());
+                            staticPlace(site, templatePath, flag ? null : lang.getId().getCode(), metadata, data);
                         }
                     }
                 }
@@ -818,11 +815,13 @@ public class TemplateComponent implements Cache, AdminContextPath {
      * @throws IOException
      * @throws TemplateException
      */
-    public void staticPlace(SysSite site, String templatePath, String lang, boolean checkExists)
+    public void publishPlace(SysSite site, String templatePath, String lang, boolean checkExists)
             throws IOException, TemplateException {
         String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, templatePath);
-        String fullStaticFilePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY,
-                CommonUtils.notEmpty(lang) ? Constants.SEPARATOR : null, lang, templatePath);
+        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+        boolean flag = CommonUtils.empty(lang) || lang.equalsIgnoreCase(defaultLang);
+        String fullStaticFilePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, flag ? null : Constants.SEPARATOR,
+                flag ? null : lang, templatePath);
         if (!checkExists
                 || site.isUseSsi() && CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), fullStaticFilePath))) {
             try {
@@ -908,10 +907,45 @@ public class TemplateComponent implements Cache, AdminContextPath {
      *
      * @param site
      * @param templatePath
+     * @param lang
+     * @return
      * @throws IOException
      * @throws TemplateException
      */
-    public void createStaticFile(SysSite site, String templatePath) throws IOException, TemplateException {
+    public boolean publishPage(SysSite site, String templatePath, String lang) throws IOException, TemplateException {
+        if (CommonUtils.notEmpty(templatePath)) {
+            String fullTemplatePath = SiteComponent.getFullTemplatePath(site.getId(), templatePath);
+            String realFilepath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
+            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realFilepath);
+            if (site.isUseStatic() && CommonUtils.notEmpty(metadata.getPublishPath())) {
+                if (metadata.isEnableMultilingual()) {
+                    String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                    boolean flag = CommonUtils.empty(lang) || lang.equalsIgnoreCase(defaultLang);
+                    String fullStaticFilePath = CommonUtils.joinString(flag ? null : lang, flag ? null : Constants.SEPARATOR,
+                            metadata.getPublishPath());
+                    CmsPageData data = metadataComponent.getTemplateData(realFilepath, flag ? null : lang);
+                    createStaticFile(site, fullTemplatePath, fullStaticFilePath, flag ? null : lang, null,
+                            metadata.getAsMap(data), null, null);
+                } else {
+                    CmsPageData data = metadataComponent.getTemplateData(realFilepath, null);
+                    createStaticFile(site, fullTemplatePath, metadata.getPublishPath(), null, null, metadata.getAsMap(data), null,
+                            null);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 创建静态化页面
+     *
+     * @param site
+     * @param templatePath
+     * @throws IOException
+     * @throws TemplateException
+     */
+    public void publishPage(SysSite site, String templatePath) throws IOException, TemplateException {
         if (CommonUtils.notEmpty(templatePath)) {
             String fullTemplatePath = SiteComponent.getFullTemplatePath(site.getId(), templatePath);
             String realFilepath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
@@ -922,15 +956,13 @@ public class TemplateComponent implements Cache, AdminContextPath {
                     if (null != languageList) {
                         String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
                         for (CmsLanguage lang : languageList) {
-                            String fullStaticFilePath = CommonUtils.joinString(
-                                    lang.getId().getCode().equalsIgnoreCase(defaultLang) ? null : lang.getId().getCode(),
-                                    lang.getId().getCode().equalsIgnoreCase(defaultLang) ? null : Constants.SEPARATOR,
-                                    metadata.getPublishPath());
+                            boolean flag = lang.getId().getCode().equalsIgnoreCase(defaultLang);
+                            String fullStaticFilePath = CommonUtils.joinString(flag ? null : lang.getId().getCode(),
+                                    flag ? null : Constants.SEPARATOR, metadata.getPublishPath());
                             CmsPageData data = metadataComponent.getTemplateData(realFilepath,
-                                    lang.getId().getCode().equalsIgnoreCase(defaultLang) ? null : lang.getId().getCode());
-                            createStaticFile(site, fullTemplatePath, fullStaticFilePath,
-                                    lang.getId().getCode().equalsIgnoreCase(defaultLang) ? null : lang.getId().getCode(), null,
-                                    metadata.getAsMap(data), null, null);
+                                    flag ? null : lang.getId().getCode());
+                            createStaticFile(site, fullTemplatePath, fullStaticFilePath, flag ? null : lang.getId().getCode(),
+                                    null, metadata.getAsMap(data), null, null);
                         }
                     }
                 } else {

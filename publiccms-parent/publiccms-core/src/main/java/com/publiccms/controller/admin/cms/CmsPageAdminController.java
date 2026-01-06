@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
-import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -126,32 +125,24 @@ public class CmsPageAdminController {
                         path, null, olddata.getExtendData(), pageDate.getExtendData(), extendList);
             }
             if ("place".equalsIgnoreCase(type)) {
-                if (path.startsWith(TemplateComponent.INCLUDE_DIRECTORY) && (site.isUseSsi())) {
+                if (path.startsWith(TemplateComponent.INCLUDE_DIRECTORY)) {
                     try {
-                        String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY,
-                                CommonUtils.notEmpty(lang) ? Constants.SEPARATOR : null, lang,
-                                path.substring(TemplateComponent.INCLUDE_DIRECTORY.length()));
-                        if (CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
-                            templateComponent.staticPlace(site, path.substring(TemplateComponent.INCLUDE_DIRECTORY.length()),
-                                    lang, placeMetadata, pageDate);
-                        }
+                        templateComponent.publishPlace(site, path.substring(TemplateComponent.INCLUDE_DIRECTORY.length()), lang,
+                                true);
                     } catch (IOException | TemplateException e) {
                         log.error(e.getMessage(), e);
                     }
                 }
             } else {
-                if (site.isUseStatic() && null != pageMetadata && CommonUtils.notEmpty(pageMetadata.getPublishPath())) {
-                    String templatePath = SiteComponent.getFullTemplatePath(site.getId(), path);
-                    try {
-                        templateComponent.createStaticFile(site, templatePath, pageMetadata.getPublishPath(), lang, null,
-                                pageMetadata.getAsMap(pageDate), null, null);
-                    } catch (IOException | TemplateException e) {
-                        log.error(e.getMessage(), e);
-                    }
+                try {
+                    templateComponent.publishPage(site, path, lang);
+                } catch (IOException | TemplateException e) {
+                    log.error(e.getMessage(), e);
                 }
             }
         }
         return CommonConstants.TEMPLATE_DONE;
+
     }
 
     /**
