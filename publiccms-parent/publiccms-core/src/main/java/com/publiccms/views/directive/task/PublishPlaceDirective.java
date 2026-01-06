@@ -17,8 +17,6 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.views.pojo.entities.CmsPageData;
-import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 
 import freemarker.template.TemplateException;
 import jakarta.annotation.Resource;
@@ -64,9 +62,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         if (CmsFileUtils.isFile(filepath)) {
             Map<String, Boolean> map = new LinkedHashMap<>();
             try {
-                CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
-                CmsPageData data = metadataComponent.getTemplateData(filepath, lang);
-                templateComponent.staticPlace(site, path, lang, metadata, data);
+                templateComponent.publishPlace(site, path, lang, false);
                 map.put(path, true);
             } catch (IOException | TemplateException e) {
                 handler.getWriter().append(e.getMessage());
@@ -90,11 +86,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
                 map.putAll(dealDir(site, handler, CommonUtils.joinString(filepath, Constants.SEPARATOR), lang));
             } else {
                 try {
-                    String realfilepath = siteComponent.getTemplateFilePath(site.getId(),
-                            CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, filepath));
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(realfilepath);
-                    CmsPageData data = metadataComponent.getTemplateData(realfilepath, lang);
-                    templateComponent.staticPlace(site, filepath, lang, metadata, data);
+                    templateComponent.publishPlace(site, filepath, lang, false);
                     map.put(filepath, true);
                 } catch (IOException | TemplateException e) {
                     handler.getWriter().append(e.getMessage());
