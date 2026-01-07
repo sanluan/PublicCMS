@@ -16,18 +16,18 @@
     .w1,.w2{width:100%;}
 }
 #rawJson{width:100%;height:80px;box-sizing:border-box;}
-#interfaes{overflow: auto;max-height:600px;padding-left: 10px;}
+#interfaes{overflow: auto;max-height:545px;padding-left: 10px;}
 #interfaes a{padding:0 5px;}
 #interfaes label{margin-left:-10px;}
 .doc{max-height:600px;overflow:auto;}
-p{margin-bottom:5px;}
-.code-canvas{max-height:480px;overflow:auto;}
+p{margin:5px 0;}
+.code-canvas{max-height:460px;overflow:auto;}
 input[type=button]{font-size:14px;border-width:0px;background-color:#3A6CCB;border-radius:4px;color:#fff;text-align: center;line-height: 28px;padding:0 8px;}
 </style>
 </head>
 <body>
-    <fieldset data-diy="page">
-        <legend>${app.interface}</legend>
+    <fieldset>
+        <legend><@t.page "app.interface"/></legend>
         <div class="row">
             <div class="w2">
                 <p>
@@ -162,7 +162,7 @@ input[type=button]{font-size:14px;border-width:0px;background-color:#3A6CCB;bord
         }
         $('#interfaes').empty();
         $.ajax({
-            url:apisArray[i],type: 'GET',
+            url:sitePath+apisArray[i],type: 'GET',
             contentType:'application/json; charset=UTF-8',
             dataType: 'json',
             success: function (dataList) {
