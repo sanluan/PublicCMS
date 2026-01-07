@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="<@t.page 'html_lang'/>">
+<head>
+<title><@t.page "app.all_interface"/></title>
+<meta charset="utf-8">
+<link href="${base}/resource/plugins/json-formatter/code-formatter.css" rel="stylesheet" />
+<style>
+.row{display:flex;flex-wrap:wrap;}
+.w1{width:33.33%;flex:0 0 auto}
+.w2{width:66.66%;}
+@media (max-width: 1024px) {
+    .w2{width:100%;}
+    .w1{width:50%;}
+}
+@media (max-width: 768px) {
+    .w1,.w2{width:100%;}
+}
+#rawJson{width:100%;height:80px;box-sizing:border-box;}
+#interfaes{overflow: auto;max-height:600px;padding-left: 10px;}
+#interfaes a{padding:0 5px;}
+#interfaes label{margin-left:-10px;}
+.doc{max-height:600px;overflow:auto;}
+p{margin-bottom:5px;}
+.code-canvas{max-height:480px;overflow:auto;}
+input[type=button]{font-size:14px;border-width:0px;background-color:#3A6CCB;border-radius:4px;color:#fff;text-align: center;line-height: 28px;padding:0 8px;}
+</style>
+</head>
+<body>
+    <fieldset data-diy="page">
+        <legend>${app.interface}</legend>
+        <div class="row">
+            <div class="w2">
+                <p>
+                    <label for="sendData">URL:</label>
+                    <textarea cols="100" rows="2" id="sendData"></textarea>
+                </p>
+                <p>
+                    <input type="button" value="Send" onclick="invoke()"/>
+                    <label style="float:right;"><input name="showParameters" type="checkbox" checked="checked"/><@t.page "parameter"/></label>
+                </p>
+            </div>
+            <div class="w1">
+                <p>
+                    <label>appToken:<input name="appToken" type="text" style="border:1px solid #f00;"/></label>
+                </p>
+                <p>
+                    <label>authToken:<input name="authToken" type="text" style="border:1px solid #0f0;"/></label>
+                </p>
+                <p>
+                    <label>authUserId:<input name="authUserId" type="text" style="border:1px solid #0f0;"/></label>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="w1">
+                <p>
+                    <label><input type="radio" name="api" value="0" /><@t.page "app.directive"/></label>
+                    <label><input type="radio" name="api" value="1" /><@t.page "app.method"/></label>
+                    <label><input type="radio" name="api" value="2" /><@t.page "app.app_directive"/></label>
+                </p>
+                <p id="interfaes"></p>
+            </div>
+            <div class="w1">
+                <textarea id="rawJson" placeholder="<@t.page 'result'/>"></textarea>
+                <p>
+                    <input type="button" value="Format" onclick="process($('#rawJson').val(),$('.code-canvas'))"/>
+                    <input type="button" value="Copy" onclick="navigator.clipboard.writeText($('.code-canvas').text())"/>
+                    <input type="button" value="Expand All" onclick="$('.code-image-collapsed','.code-canvas').trigger('click');"/>
+                    <input type="button" value="Collapse All" onclick="$('.code-image-expanded','.code-canvas').trigger('click');"/>
+                </p>
+                <div class="code-canvas"></div>
+            </div>
+            <div class="w1">
+                <div class="doc"></div>
+                <p class="description">
+                    <em>红色字体接口需要使用AppToken才能访问，后台添加应用然后用appKey和appSecret通过自定义接口appToken获取appToken，绿色框体接口需要登录信息authToken，authUserId才能访问,通过普通接口login获取</em>
+                </p>
+                <p class="description">
+                    <em>The red font interface needs to use the AppToken to
+                        access, add the application in the management, and then
+                        use the appKey and appSecret to obtain the appToken
+                        through the custom interface appToken. The green frame
+                        interface requires the login information authToken and
+                        authUserId to access, and the common interface login.</em>
+                </p>
+            </div>
+        </div>
+    </fieldset>
+    <script src="${base}/resource/plugins/json-formatter/code-formatter.js"></script>
+    <script src="${base}/resource/plugins/json-formatter/json2.js"></script>
+    <script src="${base}/resource/plugins/jquery/jquery.min.js"></script>
+    <script>
+    var i=0;
+    var sitePath = '${site.dynamicPath}';
+    var apiArray=['api/directive/','api/method/','api/']
+    var apisArray=['api/namespaces','api/methods','api/apis'];
+    var apiDoc=new Map();
+    var supportShowParametersArray=[true,false,true];
+
+    function invoke(){
+        $('#rawJson').val('loading...');
+        $.ajax({
+            url: $('#sendData').val(),
+            type: 'POST',
+            contentType:'application/json; charset=UTF-8',
+            beforeSend: function (xhr) {
+                if($('input[name=appToken]').val()){
+                    xhr.setRequestHeader("appToken", $('input[name=appToken]').val());
+                }
+                if($('input[name=authToken]').val()){
+                    xhr.setRequestHeader("authToken", $('input[name=authToken]').val());
+                }
+                if($('input[name=authUserId]').val()){
+                    xhr.setRequestHeader("authUserId",$('input[name=authUserId]').val());
+                }
+            },
+            success: function (data) {
+                if(data.appToken){
+                    $('input[name=appToken]').val(data.appToken);
+                }
+                $('#rawJson').val(JSON.stringify(data));
+                process(JSON.stringify(data),$('.code-canvas'));
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest);
+                console.log(errorThrown);
+                $('#rawJson').val('http code:'+XMLHttpRequest.status+',error:'+textStatus);
+            }
+        });
+    }
+    function getSymbol(value){
+        if(value.charAt(value.length-1)=='&'||value.charAt(value.length-1)=='?'){
+            return '';
+        }else{
+            if(value&&value.indexOf('?')>0){
+                return '&';
+            }else{
+                return '?';
+            }
+        }
+    }
+    function use(action,needAppToken,needUserToken,minParameters){
+        $('#sendData').val(sitePath+apiArray[i]+action);
+        if(apiDoc.get(action)){
+            $(".doc").html(apiDoc.get(action));
+        }
+        if(minParameters != 'undefined'){
+            for (var j = 1; j <= minParameters; j++) {
+                $('#sendData').val($('#sendData').val() + getSymbol($('#sendData').val()) + 'parameters=_value' + j+'_');
+            }
+        }else if($('input[name=showParameters]').is(':checked')&&$('input[name=showParameters]').is(':visible')){
+            $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParameters=true');
+        }
+        return false;
+    }
+    function init(){
+        i=$('input:radio[name=api]:checked').val();
+        if(supportShowParametersArray[i]){
+            $('input[name=showParameters]').parent().show();
+        }else{
+            $('input[name=showParameters]').parent().hide();
+        }
+        $('#interfaes').empty();
+        $.ajax({
+            url:apisArray[i],type: 'GET',
+            contentType:'application/json; charset=UTF-8',
+            dataType: 'json',
+            success: function (dataList) {
+                if(dataList instanceof Array) {
+                    $(dataList).each(function(index,data){
+                        var style='';
+                        if('true'==data.needAppToken){
+                            style+='color:#f00;';
+                        }
+                        if('true'==data.needUserToken){
+                            style+='border:1px solid #0f0;';
+                        }
+                        $('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+data.name+'\',\''+data.needAppToken+'\',\''+data.needUserToken+'\',\''+data.minParameters+'\');">'+data.name+'</a> ');
+                        apiDoc.set(data.name,data.doc);
+                    });
+                } else {
+                    $.each(dataList,function(key,data){
+                        $('#interfaes').append('<label>'+key+'</label>:');
+                        $(data).each(function(index,directive){
+                            var style='';
+                            if(directive.needAppToken){
+                                style+='color:#f00;';
+                            }
+                            if(directive.needUserToken){
+                                style+='border:1px solid #0f0;';
+                            }
+                            $('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+directive.namespace+'/'+directive.name+'\',\''+directive.needAppToken+'\',\''+directive.needUserToken+'\',\''+data.minParameters+'\');">'+directive.name+'</a> ');
+                            apiDoc.set(directive.namespace+'/'+directive.name,directive.doc);
+                        });
+                        $('#interfaes').append('<br/>');
+                    });
+                }
+            }
+        });
+    }
+    $(function(){
+        $('input[name=showParameters]').on("click", function(){
+            if($(this).is(':checked')){
+                $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParameters=true');
+            }else{
+                $('#sendData').val($('#sendData').val().replace('&showParameters=true','').replace('?showParameters=true&','?').replace('?showParameters=true',''));
+            }
+        });
+        $('input:radio[name=api]').eq(0).trigger("click");
+        $('input[name=api]').on("click", function(){
+            init();
+        });
+        init();
+    });
+    </script>
+</body>
+</html>
