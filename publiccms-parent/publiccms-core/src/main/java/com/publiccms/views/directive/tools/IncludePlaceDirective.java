@@ -26,15 +26,13 @@ import freemarker.template.TemplateException;
  * 参数列表
  * <ul>
  * <li><code>path</code>:路径
- * <li><code>lang</code>:语言
  * </ul>
  * <p>
  * 打印包含结果
  * <p>
  * 使用示例
  * <p>
- * &lt;@tools.includePlace path='/00000000-0000-0000-0000-000000000000'
- * lang='cn'/&gt;
+ * &lt;@tools.includePlace path='/00000000-0000-0000-0000-000000000000'/&gt;
  *
  * <pre>
 &lt;script&gt;
@@ -54,10 +52,14 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
-        String lang = handler.getString("lang");
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(handler);
             String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+            String lang = null;
+            Object temp = handler.getAttribute("lang");
+            if (null != temp && temp instanceof String) {
+                lang = (String) temp;
+            }
 
             if (site.isUseSsi()) {
                 StringBuilder sb = new StringBuilder("<!--#include virtual=\"/");
@@ -65,7 +67,8 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
                     sb.append(site.getDirectory()).append(Constants.SEPARATOR);
                 }
                 sb.append(TemplateComponent.INCLUDE_DIRECTORY);
-                if (CommonUtils.empty(lang) || lang.equalsIgnoreCase(defaultLang)) {
+
+                if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(defaultLang)) {
                     sb.append(Constants.SEPARATOR).append(lang);
                 }
                 sb.append(path).append("\"-->");

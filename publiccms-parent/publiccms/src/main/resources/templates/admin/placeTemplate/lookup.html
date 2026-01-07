@@ -22,17 +22,6 @@
     </@tools.fileList>
 </#macro>
 <div class="pageFormContent" layoutH>
-    <#if 'true'=(siteAttribute.enable_multilingual)!>
-        <dl class="nowrap">
-            <dt><@t.page 'use_way'/></dt>
-            <dd>
-                <label style="width:auto;">
-                    <input name="enableMultilingual" type="checkbox" class="form-check-input" value="true" checked="checked"/>
-                    <@t.message 'config.siteAttribute.enable_multilingual'/>
-                </label>
-            </dd>
-        </dl>
-    </#if>
     <ul class="tree treeFolder">
         <li>
             <a href="javascript:;" onclick="return false;"><@t.page 'diy'/></a>
@@ -52,11 +41,7 @@
     </ul>
     <script>
     function use(path,description){
-        if($('input[name=enableMultilingual]',$.pdialog.getCurrent()).prop('checked')){
-            JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${'<@tools.includePlace path="'?no_esc}'+path+'${'" lang=lang/>'?no_esc}'+description);
-        } else {
-            JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${'<@tools.includePlace path="'?no_esc}'+path+'${'"/>'?no_esc}'+description);
-        }
+        JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${'<@tools.includePlace path="'?no_esc}'+path+'${'"/>'?no_esc}'+description);
     }
     </script>
 </div>
