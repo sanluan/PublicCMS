@@ -261,7 +261,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
         data.setCategoryCode(categoryCode);
         data.setEntity(entity);
         if (null != webfileList && CommonUtils.notEmpty(entity.getCover()) && !entity.getCover().contains("://")
-                && entity.getCover().startsWith("//")) {
+                && !entity.getCover().startsWith("//")) {
             webfileList.add(entity.getCover());
         }
         data.setAttribute(attributeService.getEntity(entity.getId()));
@@ -291,7 +291,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
             data.setFileList(fileList);
             if (null != webfileList) {
                 for (CmsContentFile file : fileList) {
-                    if (!file.getFilePath().contains("://") && file.getFilePath().startsWith("//")) {
+                    if (!file.getFilePath().contains("://") && !file.getFilePath().startsWith("//")) {
                         webfileList.add(file.getFilePath());
                     }
                 }
@@ -303,7 +303,7 @@ public class ContentExchangeComponent extends AbstractDataExchange<CmsContent, C
             if (null != webfileList) {
                 for (CmsContentProduct file : productList) {
                     if (CommonUtils.notEmpty(file.getCover()) && !file.getCover().contains("://")
-                            && file.getCover().startsWith("//")) {
+                            && !file.getCover().startsWith("//")) {
                         webfileList.add(file.getCover());
                     }
                 }

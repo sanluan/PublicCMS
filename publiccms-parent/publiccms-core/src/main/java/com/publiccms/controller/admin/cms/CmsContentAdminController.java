@@ -228,7 +228,8 @@ public class CmsContentAdminController {
                 }
             } else if (null != oldEntity && (null == checked || !checked)) {
                 entity.setHasStatic(oldEntity.isHasStatic());
-                if (!entity.isOnlyUrl() && entity.isHasStatic() && null == entity.getQuoteContentId()
+                if (!entity.isOnlyUrl() && entity.isHasStatic()
+                        && (null == entity.getQuoteContentId() || null == entity.getParentId())
                         && CommonUtils.notEmpty(entity.getUrl())) {
                     templateComponent.deleteStaticFile(site.getId(), entity);
                 }
@@ -631,7 +632,7 @@ public class CmsContentAdminController {
             for (CmsContent entity : service.getEntitys(ids)) {
                 if (ControllerUtils.hasContentPermissions(admin, entity)) {
                     try {
-                        templateComponent.publish(site, entity);
+                        templateComponent.publish(site, entity, null);
                     } catch (IOException | TemplateException e) {
                         log.error(e.getMessage(), e);
                         sb.append(entity.getTitle()).append(Constants.COMMA);
