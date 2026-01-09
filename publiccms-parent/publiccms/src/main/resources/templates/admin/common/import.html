@@ -33,7 +33,7 @@
                 <span class="info"><@t.page 'default_font.description'/></span>
             </dd>
         </dl>
-        <dl class="nowrap">
+        <dl class="nowrap marked hide">
             <dt><@t.page 'markdown'/>:</dt>
             <dd>
                 <textarea cols="80" rows="8"></textarea>
@@ -49,6 +49,9 @@
     </div>
 </form>
 <script>
+if(marked){
+    $(".marked",$.pdialog.getCurrent()).removeClass("hide");
+}
 $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file],textarea",function(){
     if($(this).length && $(this)[0].files){
         var filenames=$(this)[0].files[0].name.toLowerCase().split('.');
@@ -63,7 +66,7 @@ $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file],texta
         } else {
             $('.font',$.pdialog.getCurrent()).hide();
         }
-        if('md' == filenames[filenames.length-1]){
+        if('md' == filenames[filenames.length-1] && marked){
             var reader = new FileReader();
             reader.onload = function(e) {
                 $(".pageFormContent",$.pdialog.getCurrent()).val(e.target.result);
@@ -75,7 +78,7 @@ $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file],texta
             $("button[type=submit]",$.pdialog.getCurrent()).prop("disabled",false).removeClass("hide");
             $(".mdImport",$.pdialog.getCurrent()).addClass("hide");
         }
-    }else if($(this).val()){
+    }else if($(this).val() && marked){
         $("button[type=submit]",$.pdialog.getCurrent()).prop("disabled",true).addClass("hide");
         $(".mdImport",$.pdialog.getCurrent()).removeClass("hide");
     }
