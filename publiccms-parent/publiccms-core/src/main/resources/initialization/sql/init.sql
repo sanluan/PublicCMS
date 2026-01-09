@@ -174,7 +174,7 @@ CREATE TABLE `cms_content_attribute` (
   `min_price` decimal(10, 2) NULL COMMENT '最低价格',
   `max_price` decimal(10, 2) NULL COMMENT '最高价格',
   `text` longtext COMMENT '内容',
-  `word_count` int(11) NOT NULL COMMENT '字数',
+  `word_count` int(11) NOT NULL DEFAULT 0 COMMENT '字数',
   PRIMARY KEY  (`content_id`)
 ) COMMENT='内容扩展';
 

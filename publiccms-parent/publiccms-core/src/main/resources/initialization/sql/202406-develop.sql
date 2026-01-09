@@ -15,7 +15,7 @@ ALTER TABLE `cms_content_file` ADD COLUMN `lang` varchar(20) default NULL COMMEN
 ALTER TABLE `cms_content` ADD COLUMN `lang` varchar(20) default NULL COMMENT '语言' AFTER `parent_id`;
 ALTER TABLE `cms_editor_history` ADD COLUMN `lang` varchar(20) default NULL COMMENT '语言' AFTER `field_name`;
 ALTER TABLE `cms_place`
- ADD COLUMN `lang` varchar(20) default NULL COMMENT '语言' AFTER `item_id`, 
+ ADD COLUMN `lang` varchar(20) default NULL COMMENT '语言' AFTER `item_id`,
  DROP INDEX `cms_place_site_id`,
  ADD INDEX  `cms_place_site_id` (`site_id`, `path`, `lang` ,`status`, `disabled`);
 -- ----------------------------
@@ -76,3 +76,5 @@ CREATE TABLE `cms_content_lang` (
   `text` longtext COMMENT '内容',
   PRIMARY KEY (`content_id`,`lang`)
 ) COMMENT='内容多语言';
+-- 2026-01-08 --
+ALTER TABLE `cms_content_attribute` MODIFY COLUMN `word_count` int NOT NULL DEFAULT 0 COMMENT '字数' AFTER `text`;
