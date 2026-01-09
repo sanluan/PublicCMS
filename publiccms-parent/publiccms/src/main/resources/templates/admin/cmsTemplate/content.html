@@ -28,6 +28,9 @@
                 </#list>
                 </select>
              </div>
+             <#if getAiChatEnable?? && getDictEnable?is_method && getAiChatEnable()>
+                <a class="button" href="simpleAi/chat.html?field=content&scene=html" lookupGroup="" width="800" height="500">AI</a>
+            </#if>
         </h2>
         <div class="pageFormContent" layoutH>
             <div class="exclude-translate">
