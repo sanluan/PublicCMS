@@ -207,6 +207,9 @@ public class CmsPlaceAdminController {
 
             try {
                 templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
+                if (null != oldEntity && null!=oldEntity.getLang() && !oldEntity.getLang().equalsIgnoreCase(entity.getLang())) {
+                    templateComponent.publishPlace(site, entity.getPath(), oldEntity.getLang(), true);
+                }
             } catch (IOException | TemplateException e) {
                 log.error(e.getMessage(), e);
             }

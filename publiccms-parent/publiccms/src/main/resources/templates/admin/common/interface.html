@@ -118,6 +118,12 @@ input[type=button]{font-size:14px;border-width:0px;background-color:#3A6CCB;bord
                 if(data.appToken){
                     $('input[name=appToken]').val(data.appToken);
                 }
+                if(data.authToken){
+                    $('input[name=authToken]').val(data.appToken);
+                }
+                if(data.user && data.user.id){
+                    $('input[name=authUserId]').val(data.user.id);
+                }
                 $('#rawJson').val(JSON.stringify(data));
                 process(JSON.stringify(data),$('.code-canvas'));
             },
