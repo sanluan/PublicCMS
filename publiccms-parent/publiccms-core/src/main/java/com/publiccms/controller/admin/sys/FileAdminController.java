@@ -122,7 +122,7 @@ public class FileAdminController {
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, originalName, privatefile, fileType,
                             uploadResult.getFileSize(), uploadResult.getWidth(), uploadResult.getHeight(),
-                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), uploadResult.getFilename()));
+                            RequestUtils.getIpAddress(request), CommonUtils.now(), uploadResult.getFilename()));
                     return result;
                 } catch (IOException e) {
                     log.error(e.getMessage(), e);
@@ -210,7 +210,7 @@ public class FileAdminController {
                                             LogLoginService.CHANNEL_WEB_MANAGER, CmsFileUtils.getFileName(filepath),
                                             false, fileType, imageData.length, uploadResult.getWidth(),
                                             uploadResult.getHeight(), RequestUtils.getIpAddress(request),
-                                            CommonUtils.getDate(), fileName));
+                                            CommonUtils.now(), fileName));
                                 } catch (IllegalStateException | IOException e) {
                                     log.error(e.getMessage());
                                 }
@@ -250,7 +250,7 @@ public class FileAdminController {
                                     logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                             LogLoginService.CHANNEL_WEB_MANAGER, suggestedName, false, fileType,
                                             content.length, uploadResult.getWidth(), uploadResult.getHeight(),
-                                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                                            RequestUtils.getIpAddress(request), CommonUtils.now(), fileName));
                                     return CommonUtils.joinString(site.getSitePath(), fileName);
                                 } catch (IllegalStateException | IOException e) {
                                     log.error(e.getMessage());
@@ -270,7 +270,7 @@ public class FileAdminController {
                                 logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                         LogLoginService.CHANNEL_WEB_MANAGER, originalName, false, fileType,
                                         uploadResult.getFileSize(), uploadResult.getWidth(), uploadResult.getHeight(),
-                                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                                        RequestUtils.getIpAddress(request), CommonUtils.now(), fileName));
 
                                 Map<String, String> config = configDataComponent.getConfigData(site.getId(),
                                         SiteConfigComponent.CONFIG_CODE);
@@ -310,7 +310,7 @@ public class FileAdminController {
                                                 LogLoginService.CHANNEL_WEB_MANAGER, resource.getName(), false,
                                                 fileType, resource.getData().length, uploadResult.getWidth(),
                                                 uploadResult.getHeight(), RequestUtils.getIpAddress(request),
-                                                CommonUtils.getDate(), fileName));
+                                                CommonUtils.now(), fileName));
                                         return CommonUtils.joinString(site.getSitePath(), fileName);
                                     } catch (IllegalStateException | IOException e) {
                                         log.error(e.getMessage());
@@ -370,7 +370,7 @@ public class FileAdminController {
                         logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                 LogLoginService.CHANNEL_WEB_MANAGER, originalName, false, fileType, file.getSize(),
                                 uploadResult.getWidth(), uploadResult.getHeight(), RequestUtils.getIpAddress(request),
-                                CommonUtils.getDate(), uploadResult.getFilename()));
+                                CommonUtils.now(), uploadResult.getFilename()));
                     } catch (IllegalStateException | IOException e) {
                         log.error(e.getMessage(), e);
                         result.put("statusCode", 300);

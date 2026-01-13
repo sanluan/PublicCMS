@@ -143,7 +143,7 @@ public class OtpController {
                     String ip = RequestUtils.getIpAddress(request);
                     service.updateLoginStatus(otpadmin.getId(), ip);
                     String authToken = UUID.randomUUID().toString();
-                    Date now = CommonUtils.getDate();
+                    Date now = CommonUtils.now();
                     Map<String, String> safeConfig = configDataComponent.getConfigData(site.getId(),
                             SafeConfigComponent.CONFIG_CODE);
                     int expiryMinutes = ConfigDataComponent.getInt(

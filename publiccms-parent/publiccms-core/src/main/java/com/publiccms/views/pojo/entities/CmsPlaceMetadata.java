@@ -108,6 +108,13 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      * 元数据扩展字段列表
      */
     private List<SysExtendField> metadataExtendList;
+    /**
+     * pagedata
+     * <p>
+     * 页面数据
+     */
+    @JsonIgnore
+    private Map<String, String> extendData;
 
     /**
      * @return alias
@@ -313,8 +320,23 @@ public class CmsPlaceMetadata implements java.io.Serializable {
         this.metadataExtendList = metadataExtendList;
     }
 
+    /**
+     * @param extendData
+     *            the extendData to set
+     */
+    public void setExtendData(Map<String, String> extendData) {
+        this.extendData = extendData;
+    }
+
+    /**
+     * @return the extendData
+     */
+    public Map<String, String> getExtendData() {
+        return extendData;
+    }
+
     @JsonIgnore
-    public Map<String, Object> getAsMap(CmsPageData data) {
+    public Map<String, Object> getAsMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("alias", getAlias());
         map.put("size", getSize());
@@ -325,7 +347,7 @@ public class CmsPlaceMetadata implements java.io.Serializable {
         map.put("acceptItemTypes", getAcceptItemTypes());
         map.put("extendList", getExtendList());
         map.put("adminIds", getAdminIds());
-        map.put("extendData", data.getExtendData());
+        map.put("extendData", getExtendData());
         map.put("fieldList", getFieldList());
         map.put("requiredFieldList", getRequiredFieldList());
         map.put("fieldTextMap", getFieldTextMap());

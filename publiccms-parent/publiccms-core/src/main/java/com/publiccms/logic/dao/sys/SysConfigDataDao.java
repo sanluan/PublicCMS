@@ -20,7 +20,7 @@ public class SysConfigDataDao extends BaseDao<SysConfigData> {
     @Override
     protected SysConfigData init(SysConfigData entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

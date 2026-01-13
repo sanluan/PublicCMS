@@ -119,7 +119,7 @@ public class LoginController {
             user = service.findByEmail(site.getId(), username);
         }
         String ip = RequestUtils.getIpAddress(request);
-        Date now = CommonUtils.getDate();
+        Date now = CommonUtils.now();
         if (CommonUtils.notEmpty(captcha)
                 || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_LOGIN)) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
@@ -279,7 +279,7 @@ public class LoginController {
             int expiryMinutes = ConfigDataComponent.getInt(safeconfig.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                     SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
 
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             String authToken = UUID.randomUUID().toString();
             Date expiryDate = DateUtils.addMinutes(now, expiryMinutes);
             addLoginStatus(entity, authToken, request, response, expiryMinutes);

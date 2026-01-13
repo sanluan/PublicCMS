@@ -20,6 +20,7 @@ import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
@@ -30,10 +31,12 @@ import freemarker.template.TemplateException;
 /**
  *
  * placeList 推荐位列表查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>path</code>:页面片段路径
  * <li><code>userId</code>:发布用户id
+ * <li><code>lang</code>:语言
  * <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
  * <li><code>status</code>:高级选项:数据状态,【0:操作,1:已发布,2:待审核】
  * <li><code>disabled</code>:高级选项:禁用状态,默认为<code>false</code>
@@ -50,13 +53,15 @@ import freemarker.template.TemplateException;
  * <li><code>pageIndex</code>:页码
  * <li><code>pageSize</code>:每页条数
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
  * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsPlace}
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.placeList path='/1.html' pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.placeList&gt;
@@ -96,10 +101,11 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(path)) {
             path = path.replace("//", Constants.SEPARATOR);
         }
+        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
         PageHandler page = service.getPage(site.getId(), handler.getLong("userId"), path, handler.getString("itemType"),
-                handler.getLong("itemId"), handler.getDate("startPublishDate"), endPublishDate, expiryDate, status, disabled,
-                handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
-                handler.getInteger("pageSize", handler.getInteger("count", 30)));
+                handler.getLong("itemId"), handler.getString("lang"), defaultLang, handler.getDate("startPublishDate"),
+                endPublishDate, expiryDate, status, disabled, handler.getString("orderField"), handler.getString("orderType"),
+                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")
         List<CmsPlace> list = (List<CmsPlace>) page.getList();
         if (null != list) {
@@ -144,5 +150,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
     protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
+    @Resource
+    private SiteAttributeComponent siteAttributeComponent;
 
 }

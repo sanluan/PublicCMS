@@ -5,6 +5,7 @@ package com.publiccms.views.directive.cms;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import jakarta.annotation.Resource;
 
@@ -62,10 +63,8 @@ public class CmsUserVoteDirective extends AbstractTemplateDirective {
         } else if (null != userId) {
             Long[] voteIds = handler.getLongArray("voteIds");
             if (CommonUtils.notEmpty(voteIds)) {
-                CmsUserVoteId[] entityIds = new CmsUserVoteId[voteIds.length];
-                for (int i = 0; i < voteIds.length; i++) {
-                    entityIds[i] = new CmsUserVoteId(userId, voteIds[i]);
-                }
+                CmsUserVoteId[] entityIds = Stream.of(voteIds).map(e -> new CmsUserVoteId(userId, e))
+                        .toArray(CmsUserVoteId[]::new);
                 List<CmsUserVote> entityList = service.getEntitys(entityIds);
                 Map<String, CmsUserVote> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getVoteId()),
                         voteIds, e -> e.getId().getVoteId());

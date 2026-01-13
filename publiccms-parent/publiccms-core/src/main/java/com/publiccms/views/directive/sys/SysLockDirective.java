@@ -5,6 +5,7 @@ package com.publiccms.views.directive.sys;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.time.DateUtils;
 import jakarta.annotation.Resource;
@@ -61,7 +62,7 @@ public class SysLockDirective extends AbstractTemplateDirective {
                 SysLock entity = service.getEntity(new SysLockId(siteId, itemType, itemId));
                 if (null != entity) {
                     int expriy = lockComponent.getExpriy(siteId, itemType);
-                    if (entity.getCreateDate().before(DateUtils.addMinutes(CommonUtils.getDate(), -expriy))) {
+                    if (entity.getCreateDate().before(DateUtils.addMinutes(CommonUtils.now(), -expriy))) {
                         entity = null;
                     }
                 }
@@ -70,16 +71,14 @@ public class SysLockDirective extends AbstractTemplateDirective {
                 String[] itemIds = handler.getStringArray("itemIds");
                 Long userId = handler.getLong("userId");
                 if (CommonUtils.notEmpty(itemIds)) {
-                    SysLockId[] entityIds = new SysLockId[itemIds.length];
-                    for (int i = 0; i < itemIds.length; i++) {
-                        entityIds[i] = new SysLockId(siteId, itemType, itemIds[i]);
-                    }
+                    SysLockId[] entityIds = Stream.of(itemIds).map(e -> new SysLockId(siteId, itemType, e))
+                            .toArray(SysLockId[]::new);
                     List<SysLock> entityList = service.getEntitys(entityIds);
                     int expriy = lockComponent.getExpriy(siteId, itemType);
                     Map<String, SysLock> map = CommonUtils.listToMapSorted(entityList, k -> String.valueOf(k.getId().getItemId()),
                             null, itemIds, e -> e.getId().getItemId(),
                             expriy > 0
-                                    ? f -> f.getCreateDate().after(DateUtils.addMinutes(CommonUtils.getDate(), -expriy))
+                                    ? f -> f.getCreateDate().after(DateUtils.addMinutes(CommonUtils.now(), -expriy))
                                             && (null == f.getUserId() || null == userId || !f.getUserId().equals(userId))
                                     : null);
                     handler.put("map", map).render();

@@ -144,7 +144,7 @@ public class CmsModelAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.model", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         } else {
             Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
             modelMap.put(entity.getId(), entity);
@@ -158,7 +158,7 @@ public class CmsModelAdminController {
                 }
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.model", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.model", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -191,7 +191,7 @@ public class CmsModelAdminController {
             categoryModelService.delete(site.getId(), id, null);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.model", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

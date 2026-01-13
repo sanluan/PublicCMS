@@ -1,0 +1,110 @@
+<@cms.category id=id><#assign category=object/><#assign attribute=getCategoryAttribute(category.id)/></@cms.category>
+<@cms.categoryType id=category.typeId><#assign categoryType=object/></@cms.categoryType>
+<form method="post" autocomplete="off" action="cmsCategoryLang/save?callbackType=closeCurrent&navTabId=cmsCategory/list<#if !id?has_content>&rel=page</#if>" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input type="hidden" name="categoryId" value="${category.id}"/>
+    <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <div class="formBar card">
+        <ul>
+            <li><a href="cmsCategory/add.html?id=${id!}" target="navTab" rel="cmsCategory/edit" class="button"><@t.page 'category.edit'/></a></li>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=categoryLang&itemId=${id!}" close-url="common/unlock?itemType=categoryLang&itemId=${id!}"</#if>><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="tabs card">
+        <@cms.languageList>
+        <div class="tabsHeader">
+            <ul>
+                <#list list as lang>
+                    <li><a href="javascript:;" onclick="return false;">${lang.name}</a></li>
+                </#list>
+            </ul>
+        </div>
+        <div class="tabsContent unitBox">
+            <#include "../include_page/extendData.html"/>
+            <#assign index=0/>
+            <#list list as lang>
+                <div class="pageFormContent" layoutH>
+                    <#if lang.id.code = (siteAttribute.default_language)!>
+                        <dl class="nowrap">
+                            <dt><@t.message 'config.siteAttribute.default_language'/>:</dt>
+                            <dd>
+                                <a href="cmsCategory/add.html?id=${id!}" target="navTab" rel="cmsCategory/edit" class="button"><@t.page 'category.edit'/></a>
+                            </dd>
+                        </dl>
+                        <dl class="nowrap">
+                            <dt><@t.page 'name'/>:</dt>
+                            <dd>
+                                <input type="hidden" name="categoryLangList[${index}].entity.id.lang" value="${lang.id.code}"/>
+                                <input readonly="readonly" name="categoryLangList[${index}].entity.name" type="text" maxlength="50" size="20" value="${(category.name)!}"/>
+                            </dd>
+                        </dl>
+                        <#if categoryType?has_content && categoryType.extendList?has_content>
+                            <@extendData inputNamePrefix="categoryLangList["+index+"]." type="view" lang=lang.id.code extendList=categoryType.extendList extendValues=(attribute!{}) historyItemType='categoryExtend' historyItemId=id/>
+                        </#if>
+                        <#if !category.onlyUrl>
+                            <fieldset>
+                                <legend><@t.page 'seo'/></legend>
+                                <dl class="nowrap">
+                                    <dt><@t.page 'title'/>:</dt>
+                                    <dd><input name="categoryLangList[${index}].entity.title" readonly="readonly"  type="text" maxlength="80" size="50" value="${(attribute.title)!}"/></dd>
+                                </dl>
+                                <dl class="nowrap">
+                                    <dt><@t.page 'keywords'/>:</dt>
+                                    <dd>
+                                        <textarea name="categoryLangList[${index}].entity.keywords" readonly="readonly"  maxlength="100" cols="80" rows="2">${(attribute.keywords)!}</textarea>
+                                        <span class="info"><@t.page 'category.keywords.description'/></span>
+                                    </dd>
+                                </dl>
+                                <dl class="nowrap">
+                                    <dt><@t.page 'description'/>:</dt>
+                                    <dd>
+                                        <textarea name="categoryLangList[${index}].entity.description" readonly="readonly"  maxlength="150" cols="80" rows="2">${(attribute.description)!}</textarea>
+                                        <span class="info"><@t.page 'category.description.description'/></span>
+                                    </dd>
+                                </dl>
+                            </fieldset>
+                        </#if>
+                    <#else>
+                        <#assign a={}/>
+                        <@cms.categoryLang id=id lang=lang.id.code><#assign a=object/></@cms.categoryLang>
+                        <dl class="nowrap">
+                            <dt><@t.page 'name'/>:</dt>
+                            <dd>
+                                <input type="hidden" name="categoryLangList[${index}].entity.id.lang" value="${lang.id.code}"/>
+                                <input class="required" name="categoryLangList[${index}].entity.name" type="text" maxlength="50" size="20" value="${(a.name)!(category.name)!}"/>
+                            </dd>
+                        </dl>
+                        <#if categoryType?has_content && categoryType.extendList?has_content>
+                            <@extendData inputNamePrefix="categoryLangList["+index+"]." lang=lang.id.code extendList=categoryType.extendList extendValues=((a.attribute)!attribute!{}) historyItemType='categoryExtend' historyItemId=id/>
+                        </#if>
+                        <#if !category.onlyUrl>
+                            <fieldset>
+                                <legend><@t.page 'seo'/></legend>
+                                <dl class="nowrap">
+                                    <dt><@t.page 'title'/>:</dt>
+                                    <dd><input name="categoryLangList[${index}].entity.title" type="text" maxlength="80" size="50" value="${(a.title)!(attribute.title)!}"/></dd>
+                                </dl>
+                                <dl class="nowrap">
+                                    <dt><@t.page 'keywords'/>:</dt>
+                                    <dd>
+                                        <textarea name="categoryLangList[${index}].entity.keywords" maxlength="100" cols="80" rows="2">${(a.keywords)!(attribute.keywords)!}</textarea>
+                                        <span class="info"><@t.page 'category.keywords.description'/></span>
+                                    </dd>
+                                </dl>
+                                <dl class="nowrap">
+                                    <dt><@t.page 'description'/>:</dt>
+                                    <dd>
+                                        <textarea name="categoryLangList[${index}].entity.description" maxlength="150" cols="80" rows="2">${(a.description)!(attribute.description)!}</textarea>
+                                        <span class="info"><@t.page 'category.description.description'/></span>
+                                    </dd>
+                                </dl>
+                            </fieldset>
+                        </#if>
+                    </#if>
+                </div>
+                <#assign index++/>
+            </#list>
+        </div>
+        </@cms.languageList>
+    </div>
+</form>

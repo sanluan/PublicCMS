@@ -215,7 +215,7 @@ public class WebAuthnController {
                 || ControllerUtils.errorNotEquals("password", user, model)) {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), webauthnuser, null == user ? null : user.getId(), ip,
-                    LogLoginService.CHANNEL_WEB_MANAGER, LogLoginService.METHOD_FINGERPRINT, false, CommonUtils.getDate(), null));
+                    LogLoginService.CHANNEL_WEB_MANAGER, LogLoginService.METHOD_FINGERPRINT, false, CommonUtils.now(), null));
             result.put("errorMessage", (String) model.get(CommonConstants.ERROR));
             return result;
         }
@@ -227,7 +227,7 @@ public class WebAuthnController {
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
                 logLoginService.save(new LogLogin(site.getId(), webauthnuser, userId, ip, LogLoginService.CHANNEL_WEB_MANAGER,
-                        LogLoginService.METHOD_FINGERPRINT, false, CommonUtils.getDate(), null));
+                        LogLoginService.METHOD_FINGERPRINT, false, CommonUtils.now(), null));
                 result.put("errorMessage", (String) model.get(CommonConstants.ERROR));
                 return result;
             }
@@ -247,7 +247,7 @@ public class WebAuthnController {
 
                         service.updateLoginStatus(user.getId(), ip);
                         String authToken = UUID.randomUUID().toString();
-                        Date now = CommonUtils.getDate();
+                        Date now = CommonUtils.now();
                         Map<String, String> safeConfig = configDataComponent.getConfigData(site.getId(),
                                 SafeConfigComponent.CONFIG_CODE);
                         int expiryMinutes = ConfigDataComponent.getInt(
@@ -258,7 +258,7 @@ public class WebAuthnController {
                                 LogLoginService.CHANNEL_WEB_MANAGER, now, DateUtils.addMinutes(now, expiryMinutes), ip));
                         logLoginService.save(
                                 new LogLogin(site.getId(), webauthnuser, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER,
-                                        LogLoginService.METHOD_FINGERPRINT, true, CommonUtils.getDate(), null));
+                                        LogLoginService.METHOD_FINGERPRINT, true, now, null));
                         session.removeAttribute("webauthnuser");
 
                         if (0 < authenticationData.getAuthenticatorData().getSignCount() || 0 < credentialRecord.getCounter()) {

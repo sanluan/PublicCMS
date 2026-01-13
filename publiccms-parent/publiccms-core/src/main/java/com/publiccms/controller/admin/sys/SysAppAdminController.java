@@ -65,13 +65,13 @@ public class SysAppAdminController {
             if (null != entity) {
                 entity.setAppSecret(null);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "update.app", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        "update.app", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
             }
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.app",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -95,7 +95,7 @@ public class SysAppAdminController {
             }
             service.delete(id);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.app",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

@@ -40,7 +40,7 @@ public class SysWorkflowProcessHistoryDao extends BaseDao<SysWorkflowProcessHist
     @Override
     protected SysWorkflowProcessHistory init(SysWorkflowProcessHistory entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

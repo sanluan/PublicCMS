@@ -25,6 +25,8 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
      * @param path
      * @param itemType
      * @param itemId
+     * @param lang
+     * @param defaultLang
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -36,9 +38,9 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId, Date startPublishDate,
-            Date endPublishDate, Date expiryDate, Integer[] status, Boolean disabled, String orderField, String orderType,
-            Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId, String lang,
+            String defaultLang, Date startPublishDate, Date endPublishDate, Date expiryDate, Integer[] status, Boolean disabled,
+            String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsPlace bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -54,6 +56,13 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
         }
         if (CommonUtils.notEmpty(itemId)) {
             queryHandler.condition("bean.itemId = :itemId").setParameter("itemId", itemId);
+        }
+        if (CommonUtils.notEmpty(lang)) {
+            if (lang.equalsIgnoreCase(defaultLang)) {
+                queryHandler.condition("(bean.lang is null or bean.lang = :lang)").setParameter("lang", lang);
+            } else {
+                queryHandler.condition("bean.lang = :lang").setParameter("lang", lang);
+            }
         }
         if (null != startPublishDate) {
             queryHandler.condition("bean.publishDate > :startPublishDate").setParameter("startPublishDate", startPublishDate);
@@ -108,13 +117,16 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
     @Override
     protected CmsPlace init(CmsPlace entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         if (null == entity.getPublishDate()) {
-            entity.setPublishDate(CommonUtils.getDate());
+            entity.setPublishDate(CommonUtils.now());
         }
         if (CommonUtils.empty(entity.getCover())) {
             entity.setCover(null);
+        }
+        if (CommonUtils.empty(entity.getLang())) {
+            entity.setLang(null);
         }
         return entity;
     }

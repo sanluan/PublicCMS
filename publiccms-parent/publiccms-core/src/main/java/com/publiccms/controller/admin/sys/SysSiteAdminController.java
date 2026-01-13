@@ -122,7 +122,7 @@ public class SysSiteAdminController {
             if (null != entity) {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.site", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        CommonUtils.now(), JsonUtils.getString(entity)));
             }
         } else {
             if (ControllerUtils.errorNotEmpty("userName", userName, model)
@@ -133,7 +133,7 @@ public class SysSiteAdminController {
             SysUser user = service.save(entity, domain, null != wild && wild, roleName, deptName, userName, password, encoding);
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                            "save.site", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
             if (CommonUtils.notEmpty(fileName)) {
                 siteExchangeComponent.importData(entity, user.getId(), true, "-site.zip", null, fileName, model);
             }
@@ -168,7 +168,7 @@ public class SysSiteAdminController {
             service.delete(id);
             domainService.deleteBySiteId(entity.getId());
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.site", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -237,7 +237,7 @@ public class SysSiteAdminController {
                         CmsFileUtils.upload(file, filepath);
                         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                                 LogLoginService.CHANNEL_WEB_MANAGER, "upload.sitefile", RequestUtils.getIpAddress(request),
-                                CommonUtils.getDate(), originalName));
+                                CommonUtils.now(), originalName));
                     }
                     return CommonConstants.TEMPLATE_DONE;
                 } catch (IOException e) {
@@ -301,7 +301,7 @@ public class SysSiteAdminController {
         model.addAttribute("sqlcommand", command);
         model.addAttribute("sqlparameters", parameters);
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "execsql.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(model)));
+                "execsql.site", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(model)));
         return CommonConstants.TEMPLATE_DONE;
     }
 
@@ -332,7 +332,7 @@ public class SysSiteAdminController {
             Thread.currentThread().interrupt();
         }
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "execscript.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), message));
+                "execscript.site", RequestUtils.getIpAddress(request), CommonUtils.now(), message));
         return CommonConstants.TEMPLATE_DONE;
     }
 
@@ -392,7 +392,7 @@ public class SysSiteAdminController {
     public String reCreateIndex(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, HttpServletRequest request) {
         hqlService.reCreateIndex();
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "reCreateIndex", RequestUtils.getIpAddress(request), CommonUtils.getDate(), Constants.BLANK));
+                "reCreateIndex", RequestUtils.getIpAddress(request), CommonUtils.now(), Constants.BLANK));
         return CommonConstants.TEMPLATE_DONE;
     }
 }

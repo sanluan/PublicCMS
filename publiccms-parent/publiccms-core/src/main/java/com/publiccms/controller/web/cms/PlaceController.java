@@ -22,7 +22,6 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
-import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -49,7 +48,6 @@ import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysWorkflowProcessItemService;
 import com.publiccms.logic.service.sys.SysWorkflowProcessService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
-import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import com.publiccms.views.pojo.model.ExtendDataParameters;
 
@@ -160,10 +158,10 @@ public class PlaceController {
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 statisticsComponent.removePlace(entity.getId());
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), null == user ? null : user.getDeptId(),
-                        LogLoginService.CHANNEL_WEB, "update.place", ip, CommonUtils.getDate(), entity.getPath()));
+                        LogLoginService.CHANNEL_WEB, "update.place", ip, CommonUtils.now(), entity.getPath()));
             } else {
-                entity.setPublishDate(CommonUtils.getDate());
-                entity.setPublishDate(CommonUtils.getDate());
+                entity.setPublishDate(CommonUtils.now());
+                entity.setPublishDate(CommonUtils.now());
                 entity.setSiteId(site.getId());
                 Long userId = null;
                 if (null != user) {
@@ -173,7 +171,7 @@ public class PlaceController {
                 entity.setDisabled(false);
                 service.save(entity);
                 logOperateService.save(new LogOperate(site.getId(), userId, null == user ? null : user.getDeptId(),
-                        LogLoginService.CHANNEL_WEB, "save.place", ip, CommonUtils.getDate(), entity.getPath()));
+                        LogLoginService.CHANNEL_WEB, "save.place", ip, CommonUtils.now(), entity.getPath()));
             }
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_CONTRIBUTE,
                     metadata.isAllowAnonymous() ? ip : String.valueOf(user.getId()), null, true);
@@ -226,15 +224,12 @@ public class PlaceController {
             } else {
                 service.delete(id);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                        "delete.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
-                    try {
-                        CmsPageData data = metadataComponent.getTemplateData(filepath);
-                        templateComponent.staticPlace(site, entity.getPath(), metadata, data);
-                    } catch (IOException | TemplateException e) {
-                        model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                        log.error(e.getMessage(), e);
-                    }
+                        "delete.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
+                try {
+                    templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
+                } catch (IOException | TemplateException e) {
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                    log.error(e.getMessage(), e);
                 }
             }
         }
@@ -266,21 +261,18 @@ public class PlaceController {
             } else {
                 service.check(site.getId(), id, user.getId());
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                        "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
-                    try {
-                        CmsPageData data = metadataComponent.getTemplateData(filepath);
-                        templateComponent.staticPlace(site, entity.getPath(), metadata, data);
-                    } catch (IOException | TemplateException e) {
-                        model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                        log.error(e.getMessage(), e);
-                    }
+                        "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
+                try {
+                    templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
+                } catch (IOException | TemplateException e) {
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                    log.error(e.getMessage(), e);
                 }
             }
         }
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
-    
+
     /**
      * @param site
      * @param id
@@ -306,15 +298,12 @@ public class PlaceController {
             } else {
                 service.reject(site.getId(), id, user.getId());
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                        "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
-                    try {
-                        CmsPageData data = metadataComponent.getTemplateData(filepath);
-                        templateComponent.staticPlace(site, entity.getPath(), metadata, data);
-                    } catch (IOException | TemplateException e) {
-                        model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                        log.error(e.getMessage(), e);
-                    }
+                        "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
+                try {
+                    templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
+                } catch (IOException | TemplateException e) {
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                    log.error(e.getMessage(), e);
                 }
             }
         }
@@ -346,15 +335,12 @@ public class PlaceController {
             } else {
                 service.uncheck(site.getId(), id);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                        "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
-                    try {
-                        CmsPageData data = metadataComponent.getTemplateData(filepath);
-                        templateComponent.staticPlace(site, entity.getPath(), metadata, data);
-                    } catch (IOException | TemplateException e) {
-                        model.addAttribute(CommonConstants.ERROR, e.getMessage());
-                        log.error(e.getMessage(), e);
-                    }
+                        "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
+                try {
+                    templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
+                } catch (IOException | TemplateException e) {
+                    model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                    log.error(e.getMessage(), e);
                 }
             }
         }

@@ -49,7 +49,7 @@ public class SysWorkflowDao extends BaseDao<SysWorkflow> {
     @Override
     protected SysWorkflow init(SysWorkflow entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

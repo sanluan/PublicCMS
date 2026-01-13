@@ -1,4 +1,4 @@
-<#macro chipTree filepath prefix suffix>
+<#macro chipTree filepath>
     <@tools.fileList path='include'+filepath orderField='createDate'>
         <#list list as a>
             <li>
@@ -6,11 +6,11 @@
             <#if a.directory>
                 <a href="javascript:;" onclick="return false;">${a.fileName} </a>
                 <ul>
-                    <@chipTree path prefix suffix/>
+                    <@chipTree path/>
                 </ul>
             <#else>
                 <@tools.placeMetadata path=path>
-                    <a href="javascript:;" onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${(prefix+path+suffix)?js_string} ${(object.alias)?has_content?then('<#-- '+object.alias+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">
+                    <a href="javascript:;" onclick="use('${path}','${(object.alias)?has_content?then('<#-- '+object.alias+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">
                         ${(object.alias)?has_content?then(object.alias+' '+a.fileName,a.fileName)}
                     </a>
                 </@tools.placeMetadata>
@@ -37,8 +37,13 @@
     </@tools.diyMetadataList>
             </ul>
         </li>
-<@chipTree '' '<@tools.includePlace path="' '"/>'/>
+<@chipTree ''/>
     </ul>
+    <script>
+    function use(path,description){
+        JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${'<@tools.includePlace path="'?no_esc}'+path+'${'"/>'?no_esc}'+description);
+    }
+    </script>
 </div>
 <div class="formBar">
     <ul>

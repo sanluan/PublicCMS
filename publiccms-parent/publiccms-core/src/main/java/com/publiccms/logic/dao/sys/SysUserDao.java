@@ -127,7 +127,7 @@ public class SysUserDao extends BaseDao<SysUser> {
     @Override
     protected SysUser init(SysUser entity) {
         if (null == entity.getRegisteredDate()) {
-            entity.setRegisteredDate(CommonUtils.getDate());
+            entity.setRegisteredDate(CommonUtils.now());
         }
         if (CommonUtils.empty(entity.getCover())) {
             entity.setCover(null);

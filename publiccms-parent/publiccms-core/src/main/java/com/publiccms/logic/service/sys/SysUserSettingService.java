@@ -33,9 +33,9 @@ public class SysUserSettingService extends BaseService<SysUserSetting> {
         if (CommonUtils.notEmpty(data)) {
             if (null != entity) {
                 entity.setData(data);
-                entity.setUpdateDate(CommonUtils.getDate());
+                entity.setUpdateDate(CommonUtils.now());
             } else if (CommonUtils.notEmpty(data)) {
-                entity = new SysUserSetting(id, data, CommonUtils.getDate());
+                entity = new SysUserSetting(id, data, CommonUtils.now());
                 save(entity);
             }
         }

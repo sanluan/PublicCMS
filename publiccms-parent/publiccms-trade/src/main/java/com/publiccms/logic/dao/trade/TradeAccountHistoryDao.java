@@ -63,7 +63,7 @@ public class TradeAccountHistoryDao extends BaseDao<TradeAccountHistory> {
     @Override
     protected TradeAccountHistory init(TradeAccountHistory entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

@@ -1,4 +1,4 @@
-<@tools.metadata path=path><#assign metadata=object/></@tools.metadata>
+<@tools.metadata path=path lang=lang><#assign metadata=object/></@tools.metadata>
 <form method="post" autocomplete="off" action="cmsPage/save?rel=${rel!'pageBox'}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="type" value="page"/>
@@ -21,8 +21,8 @@
                     <dt><@t.page 'static_page'/>:</dt>
                     <dd>
                         <a class="button" href="cmsTemplate/publish?path=${path}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'publish_page'/></a>
-                        <a class="button" href="cmsDiy/preview.html?url=${(site.sitePath+metadata.publishPath)?url}" target="navTab" rel="cmsDiy/preview" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
-                        <a class="button" href="${site.sitePath+metadata.publishPath?url_path}" target="_blank"><i class="icon-external-link"></i></a>
+                        <a class="button" href="cmsDiy/preview.html?url=${(site.sitePath+(lang?has_content)?then(lang+'/','')+metadata.publishPath)?url}" target="navTab" rel="cmsDiy/preview" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
+                        <a class="button" href="${site.sitePath+(lang?has_content)?then(lang+'/','')+metadata.publishPath?url_path}" target="_blank"><i class="icon-external-link"></i></a>
                     </dd>
                 </dl>
             </#if>
@@ -30,8 +30,8 @@
                 <dl class="nowrap">
                     <dt><@t.page 'dynamic_page'/>:</dt>
                     <dd>
-                        <a class="button" href="cmsDiy/preview.html?url=${(site.dynamicPath+path)?url}<#if metadata.acceptParameters?has_content>%3F<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@cms.contentList pageSize=1><#list page.list as a>${a.id}</#list></@cms.contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@cms.categoryList pageSize=1><#list page.list as a>${a.id}</#list></@cms.categoryList></#if><#sep>%26</#list></#if>" target="navTab" rel="cmsDiy/preview" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
-                        <a class="button" href="${site.dynamicPath+path?url_path}<#if metadata.acceptParameters?has_content>?<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@cms.contentList pageSize=1><#list page.list as a>${a.id}</#list></@cms.contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@cms.categoryList pageSize=1><#list page.list as a>${a.id}</#list></@cms.categoryList></#if><#sep>&</#list></#if>" target="_blank"><i class="icon-external-link"></i></a>
+                        <a class="button" href="cmsDiy/preview.html?url=${(site.dynamicPath+path)?url}<#if metadata.acceptParameters?has_content>%3F<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@cms.contentList pageSize=1><#list page.list as a>${a.id}</#list></@cms.contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@cms.categoryList pageSize=1><#list page.list as a>${a.id}</#list></@cms.categoryList></#if><#sep>%26</#list>%26lang=${lang!}<#else>%3Flang=${lang!}</#if>" target="navTab" rel="cmsDiy/preview" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
+                        <a class="button" href="${site.dynamicPath+path?url_path}<#if metadata.acceptParameters?has_content>?<#list metadata.acceptParameters?split(',') as p>${p}=<#if 'content'=(metadata.parameterTypeMap[p].type)!><@cms.contentList pageSize=1><#list page.list as a>${a.id}</#list></@cms.contentList><#elseif 'category'=(metadata.parameterTypeMap[p].type)!><@cms.categoryList pageSize=1><#list page.list as a>${a.id}</#list></@cms.categoryList></#if><#sep>&</#list>&lang=${lang!}<#else>?lang=${lang!}</#if>" target="_blank"><i class="icon-external-link"></i></a>
                         <#if 0 lte (metadata.cacheTime)!0>
                             <a class="button" href="cmsPage/clearCache?path=${path}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.clear_cache'/></a>
                         </#if>
@@ -71,8 +71,28 @@
             </dl>
             </#if>
         </@tools.templatePlaceList>
-            <#include "../include_page/extendData.html"/>
-            <@extendData extendList=metadata.extendList extendValues=metadata.extendData historyItemType='metadataExtend' historyItemId=path/>
+            <#if (metadata.extendList)?has_content>
+                 <#if 'true'=(siteAttribute.enable_multilingual)!>
+                    <dl class="nowrap">
+                        <dt><@t.page 'language'/></dt>
+                        <dd>
+                            <input name="lang" type="hidden" value="${lang!}"/>
+                            <@cms.languageList>
+                            <#list list as language>
+                                <#if lang?has_content && language.id.code =lang || !lang?has_content && language.id.code=siteAttribute.default_language>
+                                ${language.name!}
+                                <#else>
+                                <a href="cmsPage/metadata.html?path=${(path?url)!}<#if language.id.code != siteAttribute.default_language>&lang=${language.id.code}</#if>" target="ajax" rel="pageBox"/>${language.name!}</a>
+                                </#if>
+                            </#list>
+                            </@cms.languageList>
+                        </dd>
+                    </dl>
+                </#if>
+                <#include "../include_page/extendData.html"/>
+                <@extendData extendList=metadata.extendList extendValues=metadata.extendData historyItemType='metadataExtend' historyItemId=path/>
+
+            </#if>
         </div>
     </div>
 </form>

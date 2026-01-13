@@ -49,7 +49,7 @@ public class RefreshTokenDirective extends AbstractAppDirective {
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, TemplateException {
         String appToken = handler.getString("appToken");
         if (null != app.getExpiryMinutes()) {
-            Date now = CommonUtils.getDate();
+            Date now = CommonUtils.now();
             Date expiryDate = DateUtils.addMinutes(now, app.getExpiryMinutes());
             service.updateExpiryDate(appToken, expiryDate);
             handler.put("appToken", appToken);

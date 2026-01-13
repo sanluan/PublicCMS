@@ -36,7 +36,7 @@ public class CmsEditorHistory implements java.io.Serializable {
     private short siteId;
     /**
      * item type
-
+     * 
      * 项目类型
      */
     @GeneratorColumn(title = "项目类型", condition = true)
@@ -45,7 +45,7 @@ public class CmsEditorHistory implements java.io.Serializable {
     private String itemType;
     /**
      * item id
-
+     * 
      * 项目id
      */
     @GeneratorColumn(title = "项目id", condition = true)
@@ -54,28 +54,36 @@ public class CmsEditorHistory implements java.io.Serializable {
     private String itemId;
     /**
      * field name
-
+     * 
      * 字段名
      */
     @GeneratorColumn(title = "字段名", condition = true)
     private String fieldName;
     /**
+     * lang
+     * 
+     * 语言
+     */
+    @GeneratorColumn(title = "语言", condition = true)
+    @Length(max = 20)
+    private String lang;
+    /**
      * create date
-
+     * 
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期", order = true)
     private Date createDate;
     /**
      * user id
-
+     * 
      * 用户
      */
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
     /**
      * content text
-
+     * 
      * 正文内容
      */
     @GeneratorColumn(title = "内容")
@@ -95,12 +103,13 @@ public class CmsEditorHistory implements java.io.Serializable {
         this.userId = userId;
     }
 
-    public CmsEditorHistory(short siteId, String itemType, String itemId, String fieldName, Date createDate, long userId,
-            String text) {
+    public CmsEditorHistory(short siteId, String itemType, String itemId, String fieldName, String lang, Date createDate,
+            long userId, String text) {
         this.siteId = siteId;
         this.itemType = itemType;
         this.itemId = itemId;
         this.fieldName = fieldName;
+        this.lang = lang;
         this.createDate = createDate;
         this.userId = userId;
         this.text = text;
@@ -151,6 +160,15 @@ public class CmsEditorHistory implements java.io.Serializable {
 
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;
+    }
+
+    @Column(name = "lang", length = 20)
+    public String getLang() {
+        return this.lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     @Column(name = "create_date", nullable = false, length = 19)

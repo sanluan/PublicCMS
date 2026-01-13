@@ -93,7 +93,7 @@ public class DictAdminController {
         try {
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.dict", RequestUtils.getIpAddress(request), CommonUtils.getDate(), dict));
+                            "save.dict", RequestUtils.getIpAddress(request), CommonUtils.now(), dict));
             return CommonConstants.TEMPLATE_DONE;
         } catch (IllegalStateException e) {
             log.error(e.getMessage(), e);

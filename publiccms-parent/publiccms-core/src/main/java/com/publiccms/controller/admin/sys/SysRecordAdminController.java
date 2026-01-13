@@ -60,19 +60,19 @@ public class SysRecordAdminController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             if (null != oldEntity) {
-                entity.setUpdateDate(CommonUtils.getDate());
+                entity.setUpdateDate(CommonUtils.now());
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
                 if (null != entity) {
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.record", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
+                            CommonUtils.now(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
                 }
             } else {
                 entity.getId().setSiteId(site.getId());
                 service.save(entity);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "save.record", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
+                        CommonUtils.now(), CommonUtils.joinString(entity.getId().getCode(), ":", entity.getData())));
             }
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -97,7 +97,7 @@ public class SysRecordAdminController {
             service.delete(entityIds);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.record", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(ids)));
+                    CommonUtils.now(), JsonUtils.getString(ids)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

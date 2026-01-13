@@ -37,8 +37,7 @@ public class CmsCategory extends EntityAttribute implements java.io.Serializable
     @JsonIgnore
     private short siteId;
     /**
-     * name
-     * 名称
+     * name 名称
      */
     @GeneratorColumn(title = "名称")
     @NotNull
@@ -49,6 +48,14 @@ public class CmsCategory extends EntityAttribute implements java.io.Serializable
      */
     @GeneratorColumn(title = "父分类", condition = true)
     private Integer parentId;
+    /**
+     * lang
+     * 
+     * 语言
+     */
+    @GeneratorColumn(title = "语言")
+    @Length(max = 20)
+    private String lang;
     /**
      * type id
      * 
@@ -189,13 +196,14 @@ public class CmsCategory extends EntityAttribute implements java.io.Serializable
         this.disabled = disabled;
     }
 
-    public CmsCategory(short siteId, String name, Integer parentId, String typeId, String childIds, String tagTypeIds,
-            String code, boolean customPath, String templatePath, String path, boolean onlyUrl, boolean hasStatic, String url,
-            boolean customContentPath, String contentPath, boolean containChild, Integer pageSize, boolean allowContribute,
-            int sort, boolean hidden, boolean disabled, Integer workflowId, Integer extendId) {
+    public CmsCategory(short siteId, String name, Integer parentId, String lang, String typeId, String childIds,
+            String tagTypeIds, String code, boolean customPath, String templatePath, String path, boolean onlyUrl,
+            boolean hasStatic, String url, boolean customContentPath, String contentPath, boolean containChild, Integer pageSize,
+            boolean allowContribute, int sort, boolean hidden, boolean disabled, Integer workflowId, Integer extendId) {
         this.siteId = siteId;
         this.name = name;
         this.parentId = parentId;
+        this.lang = lang;
         this.typeId = typeId;
         this.childIds = childIds;
         this.tagTypeIds = tagTypeIds;
@@ -254,6 +262,15 @@ public class CmsCategory extends EntityAttribute implements java.io.Serializable
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
+    }
+
+    @Column(name = "lang", length = 20)
+    public String getLang() {
+        return this.lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     @Column(name = "type_id", length = 20)

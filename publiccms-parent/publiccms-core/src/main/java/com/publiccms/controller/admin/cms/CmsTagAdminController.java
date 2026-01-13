@@ -62,13 +62,13 @@ public class CmsTagAdminController {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "update.tag", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        "update.tag", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
             }
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.tag",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -86,7 +86,7 @@ public class CmsTagAdminController {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.tag",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                    RequestUtils.getIpAddress(request), CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

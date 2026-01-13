@@ -1,6 +1,5 @@
 package com.publiccms.views.pojo.entities;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,6 +79,13 @@ public class CmsPageMetadata implements java.io.Serializable {
      * 参数类型表
      */
     private Map<String, ParameterType> parameterTypeMap;
+    /**
+     * pagedata
+     * <p>
+     * 页面数据
+     */
+    @JsonIgnore
+    private Map<String, String> extendData;
 
     /**
      * @return alias
@@ -223,20 +229,19 @@ public class CmsPageMetadata implements java.io.Serializable {
         this.parameterTypeMap = parameterTypeMap;
     }
 
-    @JsonIgnore
-    public Map<String, Object> getAsMap(CmsPageData data) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("alias", getAlias());
-        map.put("publishPath", getPublishPath());
-        map.put("useDynamic", isUseDynamic());
-        map.put("needLogin", isNeedLogin());
-        map.put("needBody", isNeedBody());
-        map.put("acceptParameters", getAcceptParameters());
-        map.put("cacheTime", getCacheTime());
-        map.put("contentType", getContentType());
-        map.put("extendList", getExtendList());
-        map.put("extendData", data.getExtendData());
-        map.put("parameterTypeMap", getParameterTypeMap());
-        return map;
+    /**
+     * @param extendData
+     *            the extendData to set
+     */
+    public void setExtendData(Map<String, String> extendData) {
+        this.extendData = extendData;
     }
+
+    /**
+     * @return the extendData
+     */
+    public Map<String, String> getExtendData() {
+        return extendData;
+    }
+
 }

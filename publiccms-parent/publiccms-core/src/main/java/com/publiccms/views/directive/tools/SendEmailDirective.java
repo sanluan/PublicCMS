@@ -12,11 +12,11 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.site.EmailComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 
 import freemarker.template.TemplateException;
@@ -25,23 +25,27 @@ import jakarta.mail.MessagingException;
 
 /**
  * sendEmail 发送邮件指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>email</code>:多个邮件地址
  * <li><code>cc</code>:多个抄送地址
  * <li><code>bcc</code>:多个密送地址
  * <li><code>title</code>:标题
+ * <li><code>lang</code>:语言
  * <li><code>templatePath</code>:内容模板路径
  * <li><code>content</code>:邮件内容,templatePath为空时有效
  * <li><code>fileNames</code>:多个附件名称
  * <li><code>filePaths</code>:多个文件路径
  * <li><code>parameters</code>:参数map
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>result</code>:是否允许发送,【true,false】
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@tools.sendEmail email='master@puliccms.com' title='title'
  * content='content' parameters={"parameter1":"value1"}/&gt;
@@ -64,6 +68,7 @@ public class SendEmailDirective extends AbstractTemplateDirective {
         String[] cc = handler.getStringArray("cc");
         String[] bcc = handler.getStringArray("bcc");
         String title = handler.getString("title");
+        String lang = handler.getString("lang");
         String templatePath = handler.getString("templatePath");
         String[] fileNames = handler.getStringArray("fileNames");
         String[] filePaths = handler.getStringArray("filePaths");
@@ -82,13 +87,15 @@ public class SendEmailDirective extends AbstractTemplateDirective {
                 Map<String, Object> model = new HashMap<>();
                 expose(handler, model);
                 String filepath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
-                CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
-                CmsPageData data = metadataComponent.getTemplateData(filepath);
+
+                String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath, lang, defaultLang);
+
                 Map<String, String> parameters = handler.getMap("parameters");
                 if (!parameters.isEmpty()) {
                     model.putAll(parameters);
                 }
-                model.put("metadata", metadata.getAsMap(data));
+                model.put("metadata", metadata);
                 String content = FreeMarkerUtils.generateStringByFile(
                         SiteComponent.getFullTemplatePath(site.getId(), templatePath), templateComponent.getWebConfiguration(),
                         model);
@@ -126,4 +133,6 @@ public class SendEmailDirective extends AbstractTemplateDirective {
     private TemplateComponent templateComponent;
     @Resource
     private MetadataComponent metadataComponent;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 }

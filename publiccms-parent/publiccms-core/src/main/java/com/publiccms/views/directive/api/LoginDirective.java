@@ -97,7 +97,7 @@ public class LoginDirective extends AbstractAppDirective {
                             UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
                 }
                 service.updateLoginStatus(user.getId(), ip);
-                Date now = CommonUtils.getDate();
+                Date now = CommonUtils.now();
                 Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
                 int expiryMinutes = ConfigDataComponent.getInt(config.get(SafeConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                         SafeConfigComponent.DEFAULT_EXPIRY_MINUTES);
@@ -106,7 +106,7 @@ public class LoginDirective extends AbstractAppDirective {
                         expiryDate, ip);
                 sysUserTokenService.save(userToken);
                 logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, channel,
-                        LogLoginService.METHOD_PASSWORD, true, CommonUtils.getDate(), null));
+                        LogLoginService.METHOD_PASSWORD, true, CommonUtils.now(), null));
                 user.setPassword(null);
                 result = true;
                 handler.put("authToken", userToken.getAuthToken()).put("expiryDate", userToken.getExpiryDate()).put("user", user);

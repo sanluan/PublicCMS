@@ -132,12 +132,12 @@ public class CommentController {
                         || oldEntity.getUserId() != user.getId() && !user.isSuperuser()) {
                     return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
                 }
-                entity.setUpdateDate(CommonUtils.getDate());
+                entity.setUpdateDate(CommonUtils.now());
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                        "update.cmsComment", ip, CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        "update.cmsComment", ip, CommonUtils.now(), JsonUtils.getString(entity)));
             } else {
-                Date now = CommonUtils.getDate();
+                Date now = CommonUtils.now();
                 entity.setSiteId(site.getId());
                 entity.setUserId(user.getId());
                 entity.setDisabled(false);
@@ -171,7 +171,7 @@ public class CommentController {
                 }
                 if (null != content && !content.isDisabled()) {
                     try {
-                        templateComponent.createContentFile(site, content, null, null);
+                        templateComponent.publish(site, content, null, null);
                     } catch (IOException | TemplateException e) {
                         log.error(e.getMessage(), e);
                     }

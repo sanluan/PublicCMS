@@ -57,11 +57,11 @@ public class ${entityName}${controllerSuffix} {
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.${entityName?uncap_first}", 
-                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                                RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         } else {
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.${entityName?uncap_first}", 
-                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                            RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -81,7 +81,7 @@ public class ${entityName}${controllerSuffix} {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.${entityName?uncap_first}",
-                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, Constants.COMMA)));
+                            RequestUtils.getIpAddress(request), CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

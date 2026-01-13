@@ -58,7 +58,7 @@ server {
     ssi_silent_errors on;
         </#if>
     location <#if dynamicPath=sitePath&&dynamicPort=sitePort&&dynamicLocation=siteLocation>@cmsproxy<#else>${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}</#if> {
-        client_max_body_size 100m;
+        <#if dynamicPath!=sitePath||dynamicPort!=sitePort||dynamicLocation=siteLocation>client_max_body_size 100m;</#if>
         proxy_redirect off;
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -101,6 +101,7 @@ server {
         alias   ${realRootPath}/web/site_${siteId}/;
         index   index.html;
         <#if dynamicLocation=siteLocation>
+        client_max_body_size 100m;
         try_files  $uri  $uri/  @cmsproxy;
         </#if>
     }

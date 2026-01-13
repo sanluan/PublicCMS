@@ -11,24 +11,28 @@ import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
-import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 
 import freemarker.template.TemplateException;
 
 /**
  * metadata 模板元数据获取指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>path</code>:模板路径
+ * <li><code>lang</code>:语言
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>object</code>:
  * 元数据{@link com.publiccms.views.pojo.entities.CmsPageMetadata}
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@tools.metadata
  * path='index.html'&gt;${object.alias}&lt;/@tools.metadata&gt;
@@ -48,12 +52,15 @@ public class MetadataDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
+        String lang = handler.getString("lang");
         if (CommonUtils.notEmpty(path) && !path.endsWith(Constants.SEPARATOR)) {
             SysSite site = getSite(handler);
+
             String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
-            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath);
-            CmsPageData data = metadataComponent.getTemplateData(filepath);
-            handler.put("object", metadata.getAsMap(data)).render();
+            String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filepath, lang, defaultLang);
+
+            handler.put("object", metadata).render();
         }
     }
 
@@ -64,4 +71,6 @@ public class MetadataDirective extends AbstractTemplateDirective {
 
     @Resource
     private MetadataComponent metadataComponent;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 }

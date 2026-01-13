@@ -34,9 +34,9 @@ public class SysUserAttributeService extends BaseService<SysUserAttribute> {
         SysUserAttribute entity = getEntity(userId);
         if (null != entity) {
             entity.setData(data);
-            entity.setUpdateDate(CommonUtils.getDate());
+            entity.setUpdateDate(CommonUtils.now());
         } else if (CommonUtils.notEmpty(data)) {
-            entity = new SysUserAttribute(userId, data, CommonUtils.getDate());
+            entity = new SysUserAttribute(userId, data, CommonUtils.now());
             save(entity);
         }
     }

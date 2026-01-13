@@ -15,17 +15,21 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
+import com.publiccms.entities.cms.CmsContentLang;
+import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ContentConfigComponent;
 import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
+import com.publiccms.logic.service.cms.CmsContentLangService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentQuery;
@@ -35,13 +39,15 @@ import freemarker.template.TemplateException;
 /**
  *
  * contentList 内容列表查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>categoryId</code>:分类id,当parentId为空时有效
  * <li><code>containChild</code>:是否包含子分类,【true,false】
  * <li><code>categoryIds</code>:多个分类id,当categoryId为空时有效
  * <li><code>modelId</code>:多个模型id
  * <li><code>parentId</code>:父内容id
+ * <li><code>lang</code>:语言
  * <li><code>onlyUrl</code>:外链,【true,false】
  * <li><code>hasImages</code>:拥有图片列表,【true,false】
  * <li><code>hasFiles</code>:拥有附件列表,【true,false】
@@ -49,7 +55,8 @@ import freemarker.template.TemplateException;
  * <li><code>hasCover</code>:拥有封面图,【true,false】
  * <li><code>userId</code>:发布用户id
  * <li><code>startPublishDate</code>:起始发布日期,【2020-01-01 23:59:59】,【2020-01-01】
- * <li><code>endPublishDate</code>:终止发布日期,高级选项禁用时不能超过现在,【2020-01-01 23:59:59】,【2020-01-01】
+ * <li><code>endPublishDate</code>:终止发布日期,高级选项禁用时不能超过现在,【2020-01-01
+ * 23:59:59】,【2020-01-01】
  * <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
  * <li><code>status</code>:高级选项:内容状态,【0:操作,1:已发布,2:待审核,3:驳回】
  * <li><code>disabled</code>:高级选项:禁用状态,默认为<code>false</code>
@@ -67,7 +74,8 @@ import freemarker.template.TemplateException;
  * <li><code>maxResults</code>:最大结果数
  * </ul>
  * <p>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
  * <li><code>page.list</code>:List类型 查询结果实体列表
@@ -121,6 +129,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             }
             queryEntity.setExpiryDate(now);
         }
+        String lang = handler.getString("lang");
         queryEntity.setCategoryId(handler.getInteger("categoryId"));
         queryEntity.setCategoryIds(handler.getIntegerArray("categoryIds"));
         queryEntity.setModelIds(handler.getStringArray("modelId"));
@@ -146,20 +155,39 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             Map<Object, CmsContentAttribute> attributeMap = containsAttribute
                     ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getContentId())
                     : null;
-            Consumer<CmsContent> consumer = e -> {
-                ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+
+            CmsContentLangId[] langIds = list.stream()
+                    .map(e -> new CmsContentLangId(
+                            (null == e.getParentId() && null != e.getQuoteContentId()) ? e.getQuoteContentId() : e.getId(), lang))
+                    .toArray(CmsContentLangId[]::new);
+            Map<Long, CmsContentLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
+                    k -> k.getId().getContentId());
+
+            Consumer<CmsContent> consumer = entity -> {
+                ClickStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
                 if (null != statistics) {
-                    e.setClicks(e.getClicks() + statistics.getClicks());
+                    entity.setClicks(entity.getClicks() + statistics.getClicks());
                 }
-                if (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) {
-                    e.setId(e.getQuoteContentId());
+                if (absoluteId && null == entity.getParentId() && null != entity.getQuoteContentId()) {
+                    entity.setId(entity.getQuoteContentId());
                 }
+
+                CmsContentLang langEntity = null;
+                if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
+                    langEntity = langMap
+                            .get((null == entity.getParentId() && null != entity.getQuoteContentId()) ? entity.getQuoteContentId()
+                                    : entity.getId());
+                    CmsLangUtils.initLang(entity, langEntity);
+                }
+
                 if (absoluteURL) {
-                    CmsUrlUtils.initContentUrl(site, e);
-                    fileUploadComponent.initContentCover(site, e);
+                    CmsUrlUtils.initContentUrl(site, entity);
+                    fileUploadComponent.initContentCover(site, entity);
                 }
                 if (containsAttribute) {
-                    e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()), config));
+                    CmsContentAttribute attribute = attributeMap.get(entity.getId());
+                    CmsLangUtils.initLang(attribute, langEntity);
+                    entity.setAttribute(ExtendUtils.getAttributeMap(attribute, config));
                 }
             };
             list.forEach(consumer);
@@ -174,4 +202,6 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsContentService service;
+    @Resource
+    private CmsContentLangService langService;
 }

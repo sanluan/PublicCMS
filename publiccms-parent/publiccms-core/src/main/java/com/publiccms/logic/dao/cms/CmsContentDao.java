@@ -329,7 +329,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (null == entity.getId()) {
             entity.setId(getId());
         }
-        Date now = CommonUtils.getDate();
+        Date now = CommonUtils.now();
         if (null == entity.getCreateDate()) {
             entity.setCreateDate(now);
         }

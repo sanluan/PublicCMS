@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.api.Cache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
-import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
@@ -21,16 +20,12 @@ import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsWord;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.BeanComponent;
-import com.publiccms.logic.component.template.MetadataComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentFileService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.cms.CmsTagService;
 import com.publiccms.logic.service.cms.CmsWordService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
-import com.publiccms.views.pojo.entities.CmsPageData;
-import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import com.publiccms.views.pojo.entities.PlaceClickStatistics;
 
 import freemarker.template.TemplateException;
@@ -62,10 +57,6 @@ public class StatisticsComponent implements Cache {
     private CmsWordService wordService;
     @Resource
     private CmsTagService tagService;
-    @Resource
-    private MetadataComponent metadataComponent;
-    @Resource
-    protected SiteComponent siteComponent;
 
     /**
      * @param id
@@ -145,21 +136,16 @@ public class StatisticsComponent implements Cache {
                 }
             } else {
                 clickStatistics.addClicks();
-                if (0 < clickStatistics.getMaxClicks() && clickStatistics.getMaxClicks() < clickStatistics.getClicks() + clickStatistics.getOldClicks()) {
+                if (0 < clickStatistics.getMaxClicks()
+                        && clickStatistics.getMaxClicks() < clickStatistics.getClicks() + clickStatistics.getOldClicks()) {
                     placeService.shelf(id, false);
                     placeCache.remove(id);
                     CmsPlace entity = placeService.getEntity(id);
                     if (null != entity) {
-                        String placePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, entity.getPath());
-                        if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), placePath))) {
-                            try {
-                                String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
-                                CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
-                                CmsPageData data = metadataComponent.getTemplateData(filepath);
-                                BeanComponent.getTemplateComponent().staticPlace(site, entity.getPath(), metadata, data);
-                            } catch (IOException | TemplateException e) {
-                                log.error(e.getMessage(), e);
-                            }
+                        try {
+                            BeanComponent.getTemplateComponent().publishPlace(site, entity.getPath(), true);
+                        } catch (IOException | TemplateException e) {
+                            log.error(e.getMessage(), e);
                         }
                     }
                 }
@@ -251,11 +237,11 @@ public class StatisticsComponent implements Cache {
         }
         return null;
     }
-    
+
     public void removePlace(Long id) {
         placeCache.remove(id);
     }
-    
+
     public void removeContent(Long id) {
         contentCache.remove(id);
     }

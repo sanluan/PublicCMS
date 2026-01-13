@@ -58,7 +58,7 @@ public class TradeRefundDao extends BaseDao<TradeRefund> {
     @Override
     protected TradeRefund init(TradeRefund entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

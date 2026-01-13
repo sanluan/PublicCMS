@@ -64,7 +64,7 @@ public class CmsDiyAdminController {
             diyComponent.updateRegionData(site, entity);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.diydata", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -82,7 +82,7 @@ public class CmsDiyAdminController {
             HttpServletRequest request) {
         diyComponent.updateRegion(site, entity);
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "save.region", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                "save.region", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         return CommonConstants.TEMPLATE_DONE;
     }
 
@@ -100,7 +100,7 @@ public class CmsDiyAdminController {
         entity.setTemplate(new String(VerificationUtils.base64Decode(entity.getTemplate()), StandardCharsets.UTF_8));
         diyComponent.updateLayout(site, entity);
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "save.layout", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                "save.layout", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         return CommonConstants.TEMPLATE_DONE;
     }
 
@@ -117,7 +117,7 @@ public class CmsDiyAdminController {
             HttpServletRequest request) {
         diyComponent.updateModule(site, entity);
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "save.module", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                "save.module", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         return CommonConstants.TEMPLATE_DONE;
     }
 
@@ -139,21 +139,21 @@ public class CmsDiyAdminController {
                 diyComponent.deleteRegionData(site, id);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "delete.region", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        CommonUtils.now(), JsonUtils.getString(entity)));
             }
         } else if ("layout".equalsIgnoreCase(itemType)) {
             CmsLayout entity = diyComponent.deleteLayout(site, id);
             if (null != entity) {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "delete.layout", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        CommonUtils.now(), JsonUtils.getString(entity)));
             }
         } else if ("module".equalsIgnoreCase(itemType)) {
             CmsModule entity = diyComponent.deleteModule(site, id);
             if (null != entity) {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "delete.diymodule", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                        CommonUtils.now(), JsonUtils.getString(entity)));
             }
         }
         return CommonConstants.TEMPLATE_DONE;

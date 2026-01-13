@@ -12,7 +12,7 @@
     <div class="login_form clearfix">
         <form action="${base+adminContextPath}/login" method="post" onsubmit="encode()">
             <p class="logo">
-                <#if site.multiple || parentSite?has_content && parentSite.multiple>
+                <#if site.multiple || parentSite?has_content && domain.siteId == parentSite.id && parentSite.multiple>
                     <select onchange="change(this)">
                         <option value="${(parentSite!site).id}">${(parentSite!site).name}</option>
                         <@sys.siteList parentId=(parentSite!site).id pageSize=100>
@@ -64,7 +64,7 @@
             <@sys.configData code="site"><#assign excludeLangs=(object.site_exclude_lang!'')?split(',')/></@sys.configData>
             <#list langs as k,v>
                 <#if !(excludeLangs?has_content && excludeLangs?seq_contains(k))>
-            <a<#if t.pageMessage("lang")=k> class="current-lang"</#if> href="${base+adminContextPath}/changeLocale?lang=${k}&returnUrl=${(adminContextPath+'/')?url}">${v}</a>
+            <a<#if t.pageMessage("management_system.lang")=k> class="current-lang"</#if> href="${base+adminContextPath}/changeLocale?lang=${k}&returnUrl=${(adminContextPath+'/')?url}">${v}</a>
                 </#if>
             </#list>
         </p>

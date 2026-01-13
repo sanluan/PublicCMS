@@ -15,7 +15,7 @@
             modelId=modelIds parentId=parentId emptyParent=true title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@sys.authorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/uncheck_list,cmsContent/push,cmsCategory/lookupBySiteId,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsContent/import,cmsRecycleContent/list,cmsComment/list,cmsContent/sortParameters,cmsCategory/add'><#assign authorizedMap=map/></@sys.authorized>
+<@sys.authorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/uncheck_list,cmsContent/push,cmsCategory/lookupBySiteId,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/quoteParameters,cmsContent/changeModelParameters,cmsContent/export,cmsContent/import,cmsRecycleContent/list,cmsComment/list,cmsContent/sortParameters,cmsCategory/add'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader card">
     <form class="pagerForm" action="cmsContent/content_list.html" autocomplete="off" onsubmit="return divSearch(this,'contentBox');" method="post">
         <#include "../include_page/parameters.html"/>
@@ -120,6 +120,9 @@
         </#if>
         <#if !parentId?has_content&&authorizedMap['cmsContent/moveParameters']>
             <li><a href="cmsContent/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i><@t.page 'button.batch_move'/></a></li>
+        </#if>
+        <#if !parentId?has_content&&authorizedMap['cmsContent/quoteParameters']>
+            <li><a href="cmsContent/quoteParameters.html" target="dialog" mask="true"><i class="bi bi-blockquote-left"></i><@t.page 'button.batch_quote'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/import']>
             <li class="line">line</li>

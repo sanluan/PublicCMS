@@ -87,7 +87,7 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
     @Override
     protected SysUserToken init(SysUserToken entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

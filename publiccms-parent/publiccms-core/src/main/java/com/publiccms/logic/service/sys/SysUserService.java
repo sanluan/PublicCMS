@@ -143,7 +143,7 @@ public class SysUserService extends BaseService<SysUser> {
     public SysUser updateLoginStatus(Serializable id, String ip) {
         SysUser entity = getEntity(id);
         if (null != entity) {
-            entity.setLastLoginDate(CommonUtils.getDate());
+            entity.setLastLoginDate(CommonUtils.now());
             entity.setLastLoginIp(ip);
             entity.setLoginCount(entity.getLoginCount() + 1);
         }

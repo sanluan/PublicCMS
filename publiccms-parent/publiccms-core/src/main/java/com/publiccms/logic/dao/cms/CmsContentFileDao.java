@@ -21,6 +21,7 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
 
     /**
      * @param contentId
+     * @param lang
      * @param userId
      * @param fileTypes
      * @param orderField
@@ -29,11 +30,14 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Long contentId, Long userId, String[] fileTypes, String orderField, String orderType,
+    public PageHandler getPage(Long contentId, String lang, Long userId, String[] fileTypes, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContentFile bean");
         if (CommonUtils.notEmpty(contentId)) {
             queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
+        }
+        if (CommonUtils.notEmpty(lang)) {
+            queryHandler.condition("bean.lang = :lang").setParameter("lang", lang);
         }
         if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
@@ -62,12 +66,16 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
 
     /**
      * @param contentId
+     * @param lang 
      * @param fileTypes
      * @return results list
      */
-    public List<CmsContentFile> getList(long contentId, String[] fileTypes) {
+    public List<CmsContentFile> getList(long contentId,  String lang, String[] fileTypes) {
         QueryHandler queryHandler = getQueryHandler("from CmsContentFile bean");
         queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
+        if (CommonUtils.notEmpty(lang)) {
+            queryHandler.condition("bean.lang = :lang").setParameter("lang", lang);
+        }
         queryHandler.condition("bean.fileType in :fileTypes").setParameter("fileTypes", fileTypes);
         return getEntityList(queryHandler);
     }

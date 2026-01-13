@@ -40,7 +40,7 @@ public class TradeAddressDao extends BaseDao<TradeAddress> {
     @Override
     protected TradeAddress init(TradeAddress entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }

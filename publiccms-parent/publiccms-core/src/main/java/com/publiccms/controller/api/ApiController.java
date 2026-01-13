@@ -196,10 +196,10 @@ public class ApiController {
         result.put("result", false);
         SysUserToken sysUserToken = sysUserTokenService.getEntity(authToken);
         SysAppToken token = appTokenService.getEntity(appToken);
-        if (null != token && (null == token.getExpiryDate() || CommonUtils.getDate().before(token.getExpiryDate()))) {
+        if (null != token && (null == token.getExpiryDate() || CommonUtils.now().before(token.getExpiryDate()))) {
             SysApp app = appService.getEntity(token.getAppId());
             if (app.getSiteId() == site.getId()) {
-                if (null != sysUserToken && (null == sysUserToken.getExpiryDate() || CommonUtils.getDate().before(sysUserToken.getExpiryDate())) && authUserId.equals(sysUserToken.getUserId())) {
+                if (null != sysUserToken && (null == sysUserToken.getExpiryDate() || CommonUtils.now().before(sysUserToken.getExpiryDate())) && authUserId.equals(sysUserToken.getUserId())) {
                     SysUser user = sysUserService.getEntity(sysUserToken.getUserId());
                     if (user.getSiteId() == site.getId() && !user.isDisabled()) {
                         boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(authUserId), null);
@@ -236,7 +236,7 @@ public class ApiController {
                                     result.put("fileType", fileType);
                                     result.put("fileSize", uploadResult.getFileSize());
                                     logUploadService.save(new LogUpload(site.getId(), authUserId, LogLoginService.CHANNEL_WEB, originalName, privatefile, fileType, uploadResult.getFileSize(),
-                                            uploadResult.getWidth(), uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), uploadResult.getFilename()));
+                                            uploadResult.getWidth(), uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.now(), uploadResult.getFilename()));
                                 } catch (IOException e) {
                                     log.error(e.getMessage(), e);
                                     result.put(CommonConstants.ERROR, e.getMessage());

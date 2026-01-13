@@ -61,13 +61,13 @@ public class CmsTagTypeAdminController {
             if (null != entity) {
                 logOperateService
                         .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.tagType",
-                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                                RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
             }
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "save.tagType", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    "save.tagType", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -91,7 +91,7 @@ public class CmsTagTypeAdminController {
             }
             service.delete(id);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "delete.tagType", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
+                    "delete.tagType", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

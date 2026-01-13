@@ -1,6 +1,6 @@
 <#include "extend/dictionaryElement.html"/>
-<#macro input extend value="" type="form" itemType="" itemId="">
-    <#local inputName='extendData['+extend.id.code+']'/>
+<#macro input extend value="" type="form" itemType="" itemId="" lang="" inputNamePrefix="">
+    <#local inputName=inputNamePrefix+'extendData['+extend.id.code+']'/>
     <#local datetimes=['now','thisSunday','thisMonday','lastMonday','lastSunday','nextMonday','nextSunday']/>
     <#assign values={}/>
     <#switch extend.inputType>
@@ -220,7 +220,7 @@
                 </#list>
             </#if>
             <#break>
-        <#case 'lang'>
+        <#case 'management_system.lang'>
             <#if value?has_content>
                 <#local values=value?split(',')/>
             </#if>
@@ -232,6 +232,25 @@
                 <#list langs as k,v>
                     <label><input name="${inputName}" type="checkbox" class="form-check-input" value="${k}"${(values?has_content&&values?seq_contains(k))?then(' checked="true"','')?no_esc}/>${v}</label>
                 </#list>
+            </#if>
+            <#break>
+        <#case 'language'>
+            <#if value?has_content>
+                <#local values=value?split(',')/>
+            </#if>
+            <#if 'view'=type>
+                <#if values?has_content>
+                    <@cms.language codes=values><#list map as a>${a.name}<#sep>,</#list></@cms.language>
+                </#if>
+            <#else>
+                <@cms.languageList>
+                <select class="combox<#if extend.required> required</#if>" name="${inputName}">
+                    <option value${(!value?has_content)?then(' selected="true"','')?no_esc}><@t.page 'please_select'/></option>
+                    <#list list as s>
+                        <option value="${s.id.code}"${(value?has_content&&s.id.code=value)?then(' selected="true"','')?no_esc}>${s.name}</option>
+                    </#list>
+                </select>
+                </@cms.languageList>
             </#if>
             <#break>
         <#case 'captcha'>
@@ -285,7 +304,7 @@
             <#include "extend/text.html"/>
     </#switch>
 </#macro>
-<#macro extendData extendList=[] extendValues={} historyItemType='' historyItemId='' type='form' htmlSafe=false>
+<#macro extendData extendList=[] extendValues={} historyItemType='' historyItemId='' type='form' htmlSafe=false lang='' inputNamePrefix=''>
     <#list extendList as e>
     <#local value=extendValues[e.id.code]!e.defaultValue!''/>
         <#if 'customform'=type>
@@ -297,7 +316,7 @@
     <dl <#if !['number','alphaColor','color','date','datetime','boolean','text','password']?seq_contains(e.inputType)||e.description?has_content||e.multiple||e?is_first>class="nowrap"</#if>>
         <dt>${(e.name)}:</dt>
         <dd<#if 'editor'=e.inputType> style="width:90%;"</#if>>
-            <@input e value type historyItemType historyItemId/>
+            <@input e value type historyItemType historyItemId lang inputNamePrefix/>
             <#if e.description?has_content><span class="info">${htmlSafe?then(e.description?no_esc,e.description)}</span></#if>
         </dd>
     </dl>

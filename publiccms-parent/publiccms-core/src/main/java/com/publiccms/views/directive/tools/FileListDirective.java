@@ -16,19 +16,22 @@ import freemarker.template.TemplateException;
 
 /**
  * fileList 文件列表获取指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>type</code>:文件类型【file,task,template】,默认template
  * <li><code>path</code>:文件路径
  * <li><code>orderField</code>:
  * 排序类型【fileName,fileSize,modifiedDate,createDate】,默认fileName
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>list</code>:文件列表
  * {@link com.publiccms.common.tools.CmsFileUtils$FileInfo}
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@tools.fileList path='/'&gt;&lt;#list list as
  * a&gt;${a.fileName}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.fileList&gt;
@@ -66,7 +69,8 @@ public class FileListDirective extends AbstractTemplateDirective {
         } else {
             realpath = siteComponent.getTemplateFilePath(site.getId(), path);
         }
-        handler.put("list", CmsFileUtils.getFileList(realpath, handler.getString("orderField"))).render();
+        handler.put("list", CmsFileUtils.getFileList(realpath, !"file".equalsIgnoreCase(type), handler.getString("orderField")))
+                .render();
     }
 
     @Override

@@ -77,7 +77,7 @@ public class LogUploadDao extends BaseDao<LogUpload> {
     @Override
     protected LogUpload init(LogUpload entity) {
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(CommonUtils.now());
         }
         return entity;
     }
