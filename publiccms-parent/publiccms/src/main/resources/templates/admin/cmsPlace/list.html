@@ -14,12 +14,12 @@
                         <#if path?has_content && path?starts_with(currentPath+'/')>
                             <ul>
                                  <@placeList currentPath/>
-                            </ul> 
+                            </ul>
                         </#if>
                     <#elseif (object.size)?has_content && 0 lt object.size && (!(object.metadataExtendList)?has_content)>
-                        <a href="cmsPlace/dataList.html?path=${currentPath?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}">${(object.alias)!a.fileName}<#if 0 lt ((object.size)!0)> <@t.page 'place_data'/>(${object.size})</#if></a>
+                        <a href="cmsPlace/dataList.html?path=${currentPath?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}">${(object.alias)!a.fileName} <@t.page 'place_data'/>(${object.size})</a>
                     <#else>
-                        <a href="cmsPlace/metadata.html?path=${currentPath?url}" target="ajax" rel="placeBox">${(object.alias)!a.fileName}<#if 0 lt ((object.size)!0)> (${object.size})</#if></a>
+                        <a href="cmsPlace/metadata.html?path=${currentPath?url}"<#if (object.metadataExtendList)?has_content> class="red" title="<@t.page "metadata"/>"</#if> target="ajax" rel="placeBox">${(object.alias)!a.fileName}</a><#if 0 lt ((object.size)!0)> <a href="cmsPlace/dataList.html?path=${currentPath?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/> (${object.size})</a></#if>
                     </#if>
                 </@tools.placeMetadata>
                 </li>
