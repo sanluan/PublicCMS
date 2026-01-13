@@ -388,7 +388,9 @@ public class TemplateComponent implements Cache, AdminContextPath {
      */
     public boolean publish(SysSite site, CmsCategory entity, Integer pageIndex, Integer totalPage)
             throws IOException, TemplateException {
+        boolean flag = false;
         if (null != site && null != entity && site.getId() == entity.getSiteId()) {
+            flag = createCategoryFile(site, entity, null, pageIndex, totalPage);
             if (siteAttributeComponent.enableMultilingual(site.getId())) {
                 String oldLang = entity.getLang();
                 List<CmsCategoryLang> langList = categoryLangService.getList(entity.getId());
@@ -398,9 +400,8 @@ public class TemplateComponent implements Cache, AdminContextPath {
                     }
                 }
             }
-            return createCategoryFile(site, entity, null, pageIndex, totalPage);
         }
-        return false;
+        return flag;
     }
 
     /**
@@ -452,7 +453,9 @@ public class TemplateComponent implements Cache, AdminContextPath {
      */
     public boolean publish(SysSite site, CmsContent entity, CmsCategory category, CmsCategoryModel categoryModel)
             throws IOException, TemplateException {
+        boolean flag = false;
         if (null != entity) {
+            flag = createContentFile(site, entity, null, category, categoryModel);
             if (siteAttributeComponent.enableMultilingual(site.getId())) {
                 String oldLang = entity.getLang();
                 List<CmsContentLang> langList = contentLangService.getList(entity.getId());
@@ -462,9 +465,8 @@ public class TemplateComponent implements Cache, AdminContextPath {
                     }
                 }
             }
-            return createContentFile(site, entity, null, category, categoryModel);
         }
-        return false;
+        return flag;
     }
 
     /**
