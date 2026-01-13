@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.HtmlUtils;
@@ -20,6 +21,7 @@ import com.publiccms.entities.cms.CmsContentLang;
 import com.publiccms.entities.cms.CmsEditorHistory;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.dao.cms.CmsContentLangDao;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
@@ -44,6 +46,8 @@ public class CmsContentLangService extends BaseService<CmsContentLang> {
     private CmsContentFileService contentFileService;
     @Resource
     private CmsEditorHistoryService editorHistoryService;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 
     public List<CmsContentLang> getList(Long contentId) {
         return dao.getList(contentId);
@@ -76,6 +80,12 @@ public class CmsContentLangService extends BaseService<CmsContentLang> {
                 if (null != oldEntity) {
                     update(entity.getId(), entity, ignoreProperties);
                 } else {
+                    if (content.isHasStatic()) {
+                        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                        String fullStaticFilePath = CmsLangUtils.getFullFilepath(content.getUrl(), entity.getId().getLang(),
+                                defaultLang);
+                        entity.setUrl(fullStaticFilePath);
+                    }
                     save(entity);
                 }
 
