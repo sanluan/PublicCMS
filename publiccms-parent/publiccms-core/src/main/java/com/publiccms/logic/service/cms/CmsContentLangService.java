@@ -35,7 +35,7 @@ import com.publiccms.views.pojo.model.CmsContentLangParameters;
 @Service
 @Transactional
 public class CmsContentLangService extends BaseService<CmsContentLang> {
-    private String[] ignoreProperties = new String[] { "id" };
+    private String[] ignoreProperties = new String[] { "id", "url" };
     @Resource
     private SysExtendService extendService;
     @Resource

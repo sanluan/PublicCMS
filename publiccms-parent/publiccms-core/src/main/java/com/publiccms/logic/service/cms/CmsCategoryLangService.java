@@ -26,7 +26,7 @@ import com.publiccms.views.pojo.model.CmsCategoryLangParameters;
 @Service
 @Transactional
 public class CmsCategoryLangService extends BaseService<CmsCategoryLang> {
-    private String[] ignoreProperties = new String[] { "id" };
+    private String[] ignoreProperties = new String[] { "id", "url" };
     @Resource
     private CmsCategoryService categoryService;
     @Resource

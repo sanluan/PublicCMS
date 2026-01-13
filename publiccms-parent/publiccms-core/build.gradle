@@ -9,7 +9,7 @@ dependencies {
     implementation  project(':publiccms-common')
 
     implementation "com.zaxxer:HikariCP:${hikariCPVersion}"
-    implementation "com.blueconic:browscap-java:${browscapVersion}"
+    implementation "eu.bitwalker:UserAgentUtils:${userAgentUtilsVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
     implementation "org.hibernate.validator:hibernate-validator:${hibernateValidatorVersion}"
 
