@@ -165,9 +165,10 @@ header .navbar-toggler.side-right{background-image:url(../images/side-right.png)
 .leftPageContent .tree li:not(:has(ul)){min-width:auto;float:none;clear:both;}
 .tree ul:after{display:block;content:".";height:0;clear:both;visibility:hidden;}
 .tree li a.disabled{color:#aaa;}
-.tree a{height:auto;line-height:26px;font-size:13px;}
+.tree a{height:auto;line-height:26px;font-size:13px;margin-right:5px;}
 .tree a>i{margin-right:5px;}
 .tree a, .tree a:hover{text-decoration:none;}
+.tree a.red{color:red;}
 .tree .collapsable,.tree .end_collapsable,.tree .end_expandable,.tree .expandable,.tree .file,.tree .folder_collapsable,.tree .folder_expandable,.tree .last_collapsable,.tree .last_expandable, .tree .first_collapsable, .tree .first_expandable,.tree .ckbox{font-size:16px;font-style:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;display: inline-block;line-height:26px;text-align:center;width:18px;}
 .tree .collapsable,.tree .end_collapsable,.tree .end_expandable,.tree .expandable,.tree .file,.tree .folder_collapsable,.tree .folder_expandable,.tree .last_collapsable,.tree .last_expandable, .tree .first_collapsable, .tree .first_expandable{font-family:iconfont;}
 .tree .folder_collapsable:before{content:"\e668";}

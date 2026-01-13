@@ -471,12 +471,17 @@ public class CmsFileUtils {
         if (CommonUtils.notEmpty(file)) {
             File backupFile = new File(backupFilePath);
             try {
-                if (backupFile.exists()) {
-                    FileUtils.deleteQuietly(backupFile);
-                }
                 if (file.isDirectory()) {
-                    FileUtils.moveDirectory(file, backupFile);
+                    if (backupFile.exists()) {
+                        FileUtils.copyDirectory(file, backupFile);
+                        FileUtils.deleteQuietly(file);
+                    } else {
+                        FileUtils.moveDirectory(file, backupFile);
+                    }
                 } else {
+                    if (backupFile.exists()) {
+                        FileUtils.deleteQuietly(backupFile);
+                    }
                     FileUtils.moveFile(file, backupFile);
                 }
                 return true;
