@@ -72,7 +72,7 @@ public class CmsCategoryLangAdminController {
             if (ControllerUtils.errorNotEquals("siteId", site.getId(), category.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            service.save(site.getId(), site.getSitePath(), categoryId, admin.getId(),
+            service.save(site.getId(), site.getSitePath(), category, admin.getId(),
                     modelComponent.getCategoryType(site.getId(), category.getTypeId()), categoryLangListParameters);
             try {
                 templateComponent.publish(site, category, null, null);

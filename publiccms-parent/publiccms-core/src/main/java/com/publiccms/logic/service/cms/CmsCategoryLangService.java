@@ -8,9 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
+import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryLang;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.dao.cms.CmsCategoryLangDao;
 import com.publiccms.views.pojo.entities.CmsCategoryType;
 import com.publiccms.views.pojo.model.CmsCategoryLangListParameters;
@@ -31,6 +34,8 @@ public class CmsCategoryLangService extends BaseService<CmsCategoryLang> {
     private CmsCategoryService categoryService;
     @Resource
     private CmsEditorHistoryService editorHistoryService;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 
     /**
      * @param categoryId
@@ -43,17 +48,17 @@ public class CmsCategoryLangService extends BaseService<CmsCategoryLang> {
     /**
      * @param siteId
      * @param sitePath
-     * @param categoryId
+     * @param category
      * @param userId
      * @param categoryType
      * @param categoryLangListParameters
      */
-    public void save(short siteId, String sitePath, Integer categoryId, Long userId, CmsCategoryType categoryType,
+    public void save(short siteId, String sitePath, CmsCategory category, Long userId, CmsCategoryType categoryType,
             CmsCategoryLangListParameters categoryLangListParameters) {
         if (null != categoryLangListParameters && null != categoryLangListParameters.getCategoryLangList()) {
             for (CmsCategoryLangParameters langParameter : categoryLangListParameters.getCategoryLangList()) {
                 CmsCategoryLang entity = langParameter.getEntity();
-                entity.getId().setCategoryId(categoryId);
+                entity.getId().setCategoryId(category.getId());
                 if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendList())) {
                     entity.setData(
                             ExtendUtils.getExtendString(langParameter.getExtendData(), sitePath, categoryType.getExtendList()));
@@ -65,6 +70,12 @@ public class CmsCategoryLangService extends BaseService<CmsCategoryLang> {
                 if (null != oldEntity) {
                     update(entity.getId(), entity, ignoreProperties);
                 } else {
+                    if (category.isHasStatic()) {
+                        String defaultLang = siteAttributeComponent.getDefaultLanguage(siteId);
+                        String fullStaticFilePath = CmsLangUtils.getFullFilepath(category.getUrl(), entity.getId().getLang(),
+                                defaultLang);
+                        entity.setUrl(fullStaticFilePath);
+                    }
                     save(entity);
                 }
                 saveEditorHistory(oldEntity, siteId, entity.getId().getCategoryId(), entity.getId().getLang(), userId,
