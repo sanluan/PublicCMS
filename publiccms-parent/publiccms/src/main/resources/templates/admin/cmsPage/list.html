@@ -1,7 +1,7 @@
 <#macro pageList filepath=''>
     <@tools.fileList path=filepath>
         <#list list as a>
-            <@t.merge 'pages' filepath+'/'+a.fileName/>
+            <@t.merge 'pages' '/'+filepath?has_content?then(filepath+'/','')+a.fileName/>
             <#if !a.directory><@t.merge 'paths' filepath+'/'+a.fileName/></#if>
         </#list>
         <@sys.lock userId=admin.id itemType='page' itemIds=t.paths><#assign lockMap=map!/></@sys.lock>
@@ -14,17 +14,17 @@
         <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
         <#list list as a>
             <#local currentPath=filepath?has_content?then(filepath+'/','')+a.fileName>
-            <#if (deptPageMap[filepath+'/'+a.fileName])?has_content&&deptPageMap[filepath+'/'+a.fileName]>
+            <#if (deptPageMap['/'+currentPath])?has_content&&deptPageMap['/'+currentPath]>
                 <li<#if a.directory><#if (path?has_content && path?starts_with(currentPath+'/'))> class="expand"<#else> _src="cmsPage/list.html?parent=${currentPath?url}"</#if><#elseif path?has_content && path=currentPath> class="selected"</#if>>
                     <#if a.directory>
                         <a href="javascript:;" onclick="return false;">${a.fileName}</a>
                         <#if path?has_content && path?starts_with(currentPath+'/')>
                             <ul>
                                  <@pageList currentPath/>
-                            </ul> 
+                            </ul>
                         </#if>
                     <#else>
-                        <a href="cmsPage/metadata.html?path=${(currentPath?url)!}" target="ajax" rel="pageBox">
+                        <a href="cmsPage/metadata.html?path=${(currentPath?url)!}"<#if (object.extendList)?has_content> class="red" title="<@t.page "metadata"/>"</#if> target="ajax" rel="pageBox">
                             <@tools.metadata path=currentPath>
                                <#if lockMap?has_content && lockMap[currentPath]?has_content>
                                   <#assign lockUser=(userMap[lockMap[currentPath].userId?string].nickname)!''/>
