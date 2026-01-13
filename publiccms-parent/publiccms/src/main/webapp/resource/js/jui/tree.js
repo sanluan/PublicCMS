@@ -165,7 +165,7 @@
                         tree.subTree(op);
                     }
                 } else {
-                    node.children().wrap("<div></div>");
+                    node.children().wrapAll("<div></div>");
                     var $box=$(">div", node).prepend(( op.ckbox ? "<span class=\"ckbox " + checked + "\"></span>": "" )
                             + ( op.icon ? "<span class=\""+op.options.file+"\"></span>": "" ));
                     if(node.hasClass(op.options.selected) ){

@@ -8,37 +8,33 @@ import org.apache.commons.logging.LogFactory;
 
 import com.publiccms.common.tools.CommonUtils;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.RedisClient;
 
 /**
- * RedisClient
+ * RedisClientOperational
  */
-public class RedisClient {
+public class RedisClientOperational {
     /**
      * 
      */
     public static final int DEFAULT_EXPIRY_IN_SECONDS = 120;
 
     protected final Log log = LogFactory.getLog(getClass());
-    private JedisPool jedisPool;
+    private RedisClient redisClient;
     private Map<String, RedisCacheEntity<Object, Object>> regionMap = new HashMap<>();
 
     /**
-     * @param jedisPool
+     * @param redisClient 
      */
-    public RedisClient(JedisPool jedisPool) {
-        this.jedisPool = jedisPool;
+    public RedisClientOperational(RedisClient redisClient) {
+        this.redisClient = redisClient;
     }
 
     /**
      * @return
      */
     public long dbSize() {
-        Jedis jedis = jedisPool.getResource();
-        long size = jedis.dbSize();
-        jedis.close();
-        return size;
+        return redisClient.dbSize();
     }
 
     /**
@@ -111,22 +107,10 @@ public class RedisClient {
      * @return
      */
     public RedisCacheEntity<Object, Object> createOrGetCache(String region) {
-        return regionMap.computeIfAbsent(region, k -> new RedisCacheEntity<>().init(k, jedisPool));
+        return regionMap.computeIfAbsent(region, k -> new RedisCacheEntity<>().init(k, redisClient));
     }
 
-    /**
-     * @return
-     */
-    public boolean isShutdown() {
-        return null != jedisPool && jedisPool.isClosed();
-    }
-
-    /**
-     * 
-     */
-    public void shutdown() {
-        if (null != jedisPool) {
-            jedisPool.destroy();
-        }
+    public void close() {
+        redisClient.close();
     }
 }
