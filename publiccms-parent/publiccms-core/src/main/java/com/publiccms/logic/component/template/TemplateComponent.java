@@ -387,9 +387,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
      */
     public boolean publish(SysSite site, CmsCategory entity, Integer pageIndex, Integer totalPage)
             throws IOException, TemplateException {
-        boolean flag = false;
         if (null != site && null != entity && site.getId() == entity.getSiteId()) {
-            flag = createCategoryFile(site, entity, null, null, totalPage);
             if (siteAttributeComponent.enableMultilingual(site.getId())) {
                 String oldLang = entity.getLang();
                 List<CmsCategoryLang> langList = categoryLangService.getList(entity.getId());
@@ -399,8 +397,9 @@ public class TemplateComponent implements Cache, AdminContextPath {
                     }
                 }
             }
+            return createCategoryFile(site, entity, null, pageIndex, totalPage);
         }
-        return flag;
+        return false;
     }
 
     /**
@@ -413,6 +412,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
     public boolean publish(SysSite site, CmsContent entity) throws IOException, TemplateException {
         boolean flag = false;
         if (null != site && null != entity && site.getId() == entity.getSiteId()) {
+            flag = publish(site, entity, null);
             if (null != entity.getParentId()) {
                 CmsContent parent = contentService.getEntity(entity.getParentId());
                 if (null != parent) {
@@ -421,7 +421,6 @@ public class TemplateComponent implements Cache, AdminContextPath {
             } else {
                 CmsCategory category = categoryService.getEntity(entity.getCategoryId());
                 if (null != category) {
-                    flag = publish(site, entity, category);
                     publish(site, category, null, null);
                 }
             }
@@ -452,9 +451,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
      */
     public boolean publish(SysSite site, CmsContent entity, CmsCategory category, CmsCategoryModel categoryModel)
             throws IOException, TemplateException {
-        boolean flag = false;
         if (null != entity) {
-            flag = createContentFile(site, entity, null, category, categoryModel);
             if (siteAttributeComponent.enableMultilingual(site.getId())) {
                 String oldLang = entity.getLang();
                 List<CmsContentLang> langList = contentLangService.getList(entity.getId());
@@ -464,8 +461,9 @@ public class TemplateComponent implements Cache, AdminContextPath {
                     }
                 }
             }
+            return createContentFile(site, entity, null, category, categoryModel);
         }
-        return flag;
+        return false;
     }
 
     /**
