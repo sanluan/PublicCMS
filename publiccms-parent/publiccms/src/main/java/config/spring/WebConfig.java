@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Resource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,7 @@ import com.publiccms.common.view.DefaultWebFreeMarkerView;
 import com.publiccms.common.view.WebFreeMarkerView;
 import com.publiccms.common.view.WebFreeMarkerViewResolver;
 import com.publiccms.interceptor.CsrfInterceptor;
+import com.publiccms.interceptor.MultilingualInterceptor;
 import com.publiccms.interceptor.SiteInterceptor;
 import com.publiccms.interceptor.WebContextInterceptor;
 import com.publiccms.logic.component.cache.CacheComponent;
@@ -50,6 +52,8 @@ import com.publiccms.logic.component.template.TemplateComponent;
 public class WebConfig implements WebMvcConfigurer {
     @Resource
     private WebContextInterceptor webInterceptor;
+    @Resource
+    private MultilingualInterceptor multilingualInterceptor;
     @Resource
     private SiteInterceptor siteInterceptor;
     @Resource
@@ -121,6 +125,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(csrfInterceptor());
         registry.addInterceptor(webInterceptor);
+        registry.addInterceptor(multilingualInterceptor);
         registry.addInterceptor(siteInterceptor);
     }
 
