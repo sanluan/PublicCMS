@@ -1,5 +1,6 @@
 package com.publiccms.interceptor;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.publiccms.common.constants.CommonConstants;
@@ -9,6 +10,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * MultilingualInterceptor 多语言切换拦截器
+ * 
+ */
+@Component
 public class MultilingualInterceptor implements HandlerInterceptor {
     public static final String DEFAULT_PARAM_NAME = "language";
 
