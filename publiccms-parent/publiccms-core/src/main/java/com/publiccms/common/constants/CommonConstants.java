@@ -150,6 +150,13 @@ public class CommonConstants {
     }
 
     /**
+     * @return cookies language key
+     */
+    public static final String getCookiesLanguage() {
+        return "PUBLICCMS_LANGUAGE";
+    }
+
+    /**
      * @return cookies site key
      */
     public static final String getCookiesSite() {
