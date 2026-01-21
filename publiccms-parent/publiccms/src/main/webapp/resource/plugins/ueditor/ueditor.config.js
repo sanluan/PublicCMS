@@ -365,7 +365,7 @@
         //, allowLinkProtocols: ['http:', 'https:', '#', '/', 'ftp:', 'mailto:', 'tel:', 'git:', 'svn:']
 
         //默认过滤规则相关配置项目
-        //,disabledTableInTable:true  //禁止表格嵌套
+        ,disabledTableInTable:false  //禁止表格嵌套
         ,allowDivTransToP:false      //允许进入编辑器的div标签自动变成p标签
         //,rgb2Hex:true               //默认产出的数据中的color自动从rgb格式变成16进制格式
 
