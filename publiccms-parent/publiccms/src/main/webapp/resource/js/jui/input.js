@@ -103,8 +103,10 @@
                         $("li.disabled",optionlist).hide();
                         killAllBox(box.attr("id"));
                         $(document).on("click", killAllBox);
+                        $(document).on(JUI.eventType.pageClear, killAllBox);
                     } else {
                         $(document).off("click", null, killAllBox);
+                        $(document).off(JUI.eventType.pageClear, null,  killAllBox);
                         killAllBox();
                     }
                     return false;
