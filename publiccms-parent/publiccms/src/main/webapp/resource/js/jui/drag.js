@@ -154,6 +154,9 @@
             }).jDrag({
                 selector: op.selector, drag: this.drag, stop: this.stop, event: event
             });
+            if($helper.is("tr")){
+                $helper.css({display:"table"});
+            }
             $item.before($placeholder).before($helper).hide();
             return false;
         } ,

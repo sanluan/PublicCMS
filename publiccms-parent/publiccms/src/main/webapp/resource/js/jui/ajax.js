@@ -169,7 +169,13 @@ function navTabAjaxDone(json) {
 function dialogAjaxDone(json) {
     JUI.ajaxDone(json);
     if (json[JUI.keys.statusCode] == JUI.statusCode.ok ) {
-        if ("forward" == json.callbackType ) {
+        if (json.navTabId ) {
+            if("page" == json.rel){
+                navTab.reloadFlag(json.navTabId, 2);
+            }else{
+                navTab.reloadFlag(json.navTabId);
+            }
+        } else if ("forward" == json.callbackType ) {
             if (json.navTabId ) {
                 navTab.reload(json.forwardUrl, {
                     navTabId: json.navTabId
