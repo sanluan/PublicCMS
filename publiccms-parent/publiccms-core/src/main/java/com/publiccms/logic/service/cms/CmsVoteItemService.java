@@ -64,7 +64,9 @@ public class CmsVoteItemService extends BaseService<CmsVoteItem> {
     public void update(long voteId, List<CmsVoteItem> entitys, String[] ignoreProperties) {
         Set<Long> idList = new HashSet<>();
         if (CommonUtils.notEmpty(entitys)) {
+            int i = 0;
             for (CmsVoteItem entity : entitys) {
+                entity.setSort(i++);
                 if (null != entity.getId()) {
                     CmsVoteItem oldEntity = getEntity(entity.getId());
                     if (voteId == oldEntity.getVoteId()) {

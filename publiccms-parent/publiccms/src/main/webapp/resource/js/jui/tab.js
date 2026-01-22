@@ -29,11 +29,11 @@
                         $(this).removeClass("selected");
                     }
                     if (op.eventType == "hover" ) {
-                        $(this).on( "mouseenter",function(event) {
+                        $(this).on( "mouseenter",function() {
                             switchTab(jT, iTabIndex)
                         });
                     } else {
-                        $(this).on("click", function(event) {
+                        $(this).on("click", function() {
                             switchTab(jT, iTabIndex)
                         });
                     }
@@ -50,7 +50,7 @@
                                 event.preventDefault();
                             });
                         } else if ($(this).hasClass(op.closeClass) ) {
-                            $(this).on("click", function(event) {
+                            $(this).on("click", function() {
                                 jTabs.eq(iTabIndex).remove();
                                 jGroups.eq(iTabIndex).remove();
                                 if (iTabIndex == op.currentIndex ) {
@@ -71,7 +71,6 @@
                 var jTabs = $(op.stTabs, jSelector);
                 var jGroups = $(op.stTabPanel + " > *", jSelector);
                 var jTab = jTabs.eq(iTabIndex);
-                var jGroup = jGroups.eq(iTabIndex);
                 if (op.reverse && ( jTab.hasClass("selected") ) ) {
                     jTabs.removeClass("selected");
                     jGroups.hide();

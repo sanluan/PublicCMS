@@ -284,6 +284,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 userId, modelExtendList, categoryExtendList, contentParameters.getExtendData());// 保存编辑器字段历史记录
 
         attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
+        
         cmsContentRelatedService.update(entity.getId(), userId, contentParameters.getContentRelateds());// 更新保存推荐内容
         return entity;
     }

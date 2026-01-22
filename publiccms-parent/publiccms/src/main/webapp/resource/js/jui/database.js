@@ -36,7 +36,7 @@
         bringBackSuggest: function(args,keys) {
             var $box = _lookup["$target"].parents(".unitBox").first();
             if(keys){
-                $.each(keys,function(n,key){
+                $.each(keys,function(_n,key){
                     $box.find(":input[name="+$.escapeSelector(_util.lookupPk(key))+"]").each(function() {
                         for ( var k in args) {
                             _lookup.suffix=k;
@@ -121,7 +121,7 @@
         multLookup: function() {
             return this.each(function() {
                 var $this = $(this), args = {};
-                $this.on("click", function(event) {
+                $this.on("click", function() {
                     var $unitBox = $this.parents(".unitBox").first();
                     $unitBox.find("[name=\"" + $this.attr("multLookup") + "\"]").filter(":checked").each(function() {
                         var _args = JUI.jsonEval($(this).val());
@@ -281,7 +281,7 @@
             return this.each(function() {
                 var $table = $(this).css("clear", "both"), $tbody = $table.find("tbody");
                 var fields = [ ];
-                $table.find("thead th[type]").each(function(i) {
+                $table.find("thead th[type]").each(function() {
                     var $th = $(this);
                     var field = {
                         type: $th.attr("type") || "text", patternDate: $th.attr("dateFmt") || "yyyy-MM-dd", name: $th.attr("name") || "" ,suffix: $th.attr("suffix")||"",
@@ -314,20 +314,6 @@
                     } else {
                         delDbData();
                     }
-                    return false;
-                });
-                $tbody.find("a.btnUp").on("click", function() {
-                    var $btnUp = $(this);
-                    var $box = $btnUp.parents("tr").first();
-                    $box.after($box.prev()).css("opacity","0.1").animate({"opacity":"1"});
-                    initSuffix($tbody);
-                    return false;
-                });
-                $tbody.find("a.btnDown").on("click", function() {
-                    var $btnUp = $(this);
-                    var $box = $btnUp.parents("tr").first();
-                    $box.before($box.next()).css("opacity","0.1").animate({"opacity":"1"});
-                    initSuffix($tbody);
                     return false;
                 });
                 var addButTxt = $table.attr("addButton") || "Add New";
@@ -369,20 +355,6 @@
                                 $tbody.find(">tr.selected").removeClass("selected");
                                 $tr.addClass("selected");
                             });
-                            $tr.find("a.btnUp").on("click", function() {
-                                var $btnUp = $(this);
-                                var $box = $btnUp.parents("tr").first();
-                                $box.after($box.prev()).css("opacity","0.1").animate({"opacity":"1"});
-                                initSuffix($tbody);
-                                return false;
-                            });
-                            $tr.find("a.btnDown").on("click", function() {
-                                var $btnDown = $(this);
-                                var $box = $btnDown.parents("tr").first();
-                                $box.before($box.next()).css("opacity","0.1").animate({"opacity":"1"});
-                                initSuffix($tbody);
-                                return false;
-                            });
                         }
                         initSuffix($tbody);
                         var $attach = $tr.find(".btnAttach");
@@ -399,6 +371,12 @@
                             }
                         }
                     });
+                }
+                var sortDrag=$table.hasClass("sortDrag");
+                if(sortDrag){
+                    $table.sortDrag({cursor: "move",items: ">tbody>tr",selector: "a.icon-move",callback:function(){
+                        initSuffix($tbody);
+                    }});
                 }
             });
 
@@ -445,7 +423,7 @@
                         html = "<a href=\"javascript:void(0)\" class=\"btnDel " + field.fieldClass + "\"></a>";
                         break;
                     case "delAndSort":
-                        html = "<a href=\"javascript:void(0)\" class=\"btnDel " + field.fieldClass + "\"></a> <a href=\"javascript:;\" class=\"btnUp\"></a>";
+                        html = "<a href=\"javascript:;\" class=\"icon-move\"></a> <a href=\"javascript:void(0)\" class=\"btnDel " + field.fieldClass + "\"></a>";
                         break;
                     case "lookup":
                         var suggestFrag = "";
@@ -533,7 +511,7 @@
                         $.ajax({
                             type: "POST", url: $this.attr("href"), dataType: "json", cache: false, data: function() {
                                 if (postType == "map" ) {
-                                    return $.map(ids.split(","), function(val, i) {
+                                    return $.map(ids.split(","), function(val) {
                                         return {
                                             name: selectedIds, value: val
                                         };

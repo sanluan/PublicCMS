@@ -3,7 +3,7 @@
     <#if 'view'=type>
         <#if values?has_content><#list values as k,v><p>${k!}:${(v.name)!}</p></#list></#if>
     <#else>
-        <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>">
+        <table class="list nowrap sortDrag itemDetail" addButton="<@t.page 'button.new_line'/>">
             <thead>
                 <tr>
                     <th width="250"<#if 'customform'!=type> type="lookup" name="${extend.id.code}_categoryTypeName" fieldClass="<#if extend.required>required</#if>" size="30" fieldAttrs='{"readonly":"readonly","width":920,"height":580}' lookupUrl="cmsCategoryType/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_categoryTypeName" lookupGroup="" lookupPk="${inputName}"</#if>><@t.page 'category_type'/></th>
@@ -20,8 +20,8 @@
                             <a class="btnLook" href="cmsCategoryType/lookup.html?field=${inputName?url}&nameField=${extend.id.code?url}_categoryTypeName" width="920" height="580" lookupGroup=""><@t.page 'select'/></a>
                         </td>
                         <td>
+                            <#if 'customform'!=type><a href="javascript:;" class="icon-move"></a></#if>
                             <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
-                            <#if 'customform'!=type><a href="javascript:;" class="btnUp"></a><a href="javascript:;" class="btnDown"></a></#if>
                         </td>
                     </tr>
                     </#list>

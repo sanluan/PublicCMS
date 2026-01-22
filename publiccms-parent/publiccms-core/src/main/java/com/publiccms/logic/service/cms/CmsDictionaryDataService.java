@@ -29,7 +29,9 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
      */
     public void save(short siteId, String dictionaryId, List<CmsDictionaryData> dataList) {
         if (CommonUtils.notEmpty(dataList)) {
+            int i = 0;
             for (CmsDictionaryData entity : dataList) {
+                entity.setSort(i++);
                 if (null != entity.getId()) {
                     entity.getId().setSiteId(siteId);
                     entity.getId().setDictionaryId(dictionaryId);
@@ -48,7 +50,9 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
     public void update(short siteId, String dictionaryId, List<CmsDictionaryData> dataList, String parentValue) {
         Set<CmsDictionaryDataId> idSet = new HashSet<>();
         if (CommonUtils.notEmpty(dataList)) {
+            int i = 0;
             for (CmsDictionaryData entity : dataList) {
+                entity.setSort(i++);
                 if (null != entity.getId()) {
                     entity.getId().setSiteId(siteId);
                     entity.getId().setDictionaryId(dictionaryId);

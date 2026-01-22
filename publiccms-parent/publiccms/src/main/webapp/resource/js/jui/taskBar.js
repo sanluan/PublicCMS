@@ -4,11 +4,11 @@
  */
 ( function($) {
     $.fn.extend({
-        jTask: function(options) {
+        jTask: function() {
             return this.each(function() {
                 var $task = $(this);
                 var id = $task.attr("id");
-                $task.on("click", function(e) {
+                $task.on("click", function() {
                     var dialog = $("body").data(id);
                     if ($task.hasClass("selected") ) {
                         $("a.minimize", dialog).trigger("click");
@@ -22,7 +22,7 @@
                     $.taskBar.scrollCurrent($(this));
                     return false;
                 });
-                $("div.close", $task).on("click", function(e) {
+                $("div.close", $task).on("click", function() {
                     $.pdialog.close(id)
                     return false;
                 });
@@ -51,10 +51,10 @@
             this._taskList = this._taskBox.find(">ul");
             this._prevBut = this._taskBar.find(this._op.prevBut);
             this._nextBut = this._taskBar.find(this._op.nextBut);
-            this._prevBut.on("click", function(e) {
+            this._prevBut.on("click", function() {
                 $this.scrollLeft()
             });
-            this._nextBut.on("click", function(e) {
+            this._nextBut.on("click", function() {
                 $this.scrollRight()
             });
 
@@ -63,22 +63,22 @@
         _contextmenu: function(obj) {
             $(obj).contextMenu("dialogCM", {
                 bindings: {
-                    closeCurrent: function(t, m) {
+                    closeCurrent: function(t) {
                         var obj = t.isTag("li") ? t: $.taskBar._getCurrent();
                         $("div.close", obj).trigger("click");
-                    }, closeOther: function(t, m) {
+                    }, closeOther: function(t) {
                         var selector = t.isTag("li") ? ( "#" + t.attr("id") ): ".selected";
                         var tasks = $.taskBar._taskList.find(">li:not(:" + selector + ")");
                         tasks.each(function(i) {
                             $("div.close", tasks[i]).trigger("click");
                         });
-                    }, closeAll: function(t, m) {
+                    }, closeAll: function() {
                         var tasks = $.taskBar._getTasks();
                         tasks.each(function(i) {
                             $("div.close", tasks[i]).trigger("click");
                         });
                     }
-                }, ctrSub: function(t, m) {
+                }, ctrSub: function(_t, m) {
                     var mCur = m.find("[rel=\"closeCurrent\"]");
                     var mOther = m.find("[rel=\"closeOther\"]");
                     if (!$.taskBar._getCurrent()[0] ) {

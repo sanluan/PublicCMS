@@ -87,7 +87,7 @@
             $grid.append("<div class=\"resizeMarker\" style=\"height:300px; left:57px;display:none;\"></div><div class=\"resizeProxy\" style=\"height:300px; left:377px;display:none;\"></div>");
 
             var scroller = $(".gridScroller", $grid);
-            scroller.scroll(function(event){
+            scroller.scroll(function(){
                 var header = $(".gridThead", $grid);
                 if(scroller.scrollLeft() > 0){
                     header.css("position", "relative");
@@ -104,7 +104,7 @@
 
             $(">tr", thead).each(function(){
 
-                $(">th", this).each(function(i){
+                $(">th", this).each(function(){
                     var th = this, $th = $(this);
                     $th.on("mouseover", function(event){
                         var offset = $.jTableTool.getOffset(th, event).offsetX;
@@ -129,7 +129,6 @@
                                             var mleft = $(".resizeMarker", $grid).position().left;
                                             var move = pleft - mleft - $th.outerWidth() -9;
 
-                                            var cols = $.jTableTool.getColspan($th);
                                             var cellNum = $.jTableTool.getCellNum($th);
                                             var oldW = $th.width(), newW = $th.width() + move;
                                             var $dcell = $(">td", ftr).eq(cellNum - 1);
@@ -265,13 +264,13 @@
  */
 ( function($) {
     $.fn.extend({
-        cssTable: function(options) {
+        cssTable: function() {
             return this.each(function() {
                 var $this = $(this);
                 var $trs = $this.find("tbody>tr");
                 var $grid = $this.parent(); // table
 
-                $trs.each(function(index) {
+                $trs.each(function() {
                     var $tr = $(this);
                     $tr.on("click", function() {
                         $this.find("tbody>tr.selected").removeClass("selected");

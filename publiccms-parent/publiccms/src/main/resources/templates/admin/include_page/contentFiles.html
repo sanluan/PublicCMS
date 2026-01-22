@@ -1,7 +1,7 @@
 <#macro contentFiles image contentId='' copy=false lang=''>
     <#local name=image?then('images','files')/>
     <#local fileTypes=image?then('image','video,document,audio,other')/>
-<table class="list nowrap itemDetail ${name}" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_upload'/>" batchUrl="common/batchUpload.html?field=filePath&originalField=description<#if image>&fileTypes=image</#if>" width="100%">
+<table class="list nowrap sortDrag itemDetail ${name}" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_upload'/>" batchUrl="common/batchUpload.html?field=filePath&originalField=description<#if image>&fileTypes=image</#if>" width="100%">
     <thead>
         <tr>
             <th type="attach" name="${name}[#index#].filePath" size="50" fieldClass="required" lookupGroup="${name}[#index#]" lookupUrl="common/upload.html?field=filePath&originalField=description${image?then('&fileTypes=image','')}"><@t.page 'file_path'/></th>
@@ -9,8 +9,7 @@
             <th type="text" name="${name}[#index#].fileSize" fieldClass="digits" size="10" fieldAttrs='{"maxlength":20,"readonly":"readonly"}'><@t.page 'file.size'/></th>
             <th type="text" name="${name}[#index#].width" fieldClass="digits" size="10" fieldAttrs='{"maxlength":20,"readonly":"readonly"}'><@t.page 'width'/></th>
             <th type="text" name="${name}[#index#].height" fieldClass="digits" size="10" fieldAttrs='{"maxlength":20,"readonly":"readonly"}'><@t.page 'height'/></th>
-            <th type="text" name="${name}[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
-            <th type="del" width="60"><@t.page 'operate'/></th>
+            <th type="delAndSort" width="60"><@t.page 'operate'/></th>
         </tr>
     </thead>
     <tbody>
@@ -37,9 +36,7 @@
                     <input type="text" name="${name}[${file?index}].height" class="digits" readonly="readonly" value="${(file.height)!}" size="10" maxlength="20"/>
                 </td>
                 <td>
-                    <input type="number" name="${name}[${file?index}].sort" class="required digits" value="${file.sort!}" size="5" maxlength="5"/>
-                </td>
-                <td>
+                    <a href="javascript:;" class="icon-move"></a>
                     <a href="javascript:;" class="btnDel"><@t.page 'button.delete'/></a>
                 </td>
             </tr>

@@ -49,13 +49,13 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
 
     /**
      * @param contentId
-     * @param lang 
+     * @param lang
      * @param fileTypes
      * @return results list
      */
     @Transactional(readOnly = true)
     public List<CmsContentFile> getList(long contentId, String lang, String[] fileTypes) {
-        return dao.getList(contentId,lang, fileTypes);
+        return dao.getList(contentId, lang, fileTypes);
     }
 
     /**
@@ -82,7 +82,9 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
     public void update(long contentId, String lang, Long userId, List<CmsContentFile> files, List<CmsContentFile> images) {
         Set<Long> idList = new HashSet<>();
         if (CommonUtils.notEmpty(images)) {
+            int i = 0;
             for (CmsContentFile entity : images) {
+                entity.setSort(i++);
                 entity.setFileType(CmsFileUtils.getFileType(CmsFileUtils.getSuffix(entity.getFilePath())));
                 entity.setLang(lang);
                 if (null != entity.getId()) {
@@ -96,7 +98,9 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
             }
         }
         if (CommonUtils.notEmpty(files)) {
+            int i = 0;
             for (CmsContentFile entity : files) {
+                entity.setSort(i++);
                 entity.setFileType(CmsFileUtils.getFileType(CmsFileUtils.getSuffix(entity.getFilePath())));
                 if (CmsFileUtils.FILE_TYPE_IMAGE.equals(entity.getFileType())) {
                     entity.setFileType(CmsFileUtils.FILE_TYPE_OTHER);

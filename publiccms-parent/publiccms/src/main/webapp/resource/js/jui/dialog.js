@@ -352,7 +352,7 @@
                     }
                 }, 100);
                 return false;
-            }).on("mouseup", function(e) {
+            }).on("mouseup", function() {
                 dialog.data("task", false);
                 return false;
             });
@@ -443,7 +443,7 @@
         }
     };
     $.layerdrag = {
-        start: function(obj, e, options) {
+        start: function(obj, e, _options) {
             if (!$.layerdrag.current ) {
                 $.layerdrag.current = {
                     el: obj, oleft: parseInt(obj.style.left) || 0, owidth: parseInt(obj.style.width) || 0, otop: parseInt(obj.style.top) || 0 ,
@@ -454,9 +454,6 @@
             }
             return $.layerdrag.preventEvent(e);
         }, drag: function(e) {
-            if (!e ) {
-                var e = window.event;
-            }
             var current = $.layerdrag.current;
             var data = $.data(current.el, "layer-drag");
             var lmove = ( e.pageX || e.screenX ) - current.ox;

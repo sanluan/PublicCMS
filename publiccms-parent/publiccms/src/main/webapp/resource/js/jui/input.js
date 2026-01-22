@@ -141,7 +141,7 @@
                 }
             });
             allSelectBox = _selectBox;
-            return this.each(function(i) {
+            return this.each(function() {
                 var $this = $(this).removeClass("combox");
                 var $thisCombox = $this.parents("div.combox:first");
                 if($thisCombox.length){
@@ -238,12 +238,12 @@
             this.select(_name, "invert", _parent);
         },
         select: function(_name, _type, _parent) {
-            $parent = $(_parent || document);
-            $checkboxLi = $parent.find(":checkbox[name=\"" + _name + "\"]");
+            var $parent = $(_parent || document);
+            var $checkboxLi = $parent.find(":checkbox[name=\"" + _name + "\"]");
             switch (_type) {
                 case "invert":
                     $checkboxLi.each(function() {
-                        $checkbox = $(this);
+                        var $checkbox = $(this);
                         $checkbox.prop("checked", !$checkbox.is(":checked"));
                     });
                     break;
@@ -300,7 +300,7 @@
          * 自定义js函数验证 <input type="text" name="xxx" customvalid="xxxFn(element)"
          * title="xxx" />
          */
-        $.validator.addMethod("customvalid", function(value, element, params) {
+        $.validator.addMethod("customvalid", function(_value, _element, params) {
             try {
                 return eval("(" + params + ")");
             } catch (e) {

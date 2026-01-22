@@ -70,7 +70,7 @@ function iframeCallback(form, callback) {
 function _iframeResponse(iframe, callback) {
     var $iframe = $(iframe), $document = $(document);
     $document.trigger("ajaxStart");
-    $iframe.on("load", null, null, function(event) {
+    $iframe.on("load", null, null, function() {
         $iframe.off("load");
         $document.trigger("ajaxStop");
 
@@ -178,7 +178,6 @@ function dialogAjaxDone(json) {
                 $.pdialog.reload(json.forwardUrl);
             }
         } else {
-            var $panel = navTab.getCurrentPanel();
             var $pagerForm = $(".pagerForm", navTab.getCurrentPanel());
             if(0!=$pagerForm.length){
                 $pagerForm.trigger("submit");

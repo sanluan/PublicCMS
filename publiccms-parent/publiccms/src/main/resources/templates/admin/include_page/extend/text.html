@@ -1,7 +1,7 @@
 <#if 'view'=type>
         ${(value)!}
 <#elseif extend.multiple>
-        <table<#if 'customform'!=type> class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate.html?field=${inputName?url}"</#if>>
+        <table<#if 'customform'!=type> class="list nowrap sortDrag itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate.html?field=${inputName?url}"</#if>>
             <thead>
                 <tr>
                     <th width="400"<#if 'customform'!=type> type="text" name="${inputName}" fieldClass="<#if extend.required> required</#if>" size="50" fieldAttrs='{"batchGroup":""<#if extend.maxlength?has_content>,"maxlength":${extend.maxlength}</#if>}'</#if>><@t.page 'value'/></th>
@@ -16,8 +16,8 @@
                             <input name="${inputName}" type="text" size="50"<#if 'customform'=type><#if extend.required||a?is_first> required="required"</#if><#else> class="nocommas<#if extend.required||a?is_first> required</#if>"</#if><#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> value="${a}"/>
                         </td>
                         <td>
+                            <#if 'customform'!=type><a href="javascript:;" class="icon-move"></a></#if>
                             <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
-                            <#if 'customform'!=type><a href="javascript:;" class="btnUp"></a><a href="javascript:;" class="btnDown"></a></#if>
                         </td>
                     </tr>
                     </#list>

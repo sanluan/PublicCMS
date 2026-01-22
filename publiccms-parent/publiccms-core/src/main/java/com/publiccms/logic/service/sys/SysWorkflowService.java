@@ -97,6 +97,7 @@ public class SysWorkflowService extends BaseService<SysWorkflow> {
                             int i = 0;
                             for (Map<String, Object> data : items) {
                                 SysWorkflowStep entity = new SysWorkflowStep();
+                                entity.setSort(i++);
                                 if (null != data.get("id")) {
                                     entity.setId(Long.parseLong(data.get("id").toString()));
                                 }
@@ -112,8 +113,6 @@ public class SysWorkflowService extends BaseService<SysWorkflow> {
                                 if (null != data.get("userId")) {
                                     entity.setUserId(Long.parseLong((String) data.get("userId")));
                                 }
-                                entity.setSort(i);
-                                i++;
                                 stepList.add(entity);
                             }
                             return stepList;
