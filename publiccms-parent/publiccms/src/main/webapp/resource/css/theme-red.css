@@ -83,14 +83,14 @@ textarea.readonly,input.readonly{background-color:#eee;}
 .grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{color:#fff;}
 
 table.list,table.list td{border-color:#e4e9f2;}
-table.list thead tr{background-color:#f8fcfe;}
-table.list th{border-color:#e4e9f2;color:#31353e;}
+table.list thead tr{background-color:#D8403D;}
+table.list th{border-color:#e4e9f2;color:#FFF;}
 table.list tbody {background-color:#fff;}
 table.list tbody tr:nth-child(even){background-color:#f8fcfe;}
 table.list tbody tr.hover td{background-color:#e5eaf4;}
 table.list td a{color:#D8403D;}
-table.list tbody tr.selected td{background-color:#edd9dd;}
-table.list th.asc:before,table.list th.desc:before,table.list th.order:before{color:#D8403D;}
+table.list tbody tr.selected td{border-color:#edd9dd;background-color:#edd9dd;}
+table.list th.asc:before,table.list th.desc:before,table.list th.order:before{color:#fff;}
 table.nowrap tbody tr {border-color:#ededed;}
 
 .tabs .tabsHeader{background-color:#FFF;}
