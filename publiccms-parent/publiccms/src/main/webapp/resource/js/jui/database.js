@@ -357,6 +357,12 @@
                             });
                         }
                         initSuffix($tbody);
+                        var sortDrag=$table.hasClass("sortDrag");
+                        if(sortDrag){
+                            $table.sortDrag({cursor: "move",items: ">tbody>tr",refresh:true,selector: "a.icon-move",callback:function(){
+                                initSuffix($tbody);
+                            }});
+                        }
                         var $attach = $tr.find(".btnAttach");
                         if( $attach.length ){
                             _lookup = $.extend(_lookup, {
