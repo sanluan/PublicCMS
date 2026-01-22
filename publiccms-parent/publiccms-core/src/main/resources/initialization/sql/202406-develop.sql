@@ -78,3 +78,8 @@ CREATE TABLE `cms_content_lang` (
 ) COMMENT='内容多语言';
 -- 2026-01-08 --
 ALTER TABLE `cms_content_attribute` MODIFY COLUMN `word_count` int NOT NULL DEFAULT 0 COMMENT '字数' AFTER `text`;
+-- 2026-01-22 --
+UPDATE sys_module SET parent_id = 'page_preview' WHERE id = 'page_diy_buttons';
+UPDATE sys_module SET sort = 1 WHERE id = 'page_diy_buttons';
+UPDATE sys_module SET has_child = 1 WHERE id = 'page_preview';
+
