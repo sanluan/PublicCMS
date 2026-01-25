@@ -139,7 +139,10 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                 </dl>
                 <dl<#if !fieldList?seq_contains('source')> class="copied hide"</#if>>
                     <dt>${(model.fieldTextMap['source'])!}:</dt>
-                    <dd><input name="source" autocomplete="on" type="text"<#if requiredFieldList?seq_contains('source')> data-required="true"</#if> maxlength="50" size="20" value="${(attribute.source)!}"/></dd>
+                    <dd>
+                        <input name="source" autocomplete="on" type="text"<#if requiredFieldList?seq_contains('source')> data-required="true"</#if> postField="name" suggestfields="source,sourceUrl" suggestUrl="common/contentSourceSuggest.html" maxlength="50" size="20" value="${(attribute.source)!}"/>
+                        <a class="btnLook" href="cmsContentSource/lookup.html" lookupGroup="" width="1200" height="580"><@t.page 'content.source'/></a>
+                    </dd>
                 </dl>
                 <dl class="copied hide">
                     <dt>${(model.fieldTextMap['sourceUrl'])!}:</dt>

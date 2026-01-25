@@ -1,0 +1,67 @@
+<div class="pageFormContent icons" layoutH>
+    <dl class="nowrap">
+        <dt><@t.page 'button.search'/>:</dt>
+        <dd>
+            <input type="text" name="name" size="30"/>
+            <div class="initial"><a href="javascript:void(0);" class="btnText green" initial=""><@t.page 'all'/></a></div>
+        </dd>
+    </dl>
+    <@cms.contentSourceList pageSize=1000>
+    <div class="unit">
+        <#list page.list as a>
+        <label><a href="javascript:;" initial="${a.initial!}" url="${a.url!}" onclick="return false;">${a.name!}</a></label>
+        </#list>
+    </div>
+    </@cms.contentSourceList>
+</div>
+<div class="formBar">
+    <ul>
+        <li><a class="button" href="cmsContentSource/list.html" target="navTab" rel="cmsContentSource/list"><@t.page 'content_source.management'/></a></li>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>
+<script>
+function searchContentSource(value,inital){
+    if(value || inital){
+        $('.pageFormContent label',$.pdialog.getCurrent()).hide();
+        $(".pageFormContent .initial a").slice(1).hide();
+        $('.pageFormContent label a',$.pdialog.getCurrent()).each(function(){
+            if(!value ||  -1 < $(this).attr("url").indexOf(value) || -1 < $(this).text().indexOf(value)){
+                if(!inital || -1 < $(this).attr("initial").indexOf(inital)){
+                    $(this).parent().show();
+                }
+                if($(this).attr("initial")){
+                    $(".pageFormContent .initial a[initial="+$(this).attr("initial")+"]").show();
+                }
+            }
+        });
+    } else {
+        if(!value){
+            $(".pageFormContent .initial a").show();
+        }
+        $('.pageFormContent label',$.pdialog.getCurrent()).show();
+    }
+}
+$('input[name=name]',$.pdialog.getCurrent()).on("keyup change",function(){
+    searchContentSource($(this).val(),$(".pageFormContent .initial a.green",$.pdialog.getCurrent()).attr("initial"));
+});
+$('.pageFormContent label a',$.pdialog.getCurrent()).on("click", function(){
+    $.bringBack({"source":$(this).text(),"sourceUrl":$(this).attr("url")});
+    return false;
+});
+var initials=[];
+$initialbox=$('.pageFormContent .initial',$.pdialog.getCurrent());
+$(".pageFormContent label a",$.pdialog.getCurrent()).each(function(){
+    $this=$(this);
+    if($this.attr("initial") && -1 == initials.indexOf($this.attr("initial"))){
+        initials.push($this.attr("initial"));
+        $initialbox.append("<a href=\"javascript:void(0);\" class=\"btnText\" initial=\""+$this.attr("initial")+"\">"+$this.attr("initial")+"</a>")
+    }
+});
+$(".pageFormContent .initial",$.pdialog.getCurrent()).on("click" , "a", function(){
+    $(".pageFormContent .initial a").removeClass("green");
+    $(this).addClass("green");
+    searchContentSource($("input[name=name]",$.pdialog.getCurrent()).val(),$(this).attr("initial"));
+    return false;
+});
+</script>

@@ -150,7 +150,8 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.filesText = filesText;
     }
 
-    @Column(name = "min_price", length = 50)
+    
+    @Column(name="min_price", precision=10)
     public BigDecimal getMinPrice() {
         return this.minPrice;
     }
@@ -159,7 +160,8 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.minPrice = minPrice;
     }
 
-    @Column(name = "max_price", length = 50)
+    
+    @Column(name="max_price", precision=10)
     public BigDecimal getMaxPrice() {
         return this.maxPrice;
     }

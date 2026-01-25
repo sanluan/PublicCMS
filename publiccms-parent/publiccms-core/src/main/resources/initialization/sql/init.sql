@@ -261,8 +261,24 @@ CREATE TABLE `cms_content_related` (
   PRIMARY KEY  (`id`),
   KEY `cms_content_related_content_id`(`content_id`, `relation_type`, `relation`,  `sort`),
   KEY `cms_content_related_related_content_id` (`related_content_id`,`relation_type`, `relation` )
-) COMMENT='推荐推荐';
+) COMMENT='内容推荐';
 
+-- ----------------------------
+-- Table structure for cms_content_source
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_content_source`;
+CREATE TABLE `cms_content_source` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `site_id` smallint NOT NULL COMMENT '站点',
+  `name` varchar(100) NOT NULL COMMENT '名称',
+  `url` varchar(255) DEFAULT NULL COMMENT '地址',
+  `initial` varchar(5) DEFAULT NULL COMMENT '缩写',
+  `user_id` bigint DEFAULT NULL COMMENT '创建用户',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `cms_content_source_user_id` (`site_id`,`user_id`,`create_date`),
+  KEY `cms_content_source_initial` (`site_id`,`initial`)
+) COMMENT='内容来源';
 -- ----------------------------
 -- Table structure for cms_dictionary
 -- ----------------------------
@@ -981,7 +997,8 @@ INSERT INTO `sys_module` VALUES ('content_recycle_list', 'cmsRecycleContent/list
 INSERT INTO `sys_module` VALUES ('content_recycle_recycle', NULL, 'cmsContent/recycle', NULL, 'content_recycle_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_refresh', NULL, 'cmsContent/refresh', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_search', 'cmsContent/search', 'cmsContent/view', 'icon-search', 'content', 1, 0, 3);
-INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', NULL, 'content_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', NULL, 'content_list', 0, 0, 0)
+INSERT INTO `sys_module` VALUES ('content_source', 'cmsContentSource/list', 'cmsContentSource/add,cmsContentSource/save', NULL, 'content_list', 0, 0, 0)
 INSERT INTO `sys_module` VALUES ('content_uncheck', NULL, 'cmsContent/uncheck', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_view', 'cmsContent/view', 'cmsContent/preview,cmsContent/previewBeforeSave', NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_add', 'sysDept/add', 'sysDept/save,sysDept/virify', NULL, 'dept_list', 0, 0, 0);
@@ -1082,6 +1099,7 @@ INSERT INTO `sys_module` VALUES ('role_list', 'sysRole/list', NULL, 'icon-user-m
 INSERT INTO `sys_module` VALUES ('select_category', 'cmsCategory/lookup', 'cmsCategory/lookupByModelId', NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_category_type', 'cmsCategoryType/lookup', NULL, NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_content', 'cmsContent/lookup', 'cmsContent/lookup_list,cmsContent/contentImage', NULL, 'common', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('select_content_source', 'cmsContentSource/lookup', NULL, NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_dept', 'sysDept/lookup', NULL, NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_dictionary', 'cmsDictionary/lookup', NULL, NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('select_directory', 'cmsWebFile/directoryLookup', NULL, NULL, 'common', 0, 0, 0);
@@ -1375,6 +1393,9 @@ INSERT INTO `sys_module_lang` VALUES ('content_search', 'zh', '内容搜索');
 INSERT INTO `sys_module_lang` VALUES ('content_sort', 'en', 'Sort');
 INSERT INTO `sys_module_lang` VALUES ('content_sort', 'ja', 'トッピング');
 INSERT INTO `sys_module_lang` VALUES ('content_sort', 'zh', '置顶');
+INSERT INTO `sys_module_lang` VALUES ('content_source', 'en', 'Source Management');
+INSERT INTO `sys_module_lang` VALUES ('content_source', 'ja', 'ソース管理');
+INSERT INTO `sys_module_lang` VALUES ('content_source', 'zh', '来源管理');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck', 'en', 'Uncheck');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck', 'ja', '審査を取り消す');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck', 'zh', '撤销审核');
@@ -1675,6 +1696,9 @@ INSERT INTO `sys_module_lang` VALUES ('select_category_type', 'zh', '选择分�
 INSERT INTO `sys_module_lang` VALUES ('select_content', 'en', 'Select content');
 INSERT INTO `sys_module_lang` VALUES ('select_content', 'ja', 'コンテンツを選択');
 INSERT INTO `sys_module_lang` VALUES ('select_content', 'zh', '选择内容');
+INSERT INTO `sys_module_lang` VALUES ('select_content_source', 'en', 'Select source');
+INSERT INTO `sys_module_lang` VALUES ('select_content_source', 'ja', 'ソースを選択');
+INSERT INTO `sys_module_lang` VALUES ('select_content_source', 'zh', '选择来源');
 INSERT INTO `sys_module_lang` VALUES ('select_dept', 'en', 'Select department');
 INSERT INTO `sys_module_lang` VALUES ('select_dept', 'ja', '部門を選びます');
 INSERT INTO `sys_module_lang` VALUES ('select_dept', 'zh', '选择部门');
