@@ -998,7 +998,7 @@ INSERT INTO `sys_module` VALUES ('content_recycle_recycle', NULL, 'cmsContent/re
 INSERT INTO `sys_module` VALUES ('content_refresh', NULL, 'cmsContent/refresh', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_search', 'cmsContent/search', 'cmsContent/view', 'icon-search', 'content', 1, 0, 3);
 INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', NULL, 'content_list', 0, 0, 0)
-INSERT INTO `sys_module` VALUES ('content_source', 'cmsContentSource/list', 'cmsContentSource/add,cmsContentSource/save', NULL, 'content_list', 0, 0, 0)
+INSERT INTO `sys_module` VALUES ('content_source', 'cmsContentSource/list', 'cmsContentSource/add,cmsContentSource/save,cmsContentSource/delete', NULL, 'content_list', 0, 0, 0)
 INSERT INTO `sys_module` VALUES ('content_uncheck', NULL, 'cmsContent/uncheck', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_view', 'cmsContent/view', 'cmsContent/preview,cmsContent/previewBeforeSave', NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_add', 'sysDept/add', 'sysDept/save,sysDept/virify', NULL, 'dept_list', 0, 0, 0);

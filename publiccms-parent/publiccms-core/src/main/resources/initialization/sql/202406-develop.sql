@@ -101,7 +101,7 @@ CREATE TABLE `cms_content_source` (
   KEY `cms_content_source_initial` (`site_id`,`initial`)
 ) COMMENT='内容来源';
 INSERT INTO `sys_module` VALUES ('select_content_source', 'cmsContentSource/lookup', NULL, NULL, 'common', 0, 0, 0);
-INSERT INTO `sys_module` VALUES ('content_source', 'cmsContentSource/list', 'cmsContentSource/add,cmsContentSource/save', NULL, 'content_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('content_source', 'cmsContentSource/list', 'cmsContentSource/add,cmsContentSource/save,cmsContentSource/delete', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module_lang` VALUES ('content_source', 'en', 'Source Management');
 INSERT INTO `sys_module_lang` VALUES ('content_source', 'ja', 'ソース管理');
 INSERT INTO `sys_module_lang` VALUES ('content_source', 'zh', '来源管理');
