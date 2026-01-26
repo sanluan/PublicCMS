@@ -4,6 +4,7 @@ package com.publiccms.logic.service.trade;
 import java.util.Date;
 
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -116,9 +117,10 @@ public class TradePaymentService extends BaseService<TradePayment> {
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public boolean cancel(short siteId, long paymentId) {
+    public boolean cancel(short siteId, Long userId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
-        if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING_PAY) {
+        if (null != entity && (null == userId || entity.getUserId() == userId) && siteId == entity.getSiteId()
+                && entity.getStatus() == STATUS_PENDING_PAY) {
             entity.setStatus(STATUS_CLOSE);
             Date now = CommonUtils.now();
             entity.setPaymentDate(now);

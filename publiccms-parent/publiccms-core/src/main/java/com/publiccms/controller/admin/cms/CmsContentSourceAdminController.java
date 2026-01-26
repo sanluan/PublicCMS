@@ -34,7 +34,7 @@ import com.publiccms.logic.service.log.LogOperateService;
 @RequestMapping("cmsContentSource")
 public class CmsContentSourceAdminController {
 
-    private String[] ignoreProperties = new String[] { "id" };
+    private String[] ignoreProperties = new String[] { "id", "siteId", "userId", "createDate" };
 
     /**
      * @param site
@@ -47,14 +47,14 @@ public class CmsContentSourceAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsContentSource entity,
             HttpServletRequest request) {
-        entity.setSiteId(site.getId());
-        entity.setUserId(admin.getId());
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsContentSource", RequestUtils.getIpAddress(request),
                     CommonUtils.now(), JsonUtils.getString(entity)));
         } else {
+            entity.setSiteId(site.getId());
+            entity.setUserId(admin.getId());
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsContentSource", RequestUtils.getIpAddress(request),
