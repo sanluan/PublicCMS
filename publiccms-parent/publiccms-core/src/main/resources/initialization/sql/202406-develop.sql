@@ -105,3 +105,6 @@ INSERT INTO `sys_module` VALUES ('content_source', 'cmsContentSource/list', 'cms
 INSERT INTO `sys_module_lang` VALUES ('content_source', 'en', 'Source Management');
 INSERT INTO `sys_module_lang` VALUES ('content_source', 'ja', 'ソース管理');
 INSERT INTO `sys_module_lang` VALUES ('content_source', 'zh', '来源管理');
+INSERT INTO `sys_module_lang` VALUES ('select_content_source', 'en', 'Select source');
+INSERT INTO `sys_module_lang` VALUES ('select_content_source', 'ja', 'ソースを選択');
+INSERT INTO `sys_module_lang` VALUES ('select_content_source', 'zh', '选择来源');
