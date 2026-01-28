@@ -29,10 +29,10 @@ var navTab = {
         this._nextBut = this.componentBox.find("." + this._op.nextClass);
         this._moreBut = this.componentBox.find(this._op.stMore);
         this._moreBox = this.componentBox.find(this._op.stMoreLi);
-        this._prevBut.on("click", function(event) {
+        this._prevBut.on("click", function() {
             $this._scrollPrev()
         });
-        this._nextBut.on("click", function(event) {
+        this._nextBut.on("click", function() {
             $this._scrollNext()
         });
         this._moreBut.on("click", function() {
@@ -50,7 +50,7 @@ var navTab = {
     _init: function() {
         var $this = this;
         this._getTabs().each(function(iTabIndex) {
-            $(this).off("click").on("click", function(event) {
+            $(this).off("click").on("click", function() {
                 $this._switchTab(iTabIndex);
             });
             $(this).find(navTab._op.close$).off("click").on("click", function() {
@@ -58,7 +58,7 @@ var navTab = {
             });
         });
         this._getMoreLi().each(function(iTabIndex) {
-            $(this).find(">a").off("click").on("click", function(event) {
+            $(this).find(">a").off("click").on("click", function() {
                 $this._switchTab(iTabIndex);
             });
         });
@@ -68,19 +68,19 @@ var navTab = {
         var $this = this;
         $obj.contextMenu("navTabCM", {
             bindings: {
-                reload: function(t, m) {
+                reload: function(t) {
                     $this._reload(t, true);
-                }, closeCurrent: function(t, m) {
+                }, closeCurrent: function(t) {
                     var tabId = t.attr("tabid");
                     if (tabId ) {
                         $this.closeTab(tabId);
                     } else {
                         $this.closeCurrentTab();
                     }
-                }, closeOther: function(t, m) {
+                }, closeOther: function() {
                     var index = $this._indexTabId(t.attr("tabid"));
                     $this._closeOtherTab(index > 0 ? index: $this._currentIndex);
-                }, closeAll: function(t, m) {
+                }, closeAll: function() {
                     $this.closeAllTab();
                 }
             }, ctrSub: function(t, m) {
@@ -193,7 +193,7 @@ var navTab = {
             this._scrollTab(-this._getTabsW(0, iEnd + 1) + this._getScrollBarW());
         }
     } ,
-    _scrollTab: function(iLeft, isNext) {
+    _scrollTab: function(iLeft) {
         var $this = this;
         this._tabBox.animate({
             left: iLeft + "px"

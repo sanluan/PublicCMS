@@ -78,3 +78,33 @@ CREATE TABLE `cms_content_lang` (
 ) COMMENT='内容多语言';
 -- 2026-01-08 --
 ALTER TABLE `cms_content_attribute` MODIFY COLUMN `word_count` int NOT NULL DEFAULT 0 COMMENT '字数' AFTER `text`;
+-- 2026-01-22 --
+UPDATE sys_module SET parent_id = 'page_preview' WHERE id = 'page_diy_buttons';
+UPDATE sys_module SET sort = 1 WHERE id = 'page_diy_buttons';
+UPDATE sys_module SET has_child = 1 WHERE id = 'page_preview';
+-- 2026-01-25 --
+ALTER TABLE `cms_content_related` COMMENT = '内容推荐';
+-- ----------------------------
+-- Table structure for cms_content_source
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_content_source`;
+CREATE TABLE `cms_content_source` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `site_id` smallint NOT NULL COMMENT '站点',
+  `name` varchar(100) NOT NULL COMMENT '名称',
+  `url` varchar(255) DEFAULT NULL COMMENT '地址',
+  `initial` varchar(5) DEFAULT NULL COMMENT '缩写',
+  `user_id` bigint DEFAULT NULL COMMENT '创建用户',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY (`id`),
+  KEY `cms_content_source_user_id` (`site_id`,`user_id`,`create_date`),
+  KEY `cms_content_source_initial` (`site_id`,`initial`)
+) COMMENT='内容来源';
+INSERT INTO `sys_module` VALUES ('select_content_source', 'cmsContentSource/lookup', NULL, NULL, 'common', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('content_source', 'cmsContentSource/list', 'cmsContentSource/add,cmsContentSource/save,cmsContentSource/delete', NULL, 'content_list', 0, 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('content_source', 'en', 'Source Management');
+INSERT INTO `sys_module_lang` VALUES ('content_source', 'ja', 'ソース管理');
+INSERT INTO `sys_module_lang` VALUES ('content_source', 'zh', '来源管理');
+INSERT INTO `sys_module_lang` VALUES ('select_content_source', 'en', 'Select source');
+INSERT INTO `sys_module_lang` VALUES ('select_content_source', 'ja', 'ソースを選択');
+INSERT INTO `sys_module_lang` VALUES ('select_content_source', 'zh', '选择来源');

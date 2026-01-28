@@ -1,6 +1,4 @@
-package com.publiccms.controller.web.trade;
-
-//Generated 2023-8-16 by com.publiccms.common.generator.SourceGenerator
+package com.publiccms.controller.admin.cms;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -14,49 +12,51 @@ import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.cms.CmsContentSource;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.entities.trade.TradeAddress;
+import com.publiccms.logic.service.cms.CmsContentSourceService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.logic.service.trade.TradeAddressService;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *
- * TradeAddressController
+ * CmsContentSourceAdminController
  * 
  */
 @Controller
-@RequestMapping("tradeAddress")
-public class TradeAddressController {
+@RequestMapping("cmsContentSource")
+public class CmsContentSourceAdminController {
 
-    private String[] ignoreProperties = new String[] { "id", "userId", "siteId" };
+    private String[] ignoreProperties = new String[] { "id", "siteId", "userId", "createDate" };
 
     /**
      * @param site
-     * @param user
+     * @param admin
      * @param entity
      * @param request
      * @return operate result
      */
     @RequestMapping("save")
     @Csrf
-    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, TradeAddress entity,
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsContentSource entity,
             HttpServletRequest request) {
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                    "update.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsContentSource", RequestUtils.getIpAddress(request),
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         } else {
             entity.setSiteId(site.getId());
-            entity.setUserId(user.getId());
+            entity.setUserId(admin.getId());
             service.save(entity);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                    "save.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsContentSource", RequestUtils.getIpAddress(request),
+                    CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -65,23 +65,24 @@ public class TradeAddressController {
      * @param ids
      * @param request
      * @param site
-     * @param user
+     * @param admin
      * @return operate result
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long[] ids, HttpServletRequest request) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(ids);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                    "delete.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.now(),
-                    StringUtils.join(ids, Constants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsContentSource", RequestUtils.getIpAddress(request),
+                    CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     @Resource
-    private TradeAddressService service;
+    private CmsContentSourceService service;
     @Resource
     protected LogOperateService logOperateService;
 }

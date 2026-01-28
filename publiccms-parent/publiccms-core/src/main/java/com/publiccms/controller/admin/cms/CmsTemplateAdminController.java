@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.text.DateFormat;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +15,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.ContentDisposition;
@@ -43,7 +43,6 @@ import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.cms.CmsLanguage;
 import com.publiccms.entities.log.LogOperate;
-import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.cache.CacheComponent;
@@ -122,11 +121,12 @@ public class CmsTemplateAdminController {
             String filepath = siteComponent.getTemplateFilePath(site.getId(), path);
             try {
                 if (CommonUtils.notEmpty(metadata.getExtendList())) {
-                    metadata.getExtendList().sort(Comparator.comparing(SysExtendField::getSort));
+                    MutableInt number = new MutableInt();
                     metadata.getExtendList().forEach(e -> {
                         if (CommonUtils.empty(e.getName())) {
                             e.setName(e.getId().getCode());
                         }
+                        e.setSort(number.getAndIncrement());
                     });
                 }
                 metadataComponent.updateTemplateMetadata(filepath, metadata);
@@ -212,19 +212,21 @@ public class CmsTemplateAdminController {
             String filepath = siteComponent.getTemplateFilePath(site.getId(), placePath);
             try {
                 if (CommonUtils.notEmpty(metadata.getExtendList())) {
-                    metadata.getExtendList().sort(Comparator.comparing(SysExtendField::getSort));
+                    MutableInt number = new MutableInt();
                     metadata.getExtendList().forEach(e -> {
                         if (CommonUtils.empty(e.getName())) {
                             e.setName(e.getId().getCode());
                         }
+                        e.setSort(number.getAndIncrement());
                     });
                 }
                 if (CommonUtils.notEmpty(metadata.getMetadataExtendList())) {
-                    metadata.getMetadataExtendList().sort(Comparator.comparing(SysExtendField::getSort));
+                    MutableInt number = new MutableInt();
                     metadata.getMetadataExtendList().forEach(e -> {
                         if (CommonUtils.empty(e.getName())) {
                             e.setName(e.getId().getCode());
                         }
+                        e.setSort(number.getAndIncrement());
                     });
                 }
                 metadataComponent.updatePlaceMetadata(filepath, metadata);

@@ -1,0 +1,10 @@
+<#ftl auto_esc=false/>
+<#escape x as x?json_string>
+[
+<@cms.contentSourceList name=name pageSize=10>
+    <#list page.list as a>
+        {"source":"${a.name}","sourceUrl":"${a.url!}"}<#sep>,
+    </#list>
+</@cms.contentSourceList>
+]
+</#escape>

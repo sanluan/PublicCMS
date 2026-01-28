@@ -55,7 +55,7 @@
         }
         return this.each(function() {
             var $this = $(this);
-            var dp = new Datepicker($this.val(), opts);
+            new Datepicker($this.val(), opts);
             function generateCalendar(dp) {
                 var dw = dp.getDateWrap();
                 var minDate = dp.getMinDate();
@@ -165,7 +165,7 @@
                 $(setting.box$).remove();
                 $(document).off("click", null, closeCalendar);
             }
-            $this.on("click", function(event) {
+            $this.on("click", function() {
                 closeCalendar();
                 var dp = new Datepicker($this.val(), opts);
                 var offset = $this.offset();
@@ -176,7 +176,7 @@
                     event.stopPropagation();
                 });
                 var dayNames = "";
-                $.each($.regional.datepicker.dayNames, function(i, v) {
+                $.each($.regional.datepicker.dayNames, function(_i, v) {
                     dayNames += "<dt>" + v + "</dt>"
                 });
                 $(setting.dayNames$).html(dayNames);

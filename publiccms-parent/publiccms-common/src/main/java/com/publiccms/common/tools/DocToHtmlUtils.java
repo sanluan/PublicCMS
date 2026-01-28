@@ -214,8 +214,13 @@ public class DocToHtmlUtils {
         try (Workbook wb = WorkbookFactory.create(new FileInputStream(file))) {
             if (wb instanceof HSSFWorkbook) {
                 HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                ExcelToHtmlConverter excelToHtmlConverter = new ExcelToHtmlConverter(
-                        DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument());
+                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                dbf.setXIncludeAware(false);
+                dbf.setExpandEntityReferences(false);
+                ExcelToHtmlConverter excelToHtmlConverter = new ExcelToHtmlConverter(dbf.newDocumentBuilder().newDocument());
                 XHTMLOptions options = XHTMLOptions.create();
                 options.setImageManager(imageManager);
                 excelToHtmlConverter.setOutputRowNumbers(false);
@@ -231,9 +236,21 @@ public class DocToHtmlUtils {
     }
 
     static class StyleOnlyDocumentFacade extends HtmlDocumentFacade {
+        static DocumentBuilderFactory dbf;
+        static {
+            try {
+                dbf = DocumentBuilderFactory.newInstance();
+                dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                dbf.setXIncludeAware(false);
+                dbf.setExpandEntityReferences(false);
+            } catch (ParserConfigurationException e) {
+            }
+        }
 
         public StyleOnlyDocumentFacade() throws ParserConfigurationException {
-            super(DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument());
+            super(dbf.newDocumentBuilder().newDocument());
         }
 
         @Override

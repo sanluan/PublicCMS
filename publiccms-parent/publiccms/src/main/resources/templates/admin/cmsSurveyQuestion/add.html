@@ -54,15 +54,14 @@
             </dl>
             <fieldset class="itemList">
                 <legend><@t.page 'question.item'/></legend>
-                <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
+                <table class="list nowrap sortDrag itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
                     <thead>
                         <tr>
                             <th type="text" name="itemList[#index#].title" size="50" fieldClass="required" fieldAttrs='{"maxlength":100}'><@t.page 'title'/></th>
-                            <th type="text" name="itemList[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
                         <#if 'exam'=object.surveyType>
                             <th type="checkbox" name="itemList[#index#].answer" fieldClass="form-check-input" size="10"><@t.page 'answer.correct'/></th>
                         </#if>
-                            <th type="del" width="60"><@t.page 'operate'/></th>
+                            <th type="delAndSort" width="60"><@t.page 'operate'/></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,15 +73,13 @@
                                 <input type="hidden" name="itemList[${a?index}].id" value="${a.id}"/>
                                 <input class="required" type="text" name="itemList[${a?index}].title" value="${a.title}" size="50" maxlength="100"/>
                             </td>
-                            <td>
-                                <input class="required digits" type="number" name="itemList[${a?index}].sort" value="${a.sort!}" size="5" maxlength="5"/>
-                            </td>
                         <#if 'exam'=object.surveyType>
                             <td>
                                 <input type="checkbox" name="itemList[${a?index}].answer" class="form-check-input"${(q.answer?has_content&&q.answer?split(',')?seq_contains(a.id?string))?then(' checked="true"','')?no_esc}/>
                             </td>
                         </#if>
                             <td>
+                                <a href="javascript:;" class="icon-move"></a>
                                 <a href="javascript:;" class="btnDel"><@t.page 'button.delete'/></a>
                             </td>
                         </tr>

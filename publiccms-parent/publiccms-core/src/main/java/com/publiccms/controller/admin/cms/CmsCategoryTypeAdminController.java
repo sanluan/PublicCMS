@@ -1,8 +1,8 @@
 package com.publiccms.controller.admin.cms;
 
-import java.util.Comparator;
 import java.util.Map;
 
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -15,7 +15,6 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
-import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -55,11 +54,12 @@ public class CmsCategoryTypeAdminController {
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute CmsCategoryType entity,
             String categoryTypeId, HttpServletRequest request) {
         if (CommonUtils.notEmpty(entity.getExtendList())) {
-            entity.getExtendList().sort(Comparator.comparing(SysExtendField::getSort));
+            MutableInt number = new MutableInt();
             entity.getExtendList().forEach(e -> {
                 if (CommonUtils.empty(e.getName())) {
                     e.setName(e.getId().getCode());
                 }
+                e.setSort(number.getAndIncrement());
             });
         }
         modelComponent.clear(site.getId());
