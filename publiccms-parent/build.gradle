@@ -71,14 +71,14 @@ subprojects {
         dynamicSqlVersion = "1.5.2"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
         // 3.0 for Java 17+
-        jacksonVersion = "2.20.1"
+        jacksonVersion = "2.21.0"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.34"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "8.11.4"
         // http://mvnrepository.com/artifact/redis.clients/jedis
         // https://github.com/redis/jedis
-        jedisVersion = "7.2.0"
+        jedisVersion = "7.2.1"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         // https://github.com/quartz-scheduler/quartz/releases
         // 2.5 for jakarta

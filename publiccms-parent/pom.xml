@@ -65,14 +65,14 @@
         <version.ehcache>3.11.1</version.ehcache>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <!-- 3.0 for Java 17+ -->
-        <version.jackson>2.20.1</version.jackson>
+        <version.jackson>2.21.0</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.34</version.freemarker>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
         <version.lucene>8.11.4</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <!-- https://github.com/redis/jedis -->
-        <version.jedis>7.2.0</version.jedis>
+        <version.jedis>7.2.1</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <!-- 2.5 for jakarta -->
         <version.quartz>2.4.0</version.quartz>
