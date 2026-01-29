@@ -243,9 +243,10 @@ public abstract class AbstractCmsUpgrader {
                     entity.setOnlyUrl(false);
                     if (null != rs.getString("extend_id")) {
                         List<SysExtendField> extendList = new ArrayList<>();
-                        try (Statement extendFieldStatement = connection.createStatement();
-                                ResultSet extendFieldRs = extendFieldStatement.executeQuery(CommonUtils.joinString(
-                                        "select * from sys_extend_field where extend_id = ", rs.getString("extend_id")))) {
+                        try (PreparedStatement extendFieldStatement = connection.prepareStatement(
+                                "select * from sys_extend_field where extend_id = ?")) {
+                            extendFieldStatement.setString(1, rs.getString("extend_id"));
+                            try (ResultSet extendFieldRs = extendFieldStatement.executeQuery()) {
                             while (extendFieldRs.next()) {
                                 SysExtendField e = new SysExtendField(extendFieldRs.getString("code"),
                                         extendFieldRs.getString("input_type"), extendFieldRs.getBoolean("required"),
@@ -258,6 +259,7 @@ public abstract class AbstractCmsUpgrader {
                                 }
                                 e.setDictionaryId(extendFieldRs.getString("dictionary_id"));
                                 extendList.add(e);
+                            }
                             }
                         } catch (SQLException e1) {
                             stringWriter.write(e1.getMessage());

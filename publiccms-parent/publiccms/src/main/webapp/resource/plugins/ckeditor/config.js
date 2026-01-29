@@ -16,6 +16,9 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserVideoBrowseUrl = base + '/cmsWebFile/browse.html?type=video';  //定义图片的浏览服务器窗口.
     config.filebrowserAudioBrowseUrl = base + '/cmsWebFile/browse.html?type=audio';  //定义图片的浏览服务器窗口.
     config.filebrowserImageBrowseUrl = base + '/cmsWebFile/browse.html?type=image';  //定义图片的浏览服务器窗口.
+    // XSS防护配置
+    config.allowedContent = true;
+    config.disallowedContent = 'script[*]; iframe[*]; object[*]; embed[*]; link[rel=stylesheet]';
 };
 
 CKEDITOR.on('instanceReady', function(event){

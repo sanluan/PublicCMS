@@ -114,7 +114,7 @@ public class LoginAdminController {
                     model)) {
                 logLoginService.save(new LogLogin(site.getId(), username, null == user ? null : user.getId(), ip,
                         LogLoginService.CHANNEL_WEB_MANAGER, LogLoginService.METHOD_PASSWORD, false, CommonUtils.now(),
-                        password));
+                        null));
                 return "login";
             }
         }
@@ -126,7 +126,7 @@ public class LoginAdminController {
             model.addAttribute("returnUrl", returnUrl);
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), username, null, ip, LogLoginService.CHANNEL_WEB_MANAGER,
-                    LogLoginService.METHOD_PASSWORD, false, CommonUtils.now(), password));
+                    LogLoginService.METHOD_PASSWORD, false, CommonUtils.now(), null));
             return "login";
         }
         locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
@@ -140,7 +140,7 @@ public class LoginAdminController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB_MANAGER,
-                    LogLoginService.METHOD_PASSWORD, false, CommonUtils.now(), password));
+                    LogLoginService.METHOD_PASSWORD, false, CommonUtils.now(), null));
             return "login";
         }
 
@@ -248,7 +248,7 @@ public class LoginAdminController {
         }
         sysUserTokenService.delete(user.getId());
         logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "changepassword", RequestUtils.getIpAddress(request), CommonUtils.now(), encodedOldPassword));
+                "changepassword", RequestUtils.getIpAddress(request), CommonUtils.now(), null));
         return "common/ajaxTimeout";
     }
 
