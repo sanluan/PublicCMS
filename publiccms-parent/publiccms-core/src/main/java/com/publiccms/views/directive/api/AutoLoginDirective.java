@@ -83,7 +83,7 @@ public class AutoLoginDirective extends AbstractAppDirective {
                             .save(new SysUserToken(authToken, site.getId(), user.getId(), channel, now, expiryDate, ip));
                     service.updateLoginStatus(user.getId(), ip);
                     logLoginService.save(new LogLogin(site.getId(), uuid, user.getId(), ip, channel,
-                            LogLoginService.METHOD_CLIENT_AUTO_LOGIN, true, now, null));
+                            LogLoginService.METHOD_CLIENT_AUTO_LOGIN, true, now));
                     user.setPassword(null);
                     result = true;
                     handler.put("authToken", authToken).put("expiryDate", expiryDate).put("user", user);

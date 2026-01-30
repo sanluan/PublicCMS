@@ -127,7 +127,7 @@ public class LoginController {
             if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
                     model)) {
                 logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB,
-                        LogLoginService.METHOD_PASSWORD, false, now, password));
+                        LogLoginService.METHOD_PASSWORD, false, now));
                 return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
             }
         }
@@ -148,7 +148,7 @@ public class LoginController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB,
-                    LogLoginService.METHOD_PASSWORD, false, now, password));
+                    LogLoginService.METHOD_PASSWORD, false, now));
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, loginPath);
         }
         lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
@@ -175,7 +175,7 @@ public class LoginController {
         sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, now,
                 DateUtils.addMinutes(now, expiryMinutes), ip));
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB,
-                LogLoginService.METHOD_PASSWORD, true, now, null));
+                LogLoginService.METHOD_PASSWORD, true, now));
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 

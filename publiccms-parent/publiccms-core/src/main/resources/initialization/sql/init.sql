@@ -631,7 +631,6 @@ CREATE TABLE `log_login` (
   `login_method` varchar(50) NOT NULL COMMENT '登录方式',
   `result` tinyint(1) NOT NULL COMMENT '结果',
   `create_date` datetime NOT NULL COMMENT '创建日期',
-  `error_password` varchar(255) default NULL COMMENT '错误密码',
   PRIMARY KEY  (`id`),
   KEY `log_login_result` (`site_id`, `result`, `create_date`),
   KEY `log_login_user_id` (`site_id`, `user_id`, `create_date`),

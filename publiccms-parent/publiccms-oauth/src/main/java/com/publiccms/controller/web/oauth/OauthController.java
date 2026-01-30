@@ -170,7 +170,7 @@ public class OauthController {
                                 LoginController.addLoginStatus(user, loginToken, request, response, expiryMinutes);
                                 sysUserService.updateLoginStatus(user.getId(), ip);
                                 logLoginService.save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel,
-                                        oauthGateway.getChannel(), true, now, null));
+                                        oauthGateway.getChannel(), true, now));
                             }
                         }
                     } else {
