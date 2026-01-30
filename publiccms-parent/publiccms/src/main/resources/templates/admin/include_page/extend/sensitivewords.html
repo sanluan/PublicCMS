@@ -19,7 +19,7 @@
         </table>
     </#if>
 <#else>
-        <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate2.html?field1=${inputName?url}&fieldName1=sensitivewords&field2=${inputName?url}&fieldName2=replace&suffix1=sensitivewords&suffix2=replace">
+        <table class="list nowrap sortDrag itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate2.html?field1=${inputName?url}&fieldName1=sensitivewords&field2=${inputName?url}&fieldName2=replace&suffix1=sensitivewords&suffix2=replace">
             <thead>
                 <tr>
                     <th width="250"<#if 'customform'!=type> type="text" name="${inputName}" size="30" fieldClass="nocommas required" fieldAttrs='{"batchGroup":""<#if extend.maxlength?has_content>,"maxlength":${extend.maxlength}</#if>}' suffix="sensitivewords"</#if>><@t.page 'sensitivewords'/></th>
@@ -37,8 +37,8 @@
                         </td>
                         </#list>
                         <td>
+                            <#if 'customform'!=type><a href="javascript:;" class="icon-move"></a></#if>
                             <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
-                            <#if 'customform'!=type><a href="javascript:;" class="btnUp"></a><a href="javascript:;" class="btnDown"></a></#if>
                         </td>
                     </tr>
                 </#list>

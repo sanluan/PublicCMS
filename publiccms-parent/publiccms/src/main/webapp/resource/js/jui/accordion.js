@@ -7,7 +7,7 @@
     // If the JUI scope is not available, add it
     $.jui = $.jui || {};
     $.fn.extend({
-        accordion: function(options, data) {
+        accordion: function(options, _data) {
             var args = Array.prototype.slice.call(arguments, 1);
             return this.each(function() {
                 if (options.fillSpace) {
@@ -259,7 +259,7 @@
                 var $a = $(this);
                 if(!$a.is("[href^=javascript]")){
                     $("#sidebar #menu").ajaxUrl({
-                        type: "get", url: $a.attr("href"), callback: function(response) {
+                        type: "get", url: $a.attr("href"), callback: function() {
                             $box.find("li").removeClass("selected");
                             $a.parent().addClass("selected");
                         }
@@ -296,7 +296,7 @@
             return this;
         }
     });
-    function display(index, trigger, e, options) {
+    function display(index, trigger, e, _options) {
         var cur = hash[index];
         var content = $(JUI.frag[cur.id]);
         content.find("li");
@@ -304,7 +304,7 @@
         // Send the content to the menu
         menu.html(content);
         $.each(cur.bindings, function(id, func) {
-            $("[rel=\"" + id + "\"]", menu).on("click", null, null, function(e) {
+            $("[rel=\"" + id + "\"]", menu).on("click", null, null, function() {
                 hide();
                 func($(trigger), $("#" + cur.id));
             });

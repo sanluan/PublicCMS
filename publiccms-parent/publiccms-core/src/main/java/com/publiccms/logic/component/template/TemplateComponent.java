@@ -389,7 +389,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
             throws IOException, TemplateException {
         boolean flag = false;
         if (null != site && null != entity && site.getId() == entity.getSiteId()) {
-            flag = createCategoryFile(site, entity, null, null, totalPage);
+            flag = createCategoryFile(site, entity, null, pageIndex, totalPage);
             if (siteAttributeComponent.enableMultilingual(site.getId())) {
                 String oldLang = entity.getLang();
                 List<CmsCategoryLang> langList = categoryLangService.getList(entity.getId());
@@ -413,6 +413,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
     public boolean publish(SysSite site, CmsContent entity) throws IOException, TemplateException {
         boolean flag = false;
         if (null != site && null != entity && site.getId() == entity.getSiteId()) {
+            flag = publish(site, entity, null);
             if (null != entity.getParentId()) {
                 CmsContent parent = contentService.getEntity(entity.getParentId());
                 if (null != parent) {
@@ -421,7 +422,6 @@ public class TemplateComponent implements Cache, AdminContextPath {
             } else {
                 CmsCategory category = categoryService.getEntity(entity.getCategoryId());
                 if (null != category) {
-                    flag = publish(site, entity, category);
                     publish(site, category, null, null);
                 }
             }

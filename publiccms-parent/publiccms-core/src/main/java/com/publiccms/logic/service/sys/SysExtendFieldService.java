@@ -68,7 +68,9 @@ public class SysExtendFieldService extends BaseService<SysExtendField> {
         if (CommonUtils.notEmpty(extendId)) {
             Set<String> codeList = new HashSet<>();
             if (CommonUtils.notEmpty(entitys)) {
+                int i = 0;
                 for (SysExtendField entity : entitys) {
+                    entity.setSort(i++);
                     if (0 != entity.getId().getExtendId()) {
                         if (null == getEntity(entity.getId())) {
                             save(entity);

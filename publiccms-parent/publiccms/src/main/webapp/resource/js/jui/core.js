@@ -131,7 +131,7 @@ var JUI = {
                 alertMsg.error(json[JUI.keys.message]);
             }
             if (json["fields"]){
-                $.each(json["fields"].split(","),function(index,field){
+                $.each(json["fields"].split(","),function(_index,field){
                     $("[name="+$.escapeSelector(field)+"]", ( !$.pdialog.getCurrent() ) ? navTab.getCurrentPanel(): $.pdialog.getCurrent()).addClass("error");
                 })
             }
@@ -255,7 +255,7 @@ var JUI = {
                     }
                 });
                 $("[close-url]",$box).each(function (){
-                    $.getJSON($(this).attr("close-url"), function(data) {});
+                    $.getJSON($(this).attr("close-url"), function(_data) {});
                 });
             });
         }
@@ -313,7 +313,7 @@ var JUI = {
                     }
                 },
                 error: JUI.ajaxError, statusCode: {
-                    503: function(xhr, ajaxOptions, thrownError) {
+                    503: function(_xhr, _ajaxOptions, thrownError) {
                         alert(JUI.msg("statusCode_503") || thrownError);
                     }
                 }
@@ -446,7 +446,7 @@ var JUI = {
         isInteger: function() {
             return (new RegExp(/^\d+$/).test(this));
         },
-        isNumber: function(value, element) {
+        isNumber: function() {
             return (new RegExp(/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/).test(this));
         },
         trimstr: function() {
@@ -509,7 +509,7 @@ var JUI = {
             return ( new RegExp(/^([a-zA-z]+:)?\/\/([a-zA-Z0-9\-\.]+)([-\w .\/?%&=:]*)$/).test(this) );
         },
         isExternalUrl: function() {
-            var domain = document.domain;
+            var domain = window.location.host;
             if("" == domain){
                 domain = "localhost";
             }

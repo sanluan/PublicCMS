@@ -2,17 +2,6 @@
  * @author Roger Wu
  */
 ( function($) {
-    $.scrollPosParents = function(el){
-        var $el = $(el);
-        var scrollPos = {top:0, left:0};
-        $el.parents().each(function(){
-            var $p = $(this);
-            scrollPos.top += $p.scrollTop();
-            scrollPos.left += $p.scrollLeft();
-        });
-        return scrollPos;
-    };
-
     $.fn.jDrag = function(options) {
         if (typeof options == "string" ) {
             if (options == "destroy" ) {
@@ -39,7 +28,7 @@
     };
     $.rwdrag = {
         start: function(e) {
-            document.onselectstart = function(e) {
+            document.onselectstart = function() {
                 return false
             };// 禁止选择
 
@@ -64,9 +53,6 @@
             }
         },
         drag: function(e) {
-            if (!e ) {
-                var e = window.event;
-            }
             var current = $.rwdrag.current;
             var data = $.data(current.el, "pp-rwdrag");
             me=e;
@@ -114,7 +100,7 @@
                 data.options.stop.apply(current.el, [ current.el, e ]);
             }
             $.rwdrag.current = null;
-            document.onselectstart = function(e) {
+            document.onselectstart = function() {
                 return true
             };// 启用选择
             return $.rwdrag.preventEvent(e);
@@ -143,6 +129,7 @@
         sortBoxs: "div.sortDrag", //拖动排序项父容器
         items: ">.dragItem", //拖动排序项选择器
         selector: "", //拖动排序项用于拖动的子元素的选择器，为空时等于item
+        callback: null,
         zIndex: 1000
     };
     JUI.sortDrag = {
@@ -160,7 +147,6 @@
             var $placeholder = this._createPlaceholder($item);
             var $helper = $item.clone();
             var position = $item.position();
-            var scrollPosParents = $.scrollPosParents($sortBox);
             $helper.data("$sortBox", $sortBox).data("op", op).data("$item", $item).data("$placeholder", $placeholder);
             $helper.addClass("sortDragHelper").css({
                 position: "absolute", top: position.top , left: position.left, zIndex: op.zIndex, width: $item.width() + "px",
@@ -168,10 +154,13 @@
             }).jDrag({
                 selector: op.selector, drag: this.drag, stop: this.stop, event: event
             });
+            if($helper.is("tr")){
+                $helper.css({display:"table"});
+            }
             $item.before($placeholder).before($helper).hide();
             return false;
         } ,
-        drag: function (el, event) {
+        drag: function (_el) {
             var $helper = $(arguments[0]), $sortBox = $helper.data("$sortBox"), $placeholder = $helper.data("$placeholder");
             var $items = $sortBox.find($helper.data("op")["items"]).filter(":visible").filter(":not(.sortDragPlaceholder, .sortDragHelper)");
             var helperPos = $helper.position();
@@ -192,10 +181,13 @@
             }
         },
         stop: function () {
-            var $helper = $(arguments[0]), $item = $helper.data("$item"), $placeholder = $helper.data("$placeholder");
+            var $helper = $(arguments[0]), $item = $helper.data("$item"), $placeholder = $helper.data("$placeholder"), $op = $helper.data("op");
             $item.insertAfter($placeholder).show();
             $placeholder.remove();
             $helper.remove();
+            if($op.callback){
+                $op.callback();
+            }
             JUI.sortDrag._onDrag = false;
         },
         _createPlaceholder: function ($item) {
@@ -224,7 +216,7 @@
             if ($sortBox.attr("selector") ) {
                 op.selector = $sortBox.attr("selector");
             }
-            $sortBox.find(op.items).each(function (i) {
+            $sortBox.find(op.items).each(function () {
                 var $item = $(this), $selector = $item;
                 if (op.selector) {
                     $selector = $item.find(op.selector).css({cursor: op.cursor});
@@ -233,7 +225,7 @@
                     $selector.off("mousedown touchstart");
                 }
                 $selector.on("mousedown touchstart",function (event) {
-                    if (!$sortBox.hasClass("disabled") && !$(event.target).is("input")&& !$(event.target).is("a")) {
+                    if (!$sortBox.hasClass("disabled") && !$(event.target).is("input") && ($selector.is("a") || !$(event.target).is("a")) ) {
                         JUI.sortDrag.start($sortBox, $item, event, op);
                         if(!event.touchs) {
                             event.preventDefault();
@@ -242,7 +234,7 @@
                 });
             });
 
-            $sortBox.find(".close").one("mousedown touchstart",function (event) {
+            $sortBox.find(".close").one("mousedown touchstart",function () {
                 $(this).parent().remove();
                 return false;
             });
@@ -275,8 +267,8 @@
             $item.before($helper);
             return false;
         },
-        drag: function(el, event) {},
-        stop: function(el, event) {
+        drag: function(_el) {},
+        stop: function(_el) {
             var $helper = $(arguments[0]), $sortBox = $helper.data("$sortBox"), $overBox = JUI.miscDrag._getOverSortBox($helper);
             if ($overBox.length > 0) {
                 //移动到指定容器
@@ -285,9 +277,8 @@
                         event: event
                     });
                 });
-                var txt = $dragBox.html(), icon = $dragBox.data("icon"), id = $dragBox.data("id"), sequence = $overBox.find("> div").length;
+                var id = $dragBox.data("id"), sequence = $overBox.find("> div").length;
                 var overBoxPos = $overBox.position(), dragBoxPos = $dragBox.position();
-                var content = icon ? "<img src=\"" + icon + "\" />" : txt;
                 $dragBox.css({
                     height: "auto",
                     top: dragBoxPos.top - overBoxPos.top + "px",
@@ -341,7 +332,7 @@
             $item.before($helper).before($placeholder);
             return false;
         },
-        dragSortDrag: function(el, event) {
+        dragSortDrag: function(_el) {
             var $helper = $(arguments[0]), $sortBox = $helper.data("$sortBox"), $placeholder = $helper.data("$placeholder");
             // 修复出现滚动条拖拽位置
             var $unitBox = $helper.parents(".unitBox:first"), position = $helper.position();
@@ -414,7 +405,7 @@
             }, options);
             return this.each(function() {
                 var $box = $(this);
-                $box.find(op.items).each(function(i) {
+                $box.find(op.items).each(function() {
                     var $item = $(this);
                     $item.on("mousedown touchstart",function(event) {
                         JUI.miscDrag.start($box, $item, event, op);
@@ -436,8 +427,8 @@
                     left: parseInt($dragBoxPos.left),
                     items: []
                 };
-                $sortDrag.find(".dragItem").each(function(index) {
-                    var $dragItem = $(this), $dragItemPos = $dragItem.position();
+                $sortDrag.find(".dragItem").each(function() {
+                    var $dragItem = $(this);
                     dataItem.items.push({
                         id: $dragItem.data("id")
                     });
@@ -498,7 +489,7 @@
             }, options);
             return this.each(function() {
                 var $sortBox = $(this);
-                $sortBox.find(op.items).each(function(i) {
+                $sortBox.find(op.items).each(function() {
                     var $item = $(this);
                     $item.on("mousedown touchstart",function(event) {
                         JUI.miscDrag.startSortDrag($sortBox, $item, event, op);

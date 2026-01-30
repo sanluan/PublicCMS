@@ -139,7 +139,10 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                 </dl>
                 <dl<#if !fieldList?seq_contains('source')> class="copied hide"</#if>>
                     <dt>${(model.fieldTextMap['source'])!}:</dt>
-                    <dd><input name="source" autocomplete="on" type="text"<#if requiredFieldList?seq_contains('source')> data-required="true"</#if> maxlength="50" size="20" value="${(attribute.source)!}"/></dd>
+                    <dd>
+                        <input name="source" autocomplete="on" type="text"<#if requiredFieldList?seq_contains('source')> data-required="true"</#if> postField="name" suggestfields="source,sourceUrl" suggestUrl="common/contentSourceSuggest.html" maxlength="50" size="20" value="${(attribute.source)!}"/>
+                        <a class="btnLook" href="cmsContentSource/lookup.html" lookupGroup="" width="1200" height="580"><@t.page 'content.source'/></a>
+                    </dd>
                 </dl>
                 <dl class="copied hide">
                     <dt>${(model.fieldTextMap['sourceUrl'])!}:</dt>
@@ -257,7 +260,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
             <#if (model.relatedList)?has_content>
                 <#list model.relatedList as a>
                     <div class="pageFormContent" layoutH>
-                        <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
+                        <table class="list nowrap sortDrag itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
                             <thead>
                                 <tr>
                                     <th type="lookup" name="contentRelateds[${a?index}][#index#].title" size="30" fieldClass="required" fieldAttrs='{"maxlength":255,"width":1200,"height":580}' lookupGroup="contentRelateds[${a?index}][#index#]" lookupUrl="cmsContent/lookup.html?modelIds=${a.modelIds!}" lookupPk="relatedContentId"><@t.page 'content.select'/></th>
@@ -266,8 +269,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                                     </#if>
                                     <th type="text" name="contentRelateds[${a?index}][#index#].url" size="40" fieldClass="required" fieldAttrs='{"maxlength":2048}'><@t.page 'address'/></th>
                                     <th type="textarea" name="contentRelateds[${a?index}][#index#].description" fieldAttrs='{"maxlength":150,"rows":2,"cols":60}'><@t.page 'description'/></th>
-                                    <th type="text" name="contentRelateds[${a?index}][#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
-                                    <th type="del" width="100"><@t.page 'operate'/></th>
+                                    <th type="delAndSort" width="100"><@t.page 'operate'/></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -301,9 +303,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                                         <textarea name="contentRelateds[${a?index}][${related?index}].description" rows="2" cols="60" maxlength="150">${(related.description)!}</textarea>
                                     </td>
                                     <td>
-                                        <input class="required digits" type="number" name="contentRelateds[${a?index}][${related?index}].sort" value="${related.sort!}" size="5" maxlength="5"/>
-                                    </td>
-                                    <td>
+                                        <a href="javascript:;" class="icon-move"></a>
                                         <a href="javascript:;" class="btnDel"><@t.page 'button.delete'/></a>
                                     </td>
                                 </tr>

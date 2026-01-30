@@ -93,7 +93,7 @@ function initUI(_box) {
     $("form.required-validate", $p).each(function() {
         var $form = $(this);
         $form.validate({
-            onsubmit: false, focusInvalid: false, focusCleanup: true, errorElement: "span", ignore: ".ignore", invalidHandler: function(form, validator) {
+            onsubmit: false, focusInvalid: false, focusCleanup: true, errorElement: "span", ignore: ".ignore", invalidHandler: function(_form, validator) {
                 var errors = validator.numberOfInvalids();
                 if (errors ) {
                     var message = JUI.msg("validateFormError", [ errors ]);
@@ -153,7 +153,7 @@ function initUI(_box) {
         $("table.itemDetail", $p).itemDetail();
     }
     // 执行第三方jQuery插件【 第三方jQuery插件注册：JUI.regPlugins.push(function($p){}); 】
-    $.each(JUI.regPlugins, function(index, fn) {
+    $.each(JUI.regPlugins, function(_index, fn) {
         fn($p);
     });
     // init styles
@@ -182,7 +182,7 @@ function initLink($p) {
             var fresh = "true" == ($this.attr("fresh") || "true");
             var external = "true" == ($this.attr("external") || "false");
             var url = $this.attr("href").replaceTmById($(event.target).parents(".unitBox:first"));
-            var newWindow = (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey);
+            var newWindow = (navigator.userAgentData.platform.match("Mac") ? event.metaKey : event.ctrlKey);
             JUI.debug(url);
             if (!url.isFinishedTm() ) {
                 alertMsg.error($this.attr("warn") || JUI.msg("alertSelectMsg"));
@@ -222,7 +222,7 @@ function initLink($p) {
             options.drawable = "true" == ($this.attr("drawable") || "true");
             options.close = eval($this.attr("close") || "");
             options.param = $this.attr("param") || "";
-            options.focusNewWindow = (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey);
+            options.focusNewWindow = (navigator.userAgentData.platform.match("Mac") ? event.metaKey : event.ctrlKey);
             var url = $this.attr("href").replaceTmById($(event.target).parents(".unitBox:first"));
             JUI.debug(url);
             if (!url.isFinishedTm() ) {
@@ -288,7 +288,7 @@ function initLink($p) {
                 }
             }
             var jThemeLi = $(this).find(">li");
-            jThemeLi.each(function(index) {
+            jThemeLi.each(function() {
                 var $this = $(this);
                 var themeName = $this.attr("class");
                 if(themeName == op.defaultTheme){

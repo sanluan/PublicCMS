@@ -55,8 +55,6 @@ public class IndexController {
      *            ID
      * @param body
      *            消息体
-     * @param lang
-     *            语言
      * @param request
      *            请求
      * @param response
@@ -67,8 +65,8 @@ public class IndexController {
      */
     @RequestMapping({ "/**/{id:[0-9]+}" })
     public String rest(@RequestAttribute SysSite site, @PathVariable("id") long id, @RequestBody(required = false) String body,
-            String lang, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-        return restPage(site, id, null, body, lang, request, response, model);
+            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+        return restPage(site, id, null, body, request, response, model);
     }
 
     /**
@@ -82,8 +80,6 @@ public class IndexController {
      *            分页
      * @param body
      *            消息体
-     * @param lang
-     *            语言
      * @param request
      *            请求
      * @param response
@@ -95,7 +91,7 @@ public class IndexController {
     @RequestMapping({ "/**/{id:[0-9]+}_{pageIndex:[0-9]+}" })
     public String restPage(@RequestAttribute SysSite site, @PathVariable("id") long id,
             @PathVariable(CommonConstants.DEFAULT_PAGEINDEX) Integer pageIndex, @RequestBody(required = false) String body,
-            String lang, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         String requestPath = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
         if (requestPath.endsWith(Constants.SEPARATOR)) {
             requestPath = CommonUtils.joinString(
@@ -105,7 +101,7 @@ public class IndexController {
             requestPath = CommonUtils.joinString(requestPath.substring(0, requestPath.lastIndexOf(Constants.SEPARATOR)),
                     CommonConstants.getDefaultSubfix());
         }
-        return templateCacheComponent.getViewName(localeResolver, site, id, pageIndex, requestPath, body, lang, request, response,
+        return templateCacheComponent.getViewName(localeResolver, site, id, pageIndex, requestPath, body, request, response,
                 model);
     }
 
@@ -127,14 +123,13 @@ public class IndexController {
      * @return view name 视图名
      */
     @RequestMapping({ Constants.SEPARATOR, "/**" })
-    public String page(@RequestAttribute SysSite site, @RequestBody(required = false) String body, String lang,
-            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+    public String page(@RequestAttribute SysSite site, @RequestBody(required = false) String body, HttpServletRequest request,
+            HttpServletResponse response, ModelMap model) {
         String requestPath = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
         if (requestPath.endsWith(Constants.SEPARATOR)) {
             requestPath = CommonUtils.joinString(requestPath, CommonConstants.getDefaultPage());
         }
-        return templateCacheComponent.getViewName(localeResolver, site, null, null, requestPath, body, lang, request, response,
-                model);
+        return templateCacheComponent.getViewName(localeResolver, site, null, null, requestPath, body, request, response, model);
     }
 
 }

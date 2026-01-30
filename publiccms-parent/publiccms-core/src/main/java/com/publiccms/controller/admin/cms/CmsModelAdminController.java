@@ -2,13 +2,13 @@ package com.publiccms.controller.admin.cms;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -95,11 +95,12 @@ public class CmsModelAdminController {
             entity.setSearchable(false);
         }
         if (CommonUtils.notEmpty(entity.getExtendList())) {
-            entity.getExtendList().sort(Comparator.comparing(SysExtendField::getSort));
+            MutableInt number = new MutableInt();
             entity.getExtendList().forEach(e -> {
                 if (CommonUtils.empty(e.getName())) {
                     e.setName(e.getId().getCode());
                 }
+                e.setSort(number.getAndIncrement());
             });
         }
         entity.setSearchableModel(searchableModel);
@@ -142,9 +143,9 @@ public class CmsModelAdminController {
                 }
                 categoryModelService.delete(site.getId(), oldModel.getId(), null);
             }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "update.model", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), JsonUtils.getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "update.model", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         } else {
             Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
             modelMap.put(entity.getId(), entity);
@@ -157,9 +158,9 @@ public class CmsModelAdminController {
                     categoryModelService.save(cm);
                 }
             }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.model", RequestUtils.getIpAddress(request), CommonUtils.now(),
-                    JsonUtils.getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "save.model", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -189,9 +190,9 @@ public class CmsModelAdminController {
             }
             modelComponent.saveModel(site.getId(), modelMap);
             categoryModelService.delete(site.getId(), id, null);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.model", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), JsonUtils.getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "delete.model", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

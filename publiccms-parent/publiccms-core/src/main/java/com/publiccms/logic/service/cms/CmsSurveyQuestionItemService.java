@@ -67,7 +67,9 @@ public class CmsSurveyQuestionItemService extends BaseService<CmsSurveyQuestionI
     public void update(long questionId, List<QuestionItem> entitys, String[] ignoreProperties) {
         Set<Long> idList = new HashSet<>();
         if (CommonUtils.notEmpty(entitys)) {
+            int i = 0;
             for (QuestionItem entity : entitys) {
+                entity.setSort(i++);
                 if (null != entity.getId()) {
                     CmsSurveyQuestionItem oldEntity = getEntity(entity.getId());
                     if (questionId == oldEntity.getQuestionId()) {

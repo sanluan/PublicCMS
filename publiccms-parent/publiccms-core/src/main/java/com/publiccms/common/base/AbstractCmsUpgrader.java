@@ -53,11 +53,12 @@ public abstract class AbstractCmsUpgrader {
      */
     public abstract void update(StringWriter stringWriter, Connection connection, String fromVersion)
             throws SQLException, IOException;
+
     /**
      * @return old database config version list
      */
     public abstract List<String> getOldDatabaseConfigVersionList();
-    
+
     /**
      * @return version list
      */
@@ -181,7 +182,7 @@ public abstract class AbstractCmsUpgrader {
             e2.printStackTrace();
         }
     }
-    
+
     protected void updateImageConfig(StringWriter stringWriter, Connection connection) {
         try (Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery("select * from sys_config_data where code = 'code'");
@@ -243,8 +244,8 @@ public abstract class AbstractCmsUpgrader {
                     entity.setOnlyUrl(false);
                     if (null != rs.getString("extend_id")) {
                         List<SysExtendField> extendList = new ArrayList<>();
-                        try (PreparedStatement extendFieldStatement = connection.prepareStatement(
-                                "select * from sys_extend_field where extend_id = ?")) {
+                        try (PreparedStatement extendFieldStatement = connection
+                                .prepareStatement("select * from sys_extend_field where extend_id = ?");) {
                             extendFieldStatement.setString(1, rs.getString("extend_id"));
                             try (ResultSet extendFieldRs = extendFieldStatement.executeQuery()) {
                             while (extendFieldRs.next()) {
@@ -257,8 +258,8 @@ public abstract class AbstractCmsUpgrader {
                                 if (e.getMaxlength() != null && 0 == e.getMaxlength()) {
                                     e.setMaxlength(null);
                                 }
-                                e.setDictionaryId(extendFieldRs.getString("dictionary_id"));
-                                extendList.add(e);
+                                    e.setDictionaryId(extendFieldRs.getString("dictionary_id"));
+                                    extendList.add(e);
                             }
                             }
                         } catch (SQLException e1) {

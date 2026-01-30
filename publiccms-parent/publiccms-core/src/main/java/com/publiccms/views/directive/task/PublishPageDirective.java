@@ -60,7 +60,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
             Map<String, Boolean> map = new LinkedHashMap<>();
             try {
                 templateComponent.publishPage(site, path);
-                map.put(filepath, true);
+                map.put(path, true);
             } catch (IOException | TemplateException e) {
                 handler.getWriter().append(e.getMessage()).append("\n");
                 map.put(path, false);
@@ -81,7 +81,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
                 map.putAll(deal(site, handler, CommonUtils.joinString(filepath, Constants.SEPARATOR)));
             } else {
                 try {
-                    templateComponent.publishPage(site, path);
+                    templateComponent.publishPage(site, filepath);
                     map.put(filepath, true);
                 } catch (IOException | TemplateException e) {
                     handler.getWriter().append(e.getMessage()).append("\n");

@@ -113,8 +113,7 @@ public class LoginAdminController {
             if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
                     model)) {
                 logLoginService.save(new LogLogin(site.getId(), username, null == user ? null : user.getId(), ip,
-                        LogLoginService.CHANNEL_WEB_MANAGER, LogLoginService.METHOD_PASSWORD, false, CommonUtils.now(),
-                        null));
+                        LogLoginService.CHANNEL_WEB_MANAGER, LogLoginService.METHOD_PASSWORD, false, CommonUtils.now()));
                 return "login";
             }
         }
@@ -126,7 +125,7 @@ public class LoginAdminController {
             model.addAttribute("returnUrl", returnUrl);
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), username, null, ip, LogLoginService.CHANNEL_WEB_MANAGER,
-                    LogLoginService.METHOD_PASSWORD, false, CommonUtils.now(), null));
+                    LogLoginService.METHOD_PASSWORD, false, CommonUtils.now()));
             return "login";
         }
         locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
@@ -140,7 +139,7 @@ public class LoginAdminController {
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
             logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB_MANAGER,
-                    LogLoginService.METHOD_PASSWORD, false, CommonUtils.now(), null));
+                    LogLoginService.METHOD_PASSWORD, false, CommonUtils.now()));
             return "login";
         }
 
@@ -155,7 +154,7 @@ public class LoginAdminController {
         if (safeConfigComponent.enableOtpLogin(site.getId()) || null != userSetting) {
             ControllerUtils.setOtpAdminToSession(request.getSession(), user);
             logLoginService.save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER,
-                    LogLoginService.METHOD_PASSWORD, true, CommonUtils.now(), null));
+                    LogLoginService.METHOD_PASSWORD, true, CommonUtils.now()));
             model.addAttribute("returnUrl", returnUrl);
             return "redirect:otp/login";
         } else {
@@ -170,7 +169,7 @@ public class LoginAdminController {
             sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     now, DateUtils.addMinutes(now, expiryMinutes), ip));
             logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER,
-                    LogLoginService.METHOD_PASSWORD, true, CommonUtils.now(), null));
+                    LogLoginService.METHOD_PASSWORD, true, CommonUtils.now()));
             String safeReturnUrl = safeConfig.get(SafeConfigComponent.CONFIG_RETURN_URL);
             if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
                 returnUrl = CommonConstants.getDefaultPage();
@@ -205,7 +204,7 @@ public class LoginAdminController {
         String loginresult = login(site, username, password, null, encoding, captcha, request, response, model);
         if ("login".equalsIgnoreCase(loginresult)) {
             return CommonConstants.TEMPLATE_ERROR;
-        }else if("redirect:otp/login".equalsIgnoreCase(loginresult)) {
+        } else if ("redirect:otp/login".equalsIgnoreCase(loginresult)) {
             model.addAttribute("forwardUrl", "otp/loginDialog");
             model.addAttribute("callbackType", "forward");
         }

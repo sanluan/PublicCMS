@@ -49,7 +49,7 @@
         var H = date.getHours();
         var m = date.getMinutes();
         var s = date.getSeconds();
-        var yyyy, yy, MMM, MM, dd, hh, h, mm, ss, ampm, HH, H, KK, K, kk, k;
+        var H;
         // Convert real date parts into formatted versions
         var value = {};
         if (y.length < 4 ) {
@@ -143,7 +143,6 @@
         var i_format = 0;
         var c = "";
         var token = "";
-        var token2 = "";
         var x, y;
         var now = new Date(1970, 0, 1);
         var year = now.getYear();

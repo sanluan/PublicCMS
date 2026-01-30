@@ -98,12 +98,12 @@
             filerobotImageEditorConfig.defaultSavedImageName=fileName;
             JUI.instances[dataId] = new FilerobotImageEditor(editor[0], filerobotImageEditorConfig);
             JUI.instances[dataId].render({
-                onSave:function(imageData, imageDesignState){
+                onSave:function(imageData, _imageDesignState){
                     if ($.isFunction(callback) ) {
                         callback(imageData.imageBase64,imageData.fullName);
                     }
                 },
-                onClose: function(closingReason, haveNotSavedChanges){
+                onClose: function(_closingReason, _haveNotSavedChanges){
                   delete JUI.instances[dataId];
                 }
             });

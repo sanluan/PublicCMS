@@ -39,6 +39,7 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.ParameterType;
 
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -77,13 +78,25 @@ public class TemplateCacheComponent implements Cache {
     private Map<String, ParameterTypeHandler<?, ?>> parameterTypeHandlerMap;
 
     public String getViewName(LocaleResolver localeResolver, SysSite site, Long id, Integer pageIndex, String requestPath,
-            String body, String lang, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+            String body, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 
         requestPath = siteComponent.getPath(site, requestPath);
         SysDomain domain = siteComponent.getDomain(request.getServerName());
         String fullRequestPath = siteComponent.getViewName(site.getId(), domain, requestPath);
         String templatePath = CommonUtils.joinString(siteComponent.getTemplateFilePath(), fullRequestPath);
-        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+        String lang = null;
+        String defaultLang = null;
+        if (siteAttributeComponent.enableMultilingual(site.getId())) {
+            defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+            Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesLanguage());
+            if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
+                lang = userCookie.getValue();
+                if (null != lang) {
+                    lang = defaultLang;
+                }
+            }
+        }
+
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath, lang, defaultLang);
 
         if (metadata.isUseDynamic()) {
@@ -110,7 +123,7 @@ public class TemplateCacheComponent implements Cache {
             }
             String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), Constants.COMMA);
             if (CommonUtils.notEmpty(acceptParameters) && !billingRequestParametersToModel(request, acceptParameters, id,
-                    pageIndex, metadata.getParameterTypeMap(), site, model)) {
+                    pageIndex, lang, metadata.getParameterTypeMap(), site, model)) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 } catch (IOException e) {
@@ -146,7 +159,8 @@ public class TemplateCacheComponent implements Cache {
     }
 
     private boolean billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters, Long id,
-            Integer pageIndex, Map<String, ParameterType> parameterTypeMap, SysSite site, ModelMap model) {
+            Integer pageIndex, String lang, Map<String, ParameterType> parameterTypeMap, SysSite site, ModelMap model) {
+        model.addAttribute("lang", lang);
         for (String parameterName : acceptParameters) {
             String[] values = request.getParameterValues(parameterName);
             if ("id".equals(parameterName) && null != id) {
@@ -257,17 +271,19 @@ public class TemplateCacheComponent implements Cache {
     private static String getRequestParametersString(HttpServletRequest request, Locale locale, String lang,
             String[] acceptParameters) {
         StringBuilder sb = new StringBuilder();
-        if (CommonUtils.notEmpty(lang)) {
-            sb.append(Constants.SEPARATOR);
-            sb.append(lang);
-        }
-        if (CommonUtils.notEmpty(locale.getLanguage())) {
+        if (CommonUtils.notEmpty(locale.getLanguage()) || CommonUtils.notEmpty(lang)) {
             sb.append("/default");
-            sb.append(Constants.UNDERLINE);
-            sb.append(locale.getLanguage());
-            if (CommonUtils.notEmpty(locale.getCountry())) {
+            if (CommonUtils.notEmpty(locale.getLanguage())) {
                 sb.append(Constants.UNDERLINE);
-                sb.append(locale.getCountry());
+                sb.append(locale.getLanguage());
+                if (CommonUtils.notEmpty(locale.getCountry())) {
+                    sb.append(Constants.UNDERLINE);
+                    sb.append(locale.getCountry());
+                }
+            }
+            if (CommonUtils.notEmpty(lang)) {
+                sb.append(Constants.UNDERLINE);
+                sb.append(lang);
             }
             sb.append(".html");
         } else {

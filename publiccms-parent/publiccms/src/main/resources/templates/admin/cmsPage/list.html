@@ -24,15 +24,15 @@
                             </ul>
                         </#if>
                     <#else>
+                        <@tools.metadata path=currentPath>
                         <a href="cmsPage/metadata.html?path=${(currentPath?url)!}"<#if (object.extendList)?has_content> class="red" title="<@t.page "metadata"/>"</#if> target="ajax" rel="pageBox">
-                            <@tools.metadata path=currentPath>
-                               <#if lockMap?has_content && lockMap[currentPath]?has_content>
-                                  <#assign lockUser=(userMap[lockMap[currentPath].userId?string].nickname)!''/>
-                                  <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[currentPath].createDate}"></i>
-                               </#if>
-                               ${(object.alias)?has_content?then(object.alias+' '+a.fileName,a.fileName)}
-                            </@tools.metadata>
+                           <#if lockMap?has_content && lockMap[currentPath]?has_content>
+                              <#assign lockUser=(userMap[lockMap[currentPath].userId?string].nickname)!''/>
+                              <i class="icon-lock icon-large" title="<@t.page 'lock.message' lockUser/> ${lockMap[currentPath].createDate}"></i>
+                           </#if>
+                           ${(object.alias)?has_content?then(object.alias+' '+a.fileName,a.fileName)}
                         </a>
+                        </@tools.metadata>
                     </#if>
                 </li>
             </#if>
