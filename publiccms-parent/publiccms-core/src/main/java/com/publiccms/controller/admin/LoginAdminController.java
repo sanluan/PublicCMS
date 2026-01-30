@@ -131,7 +131,7 @@ public class LoginAdminController {
         locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
         if (ControllerUtils.errorCustom("locked.user", locked, model)
                 || ControllerUtils.errorNotEquals("password",
-                        UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding), user.getPassword(), model)
+                        UserPasswordUtils.passwordEncode(password, user.getPassword(), encoding), user.getPassword(), model)
                 || verifyNotAdmin(user, model) || verifyNotEnablie(user, model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
@@ -147,7 +147,7 @@ public class LoginAdminController {
         lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
         if (UserPasswordUtils.needUpdate(user.getPassword())) {
             service.updatePassword(user.getId(),
-                    UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
+                    UserPasswordUtils.passwordEncode(password, null, encoding));
         }
         SysUserSetting userSetting = settingService
                 .getEntity(new SysUserSettingId(user.getId(), SysUserSettingService.OPTSECRET_SETTINGS_CODE));
@@ -229,7 +229,7 @@ public class LoginAdminController {
             String password, String repassword, String encoding, HttpServletRequest request, HttpServletResponse response,
             ModelMap model) {
         SysUser user = service.getEntity(admin.getId());
-        String encodedOldPassword = UserPasswordUtils.passwordEncode(oldpassword, null, user.getPassword(), encoding);
+        String encodedOldPassword = UserPasswordUtils.passwordEncode(oldpassword, user.getPassword(), encoding);
         if (null != user.getPassword()
                 && ControllerUtils.errorNotEquals("password", user.getPassword(), encodedOldPassword, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -241,7 +241,7 @@ public class LoginAdminController {
             model.addAttribute(CommonConstants.MESSAGE, "message.needReLogin");
         }
         service.updatePassword(user.getId(),
-                UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
+                UserPasswordUtils.passwordEncode(password, null, encoding));
         if (user.isWeakPassword()) {
             service.updateWeekPassword(user.getId(), false);
         }

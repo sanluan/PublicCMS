@@ -84,7 +84,7 @@ public abstract class AbstractCmsUpgrader {
     public void setPassword(Connection connection, String username, String password) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement("update sys_user set name=?,password=? where id = 1")) {
             statement.setString(1, username);
-            statement.setString(2, UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, null));
+            statement.setString(2, UserPasswordUtils.passwordEncode(password, null, null));
             statement.executeUpdate();
         }
     }
