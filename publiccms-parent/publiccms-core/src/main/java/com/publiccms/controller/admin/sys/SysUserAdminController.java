@@ -102,7 +102,7 @@ public class SysUserAdminController {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
                 service.updatePassword(entity.getId(),
-                        UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
+                        UserPasswordUtils.passwordEncode(entity.getPassword(), null, encoding));
                 sysUserTokenService.delete(entity.getId());
             }
             if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(oldEntity.getEmail())) {
@@ -124,7 +124,7 @@ public class SysUserAdminController {
             }
             entity.setSiteId(site.getId());
             entity.setPassword(
-                    UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
+                    UserPasswordUtils.passwordEncode(entity.getPassword(), null, encoding));
             entity.setWeakPassword(true);
             service.save(entity);
             if (CommonUtils.notEmpty(roleIds)) {

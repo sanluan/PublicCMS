@@ -49,7 +49,8 @@ import jakarta.annotation.Resource;
  * <li><code>expiryDate</code>:过期日期
  * <li><code>user</code>:用户信息 {@link com.publiccms.entities.sys.SysUser}
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  *
  * <pre>
 &lt;script&gt;
@@ -88,13 +89,12 @@ public class LoginDirective extends AbstractAppDirective {
             }
             String ip = RequestUtils.getIpAddress(handler.getRequest());
             boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null);
-            if (null != user && (!locked || !ControllerUtils.ipNotEquals(ip, user)) && !user.isDisabled() && user.getPassword()
-                    .equals(UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding))) {
+            if (null != user && (!locked || !ControllerUtils.ipNotEquals(ip, user)) && !user.isDisabled()
+                    && user.getPassword().equals(UserPasswordUtils.passwordEncode(password, user.getPassword(), encoding))) {
                 lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
                 lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
                 if (UserPasswordUtils.needUpdate(user.getPassword())) {
-                    service.updatePassword(user.getId(),
-                            UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
+                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, null, encoding));
                 }
                 service.updateLoginStatus(user.getId(), ip);
                 Date now = CommonUtils.now();

@@ -100,7 +100,7 @@ public class UserController {
         if (ControllerUtils.errorNotEmpty("user", user, model) || ControllerUtils.errorNotEmpty("password", password, model)
                 || ControllerUtils.errorNotEquals("repassword", password, repassword, model)
                 || null != user.getPassword() && ControllerUtils.errorNotEquals("password", user.getPassword(),
-                        UserPasswordUtils.passwordEncode(oldpassword, null, user.getPassword(), encoding), model)) {
+                        UserPasswordUtils.passwordEncode(oldpassword, user.getPassword(), encoding), model)) {
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         } else {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
@@ -114,8 +114,7 @@ public class UserController {
                 }
             }
             ControllerUtils.clearUserToSession(request.getContextPath(), request.getScheme(), session, response);
-            service.updatePassword(user.getId(),
-                    UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
+            service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, null, encoding));
             if (user.isWeakPassword()) {
                 service.updateWeekPassword(user.getId(), false);
             }
@@ -222,7 +221,7 @@ public class UserController {
      */
     @RequestMapping(value = "verifyEmail")
     public String verifyEmail(@RequestAttribute SysSite site, String authToken, String returnUrl, HttpServletRequest request,
-    		RedirectAttributes model) {
+            RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
         if (null != sysEmailToken && CommonUtils.now().after(sysEmailToken.getExpiryDate())) {

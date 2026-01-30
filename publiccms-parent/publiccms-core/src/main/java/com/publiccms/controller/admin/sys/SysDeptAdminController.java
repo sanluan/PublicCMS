@@ -83,8 +83,8 @@ public class SysDeptAdminController {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.dept", RequestUtils.getIpAddress(request),
-                        CommonUtils.now(), JsonUtils.getString(entity)));
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.dept", RequestUtils.getIpAddress(request), CommonUtils.now(),
+                        JsonUtils.getString(entity)));
             }
             sysDeptItemService.update(entity.getId(), SysDeptItemService.ITEM_TYPE_CATEGORY, categoryIds);
             sysDeptItemService.update(entity.getId(), SysDeptItemService.ITEM_TYPE_PAGE, pages);
@@ -151,8 +151,7 @@ public class SysDeptAdminController {
                 if (ControllerUtils.errorNotEquals("repassword", entity.getPassword(), repassword, model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
-                entity.setPassword(
-                        UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
+                entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), null, encoding));
             } else {
                 entity.setPassword(oldEntity.getPassword());
                 if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(oldEntity.getEmail())) {
@@ -163,8 +162,8 @@ public class SysDeptAdminController {
             if (null != entity) {
                 roleUserService.dealRoleUsers(entity.getId(), roleIds);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.user", RequestUtils.getIpAddress(request),
-                        CommonUtils.now(), JsonUtils.getString(entity)));
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.user", RequestUtils.getIpAddress(request), CommonUtils.now(),
+                        JsonUtils.getString(entity)));
             }
         } else {
             if (ControllerUtils.errorNotEmpty("password", entity.getPassword(), model)
@@ -178,8 +177,7 @@ public class SysDeptAdminController {
             }
             entity.setDeptId(dept.getId());
             entity.setSiteId(site.getId());
-            entity.setPassword(
-                    UserPasswordUtils.passwordEncode(entity.getPassword(), UserPasswordUtils.getSalt(), null, encoding));
+            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), null, encoding));
             userService.save(entity);
             if (CommonUtils.notEmpty(roleIds)) {
                 for (Integer roleId : roleIds) {
@@ -225,9 +223,9 @@ public class SysDeptAdminController {
         SysDept entity = service.delete(site.getId(), id);
         if (null != entity) {
             sysDeptItemService.delete(entity.getId(), null, null);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.dept", RequestUtils.getIpAddress(request), CommonUtils.now(),
-                    JsonUtils.getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "delete.dept", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -256,9 +254,9 @@ public class SysDeptAdminController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             userService.updateStatus(id, false);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "enable.user", RequestUtils.getIpAddress(request), CommonUtils.now(),
-                    JsonUtils.getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "enable.user", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -287,9 +285,9 @@ public class SysDeptAdminController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             userService.updateStatus(id, true);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "disable.user", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), JsonUtils.getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "disable.user", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
