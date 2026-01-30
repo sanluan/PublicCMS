@@ -76,12 +76,6 @@ public class LogLogin implements java.io.Serializable {
      */
     @GeneratorColumn(title = "登录日期", condition = true, order = true)
     private Date createDate;
-    /**
-     * error password<p>
-     * 错误密码
-     */
-    @GeneratorColumn(title = "错误密码")
-    private String errorPassword;
 
     public LogLogin() {
     }
@@ -96,8 +90,7 @@ public class LogLogin implements java.io.Serializable {
         this.createDate = createDate;
     }
 
-    public LogLogin(short siteId, String name, Long userId, String ip, String channel, String loginMethod, boolean result, Date createDate,
-            String errorPassword) {
+    public LogLogin(short siteId, String name, Long userId, String ip, String channel, String loginMethod, boolean result, Date createDate) {
         this.siteId = siteId;
         this.name = name;
         this.userId = userId;
@@ -106,7 +99,6 @@ public class LogLogin implements java.io.Serializable {
         this.loginMethod = loginMethod;
         this.result = result;
         this.createDate = createDate;
-        this.errorPassword = errorPassword;
     }
 
     @Id
@@ -191,14 +183,4 @@ public class LogLogin implements java.io.Serializable {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
-
-    @Column(name = "error_password")
-    public String getErrorPassword() {
-        return this.errorPassword;
-    }
-
-    public void setErrorPassword(String errorPassword) {
-        this.errorPassword = errorPassword;
-    }
-
 }

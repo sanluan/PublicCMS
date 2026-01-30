@@ -60,7 +60,6 @@
                 <th><@t.page 'log.login_ip'/></th>
                 <th><@t.page 'result'/></th>
                 <th orderField="createDate"><@t.page 'log.login_date'/></th>
-                <th><@t.page 'log.error_password'/></th>
             </tr>
         </thead>
         <tbody>
@@ -77,7 +76,6 @@
                 </td>
                 <td><span class="statusText ${a.result?then('green','red')}">${t.pageMessage(a.result?then('success','fail'))}</span></td>
                 <td>${a.createDate!}</td>
-                <td class="exclude-translate">${(a.errorPassword)!}</td>
             </tr>
             </#list>
         </tbody>
