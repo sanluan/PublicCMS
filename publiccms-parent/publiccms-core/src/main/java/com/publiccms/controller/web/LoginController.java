@@ -142,7 +142,7 @@ public class LoginController {
 
         if (ControllerUtils.errorCustom("locked.user", locked, model)
                 || ControllerUtils.errorNotEquals("password",
-                        UserPasswordUtils.passwordEncode(password, null, user.getPassword(), encoding), user.getPassword(), model)
+                        UserPasswordUtils.passwordEncode(password, user.getPassword(), encoding), user.getPassword(), model)
                 || verifyNotEnablie(user, model)) {
             Long userId = user.getId();
             lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
@@ -154,8 +154,7 @@ public class LoginController {
         lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, user.getId());
         lockComponent.unLock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null);
         if (UserPasswordUtils.needUpdate(user.getPassword())) {
-            service.updatePassword(user.getId(),
-                    UserPasswordUtils.passwordEncode(password, UserPasswordUtils.getSalt(), null, encoding));
+            service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, null, encoding));
         }
         service.updateLoginStatus(user.getId(), ip);
 
@@ -256,8 +255,7 @@ public class LoginController {
             model.addAttribute("nickname", entity.getNickname());
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, registerPath);
         } else {
-            String salt = UserPasswordUtils.getSalt();
-            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), salt, null, encode));
+            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), null, encode));
             entity.setLastLoginIp(ip);
             entity.setSiteId(site.getId());
             entity.setDisabled(false);
