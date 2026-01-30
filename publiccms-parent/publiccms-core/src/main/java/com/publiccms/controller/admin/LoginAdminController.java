@@ -247,7 +247,7 @@ public class LoginAdminController {
         }
         sysUserTokenService.delete(user.getId());
         logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "changepassword", RequestUtils.getIpAddress(request), CommonUtils.now(), encodedOldPassword));
+                "changepassword", RequestUtils.getIpAddress(request), CommonUtils.now(), null));
         return "common/ajaxTimeout";
     }
 
