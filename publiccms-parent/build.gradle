@@ -52,7 +52,7 @@ subprojects {
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
         // 7 for Java 11,8.0 for Java 17
-        hibernateSearchVersion = "6.2.4.Final"
+        hibernateSearchVersion = "6.2.5.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
         // 6.1,7,8 for jakarta
         hibernateValidatorVersion = "6.0.23.Final"
@@ -71,7 +71,7 @@ subprojects {
         dynamicSqlVersion = "1.5.2"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
         // 3.0 for Java 17+
-        jacksonVersion = "2.21.0"
+        jacksonVersion = "2.21.1"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.34"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
