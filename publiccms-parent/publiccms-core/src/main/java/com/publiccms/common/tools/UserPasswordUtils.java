@@ -8,7 +8,7 @@ package com.publiccms.common.tools;
  */
 public class UserPasswordUtils {
     private static final int OLD_SHA512_SALT_LENGTH = 10;
-    private static final int SALT_LENGTH = 32;
+    private static final int SALT_LENGTH = 20;
     public static final int PASSWORD_MAX_LENGTH = 256;
     public static final String ENCODE_SHA512 = "sha512";
     public static final String SALT_SPLIT = ".";
