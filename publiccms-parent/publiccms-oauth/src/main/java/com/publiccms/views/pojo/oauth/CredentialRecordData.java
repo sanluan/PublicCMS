@@ -6,7 +6,6 @@ import static com.webauthn4j.data.attestation.authenticator.AuthenticatorData.BI
 
 import java.util.Set;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.webauthn4j.converter.AttestedCredentialDataConverter;
 import com.webauthn4j.converter.util.ObjectConverter;
 import com.webauthn4j.credential.CredentialRecord;
@@ -17,6 +16,8 @@ import com.webauthn4j.data.attestation.statement.AttestationStatement;
 import com.webauthn4j.data.client.CollectedClientData;
 import com.webauthn4j.data.extension.client.AuthenticationExtensionsClientOutputs;
 import com.webauthn4j.data.extension.client.RegistrationExtensionClientOutput;
+
+import tools.jackson.core.type.TypeReference;
 
 public class CredentialRecordData {
     public CredentialRecordData() {
@@ -29,14 +30,14 @@ public class CredentialRecordData {
         AttestedCredentialDataConverter attestedCredentialDataConverter = new AttestedCredentialDataConverter(objectConverter);
         this.attestedCredentialData = attestedCredentialDataConverter
                 .convert(attestationObject.getAuthenticatorData().getAttestedCredentialData());
-        this.attestationStatement = objectConverter.getJsonConverter()
+        this.attestationStatement = objectConverter.getJsonMapper()
                 .writeValueAsString(attestationObject.getAttestationStatement());
         this.counter = attestationObject.getAuthenticatorData().getSignCount();
-        this.authenticatorExtensions = objectConverter.getJsonConverter()
+        this.authenticatorExtensions = objectConverter.getJsonMapper()
                 .writeValueAsString(attestationObject.getAuthenticatorData().getExtensions());
         this.clientData = collectedClientData;
-        this.clientExtensions = objectConverter.getJsonConverter().writeValueAsString(clientExtensions);
-        this.transports = objectConverter.getJsonConverter().writeValueAsString(transports);
+        this.clientExtensions = objectConverter.getJsonMapper().writeValueAsString(clientExtensions);
+        this.transports = objectConverter.getJsonMapper().writeValueAsString(transports);
         this.uvInitialized = (attestationObject.getAuthenticatorData().getFlags() & BIT_UV) != 0;
         this.backupEligible = (attestationObject.getAuthenticatorData().getFlags() & BIT_BE) != 0;
         this.backupState = (attestationObject.getAuthenticatorData().getFlags() & BIT_BS) != 0;
@@ -45,13 +46,13 @@ public class CredentialRecordData {
     public CredentialRecord toRecord(ObjectConverter objectConverter) {
         AttestedCredentialDataConverter attestedCredentialDataConverter = new AttestedCredentialDataConverter(objectConverter);
         return new CredentialRecordImpl(
-                objectConverter.getJsonConverter().readValue(attestationStatement, AttestationStatementBox.class)
+                objectConverter.getJsonMapper().readValue(attestationStatement, AttestationStatementBox.class)
                         .getAttestationStatement(),
                 uvInitialized, backupEligible, backupState, counter,
                 attestedCredentialDataConverter.convert(attestedCredentialData),
-                objectConverter.getJsonConverter().readValue(authenticatorExtensions, new TypeReference<>() {
-                }), clientData, objectConverter.getJsonConverter().readValue(clientExtensions, new TypeReference<>() {
-                }), objectConverter.getJsonConverter().readValue(transports, new TypeReference<>() {
+                objectConverter.getJsonMapper().readValue(authenticatorExtensions, new TypeReference<>() {
+                }), clientData, objectConverter.getJsonMapper().readValue(clientExtensions, new TypeReference<>() {
+                }), objectConverter.getJsonMapper().readValue(transports, new TypeReference<>() {
                 }));
     }
 
