@@ -148,7 +148,7 @@ public class SimpleAiAdminController {
                             }
                         }
                     }
-                    emitter.send(temp, MediaType.TEXT_PLAIN);
+                    emitter.send(temp, MediaType.APPLICATION_JSON);
                 } catch (IOException e) {
                     log.error(e.getMessage());
                 }

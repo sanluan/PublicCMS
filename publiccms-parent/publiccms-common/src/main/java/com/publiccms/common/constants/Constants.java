@@ -29,7 +29,8 @@ public abstract class Constants {
     public static final Builder builder = JsonMapper.builder()
             .configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false)
             .configure(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS, true)
-            .addModule(new SimpleModule().addSerializer(Long.TYPE, ToStringSerializer.instance));
+            .addModule(new SimpleModule().addSerializer(Long.TYPE, ToStringSerializer.instance).addSerializer(Long.class,
+                    ToStringSerializer.instance));
     /**
      * Json Mapper
      */
