@@ -67,9 +67,9 @@ public class SysWorkflowAdminController {
      * @param model
      * @return operate result
      */
-    @RequestMapping("disabled")
+    @RequestMapping("delete")
     @Csrf
-    public String disabled(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer[] ids,
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer[] ids,
             HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(site.getId(), ids);
