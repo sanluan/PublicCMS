@@ -74,7 +74,7 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
                 String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
                 String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath, lang, defaultLang);
-                String fullStaticFilePath = CmsLangUtils.getFullFilepath(templateComponent.generateFilepath(filepath, model), lang, defaultLang);
+                String fullStaticFilePath = CmsLangUtils.getFullFilepath(templateComponent.generateFilepath(filepath, site, model), lang, defaultLang);
 
                 handler.put("url", templateComponent.createStaticFile(site, templateFullPath, fullStaticFilePath, lang, pageIndex,
                         metadata, model, null)).render();
