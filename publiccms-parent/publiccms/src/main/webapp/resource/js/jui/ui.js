@@ -182,7 +182,7 @@ function initLink($p) {
             var fresh = "true" == ($this.attr("fresh") || "true");
             var external = "true" == ($this.attr("external") || "false");
             var url = $this.attr("href").replaceTmById($(event.target).parents(".unitBox:first"));
-            var newWindow = (navigator.userAgentData.platform.match("Mac") ? event.metaKey : event.ctrlKey);
+            var newWindow = (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey);
             JUI.debug(url);
             if (!url.isFinishedTm() ) {
                 alertMsg.error($this.attr("warn") || JUI.msg("alertSelectMsg"));
@@ -222,7 +222,7 @@ function initLink($p) {
             options.drawable = "true" == ($this.attr("drawable") || "true");
             options.close = eval($this.attr("close") || "");
             options.param = $this.attr("param") || "";
-            options.focusNewWindow = (navigator.userAgentData.platform.match("Mac") ? event.metaKey : event.ctrlKey);
+            options.focusNewWindow = (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey);
             var url = $this.attr("href").replaceTmById($(event.target).parents(".unitBox:first"));
             JUI.debug(url);
             if (!url.isFinishedTm() ) {
