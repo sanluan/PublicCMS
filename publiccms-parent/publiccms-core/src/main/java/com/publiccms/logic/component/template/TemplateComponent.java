@@ -177,7 +177,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath, entity.getLang(), defaultLang);
 
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site.getId(), templatePath);
-        String filepath = generateFilepath(filepathTemplate, model);
+        String filepath = generateFilepath(filepathTemplate, site, model);
         String fullStaticFilePath = CmsLangUtils.getFullFilepath(filepath,
                 null == langEntity ? null : langEntity.getId().getLang(), defaultLang);
         if (CommonUtils.notEmpty(totalPage) && pageIndex < totalPage) {
@@ -237,7 +237,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath, entity.getLang(), defaultLang);
 
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site.getId(), templatePath);
-        String filepath = generateFilepath(filepathTemplate, model);
+        String filepath = generateFilepath(filepathTemplate, site, model);
         String fullStaticFilePath = CmsLangUtils.getFullFilepath(filepath,
                 null == langEntity ? null : langEntity.getId().getLang(), defaultLang);
         if (null != attribute && CommonUtils.notEmpty(filepath) && CommonUtils.notEmpty(attribute.getText())) {
@@ -582,8 +582,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                 CmsLangUtils.initLang(attribute, lang);
                 entity.setAttribute(ExtendUtils.getAttributeMap(attribute));
                 model.put("category", entity);
-                model.put(CommonConstants.getAttributeSite(), site);
-                String filepath = generateFilepath(categoryPathTemplate, model);
+                String filepath = generateFilepath(categoryPathTemplate, site, model);
                 if (null != lang) {
                     categoryLangService.updateUrl(lang.getId(), filepath);
                 } else if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
@@ -998,7 +997,9 @@ public class TemplateComponent implements Cache, AdminContextPath {
         }
     }
 
-    public String generateFilepath(String filepathTemplate, Map<String, Object> model) throws IOException, TemplateException {
+    public String generateFilepath(String filepathTemplate, SysSite site, Map<String, Object> model)
+            throws IOException, TemplateException {
+        AbstractFreemarkerView.exposeSite(model, site);
         String filepath = FreeMarkerUtils.generateStringByString(filepathTemplate, webConfiguration, model);
         if (filepath.startsWith(Constants.SEPARATOR)) {
             filepath = filepath.substring(1);
@@ -1027,10 +1028,10 @@ public class TemplateComponent implements Cache, AdminContextPath {
         if (CommonUtils.notEmpty(filepath)) {
             if (null == model) {
                 model = new HashMap<>();
+                AbstractFreemarkerView.exposeSite(model, site);
             }
             model.put("metadata", metadata);
             model.put(CommonConstants.DEFAULT_PAGEINDEX, pageIndex);
-            AbstractFreemarkerView.exposeSite(model, site);
             String fullPath = CommonUtils.joinString(site.getSitePath(), filepath);
             model.put("url", fullPath);
             model.put("lang", lang);
