@@ -9,6 +9,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -75,11 +76,13 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param visitDate
      * @param itemType
      * @param itemId
-     * @param maxResults 
+     * @param orderField 
+     * @param maxResults
      * @return results page
      */
     @SuppressWarnings("unchecked")
-    public List<VisitItem> getItemList(Short siteId, Date visitDate, String itemType, String itemId, Integer maxResults) {
+    public List<VisitItem> getItemList(Short siteId, Date visitDate, String itemType, String itemId, String orderField,
+            Integer maxResults) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new VisitItem(bean.siteId,bean.visitDate,bean.itemType,bean.itemId,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from VisitHistory bean");
         if (null != siteId) {
@@ -101,6 +104,20 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
         queryHandler.group("bean.visitDate");
         queryHandler.group("bean.itemType");
         queryHandler.group("bean.itemId");
+        if (null == orderField) {
+            orderField = Constants.BLANK;
+        }
+        switch (orderField) {
+        case "uv":
+            queryHandler.order("count(distinct bean.sessionId)");
+            break;
+        case "ipviews":
+            queryHandler.order("count(distinct bean.ip)");
+            break;
+        default:
+            queryHandler.order("count(*)");
+        }
+        queryHandler.append(ORDERTYPE_DESC);
         queryHandler.order("count(*) desc");
         queryHandler.setMaxResults(maxResults);
         return (List<VisitItem>) getList(queryHandler);
@@ -110,7 +127,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param siteId
      * @param url
      * @param visitDate
-     * @param maxResults 
+     * @param maxResults
      * @return results page
      */
     @SuppressWarnings("unchecked")
@@ -137,7 +154,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param siteId
      * @param visitDate
      * @param visitHour
-     * @param maxResults 
+     * @param maxResults
      * @return results page
      */
     @SuppressWarnings("unchecked")
@@ -161,7 +178,7 @@ public class VisitHistoryDao extends BaseDao<VisitHistory> {
      * @param siteId
      * @param startCreateDate
      * @param endCreateDate
-     * @param maxResults 
+     * @param maxResults
      * @return results page
      */
     @SuppressWarnings("unchecked")

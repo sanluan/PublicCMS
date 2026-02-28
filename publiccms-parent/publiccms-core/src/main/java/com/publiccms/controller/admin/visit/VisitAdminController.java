@@ -36,7 +36,7 @@ public class VisitAdminController {
      * @param sessionId
      * @param ip
      * @param url
-     * @param userId 
+     * @param userId
      * @param startCreateDate
      * @param endCreateDate
      * @param orderType
@@ -110,6 +110,7 @@ public class VisitAdminController {
      * @param site
      * @param itemType
      * @param itemId
+     * @param orderField 
      * @param startVisitDate
      * @param endVisitDate
      * @param dayAnalytics
@@ -118,10 +119,11 @@ public class VisitAdminController {
      */
     @RequestMapping("exportItem")
     @Csrf
-    public ExcelView exportItem(@RequestAttribute SysSite site, String itemType, String itemId,
+    public ExcelView exportItem(@RequestAttribute SysSite site, String itemType, String itemId, String orderField,
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date startVisitDate,
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endVisitDate,boolean dayAnalytics, HttpServletRequest request) {
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endVisitDate, boolean dayAnalytics, HttpServletRequest request) {
         Locale locale = RequestContextUtils.getLocale(request);
-        return exchangeComponent.exportItem(site, itemType, itemId, startVisitDate, endVisitDate,dayAnalytics, locale);
+        return exchangeComponent.exportItem(site, itemType, itemId, orderField, startVisitDate, endVisitDate, dayAnalytics,
+                locale);
     }
 }

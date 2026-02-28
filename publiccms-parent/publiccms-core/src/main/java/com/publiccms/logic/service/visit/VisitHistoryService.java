@@ -50,7 +50,7 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
      * @param siteId
      * @param startCreateDate
      * @param endCreateDate
-     * @param maxResults 
+     * @param maxResults
      * @return results page
      */
     @Transactional(readOnly = true)
@@ -62,7 +62,7 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
      * @param siteId
      * @param visitDate
      * @param visitHour
-     * @param maxResults 
+     * @param maxResults
      * @return results page
      */
     @Transactional(readOnly = true)
@@ -75,19 +75,21 @@ public class VisitHistoryService extends BaseService<VisitHistory> {
      * @param visitDate
      * @param itemType
      * @param itemId
-     * @param maxResults 
+     * @param orderField
+     * @param maxResults
      * @return results page
      */
     @Transactional(readOnly = true)
-    public List<VisitItem> getItemList(Short siteId, Date visitDate, String itemType, String itemId, Integer maxResults) {
-        return dao.getItemList(siteId, visitDate, itemType, itemId, maxResults);
+    public List<VisitItem> getItemList(Short siteId, Date visitDate, String itemType, String itemId, String orderField,
+            Integer maxResults) {
+        return dao.getItemList(siteId, visitDate, itemType, itemId, orderField, maxResults);
     }
 
     /**
      * @param siteId
      * @param url
      * @param visitDate
-     * @param maxResults 
+     * @param maxResults
      * @return results page
      */
     @Transactional(readOnly = true)
