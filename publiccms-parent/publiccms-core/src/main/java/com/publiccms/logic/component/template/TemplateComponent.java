@@ -1002,7 +1002,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
             throws IOException, TemplateException {
         AbstractFreemarkerView.exposeSite(model, site);
         String filepath = FreeMarkerUtils.generateStringByString(filepathTemplate, webConfiguration, model);
-        if (filepath.startsWith(Constants.SEPARATOR)) {
+        if (filepath.startsWith(Constants.SEPARATOR) && !filepath.startsWith("//")) {
             filepath = filepath.substring(1);
         }
         return filepath;
