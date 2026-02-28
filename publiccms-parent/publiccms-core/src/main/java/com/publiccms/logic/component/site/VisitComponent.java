@@ -63,14 +63,15 @@ public class VisitComponent implements Cache {
     public void dealLastHourVisitLog() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR_OF_DAY, -1);
-        List<VisitDay> entityList = visitHistoryService.getHourList(null, now.getTime(), (byte) now.get(Calendar.HOUR_OF_DAY), null);
+        List<VisitDay> entityList = visitHistoryService.getHourList(null, now.getTime(), (byte) now.get(Calendar.HOUR_OF_DAY),
+                null);
         visitDayService.save(entityList);
     }
 
     public void dealLastDayItemVisitLog() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR_OF_DAY, -1);
-        List<VisitItem> entityList = visitHistoryService.getItemList(null, now.getTime(), null, null, null);
+        List<VisitItem> entityList = visitHistoryService.getItemList(null, now.getTime(), null, null, null, null);
         visitItemService.save(entityList);
     }
 

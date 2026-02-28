@@ -56,7 +56,7 @@ header .nav>li>a [class*=" icon-"].icon-large{line-height:1.6em;font-size:1.6em;
 header .nav>li ul img{border:1px solid #ccc;}
 header .nav>li>ul li.selected a{color:#333;}
 header .nav>li>ul li.selected img{border-color:#000;box-shadow:0px 0px 5px 1px #DDE4EF;}
-
+header a{color:gray;}
 #navMenu {float:left;display:block;}
 #navMenu li{float: left;}
 #navMenu li a{display: block;font-size: 13px;font-weight:400;text-decoration:none;padding:0 15px;}
@@ -92,9 +92,11 @@ header .navbar-toggler.side-right{background-image:url(../images/side-right.png)
 .accordion .accordionHeader h2 .icon{float:right;line-height:36px;width:auto;}
 .accordion .accordionHeader a:hover{text-decoration:none;}
 .accordion .accordionContent{display:block;overflow:auto;box-sizing: border-box;}
+.accordion .accordionContent:nth-child(n+4){display:none;}
 .accordion .accordionContent h2{text-align:center;line-height:40px;display:none;}
 .accordion .accordionContent a{padding-left:20px;display:block;line-height:34px;height:auto;font-size:13px;white-space:nowrap;}
 .accordion .accordionContent a, .accordion .accordionContent a:hover{text-decoration:none;}
+.accordionContent a{color:gray;}
 .todoNumber{padding:0 5px;color:red;}
 
 .panelBar{display:block;overflow:hidden;height:auto;line-height:30px;}
