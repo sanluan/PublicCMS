@@ -1,5 +1,5 @@
 <div class="pageFormContent">
-<@visit.itemList startVisitDate=startVisitDate endVisitDate=endVisitDate dayAnalytics=dayAnalytics itemType="content" pageSize=5>
+<@visit.itemList startVisitDate=startVisitDate endVisitDate=endVisitDate dayAnalytics=dayAnalytics itemType="content" orderField="uv" pageSize=5>
     <#list page.list as a>
         <@t.merge 'contentIds' a.id.itemId!/>
     </#list>

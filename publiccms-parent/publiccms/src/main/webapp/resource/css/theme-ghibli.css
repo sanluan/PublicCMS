@@ -6,6 +6,7 @@ body,html{color:#5a3e2b;}
 a{color:#5a3e2b;}
 .contentTitle{border-color:#e4e9f2;background-color:#f2e8cc;}
 header{background-color:#b89d65;color:#95918e;}
+header a{color:#5a3e2b;}
 header .navbar-toggler li{background-color:#f2e8cc;}
 header .navbar-toggler li:hover{background-color:#f2e8cc;}
 header .navbar-toggler li:hover a,header .nav a:hover{color:#fff;}
@@ -21,6 +22,7 @@ header .nav>li>ul a,header .nav>li>ul a:hover{color:#95918e;}
 .accordion .accordionContent{background-color:#e3d1c3;}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC;}
 
+.accordionContent a{color:#5a3e2b;}
 .accordionContent a:hover{background-color:#8ebbd2;color:#eee;}
 .accordionContent a.selected,.accordionContent a.selected .todoNumber{background-color:#6b8e50;color:#fff;}
 

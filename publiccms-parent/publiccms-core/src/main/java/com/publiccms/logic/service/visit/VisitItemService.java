@@ -35,6 +35,7 @@ public class VisitItemService extends BaseService<VisitItem> {
      * @param dayAnalytics
      * @param itemType
      * @param itemId
+     * @param orderField
      * @param pageIndex
      * @param pageSize
      * @return results page
@@ -42,12 +43,14 @@ public class VisitItemService extends BaseService<VisitItem> {
     @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     public PageHandler getPage(short siteId, Date startVisitDate, Date endVisitDate, boolean dayAnalytics, String itemType,
-            String itemId, Integer pageIndex, Integer pageSize) {
-        PageHandler page = dao.getPage(siteId, startVisitDate, endVisitDate, dayAnalytics, itemType, itemId, pageIndex, pageSize);
+            String itemId, String orderField, Integer pageIndex, Integer pageSize) {
+        PageHandler page = dao.getPage(siteId, startVisitDate, endVisitDate, dayAnalytics, itemType, itemId, orderField,
+                pageIndex, pageSize);
         Date now = CommonUtils.getMinuteDate();
         if (dayAnalytics && null != page.getList() && (null == pageIndex || 1 == pageIndex)
                 && (null == endVisitDate || DateUtils.isSameDay(now, endVisitDate))) {
-            ((List<VisitItem>) page.getList()).addAll(0, visitHistoryService.getItemList(siteId, now, itemType, itemId, pageSize));
+            ((List<VisitItem>) page.getList()).addAll(0,
+                    visitHistoryService.getItemList(siteId, now, itemType, itemId, orderField, pageSize));
         }
         return page;
     }
