@@ -341,7 +341,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                             contentService.updateUrl(entity.getId(), filepath, true);
                         }
                     } else if (CommonUtils.notEmpty(contentPath)) {
-                        Map<String, Object> modelMap = new HashMap<>();
+                        Map<String, Object> model = new HashMap<>();
                         CmsUrlUtils.initContentUrl(site, entity);
                         fileUploadComponent.initContentCover(site, entity);
                         CmsUrlUtils.initCategoryUrl(site, category);
@@ -353,11 +353,11 @@ public class TemplateComponent implements Cache, AdminContextPath {
                         }
 
                         entity.setAttribute(ExtendUtils.getAttributeMap(attribute, null));
-                        modelMap.put("content", entity);
-                        modelMap.put("attribute", entity.getAttribute());
-                        modelMap.put("category", category);
-                        modelMap.put(CommonConstants.getAttributeSite(), site);
-                        String filepath = FreeMarkerUtils.generateStringByString(contentPath, webConfiguration, modelMap);
+                        model.put("content", entity);
+                        model.put("attribute", entity.getAttribute());
+                        model.put("category", category);
+                        AbstractFreemarkerView.exposeSite(model, site);
+                        String filepath = FreeMarkerUtils.generateStringByString(contentPath, webConfiguration, model);
                         if (null != lang) {
                             contentLangService.updateUrl(lang.getId(), filepath);
                         } else if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
@@ -582,7 +582,8 @@ public class TemplateComponent implements Cache, AdminContextPath {
                 CmsLangUtils.initLang(attribute, lang);
                 entity.setAttribute(ExtendUtils.getAttributeMap(attribute));
                 model.put("category", entity);
-                String filepath = generateFilepath(categoryPathTemplate, site, model);
+                AbstractFreemarkerView.exposeSite(model, site);
+                String filepath = FreeMarkerUtils.generateStringByString(categoryPathTemplate, webConfiguration, model);
                 if (null != lang) {
                     categoryLangService.updateUrl(lang.getId(), filepath);
                 } else if (entity.isHasStatic() || null == entity.getUrl() || !entity.getUrl().equals(filepath)) {
@@ -684,6 +685,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                 }
             });
         }
+        AbstractFreemarkerView.exposeSite(model, site);
         model.put("cms", directiveMap);
         attribute.setData(ExtendUtils.getExtendString(contentParameters.getExtendData(), site.getSitePath()));
         model.put("getContentAttribute", new BaseMethod() {
@@ -749,6 +751,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                     CmsUrlUtils.initCategoryUrl(site, category);
                     KeywordsConfig config = contentConfigComponent.getKeywordsConfig(site.getId());
                     entity.setAttribute(ExtendUtils.getAttributeMap(attribute, config));
+                    AbstractFreemarkerView.exposeSite(model, site);
                     model.put("content", entity);
                     model.put("attribute", entity.getAttribute());
                     model.put("category", category);
@@ -1001,7 +1004,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
             throws IOException, TemplateException {
         AbstractFreemarkerView.exposeSite(model, site);
         String filepath = FreeMarkerUtils.generateStringByString(filepathTemplate, webConfiguration, model);
-        if (filepath.startsWith(Constants.SEPARATOR) && !filepath.startsWith("//")) {
+        if (filepath.startsWith(Constants.SEPARATOR)) {
             filepath = filepath.substring(1);
         }
         return filepath;
