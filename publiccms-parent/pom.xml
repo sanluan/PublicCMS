@@ -55,7 +55,7 @@
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.11.1</version.ehcache>
         <!-- https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind -->
-        <version.jackson>3.0.4</version.jackson>
+        <version.jackson>3.1.0</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.34</version.freemarker>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->

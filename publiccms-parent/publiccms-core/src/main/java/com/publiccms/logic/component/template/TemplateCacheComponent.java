@@ -25,6 +25,7 @@ import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.servlet.WebDispatcherServlet;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
@@ -255,9 +256,9 @@ public class TemplateCacheComponent implements Cache {
                 if (CommonUtils.notEmpty(values)) {
                     for (int i = 0; i < values.length; i++) {
                         sb.append(Constants.UNDERLINE);
-                        sb.append(parameterName);
+                        sb.append(CmsFileUtils.getSafeFileName(parameterName));
                         sb.append("=");
-                        sb.append(values[i]);
+                        sb.append(CmsFileUtils.getSafeFileName(values[i]));
                     }
                 }
             }
