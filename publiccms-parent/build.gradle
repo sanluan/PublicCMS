@@ -68,7 +68,7 @@ subprojects {
         // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
         pageHelperVersion = "6.1.1"
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
-        dynamicSqlVersion = "1.5.2"
+        dynamicSqlVersion = "2.0.0"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
         // 3.0 for Java 17+
         jacksonVersion = "2.21.1"
@@ -78,7 +78,7 @@ subprojects {
         luceneVersion = "8.11.4"
         // http://mvnrepository.com/artifact/redis.clients/jedis
         // https://github.com/redis/jedis
-        jedisVersion = "7.3.0"
+        jedisVersion = "7.4.0"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         // https://github.com/quartz-scheduler/quartz/releases
         // 2.5 for jakarta
