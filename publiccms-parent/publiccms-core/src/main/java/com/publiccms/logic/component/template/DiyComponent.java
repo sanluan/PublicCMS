@@ -469,6 +469,7 @@ public class DiyComponent implements SiteCache {
                                         CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
                                         metadata.setAlias(moduleData.getName());
                                         metadataComponent.updatePlaceMetadata(destFilepath, metadata);
+                                        templateComponent.publishPlace(site, placePath, true);
                                         moduleData.setPlace(placePath);
                                     }
                                 } catch (IOException | TemplateException e) {

@@ -364,17 +364,13 @@
             if ($placeholder && $placeholder.is(":visible")) {
                 //复制到目标容器
                 var $destBox = $placeholder.parents(".sortDrag:first");
-                var html = $helper.html();
-                var $result = $("<div class=\"dragItem icon-move\">" + html + "</div>");
+                var $result = $($.parseHTML("<div class=\"dragItem icon-move\">" + $helper.html() + "</div>", document, true));
                 $result.attr("data-id", $helper.data("id"));
                 $result.attr("data-type", $helper.data("type"));
-                $result.insertAfter($placeholder).show();
-                if("function" === typeof initLink){
-                    initLink($result);
-                }
                 $result.find("input[data-class]").each(function(){
-                    $(this).addClass($(this).data("class"));
+                        $(this).addClass($(this).data("class"));
                 });
+                $result.insertAfter($placeholder).initUI().show();
                 $placeholder.remove();
                 $helper.remove();
                 if ($sortBox.data("duplicate") != 1) {
@@ -456,7 +452,7 @@
                             itemData["id"]=$dragItem.data("id");
                         }
                         $dragItem.find(":input").each(function() {
-                            var $lable = $(this), lableName = $lable.attr("name")||$lable.data("name");
+                            var $lable = $(this), lableName = $lable.data("name") || $lable.attr("name");
                             if (lableName) {
                                 if ("checkbox" == $lable.attr("type")) {
                                     itemData[lableName] = $lable.is(":checked");
