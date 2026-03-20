@@ -39,7 +39,7 @@ import jakarta.annotation.Resource;
 @Transactional
 public class CmsCategoryService extends BaseService<CmsCategory> {
 
-    private String[] ignoreCopyProperties = new String[] { "id", "childIds" ,"parentId" ,"extendId", "code", "name", "sort" };
+    private String[] ignoreCopyProperties = new String[] { "id", "childIds", "parentId", "extendId", "code", "name", "sort" };
     private String[] ignoreProperties = new String[] { "id", "siteId", "childIds", "tagTypeIds", "url", "disabled", "extendId",
             "hasStatic", "typeId" };
 
@@ -127,7 +127,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     }
 
     public void copy(short siteId, CmsCategory entity, CmsCategory copy) {
-        if(null == entity.getParentId() && null!= copy.getParentId() ){
+        if (null == entity.getParentId() && null != copy.getParentId()) {
             entity.setParentId(copy.getParentId());
         }
         BeanUtils.copyProperties(copy, entity, ignoreCopyProperties);
@@ -320,6 +320,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
      */
     public void updateWrokflow(short siteId, Integer[] ids, Integer workflowId) {
         if (CommonUtils.notEmpty(ids)) {
+            dao.deleteWorkflowIds(siteId, new Integer[] { workflowId });
             List<CmsCategory> entityList = getEntitys(ids);
             for (CmsCategory entity : entityList) {
                 if (null != entity && siteId == entity.getSiteId()) {
@@ -327,6 +328,15 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 }
             }
         }
+    }
+
+    /**
+     * @param siteId
+     * @param workflowIds
+     * @return
+     */
+    public int deleteWorkflowIds(short siteId, Integer[] workflowIds) {
+        return dao.deleteWorkflowIds(siteId, workflowIds);
     }
 
     /**
