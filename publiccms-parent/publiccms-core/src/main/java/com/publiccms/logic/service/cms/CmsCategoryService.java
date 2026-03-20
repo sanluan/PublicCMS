@@ -320,6 +320,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
      */
     public void updateWrokflow(short siteId, Integer[] ids, Integer workflowId) {
         if (CommonUtils.notEmpty(ids)) {
+            dao.deleteWorkflowIds(siteId, new Integer[] { workflowId });
             List<CmsCategory> entityList = getEntitys(ids);
             for (CmsCategory entity : entityList) {
                 if (null != entity && siteId == entity.getSiteId()) {
@@ -327,6 +328,15 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 }
             }
         }
+    }
+
+    /**
+     * @param siteId
+     * @param workflowIds
+     * @return
+     */
+    public int deleteWorkflowIds(short siteId, Integer[] workflowIds) {
+        return dao.deleteWorkflowIds(siteId, workflowIds);
     }
 
     /**

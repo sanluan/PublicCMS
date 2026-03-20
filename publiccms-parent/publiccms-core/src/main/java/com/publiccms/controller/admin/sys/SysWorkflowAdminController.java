@@ -21,6 +21,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysWorkflow;
+import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysWorkflowService;
@@ -75,6 +76,7 @@ public class SysWorkflowAdminController {
             HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(site.getId(), ids);
+            categoryService.deleteWorkflowIds(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "disable.workflow", RequestUtils.getIpAddress(request),
                     CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
@@ -84,6 +86,9 @@ public class SysWorkflowAdminController {
 
     @Resource
     private SysWorkflowService service;
+
+    @Resource
+    private CmsCategoryService categoryService;
     @Resource
     protected LogOperateService logOperateService;
 }

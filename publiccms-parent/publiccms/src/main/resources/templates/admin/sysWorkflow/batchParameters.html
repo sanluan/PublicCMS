@@ -3,7 +3,7 @@
     <@cms.categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
     <li<#if a.childIds?has_content> _src="sysWorkflow/batchParameters.html?parentId=${a.id}&id=${id!}"</#if>>
-        <a href="javascript:;" tname="categoryIds" tvalue="${a.id}"<#if a.workflowId?has_content && a.workflowId?string = id> checked="checked" disabled="disabled" class="disabled exclude-translate"<#else> class="exclude-translate"</#if>>${a.name!}</a>
+        <a href="javascript:;" tname="categoryIds" tvalue="${a.id}"<#if a.workflowId?has_content && a.workflowId?string = id> checked="checked"</#if> class="exclude-translate">${a.name!}</a>
     </li>
         <#else>
     <li><a><@t.page 'empty_directory'/></a></li>
@@ -19,7 +19,7 @@
             <@cms.categoryList advanced=true parentId=parentId pageSize=500>
                 <#list page.list as a>
             <li<#if a.childIds?has_content> _src="sysWorkflow/batchParameters.html?parentId=${a.id}&id=${id!}"</#if>>
-                <a href="javascript:;" tname="categoryIds" tvalue="${a.id}"<#if a.workflowId?has_content && a.workflowId?string = id> checked="checked" disabled="disabled" class="disabled exclude-translate"<#else> class="exclude-translate"</#if>>${a.name!}</a>
+                <a href="javascript:;" tname="categoryIds" tvalue="${a.id}"<#if a.workflowId?has_content && a.workflowId?string = id> checked="checked"</#if> class="exclude-translate">${a.name!}</a>
             </li>
                 </#list>
             </@cms.categoryList>
