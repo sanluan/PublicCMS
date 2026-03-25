@@ -368,7 +368,13 @@
                 $result.attr("data-id", $helper.data("id"));
                 $result.attr("data-type", $helper.data("type"));
                 $result.find("input[data-class]").each(function(){
-                        $(this).addClass($(this).data("class"));
+                    $(this).addClass($(this).data("class"));
+                });
+                $result.find("input[data-name]").each(function(){
+                       $(this).attr("name","nouse"+new Date().getTime())
+                });
+                $result.find("input[data-maxlength]").each(function(){
+                    $(this).attr("maxlength",$(this).data("maxlength"));
                 });
                 $result.insertAfter($placeholder).initUI().show();
                 $placeholder.remove();
@@ -452,7 +458,7 @@
                             itemData["id"]=$dragItem.data("id");
                         }
                         $dragItem.find(":input").each(function() {
-                            var $lable = $(this), lableName = $lable.data("name") || $lable.attr("name");
+                            var $lable = $(this), lableName = $lable.data("name");
                             if (lableName) {
                                 if ("checkbox" == $lable.attr("type")) {
                                     itemData[lableName] = $lable.is(":checked");

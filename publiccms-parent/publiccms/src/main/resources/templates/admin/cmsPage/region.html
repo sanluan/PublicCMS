@@ -44,7 +44,7 @@
                         <div class="dragItem icon-move" data-id="${a.id}" data-type="module" title="${a.name!}">
                             ${a.name!}<span class="close">X</span>
                             <div class="ctl-label">
-                                <input data-name="name" name="nouse" maxlength="50" type="text" data-class="required" value="<@cms.category id=categoryId>${object.name}-</@cms.category>${a.name}"/>
+                                <input data-name="name" data-maxlength="50" type="text" data-class="required" value="<@cms.category id=categoryId>${object.name}-</@cms.category>${a.name}"/>
                                 <#if a.place?has_content && !a.clone>
                                     <@tools.placeMetadata path=a.place>
                                         <#if (object.metadataExtendList)?has_content>
