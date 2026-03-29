@@ -44,14 +44,19 @@ public final class HttpRequestHashModel implements TemplateHashModelEx {
         this.wrapper = wrapper;
     }
 
+    private static boolean isBlocked(String key) {
+        for (String prefix : BLOCKED_PREFIXES) {
+            if (key.startsWith(prefix)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public TemplateModel get(String key) throws TemplateModelException {
-        if (key != null) {
-            for (String prefix : BLOCKED_PREFIXES) {
-                if (key.startsWith(prefix)) {
-                    return null;
-                }
-            }
+        if (key == null || isBlocked(key)) {
+            return null;
         }
         return wrapper.wrap(request.getAttribute(key));
     }
@@ -75,7 +80,10 @@ public final class HttpRequestHashModel implements TemplateHashModelEx {
     public TemplateCollectionModel keys() {
         List<String> keys = new ArrayList<>();
         for (Enumeration<String> enumeration = request.getAttributeNames(); enumeration.hasMoreElements();) {
-            keys.add(enumeration.nextElement());
+            String name = enumeration.nextElement();
+            if (!isBlocked(name)) {
+                keys.add(name);
+            }
         }
         return new SimpleCollection(keys.iterator(), wrapper);
     }
@@ -84,7 +92,10 @@ public final class HttpRequestHashModel implements TemplateHashModelEx {
     public TemplateCollectionModel values() {
         List<Object> values = new ArrayList<>();
         for (Enumeration<String> enumeration = request.getAttributeNames(); enumeration.hasMoreElements();) {
-            values.add(request.getAttribute(enumeration.nextElement()));
+            String name = enumeration.nextElement();
+            if (!isBlocked(name)) {
+                values.add(request.getAttribute(name));
+            }
         }
         return new SimpleCollection(values.iterator(), wrapper);
     }
