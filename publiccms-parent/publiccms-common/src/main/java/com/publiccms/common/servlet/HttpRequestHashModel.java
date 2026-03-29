@@ -22,6 +22,11 @@ public final class HttpRequestHashModel implements TemplateHashModelEx {
     private final HttpServletResponse response;
     private final ObjectWrapper wrapper;
 
+    private static final String[] BLOCKED_PREFIXES = {
+            "org.springframework.web.servlet.DispatcherServlet.",
+            "org.springframework.web.context.WebApplicationContext"
+    };
+
     /**
      * @param request 
      * @param wrapper
@@ -41,6 +46,13 @@ public final class HttpRequestHashModel implements TemplateHashModelEx {
 
     @Override
     public TemplateModel get(String key) throws TemplateModelException {
+        if (key != null) {
+            for (String prefix : BLOCKED_PREFIXES) {
+                if (key.startsWith(prefix)) {
+                    return null;
+                }
+            }
+        }
         return wrapper.wrap(request.getAttribute(key));
     }
 

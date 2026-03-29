@@ -64,6 +64,7 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
             throws Exception {
         model.put(SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE, new SafeRequestContext(request, response, getServletContext(), model));
         model.put(FreemarkerServlet.KEY_REQUEST, new HttpRequestHashModel(request, response, getObjectWrapper()));
+        model.put(FreemarkerServlet.KEY_APPLICATION, null);
         super.doRender(model, request, response);
     }
 
