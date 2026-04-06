@@ -35,7 +35,6 @@ import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.converter.HtmlDocumentFacade;
 import org.apache.poi.hwpf.converter.PicturesManager;
 import org.apache.poi.hwpf.converter.WordToHtmlConverter;
-import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.sl.usermodel.Shape;
 import org.apache.poi.sl.usermodel.Slide;
 import org.apache.poi.sl.usermodel.SlideShow;
@@ -91,7 +90,6 @@ public class DocToHtmlUtils {
      * @throws IOException
      */
     public static String docxToHtml(File file, ImageManager imageManager) throws IOException {
-        ZipSecureFile.setMinInflateRatio(-1.0d);
         try (XWPFDocument document = new XWPFDocument(new FileInputStream(file))) {
             XHTMLOptions options = XHTMLOptions.create().setImageManager(imageManager).setFragment(true)
                     .setIgnoreStylesIfUnused(true).setOmitHeaderFooterPages(true);
