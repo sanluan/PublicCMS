@@ -458,7 +458,7 @@
                             itemData["id"]=$dragItem.data("id");
                         }
                         $dragItem.find(":input").each(function() {
-                            var $lable = $(this), lableName = $lable.data("name");
+                            var $lable = $(this), lableName = $lable.data("name") || $lable.attr("name");
                             if (lableName) {
                                 if ("checkbox" == $lable.attr("type")) {
                                     itemData[lableName] = $lable.is(":checked");
