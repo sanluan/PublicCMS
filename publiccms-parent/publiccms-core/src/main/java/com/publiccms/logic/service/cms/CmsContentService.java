@@ -277,7 +277,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         dealAttribute(entity, site, modelExtendList, categoryExtendList, contentParameters.getExtendData(), cmsModel,
                 entity.isHasFiles() ? contentParameters.getFiles() : null,
                 entity.isHasImages() ? contentParameters.getImages() : null,
-                entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
+                entity.isHasProducts() ? contentParameters.getProducts() : null, attribute, true);
 
         saveEditorHistory(attributeService.getEntity(entity.getId()), attribute, site.getId(), entity.getId(), userId,
                 modelExtendList, categoryExtendList, contentParameters.getExtendData());// 保存编辑器字段历史记录
@@ -359,13 +359,13 @@ public class CmsContentService extends BaseService<CmsContent> {
             products = contentProductService.getList(site.getId(), entity.getId());
         }
         dealAttribute(entity, site, modelExtendList, categoryExtendList, ExtendUtils.getExtendMap(attribute.getData()),
-                cmsModel, files, images, products, attribute);
+                cmsModel, files, images, products, attribute, false);
         attributeService.updateAttribute(entity.getId(), attribute);
     }
 
     private void dealAttribute(CmsContent entity, SysSite site, List<SysExtendField> modelExtendList,
             List<SysExtendField> categoryExtendList, Map<String, String> map, CmsModel cmsModel, List<CmsContentFile> files,
-            List<CmsContentFile> images, List<CmsContentProduct> products, CmsContentAttribute attribute) {
+            List<CmsContentFile> images, List<CmsContentProduct> products, CmsContentAttribute attribute, boolean save) {
         StringBuilder searchTextBuilder = new StringBuilder();
         String text = HtmlUtils.removeHtmlTag(attribute.getText());
         if (null != text) {
@@ -382,7 +382,7 @@ public class CmsContentService extends BaseService<CmsContent> {
 
         if (CommonUtils.notEmpty(map)) {
             Set<String> dictionaryValueList = new HashSet<>();
-            attribute.setData(ExtendUtils.getExtendString(map, site.getSitePath(), (extendField, value) -> {
+            String data = ExtendUtils.getExtendString(map, site.getSitePath(), (extendField, value) -> {
                 if (ArrayUtils.contains(DICTIONARY_INPUT_TYPES, extendField.getInputType())) {
                     if (Config.INPUTTYPE_DICTIONARY.equalsIgnoreCase(extendField.getInputType()) && extendField.isMultiple()) {
                         String[] values = StringUtils.split(value, Constants.COMMA);
@@ -414,7 +414,10 @@ public class CmsContentService extends BaseService<CmsContent> {
                         searchTextBuilder.append(value).append(Constants.BLANK_SPACE);
                     }
                 }
-            }, modelExtendList, categoryExtendList));
+            }, modelExtendList, categoryExtendList);
+            if (save) {
+                attribute.setData(data);
+            }
             if (CommonUtils.notEmpty(dictionaryValueList)) {
                 attribute.setDictionaryValues(collectionToDelimitedString(dictionaryValueList, Constants.BLANK_SPACE));
             } else {
@@ -521,7 +524,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         }
         return entity;
     }
-    
+
     /**
      * @param siteId
      * @param user
