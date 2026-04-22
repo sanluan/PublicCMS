@@ -17,18 +17,22 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.base.HighLighterQuery;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
+import com.publiccms.entities.cms.CmsContentLang;
+import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ContentConfigComponent;
 import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
+import com.publiccms.logic.service.cms.CmsContentLangService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentSearchQuery;
@@ -48,6 +52,7 @@ import freemarker.template.TemplateModelException;
  * <li><code>userId</code>:用户id
  * <li><code>parentId</code>:父内容id
  * <li><code>categoryId</code>:分类id
+ * <li><code>lang</code>:语言
  * <li><code>containChild</code>:包含子分类,当categoryId不为空时有效
  * <li><code>categoryIds</code>:多个分类id,当categoryId为空时有效
  * <li><code>modelIds</code>:多个模型id
@@ -74,7 +79,8 @@ import freemarker.template.TemplateModelException;
  * <li><code>pageSize</code>:每页条数
  * <li><code>maxResults</code>:最大结果数
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
  * <li><code>page.list</code>:List类型 查询结果实体列表
@@ -136,6 +142,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             highLighterQuery.setPostTag(handler.getString("postTag"));
         }
         boolean containsAttribute = handler.getBoolean("containsAttribute", false);
+        String lang = handler.getString("lang");
         containsAttribute = handler.inHttp() ? getAdvanced(handler) && containsAttribute : containsAttribute;
         try {
             CmsContentSearchQuery query = new CmsContentSearchQuery(site.getId(), handler.getBoolean("projection", false),
@@ -157,6 +164,13 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             if (null != list) {
+                CmsContentLangId[] langIds = null;
+                if (CommonUtils.notEmpty(lang)) {
+                    langIds = list.stream().map(e -> new CmsContentLangId(e.getId(), lang)).toArray(CmsContentLangId[]::new);
+                }
+                Map<Long, CmsContentLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
+                        k -> k.getId().getContentId());
+
                 Consumer<CmsContent> consumer = null;
                 if (containsAttribute) {
                     Long[] ids = list.stream().map(CmsContent::getId).toArray(Long[]::new);
@@ -168,15 +182,27 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                         if (null != statistics) {
                             e.setClicks(e.getClicks() + statistics.getClicks());
                         }
+                        CmsContentLang langEntity = null;
+                        CmsContentAttribute attribute = attributeMap.get(e.getId());
+                        if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(e.getLang())) {
+                            langEntity = langMap.get(e.getId());
+                            CmsLangUtils.initLang(e, langEntity);
+                            CmsLangUtils.initLang(attribute, langEntity);
+                        }
                         CmsUrlUtils.initContentUrl(site, e);
                         fileUploadComponent.initContentCover(site, e);
-                        e.setAttribute(ExtendUtils.getAttributeMap(attributeMap.get(e.getId()), config));
+                        e.setAttribute(ExtendUtils.getAttributeMap(attribute, config));
                     };
                 } else {
                     consumer = e -> {
                         ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
                         if (null != statistics) {
                             e.setClicks(e.getClicks() + statistics.getClicks());
+                        }
+                        CmsContentLang langEntity = null;
+                        if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(e.getLang())) {
+                            langEntity = langMap.get(e.getId());
+                            CmsLangUtils.initLang(e, langEntity);
                         }
                         CmsUrlUtils.initContentUrl(site, e);
                         fileUploadComponent.initContentCover(site, e);
@@ -200,4 +226,6 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsContentService service;
+    @Resource
+    private CmsContentLangService langService;
 }
