@@ -372,6 +372,8 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 a.btnUp:before,a.btnDown:before{line-height:14px;}
 a.icon-move:hover{text-decoration:none}
 
+
+.sortDrag{position: relative;}
 .sortDragPlaceholder{border:1px dashed #ccc;}
 #printBox{display:none;}
 
@@ -482,7 +484,7 @@ a.icon-move:hover{text-decoration:none}
 .miscSortDrag dt:after{content:" ";display:block;clear:both;}
 .miscSortDrag dd{margin-left:195px;}
 .miscSortDrag dd .sortDrag{width:100%;min-height:100px;margin-bottom:10px;color:#ccc;text-align:center;box-sizing:border-box;border:1px dashed #d66;}
-.miscSortDrag dd .sortDrag .dragItem{border:1px solid #B8D0D6;box-sizing:border-box;color:#666;padding:5px;margin:3px;line-height:20px;display:block;position:relative;text-align:left;cursor:move;}
+.miscSortDrag dd .sortDrag .dragItem{border:1px solid #B8D0D6;box-sizing:border-box;color:#666;padding:5px;margin:3px;line-height:20px;display:block;text-align:left;cursor:move;}
 .miscSortDrag dd .sortDrag .sortDrag{min-height:50px;margin-bottom:0px;border:1px dashed #6d6;}
 .miscSortDrag dd .sortDrag .sortDrag .dragItem{color:#333;}
 .miscSortDrag dd .sortDrag .dragItem img{max-width:100%;max-height:200px;}

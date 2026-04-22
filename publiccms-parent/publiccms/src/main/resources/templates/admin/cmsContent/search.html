@@ -146,5 +146,10 @@
         </tbody>
     </table>
     <#include "../include_page/page.html"/>
+    <script>
+    $("input[name=word]",navTab.getCurrentPanel()).on("change",function(){
+        $("input[name=pageNum]",navTab.getCurrentPanel()).val("1");
+    });
+    </script>
 </div>
 </@cms.search>

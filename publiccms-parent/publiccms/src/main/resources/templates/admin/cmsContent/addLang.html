@@ -59,7 +59,7 @@
                         </#if>
                         <#if categoryExtendList?has_content>
                             <@extendData inputNamePrefix="contentLangList["+index+"]." type="view" extendList=categoryExtendList lang=lang.id.code extendValues=(attribute!{}) historyItemType='contentExtend' historyItemId=id/>
-                        </#if>                 
+                        </#if>
                         <@extendData inputNamePrefix="contentLangList["+index+"]." type="view" extendList=model.extendList lang=lang.id.code extendValues=(attribute!{}) historyItemType='contentExtend' historyItemId=id/>
                         <#if fieldList?seq_contains('cover')>
                             <dl class="nowrap">
@@ -125,7 +125,7 @@
                         </#if>
                         <#if categoryExtendList?has_content>
                             <@extendData inputNamePrefix="contentLangList["+index+"]." extendList=categoryExtendList lang=lang.id.code extendValues=((a.attribute)!attribute!{}) historyItemType='contentExtend' historyItemId=id/>
-                        </#if>                 
+                        </#if>
                         <@extendData inputNamePrefix="contentLangList["+index+"]." extendList=model.extendList lang=lang.id.code extendValues=((a.attribute)!attribute!{}) historyItemType='contentExtend' historyItemId=id/>
                         <#if fieldList?seq_contains('cover')>
                             <dl class="nowrap">
@@ -163,13 +163,13 @@
                         <#if model.hasImages||model.hasFiles>
                             <#if model.hasImages>
                                 <fieldset>
-                                    <legend><@t.page 'seo'/></legend>
+                                    <legend><@t.page 'image_list'/></legend>
                                     <@contentFiles true id false lang.id.code/>
                                 </fieldset>
                             </#if>
                             <#if model.hasFiles>
                                 <fieldset>
-                                    <legend><@t.page 'seo'/></legend>
+                                    <legend><@t.page 'attach_list'/></legend>
                                     <@contentFiles false id false lang.id.code/>
                                 </fieldset>
                             </#if>

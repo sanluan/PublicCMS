@@ -14,13 +14,13 @@
             <dl class="nowrap">
                 <dt><@t.page 'id'/>:</dt></dt>
                 <dd>
-                    <input name="id" class="required" type="text" size="50" value="${(a.id)!getUUID()}"/>
+                    <input name="id" class="required" type="text" size="50" maxlength="50" value="${(a.id)!getUUID()}"/>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'name'/>:</dt></dt>
                 <dd>
-                    <input name="name" type="text" maxlength="40" size="20" value="${(a.name)!}"/>
+                    <input name="name" type="text" maxlength="40" size="20" maxlength="50" value="${(a.name)!}"/>
                 </dd>
             </dl>
             <dl class="nowrap">
