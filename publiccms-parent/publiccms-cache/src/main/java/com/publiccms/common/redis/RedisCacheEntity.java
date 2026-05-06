@@ -14,6 +14,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.RedisUtils;
 
 import redis.clients.jedis.RedisClient;
+import redis.clients.jedis.params.SetParams;
 
 /**
  *
@@ -46,7 +47,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
         if (null == expiryInSeconds) {
             redisClient.set(getKey(key), valueSerializer.serialize(value));
         } else {
-            redisClient.setex(getKey(key), expiryInSeconds, valueSerializer.serialize(value));
+            redisClient.set(getKey(key), valueSerializer.serialize(value), SetParams.setParams().ex(expiryInSeconds));
         }
     }
 
