@@ -68,7 +68,7 @@ public class GetIpRegionMethod extends BaseMethod {
                         Config v6Config = null;
                         if (ipv6.exists()) {
                             v6Config = Config.custom().setCachePolicy(Config.VIndexCache).setSearchers(20)
-                                    .setCacheSliceBytes(50 * 1024 * 1024).setXdbFile(ipv6).asV6();
+                                    .setXdbFile(ipv6).asV6();
                         }
                         ip2Region = Ip2Region.create(v4Config, v6Config);
                     }
