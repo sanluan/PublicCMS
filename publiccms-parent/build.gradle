@@ -32,20 +32,20 @@ subprojects {
         servletVersion = "6.1.0"
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // https://spring.io/projects/spring-framework
-        springVersion = "7.0.6"
+        springVersion = "7.0.7"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://spring.io/projects/spring-boot
-        springBootVersion = "4.0.3"
+        springBootVersion = "4.0.6"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
         junitVersion = "6.0.3"
         // http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "7.2.5.Final"
+        hibernateVersion = "7.3.3.Final"
         // http://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm
-        hibernateToolsVersion = "7.2.5.Final"
+        hibernateToolsVersion = "7.3.3.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "8.2.2.Final"
+        hibernateSearchVersion = "8.3.0.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
         hibernateValidatorVersion = "9.1.0.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
@@ -55,13 +55,13 @@ subprojects {
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
         mybatisSpringVersion = "4.0.0"
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
-        mybatisGenerator = "1.4.2"
+        mybatisGenerator = "2.0.0"
         // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
         pageHelperVersion = "6.1.1"
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "2.0.0"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "3.1.0"
+        jacksonVersion = "3.1.3"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.34"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-core
