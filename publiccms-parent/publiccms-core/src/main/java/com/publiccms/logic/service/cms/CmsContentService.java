@@ -316,12 +316,14 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param categoryId
      * @param modelId
+     * @param status
      * @param worker
      * @param batchSize
      */
-    public void batchWorkId(short siteId, Integer categoryId, String modelId, ObjIntConsumer<List<Serializable>> worker,
-            int batchSize) {
-        dao.batchWorkId(siteId, categoryId, modelId, worker, batchSize);
+    @Transactional(readOnly = true)
+    public void batchWorkId(short siteId, Integer categoryId, String modelId, Integer[] status,
+            ObjIntConsumer<List<Serializable>> worker, int batchSize) {
+        dao.batchWorkId(siteId, categoryId, modelId, status, worker, batchSize);
     }
 
     /**

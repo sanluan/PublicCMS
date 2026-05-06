@@ -416,7 +416,7 @@ public class CmsCategoryAdminController {
                     List<CmsCategoryModel> categoryModelList = categoryModelService.getList(site.getId(), null, category.getId());
                     for (CmsCategoryModel categoryModel : categoryModelList) {
                         contentService.batchWorkId(site.getId(), category.getId(), categoryModel.getId().getModelId(),
-                                (list, i) -> {
+                                CmsContentService.STATUS_NORMAL_ARRAY, (list, i) -> {
                                     templateComponent.createContentFile(site, list, category, categoryModel);
                                     log.info(CommonUtils.joinString("publish for category : ", category.getName(), " batch ", i,
                                             " size : ", list.size()));

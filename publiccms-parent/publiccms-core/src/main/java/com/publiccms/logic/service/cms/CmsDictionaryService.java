@@ -28,6 +28,7 @@ public class CmsDictionaryService extends BaseService<CmsDictionary> {
      * @param worker
      * @param batchSize
      */
+    @Transactional(readOnly = true)
     public void batchWork(short siteId, ObjIntConsumer<List<CmsDictionary>> worker, int batchSize) {
         dao.batchWork(siteId, worker, batchSize);
     }

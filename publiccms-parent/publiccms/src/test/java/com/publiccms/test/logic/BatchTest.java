@@ -51,8 +51,8 @@ public class BatchTest {
         SysSite site = siteService.getEntity((short) 1);
         log.info(start);
         CmsCategory category = categoryService.getEntity(1);
-        CmsCategoryModel categoryModel = categoryModelService.getEntity(new CmsCategoryModelId(1,"categoryModel"));
-        contentService.batchWorkId(site.getId(), 1, "standard", (list, i) -> {
+        CmsCategoryModel categoryModel = categoryModelService.getEntity(new CmsCategoryModelId(1, "categoryModel"));
+        contentService.batchWorkId(site.getId(), 1, "standard", CmsContentService.STATUS_NORMAL_ARRAY, (list, i) -> {
             templateComponent.createContentFile(site, list, category, categoryModel);
             log.info((System.currentTimeMillis() - start) + " batch " + i + " publish size : " + list.size());
         }, PageHandler.MAX_PAGE_SIZE);

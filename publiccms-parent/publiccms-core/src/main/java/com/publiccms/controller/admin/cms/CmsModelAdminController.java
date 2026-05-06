@@ -212,11 +212,12 @@ public class CmsModelAdminController {
             for (CmsCategoryModel categoryModel : categoryModelList) {
                 CmsCategory category = categoryService.getEntity(categoryModel.getId().getCategoryId());
                 if (null != category) {
-                    contentService.batchWorkId(site.getId(), category.getId(), id, (list, i) -> {
-                        templateComponent.createContentFile(site, list, category, categoryModel);
-                        log.info(CommonUtils.joinString("publish for category : ", category.getName(), " batch ", i, " size : ",
-                                list.size()));
-                    }, PageHandler.MAX_PAGE_SIZE);
+                    contentService.batchWorkId(site.getId(), category.getId(), id, CmsContentService.STATUS_NORMAL_ARRAY,
+                            (list, i) -> {
+                                templateComponent.createContentFile(site, list, category, categoryModel);
+                                log.info(CommonUtils.joinString("publish for category : ", category.getName(), " batch ", i,
+                                        " size : ", list.size()));
+                            }, PageHandler.MAX_PAGE_SIZE);
                 }
             }
             log.info("complete batch publish");

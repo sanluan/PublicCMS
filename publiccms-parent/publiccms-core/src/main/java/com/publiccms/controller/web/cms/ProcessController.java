@@ -15,9 +15,12 @@ import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.entities.sys.SysWorkflowProcess;
 import com.publiccms.entities.sys.SysWorkflowProcessHistory;
 import com.publiccms.logic.component.config.SafeConfigComponent;
+import com.publiccms.logic.component.workflow.ProcessComponent;
 import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.logic.service.sys.SysWorkflowProcessHistoryService;
 import com.publiccms.logic.service.sys.SysWorkflowProcessService;
 
 /**
@@ -30,11 +33,13 @@ import com.publiccms.logic.service.sys.SysWorkflowProcessService;
 public class ProcessController {
     @Resource
     protected SafeConfigComponent safeConfigComponent;
+    @Resource
+    private ProcessComponent processComponent;
 
     /**
      * @param site
      * @param user
-     * @param returnUrl 
+     * @param returnUrl
      * @param entity
      * @param request
      * @return operate result
@@ -44,7 +49,14 @@ public class ProcessController {
     public String handle(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String returnUrl,
             SysWorkflowProcessHistory entity, HttpServletRequest request) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
-        service.handleProcess(site, entity, user);
+        SysWorkflowProcess process = service.handleProcess(site, entity, user);
+        if (process.isClosed()) {
+            if (SysWorkflowProcessHistoryService.OPERATE_AGREE.equalsIgnoreCase(entity.getOperate())) {
+                processComponent.finishProcess(site, process, user, entity);
+            } else if (SysWorkflowProcessHistoryService.OPERATE_REJECT.equalsIgnoreCase(entity.getOperate())) {
+                processComponent.reject(site, process, user, entity);
+            }
+        }
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
