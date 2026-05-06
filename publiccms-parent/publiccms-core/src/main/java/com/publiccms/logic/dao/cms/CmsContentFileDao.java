@@ -14,7 +14,7 @@ import com.publiccms.entities.cms.CmsContentFile;
 /**
  *
  * CmsContentFileDao
- * 
+ *
  */
 @Repository
 public class CmsContentFileDao extends BaseDao<CmsContentFile> {
@@ -42,7 +42,7 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
         if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        if (null != fileTypes) {
+        if (CommonUtils.notEmpty(fileTypes)) {
             queryHandler.condition("bean.fileType in :fileTypes").setParameter("fileTypes", fileTypes);
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
@@ -66,7 +66,7 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
 
     /**
      * @param contentId
-     * @param lang 
+     * @param lang
      * @param fileTypes
      * @return results list
      */

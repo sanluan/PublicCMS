@@ -23,7 +23,7 @@ import freemarker.template.TemplateException;
 
 /**
  *
- * categoryFileList 内容附件列表查询指令
+ * contentFileList 内容附件列表查询指令
  * <p>
  * 参数列表
  * <ul>

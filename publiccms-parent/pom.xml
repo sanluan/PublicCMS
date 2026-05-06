@@ -53,7 +53,7 @@
         <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
         <version.dynamicSql>2.0.0</version.dynamicSql>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
-        <version.ehcache>3.11.1</version.ehcache>
+        <version.ehcache>3.12.0</version.ehcache>
         <!-- https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind -->
         <version.jackson>3.1.0</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
@@ -63,14 +63,14 @@
         <version.lucene>9.12.3</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <!-- https://github.com/redis/jedis -->
-        <version.jedis>7.4.0</version.jedis>
+        <version.jedis>7.5.0</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.5.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
         <!-- https://github.com/brettwooldridge/HikariCP -->
         <version.hikariCP>7.0.2</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
-        <version.mysql>9.6.0</version.mysql>
+        <version.mysql>9.7.0</version.mysql>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.14</version.httpclient>
@@ -85,19 +85,19 @@
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <version.lang>3.20.0</version.lang>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-        <version.io>2.21.0</version.io>
+        <version.io>2.22.0</version.io>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <version.text>1.15.0</version.text>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
         <version.compress>1.28.0</version.compress>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
-        <version.codec>1.21.0</version.codec>
+        <version.codec>1.22.0</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <version.log4j>2.25.3</version.log4j>
+        <version.log4j>2.25.4</version.log4j>
         <!-- https://mvnrepository.com/artifact/org.jboss.logging/jboss-logging -->
         <version.jbossLogging>3.6.3.Final</version.jbossLogging>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
-        <version.extractor>2.19.0</version.extractor>
+        <version.extractor>2.20.0</version.extractor>
         <!-- https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio -->
         <version.webp>0.1.6</version.webp>
         <!-- https://mvnrepository.com/artifact/net.ifok.image/image4j -->
@@ -113,7 +113,7 @@
         <!-- https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc -->
         <version.therapiJavadoc>0.15.0</version.therapiJavadoc>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-        <version.jsoup>1.22.1</version.jsoup>
+        <version.jsoup>1.22.2</version.jsoup>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
         <version.annotation>3.0.0</version.annotation>
         <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->

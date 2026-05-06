@@ -156,9 +156,11 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                     ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getContentId())
                     : null;
 
-            CmsContentLangId[] langIds = list.stream()
-                    .map(e -> new CmsContentLangId(CmsLangUtils.getContentId(e, absoluteId), lang))
-                    .toArray(CmsContentLangId[]::new);
+            CmsContentLangId[] langIds = null;
+            if (CommonUtils.notEmpty(lang)) {
+                list.stream().map(e -> new CmsContentLangId(CmsLangUtils.getContentId(e, absoluteId), lang))
+                        .toArray(CmsContentLangId[]::new);
+            }
             Map<Long, CmsContentLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
                     k -> k.getId().getContentId());
 

@@ -200,7 +200,7 @@
         <li data-diy-item="${place.id}">
             <figure>
                 <#-- data type: ${place.itemType!},data id: ${place.itemId!},place/redirect:count and jump to place.url,found[true:302,false:301,default:false] -->
-                <a href="${site.dynamicPath}place/redirect?id=${place.id!}&found=false" target="_blank"><img src="${place.cover!}"></a>
+                <a href="${site.dynamicPath}place/redirect?id=${place.id!}&found=false" target="_blank"><img src="${place.cover!}" alt="${place.title}"></a>
                 <figcaption><a href="${place.url!}" target="_blank">${place.title!}</a>(${place.clicks!})</figcaption>
                 <p><#list (place.description!'')?split('\n') as line>${line}<#sep><br/></#list></p>
                 </#noparse><@t.page 'extend_field'/>:${(place.attribute.your_extend_code)!}<#noparse>
