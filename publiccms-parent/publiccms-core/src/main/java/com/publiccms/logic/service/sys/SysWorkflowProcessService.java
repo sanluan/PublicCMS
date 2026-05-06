@@ -16,7 +16,6 @@ import com.publiccms.entities.sys.SysWorkflow;
 import com.publiccms.entities.sys.SysWorkflowProcess;
 import com.publiccms.entities.sys.SysWorkflowProcessHistory;
 import com.publiccms.entities.sys.SysWorkflowStep;
-import com.publiccms.logic.component.workflow.ProcessComponent;
 import com.publiccms.logic.dao.sys.SysWorkflowProcessDao;
 
 import jakarta.annotation.Resource;
@@ -45,8 +44,6 @@ public class SysWorkflowProcessService extends BaseService<SysWorkflowProcess> {
     private SysWorkflowStepService workflowStepService;
     @Resource
     private SysWorkflowProcessHistoryService historyService;
-    @Resource
-    private ProcessComponent processComponent;
 
     /**
      * @param siteId
@@ -122,7 +119,6 @@ public class SysWorkflowProcessService extends BaseService<SysWorkflowProcess> {
                     if (null == nextStep) {
                         entity.setUpdateDate(CommonUtils.now());
                         entity.setClosed(true);
-                        processComponent.finishProcess(site, entity, user, history);
                     } else {
                         entity.setUpdateDate(CommonUtils.now());
                         entity.setStepId(step.getNextStepId());
@@ -138,7 +134,6 @@ public class SysWorkflowProcessService extends BaseService<SysWorkflowProcess> {
             } else if (SysWorkflowProcessHistoryService.OPERATE_REJECT.equalsIgnoreCase(history.getOperate())) {
                 entity.setUpdateDate(CommonUtils.now());
                 entity.setClosed(true);
-                processComponent.reject(site, entity, user, history);
             }
             historyService.save(history);
             return entity;
