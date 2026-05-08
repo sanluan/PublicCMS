@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
@@ -66,18 +67,36 @@ public class SysConfigAdminController {
             map.remove(configCode);
             map.put(entity.getCode(), entity);
             configComponent.save(site.getId(), map);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "update.config", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), JsonUtils.getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "update.config", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         } else {
             Map<String, SysConfig> map = configComponent.getMap(site.getId());
             map.put(entity.getCode(), entity);
             configComponent.save(site.getId(), map);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.config", RequestUtils.getIpAddress(request), CommonUtils.now(),
-                    JsonUtils.getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "save.config", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param code
+     * @param oldCode
+     * @return view name
+     */
+    @RequestMapping("virify")
+    @ResponseBody
+    public boolean virify(@RequestAttribute SysSite site, String code, String oldCode) {
+        if (CommonUtils.notEmpty(code)) {
+            if (CommonUtils.notEmpty(oldCode) && !code.equals(oldCode) && configComponent.existsConfig(site.getId(), code)
+                    || CommonUtils.empty(oldCode) && configComponent.existsConfig(site.getId(), code)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -95,9 +114,9 @@ public class SysConfigAdminController {
         SysConfig entity = modelMap.remove(code);
         if (null != entity) {
             configComponent.save(site.getId(), modelMap);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.config", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), JsonUtils.getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "delete.config", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

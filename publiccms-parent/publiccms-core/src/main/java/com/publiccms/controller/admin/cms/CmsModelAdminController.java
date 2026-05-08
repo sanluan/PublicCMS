@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
@@ -163,6 +164,25 @@ public class CmsModelAdminController {
                             "save.model", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param id
+     * @param oldId
+     * @return view name
+     */
+    @RequestMapping("virify")
+    @ResponseBody
+    public boolean virify(@RequestAttribute SysSite site, String id, String oldId) {
+        if (CommonUtils.notEmpty(id)) {
+            Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
+            if (CommonUtils.notEmpty(oldId) && !id.equals(oldId) && null != modelMap.get(id)
+                    || CommonUtils.empty(oldId) && null != modelMap.get(id)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

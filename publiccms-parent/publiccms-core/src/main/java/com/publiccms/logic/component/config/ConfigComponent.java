@@ -112,6 +112,23 @@ public class ConfigComponent {
     }
 
     /**
+     * @param siteId
+     * @param code
+     * @return if code exists
+     */
+    public boolean existsConfig(short siteId, String code) {
+        if (CommonUtils.notEmpty(configPluginList)) {
+            for (Config config : configPluginList) {
+                String currentCode = config.getCode(siteId, true);
+                if (CommonUtils.notEmpty(currentCode) && currentCode.equalsIgnoreCase(code)) {
+                    return true;
+                }
+            }
+        }
+        return null != getMap(siteId).get(code);
+    }
+
+    /**
      * @param site
      * @param code
      * @param customed
@@ -149,8 +166,8 @@ public class ConfigComponent {
         File file = new File(siteComponent.getConfigFilePath(siteId));
         if (CommonUtils.notEmpty(file)) {
             try {
-                modelMap = Constants.objectMapper.readValue(file, Constants.objectMapper.getTypeFactory()
-                        .constructMapType(HashMap.class, String.class, SysConfig.class));
+                modelMap = Constants.objectMapper.readValue(file,
+                        Constants.objectMapper.getTypeFactory().constructMapType(HashMap.class, String.class, SysConfig.class));
             } catch (JacksonException | ClassCastException e) {
                 modelMap = new HashMap<>();
             }

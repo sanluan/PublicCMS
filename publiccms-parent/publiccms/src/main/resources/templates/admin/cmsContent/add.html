@@ -191,13 +191,6 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                     <dd><input name="editor"<#if requiredFieldList?seq_contains('editor')> class="required"</#if> autocomplete="on" type="text" maxlength="50" size="20" value="${(a.editor)!}"/></dd>
                 </dl>
             </#if>
-            <#include "../include_page/extendData.html"/>
-            <#if category?has_content&&category.extendId?has_content>
-                 <@sys.extendFieldList extendId=category.extendId>
-                    <@extendData extendList=list extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
-                 </@sys.extendFieldList>
-            </#if>
-            <@extendData extendList=model.extendList extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
             <#if fieldList?seq_contains('cover')>
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['cover'])!}:</dt>
@@ -218,6 +211,13 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
                     </dd>
                 </dl>
             </#if>
+            <#include "../include_page/extendData.html"/>
+            <#if category?has_content&&category.extendId?has_content>
+                 <@sys.extendFieldList extendId=category.extendId>
+                    <@extendData extendList=list extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
+                 </@sys.extendFieldList>
+            </#if>
+            <@extendData extendList=model.extendList extendValues=attribute historyItemType='contentExtend' historyItemId=id/>
             <#if fieldList?seq_contains('content')>
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['content'])!}:</dt>
