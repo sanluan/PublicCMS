@@ -50,7 +50,8 @@ import freemarker.template.TemplateException;
  * <li><code>expiryDate</code>:过期日期
  * <li><code>user</code>:用户信息 {@link com.publiccms.entities.sys.SysUser}
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  *
  * <pre>
 &lt;script&gt;
@@ -116,13 +117,8 @@ public class LoginDirective extends AbstractAppDirective {
                     lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
                 }
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
-                LogLogin log = new LogLogin();
-                log.setSiteId(site.getId());
-                log.setName(username);
-                log.setErrorPassword(password);
-                log.setIp(ip);
-                log.setChannel(channel);
-                logLoginService.save(log);
+                logLoginService.save(new LogLogin(site.getId(), username, null != user ? user.getId() : null, ip, channel,
+                        LogLoginService.METHOD_PASSWORD, true, CommonUtils.getDate(), password));
             }
         }
         handler.put("result", result).render();
