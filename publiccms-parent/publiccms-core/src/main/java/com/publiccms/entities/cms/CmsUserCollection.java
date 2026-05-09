@@ -34,7 +34,7 @@ public class CmsUserCollection implements java.io.Serializable {
     private CmsUserCollectionId id;
     /**
      * create date
-
+     * 
      * 创建日期
      */
     @GeneratorColumn(title = "创建日期")
@@ -50,8 +50,7 @@ public class CmsUserCollection implements java.io.Serializable {
 
     @EmbeddedId
     @AttributeOverrides({ @AttributeOverride(name = "userId", column = @Column(name = "user_id", nullable = false)),
-            @AttributeOverride(name = "itemType", column = @Column(name = "item_type", nullable = false, length = 50)),
-            @AttributeOverride(name = "itemId", column = @Column(name = "item_id", nullable = false)) })
+            @AttributeOverride(name = "contentId", column = @Column(name = "content_id", nullable = false)) })
     public CmsUserCollectionId getId() {
         return this.id;
     }
