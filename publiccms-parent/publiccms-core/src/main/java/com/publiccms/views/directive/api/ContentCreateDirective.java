@@ -67,6 +67,7 @@ import freemarker.template.TemplateException;
  * <li><code>categoryId</code>:分类id
  * <li><code>modelId</code>:模型id
  * <li><code>title</code>:标题
+ * <li><code>cover</code>:封面图
  * <li><code>description</code>:描述
  * <li><code>author</code>:作者
  * <li><code>editor</code>:编辑
@@ -151,6 +152,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                 entity.setHasFiles(cmsModel.isHasFiles());
                 entity.setTitle(handler.getString("title"));
                 entity.setDescription(handler.getString("description"));
+                entity.setCover(handler.getString("cover"));
                 entity.setLang(handler.getString("lang"));
                 entity.setAuthor(handler.getString("author"));
                 entity.setEditor(handler.getString("editor"));
