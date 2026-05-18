@@ -2124,7 +2124,7 @@ DROP TABLE IF EXISTS `sys_user_setting`;
 CREATE TABLE `sys_user_setting` (
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `code` varchar(50) NOT NULL COMMENT '编码',
-  `data` longblob NOT NULL COMMENT '值',
+  `data` longtext NOT NULL COMMENT '值',
   `create_date` datetime(0) NOT NULL COMMENT '创建日期',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`user_id`,`code`)

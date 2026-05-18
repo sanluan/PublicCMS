@@ -115,3 +115,5 @@ UPDATE sys_module SET authorized_url = 'cmsCategory/addMore,cmsCategory/virify,c
 UPDATE sys_module SET authorized_url = 'cmsContent/addMore,cmsContent/save,cmsContent/addLang,cmsContentLang/save' WHERE id = 'content_add';
 UPDATE sys_module SET authorized_url = 'sysConfig/save,sysConfig/virify' WHERE id = 'config_add';
 UPDATE sys_module SET authorized_url = 'cmsModel/save,cmsModel/virify,cmsModel/rebuildSearchText,cmsModel/batchPublish' WHERE id = 'model_add';
+-- 2026-05-18 --
+ALTER TABLE `sys_user_setting` MODIFY COLUMN `data` longtext NOT NULL COMMENT '值' AFTER `code`;
