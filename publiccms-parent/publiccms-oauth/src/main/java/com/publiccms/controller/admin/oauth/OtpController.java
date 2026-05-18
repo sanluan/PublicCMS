@@ -10,6 +10,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,8 +68,8 @@ public class OtpController {
      * @return view name
      */
     @RequestMapping(value = "login")
-    public String login(@SessionAttribute(required = false) SysUser otpadmin, String returnUrl, RedirectAttributes model) {
-        model.addAttribute("returnUrl", returnUrl);
+    public String login(@SessionAttribute(required = false) SysUser otpadmin, String returnUrl, RedirectAttributes redirectAttrs, ModelMap model ) {
+        redirectAttrs.addAttribute("returnUrl", returnUrl);
         if (null == otpadmin) {
             return "redirect:../login";
         }
