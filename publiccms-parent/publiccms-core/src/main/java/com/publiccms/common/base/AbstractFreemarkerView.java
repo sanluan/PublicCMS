@@ -7,7 +7,6 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.servlet.HttpRequestHashModel;
 import com.publiccms.common.servlet.SafeRequestContext;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
