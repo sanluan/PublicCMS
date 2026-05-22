@@ -41,14 +41,14 @@
                     </#if>
                 </dd>
             </dl>
-        <#if 'true'=(siteAttribute.enable_multilingual)!>
+        <#if 'true'=((siteAttribute.enable_multilingual)!) && ((metadata.enableMultilingual)!false)>
             <dl>
                 <dt><@t.page 'language'/></dt>
                 <dd>
                     <select class="combox" name="lang">
                         <@cms.languageList>
                         <#list list as lang>
-                            <option value="${lang.id.code}"${(lang.id.code=(a.lang)!)?then(' selected="true"','')?no_esc}>${(lang.name)!}</option>
+                            <option value="${lang.id.code}"${(lang.id.code=(a.lang)!lang!)?then(' selected="true"','')?no_esc}>${(lang.name)!}</option>
                         </#list>
                         </@cms.languageList>
                     </select>

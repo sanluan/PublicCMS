@@ -174,9 +174,9 @@ function initLink($p) {
             if(title){
                 title = title.replace(/<[^>]*>/gi,"");
             }
-            var changeTitle = false;
-            if($this.data("change-title") && "true" == $this.data("change-title")){
-                changeTitle=true;
+            var changeTitle = true;
+            if($this.data("change-title") && "false" == $this.data("change-title")){
+                changeTitle = false;
             }
             var tabid = $this.attr("rel") || "_blank";
             var fresh = "true" == ($this.attr("fresh") || "true");

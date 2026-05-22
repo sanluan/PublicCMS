@@ -149,9 +149,9 @@ public class CmsPlaceAdminController {
                     CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, entity.getPath()));
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
             if (null != metadata.getWorkflowId()) {
-                entity.setStatus(CmsPlaceService.STATUS_NORMAL);
-            } else {
                 entity.setStatus(CmsPlaceService.STATUS_PEND);
+            } else {
+                entity.setStatus(CmsPlaceService.STATUS_NORMAL);
             }
             if (null != oldEntity) {
                 if (ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {

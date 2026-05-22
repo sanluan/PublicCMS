@@ -14,15 +14,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.base.AbstractFreemarkerView;
+import com.publiccms.common.tools.CmsLangUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
+import com.publiccms.entities.cms.CmsContentLang;
+import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ContentConfigComponent;
 import com.publiccms.logic.component.site.DirectiveComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
+import com.publiccms.logic.service.cms.CmsContentLangService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.model.CmsContentParameters;
 
@@ -39,6 +43,8 @@ public class CmsContentPreviewAdminController {
     @Resource
     private CmsContentAttributeService attributeService;
     @Resource
+    private CmsContentLangService contentLangService;
+    @Resource
     protected ContentConfigComponent contentConfigComponent;
     @Resource
     protected DirectiveComponent directiveComponent;
@@ -50,16 +56,21 @@ public class CmsContentPreviewAdminController {
     /**
      * @param site
      * @param id
+     * @param lang
      * @param request
      * @param response
      * @param model
      */
     @RequestMapping("preview")
-    public void preview(@RequestAttribute SysSite site, Long id, HttpServletRequest request, HttpServletResponse response,
-            ModelMap model) {
+    public void preview(@RequestAttribute SysSite site, Long id, String lang, HttpServletRequest request,
+            HttpServletResponse response, ModelMap model) {
         CmsContent entity = service.getEntity(id);
-        CmsContentAttribute attribute = attributeService.getEntity(id);
         if (null != entity && site.getId() == entity.getSiteId()) {
+            CmsContentAttribute attribute = attributeService.getEntity(id);
+            CmsContentLang contentLang = contentLangService.getEntity(new CmsContentLangId(id, lang));
+            if (CmsLangUtils.initLang(entity, entity.getLang(), contentLang)) {
+                CmsLangUtils.initLang(attribute, contentLang);
+            }
             try {
                 AbstractFreemarkerView.exposeAttribute(model, request);
                 response.setContentType("text/html; charset=UTF-8");

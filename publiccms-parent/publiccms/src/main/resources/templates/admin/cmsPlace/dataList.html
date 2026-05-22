@@ -30,7 +30,7 @@
                     <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
-                <#if 'true'=(siteAttribute.enable_multilingual)!>
+                <#if 'true'=((siteAttribute.enable_multilingual)!) && ((metadata.enableMultilingual)!false)>
                 <li>
                     <label><@t.page 'language'/></label>
                     <select class="combox" name="lang">
@@ -62,10 +62,7 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if authorizedMap['cmsPlace/add']>
-                <li><a href="cmsPlace/add.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'place_data.add'/></a></li>
-            </#if>
-            <#if authorizedMap['cmsPlace/refresh']>
-                <li><a href="cmsPlace/refresh?_csrf=<@tools.csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i><@t.page 'button.batch_refresh'/></a></li>
+                <li><a href="cmsPlace/add.html?path=${(path?url)!}&lang=${lang!}" target="navTab" rel="cmsPlace/add"><i class="icon-plus-sign-alt icon-large"></i><@t.page 'place_data.add'/></a></li>
             </#if>
             <#if authorizedMap['cmsPlace/check']>
                 <li><a href="cmsPlace/check?_csrf=<@tools.csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i><@t.page 'button.batch_check'/></a></li>
@@ -76,6 +73,9 @@
             <#if site.useSsi && authorizedMap['cmsTemplate/publishPlace']>
                 <li class="line">line</li>
                 <li><a href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><i class="icon-file-text-alt icon-large"></i><@t.page 'button.publish'/></a></li>
+            </#if>
+            <#if authorizedMap['cmsPlace/refresh']>
+                <li><a href="cmsPlace/refresh?_csrf=<@tools.csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i><@t.page 'button.batch_refresh'/></a></li>
             </#if>
             <#if authorizedMap['cmsPlace/import']>
                 <li class="line">line</li>
@@ -93,7 +93,7 @@
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30"><@t.page 'id'/></th>
                 <th width="150"><@t.page 'title'/></th>
-                <#if 'true'=(siteAttribute.enable_multilingual)!>
+                <#if 'true'=((siteAttribute.enable_multilingual)!) && ((metadata.enableMultilingual)!false)>
                     <th width="150"><@t.page 'language'/></th>
                 </#if>
                 <th width="70" orderField="publishDate"><@t.page 'publish_date'/></th>
@@ -145,7 +145,7 @@
                         </h3>
                     </div>
                 </td>
-                <#if 'true'=(siteAttribute.enable_multilingual)!>
+                <#if 'true'=((siteAttribute.enable_multilingual)!) && ((metadata.enableMultilingual)!false)>
                     <td>${(langMap[a.lang!siteAttribute.default_language].name)!}</td>
                 </#if>
                 <td>${a.publishDate}</td>
