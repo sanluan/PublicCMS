@@ -17,6 +17,7 @@ import com.publiccms.entities.cms.CmsContent;
 
 public class CmsContentAttributeBinder implements TypeBinder {
     public static final String EXTEND_OBJECT_NAME = "extend";
+    public static final String LANG_OBJECT_NAME = "lang";
     public static final String ANALYZER_NAME = "cms";
 
     @Override
@@ -26,6 +27,7 @@ public class CmsContentAttributeBinder implements TypeBinder {
 
         IndexFieldType<String> textFieldType = context.typeFactory().asString().projectable(Projectable.NO)
                 .analyzer(ANALYZER_NAME).toIndexFieldType();
+
         IndexFieldType<String> sortableTextFieldType = context.typeFactory().asString().sortable(Sortable.YES).toIndexFieldType();
         IndexFieldType<String> dictionaryFieldType = context.typeFactory().asString().analyzer(AnalyzerNames.WHITESPACE)
                 .toIndexFieldType();
@@ -46,8 +48,11 @@ public class CmsContentAttributeBinder implements TypeBinder {
             extendField.field(CommonUtils.joinString("sort", i), sortableTextFieldType).toReference();
         }
 
+        IndexSchemaObjectField langField = schemaElement.objectField(LANG_OBJECT_NAME);
+        langField.fieldTemplate("text", textFieldType);
+
         context.bridge(CmsContent.class, new CmsContentAttributeBridge(textField, dictionaryValuesField, filesField,
-                minPriceField, maxPriceField, extendField.toReference()));
+                minPriceField, maxPriceField, extendField.toReference(), langField.toReference()));
     }
 
 }

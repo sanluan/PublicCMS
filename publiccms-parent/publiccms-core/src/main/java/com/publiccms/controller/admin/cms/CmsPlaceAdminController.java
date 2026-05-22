@@ -145,6 +145,14 @@ public class CmsPlaceAdminController {
                 entity.setItemId(null);
             }
             CmsPlace oldEntity = service.getEntity(entity.getId());
+            String filepath = siteComponent.getTemplateFilePath(site.getId(),
+                    CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, entity.getPath()));
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
+            if (null != metadata.getWorkflowId()) {
+                entity.setStatus(CmsPlaceService.STATUS_PEND);
+            } else {
+                entity.setStatus(CmsPlaceService.STATUS_NORMAL);
+            }
             if (null != oldEntity) {
                 if (ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                     return CommonConstants.TEMPLATE_ERROR;
@@ -167,16 +175,12 @@ public class CmsPlaceAdminController {
             } else {
                 entity.setUserId(admin.getId());
                 entity.setSiteId(site.getId());
-                entity.setStatus(CmsPlaceService.STATUS_NORMAL);
                 entity.setCheckUserId(admin.getId());
                 service.save(entity);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "save.place", RequestUtils.getIpAddress(request), CommonUtils.now(),
                         JsonUtils.getString(entity)));
             }
-            String filepath = siteComponent.getTemplateFilePath(site.getId(),
-                    CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, entity.getPath()));
-            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
 
             Map<String, String> map = extendDataParameters.getExtendData();
             CmsPlaceAttribute oldAttribute = attributeService.getEntity(entity.getId());
@@ -189,10 +193,10 @@ public class CmsPlaceAdminController {
                         String.valueOf(entity.getId()), null, oldMap, map, metadata.getExtendList());
             }
 
-            if (null != metadata.getWorkflowId()) {
+            if (CmsPlaceService.STATUS_PEND == entity.getStatus() && null != metadata.getWorkflowId()) {
                 SysWorkflowProcessItem item = workflowProcessItemService.getEntity(
                         new SysWorkflowProcessItemId(SysWorkflowProcessService.ITEM_TYPE_PLACE, String.valueOf(entity.getId())));
-                if (null == item || null != oldEntity && CmsPlaceService.STATUS_PEND == oldEntity.getStatus()) {
+                if (null == item) {
                     SysWorkflowProcess process = workflowProcessService.createProcess(site.getId(), metadata.getWorkflowId(),
                             admin.getId(), entity.getTitle(), SysWorkflowProcessService.ITEM_TYPE_PLACE,
                             String.valueOf(entity.getId()));
@@ -207,7 +211,7 @@ public class CmsPlaceAdminController {
 
             try {
                 templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
-                if (null != oldEntity && null!=oldEntity.getLang() && !oldEntity.getLang().equalsIgnoreCase(entity.getLang())) {
+                if (null != oldEntity && null != oldEntity.getLang() && !oldEntity.getLang().equalsIgnoreCase(entity.getLang())) {
                     templateComponent.publishPlace(site, entity.getPath(), oldEntity.getLang(), true);
                 }
             } catch (IOException | TemplateException e) {
@@ -215,6 +219,7 @@ public class CmsPlaceAdminController {
             }
         }
         return CommonConstants.TEMPLATE_DONE;
+
     }
 
     /**

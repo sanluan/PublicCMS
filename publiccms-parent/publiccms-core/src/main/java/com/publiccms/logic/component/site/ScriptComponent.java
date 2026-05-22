@@ -39,7 +39,7 @@ public class ScriptComponent {
                 String userName = dbconfigProperties.getProperty("jdbc.username");
                 String database = dbconfigProperties.getProperty("database", "publiccms");
                 String password = DatabaseUtils.getPassword(dbconfigProperties);
-                cmdarray = new String[] { database, userName, password };
+                cmdarray = new String[] { database.replace("\"", "\\\""), userName.replace("\"", "\\\""), password.replace("\"", "\\\"") };
             } else {
                 cmdarray = new String[parameters.length];
                 if (null != parameters) {

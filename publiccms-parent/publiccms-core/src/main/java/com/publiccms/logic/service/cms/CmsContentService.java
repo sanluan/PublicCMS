@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.BaseService;
+import com.publiccms.common.base.HighLighterQuery;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
@@ -155,6 +156,11 @@ public class CmsContentService extends BaseService<CmsContent> {
             String orderType, Integer pageIndex, Integer pageSize, Integer maxResults) {
         queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
         return searchDao.facetQuery(queryEntity, orderField, orderType, pageIndex, pageSize, maxResults);
+    }
+
+    @Transactional(readOnly = true)
+    public void higtLighter(List<CmsContent> resultList, String text, HighLighterQuery highLighterQuery) {
+        searchDao.higtLighter(resultList, text, highLighterQuery);
     }
 
     /**

@@ -39,7 +39,6 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsEditorHistoryService;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
@@ -180,17 +179,17 @@ public class PlaceController {
             attributeService.updateAttribute(entity.getId(),
                     ExtendUtils.getExtendString(map, site.getSitePath(), metadata.getExtendList()));
 
-            if (null != metadata.getWorkflowId()) {
+            if (null != metadata.getWorkflowId() && CmsPlaceService.STATUS_PEND == entity.getStatus()) {
                 SysWorkflowProcessItem item = workflowProcessItemService.getEntity(
                         new SysWorkflowProcessItemId(SysWorkflowProcessService.ITEM_TYPE_PLACE, String.valueOf(entity.getId())));
-                if (null == item || null != oldEntity && CmsContentService.STATUS_NORMAL == oldEntity.getStatus()) {
+                if (null == item || null != oldEntity && CmsPlaceService.STATUS_NORMAL == oldEntity.getStatus()) {
                     SysWorkflowProcess process = workflowProcessService.createProcess(site.getId(), metadata.getWorkflowId(),
                             user.getId(), entity.getTitle(), SysWorkflowProcessService.ITEM_TYPE_PLACE,
                             String.valueOf(entity.getId()));
                     if (null != process) {
                         service.checking(site.getId(), entity.getId());
                     }
-                } else if (null != item && CmsContentService.STATUS_REJECT == oldEntity.getStatus()) {
+                } else if (null != item) {
                     workflowProcessService.reopenProcess(site.getId(), item.getProcessId());
                 }
             }

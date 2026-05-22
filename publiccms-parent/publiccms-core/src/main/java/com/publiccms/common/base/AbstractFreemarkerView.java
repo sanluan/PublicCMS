@@ -7,7 +7,6 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.servlet.HttpRequestHashModel;
 import com.publiccms.common.servlet.SafeRequestContext;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -20,6 +19,8 @@ import com.publiccms.logic.component.BeanComponent;
 import com.publiccms.logic.component.config.SiteAttributeComponent;
 
 import freemarker.ext.servlet.FreemarkerServlet;
+import freemarker.template.SimpleHash;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -63,8 +64,14 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
     protected void doRender(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         model.put(SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE, new SafeRequestContext(request, response, getServletContext(), model));
-        model.put(FreemarkerServlet.KEY_REQUEST, new HttpRequestHashModel(request, response, getObjectWrapper()));
         super.doRender(model, request, response);
+    }
+
+    protected SimpleHash buildTemplateModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) {
+        SimpleHash fmModel = super.buildTemplateModel(model, request, response);
+        fmModel.remove(FreemarkerServlet.KEY_APPLICATION);
+        fmModel.remove(FreemarkerServlet.KEY_REQUEST);
+        return fmModel;
     }
 
     @Override

@@ -117,3 +117,8 @@ UPDATE sys_module SET authorized_url = 'sysConfig/save,sysConfig/virify' WHERE i
 UPDATE sys_module SET authorized_url = 'cmsModel/save,cmsModel/virify,cmsModel/rebuildSearchText,cmsModel/batchPublish' WHERE id = 'model_add';
 -- 2026-05-18 --
 ALTER TABLE `sys_user_setting` MODIFY COLUMN `data` longtext NOT NULL COMMENT '值' AFTER `code`;
+INSERT INTO `sys_module` VALUES ('content_uncheck_list', 'cmsContent/uncheck_list', NULL, NULL, 'content_list', 0, 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('content_uncheck_list', 'en', 'Pending');
+INSERT INTO `sys_module_lang` VALUES ('content_uncheck_list', 'ja', '審査待ち');
+INSERT INTO `sys_module_lang` VALUES ('content_uncheck_list', 'zh', '待审核内容');
+UPDATE sys_module SET url = NULL WHERE id = 'content_check';

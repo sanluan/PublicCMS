@@ -68,7 +68,7 @@
             </#if>
         </@tools.templateRegionList>
         <#if (metadata.metadataExtendList)?has_content>
-            <#if 'true'=(siteAttribute.enable_multilingual)!>
+            <#if 'true'=(siteAttribute.enable_multilingual)! && (metadata.enableMultilingual)!false>
                 <dl class="nowrap">
                     <dt><@t.page 'language'/></dt>
                     <dd>

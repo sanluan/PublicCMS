@@ -5,12 +5,14 @@ import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.component.config.ConfigDataComponent;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.site.DirectiveComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.task.ScheduledTask;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
+import com.publiccms.logic.service.cms.CmsContentLangService;
 import com.publiccms.logic.service.log.LogTaskService;
 import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysTaskService;
@@ -23,12 +25,14 @@ import com.publiccms.logic.service.sys.SysTaskService;
 @Component
 public class BeanComponent {
     private static SiteComponent siteComponent;
+    private static SiteAttributeComponent siteAttributeComponent;
     private static ConfigDataComponent configDataComponent;
     private static SysTaskService sysTaskService;
     private static LogTaskService logTaskService;
     private static SysSiteService siteService;
     private static ScheduledTask scheduledTask;
     private static CmsContentAttributeService contentAttributeService;
+    private static CmsContentLangService contentLangService;
     private static TemplateComponent templateComponent;
     private static ModelComponent modelComponent;
     private static DirectiveComponent directiveComponent;
@@ -88,6 +92,7 @@ public class BeanComponent {
     public static CmsContentAttributeService getContentAttributeService() {
         return contentAttributeService;
     }
+
     /**
      * @param siteComponent
      *            the siteComponent to set
@@ -150,7 +155,7 @@ public class BeanComponent {
     public void setContentAttributeService(CmsContentAttributeService contentAttributeService) {
         BeanComponent.contentAttributeService = contentAttributeService;
     }
-    
+
     /**
      * @param templateComponent
      *            the templateComponent to set
@@ -159,7 +164,6 @@ public class BeanComponent {
     public void setTemplateComponent(TemplateComponent templateComponent) {
         BeanComponent.templateComponent = templateComponent;
     }
-    
 
     /**
      * @return the modelComponent
@@ -169,7 +173,8 @@ public class BeanComponent {
     }
 
     /**
-     * @param modelComponent the modelComponent to set
+     * @param modelComponent
+     *            the modelComponent to set
      */
     @Resource
     public void setModelComponent(ModelComponent modelComponent) {
@@ -184,10 +189,43 @@ public class BeanComponent {
     }
 
     /**
-     * @param directiveComponent the directiveComponent to set
+     * @param directiveComponent
+     *            the directiveComponent to set
      */
     @Resource
     public void setDirectiveComponent(DirectiveComponent directiveComponent) {
         BeanComponent.directiveComponent = directiveComponent;
+    }
+
+    /**
+     * @return the siteAttributeComponent
+     */
+    public static SiteAttributeComponent getSiteAttributeComponent() {
+        return siteAttributeComponent;
+    }
+
+    /**
+     * @param siteAttributeComponent
+     *            the siteAttributeComponent to set
+     */
+    @Resource
+    public void setSiteAttributeComponent(SiteAttributeComponent siteAttributeComponent) {
+        BeanComponent.siteAttributeComponent = siteAttributeComponent;
+    }
+
+    /**
+     * @return the contentLangService
+     */
+    public static CmsContentLangService getContentLangService() {
+        return contentLangService;
+    }
+
+    /**
+     * @param contentLangService
+     *            the contentLangService to set
+     */
+    @Resource
+    public void setContentLangService(CmsContentLangService contentLangService) {
+        BeanComponent.contentLangService = contentLangService;
     }
 }

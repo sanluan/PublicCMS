@@ -1,17 +1,16 @@
-<@cms.content id=id absoluteId=true>
+<@cms.content id=id absoluteId=true containsAttribute=true lang=lang>
     <#assign
         a=object
         parentId=a.parentId!''
         categoryId=a.categoryId!''
         modelId=a.modelId!''
-        attribute=getContentAttribute(a.id)
     />
 </@cms.content>
-<@cms.category id=categoryId!><#assign category=object/></@cms.category>
+<@cms.category id=categoryId! lang=lang><#assign category=object/></@cms.category>
 <@cms.model id=modelId!><#assign model=object/></@cms.model>
 <#macro bread category>
     <#if category.parentId?has_content>
-        <@cms.category id=category.parentId>
+        <@cms.category id=category.parentId lang=lang>
             <@bread object/>
             <a href="${object.url!}" target="_blank">${object.name}</a> &gt;
         </@cms.category>
@@ -82,12 +81,12 @@
         <#if a?has_content&&a.copied>
             <dl>
                 <dt>${(model.fieldTextMap['source'])!}:</dt>
-                <dd class="exclude-translate">${(attribute.source)!}</dd>
+                <dd class="exclude-translate">${(a.attribute.source)!}</dd>
             </dl>
             <dl>
                 <dt>${(model.fieldTextMap['sourceUrl'])!}:</dt>
                 <dd class="exclude-translate">
-                    <a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.sourceUrl)!}</a>
+                    <a href="${(attribute.sourceUrl)!}" target="_blank">${(a.attribute.sourceUrl)!}</a>
                 </dd>
             </dl>
         </#if>
@@ -143,17 +142,17 @@
         <#include "../include_page/extendData.html"/>
         <#if category?has_content&&category.extendId?has_content>
             <@sys.extendFieldList extendId=category.extendId>
-                <@extendData extendList=list extendValues=attribute type='view'/>
+                <@extendData extendList=list extendValues=a.attribute type='view'/>
             </@sys.extendFieldList>
         </#if>
         <#if model.extendList?has_content>
-            <@extendData extendList=model.extendList extendValues=attribute type='view'/>
+            <@extendData extendList=model.extendList extendValues=a.attribute type='view'/>
         </#if>
         <#if a.hasImages>
         <dl class="nowrap">
             <dt><@t.page 'image_list'/>:</dt>
             <dd>
-        <@cms.contentFileList contentId=a.id fileTypes='image'>
+        <@cms.contentFileList contentId=a.id lang=lang fileTypes='image'>
             <#list page.list as file>
                 <div class="thumbnail">
                     <img src="${(file.filePath)!}" alt="${(file.description)!}"/>
@@ -167,7 +166,7 @@
             <dl class="nowrap">
                 <dt><@t.page 'attach_list'/>:</dt>
                 <dd>
-            <@cms.contentFileList contentId=a.id fileTypes='video,audio,document,other'>
+            <@cms.contentFileList contentId=a.id lang=lang fileTypes='video,audio,document,other'>
                 <#list page.list as file>
                     <p><a href="${(file.filePath)!}" download="${(file.description)!}" class="exclude-translate" target="_blank">${(file.description)!}</a> <@t.page 'clicks'/>:${a.clicks!}</p>
                 </#list>
@@ -218,8 +217,8 @@
         </#if>
         <#if fieldList?seq_contains('content')>
             <div class="unit" id="content" class="exclude-translate">
-                <h3>${(model.fieldTextMap['content'])!} (<@t.page "word_count"/>:${(attribute.wordCount)!}):</h3>
-                ${(attribute.text?no_esc)!}
+                <h3>${(model.fieldTextMap['content'])!} (<@t.page "word_count"/>:${(a.attribute.wordCount)!}):</h3>
+                ${(a.attribute.text?no_esc)!}
             </div>
         </#if>
     </#if>

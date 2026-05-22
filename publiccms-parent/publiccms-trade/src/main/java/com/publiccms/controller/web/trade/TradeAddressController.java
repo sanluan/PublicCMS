@@ -72,7 +72,7 @@ public class TradeAddressController {
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long[] ids, HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
-            service.delete(ids);
+            service.delete(site.getId(), ids, user.getId());
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "delete.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     StringUtils.join(ids, Constants.COMMA)));

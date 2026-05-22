@@ -25,6 +25,12 @@
                 <dt><@t.page 'alias'/>:</dt></dt>
                 <dd>
                     <input class="required" name="alias" type="text" maxlength="50" size="20" value="${(a.alias)!}"/>
+                    <#if 'true'=((siteAttribute.enable_multilingual)!)>
+                        <label>
+                            <input name="enableMultilingual" type="checkbox"class="form-check-input"<#if a.enableMultilingual> checked="checked"</#if>/>
+                            <@t.message 'config.siteAttribute.enable_multilingual'/>
+                        </label>
+                    </#if>
                     <span class="placeExtend">
                         <label>
                             <input name="allowContribute" type="checkbox"class="form-check-input"/>

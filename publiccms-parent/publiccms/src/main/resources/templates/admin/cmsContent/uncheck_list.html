@@ -1,6 +1,6 @@
 <#if 0=admin.contentPermissions><#assign userId=admin.id/></#if>
 <#if 2=admin.contentPermissions><#assign deptId=admin.deptId/></#if>
-<@cms.contentList advanced=true status=2 modelId=modelIds categoryId=categoryId containChild=containChild title=title userId=userId deptId=deptId
+<@cms.contentList advanced=true lang=lang status=2 modelId=modelIds categoryId=categoryId containChild=containChild title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <@sys.authorized roleIds=admin.roles urls='cmsContent/delete,cmsContent/preview,cmsContent/add,cmsContent/check,cmsContent/reject,cmsComment/list'><#assign authorizedMap=map/></@sys.authorized>
@@ -8,6 +8,7 @@
     <form class="pagerForm" action="cmsContent/uncheck_list.html" autocomplete="off" onsubmit="return divSearch(this,'contentBox');" method="post">
         <#include "../include_page/parameters.html"/>
         <input name="categoryId" type="hidden" value="${categoryId!}"/>
+        <input name="lang" type="hidden" value="${lang!}"/>
         <div class="searchBar">
             <ul class="searchContent">
             <#if categoryId?has_content>
@@ -115,15 +116,15 @@
                             </#if>
                             [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
                             ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
-                            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" width="1200" height="600" rel="viewContent${a.id}">${(a.title)!}</a>
+                            <a href="cmsContent/view.html?id=${a.id}&lang=${lang!}" class="exclude-translate" target="dialog" width="1200" height="600" rel="viewContent${a.id}">${(a.title)!}</a>
                             <#if !a.onlyUrl && authorizedMap['cmsContent/preview']>
-                                <a href="cmsContent/preview?id=${a.id}" class="btnText blue" target="_blank"><@t.page 'button.preview'/></a>
+                                <a href="cmsContent/preview?id=${a.id}&lang=${lang!}" class="btnText blue" target="_blank"><@t.page 'button.preview'/></a>
                             </#if>
                             <#if a.quoteContentId?has_content && !a.parentId?has_content><span class="statusText orange"><@t.page "content.quote"/></span></#if>
                         </h3>
                         <p>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                                <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="btnText" target="navTab" rel="cmsContent/list" data-change-title="false"><@t.page 'content.child_management'/></a></label>
+                                <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}&lang=${lang!}" class="btnText" target="navTab" rel="cmsContent/list" data-change-title="false"><@t.page 'content.child_management'/></a></label>
                             </#if>
                             <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickname)!}</span>
                             <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>

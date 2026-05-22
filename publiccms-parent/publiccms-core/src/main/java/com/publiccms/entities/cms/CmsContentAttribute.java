@@ -71,8 +71,7 @@ public class CmsContentAttribute implements java.io.Serializable {
     }
 
     public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, String searchText,
-            String dictionaryValues, String filesText, BigDecimal minPrice,
-            BigDecimal maxPrice, String text, int wordCount) {
+            String dictionaryValues, String filesText, BigDecimal minPrice, BigDecimal maxPrice, String text, int wordCount) {
         this.contentId = contentId;
         this.source = source;
         this.sourceUrl = sourceUrl;

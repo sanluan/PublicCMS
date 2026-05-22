@@ -38,6 +38,12 @@
                         <input name="useDynamic" type="checkbox" class="form-check-input"/>
                         <@t.page 'allow_dynamic'/>
                     </label>
+                    <#if 'true'=((siteAttribute.enable_multilingual)!)>
+                        <label>
+                            <input name="enableMultilingual" type="checkbox"class="form-check-input"<#if a.enableMultilingual> checked="checked"</#if>/>
+                            <@t.message 'config.siteAttribute.enable_multilingual'/>
+                        </label>
+                    </#if>
                 </dd>
             </dl>
         <#if site.useStatic>
