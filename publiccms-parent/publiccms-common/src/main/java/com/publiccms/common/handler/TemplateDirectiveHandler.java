@@ -11,12 +11,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.publiccms.common.base.BaseHandler;
-import com.publiccms.common.servlet.HttpRequestHashModel;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.TemplateModelUtils;
 
 import freemarker.core.Environment;
 import freemarker.core.Environment.Namespace;
+import freemarker.ext.jakarta.servlet.HttpRequestHashModel;
 import freemarker.template.ObjectWrapper;
 import freemarker.template.TemplateDirectiveBody;
 import freemarker.template.TemplateException;

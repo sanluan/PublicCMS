@@ -34,7 +34,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("tradeAddress")
 public class TradeAddressController {
 
-    private String[] ignoreProperties = new String[] { "id" };
+    private String[] ignoreProperties = new String[] { "id", "userId", "siteId" };
 
     /**
      * @param site
@@ -47,13 +47,14 @@ public class TradeAddressController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, TradeAddress entity,
             HttpServletRequest request) {
-        entity.setSiteId(site.getId());
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "update.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     JsonUtils.getString(entity)));
         } else {
+            entity.setSiteId(site.getId());
+            entity.setUserId(user.getId());
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "save.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -72,7 +73,7 @@ public class TradeAddressController {
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long[] ids, HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
-            service.delete(ids);
+            service.delete(site.getId(), ids, user.getId());
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "delete.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, Constants.COMMA)));
