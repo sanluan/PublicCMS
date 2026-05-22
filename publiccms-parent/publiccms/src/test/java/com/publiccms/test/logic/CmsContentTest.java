@@ -53,12 +53,13 @@ class CmsContentTest {
                 CmsContentService.STATUS_NORMAL);
         entity.setDescription(text);
         contentService.save(entity);
-        HighLighterQuery highLighterQuery = new HighLighterQuery(true);
+        HighLighterQuery highLighterQuery = new HighLighterQuery();
         highLighterQuery.setPreTag("<em>");
         highLighterQuery.setPostTag("</em>");
-        PageHandler page = contentService.query(new CmsContentSearchQuery((short) 1, false, true, highLighterQuery, "天津黑核科技有限公司",
-                null, new String[] { "title", "description" }, null, null, null, 1, null, new String[] { "1" }, null, null, null,
-                null, null, CommonUtils.getMinuteDate()), false, null, null, null, null, null);
+        PageHandler page = contentService.query(new CmsContentSearchQuery((short) 1, false, true, "天津黑核科技有限公司", null,
+                new String[] { "title", "description" }, null, null, null, 1, null, new String[] { "1" }, null, null, null, null,
+                null, CommonUtils.getMinuteDate()), false, null, null, null, null, null);
+        contentService.higtLighter((List<CmsContent>) page.getList(), text, highLighterQuery);
         for (CmsContent content : (List<CmsContent>) page.getList()) {
             log.info(content.getTitle() + "\t" + content.getDescription());
         }

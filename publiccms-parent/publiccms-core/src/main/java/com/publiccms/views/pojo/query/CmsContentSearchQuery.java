@@ -4,8 +4,6 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.publiccms.common.base.HighLighterQuery;
-
 public class CmsContentSearchQuery implements java.io.Serializable {
 
     /**
@@ -15,10 +13,11 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     private Short siteId;
     private boolean projection;
     private boolean phrase;
-    private HighLighterQuery highLighterQuery;
+    private String lang;
     private String text;
     private String exclude;
     private String[] fields;
+    private String prefix;
     private Long[] tagIds;
     private Long userId;
     private Long parentId;
@@ -39,15 +38,14 @@ public class CmsContentSearchQuery implements java.io.Serializable {
 
     }
 
-    public CmsContentSearchQuery(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery, String text,
-            String exclude, String[] fields, Long[] tagIds, Long userId, Long parentId, Integer categoryId, Integer[] categoryIds,
-            String[] modelIds, String[] extendsValues, String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate,
+    public CmsContentSearchQuery(Short siteId, boolean projection, boolean phrase, String text, String exclude, String[] fields,
+            Long[] tagIds, Long userId, Long parentId, Integer categoryId, Integer[] categoryIds, String[] modelIds,
+            String[] extendsValues, String[] dictionaryValues, Boolean dictionaryUnion, Date startPublishDate,
             Date endPublishDate, Date expiryDate) {
         super();
         this.siteId = siteId;
         this.projection = projection;
         this.phrase = phrase;
-        this.highLighterQuery = highLighterQuery;
         this.text = text;
         this.exclude = exclude;
         this.fields = fields;
@@ -111,18 +109,18 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
-     * @return the highLighterQuery
+     * @return the lang
      */
-    public HighLighterQuery getHighLighterQuery() {
-        return highLighterQuery;
+    public String getLang() {
+        return lang;
     }
 
     /**
-     * @param highLighterQuery
-     *            the highLighterQuery to set
+     * @param lang
+     *            the lang to set
      */
-    public void setHighLighterQuery(HighLighterQuery highLighterQuery) {
-        this.highLighterQuery = highLighterQuery;
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     /**
@@ -171,6 +169,21 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     }
 
     /**
+     * @return the prefix
+     */
+    public String getPrefix() {
+        return prefix;
+    }
+
+    /**
+     * @param prefix
+     *            the prefix to set
+     */
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    /**
      * @return the tagIds
      */
     public Long[] getTagIds() {
@@ -199,6 +212,7 @@ public class CmsContentSearchQuery implements java.io.Serializable {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
     /**
      * @return the parentId
      */

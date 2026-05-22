@@ -21,6 +21,9 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.BeanComponent;
 import com.publiccms.logic.component.config.SiteAttributeComponent;
 
+import freemarker.ext.servlet.FreemarkerServlet;
+import freemarker.template.SimpleHash;
+
 /**
  * 
  * AbstractCmsView
@@ -62,6 +65,12 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
             throws Exception {
         model.put(SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE, new SafeRequestContext(request, response, getServletContext(), model));
         super.doRender(model, request, response);
+    }
+
+    protected SimpleHash buildTemplateModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) {
+        SimpleHash fmModel = super.buildTemplateModel(model, request, response);
+        fmModel.remove(FreemarkerServlet.KEY_APPLICATION);
+        return fmModel;
     }
 
     @Override

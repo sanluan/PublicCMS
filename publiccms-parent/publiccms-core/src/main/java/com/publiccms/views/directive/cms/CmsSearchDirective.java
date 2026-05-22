@@ -29,6 +29,7 @@ import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ContentConfigComponent;
 import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
@@ -109,6 +110,8 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
     @Resource
     protected ContentConfigComponent contentConfigComponent;
     @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
+    @Resource
     protected FileUploadComponent fileUploadComponent;
 
     @Override
@@ -136,22 +139,32 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
         Integer pageIndex = handler.getInteger("pageIndex", 1);
         Integer pageSize = handler.getInteger("pageSize", handler.getInteger("count", 30));
         Date currentDate = CommonUtils.getMinuteDate();
-        HighLighterQuery highLighterQuery = new HighLighterQuery(handler.getBoolean("highlight", false));
-        if (highLighterQuery.isHighlight()) {
+        HighLighterQuery highLighterQuery = null;
+        if (handler.getBoolean("highlight", false)) {
+            highLighterQuery = new HighLighterQuery();
             highLighterQuery.setPreTag(handler.getString("preTag"));
             highLighterQuery.setPostTag(handler.getString("postTag"));
         }
         boolean containsAttribute = handler.getBoolean("containsAttribute", false);
         String lang = handler.getString("lang");
+
+        CmsContentSearchQuery query = new CmsContentSearchQuery(site.getId(), handler.getBoolean("projection", false),
+                handler.getBoolean("phrase", false), word, handler.getString("exclude"), handler.getStringArray("fields"), tagIds,
+                handler.getLong("userId"), handler.getLong("parentId"), handler.getInteger("categoryId"),
+                handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"),
+                handler.getStringArray("extendsValues"), handler.getStringArray("dictionaryValues"),
+                handler.getBoolean("dictionaryUnion"), handler.getDate("startPublishDate"),
+                handler.getDate("endPublishDate", currentDate), currentDate);
+
+        if (siteAttributeComponent.enableMultilingual(site.getId())) {
+            String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+            if (null != lang && !lang.equalsIgnoreCase(defaultLang)) {
+                query.setLang(lang);
+            }
+        }
         containsAttribute = handler.inHttp() ? getAdvanced(handler) && containsAttribute : containsAttribute;
         try {
-            CmsContentSearchQuery query = new CmsContentSearchQuery(site.getId(), handler.getBoolean("projection", false),
-                    handler.getBoolean("phrase", false), highLighterQuery, word, handler.getString("exclude"),
-                    handler.getStringArray("fields"), tagIds, handler.getLong("userId"), handler.getLong("parentId"),
-                    handler.getInteger("categoryId"), handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"),
-                    handler.getStringArray("extendsValues"), handler.getStringArray("dictionaryValues"),
-                    handler.getBoolean("dictionaryUnion"), handler.getDate("startPublishDate"),
-                    handler.getDate("endPublishDate", currentDate), currentDate);
+
             PageHandler page = null;
             if (factSearch) {
                 page = service.facetQuery(query, handler.getBoolean("containChild"), handler.getString("orderField"),
@@ -209,6 +222,9 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                     };
                 }
                 list.forEach(consumer);
+                if (null != highLighterQuery) {
+                    service.higtLighter(list, word, highLighterQuery);
+                }
             }
             return page;
         } catch (Exception e) {

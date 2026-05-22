@@ -421,9 +421,9 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return page
      */
-    public PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
-            Integer pageIndex, Integer pageSize, Integer maxResults) {
-        return getPage(optionsStep, highLighterQuery, null, pageIndex, pageSize, maxResults);
+    public PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, Integer pageIndex, Integer pageSize,
+            Integer maxResults) {
+        return getPage(optionsStep, null, pageIndex, pageSize, maxResults);
     }
 
     /**
@@ -433,9 +433,8 @@ public abstract class BaseDao<E> {
      * @param pageSize
      * @return page
      */
-    public PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
-            Integer pageIndex, Integer pageSize) {
-        return getPage(optionsStep, highLighterQuery, null, pageIndex, pageSize, Integer.MAX_VALUE);
+    public PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, Integer pageIndex, Integer pageSize) {
+        return getPage(optionsStep, null, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
@@ -447,8 +446,8 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return results page
      */
-    public PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
-            Integer firstResult, Integer pageIndex, Integer pageSize, Integer maxResults) {
+    public PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, Integer firstResult, Integer pageIndex,
+            Integer pageSize, Integer maxResults) {
         PageHandler page = new PageHandler(firstResult, pageIndex, pageSize);
         SearchResult<E> result;
         if (null == pageSize) {
@@ -468,7 +467,6 @@ public abstract class BaseDao<E> {
         }
 
         List<E> resultList = result.hits();
-        higtLighter(resultList, highLighterQuery);
         page.setList(resultList);
         return page;
     }
@@ -484,10 +482,8 @@ public abstract class BaseDao<E> {
      */
     public FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep,
             UnaryOperator<SearchQueryOptionsStep<?, E, ?, ?, ?>> facetFieldKeys,
-            Function<SearchResult<E>, Map<String, Map<String, Long>>> facetFieldResult, HighLighterQuery highLighterQuery,
-            Integer pageIndex, Integer pageSize) {
-        return getFacetPage(optionsStep, facetFieldKeys, facetFieldResult, highLighterQuery, pageIndex, pageSize,
-                Integer.MAX_VALUE);
+            Function<SearchResult<E>, Map<String, Map<String, Long>>> facetFieldResult, Integer pageIndex, Integer pageSize) {
+        return getFacetPage(optionsStep, facetFieldKeys, facetFieldResult, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
@@ -502,8 +498,8 @@ public abstract class BaseDao<E> {
      */
     public FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep,
             UnaryOperator<SearchQueryOptionsStep<?, E, ?, ?, ?>> facetFieldKeys,
-            Function<SearchResult<E>, Map<String, Map<String, Long>>> facetFieldResult, HighLighterQuery highLighterQuery,
-            Integer pageIndex, Integer pageSize, Integer maxResults) {
+            Function<SearchResult<E>, Map<String, Map<String, Long>>> facetFieldResult, Integer pageIndex, Integer pageSize,
+            Integer maxResults) {
         FacetPageHandler page = new FacetPageHandler(pageIndex, pageSize);
         facetFieldKeys.apply(optionsStep);
         SearchResult<E> result;
@@ -522,9 +518,6 @@ public abstract class BaseDao<E> {
             }
         }
         List<E> resultList = result.hits();
-        if (null != highLighterQuery) {
-            higtLighter(resultList, highLighterQuery);
-        }
         page.setList(resultList);
         page.setFacetMap(facetFieldResult.apply(result));
         return page;
@@ -534,8 +527,8 @@ public abstract class BaseDao<E> {
      * @param resultList
      * @param highLighterQuery
      */
-    protected void higtLighter(List<E> resultList, HighLighterQuery highLighterQuery) {
-        if (highLighterQuery.isHighlight() && CommonUtils.notEmpty(highLighterQuery.getFields())) {
+    public void higtLighter(List<E> resultList, HighLighterQuery highLighterQuery) {
+        if (CommonUtils.notEmpty(highLighterQuery.getFields())) {
             if (null == highLighterQuery.getQuery()) {
                 for (E e : resultList) {
                     for (String fieldName : highLighterQuery.getFields()) {

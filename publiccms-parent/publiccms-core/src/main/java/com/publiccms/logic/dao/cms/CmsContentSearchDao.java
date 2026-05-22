@@ -1,9 +1,12 @@
 package com.publiccms.logic.dao.cms;
 
+import java.util.Arrays;
+
 // Generated 2015-5-8 16:50:23 by com.publiccms.common.generator.SourceGenerator
 
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -33,6 +36,7 @@ import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.base.HighLighterQuery;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.search.CmsContentAttributeBinder;
@@ -55,13 +59,16 @@ public class CmsContentSearchDao {
     private static final String categoryIdField = "categoryId";
     private static final String modelIdField = "modelId";
     private static final String descriptionField = "description";
-    private static final String[] textFields = new String[] { titleField, "author", "editor", descriptionField, "text", "files" };
+    private static final String filesField = "files";
+    private static final String[] textFields = new String[] { titleField, "author", "editor", descriptionField, "text",
+            filesField };
     private static final String[] highLighterTextFields = new String[] { titleField, "author", "editor", descriptionField };
     private static final String[] tagFields = new String[] { "tagIds" };
     private static final String dictionaryField = "dictionaryValues";
     private static final String[] sortableFields = new String[] { "sort", "publishDate", "clicks", "collections", "score",
             "minPrice", "maxPrice" };
     private static final String ExtendField = "extend.";
+    private static final String LangField = "lang.";
 
     private static final Date startDate = new Date(1);
 
@@ -85,9 +92,35 @@ public class CmsContentSearchDao {
         } else {
             queryEntity.setFields(textFields);
         }
-        initHighLighterQuery(queryEntity.getHighLighterQuery(), queryEntity.getText());
+
+        if (CommonUtils.notEmpty(queryEntity.getLang())) {
+            queryEntity.setFields(ArrayUtils.removeElements(queryEntity.getFields(), filesField));
+            queryEntity.setPrefix(CommonUtils.joinString(LangField, queryEntity.getLang(), Constants.UNDERLINE));
+        }
+
         SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(queryEntity, orderField, orderType);
-        return dao.getPage(optionsStep, queryEntity.getHighLighterQuery(), pageIndex, pageSize, maxResults);
+        return dao.getPage(optionsStep, pageIndex, pageSize, maxResults);
+    }
+
+    public void higtLighter(List<CmsContent> resultList, String text, HighLighterQuery highLighterQuery) {
+        highLighterQuery.setFields(highLighterTextFields);
+        if (CommonUtils.notEmpty(text)) {
+            Backend backend = dao.getSearchBackend();
+            Optional<? extends Analyzer> analyzer;
+            if (backend instanceof LuceneBackend) {
+                analyzer = backend.unwrap(LuceneBackend.class).analyzer(CmsContentAttributeBinder.ANALYZER_NAME);
+            } else {
+                analyzer = Optional.of(new StandardAnalyzer());
+            }
+            if (analyzer.isPresent()) {
+                MultiFieldQueryParser queryParser = new MultiFieldQueryParser(highLighterTextFields, analyzer.get());
+                try {
+                    highLighterQuery.setQuery(queryParser.parse(text));
+                } catch (ParseException e) {
+                }
+            }
+        }
+        dao.higtLighter(resultList, highLighterQuery);
     }
 
     /**
@@ -110,7 +143,12 @@ public class CmsContentSearchDao {
         } else {
             queryEntity.setFields(textFields);
         }
-        initHighLighterQuery(queryEntity.getHighLighterQuery(), queryEntity.getText());
+
+        if (CommonUtils.notEmpty(queryEntity.getLang())) {
+            queryEntity.setFields(ArrayUtils.removeElements(queryEntity.getFields(), filesField));
+            queryEntity.setPrefix(CommonUtils.joinString(LangField, queryEntity.getLang(), Constants.UNDERLINE));
+        }
+
         SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(queryEntity, orderField, orderType);
 
         AggregationKey<Map<Integer, Long>> categoryIdKey = AggregationKey.of("categoryIdKey");
@@ -135,30 +173,7 @@ public class CmsContentSearchDao {
             map.put(modelIdField, r.aggregation(modelIdKey));
             return map;
         };
-        return dao.getFacetPage(optionsStep, facetFieldKeys, facetFieldResult, queryEntity.getHighLighterQuery(), pageIndex,
-                pageSize, maxResults);
-    }
-
-    private void initHighLighterQuery(HighLighterQuery highLighterQuery, String text) {
-        if (highLighterQuery.isHighlight()) {
-            highLighterQuery.setFields(highLighterTextFields);
-            if (CommonUtils.notEmpty(text)) {
-                Backend backend = dao.getSearchBackend();
-                Optional<? extends Analyzer> analyzer;
-                if (backend instanceof LuceneBackend) {
-                    analyzer = backend.unwrap(LuceneBackend.class).analyzer(CmsContentAttributeBinder.ANALYZER_NAME);
-                } else {
-                    analyzer = Optional.of(new StandardAnalyzer());
-                }
-                if (analyzer.isPresent()) {
-                    MultiFieldQueryParser queryParser = new MultiFieldQueryParser(highLighterTextFields, analyzer.get());
-                    try {
-                        highLighterQuery.setQuery(queryParser.parse(text));
-                    } catch (ParseException e) {
-                    }
-                }
-            }
-        }
+        return dao.getFacetPage(optionsStep, facetFieldKeys, facetFieldResult, pageIndex, pageSize, maxResults);
     }
 
     private SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> getOptionsStep(CmsContentSearchQuery queryEntity, String orderField,
@@ -189,30 +204,51 @@ public class CmsContentSearchDao {
             if (CommonUtils.notEmpty(queryEntity.getUserId())) {
                 b.must(t -> t.match().field(userIdField).matching(queryEntity.getUserId()));
             }
+
             if (CommonUtils.notEmpty(queryEntity.getText())) {
                 Consumer<? super BooleanPredicateOptionsCollector<?>> keywordFiledsContributor = c -> {
                     if (ArrayUtils.contains(queryEntity.getFields(), titleField)) {
                         c.should(queryEntity.isPhrase()
-                                ? t -> t.phrase().field(titleField).matching(queryEntity.getText()).boost(2.0f)
-                                : t -> t.match().field(titleField).matching(queryEntity.getText()).boost(2.0f));
+                                ? t -> t.phrase().field(CommonUtils.joinString(queryEntity.getPrefix(), titleField))
+                                        .matching(queryEntity.getText()).boost(2.0f)
+                                : t -> t.match().field(CommonUtils.joinString(queryEntity.getPrefix(), titleField))
+                                        .matching(queryEntity.getText()).boost(2.0f));
                     }
                     if (ArrayUtils.contains(queryEntity.getFields(), descriptionField)) {
                         c.should(queryEntity.isPhrase()
-                                ? t -> t.phrase().field(descriptionField).matching(queryEntity.getText()).boost(1.5f)
-                                : t -> t.match().field(descriptionField).matching(queryEntity.getText()).boost(1.5f));
+                                ? t -> t.phrase().field(CommonUtils.joinString(queryEntity.getPrefix(), descriptionField))
+                                        .matching(queryEntity.getText()).boost(1.5f)
+                                : t -> t.match().field(CommonUtils.joinString(queryEntity.getPrefix(), descriptionField))
+                                        .matching(queryEntity.getText()).boost(1.5f));
                     }
+
                     String[] tempFields = ArrayUtils.removeElements(queryEntity.getFields(), titleField, descriptionField);
                     if (CommonUtils.notEmpty(tempFields)) {
-                        c.should(queryEntity.isPhrase() ? t -> t.phrase().fields(tempFields).matching(queryEntity.getText())
-                                : t -> t.match().fields(tempFields).matching(queryEntity.getText()));
+                        if (CommonUtils.notEmpty(queryEntity.getPrefix())) {
+                            String[] fields = Arrays.stream(tempFields)
+                                    .map(f -> CommonUtils.joinString(queryEntity.getPrefix(), f)).toArray(String[]::new);
+                            c.should(queryEntity.isPhrase() ? t -> t.phrase().fields(fields).matching(queryEntity.getText())
+                                    : t -> t.match().fields(fields).matching(queryEntity.getText()));
+                        } else {
+                            c.should(queryEntity.isPhrase() ? t -> t.phrase().fields(tempFields).matching(queryEntity.getText())
+                                    : t -> t.match().fields(tempFields).matching(queryEntity.getText()));
+                        }
+
                     }
                 };
                 b.must(f -> f.bool().with(keywordFiledsContributor));
             }
             if (CommonUtils.notEmpty(queryEntity.getExclude())) {
-                b.mustNot(queryEntity.isPhrase()
-                        ? t -> t.phrase().fields(queryEntity.getFields()).matching(queryEntity.getExclude())
-                        : t -> t.match().fields(queryEntity.getFields()).matching(queryEntity.getExclude()));
+                if (CommonUtils.notEmpty(queryEntity.getPrefix())) {
+                    String[] fields = Arrays.stream(queryEntity.getFields())
+                            .map(f -> CommonUtils.joinString(queryEntity.getPrefix(), f)).toArray(String[]::new);
+                    b.mustNot(queryEntity.isPhrase() ? t -> t.phrase().fields(fields).matching(queryEntity.getExclude())
+                            : t -> t.match().fields(fields).matching(queryEntity.getExclude()));
+                } else {
+                    b.mustNot(queryEntity.isPhrase()
+                            ? t -> t.phrase().fields(queryEntity.getFields()).matching(queryEntity.getExclude())
+                            : t -> t.match().fields(queryEntity.getFields()).matching(queryEntity.getExclude()));
+                }
             }
             if (CommonUtils.notEmpty(queryEntity.getTagIds())) {
                 Consumer<? super BooleanPredicateOptionsCollector<?>> tagIdsFiledsContributor = c -> {
@@ -230,17 +266,26 @@ public class CmsContentSearchDao {
                         if (CommonUtils.notEmpty(value)) {
                             String[] vs = StringUtils.split(value, ":", 2);
                             if (2 == vs.length) {
-                                c.should(queryEntity.isPhrase()
-                                        ? t -> t.phrase().field(CommonUtils.joinString(ExtendField, vs[0])).matching(vs[1])
-                                                .boost(2.0f)
-                                        : t -> t.match().field(CommonUtils.joinString(ExtendField, vs[0])).matching(vs[1])
-                                                .boost(2.0f));
+                                if (CommonUtils.notEmpty(queryEntity.getPrefix())) {
+                                    c.should(queryEntity.isPhrase()
+                                            ? t -> t.phrase().field(CommonUtils.joinString(queryEntity.getPrefix(), vs[0]))
+                                                    .matching(vs[1]).boost(2.0f)
+                                            : t -> t.match().field(CommonUtils.joinString(queryEntity.getPrefix(), vs[0]))
+                                                    .matching(vs[1]).boost(2.0f));
+                                } else {
+                                    c.should(queryEntity.isPhrase()
+                                            ? t -> t.phrase().field(CommonUtils.joinString(ExtendField, vs[0])).matching(vs[1])
+                                                    .boost(2.0f)
+                                            : t -> t.match().field(CommonUtils.joinString(ExtendField, vs[0])).matching(vs[1])
+                                                    .boost(2.0f));
+                                }
                             }
                         }
                     }
                 };
                 b.must(f -> f.bool().with(extendsFiledsContributor));
             }
+
             if (CommonUtils.notEmpty(queryEntity.getDictionaryValues())) {
                 Consumer<? super BooleanPredicateOptionsCollector<?>> dictionaryFiledsContributor = c -> {
                     for (String value : queryEntity.getDictionaryValues()) {

@@ -979,7 +979,7 @@ INSERT INTO `sys_module` VALUES ('config_list', 'sysConfig/list', NULL, 'icon-co
 INSERT INTO `sys_module` VALUES ('content', NULL, NULL, 'bi bi-file-post', NULL, 1, 1, 2);
 INSERT INTO `sys_module` VALUES ('content_add', 'cmsContent/add', 'cmsContent/addMore,cmsContent/save,cmsContent/addLang,cmsContentLang/save', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_change_model', 'cmsContent/changeModelParameters', 'cmsContent/changeModel', NULL, 'content_list', 0, 0, 0);
-INSERT INTO `sys_module` VALUES ('content_check', 'cmsContent/uncheck_list', 'cmsContent/check,cmsContent/reject', NULL, 'content_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('content_check', NULL, 'cmsContent/check,cmsContent/reject', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_delete', NULL, 'cmsContent/delete', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_distribute', 'cmsCategory/lookupBySiteId', 'cmsContent/distribute', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_export', 'cmsContent/export', 'cmsContent/exportExcel,cmsContent/exportData', NULL, 'content_list', 0, 0, 0);
@@ -996,9 +996,10 @@ INSERT INTO `sys_module` VALUES ('content_recycle_list', 'cmsRecycleContent/list
 INSERT INTO `sys_module` VALUES ('content_recycle_recycle', NULL, 'cmsContent/recycle', NULL, 'content_recycle_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_refresh', NULL, 'cmsContent/refresh', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_search', 'cmsContent/search', 'cmsContent/view', 'icon-search', 'content', 1, 0, 3);
-INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', NULL, 'content_list', 0, 0, 0)
-INSERT INTO `sys_module` VALUES ('content_source', 'cmsContentSource/list', 'cmsContentSource/add,cmsContentSource/save,cmsContentSource/delete', NULL, 'content_list', 0, 0, 0)
+INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', NULL, 'content_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('content_source', 'cmsContentSource/list', 'cmsContentSource/add,cmsContentSource/save,cmsContentSource/delete', NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_uncheck', NULL, 'cmsContent/uncheck', NULL, 'content_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('content_uncheck_list', 'cmsContent/uncheck_list', NULL, NULL, 'content_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('content_view', 'cmsContent/view', 'cmsContent/preview,cmsContent/previewBeforeSave', NULL, 'common', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_add', 'sysDept/add', 'sysDept/save,sysDept/virify', NULL, 'dept_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_delete', NULL, 'sysDept/delete', NULL, 'dept_list', 0, 0, 0);
@@ -1398,6 +1399,9 @@ INSERT INTO `sys_module_lang` VALUES ('content_source', 'zh', '来源管理');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck', 'en', 'Uncheck');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck', 'ja', '審査を取り消す');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck', 'zh', '撤销审核');
+INSERT INTO `sys_module_lang` VALUES ('content_uncheck_list', 'en', 'Pending');
+INSERT INTO `sys_module_lang` VALUES ('content_uncheck_list', 'ja', '審査待ち');
+INSERT INTO `sys_module_lang` VALUES ('content_uncheck_list', 'zh', '待审核内容');
 INSERT INTO `sys_module_lang` VALUES ('content_view', 'en', 'View');
 INSERT INTO `sys_module_lang` VALUES ('content_view', 'ja', '見る');
 INSERT INTO `sys_module_lang` VALUES ('content_view', 'zh', '查看');
@@ -2124,7 +2128,7 @@ DROP TABLE IF EXISTS `sys_user_setting`;
 CREATE TABLE `sys_user_setting` (
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `code` varchar(50) NOT NULL COMMENT '编码',
-  `data` longblob NOT NULL COMMENT '值',
+  `data` longtext NOT NULL COMMENT '值',
   `create_date` datetime(0) NOT NULL COMMENT '创建日期',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`user_id`,`code`)

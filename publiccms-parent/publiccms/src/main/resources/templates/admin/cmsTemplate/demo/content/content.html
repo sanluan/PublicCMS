@@ -90,7 +90,7 @@
                             <label>
                                 <input type="radio" name="productId" value="${product.id}"/>
                                 <#if product.cover?has_content>
-                                    <img src="<@tools.thumb path=product.cover width=30 height=30/>" title="${product.title}" alt="${product.title}" style="max-width:30px;max-height30px;border:1px solid;"/>
+                                    <img src="<@tools.thumb path=product.cover width=30 height=30/>" title="${product.title}" alt="${product.title}" style="max-width:30px;max-height:30px;border:1px solid;"/>
                                 </#if>
                                 ${product.title}
                             </label>
@@ -191,8 +191,20 @@
     <script>
         $("nav a[data-id="+$(".bread a:first-child").data("id")+"]").addClass("selected");
 
-        $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
-            $('article p em').text(data.clicks);
+        fetch('${site.dynamicPath!}api/contentClick?id=${content.id}').then(response => {
+            if(response.ok){
+                return response.json();
+            }
+        }).then(data => {
+            if(data.clicks > 100000){
+                document.querySelector('article p em').textContent="10万+";
+            } else if(data.clicks <10000){
+                document.querySelector('article p em').textContent=data.clicks;
+            } else {
+                 document.querySelector('article p em').textContent=((data.clicks/10000)|0)+"万+";
+            }
+        }).catch(error => {
+            console.error('error', error);
         });
 
         uParse('#content',{rootPath: '${site.dynamicPath}resource/plugins/ueditor/'});
