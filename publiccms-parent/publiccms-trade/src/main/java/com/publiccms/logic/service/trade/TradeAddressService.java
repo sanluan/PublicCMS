@@ -1,6 +1,9 @@
 package com.publiccms.logic.service.trade;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -27,10 +30,18 @@ public class TradeAddressService extends BaseService<TradeAddress> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Long userId, 
-                Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, userId, 
-                pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, Long userId, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, userId, pageIndex, pageSize);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void delete(short siteId, Long[] ids, Long userId) {
+        List<TradeAddress> entityList = getEntitys(ids);
+        for (TradeAddress entity : entityList) {
+            if (null != entity && siteId == entity.getSiteId() && (null == userId || entity.getUserId() == userId)) {
+                dao.delete(entity);
+            }
+        }
     }
     
     @Resource
