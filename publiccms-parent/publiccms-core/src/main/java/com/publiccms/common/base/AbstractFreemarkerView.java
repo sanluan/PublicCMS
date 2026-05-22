@@ -70,6 +70,7 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
     protected SimpleHash buildTemplateModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) {
         SimpleHash fmModel = super.buildTemplateModel(model, request, response);
         fmModel.remove(FreemarkerServlet.KEY_APPLICATION);
+        fmModel.remove(FreemarkerServlet.KEY_REQUEST);
         return fmModel;
     }
 
