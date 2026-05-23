@@ -1,5 +1,7 @@
 package com.publiccms.common.tools;
 
+import java.util.function.Function;
+
 import org.springframework.beans.BeanUtils;
 
 import com.publiccms.common.constants.Constants;
@@ -58,6 +60,14 @@ public class CmsLangUtils {
      */
     public static boolean initLang(CmsContent entity, CmsContentLang langEntity) {
         return initLang(entity, entity.getLang(), langEntity);
+    }
+
+    public static Function<CmsContent, Long> getContentIdFunction(boolean absoluteId) {
+        return e -> getContentId(e, absoluteId);
+    }
+
+    public static Long getContentId(CmsContent e, boolean absoluteId) {
+        return (absoluteId && null == e.getParentId() && null != e.getQuoteContentId()) ? e.getQuoteContentId() : e.getId();
     }
 
     /**

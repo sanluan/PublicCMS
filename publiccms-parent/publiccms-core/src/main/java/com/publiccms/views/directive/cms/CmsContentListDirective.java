@@ -150,16 +150,17 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         if (null != list) {
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             boolean absoluteId = handler.getBoolean("absoluteId", true);
-            Long[] ids = list.stream().map(CmsContent::getId).toArray(Long[]::new);
+            Long[] ids = list.stream().map(CmsLangUtils.getContentIdFunction(absoluteId)).toArray(Long[]::new);
             KeywordsConfig config = containsAttribute ? contentConfigComponent.getKeywordsConfig(site.getId()) : null;
             Map<Object, CmsContentAttribute> attributeMap = containsAttribute
                     ? CommonUtils.listToMap(attributeService.getEntitys(ids), k -> k.getContentId())
                     : null;
 
-            CmsContentLangId[] langIds = list.stream()
-                    .map(e -> new CmsContentLangId(
-                            (null == e.getParentId() && null != e.getQuoteContentId()) ? e.getQuoteContentId() : e.getId(), lang))
-                    .toArray(CmsContentLangId[]::new);
+            CmsContentLangId[] langIds = null;
+            if (CommonUtils.notEmpty(lang)) {
+                langIds = list.stream().map(e -> new CmsContentLangId(CmsLangUtils.getContentId(e, absoluteId), lang))
+                        .toArray(CmsContentLangId[]::new);
+            }
             Map<Long, CmsContentLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
                     k -> k.getId().getContentId());
 
@@ -174,9 +175,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
 
                 CmsContentLang langEntity = null;
                 if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
-                    langEntity = langMap
-                            .get((null == entity.getParentId() && null != entity.getQuoteContentId()) ? entity.getQuoteContentId()
-                                    : entity.getId());
+                    langEntity = langMap.get(CmsLangUtils.getContentId(entity, absoluteId));
                     CmsLangUtils.initLang(entity, langEntity);
                 }
 
@@ -185,7 +184,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                     fileUploadComponent.initContentCover(site, entity);
                 }
                 if (containsAttribute) {
-                    CmsContentAttribute attribute = attributeMap.get(entity.getId());
+                    CmsContentAttribute attribute = attributeMap.get(CmsLangUtils.getContentId(entity, absoluteId));
                     CmsLangUtils.initLang(attribute, langEntity);
                     entity.setAttribute(ExtendUtils.getAttributeMap(attribute, config));
                 }

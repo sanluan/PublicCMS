@@ -37,6 +37,12 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      */
     private Integer size;
     /**
+     * enable multilingual
+     * <p>
+     * 启用国际化
+     */
+    private boolean enableMultilingual;
+    /**
      * front administrator ids
      * <p>
      * 前台管理员ids
@@ -142,6 +148,21 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      */
     public void setSize(Integer size) {
         this.size = size;
+    }
+
+    /**
+     * @return the enableMultilingual
+     */
+    public boolean isEnableMultilingual() {
+        return enableMultilingual;
+    }
+
+    /**
+     * @param enableMultilingual
+     *            the enableMultilingual to set
+     */
+    public void setEnableMultilingual(boolean enableMultilingual) {
+        this.enableMultilingual = enableMultilingual;
     }
 
     /**

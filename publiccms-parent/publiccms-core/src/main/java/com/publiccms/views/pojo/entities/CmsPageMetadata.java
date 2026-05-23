@@ -26,6 +26,12 @@ public class CmsPageMetadata implements java.io.Serializable {
      */
     private String alias;
     /**
+     * enable multilingual
+     * <p>
+     * 启用国际化
+     */
+    private boolean enableMultilingual;
+    /**
      * static file path
      * <p>
      * 静态文件路径
@@ -99,6 +105,21 @@ public class CmsPageMetadata implements java.io.Serializable {
      */
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    /**
+     * @return the enableMultilingual
+     */
+    public boolean isEnableMultilingual() {
+        return enableMultilingual;
+    }
+
+    /**
+     * @param enableMultilingual
+     *            the enableMultilingual to set
+     */
+    public void setEnableMultilingual(boolean enableMultilingual) {
+        this.enableMultilingual = enableMultilingual;
     }
 
     /**

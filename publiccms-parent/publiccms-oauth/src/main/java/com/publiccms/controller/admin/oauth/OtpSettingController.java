@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -18,6 +19,7 @@ import com.bastiaanjansen.otp.TOTPGenerator;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserSetting;
 import com.publiccms.entities.sys.SysUserSettingId;
@@ -81,13 +83,13 @@ public class OtpSettingController {
      */
     @RequestMapping(value = "getRegisterURI")
     @ResponseBody
-    public Map<String, String> getRegisterURI(@SessionAttribute SysUser admin) {
+    public Map<String, String> getRegisterURI(@RequestAttribute SysSite site, @SessionAttribute SysUser admin) {
         byte[] secret = SecretGenerator.generate();
         TOTPGenerator totp = new TOTPGenerator.Builder(secret).build();
         Map<String, String> result = new HashMap<>();
         result.put("secret", new String(secret, StandardCharsets.UTF_8));
         try {
-            result.put("bindURI", totp.getURI("cms", admin.getName()).toString());
+            result.put("bindURI", totp.getURI(site.getName(), admin.getName()).toString());
         } catch (URISyntaxException e) {
             result.put(CommonConstants.ERROR, e.getMessage());
         }

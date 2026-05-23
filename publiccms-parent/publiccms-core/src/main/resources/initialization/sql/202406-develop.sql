@@ -31,7 +31,7 @@ CREATE TABLE `cms_language` (
   `sort` int NOT NULL DEFAULT '0' COMMENT '顺序',
   PRIMARY KEY (`code`,`site_id`)
 ) COMMENT='语言';
-INSERT INTO `sys_module` VALUES ('lang_add', 'cmsLanguage/add', 'cmsLanguage/save', NULL, 'lang_list', 0, 0, 0);
+INSERT INTO `sys_module` VALUES ('lang_add', 'cmsLanguage/add', 'cmsLanguage/save,cmsLanguage/virify', NULL, 'lang_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('lang_delete',  NULL,'cmsLanguage/delete', NULL, 'lang_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('lang_list', 'cmsLanguage/list', NULL, 'bi bi-globe', 'config', 1, 1, 5);
 INSERT INTO `sys_module_lang` VALUES ('lang_add', 'en', 'Add/edit');
@@ -110,3 +110,15 @@ INSERT INTO `sys_module_lang` VALUES ('select_content_source', 'ja', 'ソース�
 INSERT INTO `sys_module_lang` VALUES ('select_content_source', 'zh', '选择来源');
 -- 2026-01-30 --
 ALTER TABLE `log_login` DROP COLUMN `error_password`; 
+-- 2026-05-08 --
+UPDATE sys_module SET authorized_url = 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsCategory/addLang,cmsCategoryLang/save,cmsCategory/batchPublish,cmsCategory/batchCopy,cmsCategory/batchCreate,cmsCategory/batchSave,cmsCategory/seo,cmsCategory/saveSeo,cmsCategory/categoryPath,cmsCategory/contentPath,cmsCategory/save' WHERE id = 'category_add';
+UPDATE sys_module SET authorized_url = 'cmsContent/addMore,cmsContent/save,cmsContent/addLang,cmsContentLang/save' WHERE id = 'content_add';
+UPDATE sys_module SET authorized_url = 'sysConfig/save,sysConfig/virify' WHERE id = 'config_add';
+UPDATE sys_module SET authorized_url = 'cmsModel/save,cmsModel/virify,cmsModel/rebuildSearchText,cmsModel/batchPublish' WHERE id = 'model_add';
+-- 2026-05-18 --
+ALTER TABLE `sys_user_setting` MODIFY COLUMN `data` longtext NOT NULL COMMENT '值' AFTER `code`;
+INSERT INTO `sys_module` VALUES ('content_uncheck_list', 'cmsContent/uncheck_list', NULL, NULL, 'content_list', 0, 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('content_uncheck_list', 'en', 'Pending');
+INSERT INTO `sys_module_lang` VALUES ('content_uncheck_list', 'ja', '審査待ち');
+INSERT INTO `sys_module_lang` VALUES ('content_uncheck_list', 'zh', '待审核内容');
+UPDATE sys_module SET url = NULL WHERE id = 'content_check';

@@ -23,7 +23,7 @@
                     <#if a?has_content&&!a.customed>
                         <input class="required" readonly="readonly" name="code" type="text" value="${(a.code)!}"/>
                     <#else>
-                        <input class="required" name="code" type="text" maxlength="20" size="20" value="${(a.code)!}"/>
+                        <input class="required" name="code" type="text" remote="cmsLanguage/virify<#if code?has_content>?oldCode=${(a.code)!}</#if>" data-msg-remote="<@t.message 'verify.hasExist.code'/>" maxlength="20" size="20" value="${(a.code)!}"/>
                     </#if>
                 </dd>
             </dl>

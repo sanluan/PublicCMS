@@ -77,7 +77,7 @@ var navTab = {
                     } else {
                         $this.closeCurrentTab();
                     }
-                }, closeOther: function() {
+                }, closeOther: function(t) {
                     var index = $this._indexTabId(t.attr("tabid"));
                     $this._closeOtherTab(index > 0 ? index: $this._currentIndex);
                 }, closeAll: function() {

@@ -15,7 +15,7 @@
             <li><button type="button" class="buttonDisabled"><@t.page "site.parent_maintain"/></button></li>
         <#else>
         <@sys.authorized roleIds=admin.roles url="cmsModel/save">
-            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=model&itemId=${id!} close-url="common/unlock?itemType=model&itemId=${id!}"</#if>><@t.page "button.save"/></button></li>
+            <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=model&itemId=${id!}" close-url="common/unlock?itemType=model&itemId=${id!}"</#if>><@t.page "button.save"/></button></li>
         </@sys.authorized>
         </#if>
             <li><button type="button" class="button close"><@t.page "button.close"/></button></li>
@@ -28,7 +28,7 @@
                 <dl class="nowrap">
                     <dt><@t.page "id"/>:</dt>
                     <dd>
-                        <input class="required" name="id" type="text" maxlength="20" size="20" value="${(a.id)!}"/>
+                        <input class="required" name="id" type="text" remote="cmsLanguage/virify<#if id?has_content>?oldId=${(a.id)!}</#if>" data-msg-remote="<@t.message 'verify.hasExist.id'/>" maxlength="20" size="20" value="${(a.id)!}"/>
                         <label><input name="onlyUrl" type="checkbox" class="form-check-input"/><@t.page "url"/></label>
                     </dd>
                 </dl>

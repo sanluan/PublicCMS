@@ -15,7 +15,7 @@
                         </li>
                     <#elseif (object.size)?has_content&&0!=object.size&&(!(object.acceptItemTypes)?has_content||object.acceptItemTypes?seq_contains(itemType))>
                         <li>
-                            <a href="cmsPlace/add.html?path=${path?url}&itemType=${itemType}&itemId=${itemId!}" target="navTab" rel="cmsPlace/add">${(object.alias)!a.fileName}</a>
+                            <a href="cmsPlace/add.html?path=${path?url}&itemType=${itemType}&itemId=${itemId!}&lang=${lang!}" target="navTab" rel="cmsPlace/add">${(object.alias)!a.fileName}</a>
                         </li>
                     </#if>
                 </@tools.placeMetadata>

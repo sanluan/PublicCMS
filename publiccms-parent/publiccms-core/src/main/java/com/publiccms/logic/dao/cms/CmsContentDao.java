@@ -99,11 +99,14 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         batchWork(queryHandler, worker, batchSize);
     }
 
-    public void batchWorkId(short siteId, Integer categoryId, String modelId, ObjIntConsumer<List<Serializable>> worker,
-            int batchSize) {
+    public void batchWorkId(short siteId, Integer categoryId, String modelId, Integer[] status,
+            ObjIntConsumer<List<Serializable>> worker, int batchSize) {
         QueryHandler queryHandler = getQueryHandler("select bean.id from CmsContent bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", false);
+        if (CommonUtils.notEmpty(status)) {
+            queryHandler.condition("bean.status in (:status)").setParameter("status", status);
+        }
         if (CommonUtils.notEmpty(categoryId)) {
             queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", categoryId);
         }

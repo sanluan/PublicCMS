@@ -3,23 +3,14 @@ package com.publiccms.common.base;
 import org.apache.lucene.search.Query;
 
 public class HighLighterQuery {
-    private boolean highlight;
     private String defaultFieldName;
     private String[] fields;
     private Query query;
     private String preTag;
     private String postTag;
 
-    public HighLighterQuery(boolean highlight) {
+    public HighLighterQuery() {
         super();
-        this.highlight = highlight;
-    }
-
-    /**
-     * @return the highlight
-     */
-    public boolean isHighlight() {
-        return highlight;
     }
 
     /**
@@ -35,14 +26,6 @@ public class HighLighterQuery {
      */
     public void setDefaultFieldName(String defaultFieldName) {
         this.defaultFieldName = defaultFieldName;
-    }
-
-    /**
-     * @param highlight
-     *            the highlight to set
-     */
-    public void setHighlight(boolean highlight) {
-        this.highlight = highlight;
     }
 
     /**

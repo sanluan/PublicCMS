@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
@@ -49,7 +50,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * 
+ *
  * CmsModelController
  *
  */
@@ -138,7 +139,7 @@ public class CmsModelAdminController {
                 List<CmsCategoryModel> categoryModelList = categoryModelService.getList(site.getId(), entity.getParentId(), null);
                 for (CmsCategoryModel categoryModel : categoryModelList) {
                     CmsCategoryModel cm = new CmsCategoryModel(
-                            new CmsCategoryModelId(categoryModel.getId().getCategoryId(), entity.getId()), site.getId(), true);
+                            new CmsCategoryModelId(categoryModel.getId().getCategoryId(), entity.getId()), site.getId(), false);
                     categoryModelService.save(cm);
                 }
                 categoryModelService.delete(site.getId(), oldModel.getId(), null);
@@ -154,7 +155,7 @@ public class CmsModelAdminController {
                 List<CmsCategoryModel> categoryModelList = categoryModelService.getList(site.getId(), entity.getParentId(), null);
                 for (CmsCategoryModel categoryModel : categoryModelList) {
                     CmsCategoryModel cm = new CmsCategoryModel(
-                            new CmsCategoryModelId(categoryModel.getId().getCategoryId(), entity.getId()), site.getId(), true);
+                            new CmsCategoryModelId(categoryModel.getId().getCategoryId(), entity.getId()), site.getId(), false);
                     categoryModelService.save(cm);
                 }
             }
@@ -163,6 +164,25 @@ public class CmsModelAdminController {
                             "save.model", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param id
+     * @param oldId
+     * @return view name
+     */
+    @RequestMapping("virify")
+    @ResponseBody
+    public boolean virify(@RequestAttribute SysSite site, String id, String oldId) {
+        if (CommonUtils.notEmpty(id)) {
+            Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
+            if (CommonUtils.notEmpty(oldId) && !id.equals(oldId) && null != modelMap.get(id)
+                    || CommonUtils.empty(oldId) && null != modelMap.get(id)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -212,11 +232,12 @@ public class CmsModelAdminController {
             for (CmsCategoryModel categoryModel : categoryModelList) {
                 CmsCategory category = categoryService.getEntity(categoryModel.getId().getCategoryId());
                 if (null != category) {
-                    contentService.batchWorkId(site.getId(), category.getId(), id, (list, i) -> {
-                        templateComponent.createContentFile(site, list, category, categoryModel);
-                        log.info(CommonUtils.joinString("publish for category : ", category.getName(), " batch ", i, " size : ",
-                                list.size()));
-                    }, PageHandler.MAX_PAGE_SIZE);
+                    contentService.batchWorkId(site.getId(), category.getId(), id, CmsContentService.STATUS_NORMAL_ARRAY,
+                            (list, i) -> {
+                                templateComponent.createContentFile(site, list, category, categoryModel);
+                                log.info(CommonUtils.joinString("publish for category : ", category.getName(), " batch ", i,
+                                        " size : ", list.size()));
+                            }, PageHandler.MAX_PAGE_SIZE);
                 }
             }
             log.info("complete batch publish");

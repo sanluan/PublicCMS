@@ -115,12 +115,8 @@ public class LoginDirective extends AbstractAppDirective {
                     lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_LOGIN, String.valueOf(user.getId()), null, true);
                 }
                 lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_IP_LOGIN, ip, null, true);
-                LogLogin log = new LogLogin();
-                log.setSiteId(site.getId());
-                log.setName(username);
-                log.setIp(ip);
-                log.setChannel(channel);
-                logLoginService.save(log);
+                logLoginService.save(new LogLogin(site.getId(), username, null != user ? user.getId() : null, ip, channel,
+                        LogLoginService.METHOD_PASSWORD, true, CommonUtils.now()));
             }
         }
         handler.put("result", result).render();

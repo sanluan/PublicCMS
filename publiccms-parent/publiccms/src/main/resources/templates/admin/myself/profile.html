@@ -1,3 +1,6 @@
+<@sys.user id=id absoluteURL=false replaceSensitive=false>
+    <#assign a=object/>
+</@sys.user>
 <form action="sysUser/update?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, ${(target?has_content&&'dialog'=target)?then('dialogAjaxDone','navTabAjaxDone')});">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <div class="formBar card">
@@ -10,19 +13,19 @@
         <div class="pageFormContent" layoutH>
             <dl class="nowrap">
                 <dt><@t.page 'user.nickname'/>:</dt>
-                <dd><input class="required" name="nickname" type="text" size="20" maxlength="30" value="${(admin.nickname)!}"/></dd>
+                <dd><input class="required" name="nickname" type="text" size="20" maxlength="30" value="${(a.nickname)!}"/></dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'cover'/>:</dt>
                 <dd>
-                    <input name="cover" class="preview" value="${(admin.cover)!}" maxlength="300" size="50" type="text"/>
+                    <input name="cover" class="preview" value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
                     <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="1000" height="600"><@t.page 'cover'/></a>
                     <a class="view icon-eye-open" ref="cover" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'email'/>:</dt>
-                <dd><input name="email" type="text" size="30" maxlength="50" value="${(admin.email)!}"/></dd>
+                <dd><input name="email" type="text" size="30" maxlength="50" value="${(a.email)!}"/></dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'login.2fa'/>:</dt>

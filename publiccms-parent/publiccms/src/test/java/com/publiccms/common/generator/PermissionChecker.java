@@ -34,7 +34,7 @@ public class PermissionChecker {
     public static final String SQL_END = "Table structure for sys_module_lang";
     public static final String TEMPLATES = "src/main/resources/templates/admin";
     public static final Pattern FORM_PATTERN = Pattern.compile("<form.*action=[\"|\']([^\"\']*)[\"|\'].*>");
-    public static final Pattern FORM2_PATTERN = Pattern.compile("<input.*remote=[\"|\']([^\"\']*)[\"|\'].*>");
+    public static final Pattern FORM2_PATTERN = Pattern.compile("<input.* remote=[\"|\']([^\"\']*)[\"|\'].*>");
     public static final Pattern AJAXBUTTON_PATTERN = Pattern.compile("<a.*href=[\"|\']([^\"\']*)[\"|\'].*target=\"ajaxTodo\".*>");
     public static final Pattern AJAXBUTTON2_PATTERN = Pattern
             .compile("<a.*target=\"ajaxTodo\".*href=[\"|\']([^\"\']*)[\"|\'].*>");
@@ -42,8 +42,8 @@ public class PermissionChecker {
             .compile("<a.*href=[\"|\']([^\"\']*)[\"|\'].*target=\"selectedTodo\".*>");
     public static final Pattern AJAXBUTTON4_PATTERN = Pattern
             .compile("<a.*target=\"selectedTodo\".*href=[\"|\']([^\"\']*)[\"|\'].*>");
-    public static final Pattern[] URL_PATTERNS = new Pattern[] { FORM_PATTERN, AJAXBUTTON_PATTERN, AJAXBUTTON2_PATTERN,
-            AJAXBUTTON3_PATTERN, AJAXBUTTON4_PATTERN };
+    public static final Pattern[] URL_PATTERNS = new Pattern[] { FORM_PATTERN, FORM2_PATTERN, AJAXBUTTON_PATTERN,
+            AJAXBUTTON2_PATTERN, AJAXBUTTON3_PATTERN, AJAXBUTTON4_PATTERN };
 
     public static void main(String[] args) {
         try {
@@ -85,10 +85,11 @@ public class PermissionChecker {
         if (null != url && !url.startsWith("include_page") && !url.startsWith("common") && !url.startsWith("main")
                 && !url.startsWith("login") && !url.startsWith("logout") && !url.startsWith("sysSite\\")
                 && !url.startsWith("sysSite/") && !url.startsWith("cmsTemplate\\demo\\") && !url.startsWith("sysModule\\")
-                && !url.startsWith("sysModule/") && !url.startsWith("sysDomain/save") && !url.startsWith("sysDomain/delete")
-                && !url.startsWith("dict/save") && !url.startsWith("sysDomain\\add") && !url.startsWith("sysDomain\\list")
-                && !url.startsWith("sysCluster\\") && !url.startsWith("changeLocale") && !url.startsWith("otp\\")
-                && !url.startsWith("otp/") && !url.startsWith("index") && !url.startsWith("<") && !url.startsWith("$")) {
+                && !url.startsWith("sysModule/") && !url.startsWith("sysDomain/save") && !url.startsWith("sysDomain/virify")
+                && !url.startsWith("sysDomain/delete") && !url.startsWith("dict/save") && !url.startsWith("sysDomain\\add")
+                && !url.startsWith("sysDomain\\list") && !url.startsWith("sysCluster\\") && !url.startsWith("changeLocale")
+                && !url.startsWith("otp\\") && !url.startsWith("otp/") && !url.startsWith("index") && !url.startsWith("<")
+                && !url.startsWith("$")) {
             addUrl(url, pageUrlSet);
         }
     }

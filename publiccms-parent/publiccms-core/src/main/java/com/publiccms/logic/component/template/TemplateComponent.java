@@ -808,7 +808,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
             if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), fullTemplatePath))) {
                 String realFilepath = siteComponent.getTemplateFilePath(site.getId(), fullTemplatePath);
                 CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(realFilepath, null, null);
-                if (siteAttributeComponent.enableMultilingual(site.getId())) {
+                if (siteAttributeComponent.enableMultilingual(site.getId()) && metadata.isEnableMultilingual()) {
                     List<CmsLanguage> languageList = languageService.getList(site.getId());
                     if (null != languageList) {
                         String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
@@ -945,7 +945,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
             String realFilepath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realFilepath, null, null);
             if (site.isUseStatic() && CommonUtils.notEmpty(metadata.getPublishPath())) {
-                if (siteAttributeComponent.enableMultilingual(site.getId())) {
+                if (siteAttributeComponent.enableMultilingual(site.getId())&& metadata.isEnableMultilingual()) {
                     String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
                     String fullStaticFilePath = CmsLangUtils.getFullFilepath(metadata.getPublishPath(), lang, defaultLang);
                     CmsPageData data = metadataComponent.getPageData(realFilepath, lang, defaultLang);

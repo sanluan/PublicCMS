@@ -11,7 +11,7 @@
     </#if>
     <#if 0=admin.contentPermissions><#assign userId=admin.id/></#if>
     <#if 2=admin.contentPermissions><#assign deptId=admin.deptId/></#if>
-<@cms.contentList advanced=true status=1 categoryId=categoryId containChild=containChild
+<@cms.contentList advanced=true lang=lang status=1 categoryId=categoryId containChild=containChild
             modelId=modelIds parentId=parentId emptyParent=true title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
@@ -21,6 +21,7 @@
         <#include "../include_page/parameters.html"/>
         <input name="categoryId" type="hidden" value="${categoryId!}"/>
         <input name="parentId" type="hidden" value="${(parent.id)!}"/>
+        <input name="lang" type="hidden" value="${lang!}"/>
         <input name="status" type="hidden" value="1"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -71,7 +72,7 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if parent?has_content>
-                <li><a href="cmsContent/list.html?parentId=${(parent.parentId)!}&categoryId=${categoryId!}" target="navTab" rel="cmsContent/list"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
+                <li><a href="cmsContent/list.html?parentId=${(parent.parentId)!}&categoryId=${categoryId!}&lang=${lang!}" target="navTab" rel="cmsContent/list"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
 <#if authorizedMap['cmsContent/add']>
@@ -138,12 +139,12 @@
             <@cms.contentList advanced=true status=2 categoryId=categoryId userId=uncheckUserId deptId=uncheckDeptId containChild=containChild absoluteId=false pageSize=0>
                 <#if page.totalCount gt 0>
                     <li class="line">line</li>
-                    <li><a href="cmsContent/uncheck_list.html?categoryId=${categoryId!}&containChild=${containChild!}" target="ajax" rel="contentBox"><i class="icon-check-sign icon-large"></i><@t.page 'status.content.2'/><span class="todoNumber">${page.totalCount}</span></a></li>
+                    <li><a href="cmsContent/uncheck_list.html?categoryId=${categoryId!}&containChild=${containChild!}&lang=${lang!}" target="ajax" rel="contentBox"><i class="icon-check-sign icon-large"></i><@t.page 'status.content.2'/><span class="todoNumber">${page.totalCount}</span></a></li>
                 </#if>
             </@cms.contentList>
         </#if>
         <#if authorizedMap['cmsRecycleContent/list']>
-            <li><a class="button" href="cmsRecycleContent/list.html" target="navTab" rel="cmsRecycleContent/list"><i class="bi bi-recycle"></i><@t.page 'recycle_bin'/></a></li>
+            <li><a class="button" href="cmsRecycleContent/list.html&lang=${lang!}" target="navTab" rel="cmsRecycleContent/list"><i class="bi bi-recycle"></i><@t.page 'recycle_bin'/></a></li>
         </#if>
         </ul>
     </div>
@@ -176,7 +177,7 @@
             </#if>
 
             <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
-            <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
+            <@cms.category ids=t.categoryIds! lang=lang><#assign categoryMap=map!/></@cms.category>
             <@cms.model ids=t.modelId!><#assign modelMap=map!/></@cms.model>
             <@sys.workflowProcessItem itemType="content" itemIds=t.ids!><#assign processItemMap=map!/></@sys.workflowProcessItem>
 
@@ -197,13 +198,13 @@
                             </#if>
                             [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
                             ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
-                            <a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}" width="1200" height="600">${(a.title)!}</a>
+                            <a href="cmsContent/view.html?id=${a.id}&lang=${lang!}" class="exclude-translate" target="dialog" rel="viewContent${a.id}" width="1200" height="600">${(a.title)!}</a>
                             <#if a.url?has_content><a href="${a.url!}" target="_blank"><i class="icon-external-link"></i></a></#if>
                             <#if a.quoteContentId?has_content && !a.parentId?has_content><span class="statusText orange"><@t.page "content.quote"/></span></#if>
                         </h3>
                         <p>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                                <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="btnText" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></label>
+                                <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}&lang=${lang!}" class="btnText" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></label>
                             </#if>
                             <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickname)!}</span>
                             <label><@t.page 'inspector'/>:</label><span class="exclude-translate">${(userMap[a.checkUserId?string].nickname)!}</span>

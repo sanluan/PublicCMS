@@ -43,6 +43,24 @@ public class CredentialRecordData {
         this.backupState = (attestationObject.getAuthenticatorData().getFlags() & BIT_BS) != 0;
     }
 
+    public CredentialRecordData(AttestationObject attestationObject, CollectedClientData collectedClientData,
+            String clientExtensions, Set<AuthenticatorTransport> transports, ObjectConverter objectConverter) {
+        AttestedCredentialDataConverter attestedCredentialDataConverter = new AttestedCredentialDataConverter(objectConverter);
+        this.attestedCredentialData = attestedCredentialDataConverter
+                .convert(attestationObject.getAuthenticatorData().getAttestedCredentialData());
+        this.attestationStatement = objectConverter.getJsonMapper()
+                .writeValueAsString(attestationObject.getAttestationStatement());
+        this.counter = attestationObject.getAuthenticatorData().getSignCount();
+        this.authenticatorExtensions = objectConverter.getJsonMapper()
+                .writeValueAsString(attestationObject.getAuthenticatorData().getExtensions());
+        this.clientData = collectedClientData;
+        this.clientExtensions = clientExtensions;
+        this.transports = objectConverter.getJsonMapper().writeValueAsString(transports);
+        this.uvInitialized = (attestationObject.getAuthenticatorData().getFlags() & BIT_UV) != 0;
+        this.backupEligible = (attestationObject.getAuthenticatorData().getFlags() & BIT_BE) != 0;
+        this.backupState = (attestationObject.getAuthenticatorData().getFlags() & BIT_BS) != 0;
+    }
+
     public CredentialRecord toRecord(ObjectConverter objectConverter) {
         AttestedCredentialDataConverter attestedCredentialDataConverter = new AttestedCredentialDataConverter(objectConverter);
         return new CredentialRecordImpl(

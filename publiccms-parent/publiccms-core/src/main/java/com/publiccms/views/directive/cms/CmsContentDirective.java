@@ -122,9 +122,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                         : null;
 
                 CmsContentLangId[] langIds = entityList.stream()
-                        .map(e -> new CmsContentLangId(
-                                (null == e.getParentId() && null != e.getQuoteContentId()) ? e.getQuoteContentId() : e.getId(),
-                                lang))
+                        .map(e -> new CmsContentLangId(CmsLangUtils.getContentId(e, absoluteId), lang))
                         .toArray(CmsContentLangId[]::new);
                 Map<Long, CmsContentLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
                         k -> k.getId().getContentId());
@@ -139,9 +137,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     }
                     CmsContentLang langEntity = null;
                     if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
-                        langEntity = langMap.get(
-                                (null == entity.getParentId() && null != entity.getQuoteContentId()) ? entity.getQuoteContentId()
-                                        : entity.getId());
+                        langEntity = langMap.get(CmsLangUtils.getContentId(entity, absoluteId));
                         CmsLangUtils.initLang(entity, langEntity);
                     }
 
@@ -150,7 +146,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                         fileUploadComponent.initContentCover(site, entity);
                     }
                     if (containsAttribute) {
-                        CmsContentAttribute attribute = attributeMap.get(entity.getId());
+                        CmsContentAttribute attribute = attributeMap.get(CmsLangUtils.getContentId(entity, absoluteId));
                         CmsLangUtils.initLang(attribute, langEntity);
                         entity.setAttribute(ExtendUtils.getAttributeMap(attribute, config));
                     }
