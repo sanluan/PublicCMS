@@ -68,7 +68,8 @@ public class MetadataComponent implements Cache {
         File file = new File(realFilepath);
         CmsPlaceMetadata pageMetadata = getPlaceMetadataMap(file.getParent()).get(file.getName());
         if (null != pageMetadata) {
-            CmsPageData pagedata = getPageDataMap(file.getParent(), lang, defaultLang).get(file.getName());
+            CmsPageData pagedata = getPageDataMap(file.getParent(), pageMetadata.isEnableMultilingual() ? lang : null,
+                    defaultLang).get(file.getName());
             if (null != pagedata) {
                 pageMetadata.setExtendData(pagedata.getExtendData());
             }
@@ -106,7 +107,8 @@ public class MetadataComponent implements Cache {
         File file = new File(realFilepath);
         CmsPageMetadata pageMetadata = getTemplateMetadataMap(file.getParent()).get(file.getName());
         if (null != pageMetadata) {
-            CmsPageData pagedata = getPageDataMap(file.getParent(), lang, defaultLang).get(file.getName());
+            CmsPageData pagedata = getPageDataMap(file.getParent(), pageMetadata.isEnableMultilingual() ? lang : null,
+                    defaultLang).get(file.getName());
             if (null != pagedata) {
                 pageMetadata.setExtendData(pagedata.getExtendData());
             }

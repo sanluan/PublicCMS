@@ -23,7 +23,7 @@
                 </li>
                 </#if>
                 <li>
-                    <a href="cmsCategory/category_list.html?lang=${lang}" target="ajax" rel="categoryBox"><@t.page 'category.parent'/></a>
+                    <a href="cmsCategory/category_list.html?lang=${lang!}" target="ajax" rel="categoryBox"><@t.page 'category.parent'/></a>
                     <ul>
                         <@cms.categoryList advanced=true lang=lang pageSize=500>
                             <#list page.list as a>

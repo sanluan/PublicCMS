@@ -30,7 +30,7 @@ public class CmsPageMetadata implements java.io.Serializable {
      * <p>
      * 启用国际化
      */
-    private boolean enableMultilingual;
+    private boolean enableMultilingual = true;
     /**
      * static file path
      * <p>

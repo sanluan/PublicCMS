@@ -61,6 +61,9 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
                 lang = (String) temp;
             }
 
+            String filepath = siteComponent.getTemplateFilePath(site.getId(),
+                    CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath, lang, defaultLang);
             if (site.isUseSsi()) {
                 StringBuilder sb = new StringBuilder("<!--#include virtual=\"/");
                 if (null != site.getParentId() && CommonUtils.notEmpty(site.getDirectory())) {
@@ -68,7 +71,7 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
                 }
                 sb.append(TemplateComponent.INCLUDE_DIRECTORY);
 
-                if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(defaultLang)) {
+                if (metadata.isEnableMultilingual() && CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(defaultLang)) {
                     sb.append(Constants.SEPARATOR).append(lang);
                 }
                 sb.append(path).append("\"-->");
@@ -80,9 +83,6 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
                 if (CmsFileUtils.exists(webfilepath)) {
                     handler.print(CmsFileUtils.getFileContent(webfilepath));
                 } else {
-                    String filepath = siteComponent.getTemplateFilePath(site.getId(),
-                            CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath, lang, defaultLang);
                     templateComponent.printPlace(handler.getWriter(), site, path, lang, defaultLang, metadata);
                 }
             }
