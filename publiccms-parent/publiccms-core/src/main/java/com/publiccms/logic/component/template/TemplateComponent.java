@@ -43,6 +43,7 @@ import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.cms.CmsCategoryLang;
+import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
@@ -312,6 +313,11 @@ public class TemplateComponent implements Cache, AdminContextPath {
             } else {
                 if (null == category) {
                     category = categoryService.getEntity(entity.getCategoryId());
+                }
+                if (null != lang) {
+                    CmsCategoryLang categoryLang = categoryLangService
+                            .getEntity(new CmsCategoryLangId(category.getId(), lang.getId().getLang()));
+                    CmsLangUtils.initLang(category, category.getLang(), categoryLang);
                 }
                 if (null == categoryModel) {
                     categoryModel = categoryModelService

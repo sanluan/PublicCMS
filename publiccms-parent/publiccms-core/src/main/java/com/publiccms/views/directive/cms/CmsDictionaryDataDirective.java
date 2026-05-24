@@ -70,6 +70,10 @@ public class CmsDictionaryDataDirective extends AbstractTemplateDirective {
                 CmsDictionaryData entity = service.getEntity(new CmsDictionaryDataId(dictionaryId, siteId, value));
                 if (null != entity) {
                     entity.setAttribute(ExtendUtils.getExtendMap(entity.getLangdata()));
+                    String text = entity.getAttribute().get(lang);
+                    if (CommonUtils.notEmpty(lang) && CommonUtils.notEmpty(text)) {
+                        entity.setText(text);
+                    }
                     handler.put("object", entity).render();
                 }
             } else {
