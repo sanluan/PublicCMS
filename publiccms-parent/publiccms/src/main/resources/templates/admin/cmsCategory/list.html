@@ -13,18 +13,18 @@
     <div class="leftPageContent">
         <div class="card">
             <ul class="tree treeFolder" layoutH>
-                <#if 'true'=(siteAttribute.enable_multilingual)!>
-                <li>
-                    <@cms.languageList>
-                    <#list list as l>
-                        <a href="cmsCategory/list.html?lang=${l.id.code}"${(l.id.code=lang!)?then(' class="red"','')?no_esc} target="navTab" rel="cmsCategory/list">${(l.name)!}</a>
-                    </#list>
-                    </@cms.languageList>
-                </li>
-                </#if>
                 <li>
                     <a href="cmsCategory/category_list.html?lang=${lang!}" target="ajax" rel="categoryBox"><@t.page 'category.parent'/></a>
                     <ul>
+                        <#if 'true'=(siteAttribute.enable_multilingual)!>
+                        <li>
+                            <@cms.languageList>
+                            <#list list as l>
+                                <a href="cmsCategory/list.html?lang=${l.id.code}"${(l.id.code=(lang!(siteAttribute.default_language)!))?then(' class="red"','')?no_esc} target="navTab" rel="cmsCategory/list">${(l.name)!}</a>
+                            </#list>
+                            </@cms.languageList>
+                        </li>
+                        </#if>
                         <@cms.categoryList advanced=true lang=lang pageSize=500>
                             <#list page.list as a>
                                 <li<#if a.childIds?has_content> _src="cmsCategory/list.html?parent=${a.id}&lang=${lang!}"</#if>>

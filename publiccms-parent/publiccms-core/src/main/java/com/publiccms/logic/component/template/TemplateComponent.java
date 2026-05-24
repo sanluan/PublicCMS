@@ -809,7 +809,8 @@ public class TemplateComponent implements Cache, AdminContextPath {
             if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), fullTemplatePath))) {
                 String realFilepath = siteComponent.getTemplateFilePath(site.getId(), fullTemplatePath);
                 CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(realFilepath, null, null);
-                if (siteAttributeComponent.enableMultilingual(site.getId()) && metadata.isEnableMultilingual()) {
+                if (siteAttributeComponent.enableMultilingual(site.getId())
+                        && (metadata.isEnableMultilingual() || metadata.isEnablePlaceMultilingual())) {
                     List<CmsLanguage> languageList = languageService.getList(site.getId());
                     if (null != languageList) {
                         String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
@@ -1064,7 +1065,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
         if (null != metadata.getSize() && 0 < metadata.getSize()) {
             Date now = CommonUtils.getMinuteDate();
             PageHandler page = placeService.getPage(site.getId(), null, templatePath, null, null,
-                    metadata.isEnableMultilingual() ? lang : null, defaultLang, null, now, now,
+                    metadata.isEnablePlaceMultilingual() ? lang : null, defaultLang, null, now, now,
                     CmsPlaceService.STATUS_NORMAL_ARRAY, false, null, null, 1, metadata.getSize());
             @SuppressWarnings("unchecked")
             List<CmsPlace> list = (List<CmsPlace>) page.getList();

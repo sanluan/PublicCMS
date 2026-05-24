@@ -71,7 +71,8 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
                 }
                 sb.append(TemplateComponent.INCLUDE_DIRECTORY);
 
-                if (metadata.isEnableMultilingual() && CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(defaultLang)) {
+                if ((metadata.isEnableMultilingual() || metadata.isEnablePlaceMultilingual()) && CommonUtils.notEmpty(lang)
+                        && !lang.equalsIgnoreCase(defaultLang)) {
                     sb.append(Constants.SEPARATOR).append(lang);
                 }
                 sb.append(path).append("\"-->");
