@@ -40,7 +40,7 @@
                     </label>
                     <#if 'true'=((siteAttribute.enable_multilingual)!)>
                         <label>
-                            <input name="enableMultilingual" type="checkbox"class="form-check-input"<#if a.enableMultilingual> checked="checked"</#if>/>
+                            <input name="enableMultilingual" type="checkbox" class="form-check-input"<#if (a.enableMultilingual)?has_content && a.enableMultilingual> checked="checked"</#if>/>
                             <@t.message 'config.siteAttribute.enable_multilingual'/>
                         </label>
                     </#if>
