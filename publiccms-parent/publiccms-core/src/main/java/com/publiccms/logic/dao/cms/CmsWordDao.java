@@ -25,14 +25,16 @@ public class CmsWordDao extends BaseDao<CmsWord> {
      * @param startCreateDate
      * @param endCreateDate
      * @param name
+     * @param lang 
+     * @param defaultLang 
      * @param orderField
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Boolean hidden, Date startCreateDate, Date endCreateDate, String name,
-            String orderField, String orderType, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Boolean hidden, Date startCreateDate, Date endCreateDate, String name, String lang,
+            String defaultLang, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsWord bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -48,6 +50,13 @@ public class CmsWordDao extends BaseDao<CmsWord> {
         }
         if (CommonUtils.notEmpty(name)) {
             queryHandler.condition("bean.name like :name").setParameter("name", like(name));
+        }
+        if (CommonUtils.notEmpty(lang)) {
+            if (lang.equalsIgnoreCase(defaultLang)) {
+                queryHandler.condition("(bean.lang is null or bean.lang = :lang)").setParameter("lang", lang);
+            } else {
+                queryHandler.condition("bean.lang = :lang").setParameter("lang", lang);
+            }
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;

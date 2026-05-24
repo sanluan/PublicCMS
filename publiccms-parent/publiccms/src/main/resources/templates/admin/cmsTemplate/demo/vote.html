@@ -103,39 +103,40 @@
         </ul>
 </@cms.voteList>
     </main>
-    <footer>
-        Copyright &copy; ${.now?string('yyyy')}
-    </footer>
     <script>
     var templatePath='${.current_template_name?keep_after('/')}';
     </script>
-    <script src="${site.dynamicPath!}resource/plugins/jquery/jquery.min.js"></script>
+    <#-- footer -->
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
     <script src="${site.dynamicPath}resource/js/cms.support.js"></script>
-<#if user?has_content>
-<script>
-function vote(itemId){
-    $.getJSON('${site.dynamicPath!}vote/vote?itemId='+itemId+'&_csrf=<@tools.csrfToken/>', function(data){
-        alert("Vote ok!");
-        location.reload();
-    });
-}
-function unvote(itemId){
-    $.getJSON('${site.dynamicPath!}vote/unvote?itemId='+itemId+'&_csrf=<@tools.csrfToken/>', function(data){
-        alert("Cancel ok!");
-        location.reload();
-    });
-}
-</script>
-</#if>
     <script>
-        var ca = cmsAnalytics();
-        var url='${site.dynamicPath}api/visit/record';
-        if("string" ==typeof itemString){
-            url=url+"?"+itemString;
-        }
-        ca.setDomain('${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}');
-        ca.setPath('/');
-        ca.report(url);
+    var ca = cmsAnalytics();
+    var url='${site.dynamicPath}api/visit/record';
+    if("string" ==typeof itemString){
+        url=url+"?"+itemString;
+    }
+    ca.setDomain('${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}');
+    ca.setPath('/');
+    ca.report(url);
     </script>
+    <#-- end footer -->
+<#if user?has_content>
+    <script>
+    function vote(itemId){
+        fetch('${site.dynamicPath!}vote/vote?itemId='+itemId+'&_csrf=<@tools.csrfToken/>').then(res => res.json()).then(data=>{
+            alert("Vote ok!");
+            location.reload();
+        });
+    }
+    function unvote(itemId){
+        fetch('${site.dynamicPath!}vote/unvote?itemId='+itemId+'&_csrf=<@tools.csrfToken/>').then(res => res.json()).then(data=>{
+            alert("Cancel ok!");
+            location.reload();
+        });
+    }
+    </script>
+</#if>
 </body>
 </html>

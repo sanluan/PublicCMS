@@ -28,7 +28,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/config?code=site&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/sys/config?code=site&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{
   console.log(data.description);
 });
 &lt;/script&gt;

@@ -100,7 +100,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath!}api/contentCreate?categoryId=1&amp;modelId=article&amp;title=title&amp;text=%3Cdiv%3Econtent%3C/div%3E&amp;extendData.field1=value1&amp;extendData.field2=value2&amp;authToken=用户登录授权&amp;authUserId=1&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath!}api/contentCreate?categoryId=1&amp;modelId=article&amp;title=title&amp;text=%3Cdiv%3Econtent%3C/div%3E&amp;extendData.field1=value1&amp;extendData.field2=value2&amp;authToken=用户登录授权&amp;authUserId=1&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{
 console.log(data.result);
 });
 &lt;/script&gt;

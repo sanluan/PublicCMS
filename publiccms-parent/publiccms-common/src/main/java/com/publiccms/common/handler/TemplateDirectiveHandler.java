@@ -181,6 +181,15 @@ public class TemplateDirectiveHandler extends BaseHandler {
         }
         return null;
     }
+    
+    @Override
+    public String getStringAttribute(String name) throws TemplateModelException {
+        TemplateModel model = environment.getGlobalVariable(name);
+        if (null != model) {
+            return TemplateModelUtils.converString(model);
+        }
+        return null;
+    }
 
     @Override
     public boolean inHttp() {

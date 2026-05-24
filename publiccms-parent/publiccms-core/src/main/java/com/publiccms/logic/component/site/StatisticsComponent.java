@@ -83,15 +83,17 @@ public class StatisticsComponent implements Cache {
     /**
      * @param siteId
      * @param word
+     * @param lang 
      * @param ip
      * @return word statistics
      */
-    public ClickStatistics search(short siteId, String word, String ip) {
+    public ClickStatistics search(short siteId, String word, String lang, String ip) {
         if (CommonUtils.notEmpty(word)) {
             CmsWord entity = wordService.getEntity(siteId, word);
             if (null == entity) {
                 entity = new CmsWord();
                 entity.setName(word);
+                entity.setLang(lang);
                 entity.setIp(ip);
                 entity.setSiteId(siteId);
                 entity.setHidden(true);

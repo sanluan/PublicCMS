@@ -245,6 +245,12 @@ public interface RenderHandler {
      * @throws TemplateModelException
      */
     Object getAttribute(String name) throws TemplateModelException;
+    /**
+     * @param name
+     * @return attribute
+     * @throws TemplateModelException
+     */
+    String getStringAttribute(String name) throws TemplateModelException;
 
     /**
      * @return if renderd

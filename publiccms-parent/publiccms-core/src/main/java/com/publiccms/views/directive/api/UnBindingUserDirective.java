@@ -32,7 +32,7 @@ import freemarker.template.TemplateException;
  * <p>使用示例
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/unBindingUser?uuid=1&amp;channel=web&amp;authToken=用户登录授权&amp;authUserId=1', function(data){
+fetch('${site.dynamicPath}api/unBindingUser?uuid=1&amp;channel=web&amp;authToken=用户登录授权&amp;authUserId=1').then(res => res.json()).then(data=>{
 console.log(data.result);
 });
 &lt;/script&gt;

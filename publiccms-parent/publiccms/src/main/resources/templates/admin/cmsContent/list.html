@@ -1,5 +1,5 @@
 <#if parent?has_content>
-<@cms.categoryList advanced=true lang=lang parentId=parent pageSize=500>
+<@cms.categoryList advanced=true parentId=parent pageSize=500>
 <ul>
     <#list page.list as a>
         <@t.merge 'categoryIds' a.id!/>
@@ -40,7 +40,7 @@
                                 </@cms.languageList>
                             </li>
                         </#if>
-                        <@cms.categoryList advanced=true lang=lang pageSize=500>
+                        <@cms.categoryList advanced=true pageSize=500>
                             <#list page.list as a>
                                 <@t.merge 'categoryIds' a.id!/>
                             </#list>

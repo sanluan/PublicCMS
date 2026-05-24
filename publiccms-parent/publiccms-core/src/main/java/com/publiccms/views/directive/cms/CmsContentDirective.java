@@ -35,11 +35,15 @@ import freemarker.template.TemplateException;
  *
  * content 内容查询指令
  * <p>
+ * 上下文变量
+ * <ul>
+ * <li><code>lang</code>:语言
+ * </ul>
+ * <p>
  * 参数列表
  * <ul>
  * <li><code>id</code>
  * 内容id,结果返回<code>object</code>{@link com.publiccms.entities.cms.CmsContent}
- * <li><code>lang</code>:语言
  * <li><code>absoluteURL</code>:url处理为绝对路径 默认为<code> true</code>
  * <li><code>absoluteId</code>:id处理为引用内容的ID 默认为<code> true</code>
  * <li><code>containsAttribute</code>
@@ -50,6 +54,7 @@ import freemarker.template.TemplateException;
  * <p>
  * 使用示例
  * <p>
+ * &lt;#assign lang="cn"/&gt;
  * &lt;@cms.content id=1&gt;${object.title}&lt;/@cms.content&gt;
  * <p>
  * &lt;@cms.content ids=1,2,3&gt;&lt;#list map as
@@ -57,7 +62,7 @@ import freemarker.template.TemplateException;
  * 
  * <pre>
 *  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/content?id=1', function(data){    
+   fetch('${site.dynamicPath}api/directive/cms/content?id=1',{headers: {"lang":"cn"}}).then(res => res.json()).then(data=>{    
      console.log(data.title);
    });
    &lt;/script&gt;
@@ -83,7 +88,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
         boolean absoluteId = handler.getBoolean("absoluteId", true);
         boolean containsAttribute = handler.getBoolean("containsAttribute", false) && (!handler.inHttp() || getAdvanced(handler));
         SysSite site = getSite(handler);
-        String lang = handler.getString("lang");
+        String lang = handler.getStringAttribute("lang");
         if (CommonUtils.notEmpty(id)) {
             CmsContent entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {

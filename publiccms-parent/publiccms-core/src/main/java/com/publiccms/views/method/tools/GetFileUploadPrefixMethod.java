@@ -34,7 +34,7 @@ import freemarker.template.TemplateModelException;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getFileUploadPrefix', function(data){
+fetch('${site.dynamicPath}api/method/getFileUploadPrefix').then(res => res.json()).then(data=>{
 console.log(data);
 });
 &lt;/script&gt;

@@ -42,7 +42,7 @@ import com.publiccms.common.handler.RenderHandler;
  *
  * <pre>
  &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/clusterList?pageSize=10', function(data){
+  fetch('${site.dynamicPath}api/directive/sys/clusterList?pageSize=10').then(res => res.json()).then(data=>{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;

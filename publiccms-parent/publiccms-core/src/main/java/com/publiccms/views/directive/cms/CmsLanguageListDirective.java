@@ -40,7 +40,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/cms/languageList', function(data){
+ fetch('${site.dynamicPath}api/directive/cms/languageList').then(res => res.json()).then(data=>{
    console.log(data);
  });
  &lt;/script&gt;

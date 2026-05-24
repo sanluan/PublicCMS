@@ -34,7 +34,7 @@ import freemarker.template.TemplateException;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('//sys.publicsys.com/api/directive/sys/module?id=page&amp;appToken=接口访问授权Token', function(data){    
+fetch('//sys.publicsys.com/api/directive/sys/module?id=page&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{    
   console.log(data.url);
 });
 &lt;/script&gt;

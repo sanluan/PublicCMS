@@ -11,7 +11,7 @@
     </#if>
     <#if 0=admin.contentPermissions><#assign userId=admin.id/></#if>
     <#if 2=admin.contentPermissions><#assign deptId=admin.deptId/></#if>
-<@cms.contentList advanced=true lang=lang status=1 categoryId=categoryId containChild=containChild
+<@cms.contentList advanced=true status=1 categoryId=categoryId containChild=containChild
             modelId=modelIds parentId=parentId emptyParent=true title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
@@ -177,7 +177,7 @@
             </#if>
 
             <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
-            <@cms.category ids=t.categoryIds! lang=lang><#assign categoryMap=map!/></@cms.category>
+            <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
             <@cms.model ids=t.modelId!><#assign modelMap=map!/></@cms.model>
             <@sys.workflowProcessItem itemType="content" itemIds=t.ids!><#assign processItemMap=map!/></@sys.workflowProcessItem>
 

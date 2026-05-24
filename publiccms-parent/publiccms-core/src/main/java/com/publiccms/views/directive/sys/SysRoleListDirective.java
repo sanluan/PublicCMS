@@ -37,7 +37,7 @@ import com.publiccms.common.handler.RenderHandler;
  *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/sys/roleList?deptId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/sys/roleList?deptId=1&amp;pageSize=10&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;

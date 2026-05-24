@@ -62,6 +62,8 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
                         save(entity);
                     } else {
                         oldEntity.setSort(entity.getSort());
+                        oldEntity.setParentValue(parentValue);
+                        oldEntity.setLangdata(entity.getLangdata());
                         oldEntity.setText(entity.getText());
                     }
                     idSet.add(entity.getId());

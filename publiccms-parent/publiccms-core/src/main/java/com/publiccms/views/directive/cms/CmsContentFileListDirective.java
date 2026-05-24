@@ -26,6 +26,11 @@ import freemarker.template.TemplateException;
  *
  * contentFileList 内容附件列表查询指令
  * <p>
+ * 上下文变量
+ * <ul>
+ * <li><code>lang</code>:语言
+ * </ul>
+ * <p>
  * 参数列表
  * <ul>
  * <li><code>fileTypes</code>:文件类型,【image:图片,video:视频,audio:音频,other:其他】
@@ -48,12 +53,13 @@ import freemarker.template.TemplateException;
  * <p>
  * 使用示例
  * <p>
+ * &lt;#assign lang="cn"/&gt;
  * &lt;@cms.contentFileList contentId=1 pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.filePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;
  *
  * <pre>
  *  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/contentFileList?contentId=1&amp;pageSize=10', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/contentFileList?contentId=1&amp;pageSize=10',{headers: {"lang":"cn"}}).then(res => res.json()).then(data=>{
      console.log(data.page.totalCount);
    });
    &lt;/script&gt;
@@ -69,7 +75,7 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
         if (CommonUtils.empty(fileTypes) && handler.getBoolean("image", false)) {
             fileTypes = new String[] { CmsFileUtils.FILE_TYPE_IMAGE };
         }
-        PageHandler page = service.getPage(handler.getLong("contentId"), handler.getString("lang"), handler.getLong("userId"),
+        PageHandler page = service.getPage(handler.getLong("contentId"), handler.getStringAttribute("lang"), handler.getLong("userId"),
                 fileTypes, handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")

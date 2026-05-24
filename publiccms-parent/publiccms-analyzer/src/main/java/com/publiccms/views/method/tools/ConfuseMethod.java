@@ -53,7 +53,7 @@ import freemarker.template.TemplateModelException;
  * 
  * <pre>
  * &lt;script&gt;
- * $.getJSON('${site.dynamicPath}api/method/confuse?parameters=aaa&amp;appToken=接口访问授权Token', function(data){
+ * fetch('${site.dynamicPath}api/method/confuse?parameters=aaa&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{
  *     console.log(data);
  * });
  * &lt;/script&gt;

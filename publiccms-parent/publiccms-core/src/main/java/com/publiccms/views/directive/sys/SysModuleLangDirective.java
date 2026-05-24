@@ -31,7 +31,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('//sys.publicsys.com/api/directive/sys/moduleLang?moduleId=page&amp;lang=zh', function(data){
+fetch('//sys.publicsys.com/api/directive/sys/moduleLang?moduleId=page&amp;lang=zh').then(res => res.json()).then(data=>{
  console.log(data);
 });
 &lt;/script&gt;
@@ -43,7 +43,7 @@ public class SysModuleLangDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String moduleId = handler.getString("moduleId");
-        String lang = handler.getString("lang");
+        String lang = handler.getStringAttribute("lang");
         if (CommonUtils.notEmpty(moduleId) && null != lang) {
             SysModuleLang entity = service.getEntity(new SysModuleLangId(moduleId, lang));
             if (null != entity) {

@@ -38,7 +38,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryList?name=data', function(data){
+ fetch('${site.dynamicPath}api/directive/cms/dictionaryList?name=data').then(res => res.json()).then(data=>{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;

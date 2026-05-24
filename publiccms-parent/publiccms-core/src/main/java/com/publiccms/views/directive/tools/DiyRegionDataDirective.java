@@ -31,7 +31,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/regionData?itemId=00000000-0000-0000-0000-000000000000&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/regionData?itemId=00000000-0000-0000-0000-000000000000&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{
    console.log(data.id);
  });
  &lt;/script&gt;

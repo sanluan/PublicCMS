@@ -37,7 +37,7 @@ import freemarker.template.TemplateModelException;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getContentAttributes?parameters=正文内容&amp;parameters=2', function(data){
+fetch('${site.dynamicPath}api/method/getContentAttributes?parameters=正文内容&amp;parameters=2').then(res => res.json()).then(data=>{
 console.log(data.text);
 });
 &lt;/script&gt;

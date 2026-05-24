@@ -35,7 +35,7 @@ import freemarker.template.TemplateException;
  * &lt;@visit.url visitDate='2020-01-01' urlMd5='md5' urlSha='sha'&gt;${object.pv}&lt;/@visit.url&gt;
  * <pre>
  &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/visit/url?visitDate=2020-01-01&amp;urlMd5=MD5&amp;urlSha=sha&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/visit/url?visitDate=2020-01-01&amp;urlMd5=MD5&amp;urlSha=sha&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{
     console.log(data.pv);
   });
   &lt;/script&gt;

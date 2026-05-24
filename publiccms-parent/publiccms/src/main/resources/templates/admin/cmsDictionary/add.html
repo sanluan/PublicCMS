@@ -1,6 +1,12 @@
 <@cms.dictionary id=id><#assign a=object/></@cms.dictionary>
+<#if 'true'=(siteAttribute.enable_multilingual)!><@cms.languageList><#assign languageList=list/></@cms.languageList></#if>
 <form method="post" autocomplete="off" action="cmsDictionary/save?callbackType=closeCurrent&navTabId=cmsDictionary/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
+    <#if languageList?has_content>
+        <#list languageList as lang>
+            <input type="hidden" name="languageList" value="${lang.id.code}"/>
+        </#list>
+    </#if>
     <div class="formBar card">
         <ul>
         <#if site.parentId?has_content>
@@ -60,7 +66,13 @@
                     <thead>
                         <tr>
                             <th type="text" name="dataList[#index#].id.value" size="20" fieldClass="required" fieldAttrs='{"maxlength":50,"batchGroup":"dataList[#index#]"}'><@t.page 'value'/></th>
-                            <th type="text" name="dataList[#index#].text" size="50" fieldAttrs='{"maxlength":100}'><@t.page 'text'/></th>
+                            <#if languageList?has_content>
+                                <#list languageList as lang>
+                                    <th type="text" name="dataList[#index#].langdata" size="50" fieldAttrs='{"maxlength":100}'>${(lang.name)!}</th>
+                                </#list>
+                            <#else>
+                                <th type="text" name="dataList[#index#].text" size="50" fieldAttrs='{"maxlength":100}'><@t.page 'text'/></th>
+                            </#if>
                             <th type="delAndSort" width="100"><@t.page 'operate'/></th>
                         </tr>
                     </thead>
@@ -72,9 +84,17 @@
                                 <td>
                                     <input type="text" name="dataList[${d?index}].id.value" value="${d.id.value}" size="20" class="required" maxlength="50"/>
                                 </td>
-                                <td>
-                                    <input type="text" name="dataList[${d?index}].text" value="${d.text}" size="50" maxlength="100"/>
-                                </td>
+                                <#if languageList?has_content>
+                                    <#list languageList as lang>
+                                        <td>
+                                            <input type="text" name="dataList[${d?index}].langdata" value="${d.attribute[lang.id.code]!d.text}" size="50" maxlength="100"/>
+                                        </td>
+                                    </#list>
+                                <#else>
+                                    <td>
+                                        <input type="text" name="dataList[${d?index}].text" value="${d.text}" size="50" maxlength="100"/>
+                                    </td>
+                                </#if>
                                 <td>
                                     <a href="javascript:;" class="icon-move"></a>
                                     <a href="javascript:void(0)" class="btnDel "><@t.page 'button.delete'/></a>

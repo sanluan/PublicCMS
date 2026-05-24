@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsDictionaryData;
 import com.publiccms.entities.cms.CmsDictionaryDataId;
 import com.publiccms.entities.sys.SysSite;
@@ -22,6 +23,11 @@ import freemarker.template.TemplateException;
 /**
  *
  * dictionaryData 数据字典数据查询指令
+ * <p>
+ * 上下文变量
+ * <ul>
+ * <li><code>lang</code>:语言
+ * </ul>
  * <p>
  * 参数列表
  * <ul>
@@ -34,6 +40,7 @@ import freemarker.template.TemplateException;
  * <p>
  * 使用示例
  * <p>
+ * &lt;#assign lang="cn"/&gt;
  * &lt;@cms.dictionaryData dictionaryId='data'
  * value='1'&gt;${object.text}&lt;/@cms.dictionaryData&gt;
  * <p>
@@ -42,7 +49,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
  *  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryData?dictionaryId=data&amp;value=1', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/dictionaryData?dictionaryId=data&amp;value=1',{headers: {"lang":"cn"}}).then(res => res.json()).then(data=>{
      console.log(data.text);
    });
    &lt;/script&gt;
@@ -55,12 +62,14 @@ public class CmsDictionaryDataDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String dictionaryId = handler.getString("dictionaryId");
         String value = handler.getString("value");
+        String lang = handler.getStringAttribute("lang");
         if (CommonUtils.notEmpty(dictionaryId)) {
             SysSite site = getSite(handler);
             short siteId = null == site.getParentId() ? site.getId() : site.getParentId();
             if (CommonUtils.notEmpty(value)) {
                 CmsDictionaryData entity = service.getEntity(new CmsDictionaryDataId(dictionaryId, siteId, value));
                 if (null != entity) {
+                    entity.setAttribute(ExtendUtils.getExtendMap(entity.getLangdata()));
                     handler.put("object", entity).render();
                 }
             } else {
@@ -69,6 +78,13 @@ public class CmsDictionaryDataDirective extends AbstractTemplateDirective {
                     CmsDictionaryDataId[] ids = Stream.of(values).map(e -> new CmsDictionaryDataId(dictionaryId, siteId, e))
                             .toArray(CmsDictionaryDataId[]::new);
                     List<CmsDictionaryData> entityList = service.getEntitys(ids);
+                    entityList.forEach(entity -> {
+                        entity.setAttribute(ExtendUtils.getExtendMap(entity.getLangdata()));
+                        String text = entity.getAttribute().get(lang);
+                        if (CommonUtils.notEmpty(lang) && CommonUtils.notEmpty(text)) {
+                            entity.setText(text);
+                        }
+                    });
                     Map<String, CmsDictionaryData> map = CommonUtils.listToMapSorted(entityList, k -> k.getId().getValue(),
                             values, e -> e.getId().getValue());
                     handler.put("map", map).render();

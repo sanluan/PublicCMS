@@ -10,6 +10,10 @@
 <body>
     <header data-diy="page">
         <h1>${(site.name)!}</h1>
+        <#if base??>
+            <a href="?locale=zh_CN">中文</a>
+            <a href="?locale=ja">日本語</a>
+        </#if>
     </header>
     <nav data-diy="category">
         <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}" data-id="home">Home</a>
@@ -45,32 +49,31 @@
             </ul>
         </aside>
     </main>
-    <footer>
-        <#if base??>
-            <a href="?locale=zh_CN">中文</a>
-            <a href="?locale=ja">日本語</a>
-        </#if>
-        Copyright &copy; ${.now?string('yyyy')}
-        <@sys.record code="visit"><#assign history=object.data?eval_json/><p><@visit.dayList pageSize=1><#list page.list as a><#if a?is_first>There were ${a.uv} visits before ${.now?string('HH:mm')} today<#else>${a.uv} visits yesterday</#if>, </#list></@visit.dayList>a cumulative ${history.uv}, and a maximum of ${history.maxUv} on ${history.maxUvDate?number_to_date}</p></@sys.record>
-    </footer>
     <script>
     var templatePath='${.current_template_name?keep_after('/')}';
     </script>
+    <#-- footer -->
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+        <@sys.record code="visit"><#assign history=object.data?eval_json/><p><@visit.dayList pageSize=1><#list page.list as a><#if a?is_first>There were ${a.uv} visits before ${.now?string('HH:mm')} today<#else>${a.uv} visits yesterday</#if>, </#list></@visit.dayList>a cumulative ${history.uv}, and a maximum of ${history.maxUv} on ${history.maxUvDate?number_to_date}</p></@sys.record>
+    </footer>
     <script src="${site.dynamicPath}resource/js/cms.support.js"></script>
     <script>
-        var nav = document.querySelectorAll('nav a[data-id="home"]');
-        if(nav.length){
-            nav[0].className="selected";
-        }
-
-        var ca = cmsAnalytics();
-        var url='${site.dynamicPath}api/visit/record';
-        if("string" ==typeof itemString){
-            url=url+"?"+itemString;
-        }
-        ca.setDomain("${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}");
-        ca.setPath('/');
-        ca.report(url);
+    var ca = cmsAnalytics();
+    var url='${site.dynamicPath}api/visit/record';
+    if("string" ==typeof itemString){
+        url=url+"?"+itemString;
+    }
+    ca.setDomain('${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}');
+    ca.setPath('/');
+    ca.report(url);
+    </script>
+    <#-- end footer -->
+    <script>
+    var nav = document.querySelector('nav a[data-id="home"]');
+    if(nav){
+        nav.className="selected";
+    }
     </script>
 </body>
 </html>

@@ -39,7 +39,7 @@ import freemarker.template.TemplateException;
  * <p>使用示例
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/appToken?appKey=1&amp;appSecret=1', function(data){
+fetch('${site.dynamicPath}api/appToken?appKey=1&amp;appSecret=1').then(res => res.json()).then(data=>{
   $('article p em').text(data.clicks);
 });
 &lt;/script&gt;

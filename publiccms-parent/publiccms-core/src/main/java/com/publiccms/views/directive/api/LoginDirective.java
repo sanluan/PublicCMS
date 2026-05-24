@@ -55,7 +55,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/login?username=admin&amp;password=sha512encodingpassword&amp;encoding=sha512&amp;channel=web', function(data){
+fetch('${site.dynamicPath}api/login?username=admin&amp;password=sha512encodingpassword&amp;encoding=sha512&amp;channel=web').then(res => res.json()).then(data=>{
     console.log(result+","+authToken+","+user.nickname+","+expiryDate);
 });
 &lt;/script&gt;

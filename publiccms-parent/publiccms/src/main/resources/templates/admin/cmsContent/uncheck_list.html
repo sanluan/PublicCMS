@@ -1,6 +1,6 @@
 <#if 0=admin.contentPermissions><#assign userId=admin.id/></#if>
 <#if 2=admin.contentPermissions><#assign deptId=admin.deptId/></#if>
-<@cms.contentList advanced=true lang=lang status=2 modelId=modelIds categoryId=categoryId containChild=containChild title=title userId=userId deptId=deptId
+<@cms.contentList advanced=true status=2 modelId=modelIds categoryId=categoryId containChild=containChild title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <@sys.authorized roleIds=admin.roles urls='cmsContent/delete,cmsContent/preview,cmsContent/add,cmsContent/check,cmsContent/reject,cmsComment/list'><#assign authorizedMap=map/></@sys.authorized>

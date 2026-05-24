@@ -24,6 +24,19 @@
                     <input type="text" name="endCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
+                <#if 'true'=((siteAttribute.enable_multilingual)!)>
+                <li>
+                    <label><@t.page 'language'/></label>
+                    <select class="combox" name="lang">
+                        <option value><@t.page 'please_select'/></option>
+                        <@cms.languageList>
+                        <#list list as l>
+                            <option value="${l.id.code}"${(l.id.code=lang!)?then(' selected="true"','')?no_esc}>${(l.name)!}</option>
+                        </#list>
+                        </@cms.languageList>
+                    </select>
+                </li>
+                </#if>
             </ul>
             <div class="subBar">
                 <ul>
