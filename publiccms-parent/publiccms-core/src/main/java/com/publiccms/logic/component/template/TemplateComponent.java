@@ -948,7 +948,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
             String realFilepath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realFilepath, null, null);
             if (site.isUseStatic() && CommonUtils.notEmpty(metadata.getPublishPath())) {
-                if (siteAttributeComponent.enableMultilingual(site.getId())) {
+                if (siteAttributeComponent.enableMultilingual(site.getId()) && metadata.isEnableMultilingual()) {
                     List<CmsLanguage> languageList = languageService.getList(site.getId());
                     if (null != languageList) {
                         String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
@@ -964,7 +964,6 @@ public class TemplateComponent implements Cache, AdminContextPath {
                         }
                     }
                 } else {
-
                     createStaticFile(site, fullTemplatePath, metadata.getPublishPath(), null, null, metadata, null, null);
                 }
 
