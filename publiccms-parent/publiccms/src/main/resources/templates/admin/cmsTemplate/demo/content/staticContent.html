@@ -149,12 +149,12 @@
     <script src="${site.dynamicPath}resource/js/cms.support.js"></script>
     <script>
         var ca = cmsAnalytics();
-        var url='${site.dynamicPath}api/visit/record';
+        var url="${site.dynamicPath}api/visit/record";
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
         }
         ca.setDomain("${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}");
-        ca.setPath('/');
+        ca.setPath("/");
         ca.report(url);
     </script>
     <#-- end footer -->
