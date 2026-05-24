@@ -175,7 +175,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
 
     @Override
     public Object getAttribute(String name) throws TemplateModelException {
-        TemplateModel model = environment.getGlobalVariable(name);
+        TemplateModel model = environment.getVariable(name);
         if (null != model) {
             return TemplateModelUtils.converBean(model);
         }
@@ -184,7 +184,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
     
     @Override
     public String getStringAttribute(String name) throws TemplateModelException {
-        TemplateModel model = environment.getGlobalVariable(name);
+        TemplateModel model = environment.getVariable(name);
         if (null != model) {
             return TemplateModelUtils.converString(model);
         }
