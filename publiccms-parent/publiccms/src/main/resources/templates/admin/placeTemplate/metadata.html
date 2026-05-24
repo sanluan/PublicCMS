@@ -48,7 +48,7 @@
                 <dd>
                     <input name="size" class="required digits" type="number" value="${(a.size)!0}"/>
                     <#if 'true'=((siteAttribute.enable_multilingual)!)>
-                        <label>
+                        <label class="placeExtend">
                             <input name="enableMultilingual" type="checkbox"class="form-check-input"<#if a.enableMultilingual> checked="checked"</#if>/>
                             <@t.message 'config.siteAttribute.enable_multilingual'/>
                         </label>

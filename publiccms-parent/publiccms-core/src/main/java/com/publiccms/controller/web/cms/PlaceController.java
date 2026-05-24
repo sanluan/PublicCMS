@@ -225,7 +225,7 @@ public class PlaceController {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "delete.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
                 try {
-                    templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
+                    templateComponent.publishPlace(site, entity.getPath(), true);
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
@@ -262,7 +262,7 @@ public class PlaceController {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
                 try {
-                    templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
+                    templateComponent.publishPlace(site, entity.getPath(), true);
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
@@ -299,7 +299,7 @@ public class PlaceController {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
                 try {
-                    templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
+                    templateComponent.publishPlace(site, entity.getPath(), true);
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);
@@ -336,7 +336,7 @@ public class PlaceController {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                         "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(), id.toString()));
                 try {
-                    templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
+                    templateComponent.publishPlace(site, entity.getPath(), true);
                 } catch (IOException | TemplateException e) {
                     model.addAttribute(CommonConstants.ERROR, e.getMessage());
                     log.error(e.getMessage(), e);

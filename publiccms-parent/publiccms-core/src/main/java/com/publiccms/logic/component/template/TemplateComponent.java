@@ -836,36 +836,6 @@ public class TemplateComponent implements Cache, AdminContextPath {
     }
 
     /**
-     * @param site
-     *            站点
-     * @param templatePath
-     *            模板路径 不含include
-     * @param lang
-     *            语言
-     * @param checkExists
-     *            检查是否存在
-     * @throws IOException
-     * @throws TemplateException
-     */
-    public void publishPlace(SysSite site, String templatePath, String lang, boolean checkExists)
-            throws IOException, TemplateException {
-        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
-        String fullStaticFilePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY,
-                CmsLangUtils.getPlaceFilepath(templatePath, lang, defaultLang));
-        if (!checkExists
-                || site.isUseSsi() && CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), fullStaticFilePath))) {
-            try {
-                String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(),
-                        CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, templatePath));
-                CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(realTemplatePath, lang, defaultLang);
-                staticPlace(site, templatePath, lang, defaultLang, metadata);
-            } catch (IOException | TemplateException e) {
-                log.error(e.getMessage(), e);
-            }
-        }
-    }
-
-    /**
      * 静态化页面片段
      *
      * @param site
