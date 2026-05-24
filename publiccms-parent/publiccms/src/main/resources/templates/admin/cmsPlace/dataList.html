@@ -146,7 +146,7 @@
                     </div>
                 </td>
                 <#if 'true'=((siteAttribute.enable_multilingual)!) && ((metadata.enablePlaceMultilingual)!false)>
-                    <td>${(langMap[a.lang!siteAttribute.default_language].name)!}</td>
+                    <td class="exclude-translate">${(langMap[a.lang!siteAttribute.default_language].name)!}</td>
                 </#if>
                 <td>${a.publishDate}</td>
                 <td>${a.expiryDate!}</td>

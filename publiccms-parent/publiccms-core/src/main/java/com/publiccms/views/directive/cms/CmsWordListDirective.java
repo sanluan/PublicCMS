@@ -21,6 +21,11 @@ import com.publiccms.entities.sys.SysSite;
  *
  * wordList 用户投票列表查询指令
  * <p>
+ * 上下文变量
+ * <ul>
+ * <li><code>lang</code>:语言
+ * </ul>
+ * <p>
  * 参数列表
  * <ul>
  * <li><code>startCreateDate</code>:起始创建日期,【2020-01-01 23:59:59】,【2020-01-01】
@@ -44,12 +49,13 @@ import com.publiccms.entities.sys.SysSite;
  * <p>
  * 使用示例
  * <p>
+ * &lt;#assign lang="cn"/&gt;
  * &lt;@cms.wordList userId=1 pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.ip}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.wordList&gt;
  *
  * <pre>
 &lt;script&gt;
-fetch('${site.dynamicPath}api/directive/cms/wordList?userId=1&amp;pageSize=10').then(res => res.json()).then(data=>{
+fetch('${site.dynamicPath}api/directive/cms/wordList?userId=1&amp;pageSize=10',{headers: {"lang":"cn"}}).then(res => res.json()).then(data=>{
 console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -71,7 +77,7 @@ public class CmsWordListDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
         PageHandler page = service.getPage(site.getId(), hidden, handler.getDate("startCreateDate"),
-                handler.getDate("endCreateDate"), name, handler.getString("lang"), defaultLang, orderField,
+                handler.getDate("endCreateDate"), name, handler.getStringAttribute("lang"), defaultLang, orderField,
                 handler.getString("orderType"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
