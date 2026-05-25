@@ -47,7 +47,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
-fetch('${site.dynamicPath}api/directive/tools/createTemplateFile?id=1&amp;templatePath=template.html&amp;filePath=page/1.html&amp;parameters.parameter1=value1&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{
+fetch('${site.dynamicPath}api/directive/tools/createTemplateFile?id=1&amp;templatePath=template.html&amp;filePath=page/1.html&amp;parameters.parameter1=value1',{"headers":{"appToken":"接口访问授权Token"}}).then(res => res.json()).then(data=>{
   console.log(data);
 });
 &lt;/script&gt;

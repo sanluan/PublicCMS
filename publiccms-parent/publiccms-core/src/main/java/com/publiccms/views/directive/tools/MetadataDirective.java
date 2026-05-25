@@ -39,7 +39,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
- fetch('${site.dynamicPath}api/directive/tools/metadata?path=index.html&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{
+ fetch('${site.dynamicPath}api/directive/tools/metadata?path=index.html',{"headers":{"appToken":"接口访问授权Token"}}).then(res => res.json()).then(data=>{
    console.log(data.alias);
  });
  &lt;/script&gt;

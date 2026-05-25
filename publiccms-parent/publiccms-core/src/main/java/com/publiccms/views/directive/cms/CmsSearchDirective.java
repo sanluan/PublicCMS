@@ -99,7 +99,7 @@ import freemarker.template.TemplateModelException;
  *
  * <pre>
 *  &lt;script&gt;
-  fetch('${site.dynamicPath}api/directive/cms/search?word=cms&amp;pageSize=10',{headers: {"lang":"cn"}}).then(res => res.json()).then(data=>{
+  fetch('${site.dynamicPath}api/directive/cms/search?word=cms&amp;pageSize=10',{"headers":{"lang":"cn"}}).then(res => res.json()).then(data=>{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;

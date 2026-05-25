@@ -32,7 +32,7 @@ import freemarker.template.TemplateException;
  * <pre>
 &lt;script&gt;
 fetch('${site.dynamicPath}api/contentClick?id=1').then(res => res.json()).then(data=>{
-  console.log(data.clicks);
+  document.querySelector('article p em').textContent=data.clicks;
 });
 &lt;/script&gt;
  * </pre>

@@ -103,7 +103,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
     }
 
     protected SysApp getApp(RenderHandler handler) throws TemplateModelException {
-        String appToken = (String) handler.getAttribute(APP_TOKEN);
+        String appToken = handler.getStringAttribute(APP_TOKEN);
         if (null == appToken) {
             appToken = handler.getString(APP_TOKEN);
         }
@@ -118,8 +118,12 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
     }
 
     protected SysUser getUser(RenderHandler handler) throws TemplateModelException {
-        String authToken = (String) handler.getAttribute(AUTH_TOKEN);
-        Long authUserId = (Long) handler.getAttribute(AUTH_USER_ID);
+        String authToken = handler.getStringAttribute(AUTH_TOKEN);
+        Long authUserId = null;
+        try {
+            authUserId = Long.parseLong(handler.getStringAttribute(AUTH_USER_ID));
+        } catch (NumberFormatException e) {
+        }
         if (null == authToken && null == authUserId) {
             authToken = handler.getString(AUTH_TOKEN);
             authUserId = handler.getLong(AUTH_USER_ID);

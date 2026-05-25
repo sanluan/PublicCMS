@@ -41,7 +41,7 @@ import com.publiccms.common.handler.PageHandler;
  *
  * <pre>
 &lt;script&gt;
-fetch('${site.dynamicPath}api/directive/visit/historyList?hourAnalytics=false&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{
+fetch('${site.dynamicPath}api/directive/visit/historyList?hourAnalytics=false',{"headers":{"appToken":"接口访问授权Token"}}).then(res => res.json()).then(data=>{
   console.log(data.page.totalCount);
 });
 &lt;/script&gt;

@@ -36,7 +36,7 @@ import freemarker.template.TemplateException;
  * <p>
  * <pre>
 &lt;script&gt;
-fetch('${site.dynamicPath}api/login?appToken=接口访问授权Token').then(res => res.json()).then(data=>{
+fetch('${site.dynamicPath}api/login',{"headers":{"appToken":"接口访问授权Token"}}).then(res => res.json()).then(data=>{
     console.log(appToken+","+expiryDate);
 });
 &lt;/script&gt;

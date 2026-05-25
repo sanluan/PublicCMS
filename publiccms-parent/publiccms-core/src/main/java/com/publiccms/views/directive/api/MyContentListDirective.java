@@ -61,7 +61,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
-fetch('${site.dynamicPath!}api/myContentList?pageSize=10&amp;authToken=用户登录授权&amp;authUserId=1').then(res => res.json()).then(data=>{
+fetch('${site.dynamicPath!}api/myContentList?pageSize=10',{"headers":{"authToken":"用户登录授权","authUserId":"1"}}).then(res => res.json()).then(data=>{
     console.log(data.page.totalCount);
 });
 &lt;/script&gt;

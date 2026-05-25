@@ -47,7 +47,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
- fetch('${site.dynamicPath}api/directive/cms/dictionaryDataList?dictionaryId=1&amp;parentValue=text',{headers: {"lang":"cn"}}).then(res => res.json()).then(data=>{
+ fetch('${site.dynamicPath}api/directive/cms/dictionaryDataList?dictionaryId=1&amp;parentValue=text',{"headers":{"lang":"cn"}}).then(res => res.json()).then(data=>{
    console.log(data);
  });
  &lt;/script&gt;

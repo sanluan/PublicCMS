@@ -55,7 +55,7 @@ import com.publiccms.entities.sys.SysSite;
  *
  * <pre>
 &lt;script&gt;
-fetch('${site.dynamicPath}api/directive/cms/wordList?userId=1&amp;pageSize=10',{headers: {"lang":"cn"}}).then(res => res.json()).then(data=>{
+fetch('${site.dynamicPath}api/directive/cms/wordList?userId=1&amp;pageSize=10',{"headers":{"lang":"cn"}}).then(res => res.json()).then(data=>{
 console.log(data.page.totalCount);
 });
 &lt;/script&gt;

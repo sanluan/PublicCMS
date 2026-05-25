@@ -56,7 +56,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
    &lt;script&gt;
-    fetch('${site.dynamicPath}api/directive/cms/category?id=1',{headers: {"lang":"cn"}}).then(res => res.json()).then(data=>{
+    fetch('${site.dynamicPath}api/directive/cms/category?id=1',{"headers":{"lang":"cn"}}).then(res => res.json()).then(data=>{
       console.log(data.name);
     });
     &lt;/script&gt;

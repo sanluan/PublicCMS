@@ -45,7 +45,7 @@ import com.publiccms.common.handler.PageHandler;
  *
  * <pre>
  &lt;script&gt;
-  fetch('${site.dynamicPath}api/directive/cms/editorHistoryList?contentId=1&amp;fieldName='text'&amp;pageSize=10&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{
+  fetch('${site.dynamicPath}api/directive/cms/editorHistoryList?contentId=1&amp;fieldName='text'&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res => res.json()).then(data=>{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;

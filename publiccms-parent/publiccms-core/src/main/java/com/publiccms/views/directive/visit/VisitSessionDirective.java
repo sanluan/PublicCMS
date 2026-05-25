@@ -34,7 +34,7 @@ import freemarker.template.TemplateException;
  * &lt;@visit.session visitDate='2020-01-01' sessionId='xxxx-xxxx-xxxx'&gt;${object.pv}&lt;/@visit.session&gt;
  * <pre>
  &lt;script&gt;
-  fetch('${site.dynamicPath}api/directive/visit/session?visitDate=2020-01-01&amp;sessionId=xxxx-xxxx-xxxx&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{
+  fetch('${site.dynamicPath}api/directive/visit/session?visitDate=2020-01-01&amp;sessionId=xxxx-xxxx-xxxx',{"headers":{"appToken":"接口访问授权Token"}}).then(res => res.json()).then(data=>{
     console.log(data.pv);
   });
   &lt;/script&gt;

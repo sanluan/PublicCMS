@@ -23,6 +23,11 @@ import freemarker.template.TemplateException;
 /**
  * includePlace 包含页面片段指令
  * <p>
+ * 上下文变量
+ * <ul>
+ * <li><code>lang</code>:语言
+ * </ul>
+ * <p>
  * 参数列表
  * <ul>
  * <li><code>path</code>:路径
@@ -32,11 +37,12 @@ import freemarker.template.TemplateException;
  * <p>
  * 使用示例
  * <p>
+ * &lt;#assign lang="cn"/&gt;
  * &lt;@tools.includePlace path='/00000000-0000-0000-0000-000000000000'/&gt;
  *
  * <pre>
 &lt;script&gt;
- fetch('${site.dynamicPath}api/directive/tools/includePlace?path=/00000000-0000-0000-0000-000000000000.html&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{
+ fetch('${site.dynamicPath}api/directive/tools/includePlace?path=/00000000-0000-0000-0000-000000000000.html',{"headers":{"appToken":"接口访问授权Token","lang":"cn"}}).then(res => res.json()).then(data=>{
    console.log(data);
  });
  &lt;/script&gt;

@@ -40,11 +40,11 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
-$('input[type=file]').change(function() {
+document.querySelector("input[type=file]").addEventListener("change",function(event) {
     var formData = new FormData();
-    var file = this.files[0];
-    formData.append('file', file);
-    $.ajax({url:'${site.dynamicPath}api/upload',type:'post',headers: {'appToken': 'your app token','':'','':''},data: formData,, success:function(data){
+    var file = event.target.files[0];
+    formData.append("file", file);
+    fetch("${site.dynamicPath}api/upload",{method:"post",headers:{"appToken":"接口访问授权Token""authToken":"用户登录授权","authUserId":"1"},body: formData}).then(res => res.json()).then(data=>{
         console.log(result+","+error+","+fileName);
     });
 });

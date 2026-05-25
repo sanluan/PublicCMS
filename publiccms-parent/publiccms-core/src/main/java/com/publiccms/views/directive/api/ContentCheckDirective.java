@@ -48,7 +48,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
-fetch('${site.dynamicPath!}api/contentCheck?ids=1,2&amp;authToken=用户登录授权&amp;authUserId=1&amp;appToken=接口访问授权Token').then(res => res.json()).then(data=>{
+fetch('${site.dynamicPath!}api/contentCheck?ids=1,2',{"headers":{"appToken":"接口访问授权Token","authToken":"用户登录授权","authUserId":"1"}}).then(res => res.json()).then(data=>{
 });
 &lt;/script&gt;
  * </pre>

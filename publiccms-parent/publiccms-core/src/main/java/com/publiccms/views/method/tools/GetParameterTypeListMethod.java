@@ -26,7 +26,7 @@ import freemarker.template.TemplateModelException;
  *
  * <pre>
 &lt;script&gt;
-fetch('${site.dynamicPath}api/method/getParameterTypeList?appToken=接口访问授权Token').then(res => res.json()).then(data=>{
+fetch('${site.dynamicPath}api/method/getParameterTypeList',{"headers":{"appToken":"接口访问授权Token"}}).then(res => res.json()).then(data=>{
 console.log(data);
 });
 &lt;/script&gt;
