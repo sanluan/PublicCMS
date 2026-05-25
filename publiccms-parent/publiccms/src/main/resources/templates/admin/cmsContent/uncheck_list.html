@@ -8,6 +8,7 @@
     <form class="pagerForm" action="cmsContent/uncheck_list.html" autocomplete="off" onsubmit="return divSearch(this,'contentBox');" method="post">
         <#include "../include_page/parameters.html"/>
         <input name="categoryId" type="hidden" value="${categoryId!}"/>
+        <input name="parentId" type="hidden" value="${parentId!}"/>
         <input name="lang" type="hidden" value="${lang!}"/>
         <div class="searchBar">
             <ul class="searchContent">

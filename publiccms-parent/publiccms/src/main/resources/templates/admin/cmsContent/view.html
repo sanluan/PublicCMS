@@ -262,11 +262,10 @@
             <#if authorizedMap['cmsContent/uncheck_list']>
                 <#if 0=admin.contentPermissions><#assign uncheckUserId=admin.id/></#if>
                 <#if 2=admin.contentPermissions><#assign uncheckDeptId=admin.deptId/></#if>
-                <@sys.dept id=admin.deptId!><#assign containChild=object.ownsAllCategory/></@sys.dept>
-                <@cms.contentList advanced=true status=2 categoryId=categoryId parentId=a.id userId=uncheckUserId deptId=uncheckDeptId containChild=containChild absoluteId=false pageSize=0>
+                <@cms.contentList advanced=true status=2 parentId=a.id userId=uncheckUserId deptId=uncheckDeptId absoluteId=false pageSize=0>
                     <#if page.totalCount gt 0>
                         <li class="line">line</li>
-                        <li><a href="cmsContent/uncheck_list.html?categoryId=${categoryId!}&containChild=${containChild!}&lang=${lang!}&parentId=a.id&type=uncheck_list" target="navTab" rel="cmsContent/list" data-change-title="false"><i class="icon-check-sign icon-large"></i><@t.page 'status.content.2'/><span class="todoNumber">${page.totalCount}</span></a></li>
+                        <li><a href="cmsContent/uncheck_list.html?lang=${lang!}&parentId=${a.id}&type=uncheck_list" target="navTab" rel="cmsContent/list" data-change-title="false"><i class="icon-check-sign icon-large"></i><@t.page 'status.content.2'/><span class="todoNumber">${page.totalCount}</span></a></li>
                     </#if>
                 </@cms.contentList>
             </#if>
