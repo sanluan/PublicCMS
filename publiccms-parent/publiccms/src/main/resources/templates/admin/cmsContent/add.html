@@ -9,7 +9,12 @@
 </@cms.content>
 <@cms.category id=categoryId!><#assign category=object/></@cms.category>
 <@cms.model id=modelId!><#assign model=object/></@cms.model>
-<@sys.dept id=admin.deptId!><#assign dept=object/></@sys.dept>
+<@sys.dept id=admin.deptId!>
+    <#assign
+        dept=object
+        containChild=object.ownsAllCategory
+    />
+</@sys.dept>
 <form method="post" autocomplete="off" action="cmsContent/save?<#if !id?has_content && 'true'=(siteAttribute.enable_multilingual)!>callbackType=forward&forwardUrl=cmsContent/addLang.html<#else>callbackType=closeCurrent&navTabId=cmsContent/list</#if>" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}"/>
     <input name="parentId" type="hidden" value="${parentId!}"/>
@@ -35,6 +40,16 @@
             </#if>
             <#if a?has_content && model?has_content && model.hasChild>
                 <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list" data-change-title="false"><@t.page 'content.child_management'/></a></li>
+                <#if authorizedMap['cmsContent/uncheck_list']>
+                    <#if 0=admin.contentPermissions><#assign uncheckUserId=admin.id/></#if>
+                    <#if 2=admin.contentPermissions><#assign uncheckDeptId=admin.deptId/></#if>
+                    <@cms.contentList advanced=true status=2 categoryId=categoryId parentId=a.id userId=uncheckUserId deptId=uncheckDeptId containChild=containChild absoluteId=false pageSize=0>
+                        <#if page.totalCount gt 0>
+                            <li class="line">line</li>
+                            <li><a href="cmsContent/uncheck_list.html?categoryId=${categoryId!}&containChild=${containChild!}&lang=${lang!}&parentId=a.id&type=uncheck_list" target="navTab" rel="cmsContent/list" data-change-title="false"><i class="icon-check-sign icon-large"></i><@t.page 'status.content.2'/><span class="todoNumber">${page.totalCount}</span></a></li>
+                        </#if>
+                    </@cms.contentList>
+                </#if>
             </#if>
             <li><button type="submit" class="buttonActive" title="ctrl+s"<#if id?has_content> lock-url="common/lock?itemType=content&itemId=${id!}" close-url="common/unlock?itemType=content&itemId=${id!}"</#if>><#if !id?has_content && 'true'=(siteAttribute.enable_multilingual)!><@t.page 'next_step'/><#else><@t.page 'button.save'/></#if></button></li>
         <@sys.authorized roleIds=admin.roles url='cmsContent/previewBeforeSave'>

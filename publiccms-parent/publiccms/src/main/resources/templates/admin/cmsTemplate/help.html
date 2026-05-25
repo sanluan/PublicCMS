@@ -97,7 +97,7 @@ onclick="JUI.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].r
     <ul>
             <#list page.list as m>
         <li>
-            <a href="cmsModel/categoryList.html?modelId=${m.id?url}" target="dialog" rel="categoryList">${m.name!}</a>
+            <a href="cmsModel/template.html?modelId=${m.id?url}" target="dialog" mask="true">${m.name!}</a>
             <@childModel m/>
         </li>
             </#list>

@@ -90,15 +90,15 @@ import freemarker.template.TemplateException;
  * &lt;#assign lang="cn"/&gt;
  * &lt;@cms.contentList pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentList&gt;
- * 
+ *
  * <pre>
  *  &lt;script&gt;
-    fetch('${site.dynamicPath}api/directive/cms/contentList?pageSize=10',{"headers":{"lang":"cn"}}).then(res => res.json()).then(data=>{    
+    fetch('${site.dynamicPath}api/directive/cms/contentList?pageSize=10',{"headers":{"lang":"cn"}}).then(res => res.json()).then(data=>{
       console.log(data.page.totalCount);
     });
     &lt;/script&gt;
  * </pre>
- * 
+ *
  */
 @Component
 public class CmsContentListDirective extends AbstractTemplateDirective {
