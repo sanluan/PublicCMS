@@ -35,7 +35,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
  &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/contentQuoteList?contentId=1', function(data){
+  fetch('${site.dynamicPath}api/directive/cms/contentQuoteList?contentId=1').then(res => res.json()).then(data=>{
     console.log(data);
   });
   &lt;/script&gt;

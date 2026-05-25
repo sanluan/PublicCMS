@@ -1,4 +1,4 @@
-<@cms.content id=id absoluteId=true containsAttribute=true lang=lang>
+<@cms.content id=id absoluteId=true containsAttribute=true>
     <#assign
         a=object
         parentId=a.parentId!''
@@ -6,11 +6,11 @@
         modelId=a.modelId!''
     />
 </@cms.content>
-<@cms.category id=categoryId! lang=lang><#assign category=object/></@cms.category>
+<@cms.category id=categoryId!><#assign category=object/></@cms.category>
 <@cms.model id=modelId!><#assign model=object/></@cms.model>
 <#macro bread category>
     <#if category.parentId?has_content>
-        <@cms.category id=category.parentId lang=lang>
+        <@cms.category id=category.parentId>
             <@bread object/>
             <a href="${object.url!}" target="_blank">${object.name}</a> &gt;
         </@cms.category>
@@ -152,7 +152,7 @@
         <dl class="nowrap">
             <dt><@t.page 'image_list'/>:</dt>
             <dd>
-        <@cms.contentFileList contentId=a.id lang=lang fileTypes='image'>
+        <@cms.contentFileList contentId=a.id fileTypes='image'>
             <#list page.list as file>
                 <div class="thumbnail">
                     <img src="${(file.filePath)!}" alt="${(file.description)!}"/>
@@ -166,7 +166,7 @@
             <dl class="nowrap">
                 <dt><@t.page 'attach_list'/>:</dt>
                 <dd>
-            <@cms.contentFileList contentId=a.id lang=lang fileTypes='video,audio,document,other'>
+            <@cms.contentFileList contentId=a.id fileTypes='video,audio,document,other'>
                 <#list page.list as file>
                     <p><a href="${(file.filePath)!}" download="${(file.description)!}" class="exclude-translate" target="_blank">${(file.description)!}</a> <@t.page 'clicks'/>:${a.clicks!}</p>
                 </#list>

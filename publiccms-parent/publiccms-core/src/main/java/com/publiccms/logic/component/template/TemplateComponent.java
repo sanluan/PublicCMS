@@ -40,6 +40,7 @@ import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.cms.CmsCategoryLang;
+import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
@@ -311,6 +312,11 @@ public class TemplateComponent implements Cache, AdminContextPath {
             } else {
                 if (null == category) {
                     category = categoryService.getEntity(entity.getCategoryId());
+                }
+                if (null != lang) {
+                    CmsCategoryLang categoryLang = categoryLangService
+                            .getEntity(new CmsCategoryLangId(category.getId(), lang.getId().getLang()));
+                    CmsLangUtils.initLang(category, category.getLang(), categoryLang);
                 }
                 if (null == categoryModel) {
                     categoryModel = categoryModelService
@@ -808,7 +814,8 @@ public class TemplateComponent implements Cache, AdminContextPath {
             if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), fullTemplatePath))) {
                 String realFilepath = siteComponent.getTemplateFilePath(site.getId(), fullTemplatePath);
                 CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(realFilepath, null, null);
-                if (siteAttributeComponent.enableMultilingual(site.getId()) && metadata.isEnableMultilingual()) {
+                if (siteAttributeComponent.enableMultilingual(site.getId())
+                        && (metadata.isEnableMultilingual() || metadata.isEnablePlaceMultilingual())) {
                     List<CmsLanguage> languageList = languageService.getList(site.getId());
                     if (null != languageList) {
                         String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
@@ -829,36 +836,6 @@ public class TemplateComponent implements Cache, AdminContextPath {
                 } else if (!checkExists || CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), fullTemplatePath))) {
                     staticPlace(site, templatePath, null, null, metadata);
                 }
-            }
-        }
-    }
-
-    /**
-     * @param site
-     *            站点
-     * @param templatePath
-     *            模板路径 不含include
-     * @param lang
-     *            语言
-     * @param checkExists
-     *            检查是否存在
-     * @throws IOException
-     * @throws TemplateException
-     */
-    public void publishPlace(SysSite site, String templatePath, String lang, boolean checkExists)
-            throws IOException, TemplateException {
-        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
-        String fullStaticFilePath = CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY,
-                CmsLangUtils.getPlaceFilepath(templatePath, lang, defaultLang));
-        if (!checkExists
-                || site.isUseSsi() && CmsFileUtils.exists(siteComponent.getWebFilePath(site.getId(), fullStaticFilePath))) {
-            try {
-                String realTemplatePath = siteComponent.getTemplateFilePath(site.getId(),
-                        CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, templatePath));
-                CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(realTemplatePath, lang, defaultLang);
-                staticPlace(site, templatePath, lang, defaultLang, metadata);
-            } catch (IOException | TemplateException e) {
-                log.error(e.getMessage(), e);
             }
         }
     }
@@ -945,7 +922,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
             String realFilepath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realFilepath, null, null);
             if (site.isUseStatic() && CommonUtils.notEmpty(metadata.getPublishPath())) {
-                if (siteAttributeComponent.enableMultilingual(site.getId())&& metadata.isEnableMultilingual()) {
+                if (siteAttributeComponent.enableMultilingual(site.getId()) && metadata.isEnableMultilingual()) {
                     String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
                     String fullStaticFilePath = CmsLangUtils.getFullFilepath(metadata.getPublishPath(), lang, defaultLang);
                     CmsPageData data = metadataComponent.getPageData(realFilepath, lang, defaultLang);
@@ -976,7 +953,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
             String realFilepath = siteComponent.getTemplateFilePath(site.getId(), templatePath);
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realFilepath, null, null);
             if (site.isUseStatic() && CommonUtils.notEmpty(metadata.getPublishPath())) {
-                if (siteAttributeComponent.enableMultilingual(site.getId())) {
+                if (siteAttributeComponent.enableMultilingual(site.getId()) && metadata.isEnableMultilingual()) {
                     List<CmsLanguage> languageList = languageService.getList(site.getId());
                     if (null != languageList) {
                         String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
@@ -992,7 +969,6 @@ public class TemplateComponent implements Cache, AdminContextPath {
                         }
                     }
                 } else {
-
                     createStaticFile(site, fullTemplatePath, metadata.getPublishPath(), null, null, metadata, null, null);
                 }
 
@@ -1062,8 +1038,9 @@ public class TemplateComponent implements Cache, AdminContextPath {
             Map<String, Object> model) {
         if (null != metadata.getSize() && 0 < metadata.getSize()) {
             Date now = CommonUtils.getMinuteDate();
-            PageHandler page = placeService.getPage(site.getId(), null, templatePath, null, null, lang, defaultLang, null, now,
-                    now, CmsPlaceService.STATUS_NORMAL_ARRAY, false, null, null, 1, metadata.getSize());
+            PageHandler page = placeService.getPage(site.getId(), null, templatePath, null, null,
+                    metadata.isEnablePlaceMultilingual() ? lang : null, defaultLang, null, now, now,
+                    CmsPlaceService.STATUS_NORMAL_ARRAY, false, null, null, 1, metadata.getSize());
             @SuppressWarnings("unchecked")
             List<CmsPlace> list = (List<CmsPlace>) page.getList();
             if (null != list) {

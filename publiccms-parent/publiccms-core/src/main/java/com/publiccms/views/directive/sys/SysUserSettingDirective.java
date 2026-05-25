@@ -37,7 +37,7 @@ import jakarta.annotation.Resource;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site',{"headers":{"appToken":"接口访问授权Token"}}).then(res => res.json()).then(data=>{
  console.log(data.register_url);
 });
 &lt;/script&gt;

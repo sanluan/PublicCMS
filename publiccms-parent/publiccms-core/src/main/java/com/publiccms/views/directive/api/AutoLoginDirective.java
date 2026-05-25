@@ -50,7 +50,7 @@ import freemarker.template.TemplateException;
  * 使用示例
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/autoLogin?uuid=1&amp;username=admin&amp;channel=web', function(data){
+fetch('${site.dynamicPath}api/autoLogin?uuid=1&amp;username=admin&amp;channel=web').then(res => res.json()).then(data=>{
     console.log(result+","+authToken+","+user.nickname+","+expiryDate);
 });
 &lt;/script&gt;

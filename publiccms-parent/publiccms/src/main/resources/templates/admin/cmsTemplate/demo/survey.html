@@ -104,23 +104,25 @@
             <p><input type="submit" value="Submit"<#if !available> disabled="true"</#if>/></p>
         </form>
     </main>
-    <footer>
-        Copyright &copy; ${.now?string('yyyy')}
-    </footer>
     <script>
     var itemString="itemType=survey&itemId=${survey.id}";
     var templatePath='${.current_template_name?keep_after('/')}';
     </script>
+    <#-- footer -->
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
     <script src="${site.dynamicPath}resource/js/cms.support.js"></script>
     <script>
-        var ca = cmsAnalytics();
-        var url='${site.dynamicPath}api/visit/record';
-        if("string" ==typeof itemString){
-            url=url+"?"+itemString;
-        }
-        ca.setDomain('${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}');
-        ca.setPath('/');
-        ca.report(url);
+    var ca = cmsAnalytics();
+    var url="${site.dynamicPath}api/visit/record";
+    if("string" ==typeof itemString){
+        url=url+"?"+itemString;
+    }
+    ca.setDomain("${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}");
+    ca.setPath("/");
+    ca.report(url);
     </script>
+    <#-- end footer -->
 </body>
 </html>

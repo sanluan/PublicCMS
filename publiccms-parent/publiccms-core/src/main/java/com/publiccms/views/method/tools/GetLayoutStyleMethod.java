@@ -33,7 +33,7 @@ import freemarker.template.TemplateModelException;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getLayoutStyle?appToken=接口访问授权Token&amp;parameters=&#47;&#42; selecter &#42;&#47;&amp;parameters=.diy-layout', function(data){
+fetch('${site.dynamicPath}api/method/getLayoutStyle?appToken=接口访问授权Token&amp;parameters=&#47;&#42; selecter &#42;&#47;&amp;parameters=.diy-layout').then(res => res.json()).then(data=>{
 console.log(data);
 });
 &lt;/script&gt;

@@ -5,6 +5,8 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
@@ -31,13 +33,16 @@ import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsDictionary;
+import com.publiccms.entities.cms.CmsDictionaryData;
 import com.publiccms.entities.cms.CmsDictionaryId;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.exchange.DictionaryExchangeComponent;
 import com.publiccms.logic.component.exchange.SiteExchangeComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -67,6 +72,8 @@ public class CmsDictionaryAdminController {
     protected SiteComponent siteComponent;
     @Resource
     protected DictionaryExchangeComponent exchangeComponent;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };
 
@@ -75,6 +82,7 @@ public class CmsDictionaryAdminController {
      * @param admin
      * @param entity
      * @param oldId
+     * @param languageList
      * @param parentValue
      * @param dictionaryParameters
      * @param request
@@ -84,13 +92,36 @@ public class CmsDictionaryAdminController {
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsDictionary entity, String oldId,
-            String parentValue, @ModelAttribute CmsDictionaryParameters dictionaryParameters, HttpServletRequest request,
-            ModelMap model) {
+            String[] languageList, String parentValue, @ModelAttribute CmsDictionaryParameters dictionaryParameters,
+            HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.errorCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null != entity && null != entity.getId()) {
             entity.getId().setSiteId(site.getId());
+            if (null != dictionaryParameters.getDataList() && null != languageList) {
+                String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                for (CmsDictionaryData data : dictionaryParameters.getDataList()) {
+                    if (CommonUtils.notEmpty(data.getLangdata())) {
+                        String[] langdata = StringUtils.split(data.getLangdata(), Constants.COMMA);
+                        Map<String, String> map = new HashMap<>();
+                        int i = 0;
+                        for (String text : langdata) {
+                            if (0 == i) {
+                                data.setText(text);
+                            }
+                            if (languageList.length > i) {
+                                String lang = languageList[i++];
+                                map.put(lang, text);
+                                if (null != defaultLang && defaultLang.equalsIgnoreCase(lang)) {
+                                    data.setText(text);
+                                }
+                            }
+                        }
+                        data.setLangdata(ExtendUtils.getExtendString(map));
+                    }
+                }
+            }
             if (CommonUtils.notEmpty(parentValue)) {
                 dataService.update(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList(), parentValue);
             } else if (CommonUtils.notEmpty(oldId)) {

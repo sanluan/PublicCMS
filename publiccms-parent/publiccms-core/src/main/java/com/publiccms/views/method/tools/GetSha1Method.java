@@ -29,7 +29,7 @@ import freemarker.template.TemplateModelException;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getSha1?parameters=aaa', function(data){
+fetch('${site.dynamicPath}api/method/getSha1?parameters=aaa').then(res => res.json()).then(data=>{
 console.log(data);
 });
 &lt;/script&gt;

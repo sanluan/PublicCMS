@@ -27,7 +27,7 @@
                     <input class="required" name="alias" type="text" maxlength="50" size="20" value="${(a.alias)!}"/>
                     <#if 'true'=((siteAttribute.enable_multilingual)!)>
                         <label>
-                            <input name="enableMultilingual" type="checkbox"class="form-check-input"<#if a.enableMultilingual> checked="checked"</#if>/>
+                            <input name="enableMultilingual" type="checkbox" class="form-check-input"<#if (a.enableMultilingual)?has_content &&a.enableMultilingual> checked="checked"</#if>/>
                             <@t.message 'config.siteAttribute.enable_multilingual'/>
                         </label>
                     </#if>
@@ -37,7 +37,7 @@
                             <@t.page 'allow_contribute'/>
                         </label>
                         <label class="allowContribute hide">
-                            <input name="allowAnonymous" type="checkbox"class="form-check-input"${((a.allowAnonymous)?has_content&&a.allowAnonymous)?then(' checked="checked"','')?no_esc}/>
+                            <input name="allowAnonymous" type="checkbox" class="form-check-input"${((a.allowAnonymous)?has_content&&a.allowAnonymous)?then(' checked="checked"','')?no_esc}/>
                             <@t.page 'allow_anonymous_contribute'/>
                         </label>
                     </span>
@@ -47,6 +47,12 @@
                 <dt><@t.page 'place_data.page_size'/>:</dt>
                 <dd>
                     <input name="size" class="required digits" type="number" value="${(a.size)!0}"/>
+                    <#if 'true'=((siteAttribute.enable_multilingual)!)>
+                        <label class="placeExtend">
+                            <input name="enablePlaceMultilingual" type="checkbox" class="form-check-input"<#if (a.enablePlaceMultilingual)?has_content && a.enablePlaceMultilingual> checked="checked"</#if>/>
+                            <@t.message 'config.siteAttribute.enable_multilingual'/>
+                        </label>
+                    </#if>
                     <span class="info"><@t.page 'place_data.page_size.description'/></span>
                 </dd>
             </dl>

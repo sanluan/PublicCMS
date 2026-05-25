@@ -36,7 +36,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/tagType?id=1', function(data){
+fetch('${site.dynamicPath}api/directive/cms/tagType?id=1').then(res => res.json()).then(data=>{
   console.log(data.name);
 });
 &lt;/script&gt;

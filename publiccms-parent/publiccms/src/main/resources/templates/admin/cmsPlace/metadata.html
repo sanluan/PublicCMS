@@ -1,4 +1,4 @@
-<@tools.placeMetadata path=path lang=lang><#assign metadata=object/></@tools.placeMetadata>
+<@tools.placeMetadata path=path><#assign metadata=object/></@tools.placeMetadata>
 <form method="post" autocomplete="off" action="cmsPage/save?rel=${rel!'placeBox'}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="type" value="place"/>

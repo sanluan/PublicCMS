@@ -42,9 +42,9 @@ main{overflow:hidden;position:relative;}
 footer{text-align:center;width:100%;line-height:24px;z-index:-1;font-size:12px;position:absolute;bottom:0px;}
 footer a{font-size:12px;}
 /* Menu */
-header .logo{float:left;width:175px;height:50px;text-align:center;}
-header .logo img{max-width:130px;max-height:50px;}
-header .nav.left{position:unset;}
+header .logo{float:left;width:190px;height:50px;text-align:center;}
+header .logo img{max-width:170px;max-height:50px;}
+header .nav.left{left:190px;right:auto;}
 header .nav{display:block;position:absolute;right:0px;z-index:2;}
 header .nav>li{float:left;padding:0 10px;line-height:48px;position:relative;}
 header .nav>li a{font-size:12px;}
@@ -71,7 +71,7 @@ header .navbar-toggler.side-right{background-image:url(../images/side-right.png)
 
 /* sidebar */
 #leftside{position:absolute;top:0;left:0;height:100%;}
-#sidebar{position:absolute;left:0px;z-index:20;display:block;top:0;bottom:0;width:185px;}
+#sidebar{position:absolute;left:0px;z-index:20;display:block;top:0;bottom:0;width:190px;}
 #sidebar.collapse{width:50px;}
 #sidebar.collapse .hideWhenIndented{display:none;}
 #sidebar.collapse footer{display:none;}
@@ -80,8 +80,8 @@ header .navbar-toggler.side-right{background-image:url(../images/side-right.png)
 #sidebar.collapse .accordion .accordionHeader h2{text-align:center;}
 #sidebar.collapse .accordion .accordionContent h2{display:block;}
 #sidebar #menu{overflow:auto;max-height:100%;}
-#splitBar{display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:50px;left:183px;z-index:20;}
-#splitBarProxy{display:none;overflow:hidden;width:2px;border-style:solid;border-width:1px;cursor:col-resize;position:absolute;left:183px;z-index:20;}
+#splitBar{display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:50px;left:188px;z-index:20;}
+#splitBarProxy{display:none;overflow:hidden;width:2px;border-style:solid;border-width:1px;cursor:col-resize;position:absolute;left:188px;z-index:20;}
 #splitBar,#splitBarProxy{top:50px;}
 
 /* Accordion */
@@ -131,7 +131,7 @@ header .navbar-toggler.side-right{background-image:url(../images/side-right.png)
 .tabs .tabsHeader li.selected:before{content:"";width:100%;height:2px;position:absolute;bottom:-1px;left:0;}
 .tabs .tabsContent{display:block;overflow:auto;}
 
-.tabsPage{margin-left:185px;position:relative;}
+.tabsPage{margin-left:190px;position:relative;}
 .tabsPage .tabsPageHeader{display:block;height:37px;position:relative;}
 .tabsPage .tabsPageHeaderContent{display:block;overflow:hidden;height:100%;margin-left:0px;margin-right:30px;position:relative;}
 .tabsPage .tabsPageHeaderMargin{margin:0 60px 0 30px;}
@@ -264,9 +264,9 @@ a.button:hover{text-decoration:none;}
 .button i,.buttonActive i,.buttonDisabled i{margin-right:5px;}
 
 /* Layout */
-.leftPageContent{float:left;display:block;overflow:auto;width:220px;line-height:21px;}
+.leftPageContent{float:left;display:block;overflow:auto;width:230px;line-height:21px;}
 .leftPageContent .card{margin-right:4px;}
-.rightPageContent{margin-left:220px;}
+.rightPageContent{margin-left:230px;}
 .thumbnail,.image-list{position:relative;overflow:hidden;margin-top:5px;margin-right:5px;border:1px dashed #cacbcc;display:inline-block;text-align:center;line-height:0px;}
 /* Pages default */
 .page{display:block;overflow:hidden;width:100%;height:100%;-webkit-overflow-scrolling:touch;}

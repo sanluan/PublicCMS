@@ -28,6 +28,19 @@
                     <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
+                <#if 'true'=((siteAttribute.enable_multilingual)!)>
+                <li>
+                    <label><@t.page 'language'/></label>
+                    <select class="combox" name="lang">
+                        <option value><@t.page 'please_select'/></option>
+                        <@cms.languageList>
+                        <#list list as l>
+                            <option value="${l.id.code}"${(l.id.code=lang!)?then(' selected="true"','')?no_esc}>${(l.name)!}</option>
+                        </#list>
+                        </@cms.languageList>
+                    </select>
+                </li>
+                </#if>
                 <li style="width:auto">
                     <label><@t.page 'model'/>:</label>
                     <#include "../include_page/modelId.html"/>
@@ -52,7 +65,7 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if parent?has_content>
-                <li><a href="myself/contentList.html?parentId=${(parent.parentId)!}" target="navTab" data-change-title="false" rel="myself/contentList"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
+                <li><a href="myself/contentList.html?parentId=${(parent.parentId)!}&lang=${lang!}" target="navTab" data-change-title="false" rel="myself/contentList"><i class="icon-circle-arrow-up icon-large"></i><@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
             <#if authorizedMap['cmsContent/uncheck']>
@@ -108,16 +121,16 @@
                         <h3>
                             [<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>]
                             ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}
-                            <a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" width="1200" height="600" rel="viewContent${contentId}">${(a.title)!}</a>
+                            <a href="cmsContent/view.html?id=${contentId}&lang=${lang!}" class="exclude-translate" target="dialog" width="1200" height="600" rel="viewContent${contentId}">${(a.title)!}</a>
                             <#if !a.onlyUrl && authorizedMap['cmsContent/preview']>
-                                <a href="cmsContent/preview?id=${a.id}" class="btnText blue" target="_blank"><@t.page 'button.preview'/></a>
+                                <a href="cmsContent/preview?id=${a.id}&lang=${lang!}" class="btnText blue" target="_blank"><@t.page 'button.preview'/></a>
                             </#if>
                             <#if a.quoteContentId?has_content && !a.parentId?has_content><span class="statusText orange"><@t.page "content.quote"/></span></#if>
                         </h3>
                         <p>
                             <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                                <label><a href="myself/contentList.html?parentId=${contentId}" class="btnText" target="navTab" data-change-title="false" rel="myself/contentList"><@t.page 'content.child_management'/></a></label>
+                                <label><a href="myself/contentList.html?parentId=${contentId}&lang=${lang!}" class="btnText" target="navTab" data-change-title="false" rel="myself/contentList"><@t.page 'content.child_management'/></a></label>
                             </#if>
                             <#if a.expiryDate?has_content><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></#if>
                             <#if processItemMap[a.id?string]?has_content && authorizedMap['sysWorkflowProcess/view']><a href="sysWorkflowProcess/view.html?id=${processItemMap[a.id?string].processId}" class="btnText blue" target="dialog" rel="viewProcess${processItemMap[a.id?string].processId}" width="1200" height="500"><@t.page 'workflow.check'/></a></#if>
@@ -139,7 +152,7 @@
                 </td>
                 <td class="wrap">
                     <#if 4 != a.status && authorizedMap['cmsContent/add']>
-                        <a href="cmsContent/add.html?id=${a.id}&navTabId=myself/contentList" class="edit btnText blue" target="navTab" rel="myself/contentList/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a></li>
+                        <a href="<#if lang?has_content && lang != siteAttribute.default_language!>cmsContent/addLang.html?id=${a.id}&navTabId=myself/contentList&showTab=${lang!}<#else>cmsContent/add.html?id=${a.id}&navTabId=myself/contentList</#if>" class="edit btnText blue" target="navTab" rel="myself/contentList/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a></li>
                     </#if>
                     <#if 1 = a.status && authorizedMap['cmsContent/push']>
                         <a href="cmsContent/push.html?contentId=${contentId}" class="btnText green" width="1200" height="600" target="dialog" mask="true"><@t.page 'button.push'/></a>

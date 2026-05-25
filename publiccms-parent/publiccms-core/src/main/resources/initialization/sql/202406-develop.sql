@@ -122,3 +122,9 @@ INSERT INTO `sys_module_lang` VALUES ('content_uncheck_list', 'en', 'Pending');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck_list', 'ja', '審査待ち');
 INSERT INTO `sys_module_lang` VALUES ('content_uncheck_list', 'zh', '待审核内容');
 UPDATE sys_module SET url = NULL WHERE id = 'content_check';
+-- 2026-05-24 --
+ALTER TABLE `cms_dictionary_data` add `langdata` longtext COMMENT '语言JSON' AFTER `text`;
+ALTER TABLE `cms_word`
+  add `lang` varchar(50) NOT NULL COMMENT '语言' AFTER `name`,
+  DROP INDEX `cms_word_hidden`,
+  ADD INDEX  `cms_word_hidden` (`site_id`,`lang`, `hidden`);

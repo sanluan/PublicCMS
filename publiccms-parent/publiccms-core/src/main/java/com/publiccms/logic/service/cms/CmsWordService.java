@@ -33,6 +33,8 @@ public class CmsWordService extends BaseService<CmsWord> {
      * @param startCreateDate
      * @param endCreateDate
      * @param name
+     * @param lang 
+     * @param defaultLang 
      * @param orderField
      * @param orderType
      * @param pageIndex
@@ -40,9 +42,10 @@ public class CmsWordService extends BaseService<CmsWord> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Boolean hidden, Date startCreateDate, Date endCreateDate, String name,
-            String orderField, String orderType, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, hidden, startCreateDate, endCreateDate, name, orderField, orderType, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, Boolean hidden, Date startCreateDate, Date endCreateDate, String name, String lang,
+            String defaultLang, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, hidden, startCreateDate, endCreateDate, name, lang, defaultLang, orderField, orderType,
+                pageIndex, pageSize);
     }
 
     /**

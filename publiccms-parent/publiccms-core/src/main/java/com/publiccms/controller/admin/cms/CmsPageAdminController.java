@@ -131,8 +131,7 @@ public class CmsPageAdminController {
             if ("place".equalsIgnoreCase(type)) {
                 if (path.startsWith(TemplateComponent.INCLUDE_DIRECTORY)) {
                     try {
-                        templateComponent.publishPlace(site, path.substring(TemplateComponent.INCLUDE_DIRECTORY.length()), lang,
-                                true);
+                        templateComponent.publishPlace(site, path.substring(TemplateComponent.INCLUDE_DIRECTORY.length()), true);
                     } catch (IOException | TemplateException e) {
                         log.error(e.getMessage(), e);
                     }

@@ -1,4 +1,4 @@
-<@tools.metadata path=path lang=lang><#assign metadata=object/></@tools.metadata>
+<@tools.metadata path=path><#assign metadata=object/></@tools.metadata>
 <form method="post" autocomplete="off" action="cmsPage/save?rel=${rel!'pageBox'}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@tools.csrfToken admin=true/>"/>
     <input type="hidden" name="type" value="page"/>

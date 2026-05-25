@@ -87,32 +87,34 @@
             </ul>
         </aside>
     </main>
-    <footer>
-        Copyright &copy; ${.now?string('yyyy')}
-    </footer>
     <script>
     var itemString="itemType=category&itemId=${category.id}";
     var templatePath='${.current_template_name?keep_after('/')}';
     </script>
-
+<#-- footer -->
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
     <script src="${site.dynamicPath}resource/js/cms.support.js"></script>
     <script>
-        var bread = document.querySelectorAll('.bread a:first-child');
-        if(bread.length)
-            var nav = document.querySelectorAll('nav a[data-id="'+bread[0].getAttribute("data-id")+'"]');
-            if(nav.length){
-                nav[0].className="selected";
-            }
+    var ca = cmsAnalytics();
+    var url="${site.dynamicPath}api/visit/record";
+    if("string" ==typeof itemString){
+        url=url+"?"+itemString;
+    }
+    ca.setDomain("${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}");
+    ca.setPath("/");
+    ca.report(url);
+    </script>
+<#-- end footer -->
+    <script>
+    var bread = document.querySelector('.bread a:first-child');
+    if(bread)
+        var nav = document.querySelector('nav a[data-id="'+bread.getAttribute("data-id")+'"]');
+        if(nav){
+            nav.className="selected";
         }
-
-        var ca = cmsAnalytics();
-        var url='${site.dynamicPath}api/visit/record';
-        if("string" ==typeof itemString){
-            url=url+"?"+itemString;
-        }
-        ca.setDomain("${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}");
-        ca.setPath('/');
-        ca.report(url);
+    }
     </script>
 </body>
 </html>

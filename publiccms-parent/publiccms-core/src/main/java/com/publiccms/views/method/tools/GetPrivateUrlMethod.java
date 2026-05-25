@@ -37,7 +37,7 @@ import jakarta.servlet.http.HttpServletRequest;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getPrivateUrl?appToken=接口访问授权Token&amp;parameters=index.html', function(data){
+fetch('${site.dynamicPath}api/method/getPrivateUrl?appToken=接口访问授权Token&amp;parameters=index.html').then(res => res.json()).then(data=>{
 console.log(data);
 });
 &lt;/script&gt;

@@ -40,7 +40,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/placeMetadata?path=00000000-0000-0000-0000-000000000000.html&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/placeMetadata?path=00000000-0000-0000-0000-000000000000.html',{"headers":{"appToken":"接口访问授权Token"}}).then(res => res.json()).then(data=>{
    console.log(data.alias);
  });
  &lt;/script&gt;
@@ -53,7 +53,7 @@ public class PlaceMetadataDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String path = handler.getString("path");
-        String lang = handler.getString("lang");
+        String lang = handler.getStringAttribute("lang");
         if (CommonUtils.notEmpty(path) && !path.endsWith(Constants.SEPARATOR)) {
             SysSite site = getSite(handler);
             String filepath = siteComponent.getTemplateFilePath(site.getId(),

@@ -34,7 +34,7 @@ import jakarta.annotation.Resource;
  *
  * <pre>
  &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/workflowStepList?workflowId=1', function(data){
+  fetch('${site.dynamicPath}api/directive/sys/workflowStepList?workflowId=1').then(res => res.json()).then(data=>{
     console.log(data);
   });
   &lt;/script&gt;

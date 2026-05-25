@@ -23,6 +23,11 @@ import freemarker.template.TemplateException;
 /**
  * includePlace 包含页面片段指令
  * <p>
+ * 上下文变量
+ * <ul>
+ * <li><code>lang</code>:语言
+ * </ul>
+ * <p>
  * 参数列表
  * <ul>
  * <li><code>path</code>:路径
@@ -32,11 +37,12 @@ import freemarker.template.TemplateException;
  * <p>
  * 使用示例
  * <p>
+ * &lt;#assign lang="cn"/&gt;
  * &lt;@tools.includePlace path='/00000000-0000-0000-0000-000000000000'/&gt;
  *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/includePlace?path=/00000000-0000-0000-0000-000000000000.html&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/includePlace?path=/00000000-0000-0000-0000-000000000000.html',{"headers":{"appToken":"接口访问授权Token","lang":"cn"}}).then(res => res.json()).then(data=>{
    console.log(data);
  });
  &lt;/script&gt;
@@ -55,12 +61,11 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(handler);
             String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
-            String lang = null;
-            Object temp = handler.getAttribute("lang");
-            if (null != temp && temp instanceof String) {
-                lang = (String) temp;
-            }
+            String lang = handler.getStringAttribute("lang");
 
+            String filepath = siteComponent.getTemplateFilePath(site.getId(),
+                    CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath, lang, defaultLang);
             if (site.isUseSsi()) {
                 StringBuilder sb = new StringBuilder("<!--#include virtual=\"/");
                 if (null != site.getParentId() && CommonUtils.notEmpty(site.getDirectory())) {
@@ -68,7 +73,8 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
                 }
                 sb.append(TemplateComponent.INCLUDE_DIRECTORY);
 
-                if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(defaultLang)) {
+                if ((metadata.isEnableMultilingual() || metadata.isEnablePlaceMultilingual()) && CommonUtils.notEmpty(lang)
+                        && !lang.equalsIgnoreCase(defaultLang)) {
                     sb.append(Constants.SEPARATOR).append(lang);
                 }
                 sb.append(path).append("\"-->");
@@ -80,9 +86,6 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
                 if (CmsFileUtils.exists(webfilepath)) {
                     handler.print(CmsFileUtils.getFileContent(webfilepath));
                 } else {
-                    String filepath = siteComponent.getTemplateFilePath(site.getId(),
-                            CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath, lang, defaultLang);
                     templateComponent.printPlace(handler.getWriter(), site, path, lang, defaultLang, metadata);
                 }
             }

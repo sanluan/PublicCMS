@@ -7,6 +7,7 @@ import java.io.IOException;
 import jakarta.annotation.Resource;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.service.cms.CmsWordService;
 
 import freemarker.template.TemplateException;
@@ -15,11 +16,18 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.entities.sys.SysSite;
 
 /**
  *
  * wordList 用户投票列表查询指令
- * <p>参数列表
+ * <p>
+ * 上下文变量
+ * <ul>
+ * <li><code>lang</code>:语言
+ * </ul>
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>startCreateDate</code>:起始创建日期,【2020-01-01 23:59:59】,【2020-01-01】
  * <li><code>endCreateDate</code>:终止创建日期,【2020-01-01 23:59:59】,【2020-01-01】
@@ -32,20 +40,23 @@ import com.publiccms.common.handler.RenderHandler;
  * <li><code>pageIndex</code>:页码
  * <li><code>pageSize</code>:每页条数
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
  * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsWord}
  * </ul>
- * <p>使用示例
  * <p>
+ * 使用示例
+ * <p>
+ * &lt;#assign lang="cn"/&gt;
  * &lt;@cms.wordList userId=1 pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.ip}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.wordList&gt;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/wordList?userId=1&amp;pageSize=10', function(data){    
+fetch('${site.dynamicPath}api/directive/cms/wordList?userId=1&amp;pageSize=10',{"headers":{"lang":"cn"}}).then(res => res.json()).then(data=>{
 console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -64,9 +75,12 @@ public class CmsWordListDirective extends AbstractTemplateDirective {
             orderField = handler.getString("orderField");
             name = handler.getString("name");
         }
-        PageHandler page = service.getPage(getSite(handler).getId(), hidden, handler.getDate("startCreateDate"),
-                handler.getDate("endCreateDate"), name, orderField, handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
+        SysSite site = getSite(handler);
+        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+        PageHandler page = service.getPage(site.getId(), hidden, handler.getDate("startCreateDate"),
+                handler.getDate("endCreateDate"), name, handler.getStringAttribute("lang"), defaultLang, orderField,
+                handler.getString("orderType"), handler.getInteger("pageIndex", 1),
+                handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
 
@@ -77,5 +91,7 @@ public class CmsWordListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsWordService service;
+    @Resource
+    private SiteAttributeComponent siteAttributeComponent;
 
 }
