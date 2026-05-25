@@ -35,7 +35,7 @@
                             <li>
                                 <@cms.languageList>
                                 <#list list as l>
-                                    <a href="cmsContent/list.html?lang=${l.id.code}"${(l.id.code=(lang!(siteAttribute.default_language)!))?then(' class="red"','')?no_esc} target="navTab" rel="cmsContent/list">${(l.name)!}</a>
+                                    <a href="cmsContent/list.html?lang=${l.id.code}"${(l.id.code=(lang!(siteAttribute.default_language)!))?then(' class="red"','')?no_esc} target="navTab" data-change-title="false" rel="cmsContent/list">${(l.name)!}</a>
                                 </#list>
                                 </@cms.languageList>
                             </li>

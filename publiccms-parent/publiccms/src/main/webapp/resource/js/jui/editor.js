@@ -9,7 +9,10 @@
             $this.attr("data-id",dataId);
             if("ckeditor"==$this.attr("editorType")) {
                 if(window.editor.ckeditorInitd){
-                    CKEDITOR.replace(dataId);
+                    var editor = CKEDITOR.replace(dataId);
+                    if($this.prop("readonly")){
+                        editor.setReadOnly(true);
+                    }
                 } else {
                     if(window.editor.ckeditorIniting){
                         window.editor.ckeditorArray.push(dataId);
@@ -19,11 +22,17 @@
                         loadScripts(window.editor.ckeditorResources,function(){
                             window.editor.ckeditorIniting=false;
                             window.editor.ckeditorInitd=true;
-                            CKEDITOR.replace(dataId);
+                            var editor = CKEDITOR.replace(dataId);
+                            if($this.prop("readonly")){
+                                editor.setReadOnly(true);
+                            }
                             ajaxbg.hide();
                             if(0 < window.editor.ckeditorArray.length){
                                 for(var i=0;i<window.editor.ckeditorArray.length;i++){
-                                    CKEDITOR.replace(window.editor.ckeditorArray.shift());
+                                    var editor = CKEDITOR.replace(window.editor.ckeditorArray.shift());
+                                    if($this.prop("readonly")){
+                                        editor.setReadOnly(true);
+                                    }
                                 }
                             }
                         },window.editor.base);
@@ -31,7 +40,7 @@
                 }
             } else if("tinymce"==$this.attr("editorType")) {
                 if(window.editor.tinymceInitd){
-                    tinymce.init($.extend(true, {selector:"#"+dataId}, window.TINYMCE_OPTIONS));
+                    tinymce.init($.extend(true, {selector:"#"+dataId,readonly:$this.prop("readonly")?1:0}, window.TINYMCE_OPTIONS));
                 } else {
                     if(window.editor.tinymceIniting){
                         window.editor.tinymceArray.push(dataId);
@@ -41,11 +50,14 @@
                         loadScripts(window.editor.tinymceResources,function(){
                             window.editor.tinymceIniting=false;
                             window.editor.tinymceInitd=true;
-                            tinymce.init($.extend(true, {selector:"#"+dataId}, window.TINYMCE_OPTIONS));
+                            var $textarea=$("#"+dataId);
+                            tinymce.init($.extend(true, {selector:"#"+dataId,readonly:$textarea.prop("readonly")?1:0}, window.TINYMCE_OPTIONS));
                             ajaxbg.hide();
                             if(0 < window.editor.tinymceArray.length){
                                 for(var i=0;i<window.editor.tinymceArray.length;i++){
-                                    tinymce.init($.extend(true, {selector:"#"+window.editor.tinymceArray.shift()}, window.TINYMCE_OPTIONS));
+                                    var dataId=window.editor.tinymceArray.shift();
+                                    var $textarea=$("#"+dataId);
+                                    tinymce.init($.extend(true, {selector:"#"+dataId,readonly:$textarea.prop("readonly")?1:0}, window.TINYMCE_OPTIONS));
                                 }
                             }
                         },window.editor.base);
@@ -53,7 +65,7 @@
                 }
             } else {
                 if(window.editor.ueditorInitd){
-                    var editor = new baidu.editor.ui.Editor();
+                    var editor = new baidu.editor.ui.Editor({readonly: $this.prop("readonly")});
                     if ($this.attr("maxlength") ){
                         editor.setOpt({
                             maximumWords: $this.attr("maxlength")
@@ -70,7 +82,7 @@
                         loadScripts(window.editor.ueditorResources,function(){
                             window.editor.ueditorIniting=false;
                             window.editor.ueditorInitd=true;
-                            var editor = new baidu.editor.ui.Editor();
+                            var editor = new baidu.editor.ui.Editor({readonly: $this.prop("readonly")});
                             if ($this.attr("maxlength") ){
                                 editor.setOpt({
                                     maximumWords: $this.attr("maxlength")
@@ -93,8 +105,8 @@
                             ajaxbg.hide();
                             if(0 < window.editor.ueditorArray.length){
                                 for(var i=0;i<window.editor.ueditorArray.length;i++){
-                                    var editor = new baidu.editor.ui.Editor();
                                     var $textarea=$("#"+window.editor.ueditorArray.shift());
+                                    var editor = new baidu.editor.ui.Editor({readonly: $textarea.prop("readonly")});
                                     $textarea.attr("data-id","ueditorInstant"+editor.uid);
                                     if ($textarea.attr("maxlength") ){
                                         editor.setOpt({

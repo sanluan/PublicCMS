@@ -51,10 +51,6 @@
                                 <dd><input name="contentLangList[${index}].entity.editor" readonly="readonly"  autocomplete="on" type="text" maxlength="50" size="20" value="${(content.editor)!}"/></dd>
                             </dl>
                         </#if>
-                        <#if categoryExtendList?has_content>
-                            <@extendData inputNamePrefix="contentLangList["+index+"]." type="view" extendList=categoryExtendList lang=lang.id.code extendValues=(attribute!{}) historyItemType="contentExtend" historyItemId=id/>
-                        </#if>
-                        <@extendData inputNamePrefix="contentLangList["+index+"]." type="view" extendList=model.extendList lang=lang.id.code extendValues=(attribute!{}) historyItemType="contentExtend" historyItemId=id/>
                         <#if fieldList?seq_contains("cover")>
                             <dl class="nowrap">
                                 <dt>${(model.fieldTextMap["cover"])!}:</dt>
@@ -73,6 +69,10 @@
                                 </dd>
                             </dl>
                         </#if>
+                        <#if categoryExtendList?has_content>
+                            <@extendData inputNamePrefix="contentLangList["+index+"]." type="view" extendList=categoryExtendList lang=lang.id.code extendValues=(attribute!{}) historyItemType="contentExtend" historyItemId=id/>
+                        </#if>
+                        <@extendData inputNamePrefix="contentLangList["+index+"]." type="view" extendList=model.extendList lang=lang.id.code extendValues=(attribute!{}) historyItemType="contentExtend" historyItemId=id/>
                         <#if fieldList?seq_contains("content")>
                             <dl class="nowrap">
                                 <dt>${(model.fieldTextMap["content"])!}:</dt>
@@ -117,10 +117,6 @@
                                 <dd><input name="contentLangList[${index}].entity.editor"<#if requiredFieldList?seq_contains('editor')> class="required"</#if> autocomplete="on" type="text" maxlength="50" size="20" value="${(a.editor)!(content.editor)!}"/></dd>
                             </dl>
                         </#if>
-                        <#if categoryExtendList?has_content>
-                            <@extendData inputNamePrefix="contentLangList["+index+"]." extendList=categoryExtendList lang=lang.id.code extendValues=((a.attribute)!attribute!{}) historyItemType="contentExtend" historyItemId=id/>
-                        </#if>
-                        <@extendData inputNamePrefix="contentLangList["+index+"]." extendList=model.extendList lang=lang.id.code extendValues=((a.attribute)!attribute!{}) historyItemType="contentExtend" historyItemId=id/>
                         <#if fieldList?seq_contains("cover")>
                             <dl class="nowrap">
                                 <dt>${(model.fieldTextMap["cover"])!}:</dt>
@@ -140,6 +136,10 @@
                                 </dd>
                             </dl>
                         </#if>
+                        <#if categoryExtendList?has_content>
+                            <@extendData inputNamePrefix="contentLangList["+index+"]." extendList=categoryExtendList lang=lang.id.code extendValues=((a.attribute)!attribute!{}) historyItemType="contentExtend" historyItemId=id/>
+                        </#if>
+                        <@extendData inputNamePrefix="contentLangList["+index+"]." extendList=model.extendList lang=lang.id.code extendValues=((a.attribute)!attribute!{}) historyItemType="contentExtend" historyItemId=id/>
                         <#if fieldList?seq_contains("content")>
                             <dl class="nowrap">
                                 <dt>${(model.fieldTextMap["content"])!}:</dt>
