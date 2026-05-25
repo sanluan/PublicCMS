@@ -15,7 +15,7 @@
         <div class="tabsHeader">
             <ul>
                 <#list list as lang>
-                    <li><a href="javascript:;" onclick="return false;">${lang.name}<#if lang.id.code = (siteAttribute.default_language)!> [<@t.message 'config.siteAttribute.default_language'/>]</#if></a></li>
+                    <li class="${lang.id.code}"><a href="javascript:;" onclick="return false;">${lang.name}<#if lang.id.code = (siteAttribute.default_language)!> [<@t.message 'config.siteAttribute.default_language'/>]</#if></a></li>
                 </#list>
             </ul>
         </div>
@@ -25,12 +25,6 @@
             <#list list as lang>
                 <div class="pageFormContent" layoutH>
                     <#if lang.id.code = (siteAttribute.default_language)!>
-                        <dl class="nowrap">
-                            <dt><@t.message 'config.siteAttribute.default_language'/>:</dt>
-                            <dd>
-                                <a href="cmsCategory/add.html?id=${id!}" target="navTab" rel="cmsCategory/edit" class="button"><@t.page 'category.edit'/></a>
-                            </dd>
-                        </dl>
                         <dl class="nowrap">
                             <dt><@t.page 'name'/>:</dt>
                             <dd>
@@ -107,4 +101,9 @@
         </div>
         </@cms.languageList>
     </div>
+    <#if showTab?has_content>
+    <script>
+        $(".tabs",navTab.getCurrentPanel()).attr("currentIndex",$("li.${showTab}",navTab.getCurrentPanel()).index());
+    </script>
+    </#if>
 </form>
