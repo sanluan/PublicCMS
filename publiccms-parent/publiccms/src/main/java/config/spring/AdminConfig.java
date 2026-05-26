@@ -14,6 +14,7 @@ import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.request.async.CallableProcessingInterceptor;
@@ -44,6 +45,7 @@ import com.publiccms.logic.component.cache.CacheComponent;
  */
 @Configuration
 @EnableWebMvc
+@EnableAsync
 @ComponentScan(basePackages = "com.publiccms.controller.admin", useDefaultFilters = false, includeFilters = {
         @ComponentScan.Filter(value = { Controller.class }) }, nameGenerator = FullBeanNameGenerator.class)
 public class AdminConfig implements WebMvcConfigurer {
