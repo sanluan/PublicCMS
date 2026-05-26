@@ -16,6 +16,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentLang;
 import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
@@ -73,11 +74,13 @@ public class CreateContentFileDirective extends AbstractTemplateDirective {
                     CmsContentLang langEntity = null;
                     if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(content.getLang())) {
                         langEntity = contentLangService.getEntity(new CmsContentLangId(id, lang));
-                        CmsLangUtils.initLang(content, langEntity);
+                        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                        CmsLangUtils.initLang(content, defaultLang, langEntity);
                     }
                     CmsCategory category = categoryService.getEntity(content.getCategoryId());
                     if (null != category && CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(category.getLang())) {
-                        CmsLangUtils.initLang(category,
+                        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                        CmsLangUtils.initLang(category, defaultLang,
                                 categoryLangService.getEntity(new CmsCategoryLangId(content.getCategoryId(), lang)));
                     }
                     handler.put("url", templateComponent.createContentFile(site, content, langEntity, category, false,
@@ -104,5 +107,7 @@ public class CreateContentFileDirective extends AbstractTemplateDirective {
     private CmsCategoryLangService categoryLangService;
     @Resource
     private CmsContentLangService contentLangService;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 
 }

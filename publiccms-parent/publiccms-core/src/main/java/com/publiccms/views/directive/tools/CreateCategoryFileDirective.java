@@ -14,6 +14,7 @@ import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryLang;
 import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
@@ -69,7 +70,8 @@ public class CreateCategoryFileDirective extends AbstractTemplateDirective {
                     CmsCategoryLang langEntity = null;
                     if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(category.getLang())) {
                         langEntity = categoryLangService.getEntity(new CmsCategoryLangId(id, lang));
-                        CmsLangUtils.initLang(category, langEntity);
+                        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                        CmsLangUtils.initLang(category, defaultLang, langEntity);
                     }
                     handler.put("url", templateComponent.createCategoryFile(site, category, langEntity, templatePath, filepath,
                             pageIndex, handler.getInteger("totalPage"))).render();
@@ -91,4 +93,6 @@ public class CreateCategoryFileDirective extends AbstractTemplateDirective {
     private CmsCategoryService categoryService;
     @Resource
     private CmsCategoryLangService categoryLangService;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 }

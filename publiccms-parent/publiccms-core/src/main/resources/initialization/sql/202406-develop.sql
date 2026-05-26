@@ -128,3 +128,5 @@ ALTER TABLE `cms_word`
   ADD `lang` varchar(50) DEFAULT NULL COMMENT '语言' AFTER `name`,
   DROP INDEX `cms_word_hidden`,
   ADD INDEX  `cms_word_hidden` (`site_id`,`lang`, `hidden`);
+-- 2026-05-26 --
+DELETE FROM sys_module WHERE module_id in ('myself_content_view','myself_process_view');

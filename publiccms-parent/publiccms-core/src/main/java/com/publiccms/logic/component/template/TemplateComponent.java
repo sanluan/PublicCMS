@@ -290,8 +290,8 @@ public class TemplateComponent implements Cache, AdminContextPath {
      * @throws TemplateException
      * @throws IOException
      */
-    private boolean createContentFile(SysSite site, CmsContent entity, CmsContentLang lang, CmsCategory category,
-            CmsCategoryModel categoryModel) throws IOException, TemplateException {
+    private boolean createContentFile(SysSite site, CmsContent entity, CmsContentLang lang, String defaultLang,
+            CmsCategory category, CmsCategoryModel categoryModel) throws IOException, TemplateException {
         if (null != site && null != entity) {
             if (entity.isOnlyUrl()) {
                 if (null == entity.getParentId() && null != entity.getQuoteContentId()) {
@@ -316,7 +316,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                 if (null != lang) {
                     CmsCategoryLang categoryLang = categoryLangService
                             .getEntity(new CmsCategoryLangId(category.getId(), lang.getId().getLang()));
-                    CmsLangUtils.initLang(category, category.getLang(), categoryLang);
+                    CmsLangUtils.initLang(category, entity.getLang(), defaultLang, categoryLang);
                 }
                 if (null == categoryModel) {
                     categoryModel = categoryModelService
@@ -398,9 +398,10 @@ public class TemplateComponent implements Cache, AdminContextPath {
             flag = createCategoryFile(site, entity, null, pageIndex, totalPage);
             if (siteAttributeComponent.enableMultilingual(site.getId())) {
                 String oldLang = entity.getLang();
+                String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
                 List<CmsCategoryLang> langList = categoryLangService.getList(entity.getId());
                 for (CmsCategoryLang lang : langList) {
-                    if (CmsLangUtils.initLang(entity, oldLang, lang)) {
+                    if (CmsLangUtils.initLang(entity, oldLang, defaultLang, lang)) {
                         createCategoryFile(site, entity, lang, pageIndex, totalPage);
                     }
                 }
@@ -460,13 +461,14 @@ public class TemplateComponent implements Cache, AdminContextPath {
             throws IOException, TemplateException {
         boolean flag = false;
         if (null != entity) {
-            flag = createContentFile(site, entity, null, category, categoryModel);
+            flag = createContentFile(site, entity, null, null, category, categoryModel);
             if (siteAttributeComponent.enableMultilingual(site.getId())) {
                 String oldLang = entity.getLang();
+                String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
                 List<CmsContentLang> langList = contentLangService.getList(entity.getId());
                 for (CmsContentLang lang : langList) {
-                    if (CmsLangUtils.initLang(entity, oldLang, lang)) {
-                        createContentFile(site, entity, lang, category, categoryModel);
+                    if (CmsLangUtils.initLang(entity, oldLang, defaultLang, lang)) {
+                        createContentFile(site, entity, lang, defaultLang, category, categoryModel);
                     }
                 }
             }

@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @Component
 public class MultilingualInterceptor implements HandlerInterceptor {
-    public static final String DEFAULT_PARAM_NAME = "language";
+    public static final String DEFAULT_PARAM_NAME = "lang";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {

@@ -25,6 +25,7 @@ import com.publiccms.entities.cms.CmsContentLang;
 import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
@@ -87,8 +88,8 @@ import freemarker.template.TemplateException;
  * </ul>
  * 使用示例
  * <p>
- * &lt;#assign lang="cn"/&gt;
- * &lt;@cms.contentList pageSize=10&gt;&lt;#list page.list as
+ * &lt;#assign lang="cn"/&gt; &lt;@cms.contentList pageSize=10&gt;&lt;#list
+ * page.list as
  * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentList&gt;
  *
  * <pre>
@@ -110,6 +111,8 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
     protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
@@ -168,7 +171,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             }
             Map<Long, CmsContentLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
                     k -> k.getId().getContentId());
-
+            String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
             Consumer<CmsContent> consumer = entity -> {
                 ClickStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
                 if (null != statistics) {
@@ -181,7 +184,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                 CmsContentLang langEntity = null;
                 if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
                     langEntity = langMap.get(CmsLangUtils.getContentId(entity, absoluteId));
-                    CmsLangUtils.initLang(entity, langEntity);
+                    CmsLangUtils.initLang(entity, defaultLang, langEntity);
                 }
 
                 if (absoluteURL) {
