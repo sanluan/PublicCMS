@@ -33,7 +33,7 @@
                     <#assign sort=-1/>
                     <#list page.list as a>
                         <div class="text-center step <#if a.operate='agree'>processed<#elseif a.operate='reject'>reject</#if>">
-                            ${(stepMap[a.stepId?string].name)!t.pageMessage('page.disabled')}
+                            ${(stepMap[a.stepId?string].name)!t.pageMessage('process.deleted')}
                             <br>
                             ${(userMap[a.userId?string].nickname)!}:${a.reason!}
                         </div>
