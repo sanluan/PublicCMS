@@ -146,8 +146,8 @@
                                 <dd>
                                     <div>
                                         <a class="button" href="common/import.html" lookupGroup="" width="600" height="400"><@t.page "import_doc"/></a>
-                                    <#if a?has_content>
-                                        <a class="button" href="cmsEditorHistory/lookup.html?itemType=content&itemId=${content.id}&fieldName=text&lang=${lang.id.code?url}" lookupGroup=""><@t.page "history"/></a>
+                                    <#if getAiChatEnable?? && getDictEnable?is_method && getAiChatEnable()>
+                                        <a class="button" href="simpleAi/chat.html?field=${'contentLangList['?url+index+'].entity.text'?url}" lookupGroup="" width="800" height="500">AI</a>
                                     </#if>
                                     </div>
                                     <textarea name="contentLangList[${index}].entity.text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(a.text)!(attribute.text)!}</textarea>
