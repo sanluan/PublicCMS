@@ -18,7 +18,7 @@
                 <textarea name="messages[${index}].content" class="input" rows="3" cols="80"></textarea>
                 <button type="button" class="buttonActive send"><@t.page 'button.send'/></button>
                 <#if !scene?has_content || "html"!=scene>
-                <button type="button" class="button" onclick="$('.input',$.pdialog.getCurrent()).val($('.input',$.pdialog.getCurrent()).val()+' '+$('[name=${field!'text'}]',navTab.getCurrentPanel()).val());"><@t.page 'insert_content'/></button>
+                <button type="button" class="button" onclick="$('.input',$.pdialog.getCurrent()).val($('.input',$.pdialog.getCurrent()).val()+' '+$('[name='+$.escapeSelector('${field!'text'}')+']',navTab.getCurrentPanel()).val());"><@t.page 'insert_content'/></button>
                 </#if>
                 <button type="button" onclick="$('.input',$.pdialog.getCurrent()).val('')" class="button"><@t.page 'button.clear'/></button>
                 <#assign index++/>
