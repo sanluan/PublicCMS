@@ -53,7 +53,7 @@
             </div>
                     </#list>
                 </@sys.workflowStepList>
-                <div class="text-center step">
+                <div class="text-center step<#if (a.closed)!false> current</#if>">
                     <i class="bi bi-stop-circle"></i><br><@t.page "end"/>
                 </div>
             </div>
