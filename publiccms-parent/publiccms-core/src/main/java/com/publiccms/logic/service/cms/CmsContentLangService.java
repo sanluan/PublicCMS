@@ -64,10 +64,13 @@ public class CmsContentLangService extends BaseService<CmsContentLang> {
                             content.isHasFiles() ? langParameter.getFiles() : null,
                             content.isHasImages() ? langParameter.getImages() : null);// 更新保存图集，附件
                 }
-
-                entity.setText(HtmlUtils.cleanUnsafeHtml(
-                        new String(VerificationUtils.base64Decode(entity.getText()), StandardCharsets.UTF_8),
-                        site.getSitePath()));
+                if (CommonUtils.notEmpty(entity.getText())) {
+                    entity.setText(HtmlUtils.cleanUnsafeHtml(
+                            new String(VerificationUtils.base64Decode(entity.getText()), StandardCharsets.UTF_8),
+                            site.getSitePath()));
+                } else {
+                    entity.setText(null);
+                }
 
                 List<SysExtendField> modelExtendList = cmsModel.getExtendList();
                 List<SysExtendField> categoryExtendList = null;
