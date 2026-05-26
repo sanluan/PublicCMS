@@ -372,6 +372,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         dealAttribute(entity, site, modelExtendList, categoryExtendList, ExtendUtils.getExtendMap(attribute.getData()), cmsModel,
                 files, images, products, attribute, false);
         attributeService.updateAttribute(entity.getId(), attribute);
+        dao.index(site.getId(), new Long[] { entity.getId() });
     }
 
     private void dealAttribute(CmsContent entity, SysSite site, List<SysExtendField> modelExtendList,
