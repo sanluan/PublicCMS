@@ -92,9 +92,9 @@ public class TemplateCacheComponent implements Cache {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesLanguage());
             if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
                 lang = userCookie.getValue();
-                if (null != lang) {
-                    lang = defaultLang;
-                }
+            }
+            if (CommonUtils.empty(lang)) {
+                lang = defaultLang;
             }
         }
 
