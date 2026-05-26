@@ -21,6 +21,7 @@ import com.publiccms.entities.cms.CmsContentLang;
 import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
@@ -54,8 +55,8 @@ import freemarker.template.TemplateException;
  * <p>
  * 使用示例
  * <p>
- * &lt;#assign lang="cn"/&gt;
- * &lt;@cms.content id=1&gt;${object.title}&lt;/@cms.content&gt;
+ * &lt;#assign lang="cn"/&gt; &lt;@cms.content
+ * id=1&gt;${object.title}&lt;/@cms.content&gt;
  * <p>
  * &lt;@cms.content ids=1,2,3&gt;&lt;#list map as
  * k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.content&gt;
@@ -80,6 +81,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
     private StatisticsComponent statisticsComponent;
     @Resource
     private CmsContentLangService langService;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
@@ -95,7 +98,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 CmsContentLang langEntity = null;
                 if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
                     langEntity = langService.getEntity(new CmsContentLangId(entity.getId(), lang));
-                    CmsLangUtils.initLang(entity, langEntity);
+                    String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                    CmsLangUtils.initLang(entity, defaultLang, langEntity);
                 }
                 ClickStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
                 if (null != statistics) {
@@ -131,7 +135,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                         .toArray(CmsContentLangId[]::new);
                 Map<Long, CmsContentLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
                         k -> k.getId().getContentId());
-
+                String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
                 UnaryOperator<CmsContent> valueMapper = entity -> {
                     ClickStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
                     if (null != statistics) {
@@ -143,7 +147,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     CmsContentLang langEntity = null;
                     if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
                         langEntity = langMap.get(CmsLangUtils.getContentId(entity, absoluteId));
-                        CmsLangUtils.initLang(entity, langEntity);
+                        CmsLangUtils.initLang(entity, defaultLang, langEntity);
                     }
 
                     if (absoluteURL) {

@@ -26,7 +26,7 @@ public class CmsLanguageDao extends BaseDao<CmsLanguage> {
         if (null != siteId) {
             queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
         }
-        queryHandler.order("bean.sort desc");
+        queryHandler.order("bean.sort asc");
         return getEntityList(queryHandler);
     }
 

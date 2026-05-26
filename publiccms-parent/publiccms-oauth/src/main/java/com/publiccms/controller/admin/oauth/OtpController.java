@@ -67,7 +67,7 @@ public class OtpController {
      * @return view name
      */
     @RequestMapping(value = "login")
-    public String login(@SessionAttribute(required = false) SysUser otpadmin, String returnUrl, RedirectAttributes model) {
+    public String login(@RequestAttribute SysSite site, @SessionAttribute(required = false) SysUser otpadmin, String returnUrl, RedirectAttributes model) {
         model.addAttribute("returnUrl", returnUrl);
         if (null == otpadmin) {
             return "redirect:../login";
@@ -79,7 +79,7 @@ public class OtpController {
             TOTPGenerator totp = new TOTPGenerator.Builder(secret).build();
             model.addAttribute("secret", new String(secret, StandardCharsets.UTF_8));
             try {
-                model.addAttribute("bindURI", totp.getURI("cms", otpadmin.getName()).toString());
+                model.addAttribute("bindURI", totp.getURI(site.getName(), otpadmin.getName()).toString());
             } catch (URISyntaxException e) {
             }
             return "otp/register";
@@ -108,7 +108,7 @@ public class OtpController {
             Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
             String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
             if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
-                returnUrl = CommonConstants.getDefaultPage();
+                returnUrl = CommonUtils.joinString("../", CommonConstants.getDefaultPage());
             }
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         } else {

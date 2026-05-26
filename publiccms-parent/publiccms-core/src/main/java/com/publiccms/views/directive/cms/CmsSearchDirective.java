@@ -93,8 +93,8 @@ import freemarker.template.TemplateModelException;
  * </ul>
  * 使用示例
  * <p>
- * &lt;#assign lang="cn"/&gt;
- * &lt;@cms.search word='cms' pageSize=10&gt;&lt;#list page.list as
+ * &lt;#assign lang="cn"/&gt; &lt;@cms.search word='cms'
+ * pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.search&gt;
  *
  * <pre>
@@ -161,8 +161,8 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                 handler.getBoolean("dictionaryUnion"), handler.getDate("startPublishDate"),
                 handler.getDate("endPublishDate", currentDate), currentDate);
 
+        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
         if (siteAttributeComponent.enableMultilingual(site.getId())) {
-            String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
             if (null != lang && !lang.equalsIgnoreCase(defaultLang)) {
                 query.setLang(lang);
             }
@@ -204,7 +204,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                         CmsContentAttribute attribute = attributeMap.get(e.getId());
                         if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(e.getLang())) {
                             langEntity = langMap.get(e.getId());
-                            CmsLangUtils.initLang(e, langEntity);
+                            CmsLangUtils.initLang(e, defaultLang, langEntity);
                             CmsLangUtils.initLang(attribute, langEntity);
                         }
                         CmsUrlUtils.initContentUrl(site, e);
@@ -220,7 +220,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                         CmsContentLang langEntity = null;
                         if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(e.getLang())) {
                             langEntity = langMap.get(e.getId());
-                            CmsLangUtils.initLang(e, langEntity);
+                            CmsLangUtils.initLang(e, defaultLang, langEntity);
                         }
                         CmsUrlUtils.initContentUrl(site, e);
                         fileUploadComponent.initContentCover(site, e);
