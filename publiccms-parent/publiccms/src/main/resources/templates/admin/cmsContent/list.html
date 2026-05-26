@@ -61,7 +61,11 @@
         </div>
     </div>
     <div id="contentBox" class="rightPageContent">
+        <#if type?has_content && "uncheck_list"=type>
         <#include "content_list.html"/>
+        <#else>
+        <#include "uncheck_list.html"/>
+        </#if>
     </div>
 </div>
 </#if>

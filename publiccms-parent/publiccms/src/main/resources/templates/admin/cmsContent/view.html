@@ -258,7 +258,16 @@
 <div class="formBar">
     <ul>
         <#if model?has_content&&model.hasChild>
-            <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></li>
+            <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list" data-change-title="false"><@t.page 'content.child_management'/></a></li>
+            <#if authorizedMap['cmsContent/uncheck_list']>
+                <#if 0=admin.contentPermissions><#assign uncheckUserId=admin.id/></#if>
+                <#if 2=admin.contentPermissions><#assign uncheckDeptId=admin.deptId/></#if>
+                <@cms.contentList advanced=true status=2 parentId=a.id userId=uncheckUserId deptId=uncheckDeptId absoluteId=false pageSize=0>
+                    <#if page.totalCount gt 0>
+                        <li><a href="cmsContent/uncheck_list.html?lang=${lang!}&parentId=${a.id}&type=uncheck_list" class="button" target="navTab" rel="cmsContent/list" data-change-title="false"><@t.page 'status.content.2'/><@t.page 'content.child_management'/><span class="todoNumber">${page.totalCount}</span></a></li>
+                    </#if>
+                </@cms.contentList>
+            </#if>
         </#if>
         <@sys.workflowProcessItem itemType="content" itemId=a.id>
             <li><a href="sysWorkflowProcess/view.html?id=${object.processId}" class="button" target="dialog" rel="viewProcess${object.processId}" width="1200" height="500"><@t.page 'workflow.check'/></a></li>

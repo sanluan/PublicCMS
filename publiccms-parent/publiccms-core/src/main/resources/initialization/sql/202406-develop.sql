@@ -125,6 +125,6 @@ UPDATE sys_module SET url = NULL WHERE id = 'content_check';
 -- 2026-05-24 --
 ALTER TABLE `cms_dictionary_data` add `langdata` longtext COMMENT '语言JSON' AFTER `text`;
 ALTER TABLE `cms_word`
-  add `lang` varchar(50) NOT NULL COMMENT '语言' AFTER `name`,
+  ADD `lang` varchar(50) DEFAULT NULL COMMENT '语言' AFTER `name`,
   DROP INDEX `cms_word_hidden`,
   ADD INDEX  `cms_word_hidden` (`site_id`,`lang`, `hidden`);

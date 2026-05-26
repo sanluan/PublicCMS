@@ -609,7 +609,7 @@ CREATE TABLE `cms_word` (
   `id` bigint(20) NOT NULL auto_increment,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(100) NOT NULL COMMENT '名称',
-  `lang` varchar(50) NOT NULL COMMENT '语言',
+  `lang` varchar(50) DEFAULT NULL COMMENT '语言',
   `search_count` int(11) NOT NULL COMMENT '搜索次数',
   `hidden` tinyint(1) NOT NULL COMMENT '隐藏',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
