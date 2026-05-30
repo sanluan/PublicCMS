@@ -70,9 +70,9 @@
                             </dl>
                         </#if>
                         <#if categoryExtendList?has_content>
-                            <@extendData inputNamePrefix="contentLangList["+index+"]." type="view" extendList=categoryExtendList lang=lang.id.code extendValues=(attribute!{}) historyItemType="contentExtend" historyItemId=id/>
+                            <@extendData inputNamePrefix="contentLangList["+index+"]." readonly=true extendList=categoryExtendList lang=lang.id.code extendValues=(attribute!{}) historyItemType="contentExtend" historyItemId=id/>
                         </#if>
-                        <@extendData inputNamePrefix="contentLangList["+index+"]." type="view" extendList=model.extendList lang=lang.id.code extendValues=(attribute!{}) historyItemType="contentExtend" historyItemId=id/>
+                        <@extendData inputNamePrefix="contentLangList["+index+"]." readonly=true  extendList=model.extendList lang=lang.id.code extendValues=(attribute!{}) historyItemType="contentExtend" historyItemId=id/>
                         <#if fieldList?seq_contains("content")>
                             <dl class="nowrap">
                                 <dt>${(model.fieldTextMap["content"])!}:</dt>
