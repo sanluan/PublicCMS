@@ -33,7 +33,7 @@
                             </dd>
                         </dl>
                         <#if categoryType?has_content && categoryType.extendList?has_content>
-                            <@extendData inputNamePrefix="categoryLangList["+index+"]." type="view" lang=lang.id.code extendList=categoryType.extendList extendValues=(attribute!{}) historyItemType='categoryExtend' historyItemId=id/>
+                            <@extendData inputNamePrefix="categoryLangList["+index+"]." readonly=true lang=lang.id.code extendList=categoryType.extendList extendValues=(attribute!{}) historyItemType='categoryExtend' historyItemId=id/>
                         </#if>
                         <#if !category.onlyUrl>
                             <fieldset>
