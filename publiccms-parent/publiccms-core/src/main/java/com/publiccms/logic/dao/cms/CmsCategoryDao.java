@@ -71,10 +71,10 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
      * @return
      */
     public int deleteWorkflowIds(short siteId, Integer[] workflowIds) {
-        QueryHandler queryHandler = getQueryHandler("from CmsCategory bean");
+        QueryHandler queryHandler = getQueryHandler("delete from CmsCategory bean");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.workflowId in (:workflowIds)").setParameter("workflowIds", workflowIds);
-        return update(queryHandler);
+        return delete(queryHandler);
     }
 
     /**
