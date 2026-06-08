@@ -65,6 +65,13 @@ public class CmsCategory extends EntityAttribute implements java.io.Serializable
     @GeneratorColumn(title = "分类类型", condition = true)
     private String typeId;
     /**
+     * parent ids
+     * 
+     * 父分类id
+     */
+    @GeneratorColumn(title = "父分类")
+    private String parentIds;
+    /**
      * child ids
      * 
      * 子分类id
@@ -197,7 +204,7 @@ public class CmsCategory extends EntityAttribute implements java.io.Serializable
         this.disabled = disabled;
     }
 
-    public CmsCategory(short siteId, String name, Integer parentId, String lang, String typeId, String childIds,
+    public CmsCategory(short siteId, String name, Integer parentId, String lang, String typeId, String parentIds, String childIds,
             String tagTypeIds, String code, boolean customPath, String templatePath, String path, boolean onlyUrl,
             boolean hasStatic, String url, boolean customContentPath, String contentPath, boolean containChild, Integer pageSize,
             boolean allowContribute, int sort, boolean hidden, boolean disabled, Integer workflowId, Integer extendId) {
@@ -206,6 +213,7 @@ public class CmsCategory extends EntityAttribute implements java.io.Serializable
         this.parentId = parentId;
         this.lang = lang;
         this.typeId = typeId;
+        this.parentIds = parentIds;
         this.childIds = childIds;
         this.tagTypeIds = tagTypeIds;
         this.code = code;
@@ -282,6 +290,15 @@ public class CmsCategory extends EntityAttribute implements java.io.Serializable
 
     public void setTypeId(String typeId) {
         this.typeId = typeId;
+    }
+
+    @Column(name = "parent_ids", length = 65535)
+    public String getParentIds() {
+        return this.parentIds;
+    }
+
+    public void setParentIds(String parentIds) {
+        this.parentIds = parentIds;
     }
 
     @Column(name = "child_ids", length = 65535)

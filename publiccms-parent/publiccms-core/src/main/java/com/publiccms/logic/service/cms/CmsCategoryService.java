@@ -80,6 +80,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     public void saveTagAndAttribute(short siteId, String sitePath, CmsCategory entity, CmsCategory oldEntity, Long userId,
             CmsCategoryAttribute attribute, CmsCategoryType categoryType, CmsCategoryParameters categoryParameters) {
         if (null != entity.getId()) {
+            entity.setParentIds(getParentIds(entity.getSiteId(), entity.getParentId(), false));
             update(entity.getId(), entity, ignoreProperties);
             if (null != oldEntity.getParentId() && !oldEntity.getParentId().equals(entity.getParentId())) {
                 generateChildIds(siteId, oldEntity.getParentId());
@@ -125,7 +126,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 categoryType, categoryParameters.getExtendData());// 保存编辑器字段历史记录
         attributeService.updateAttribute(entity.getId(), attribute);
     }
-    
+
     public void copy(short siteId, CmsCategory entity, CmsCategory copy) {
         if (null == entity.getParentId() && null != copy.getParentId()) {
             entity.setParentId(copy.getParentId());
@@ -186,28 +187,9 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         if (entity.isOnlyUrl()) {
             entity.setUrl(entity.getPath());
         }
+        entity.setParentIds(getParentIds(entity.getSiteId(), entity.getParentId(), false));
         super.save(entity);
         addChildIds(entity.getParentId(), entity.getId());
-    }
-
-    /**
-     * @param parentId
-     * @param id
-     */
-    private void addChildIds(Serializable parentId, Serializable id) {
-        if (null != parentId) {
-            CmsCategory parent = getEntity(parentId);
-            if (null != parent) {
-                addChildIds(parent.getParentId(), id);
-                String childIds;
-                if (CommonUtils.notEmpty(parent.getChildIds())) {
-                    childIds = CommonUtils.joinString(parent.getChildIds(), Constants.COMMA, id);
-                } else {
-                    childIds = String.valueOf(id);
-                }
-                updateChildIds(parent.getId(), childIds);
-            }
-        }
     }
 
     /**
@@ -218,32 +200,6 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         CmsCategory entity = getEntity(id);
         if (null != entity) {
             entity.setTypeId(typeId);
-        }
-    }
-
-    private String getChildIds(short siteId, Integer parentId) {
-        StringBuilder childIds = new StringBuilder();
-        @SuppressWarnings("unchecked")
-        List<CmsCategory> list = (List<CmsCategory>) getPage(
-                new CmsCategoryQuery(siteId, parentId, false, null, null, null, false), null, null).getList();
-        if (!list.isEmpty()) {
-            for (CmsCategory category : list) {
-                childIds.append(category.getId());
-                childIds.append(Constants.COMMA);
-                String childChildIds = getChildIds(siteId, category.getId());
-                if (CommonUtils.notEmpty(childChildIds)) {
-                    childIds.append(childChildIds);
-                    childIds.append(Constants.COMMA);
-                }
-            }
-            if (0 < childIds.length()) {
-                childIds.setLength(childIds.length() - 1);
-            }
-        }
-        if (0 < childIds.length()) {
-            return childIds.toString();
-        } else {
-            return null;
         }
     }
 
@@ -266,14 +222,21 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         }
     }
 
-    private void generateChildIds(short siteId, Integer parentId, boolean generateParent) {
-        if (null != parentId) {
-            updateChildIds(parentId, getChildIds(siteId, parentId));
-            if (generateParent) {
-                CmsCategory parent = getEntity(parentId);
-                if (null != parent && null != parent.getParentId()) {
-                    generateChildIds(siteId, parent.getParentId(), true);
-                }
+    /**
+     * @param siteId
+     * @param parentId
+     */
+    @SuppressWarnings("unchecked")
+    public void generateParentIds(short siteId) {
+        CmsCategoryQuery query = new CmsCategoryQuery();
+        query.setSiteId(siteId);
+        query.setQueryAll(true);
+        PageHandler page = getPage(query, null, null);
+        for (CmsCategory category : (List<CmsCategory>) page.getList()) {
+            if (null == category.getParentId()) {
+                updateParentIds(category.getId(), null);
+            } else {
+                updateParentIds(category.getId(), getParentIds(siteId, category.getParentId(), true));
             }
         }
     }
@@ -304,9 +267,20 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
     /**
      * @param id
+     * @param parentIds
+     */
+    public void updateParentIds(Serializable id, String parentIds) {
+        CmsCategory entity = getEntity(id);
+        if (null != entity) {
+            entity.setParentIds(parentIds);
+        }
+    }
+
+    /**
+     * @param id
      * @param childIds
      */
-    public void updateChildIds(Serializable id, String childIds) {
+    private void updateChildIds(Serializable id, String childIds) {
         CmsCategory entity = getEntity(id);
         if (null != entity) {
             entity.setChildIds(childIds);
@@ -347,6 +321,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     public void updateParentId(short siteId, Serializable id, Integer parentId) {
         CmsCategory entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
+            entity.setParentIds(getParentIds(entity.getSiteId(), entity.getParentId(), false));
             entity.setParentId(parentId);
         }
     }
@@ -361,6 +336,87 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         if (null != entity) {
             entity.setUrl(url);
             entity.setHasStatic(hasStatic);
+        }
+    }
+
+    private String getChildIds(short siteId, Integer categoryId) {
+        StringBuilder childIds = new StringBuilder();
+        @SuppressWarnings("unchecked")
+        List<CmsCategory> list = (List<CmsCategory>) getPage(
+                new CmsCategoryQuery(siteId, categoryId, false, null, null, null, false), null, null).getList();
+        if (!list.isEmpty()) {
+            for (CmsCategory category : list) {
+                childIds.append(category.getId());
+                childIds.append(Constants.COMMA);
+                String childChildIds = getChildIds(siteId, category.getId());
+                if (CommonUtils.notEmpty(childChildIds)) {
+                    childIds.append(childChildIds);
+                    childIds.append(Constants.COMMA);
+                }
+            }
+            if (0 < childIds.length()) {
+                childIds.setLength(childIds.length() - 1);
+            }
+        }
+        if (0 < childIds.length()) {
+            return childIds.toString();
+        } else {
+            return null;
+        }
+    }
+
+    private String getParentIds(short siteId, Integer parentId, boolean rebuild) {
+        if (null != parentId) {
+            CmsCategory parent = getEntity(parentId);
+            if (null == parent.getParentId()) {
+                if (rebuild) {
+                    parent.setParentId(null);
+                }
+                return String.valueOf(parentId);
+            } else {
+                if (CommonUtils.empty(parent.getParentIds()) || rebuild) {
+                    parent.setParentIds(getParentIds(siteId, parent.getParentId(), rebuild));
+                }
+                StringBuilder parentIds = new StringBuilder();
+                parentIds.append(parent.getParentIds());
+                parentIds.append(Constants.COMMA);
+                parentIds.append(parent.getId());
+                return parentIds.toString();
+            }
+        } else {
+            return null;
+        }
+    }
+
+    private void generateChildIds(short siteId, Integer categoryId, boolean generateParent) {
+        if (null != categoryId) {
+            updateChildIds(categoryId, getChildIds(siteId, categoryId));
+            if (generateParent) {
+                CmsCategory category = getEntity(categoryId);
+                if (null != category && null != category.getParentId()) {
+                    generateChildIds(siteId, category.getParentId(), true);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param parentId
+     * @param id
+     */
+    private void addChildIds(Serializable parentId, Serializable id) {
+        if (null != parentId) {
+            CmsCategory parent = getEntity(parentId);
+            if (null != parent) {
+                addChildIds(parent.getParentId(), id);
+                String childIds;
+                if (CommonUtils.notEmpty(parent.getChildIds())) {
+                    childIds = CommonUtils.joinString(parent.getChildIds(), Constants.COMMA, id);
+                } else {
+                    childIds = String.valueOf(id);
+                }
+                updateChildIds(parent.getId(), childIds);
+            }
         }
     }
 

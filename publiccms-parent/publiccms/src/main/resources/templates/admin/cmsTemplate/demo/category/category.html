@@ -30,14 +30,16 @@
     </nav>
     <main>
 <#macro bread category>
-    <#if category.parentId?has_content>
-        <@cms.category id=category.parentId;category>
-            <@bread category/>
+    <#if category.parentIds?has_content>
+        <@cms.category ids=category.parentIds>
+            <#list map as k,category>
+            <a href="${category.url}" data-id="${category.id}" data-diy-item="${category.id}">${category.name}</a> &gt;
+            </#list>
         </@cms.category>
     </#if>
-    <a href="${category.url}" data-id="${category.id}">${category.name}</a> &gt;
+    <a href="${category.url}" data-id="${category.id}" data-diy-item="${category.id}">${category.name}</a> &gt;
 </#macro>
-        <p class="bread"><@bread category/></p>
+        <p class="bread" data-diy="category"><@bread category/></p>
         <h1 data-diy="category" data-diy-id="${(category.id)!}">${(category.name)!}</h1>
     <@cms.contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
         <ul data-diy="content">

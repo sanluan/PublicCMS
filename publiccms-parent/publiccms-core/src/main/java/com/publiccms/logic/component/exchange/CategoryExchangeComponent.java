@@ -165,6 +165,7 @@ public class CategoryExchangeComponent extends AbstractDataExchange<CmsCategory,
             ZipUtils.unzip(zipFile, ATTACHMENT_DIR, filepath, overwrite, null);
         }
         service.generateChildIds(site.getId(), null);
+        service.generateParentIds(site.getId());
     }
 
     @Override

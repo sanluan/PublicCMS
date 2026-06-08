@@ -130,3 +130,5 @@ ALTER TABLE `cms_word`
   ADD INDEX  `cms_word_hidden` (`site_id`,`lang`, `hidden`);
 -- 2026-05-26 --
 DELETE FROM sys_module WHERE module_id in ('myself_content_view','myself_process_view');
+-- 2026-06-08 --
+ALTER TABLE `cms_category` ADD COLUMN `parent_ids` text NULL COMMENT '所有父分类' AFTER `type_id`;
