@@ -521,6 +521,14 @@ public class ControllerUtils {
 
     /**
      * @param request
+     * @param site 
+     */
+    public static void setSiteToAttribute(HttpServletRequest request, SysSite site) {
+        request.setAttribute(CommonConstants.getAttributeSite(), site);
+    }
+
+    /**
+     * @param request
      * @return SysSite
      */
     public static SysSite getSiteFromAttribute(HttpServletRequest request) {
@@ -611,6 +619,7 @@ public class ControllerUtils {
     public static void clearOptAdminToSession(HttpSession session) {
         session.removeAttribute(CommonConstants.getSessionAdmin());
     }
+
     /**
      * @param contextPath
      * @param scheme

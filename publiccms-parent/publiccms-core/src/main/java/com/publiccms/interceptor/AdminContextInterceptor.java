@@ -73,7 +73,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             }
         }
 
-        request.setAttribute(CommonConstants.getAttributeSite(), site);
+        ControllerUtils.setSiteToAttribute(request, site);
         String path = CmsFileUtils.getSafeFileName(urlPathHelper.getLookupPathForRequest(request));
         if (adminContextPath.equals(path)) {
             try {

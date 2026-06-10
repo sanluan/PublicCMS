@@ -1,16 +1,16 @@
 package com.publiccms.interceptor;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsProcessor;
 import org.springframework.web.cors.DefaultCorsProcessor;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.util.UrlPathHelper;
 
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.CorsConfigComponent;
@@ -43,7 +43,7 @@ public class SiteInterceptor implements HandlerInterceptor {
                 }
             }
         }
-        request.setAttribute(CommonConstants.getAttributeSite(), site);
+        ControllerUtils.setSiteToAttribute(request, site);
         return corsProcessor.processRequest(corsConfigComponent.getConfig(site), request, response);
     }
 
