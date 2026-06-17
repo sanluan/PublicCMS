@@ -73,7 +73,7 @@
         <version.lucene>8.11.4</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <!-- https://github.com/redis/jedis -->
-        <version.jedis>7.5.0</version.jedis>
+        <version.jedis>7.5.2</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <!-- 2.5 for jakarta -->
         <version.quartz>2.4.0</version.quartz>
@@ -106,7 +106,7 @@
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.22.0</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <version.log4j>2.25.4</version.log4j>
+        <version.log4j>2.26.0</version.log4j>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
         <version.extractor>2.20.0</version.extractor>
         <!-- https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio -->
@@ -116,9 +116,9 @@
         <!-- https://mvnrepository.com/artifact/net.sf.cssbox/pdf2dom -->
         <version.pdf2dom>2.0.3</version.pdf2dom>
         <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/jbig2-imageio -->
-        <version.jbig2>3.0.4</version.jbig2>
+        <version.jbig2>3.0.5</version.jbig2>
         <!-- https://mvnrepository.com/artifact/com.github.bgalek.security.svg/safe-svg -->
-        <version.safeSvg>1.1.8</version.safeSvg>
+        <version.safeSvg>1.2.0</version.safeSvg>
         <!-- https://mvnrepository.com/artifact/com.blueconic/browscap-java -->
         <version.browscap>1.5.1</version.browscap>
         <!-- https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc -->
