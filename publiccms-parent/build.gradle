@@ -23,7 +23,7 @@ subprojects {
     apply plugin: "eclipse-wtp"
 
     group = "com.publiccms"
-    version = "V4.0.2024506.d"
+    version = "V4.0.2024506.e"
 
     test.enabled = false
 
