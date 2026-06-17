@@ -9,22 +9,24 @@
         <h1>${(site.name)!}</h1>
     </header>
     <main data-diy="page" data-diy-noborder="true">New PublicCMS Template</main>
-    <footer>
-       <p>Powered by <a href="http://www.publiccms.com/">PublicCMS</a></p>
-    </footer>
     <script>
     var templatePath='${.current_template_name?keep_after('/')}';
     </script>
+    <#-- footer -->
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
     <script src="${site.dynamicPath}resource/js/cms.support.js"></script>
     <script>
-        var ca = cmsAnalytics();
-        var url='${site.dynamicPath}api/visit/record';
-        if("string" ==typeof itemString){
-            url=url+"?"+itemString;
-        }
-        ca.setDomain("${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}");
-        ca.setPath('/');
-        ca.report(url);
+    var ca = cmsAnalytics();
+    var url="${site.dynamicPath}api/visit/record";
+    if("string" ==typeof itemString){
+        url=url+"?"+itemString;
+    }
+    ca.setDomain("${site.sitePath?keep_after('//')?keep_before('/')?keep_before(':')}");
+    ca.setPath("/");
+    ca.report(url);
     </script>
+    <#-- end footer -->
 </body>
 </html>

@@ -35,7 +35,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
   &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/model?id=article', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/model?id=article').then(res => res.json()).then(data=>{
      console.log(data.name);
    });
    &lt;/script&gt;

@@ -71,7 +71,7 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
      * @return
      */
     public int deleteWorkflowIds(short siteId, Integer[] workflowIds) {
-        QueryHandler queryHandler = getQueryHandler("from CmsCategory bean");
+        QueryHandler queryHandler = getQueryHandler("update  CmsCategory bean set bean.workflowId = null");
         queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         queryHandler.condition("bean.workflowId in (:workflowIds)").setParameter("workflowIds", workflowIds);
         return update(queryHandler);
@@ -93,6 +93,9 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
     protected CmsCategory init(CmsCategory entity) {
         if (CommonUtils.empty(entity.getChildIds())) {
             entity.setChildIds(null);
+        }
+        if (CommonUtils.empty(entity.getParentIds())) {
+            entity.setParentIds(null);
         }
         if (CommonUtils.notEmpty(entity.getName())) {
             entity.setName(CommonUtils.keep(entity.getName(), 50));

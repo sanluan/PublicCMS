@@ -37,7 +37,7 @@ import freemarker.template.TemplateModelException;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getHash?parameters=https://www.publiccms.com/introduction/index_3.html&amp;parameters=2', function(data){
+fetch('${site.dynamicPath}api/method/getHash?parameters=https://www.publiccms.com/introduction/index_3.html&amp;parameters=2').then(res => res.json()).then(data=>{
 console.log(data);
 });
 &lt;/script&gt;

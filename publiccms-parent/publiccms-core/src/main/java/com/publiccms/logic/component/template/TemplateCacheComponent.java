@@ -45,7 +45,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * 
+ *
  * TemplateCacheComponent 动态模板缓存组件
  *
  */
@@ -54,15 +54,15 @@ public class TemplateCacheComponent implements Cache {
 
     protected final Log log = LogFactory.getLog(getClass());
     /**
-     * 
+     *
      */
     public static final String CACHE_VAR = "useCache";
     /**
-     * 
+     *
      */
     public static final String CONTENT_CACHE = "noCache";
     /**
-     * 
+     *
      */
     public static final String CACHE_FILE_DIRECTORY = "/cache";
     private final Lock lock = new ReentrantLock();
@@ -92,9 +92,9 @@ public class TemplateCacheComponent implements Cache {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesLanguage());
             if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
                 lang = userCookie.getValue();
-                if (null != lang) {
-                    lang = defaultLang;
-                }
+            }
+            if (CommonUtils.empty(lang)) {
+                lang = defaultLang;
             }
         }
 
@@ -124,14 +124,14 @@ public class TemplateCacheComponent implements Cache {
             }
             String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), Constants.COMMA);
             if (CommonUtils.notEmpty(acceptParameters) && !billingRequestParametersToModel(request, acceptParameters, id,
-                    pageIndex, lang, metadata.getParameterTypeMap(), site, model)) {
+                    pageIndex, metadata.getParameterTypeMap(), site, model)) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 } catch (IOException e) {
                 }
                 return requestPath;
             }
-
+            model.addAttribute("lang", lang);
             model.addAttribute("metadata", metadata);
             if (metadata.isNeedBody()) {
                 model.addAttribute("body", body);
@@ -160,8 +160,7 @@ public class TemplateCacheComponent implements Cache {
     }
 
     private boolean billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters, Long id,
-            Integer pageIndex, String lang, Map<String, ParameterType> parameterTypeMap, SysSite site, ModelMap model) {
-        model.addAttribute("lang", lang);
+            Integer pageIndex, Map<String, ParameterType> parameterTypeMap, SysSite site, ModelMap model) {
         for (String parameterName : acceptParameters) {
             String[] values = request.getParameterValues(parameterName);
             if ("id".equals(parameterName) && null != id) {
@@ -248,7 +247,7 @@ public class TemplateCacheComponent implements Cache {
 
     /**
      * 返回缓存模板路径或者模板原路径
-     * 
+     *
      * @param requestPath
      * @param fullTemplatePath
      * @param locale
@@ -308,7 +307,7 @@ public class TemplateCacheComponent implements Cache {
 
     /**
      * 删除缓存文件
-     * 
+     *
      * @param path
      */
     public void deleteCachedFile(String path) {

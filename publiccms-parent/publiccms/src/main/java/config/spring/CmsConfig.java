@@ -1,6 +1,7 @@
 package config.spring;
 
 import com.publiccms.common.servlet.WebFileHttpRequestHandler;
+import com.publiccms.logic.component.config.CorsConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -30,12 +31,13 @@ public class CmsConfig {
     /**
      * 站点静态资源处理器
      * 
-     * @param siteComponent 
+     * @param siteComponent
+     * @param corsConfigComponent 
      * @return static resource servlet httprequesthandler
      */
     @Bean
-    public HttpRequestHandler webfileServlet(SiteComponent siteComponent) {
-        WebFileHttpRequestHandler bean = new WebFileHttpRequestHandler(siteComponent);
+    public HttpRequestHandler webfileServlet(SiteComponent siteComponent, CorsConfigComponent corsConfigComponent) {
+        WebFileHttpRequestHandler bean = new WebFileHttpRequestHandler(siteComponent, corsConfigComponent);
         return bean;
     }
 }

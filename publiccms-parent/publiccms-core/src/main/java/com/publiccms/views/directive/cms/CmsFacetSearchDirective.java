@@ -34,7 +34,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
   &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/facetSearch?word=cms&amp;pageSize=10', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/facetSearch?word=cms&amp;pageSize=10').then(res => res.json()).then(data=>{
      console.log(data.page.totalCount);
    });
    &lt;/script&gt;

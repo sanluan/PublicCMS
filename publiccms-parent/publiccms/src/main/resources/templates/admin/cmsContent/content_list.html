@@ -11,7 +11,7 @@
     </#if>
     <#if 0=admin.contentPermissions><#assign userId=admin.id/></#if>
     <#if 2=admin.contentPermissions><#assign deptId=admin.deptId/></#if>
-<@cms.contentList advanced=true lang=lang status=1 categoryId=categoryId containChild=containChild
+<@cms.contentList advanced=true status=1 categoryId=categoryId containChild=containChild
             modelId=modelIds parentId=parentId emptyParent=true title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
@@ -177,7 +177,7 @@
             </#if>
 
             <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
-            <@cms.category ids=t.categoryIds! lang=lang><#assign categoryMap=map!/></@cms.category>
+            <@cms.category ids=t.categoryIds!><#assign categoryMap=map!/></@cms.category>
             <@cms.model ids=t.modelId!><#assign modelMap=map!/></@cms.model>
             <@sys.workflowProcessItem itemType="content" itemIds=t.ids!><#assign processItemMap=map!/></@sys.workflowProcessItem>
 
@@ -204,7 +204,7 @@
                         </h3>
                         <p>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                                <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}&lang=${lang!}" class="btnText" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></label>
+                                <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}&lang=${lang!}" data-change-title="false" class="btnText" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></label>
                             </#if>
                             <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickname)!}</span>
                             <label><@t.page 'inspector'/>:</label><span class="exclude-translate">${(userMap[a.checkUserId?string].nickname)!}</span>
@@ -226,7 +226,7 @@
                 <td class="center" title="<@t.page 'create_date'/>:${a.createDate!}">${a.publishDate!}</td>
                 <td class="wrap">
                     <p>
-                    <a href="cmsContent/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsContent/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a>
+                    <a href="<#if lang?has_content && lang != siteAttribute.default_language!>cmsContent/addLang.html?id=${a.id}&showTab=${lang!}<#else>cmsContent/add.html?id=${a.id}</#if>" class="edit btnText blue" target="navTab" rel="cmsContent/edit"><i class="icon-edit"></i><@t.page 'content.edit'/></a>
                     <#if authorizedMap['cmsContent/sortParameters']>
                         <#if dept?has_content>
                             <a href="cmsContent/sortParameters.html?id=${a.id}&sort=${a.sort}" class="btnText <#if a.sort gt 0>warn<#else>blue</#if>" target="dialog" width="450" height="180" mask="true"><@t.page 'top'/><#if a.sort gt 0>(${a.sort})</#if></a>

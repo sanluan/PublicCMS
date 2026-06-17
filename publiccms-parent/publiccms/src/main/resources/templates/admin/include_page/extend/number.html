@@ -1,7 +1,7 @@
 <#if 'view'=type>
         ${(value)!}
 <#elseif extend.multiple>
-        <table<#if 'customform'!=type> class="list nowrap sortDrag itemDetail" addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate.html?field=${inputName?url}"</#if>>
+        <table<#if 'customform'!=type> class="list nowrap sortDrag itemDetail"<#if !readonly> addButton="<@t.page 'button.new_line'/>" batchButton="<@t.page 'button.batch_create'/>" batchUrl="common/batchCreate.html?field=${inputName?url}"</#if></#if>>>
             <thead>
                 <tr>
                     <th width="250"<#if 'customform'!=type> type="number" name="${inputName}" fieldClass="number<#if extend.required> required</#if>" size="30"  fieldAttrs='{"batchGroup":""<#if extend.maxlength?has_content>,"maxlength":${extend.maxlength}</#if>}'</#if>><@t.page 'value'/></th>
@@ -13,11 +13,13 @@
                     <#list value?split(',') as a>
                     <tr>
                         <td>
-                            <input name="${inputName}" type="number" size="30"<#if 'customform'=type><#if extend.required||a?is_first> required="required"</#if><#else>class="required"</#if><#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> value="${a}"/>
+                            <input name="${inputName}"<#if readonly> readonly="readonly"</#if>type="number" size="30"<#if 'customform'=type><#if extend.required||a?is_first> required="required"</#if><#else>class="required"</#if><#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> value="${a}"/>
                         </td>
                         <td>
+                        <#if !readonly>
                             <#if 'customform'!=type><a href="javascript:;" class="icon-move"></a></#if>
                             <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
+                        </#if>
                         </td>
                     </tr>
                     </#list>
@@ -30,5 +32,5 @@
             </tbody>
         </table>
 <#else>
-        <input name="${inputName}" type="number"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if><#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
+        <input name="${inputName}" type="number"<#if readonly> readonly="readonly"</#if><#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if><#if 'customform'=type><#if extend.required> required="required"</#if><#else><#if extend.required> class="required"</#if></#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
 </#if>

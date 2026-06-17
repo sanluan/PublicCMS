@@ -31,8 +31,8 @@ import freemarker.template.TemplateException;
  * <p>使用示例
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/contentClick?id=1', function(data){
-  console.log(data.clicks);
+fetch('${site.dynamicPath}api/contentClick?id=1').then(res => res.json()).then(data=>{
+  document.querySelector('article p em').textContent=data.clicks;
 });
 &lt;/script&gt;
  * </pre>

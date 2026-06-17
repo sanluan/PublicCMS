@@ -18,11 +18,13 @@ public class CmsLangUtils {
     /**
      * @param entity
      * @param lang
+     * @param defaultLang
      * @param langEntity
      * @return
      */
-    public static boolean initLang(CmsCategory entity, String lang, CmsCategoryLang langEntity) {
-        if (null != langEntity && null != langEntity.getId().getLang() && !langEntity.getId().getLang().equalsIgnoreCase(lang)) {
+    public static boolean initLang(CmsCategory entity, String lang, String defaultLang, CmsCategoryLang langEntity) {
+        if (null != langEntity && null != langEntity.getId().getLang() && !(langEntity.getId().getLang().equalsIgnoreCase(lang)
+                || null == lang && langEntity.getId().getLang().equalsIgnoreCase(defaultLang))) {
             BeanUtils.copyProperties(langEntity, entity, ignoreProperties);
             entity.setLang(langEntity.getId().getLang());
             return true;
@@ -32,11 +34,12 @@ public class CmsLangUtils {
 
     /**
      * @param entity
+     * @param defaultLang
      * @param langEntity
      * @return
      */
-    public static boolean initLang(CmsCategory entity, CmsCategoryLang langEntity) {
-        return initLang(entity, entity.getLang(), langEntity);
+    public static boolean initLang(CmsCategory entity, String defaultLang, CmsCategoryLang langEntity) {
+        return initLang(entity, entity.getLang(), defaultLang, langEntity);
     }
 
     /**
@@ -55,11 +58,12 @@ public class CmsLangUtils {
 
     /**
      * @param entity
+     * @param defaultLang
      * @param langEntity
      * @return
      */
-    public static boolean initLang(CmsContent entity, CmsContentLang langEntity) {
-        return initLang(entity, entity.getLang(), langEntity);
+    public static boolean initLang(CmsContent entity, String defaultLang, CmsContentLang langEntity) {
+        return initLang(entity, entity.getLang(), defaultLang, langEntity);
     }
 
     public static Function<CmsContent, Long> getContentIdFunction(boolean absoluteId) {
@@ -73,11 +77,13 @@ public class CmsLangUtils {
     /**
      * @param entity
      * @param lang
+     * @param defaultLang
      * @param langEntity
      * @return
      */
-    public static boolean initLang(CmsContent entity, String lang, CmsContentLang langEntity) {
-        if (null != langEntity && null != langEntity.getId().getLang() && !langEntity.getId().getLang().equalsIgnoreCase(lang)) {
+    public static boolean initLang(CmsContent entity, String lang, String defaultLang, CmsContentLang langEntity) {
+        if (null != langEntity && null != langEntity.getId().getLang() && !(langEntity.getId().getLang().equalsIgnoreCase(lang)
+                || null == lang && langEntity.getId().getLang().equalsIgnoreCase(defaultLang))) {
             BeanUtils.copyProperties(langEntity, entity, ignoreProperties);
             entity.setLang(langEntity.getId().getLang());
             return true;

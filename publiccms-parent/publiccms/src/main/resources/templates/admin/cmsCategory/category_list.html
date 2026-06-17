@@ -1,4 +1,4 @@
-<@cms.categoryList advanced=true lang=lang parentId=parentId allowContribute=allowContribute pageIndex=pageNum pageSize=numPerPage>
+<@cms.categoryList advanced=true parentId=parentId allowContribute=allowContribute pageIndex=pageNum pageSize=numPerPage>
 <@sys.authorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/rebuildChildIds,cmsCategory/batchPublish,cmsCategory/seo,cmsCategory/batchCopy,cmsCategory/export,cmsCategory/import,cmsCategory/contributeForm,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/changeTypeParameters,cmsCategory/publishParameters,cmsPlace/push'><#assign authorizedMap=map/></@sys.authorized>
 <div class="pageHeader card">
     <form autocomplete="off" class="pagerForm" action="cmsCategory/category_list.html" onsubmit="return divSearch(this,'categoryBox');" method="post">
@@ -151,7 +151,7 @@
                 <td>${a.sort!}</td>
                 <td class="wrap">
                 <#if authorizedMap['cmsCategory/add']>
-                    <a href="cmsCategory/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsCategory/edit"><i class="icon-edit"></i><@t.page 'category.edit'/></a>
+                    <a href="<#if lang?has_content && lang != siteAttribute.default_language!>cmsCategory/addLang.html?id=${a.id}&showTab=${lang!}<#else>cmsCategory/add.html?id=${a.id}</#if>" class="edit btnText blue" target="navTab" rel="cmsCategory/edit"><i class="icon-edit"></i><@t.page 'category.edit'/></a>
                     <a href="cmsCategory/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsCategory/add" title="<@t.page 'category.add'/>"><i class="icon-copy"></i><@t.page 'button.copy'/></a>
                 </#if>
                 <#if authorizedMap['cmsCategory/publishParameters']&&site.useStatic&&!a.onlyUrl>

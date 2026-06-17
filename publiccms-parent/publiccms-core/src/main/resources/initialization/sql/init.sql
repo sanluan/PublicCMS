@@ -11,7 +11,8 @@ CREATE TABLE `cms_category` (
   `parent_id` int(11) default NULL COMMENT '父分类',
   `lang` varchar(20) default NULL COMMENT '语言',
   `type_id` varchar(20) default NULL COMMENT '分类类型',
-  `child_ids` text COMMENT '所有子分类',
+  `parent_ids` text default NULL COMMENT '所有父分类',
+  `child_ids` text default NULL COMMENT '所有子分类',
   `tag_type_ids` text default NULL COMMENT '标签分类',
   `code` varchar(50) NOT NULL COMMENT '编码',
   `custom_path` tinyint(1) NOT NULL default 1 COMMENT '自定义访问路径',
@@ -302,6 +303,7 @@ CREATE TABLE `cms_dictionary_data` (
   `parent_value` varchar(50) NULL COMMENT '父值',
   `value` varchar(50) NOT NULL COMMENT '值',
   `text` varchar(100) NOT NULL COMMENT '文字',
+  `langdata` longtext COMMENT '语言JSON',
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   PRIMARY KEY  (`dictionary_id`, `site_id`, `value`),
   KEY `cms_dictionary_parent_value`(`dictionary_id`, `site_id`, `parent_value`)
@@ -608,13 +610,14 @@ CREATE TABLE `cms_word` (
   `id` bigint(20) NOT NULL auto_increment,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(100) NOT NULL COMMENT '名称',
+  `lang` varchar(50) DEFAULT NULL COMMENT '语言',
   `search_count` int(11) NOT NULL COMMENT '搜索次数',
   `hidden` tinyint(1) NOT NULL COMMENT '隐藏',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `cms_word_name` (`site_id`, `name`),
-  KEY `cms_word_hidden` (`site_id`, `hidden`)
+  KEY `cms_word_hidden` (`site_id`,`lang`, `hidden`)
 ) COMMENT='搜索词';
 
 -- ----------------------------

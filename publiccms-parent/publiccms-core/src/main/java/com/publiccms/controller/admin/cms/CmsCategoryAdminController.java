@@ -437,6 +437,7 @@ public class CmsCategoryAdminController {
     @Csrf
     public String rebuildChildIds(@RequestAttribute SysSite site) {
         service.generateChildIds(site.getId(), null);
+        service.generateParentIds(site.getId());
         return CommonConstants.TEMPLATE_DONE;
     }
 }

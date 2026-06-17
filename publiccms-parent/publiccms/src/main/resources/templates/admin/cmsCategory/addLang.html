@@ -15,7 +15,7 @@
         <div class="tabsHeader">
             <ul>
                 <#list list as lang>
-                    <li><a href="javascript:;" onclick="return false;">${lang.name}</a></li>
+                    <li class="${lang.id.code}"><a href="javascript:;" onclick="return false;">${lang.name}<#if lang.id.code = (siteAttribute.default_language)!> [<@t.message 'config.siteAttribute.default_language'/>]</#if></a></li>
                 </#list>
             </ul>
         </div>
@@ -26,12 +26,6 @@
                 <div class="pageFormContent" layoutH>
                     <#if lang.id.code = (siteAttribute.default_language)!>
                         <dl class="nowrap">
-                            <dt><@t.message 'config.siteAttribute.default_language'/>:</dt>
-                            <dd>
-                                <a href="cmsCategory/add.html?id=${id!}" target="navTab" rel="cmsCategory/edit" class="button"><@t.page 'category.edit'/></a>
-                            </dd>
-                        </dl>
-                        <dl class="nowrap">
                             <dt><@t.page 'name'/>:</dt>
                             <dd>
                                 <input type="hidden" name="categoryLangList[${index}].entity.id.lang" value="${lang.id.code}"/>
@@ -39,7 +33,7 @@
                             </dd>
                         </dl>
                         <#if categoryType?has_content && categoryType.extendList?has_content>
-                            <@extendData inputNamePrefix="categoryLangList["+index+"]." type="view" lang=lang.id.code extendList=categoryType.extendList extendValues=(attribute!{}) historyItemType='categoryExtend' historyItemId=id/>
+                            <@extendData inputNamePrefix="categoryLangList["+index+"]." readonly=true lang=lang.id.code extendList=categoryType.extendList extendValues=(attribute!{}) historyItemType='categoryExtend' historyItemId=id/>
                         </#if>
                         <#if !category.onlyUrl>
                             <fieldset>
@@ -107,4 +101,9 @@
         </div>
         </@cms.languageList>
     </div>
+    <#if showTab?has_content>
+    <script>
+        $(".tabs",navTab.getCurrentPanel()).attr("currentIndex",$("li.${showTab}",navTab.getCurrentPanel()).index());
+    </script>
+    </#if>
 </form>

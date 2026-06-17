@@ -32,7 +32,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/fileHistoryContent?type=file&amp;path=index.html/2020-01-01_01-01-000000&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/fileHistoryContent?type=file&amp;path=index.html/2020-01-01_01-01-000000',{"headers":{"appToken":"接口访问授权Token"}}).then(res => res.json()).then(data=>{
    console.log(data);
  });
  &lt;/script&gt;

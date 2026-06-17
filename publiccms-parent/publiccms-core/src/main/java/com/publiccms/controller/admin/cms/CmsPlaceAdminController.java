@@ -2,11 +2,8 @@ package com.publiccms.controller.admin.cms;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -210,10 +207,7 @@ public class CmsPlaceAdminController {
             }
 
             try {
-                templateComponent.publishPlace(site, entity.getPath(), entity.getLang(), true);
-                if (null != oldEntity && null != oldEntity.getLang() && !oldEntity.getLang().equalsIgnoreCase(entity.getLang())) {
-                    templateComponent.publishPlace(site, entity.getPath(), oldEntity.getLang(), true);
-                }
+                templateComponent.publishPlace(site, entity.getPath(), true);
             } catch (IOException | TemplateException e) {
                 log.error(e.getMessage(), e);
             }
@@ -247,17 +241,14 @@ public class CmsPlaceAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            List<CmsPlace> entityList = service.refresh(site.getId(), ids, path);
+            service.refresh(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "refresh.place", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     StringUtils.join(ids, Constants.COMMA)));
-            Set<String> set = entityList.stream().map(e -> e.getLang()).collect(Collectors.toSet());
-            for (String lang : set) {
-                try {
-                    templateComponent.publishPlace(site, path, lang, true);
-                } catch (IOException | TemplateException e) {
-                    log.error(e.getMessage(), e);
-                }
+            try {
+                templateComponent.publishPlace(site, path, true);
+            } catch (IOException | TemplateException e) {
+                log.error(e.getMessage(), e);
             }
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -288,17 +279,14 @@ public class CmsPlaceAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            List<CmsPlace> entityList = service.check(site.getId(), admin.getId(), ids, path);
+            service.check(site.getId(), admin.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     StringUtils.join(ids, Constants.COMMA)));
-            Set<String> set = entityList.stream().map(e -> e.getLang()).collect(Collectors.toSet());
-            for (String lang : set) {
-                try {
-                    templateComponent.publishPlace(site, path, lang, true);
-                } catch (IOException | TemplateException e) {
-                    log.error(e.getMessage(), e);
-                }
+            try {
+                templateComponent.publishPlace(site, path, true);
+            } catch (IOException | TemplateException e) {
+                log.error(e.getMessage(), e);
             }
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -362,17 +350,14 @@ public class CmsPlaceAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            List<CmsPlace> entityList = service.uncheck(site.getId(), ids, path);
+            service.uncheck(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     StringUtils.join(ids, Constants.COMMA)));
-            Set<String> set = entityList.stream().map(e -> e.getLang()).collect(Collectors.toSet());
-            for (String lang : set) {
-                try {
-                    templateComponent.publishPlace(site, path, lang, true);
-                } catch (IOException | TemplateException e) {
-                    log.error(e.getMessage(), e);
-                }
+            try {
+                templateComponent.publishPlace(site, path, true);
+            } catch (IOException | TemplateException e) {
+                log.error(e.getMessage(), e);
             }
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -489,17 +474,14 @@ public class CmsPlaceAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            List<CmsPlace> entityList = service.delete(site.getId(), ids, path);
+            service.delete(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.place", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     StringUtils.join(ids, Constants.COMMA)));
-            Set<String> set = entityList.stream().map(e -> e.getLang()).collect(Collectors.toSet());
-            for (String lang : set) {
-                try {
-                    templateComponent.publishPlace(site, path, lang, true);
-                } catch (IOException | TemplateException e) {
-                    log.error(e.getMessage(), e);
-                }
+            try {
+                templateComponent.publishPlace(site, path, true);
+            } catch (IOException | TemplateException e) {
+                log.error(e.getMessage(), e);
             }
         }
         return CommonConstants.TEMPLATE_DONE;

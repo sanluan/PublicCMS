@@ -1,4 +1,4 @@
-<@cms.content id=id absoluteId=true containsAttribute=true lang=lang>
+<@cms.content id=id absoluteId=true containsAttribute=true>
     <#assign
         a=object
         parentId=a.parentId!''
@@ -6,26 +6,12 @@
         modelId=a.modelId!''
     />
 </@cms.content>
-<@cms.category id=categoryId! lang=lang><#assign category=object/></@cms.category>
+<@cms.category id=categoryId!><#assign category=object/></@cms.category>
 <@cms.model id=modelId!><#assign model=object/></@cms.model>
-<#macro bread category>
-    <#if category.parentId?has_content>
-        <@cms.category id=category.parentId lang=lang>
-            <@bread object/>
-            <a href="${object.url!}" target="_blank">${object.name}</a> &gt;
-        </@cms.category>
-    </#if>
-</#macro>
 <style>
 #content img,#content video{max-width:100%;}
 </style>
 <div class="pageFormContent" layoutH>
-    <dl>
-        <dt><@t.page 'language'/>:</dt>
-        <dd>
-            <@cms.language code=(a.lang)!(siteAttribute.default_language)!>${object.name}</@cms.language>
-        </dd>
-    </dl>
     <#if model?has_content>
         <#assign fieldList=model.fieldList![]/>
         <@cms.content id=parentId>
@@ -39,7 +25,14 @@
             <dl>
                 <dt><@t.page 'category'/>:</dt>
                 <dd class="exclude-translate">
-                    <@bread category/> <a href="${(category.url)!}" target="_blank">${(category.name)!}</a>
+                    <#if category.parentIds?has_content>
+                        <@cms.category ids=category.parentIds>
+                            <#list map as k,v>
+                            <a href="${v.url!}" target="_blank">${v.name}</a> &gt;
+                            </#list>
+                        </@cms.category>
+                    </#if>
+                    <a href="${(category.url)!}" target="_blank">${(category.name)!}</a>
                 </dd>
             </dl>
             <dl>
@@ -54,6 +47,14 @@
                     ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<span class="exclude-translate">${(a.title)!}</span>
                 </dd>
             </dl>
+            <#if 'true'=(siteAttribute.enable_multilingual)!>
+                <dl>
+                    <dt><@t.page 'language'/>:</dt>
+                    <dd>
+                        <@cms.language code=(a.lang)!(siteAttribute.default_language)!>${object.name}</@cms.language>
+                    </dd>
+                </dl>
+            </#if>
             <dl>
                 <dt><@t.page 'status'/>:</dt>
                 <dd>
@@ -152,7 +153,7 @@
         <dl class="nowrap">
             <dt><@t.page 'image_list'/>:</dt>
             <dd>
-        <@cms.contentFileList contentId=a.id lang=lang fileTypes='image'>
+        <@cms.contentFileList contentId=a.id fileTypes='image'>
             <#list page.list as file>
                 <div class="thumbnail">
                     <img src="${(file.filePath)!}" alt="${(file.description)!}"/>
@@ -166,7 +167,7 @@
             <dl class="nowrap">
                 <dt><@t.page 'attach_list'/>:</dt>
                 <dd>
-            <@cms.contentFileList contentId=a.id lang=lang fileTypes='video,audio,document,other'>
+            <@cms.contentFileList contentId=a.id fileTypes='video,audio,document,other'>
                 <#list page.list as file>
                     <p><a href="${(file.filePath)!}" download="${(file.description)!}" class="exclude-translate" target="_blank">${(file.description)!}</a> <@t.page 'clicks'/>:${a.clicks!}</p>
                 </#list>
@@ -258,11 +259,29 @@
 <div class="formBar">
     <ul>
         <#if model?has_content&&model.hasChild>
-            <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></li>
+            <li><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="button" target="navTab" rel="cmsContent/list" data-change-title="false"><@t.page 'content.child_management'/></a></li>
+            <#if authorizedMap['cmsContent/uncheck_list']>
+                <#if 0=admin.contentPermissions><#assign uncheckUserId=admin.id/></#if>
+                <#if 2=admin.contentPermissions><#assign uncheckDeptId=admin.deptId/></#if>
+                <@cms.contentList advanced=true status=2 parentId=a.id userId=uncheckUserId deptId=uncheckDeptId absoluteId=false pageSize=0>
+                    <#if page.totalCount gt 0>
+                        <li><a href="cmsContent/uncheck_list.html?lang=${lang!}&parentId=${a.id}&type=uncheck_list" class="button" target="navTab" rel="cmsContent/list" data-change-title="false"><@t.page 'status.content.2'/><@t.page 'content.child_management'/><span class="todoNumber">${page.totalCount}</span></a></li>
+                    </#if>
+                </@cms.contentList>
+            </#if>
         </#if>
         <@sys.workflowProcessItem itemType="content" itemId=a.id>
             <li><a href="sysWorkflowProcess/view.html?id=${object.processId}" class="button" target="dialog" rel="viewProcess${object.processId}" width="1200" height="500"><@t.page 'workflow.check'/></a></li>
         </@sys.workflowProcessItem>
+        <#if 'true'=(siteAttribute.enable_multilingual)!>
+            <@cms.languageList>
+                <#list list as language>
+                <#if language.id.code != (a.lang)!(siteAttribute.default_language)!>
+                    <li><a href="cmsContent/view.html?id=${a.id}&lang=${language.id.code!}" class="button" target="dialog" rel="viewContent${a.id}" width="1200" height="600">${language.name}</a></li>
+                </#if>
+                </#list>
+            </@cms.languageList>
+        </#if>
         <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
     </ul>
 </div>

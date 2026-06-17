@@ -16,6 +16,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentLang;
 import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
@@ -49,7 +50,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/tools/createContentFile?id=1&amp;templatePath=content.html&amp;filePath=content/1.html&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/tools/createContentFile?id=1&amp;templatePath=content.html&amp;filePath=content/1.html',{"headers":{"appToken":"接口访问授权Token"}}).then(res => res.json()).then(data=>{
   console.log(data);
 });
 &lt;/script&gt;
@@ -61,7 +62,7 @@ public class CreateContentFileDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         Long id = handler.getLong("id");
-        String lang = handler.getString("lang");
+        String lang = handler.getStringAttribute("lang");
         String templatePath = handler.getString("templatePath");
         String filepath = handler.getString("filePath");
         Integer pageIndex = handler.getInteger("pageIndex");
@@ -73,11 +74,13 @@ public class CreateContentFileDirective extends AbstractTemplateDirective {
                     CmsContentLang langEntity = null;
                     if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(content.getLang())) {
                         langEntity = contentLangService.getEntity(new CmsContentLangId(id, lang));
-                        CmsLangUtils.initLang(content, langEntity);
+                        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                        CmsLangUtils.initLang(content, defaultLang, langEntity);
                     }
                     CmsCategory category = categoryService.getEntity(content.getCategoryId());
                     if (null != category && CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(category.getLang())) {
-                        CmsLangUtils.initLang(category,
+                        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+                        CmsLangUtils.initLang(category, defaultLang,
                                 categoryLangService.getEntity(new CmsCategoryLangId(content.getCategoryId(), lang)));
                     }
                     handler.put("url", templateComponent.createContentFile(site, content, langEntity, category, false,
@@ -104,5 +107,7 @@ public class CreateContentFileDirective extends AbstractTemplateDirective {
     private CmsCategoryLangService categoryLangService;
     @Resource
     private CmsContentLangService contentLangService;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 
 }

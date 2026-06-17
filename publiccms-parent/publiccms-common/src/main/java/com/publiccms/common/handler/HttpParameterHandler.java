@@ -223,6 +223,11 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
+    public String getStringAttribute(String name) {
+        return request.getHeader(name);
+    }
+
+    @Override
     public boolean inHttp() {
         return true;
     }

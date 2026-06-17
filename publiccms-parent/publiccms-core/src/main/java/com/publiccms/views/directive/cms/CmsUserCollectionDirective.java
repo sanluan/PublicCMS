@@ -42,7 +42,7 @@ import jakarta.annotation.Resource;
  *
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userCollection?id=1', function(data){
+fetch('${site.dynamicPath}api/directive/cms/userCollection?id=1').then(res => res.json()).then(data=>{
   console.log(data.scores);
 });
 &lt;/script&gt;

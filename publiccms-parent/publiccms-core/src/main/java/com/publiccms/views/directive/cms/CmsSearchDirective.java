@@ -45,6 +45,11 @@ import freemarker.template.TemplateModelException;
  *
  * search 内容列表查询指令
  * <p>
+ * 上下文变量
+ * <ul>
+ * <li><code>lang</code>:语言
+ * </ul>
+ * <p>
  * 参数列表
  * <ul>
  * <li><code>word</code>:搜索词,多个搜索词时取并集结果
@@ -53,7 +58,6 @@ import freemarker.template.TemplateModelException;
  * <li><code>userId</code>:用户id
  * <li><code>parentId</code>:父内容id
  * <li><code>categoryId</code>:分类id
- * <li><code>lang</code>:语言
  * <li><code>containChild</code>:包含子分类,当categoryId不为空时有效
  * <li><code>categoryIds</code>:多个分类id,当categoryId为空时有效
  * <li><code>modelIds</code>:多个模型id
@@ -89,12 +93,13 @@ import freemarker.template.TemplateModelException;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@cms.search word='cms' pageSize=10&gt;&lt;#list page.list as
+ * &lt;#assign lang="cn"/&gt; &lt;@cms.search word='cms'
+ * pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.search&gt;
  *
  * <pre>
 *  &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/search?word=cms&amp;pageSize=10', function(data){
+  fetch('${site.dynamicPath}api/directive/cms/search?word=cms&amp;pageSize=10',{"headers":{"lang":"cn"}}).then(res => res.json()).then(data=>{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
@@ -126,10 +131,11 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             tagIds = handler.getLongArray("tagId");
         }
         SysSite site = getSite(handler);
+        String lang = handler.getStringAttribute("lang");
         if (CommonUtils.notEmpty(word)) {
             word = CommonUtils.keep(word, 100, null);
             String ip = RequestUtils.getIpAddress(handler.getRequest());
-            statisticsComponent.search(site.getId(), word, ip);
+            statisticsComponent.search(site.getId(), word, lang, ip);
         }
         if (CommonUtils.notEmpty(tagIds)) {
             for (Long tagId : tagIds) {
@@ -146,7 +152,6 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             highLighterQuery.setPostTag(handler.getString("postTag"));
         }
         boolean containsAttribute = handler.getBoolean("containsAttribute", false);
-        String lang = handler.getString("lang");
 
         CmsContentSearchQuery query = new CmsContentSearchQuery(site.getId(), handler.getBoolean("projection", false),
                 handler.getBoolean("phrase", false), word, handler.getString("exclude"), handler.getStringArray("fields"), tagIds,
@@ -156,8 +161,8 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                 handler.getBoolean("dictionaryUnion"), handler.getDate("startPublishDate"),
                 handler.getDate("endPublishDate", currentDate), currentDate);
 
+        String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
         if (siteAttributeComponent.enableMultilingual(site.getId())) {
-            String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
             if (null != lang && !lang.equalsIgnoreCase(defaultLang)) {
                 query.setLang(lang);
             }
@@ -199,7 +204,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                         CmsContentAttribute attribute = attributeMap.get(e.getId());
                         if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(e.getLang())) {
                             langEntity = langMap.get(e.getId());
-                            CmsLangUtils.initLang(e, langEntity);
+                            CmsLangUtils.initLang(e, defaultLang, langEntity);
                             CmsLangUtils.initLang(attribute, langEntity);
                         }
                         CmsUrlUtils.initContentUrl(site, e);
@@ -215,7 +220,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                         CmsContentLang langEntity = null;
                         if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(e.getLang())) {
                             langEntity = langMap.get(e.getId());
-                            CmsLangUtils.initLang(e, langEntity);
+                            CmsLangUtils.initLang(e, defaultLang, langEntity);
                         }
                         CmsUrlUtils.initContentUrl(site, e);
                         fileUploadComponent.initContentCover(site, e);

@@ -32,7 +32,7 @@ import freemarker.template.TemplateException;
  *
  * <pre>
   &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/categoryTypeList', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/categoryTypeList').then(res => res.json()).then(data=>{
      console.log(data.page.totalCount);
    });
    &lt;/script&gt;

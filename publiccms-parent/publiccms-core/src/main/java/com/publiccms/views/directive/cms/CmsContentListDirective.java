@@ -25,6 +25,7 @@ import com.publiccms.entities.cms.CmsContentLang;
 import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.config.ContentConfigComponent.KeywordsConfig;
 import com.publiccms.logic.component.site.FileUploadComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
@@ -40,6 +41,11 @@ import freemarker.template.TemplateException;
  *
  * contentList 内容列表查询指令
  * <p>
+ * 上下文变量
+ * <ul>
+ * <li><code>lang</code>:语言
+ * </ul>
+ * <p>
  * 参数列表
  * <ul>
  * <li><code>categoryId</code>:分类id,当parentId为空时有效
@@ -47,7 +53,6 @@ import freemarker.template.TemplateException;
  * <li><code>categoryIds</code>:多个分类id,当categoryId为空时有效
  * <li><code>modelId</code>:多个模型id
  * <li><code>parentId</code>:父内容id
- * <li><code>lang</code>:语言
  * <li><code>onlyUrl</code>:外链,【true,false】
  * <li><code>hasImages</code>:拥有图片列表,【true,false】
  * <li><code>hasFiles</code>:拥有附件列表,【true,false】
@@ -83,17 +88,18 @@ import freemarker.template.TemplateException;
  * </ul>
  * 使用示例
  * <p>
- * &lt;@cms.contentList pageSize=10&gt;&lt;#list page.list as
+ * &lt;#assign lang="cn"/&gt; &lt;@cms.contentList pageSize=10&gt;&lt;#list
+ * page.list as
  * a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentList&gt;
- * 
+ *
  * <pre>
  *  &lt;script&gt;
-    $.getJSON('${site.dynamicPath}api/directive/cms/contentList?pageSize=10', function(data){    
+    fetch('${site.dynamicPath}api/directive/cms/contentList?pageSize=10',{"headers":{"lang":"cn"}}).then(res => res.json()).then(data=>{
       console.log(data.page.totalCount);
     });
     &lt;/script&gt;
  * </pre>
- * 
+ *
  */
 @Component
 public class CmsContentListDirective extends AbstractTemplateDirective {
@@ -105,6 +111,8 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
     protected FileUploadComponent fileUploadComponent;
     @Resource
     private StatisticsComponent statisticsComponent;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
@@ -129,7 +137,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             }
             queryEntity.setExpiryDate(now);
         }
-        String lang = handler.getString("lang");
+        String lang = handler.getStringAttribute("lang");
         queryEntity.setCategoryId(handler.getInteger("categoryId"));
         queryEntity.setCategoryIds(handler.getIntegerArray("categoryIds"));
         queryEntity.setModelIds(handler.getStringArray("modelId"));
@@ -163,7 +171,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             }
             Map<Long, CmsContentLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
                     k -> k.getId().getContentId());
-
+            String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
             Consumer<CmsContent> consumer = entity -> {
                 ClickStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
                 if (null != statistics) {
@@ -176,7 +184,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                 CmsContentLang langEntity = null;
                 if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
                     langEntity = langMap.get(CmsLangUtils.getContentId(entity, absoluteId));
-                    CmsLangUtils.initLang(entity, langEntity);
+                    CmsLangUtils.initLang(entity, defaultLang, langEntity);
                 }
 
                 if (absoluteURL) {

@@ -24,6 +24,19 @@
                     <input type="text" name="endCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
+                <#if 'true'=((siteAttribute.enable_multilingual)!)>
+                <li>
+                    <label><@t.page 'language'/></label>
+                    <select class="combox" name="lang">
+                        <option value><@t.page 'please_select'/></option>
+                        <@cms.languageList>
+                        <#list list as l>
+                            <option value="${l.id.code}"${(l.id.code=lang!)?then(' selected="true"','')?no_esc}>${(l.name)!}</option>
+                        </#list>
+                        </@cms.languageList>
+                    </select>
+                </li>
+                </#if>
             </ul>
             <div class="subBar">
                 <ul>
@@ -47,6 +60,9 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'name'/></th>
+                <#if 'true'=((siteAttribute.enable_multilingual)!)>
+                    <th width="150"><@t.page 'language'/></th>
+                </#if>
                 <th orderField="searchCount"><@t.page 'tag.search_count'/></th>
                 <th><@t.page 'display'/></th>
                 <th><@t.page 'log.operate_ip'/></th>
@@ -56,9 +72,18 @@
         </thead>
         <tbody>
             <#list page.list as a>
+                <#if a.lang?has_content>
+                    <@t.merge 'languages' a.lang/>
+                </#if>
+            </#list>
+            <@cms.language codes=t.languages!><#assign langMap=map!/></@cms.language>
+            <#list page.list as a>
             <tr>
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td class="exclude-translate"><a href="cmsContent/search.html?word=${a.name}" target="navTab" rel="cmsContent/search" title="<@t.page 'content.search'/>">${(a.name)!}</a></td>
+                <#if 'true'=((siteAttribute.enable_multilingual)!)>
+                    <td class="exclude-translate">${(langMap[a.lang!siteAttribute.default_language].name)!}</td>
+                </#if>
                 <td>${a.searchCount!}</td>
                 <td><span class="statusText ${a.hidden?then('red','green')}">${t.pageMessage(a.hidden?then('hidden','show'))}</span></td>
                 <td>

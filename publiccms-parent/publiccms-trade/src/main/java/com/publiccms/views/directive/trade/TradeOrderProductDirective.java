@@ -40,7 +40,7 @@ import com.publiccms.common.handler.RenderHandler;
  * 
  * <pre>
  &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/trade/orderProduct?id=1&amp;appToken=接口访问授权Token', function(data){    
+  fetch('${site.dynamicPath}api/directive/trade/orderProduct?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res => res.json()).then(data=>{    
     console.log(data.quantity);
   });
   &lt;/script&gt;

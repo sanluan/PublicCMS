@@ -13,6 +13,7 @@ import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverters;
 import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.request.async.CallableProcessingInterceptor;
@@ -47,6 +48,7 @@ import jakarta.annotation.Resource;
  */
 @Configuration
 @EnableWebMvc
+@EnableAsync
 @ComponentScan(basePackages = "com.publiccms.controller.web", useDefaultFilters = false, includeFilters = {
         @ComponentScan.Filter(value = { Controller.class }) }, nameGenerator = FullBeanNameGenerator.class)
 public class WebConfig implements WebMvcConfigurer {

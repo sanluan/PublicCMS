@@ -23,6 +23,7 @@ import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.cms.CmsCategoryLang;
 import com.publiccms.entities.cms.CmsCategoryLangId;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 import com.publiccms.logic.service.cms.CmsCategoryLangService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
@@ -34,11 +35,15 @@ import freemarker.template.TemplateException;
  *
  * categoryList 分类列表查询指令
  * <p>
+ * 上下文变量
+ * <ul>
+ * <li><code>lang</code>:语言
+ * </ul>
+ * <p>
  * 参数列表
  * <ul>
  * <li><code>parentId</code>:父分类id
  * <li><code>typeId</code>:分类类型id
- * <li><code>lang</code>:语言
  * <li><code>absoluteURL</code>:url处理为绝对路径, 默认为<code> true</code>
  * <li><code>queryAll</code>:查询全部,【true,false】,parentId为空时有效
  * <li><code>advanced</code>:开启高级选项, 默认为<code>false</code>
@@ -58,12 +63,13 @@ import freemarker.template.TemplateException;
  * <p>
  * 使用示例
  * <p>
- * &lt;@cms.categoryList pageSize=10&gt;&lt;#list page.list as
+ * &lt;#assign lang="cn"/&gt; &lt;@cms.categoryList pageSize=10&gt;&lt;#list
+ * page.list as
  * a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryList&gt;
  *
  * <pre>
    &lt;script&gt;
-    $.getJSON('${site.dynamicPath}api/directive/cms/categoryList?pageSize=10', function(data){
+    fetch('${site.dynamicPath}api/directive/cms/categoryList?pageSize=10',{"headers":{"lang":"cn"}}).then(res => res.json()).then(data=>{
       console.log(data.page.totalCount);
     });
     &lt;/script&gt;
@@ -74,6 +80,8 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
 
     @Resource
     private CmsCategoryLangService langService;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
@@ -99,7 +107,7 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) page.getList();
         if (null != list) {
-            String lang = handler.getString("lang");
+            String lang = handler.getStringAttribute("lang");
             boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             Integer[] ids = list.stream().map(CmsCategory::getId).toArray(Integer[]::new);
             Map<Integer, CmsCategoryAttribute> attributeMap = containsAttribute
@@ -112,12 +120,12 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
             }
             Map<Integer, CmsCategoryLang> langMap = CommonUtils.listToMap(langService.getEntitys(langIds),
                     k -> k.getId().getCategoryId());
-
+            String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
             Consumer<CmsCategory> consumer = entity -> {
                 CmsCategoryLang langEntity = null;
                 if (CommonUtils.notEmpty(lang) && !lang.equalsIgnoreCase(entity.getLang())) {
                     langEntity = langMap.get(entity.getId());
-                    CmsLangUtils.initLang(entity, langEntity);
+                    CmsLangUtils.initLang(entity, defaultLang, langEntity);
                 }
 
                 if (absoluteURL) {

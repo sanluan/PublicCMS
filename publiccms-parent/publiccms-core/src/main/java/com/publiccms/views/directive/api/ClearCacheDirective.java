@@ -19,7 +19,7 @@ import freemarker.template.TemplateException;
  * <p>使用示例
  * <pre>
   &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/clearCache&amp;appToken=接口访问授权Token', function(data){
+   fetch('${site.dynamicPath}api/clearCache',{"headers":{"appToken":"接口访问授权Token"}}).then(res => res.json()).then(data=>{
      console.log("ok");
    });
    &lt;/script&gt;

@@ -1,5 +1,5 @@
 <@tools.placeMetadata path=path><#assign metadata=object/></@tools.placeMetadata>
-<@cms.placeList path=path lang=lang advanced=true status=status userId=userId startPublishDate=startPublishDate endPublishDate=endPublishDate
+<@cms.placeList path=path advanced=true status=status userId=userId startPublishDate=startPublishDate endPublishDate=endPublishDate
     orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader card">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -30,7 +30,7 @@
                     <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}"/>
                     <a class="inputDateButton" href="javascript:void(0);"></a>
                 </li>
-                <#if 'true'=((siteAttribute.enable_multilingual)!) && ((metadata.enableMultilingual)!false)>
+                <#if 'true'=((siteAttribute.enable_multilingual)!) && ((metadata.enablePlaceMultilingual)!false)>
                 <li>
                     <label><@t.page 'language'/></label>
                     <select class="combox" name="lang">
@@ -93,7 +93,7 @@
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30"><@t.page 'id'/></th>
                 <th width="150"><@t.page 'title'/></th>
-                <#if 'true'=((siteAttribute.enable_multilingual)!) && ((metadata.enableMultilingual)!false)>
+                <#if 'true'=((siteAttribute.enable_multilingual)!) && ((metadata.enablePlaceMultilingual)!false)>
                     <th width="150"><@t.page 'language'/></th>
                 </#if>
                 <th width="70" orderField="publishDate"><@t.page 'publish_date'/></th>
@@ -145,8 +145,8 @@
                         </h3>
                     </div>
                 </td>
-                <#if 'true'=((siteAttribute.enable_multilingual)!) && ((metadata.enableMultilingual)!false)>
-                    <td>${(langMap[a.lang!siteAttribute.default_language].name)!}</td>
+                <#if 'true'=((siteAttribute.enable_multilingual)!) && ((metadata.enablePlaceMultilingual)!false)>
+                    <td class="exclude-translate">${(langMap[a.lang!siteAttribute.default_language].name)!}</td>
                 </#if>
                 <td>${a.publishDate}</td>
                 <td>${a.expiryDate!}</td>

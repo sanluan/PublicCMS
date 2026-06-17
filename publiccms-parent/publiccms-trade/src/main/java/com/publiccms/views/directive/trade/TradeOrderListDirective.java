@@ -44,7 +44,7 @@ import com.publiccms.common.handler.PageHandler;
  * 
  * <pre>
 &lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/trade/orderList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id', function(data){    
+fetch('${site.dynamicPath}api/directive/trade/orderList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id').then(res => res.json()).then(data=>{    
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;

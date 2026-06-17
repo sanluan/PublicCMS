@@ -18,6 +18,7 @@ import com.publiccms.entities.cms.CmsContentLang;
 import com.publiccms.entities.cms.CmsContentLangId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ContentConfigComponent;
+import com.publiccms.logic.component.config.SiteAttributeComponent;
 import com.publiccms.logic.component.site.DirectiveComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -52,6 +53,8 @@ public class CmsContentPreviewAdminController {
     private MetadataComponent metadataComponent;
     @Resource
     private TemplateComponent templateComponent;
+    @Resource
+    protected SiteAttributeComponent siteAttributeComponent;
 
     /**
      * @param site
@@ -68,7 +71,8 @@ public class CmsContentPreviewAdminController {
         if (null != entity && site.getId() == entity.getSiteId()) {
             CmsContentAttribute attribute = attributeService.getEntity(id);
             CmsContentLang contentLang = contentLangService.getEntity(new CmsContentLangId(id, lang));
-            if (CmsLangUtils.initLang(entity, entity.getLang(), contentLang)) {
+            String defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
+            if (CmsLangUtils.initLang(entity, defaultLang, contentLang)) {
                 CmsLangUtils.initLang(attribute, contentLang);
             }
             try {

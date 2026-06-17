@@ -14,7 +14,7 @@
     </thead>
     <tbody>
 <#if contentId?has_content>
-    <@cms.contentFileList contentId=contentId lang=lang fileTypes=fileTypes absoluteURL=false pageSize=500>
+    <@cms.contentFileList contentId=contentId fileTypes=fileTypes absoluteURL=false pageSize=500>
         <#list page.list as file>
             <tr>
                 <td>
