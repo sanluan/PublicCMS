@@ -144,10 +144,11 @@
 <@cms.model id=content.modelId><#assign model=object/></@cms.model>
 <#if !category?has_content><@cms.category id=content.categoryId><#assign category=object/></@cms.category></#if>
 <#macro bread category>
-    <#if category.parentId?has_content>
-        <@cms.category id=category.parentId>
-            <@bread object/>
-            <a href="${object.url!}" target="_blank">${object.name}</a> &gt;
+    <#if category.parentIds?has_content>
+        <@cms.category ids=category.parentIds>
+            <#list map as k,category>
+                <a href="${category.url!}" target="_blank">${category.name}</a> &gt;
+            </#list>
         </@cms.category>
     </#if>
 </#macro>

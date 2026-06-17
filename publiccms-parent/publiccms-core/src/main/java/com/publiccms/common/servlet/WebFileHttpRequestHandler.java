@@ -16,7 +16,10 @@ import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.interceptor.SiteInterceptor;
+import com.publiccms.logic.component.config.CorsConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 
 import jakarta.servlet.ServletException;
@@ -30,18 +33,28 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
     private SiteComponent siteComponent;
+    private CorsConfigComponent corsConfigComponent;
     private static Resource favicon = new ClassPathResource("favicon.ico");
 
     /**
      * @param siteComponent
+     * @param corsConfigComponent
      */
-    public WebFileHttpRequestHandler(SiteComponent siteComponent) {
+    public WebFileHttpRequestHandler(SiteComponent siteComponent, CorsConfigComponent corsConfigComponent) {
         this.siteComponent = siteComponent;
+        this.corsConfigComponent = corsConfigComponent;
     }
 
     @Override
     public void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setHeader(CommonConstants.getXPowered(), CmsVersion.BASE_VERSION);
+        String path = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
+        if (path.endsWith(Constants.SEPARATOR)) {
+            path = CommonUtils.joinString(path, CommonConstants.getDefaultPage());
+        }
+        SysSite site = siteComponent.getSite(request.getServerName(), path);
+        ControllerUtils.setSiteToAttribute(request, site);
+        SiteInterceptor.corsProcessor.processRequest(corsConfigComponent.getConfig(site), request, response);
         try {
             super.handleRequest(request, response);
         } catch (NoResourceFoundException e) {
@@ -53,10 +66,10 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
     protected Resource getResource(HttpServletRequest request) throws IOException {
         String path = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
         if (CmsVersion.isInitialized()) {
+            SysSite site = ControllerUtils.getSiteFromAttribute(request);
             if (path.endsWith(Constants.SEPARATOR)) {
                 path = CommonUtils.joinString(path, CommonConstants.getDefaultPage());
             }
-            SysSite site = siteComponent.getSite(request.getServerName(), path);
             path = siteComponent.getPath(site, path);
             Resource resource = new FileSystemResource(siteComponent.getWebFilePath(site.getId(), path));
             if (resource.exists() && (resource.isReadable())) {

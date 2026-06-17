@@ -18,13 +18,14 @@
             <div class="workflow">
                 <div class="text-center step processed">
                     <i class="bi bi-record-circle"></i><br><@t.page "start"/>
+                    <br>${(a.createDate)!}
                 </div>
                 <@sys.workflowProcessHistoryList processId=id pageSize=100>
                     <#list page.list as a>
                         <@t.merge 'stepIds' a.stepId!/>
                         <@t.merge 'userIds' a.userId!/>
                     </#list>
-                    
+
                     <@sys.workflowStep ids=t.stepIds!><#assign stepMap=map!/></@sys.workflowStep>
                     <@sys.user ids=t.userIds!><#assign userMap=map!/></@sys.user>
                     <#assign sort=-1/>
@@ -33,6 +34,8 @@
                             ${(stepMap[a.stepId?string].name)!t.pageMessage('process.deleted')}
                             <br>
                             ${(userMap[a.userId?string].nickname)!}:${a.reason!}
+                            <br>
+                            ${(a.createDate)!}
                         </div>
                         <#assign sort=(stepMap[a.stepId?string].sort)!-1/>
                     </#list>
@@ -55,6 +58,7 @@
                 </@sys.workflowStepList>
                 <div class="text-center step<#if (a.closed)!false> current</#if>">
                     <i class="bi bi-stop-circle"></i><br><@t.page "end"/>
+                    <#if (a.closed)!false><br>${(a.updateDate)!}</#if>
                 </div>
             </div>
         </fieldset>
