@@ -43,7 +43,7 @@ public class SysModuleLangDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
         String moduleId = handler.getString("moduleId");
-        String lang = handler.getStringAttribute("lang");
+        String lang = handler.getString("lang");
         if (CommonUtils.notEmpty(moduleId) && null != lang) {
             SysModuleLang entity = service.getEntity(new SysModuleLangId(moduleId, lang));
             if (null != entity) {
