@@ -132,3 +132,5 @@ ALTER TABLE `cms_word`
 DELETE FROM sys_module WHERE id in ('myself_content_view','myself_process_view');
 -- 2026-06-08 --
 ALTER TABLE `cms_category` ADD COLUMN `parent_ids` text NULL COMMENT '所有父分类' AFTER `type_id`;
+-- 2026-07-03 --
+ UPDATE sys_module SET authorized_url = 'sysUser/update,myself/otpsettings,otpSetting/bind,otpSetting/check,otpSetting/getRegisterURI,otpSetting/unbind,webauthn/attestation/options,webauthn/attestation/result,webauthn/getCredentials,webauthn/deleteCredential' WHERE id = 'myself_profile';
