@@ -113,7 +113,7 @@ public class CmsContentLangAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
 
-        service.save(site, contentId, content, contentLangListParameters, cmsModel, category.getExtendId());
+        service.save(site, admin.getId(), content, contentLangListParameters, cmsModel, category.getExtendId());
 
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                 "save.contentLang", RequestUtils.getIpAddress(request), CommonUtils.now(),
