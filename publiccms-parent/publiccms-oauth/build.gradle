@@ -9,7 +9,7 @@ dependencies {
     implementation project(':publiccms-core')
     
     // https://mvnrepository.com/artifact/com.github.bastiaanjansen/otp-java
-    implementation "com.github.bastiaanjansen:otp-java:2.1.0"
+    implementation "com.github.bastiaanjansen:otp-java:2.2.0"
     
     compileOnly "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
     compileOnly "javax.servlet:javax.servlet-api:${servletVersion}"
