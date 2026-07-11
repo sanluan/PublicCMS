@@ -19,14 +19,14 @@
         <dependency>
             <groupId>com.github.bastiaanjansen</groupId>
             <artifactId>otp-java</artifactId>
-            <version>2.1.0</version>
+            <version>2.2.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.webauthn4j/webauthn4j-core -->
         <!-- https://github.com/webauthn4j/webauthn4j -->
         <dependency>
             <groupId>com.webauthn4j</groupId>
             <artifactId>webauthn4j-core</artifactId>
-            <version>0.31.7.RELEASE</version>
+            <version>0.31.8.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.github.therapi</groupId>

@@ -37,23 +37,23 @@ subprojects {
         // https://spring.io/projects/spring-boot
         springBootVersion = "4.1.0"
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-        junitVersion = "6.1.0"
+        junitVersion = "6.1.1"
         // http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "7.4.1.Final"
+        hibernateVersion = "7.4.4.Final"
         // http://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm
-        hibernateToolsVersion = "7.3.8.Final"
+        hibernateToolsVersion = "7.3.11.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
         hibernateSearchVersion = "8.4.0.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
-        hibernateValidatorVersion = "9.1.0.Final"
+        hibernateValidatorVersion = "9.1.2.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
         ehcacheVersion = "3.12.0"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
         mybatisVersion = "3.5.19"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
-        mybatisSpringVersion = "4.0.0"
+        mybatisSpringVersion = "4.1.0"
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
         mybatisGenerator = "2.0.0"
         // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
@@ -61,7 +61,7 @@ subprojects {
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "2.0.0"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "3.2.0"
+        jacksonVersion = "3.2.1"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.34"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-core
@@ -69,7 +69,7 @@ subprojects {
         luceneVersion = "9.12.3"
         // http://mvnrepository.com/artifact/redis.clients/jedis
         // https://github.com/redis/jedis
-        jedisVersion = "7.5.2"
+        jedisVersion = "7.5.3"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         // https://github.com/quartz-scheduler/quartz/releases
         quartzVersion = "2.5.2"
@@ -102,7 +102,7 @@ subprojects {
         // https://mvnrepository.com/artifact/org.jboss.logging/jboss-logging
         jbossLoggingVersion = "3.6.3.Final"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-        log4jVersion = "2.26.0"
+        log4jVersion = "2.26.1"
         // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
         extractorVersion = "2.20.0"
         // https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio
@@ -128,6 +128,7 @@ subprojects {
         // https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail
         mailVersion = "2.0.2"
         // https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
+        // 2 for ehcache
         jaxbVersion = "2.3.9"
     }
     sourceCompatibility = 17

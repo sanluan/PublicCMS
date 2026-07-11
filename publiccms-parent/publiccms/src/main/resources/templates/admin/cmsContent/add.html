@@ -246,17 +246,18 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
             </#if>
             </div>
             <#assign copy=false/>
+            <#assign lang=(a.lang)!/>
             <#if a?has_content && !id?has_content><#assign copy=true/></#if>
             <#if model.hasImages||model.hasFiles>
                 <#include "../include_page/contentFiles.html"/>
                 <#if model.hasImages>
                 <div class="pageFormContent" layoutH>
-                    <@contentFiles true id!copyId copy/>
+                    <@contentFiles true id!copyId copy lang/>
                 </div>
                 </#if>
                 <#if model.hasFiles>
                 <div class="pageFormContent" layoutH>
-                    <@contentFiles false id!copyId copy/>
+                    <@contentFiles false id!copyId copy lang/>
                 </div>
                 </#if>
             </#if>
