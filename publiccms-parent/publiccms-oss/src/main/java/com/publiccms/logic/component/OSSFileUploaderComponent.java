@@ -1,5 +1,6 @@
 package com.publiccms.logic.component;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -157,7 +158,8 @@ public class OSSFileUploaderComponent implements FileUploader {
                 .bucket(config.get(privatefile ? OSSComponent.CONFIG_PRIVATE_BUCKET : OSSComponent.CONFIG_BUCKET)).key(filepath)
                 .build();
         S3Client client = getClient(siteId, privatefile, config);
-        try (InputStream inputStream = file.getInputStream()) {
+        try (InputStream fileInputStream = file.getInputStream();
+                BufferedInputStream inputStream = new BufferedInputStream(fileInputStream)) {
             client.putObject(objectRequest, RequestBody.fromInputStream(inputStream, file.getSize()));
         }
         FileUploadResult uploadResult = new FileUploadResult();

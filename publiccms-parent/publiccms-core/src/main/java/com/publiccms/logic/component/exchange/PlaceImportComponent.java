@@ -1,6 +1,7 @@
 package com.publiccms.logic.component.exchange;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
@@ -66,7 +67,8 @@ public class PlaceImportComponent {
                 CommonUtils.joinString(TemplateComponent.INCLUDE_DIRECTORY, path));
         CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filepath);
         List<String> fieldList = metadata.getFieldList();
-        try (Workbook wb = WorkbookFactory.create(file.getInputStream())) {
+        try (InputStream fileInputStream = file.getInputStream();
+                Workbook wb = WorkbookFactory.create(fileInputStream)) {
             Sheet sheet = wb.getSheetAt(0);
             Row row = null;
             int lastRowNum = sheet.getLastRowNum();
