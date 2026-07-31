@@ -89,10 +89,16 @@ public class TemplateCacheComponent implements Cache {
         String defaultLang = null;
         if (siteAttributeComponent.enableMultilingual(site.getId())) {
             defaultLang = siteAttributeComponent.getDefaultLanguage(site.getId());
-            Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesLanguage());
-            if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
-                lang = userCookie.getValue();
+            String langAttribute = (String) request.getAttribute(CommonConstants.getCookiesLanguage());
+            if (null != langAttribute) {
+                lang = langAttribute;
+            } else {
+                Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesLanguage());
+                if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
+                    lang = userCookie.getValue();
+                }
             }
+
             if (CommonUtils.empty(lang)) {
                 lang = defaultLang;
             }
