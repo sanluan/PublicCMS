@@ -2,9 +2,6 @@ package com.publiccms.views.method.tools;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
@@ -19,6 +16,8 @@ import com.publiccms.logic.component.site.FileUploadComponent;
 import freemarker.core.Environment;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *
