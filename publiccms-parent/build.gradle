@@ -89,7 +89,7 @@ subprojects {
         // 5,6,7 for Java 11+
         hikariCPVersion = "4.0.3"
         // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
-        mysqlVersion = "9.7.0"
+        mysqlVersion = "26.7.0"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.14"
