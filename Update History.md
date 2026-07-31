@@ -1,3 +1,62 @@
+## develop
+
+new feature:
+1. add multilingual support
+1. add content preview
+1. add content source management
+1. add parentIds to category
+1. add cors config to webfile
+1. add index recreate to rebuildSearchText
+1. add readonly model to editor
+1. add model virify,config virify
+1. add orderField to visitItemList
+1. add ctrl + s to save in ueditor
+1. add drag-and-drop sorting for extended fields
+1. add content preview
+
+bug fixed:
+
+1. content export
+1. recycle directory
+1. update category after workflow delete
+1. remove disabled for workflow batch use
+
+## 202506.e
+
+bugfix:
+
+1. batch use workflow
+1. otp login
+1. safe http request in template
+1. safe address save and delete
+1. safe script exec
+1. remove unsafe application in template
+1. remove unsafe tempalte result directive
+
+## 202506.d
+
+1. wrong parameter order
+1. bugfix:highLighter search when text is empty
+1. sitefile safe upload
+
+## 202506.c
+
+1. add quote flag
+1. add parentId for category catch copy
+1. bugfix:ids search sort
+1. bugfix:category list refresh after save
+1. bugfix:tinymce upload error
+1. bugfix:multiple site change
+1. remove lock after captcha error
+1. update ueditor
+
+## 202506.b
+
+1. bugfix:workflow
+1. bugfix:multi-node cache updates
+1. add resize to image-editor
+1. bugfix:page permissions
+
 ## 202506.a
 
 new feature:
