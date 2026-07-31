@@ -3,9 +3,10 @@ ADD publiccms-parent/publiccms/target/publiccms.war /opt/publiccms.war
 ADD data /data
 ENV PORT=8080
 ENV CONTEXTPATH=""
+ENV INITPROTO=false
 ENV FILEPATH="/data/publiccms"
 ENV TZ=Asia/Shanghai
 VOLUME $FILEPATH
-CMD ["-Dcms.port=$PORT -Dcms.contextPath=$CONTEXTPATH -Dcms.filePath=$FILEPATH"]
+CMD ["-Dcms.port=$PORT -Dcms.initProto=$INITPROTO -Dcms.contextPath=$CONTEXTPATH -Dcms.filePath=$FILEPATH"]
 ENTRYPOINT ["java","-jar","/opt/publiccms.war"]
 EXPOSE $PORT
