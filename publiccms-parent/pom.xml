@@ -30,17 +30,17 @@
         <!-- https://spring.io/projects/spring-boot -->
         <version.springBoot>4.1.0</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
-        <version.juint>6.1.1</version.juint>
+        <version.juint>6.1.2</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>7.4.4.Final</version.hibernate>
+        <version.hibernate>7.4.5.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm -->
-        <version.hibernateTools>7.3.11.Final</version.hibernateTools>
+        <version.hibernateTools>7.3.12.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
         <version.hibernateSearch>8.4.0.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
-        <version.hibernateValidator>9.1.2.Final</version.hibernateValidator>
+        <version.hibernateValidator>9.1.3.Final</version.hibernateValidator>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
         <version.mybatis>3.5.19</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
@@ -69,7 +69,7 @@
         <!-- https://github.com/brettwooldridge/HikariCP -->
         <version.hikariCP>7.1.0</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
-        <version.mysql>9.7.0</version.mysql>
+        <version.mysql>26.7.0</version.mysql>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.14</version.httpclient>
