@@ -317,7 +317,7 @@ public class TemplateComponent implements Cache, AdminContextPath {
                 if (null != lang) {
                     CmsCategoryLang categoryLang = categoryLangService
                             .getEntity(new CmsCategoryLangId(category.getId(), lang.getId().getLang()));
-                    CmsLangUtils.initLang(category, entity.getLang(), defaultLang, categoryLang);
+                    CmsLangUtils.initLang(category, category.getLang(), defaultLang, categoryLang);
                 }
                 if (null == categoryModel) {
                     categoryModel = categoryModelService

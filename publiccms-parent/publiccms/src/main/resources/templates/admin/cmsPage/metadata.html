@@ -21,8 +21,8 @@
                     <dt><@t.page 'static_page'/>:</dt>
                     <dd>
                         <a class="button" href="cmsTemplate/publish?path=${path}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'publish_page'/></a>
-                        <a class="button" href="cmsDiy/preview.html?url=${getLangPath(lang)+metadata.publishPath)?url}" target="navTab" rel="cmsDiy/preview" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
-                        <a class="button" href="${site.sitePath+(getLangPath(lang)+metadata.publishPath?url_path}" target="_blank"><i class="icon-external-link"></i></a>
+                        <a class="button" href="cmsDiy/preview.html?url=${(getLangPath(lang)+metadata.publishPath)?url}" target="navTab" rel="cmsDiy/preview" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
+                        <a class="button" href="${getLangPath(lang)+metadata.publishPath?url_path}" target="_blank"><i class="icon-external-link"></i></a>
                     </dd>
                 </dl>
             </#if>
