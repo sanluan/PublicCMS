@@ -43,14 +43,6 @@ public class CmsLanguage implements java.io.Serializable {
     @Length(max = 255)
     private String cover;
     /**
-     * htmlLang
-     * <p>
-     * 页面语言
-     */
-    @GeneratorColumn(title = "页面语言")
-    @Length(max = 20)
-    private String htmlLang;
-    /**
      * sort
      * <p>
      * 排序
@@ -61,11 +53,10 @@ public class CmsLanguage implements java.io.Serializable {
     public CmsLanguage() {
     }
 
-    public CmsLanguage(CmsLanguageId id, String name, String cover, String htmlLang, int sort) {
+    public CmsLanguage(CmsLanguageId id, String name, String cover, int sort) {
         this.id = id;
         this.name = name;
         this.cover = cover;
-        this.htmlLang = htmlLang;
         this.sort = sort;
     }
 
@@ -96,15 +87,6 @@ public class CmsLanguage implements java.io.Serializable {
 
     public void setCover(String cover) {
         this.cover = cover;
-    }
-
-    @Column(name = "html_lang", length = 255)
-    public String getHtmlLang() {
-        return this.htmlLang;
-    }
-
-    public void setHtmlLang(String htmlLang) {
-        this.htmlLang = htmlLang;
     }
 
     @Column(name = "sort", nullable = false)

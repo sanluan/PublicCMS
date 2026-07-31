@@ -362,7 +362,6 @@ CREATE TABLE `cms_language` (
   `site_id` smallint NOT NULL COMMENT '站点',
   `name` varchar(100) NOT NULL COMMENT '名称',
   `cover` varchar(255) DEFAULT NULL COMMENT '封面图',
-  `html_lang` varchar(20) DEFAULT NULL COMMENT '页面语言',
   `sort` int NOT NULL DEFAULT '0' COMMENT '顺序',
   PRIMARY KEY (`code`,`site_id`)
 ) COMMENT='语言';

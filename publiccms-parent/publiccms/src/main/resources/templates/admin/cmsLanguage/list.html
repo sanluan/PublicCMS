@@ -29,7 +29,6 @@
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'code'/></th>
                 <th><@t.page 'name'/></th>
-                <th><@t.page 'language.html'/></th>
                 <th><@t.page 'sort'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
@@ -49,7 +48,6 @@
                         ${a.name!}
                     </div>
                 </td>
-                <td class="exclude-translate">${a.htmlLang!}</td>
                 <td>${a.sort!}</td>
                 <td class="wrap">
                     <a href="cmsLanguage/add.html?id=${a.id.code}" class="edit btnText blue" target="navTab" rel="cmsLanguage/add"><i class="icon-edit"></i><@t.page 'button.edit'/></a>
