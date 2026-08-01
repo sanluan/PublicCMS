@@ -134,3 +134,8 @@ CREATE TABLE `cms_language` (
   `sort` int NOT NULL DEFAULT '0' COMMENT '顺序',
   PRIMARY KEY (`code`,`site_id`)
 ) COMMENT='语言';
+-- 2026-08-01 --
+ALTER TABLE `cms_word` 
+  DROP INDEX `cms_word_hidden`,
+  ADD INDEX `cms_word_hidden`(`site_id`, `hidden`, `search_count`),
+  ADD INDEX `cms_word_lang`(`site_id`, `lang`, `hidden`, `search_count`);
