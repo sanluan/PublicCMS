@@ -279,7 +279,8 @@ public class VisitExportComponent {
             for (VisitItem entity : entityList) {
                 row = sheet.createRow(i++);
                 j = 0;
-                row.createCell(j++).setCellValue(dateFormat.format(entity.getId().getVisitDate()));
+                row.createCell(j++).setCellValue(
+                        null == entity.getId().getVisitDate() ? null : dateFormat.format(entity.getId().getVisitDate()));
                 row.createCell(j++).setCellValue(entity.getId().getItemType());
                 row.createCell(j++).setCellValue(entity.getId().getItemId());
                 if (CommonUtils.notEmpty(entity.getId().getItemType()) && CommonUtils.notEmpty(entity.getId().getItemId())) {
