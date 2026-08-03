@@ -17,6 +17,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -310,6 +311,7 @@ public class ContentExportComponent {
                 j = 0;
                 row.createCell(j++).setCellValue(entity.getId().toString());
                 row.createCell(j++).setCellValue(entity.getTitle());
+                CmsUrlUtils.initContentUrl(site, entity);
                 row.createCell(j++).setCellValue(entity.getUrl());
                 if (null != fieldList && fieldList.contains("author")) {
                     row.createCell(j++).setCellValue(entity.getAuthor());
