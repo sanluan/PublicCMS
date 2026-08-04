@@ -616,7 +616,8 @@ CREATE TABLE `cms_word` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `cms_word_name` (`site_id`, `name`),
-  KEY `cms_word_hidden` (`site_id`,`lang`, `hidden`)
+  KEY `cms_word_hidden`(`site_id`, `hidden`, `search_count`),
+  KEY `cms_word_lang`(`site_id`, `lang`, `hidden`, `search_count`)
 ) COMMENT='搜索词';
 
 -- ----------------------------

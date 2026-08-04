@@ -10,7 +10,7 @@
 <@cms.category id=categoryId!><#assign category=object/></@cms.category>
 <@cms.model id=modelId!><#assign model=object/></@cms.model>
 <@sys.dept id=admin.deptId!><#assign dept=object/></@sys.dept>
-<@sys.authorized roleIds=admin.roles urls='cmsContent/check，cmsContent/previewBeforeSave,cmsContent/uncheck_list'><#assign authorizedMap=map/></@sys.authorized>
+<@sys.authorized roleIds=admin.roles urls='cmsContent/check,cmsContent/previewBeforeSave,cmsContent/uncheck_list'><#assign authorizedMap=map/></@sys.authorized>
 <form method="post" autocomplete="off" action="cmsContent/save?<#if !id?has_content && 'true'=(siteAttribute.enable_multilingual)!>callbackType=forward&forwardUrl=cmsContent/addLang.html<#else>callbackType=closeCurrent&navTabId=cmsContent/list</#if>" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}"/>
     <input name="parentId" type="hidden" value="${parentId!}"/>

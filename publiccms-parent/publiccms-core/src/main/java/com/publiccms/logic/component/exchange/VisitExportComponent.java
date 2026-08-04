@@ -1,9 +1,12 @@
 package com.publiccms.logic.component.exchange;
 
+import java.io.Serializable;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -11,16 +14,21 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CmsUrlUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.view.ExcelView;
+import com.publiccms.entities.cms.CmsCategory;
+import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.visit.VisitDay;
 import com.publiccms.entities.visit.VisitHistory;
 import com.publiccms.entities.visit.VisitItem;
 import com.publiccms.entities.visit.VisitSession;
 import com.publiccms.entities.visit.VisitUrl;
+import com.publiccms.logic.service.cms.CmsCategoryService;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.visit.VisitDayService;
 import com.publiccms.logic.service.visit.VisitHistoryService;
 import com.publiccms.logic.service.visit.VisitItemService;
@@ -41,6 +49,10 @@ public class VisitExportComponent {
     private VisitDayService dayService;
     @Resource
     private VisitSessionService sessionService;
+    @Resource
+    private CmsContentService contentService;
+    @Resource
+    private CmsCategoryService categoryService;
     @Resource
     private VisitUrlService urlService;
     @Resource
@@ -68,8 +80,7 @@ public class VisitExportComponent {
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.referer"));
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.screen"));
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.item"));
+            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.item"));
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.ip"));
             row.createCell(j++)
@@ -182,7 +193,7 @@ public class VisitExportComponent {
         @SuppressWarnings("unchecked")
         List<VisitUrl> entityList = (List<VisitUrl>) page.getList();
         ExcelView view = new ExcelView(workbook -> {
-            Sheet sheet = workbook.createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "url"));
+            Sheet sheet = workbook.createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"));
             sheet.setDefaultColumnWidth(20);
             int i = 0;
             int j = 0;
@@ -204,20 +215,20 @@ public class VisitExportComponent {
             }
         });
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
-        view.setFilename(CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "url"),
+        view.setFilename(CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"),
                 dateFormat.format(new Date())));
         return view;
     }
 
     public ExcelView exportItem(SysSite site, String itemType, String itemId, String orderField, Date startVisitDate,
-            Date endVisitDate, boolean dayAnalytics, Locale locale) {
-        PageHandler page = itemService.getPage(site.getId(), startVisitDate, endVisitDate, dayAnalytics, itemType, itemId,
-                orderField, null, PageHandler.MAX_PAGE_SIZE);
+            Date endVisitDate, Boolean dayAnalytics, Locale locale) {
+        PageHandler page = itemService.getPage(site.getId(), startVisitDate, endVisitDate,
+                null == dayAnalytics ? true : dayAnalytics, itemType, itemId, orderField, null, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<VisitItem> entityList = (List<VisitItem>) page.getList();
         ExcelView view = new ExcelView(workbook -> {
             Sheet sheet = workbook
-                    .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.item"));
+                    .createSheet(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.item"));
             sheet.setDefaultColumnWidth(20);
             int i = 0;
             int j = 0;
@@ -226,18 +237,71 @@ public class VisitExportComponent {
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.visit_date"));
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.item_type"));
-            row.createCell(j++)
-                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.item"));
+            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.item"));
+            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title"));
+            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"));
             row.createCell(j++).setCellValue("PV");
             row.createCell(j++).setCellValue("UV");
             row.createCell(j++).setCellValue("IP Views");
             DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING);
+            List<Serializable> categoryIds = new ArrayList<>();
+            List<Serializable> contentIds = new ArrayList<>();
+
+            for (VisitItem entity : entityList) {
+                if (CommonUtils.notEmpty(entity.getId().getItemType()) && CommonUtils.notEmpty(entity.getId().getItemId())) {
+                    if ("category".equalsIgnoreCase(entity.getId().getItemType())) {
+                        try {
+                            categoryIds.add(Integer.parseInt(entity.getId().getItemId()));
+                        } catch (NumberFormatException e) {
+                        }
+                    } else if ("content".equalsIgnoreCase(entity.getId().getItemType())) {
+                        try {
+                            contentIds.add(Long.parseLong(entity.getId().getItemId()));
+                        } catch (NumberFormatException e) {
+                        }
+                    }
+                }
+            }
+            List<CmsCategory> categoryList = categoryService.getEntitys(categoryIds);
+            List<CmsContent> contentList = contentService.getEntitys(contentIds);
+            Map<String, CmsCategory> categoryMap = CommonUtils.listToMapSorted(categoryList, k -> k.getId().toString(),
+                    entity -> {
+                        CmsUrlUtils.initCategoryUrl(site, entity);
+                        return entity;
+                    }, categoryIds.toArray(new Serializable[categoryIds.size()]), e -> e.getId(),
+                    entity -> site.getId() == entity.getSiteId());
+            Map<String, CmsContent> contentMap = CommonUtils.listToMapSorted(contentList, k -> k.getId().toString(), entity -> {
+                CmsUrlUtils.initContentUrl(site, entity);
+                return entity;
+            }, contentIds.toArray(new Serializable[contentIds.size()]), e -> e.getId(),
+                    entity -> site.getId() == entity.getSiteId());
+
             for (VisitItem entity : entityList) {
                 row = sheet.createRow(i++);
                 j = 0;
-                row.createCell(j++).setCellValue(dateFormat.format(entity.getId().getVisitDate()));
+                row.createCell(j++).setCellValue(
+                        null == entity.getId().getVisitDate() ? null : dateFormat.format(entity.getId().getVisitDate()));
                 row.createCell(j++).setCellValue(entity.getId().getItemType());
                 row.createCell(j++).setCellValue(entity.getId().getItemId());
+                if (CommonUtils.notEmpty(entity.getId().getItemType()) && CommonUtils.notEmpty(entity.getId().getItemId())) {
+                    if ("category".equalsIgnoreCase(entity.getId().getItemType())
+                            && categoryMap.containsKey(entity.getId().getItemId())) {
+                        CmsCategory category = categoryMap.get(entity.getId().getItemId());
+                        row.createCell(j++).setCellValue(category.getName());
+                        row.createCell(j++).setCellValue(category.getUrl());
+                    } else if ("content".equalsIgnoreCase(entity.getId().getItemType())
+                            && contentMap.containsKey(entity.getId().getItemId())) {
+                        CmsContent content = contentMap.get(entity.getId().getItemId());
+                        row.createCell(j++).setCellValue(content.getTitle());
+                        row.createCell(j++).setCellValue(content.getUrl());
+                    } else {
+                        row.createCell(j++);
+                        row.createCell(j++);
+                    }
+                } else {
+                    row.createCell(j++);
+                    row.createCell(j++);
+                }
                 row.createCell(j++).setCellValue(entity.getPv());
                 row.createCell(j++).setCellValue(entity.getUv());
                 row.createCell(j++).setCellValue(entity.getIpviews());
@@ -245,7 +309,7 @@ public class VisitExportComponent {
         });
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.DOWNLOAD_FORMAT_STRING);
         view.setFilename(
-                CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.visit.item"),
+                CommonUtils.joinString(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.item"),
                         dateFormat.format(new Date())));
         return view;
     }
