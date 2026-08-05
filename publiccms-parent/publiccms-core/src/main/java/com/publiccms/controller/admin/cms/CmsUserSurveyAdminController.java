@@ -57,7 +57,9 @@ public class CmsUserSurveyAdminController {
             }
         }
         CmsUserSurvey userSurvey = service.updateScore(site.getId(), entity.getId(), socre);
-        questionService.updateScore(userQuestionParameters.getAnswerList());
+        if (null != userSurvey) {
+            questionService.updateScore(userSurvey.getId(), userQuestionParameters.getAnswerList());
+        }
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                 "update.cmsUserSurveyQuestion", RequestUtils.getIpAddress(request), CommonUtils.now(),
                 JsonUtils.getString(userSurvey)));

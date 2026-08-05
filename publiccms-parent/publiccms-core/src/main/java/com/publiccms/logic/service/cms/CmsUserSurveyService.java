@@ -50,8 +50,9 @@ public class CmsUserSurveyService extends BaseService<CmsUserSurvey> {
         CmsUserSurvey entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setScore(score);
+            return entity;
         }
-        return entity;
+        return null;
     }
 
     @Resource

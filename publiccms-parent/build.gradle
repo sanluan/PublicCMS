@@ -42,7 +42,7 @@ subprojects {
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "7.4.5.Final"
         // http://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm
-        hibernateToolsVersion = "7.3.12.Final"
+        hibernateToolsVersion = "7.3.13.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
         hibernateSearchVersion = "8.4.0.Final"

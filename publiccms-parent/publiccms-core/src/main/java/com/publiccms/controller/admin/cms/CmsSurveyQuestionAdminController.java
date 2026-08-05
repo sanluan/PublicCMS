@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,14 +15,17 @@ import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.cms.CmsSurvey;
 import com.publiccms.entities.cms.CmsSurveyQuestion;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionItemService;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
+import com.publiccms.logic.service.cms.CmsSurveyService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.QuestionItem;
@@ -51,14 +55,21 @@ public class CmsSurveyQuestionAdminController {
      * @param entity
      * @param questionParameters
      * @param request
+     * @param model 
      * @return operate result
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsSurveyQuestion entity,
-            @ModelAttribute CmsSurveyQuestionParameters questionParameters, HttpServletRequest request) {
+            @ModelAttribute CmsSurveyQuestionParameters questionParameters, HttpServletRequest request, ModelMap model) {
         List<QuestionItem> itemList = questionParameters.getItemList();
         if (null != entity.getId()) {
+            CmsSurveyQuestion oldEntity = service.getEntity(entity.getId());
+            CmsSurvey oldSurvey = surveyService.getEntity(oldEntity.getSurveyId());
+            if (null == oldEntity
+                    || ControllerUtils.errorNotEquals("siteId", oldSurvey.getId(), oldEntity.getSurveyId(), model)) {
+                return CommonConstants.TEMPLATE_ERROR;
+            }
             entity = service.update(entity.getId(), entity, ignoreProperties);
             itemService.update(entity.getId(), itemList, itemIgnoreProperties);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
@@ -116,6 +127,8 @@ public class CmsSurveyQuestionAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
+    @Resource
+    private CmsSurveyService surveyService;
     @Resource
     private CmsSurveyQuestionService service;
     @Resource
