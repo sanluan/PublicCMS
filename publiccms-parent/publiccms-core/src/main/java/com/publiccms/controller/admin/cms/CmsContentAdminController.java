@@ -812,7 +812,7 @@ public class CmsContentAdminController {
         if (CommonUtils.notEmpty(categoryIds)) {
             CmsContent entity = service.getEntity(id);
             List<CmsCategory> categoryList = categoryService.getEntitys(categoryIds);
-            if (null != categoryList) {
+            if (null != categoryList && site.getId() == entity.getSiteId()) {
                 for (CmsCategory category : categoryList) {
                     Map<String, String> config = configDataComponent.getConfigData(category.getSiteId(),
                             SiteConfigComponent.CONFIG_CODE);
@@ -842,10 +842,10 @@ public class CmsContentAdminController {
                         }
                     }
                 }
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "copy.content", RequestUtils.getIpAddress(request), CommonUtils.now(),
+                        StringUtils.join(categoryIds, Constants.COMMA)));
             }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "copy.content", RequestUtils.getIpAddress(request), CommonUtils.now(),
-                    StringUtils.join(categoryIds, Constants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

@@ -135,7 +135,8 @@ public class SysDeptAdminController {
         entity.setRoles(arrayToCommaDelimitedString(roleIds));
         if (null != entity.getId()) {
             SysUser oldEntity = userService.getEntity(entity.getId());
-            if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
+                    || ControllerUtils.errorNotEquals("siteId", dept.getId(), oldEntity.getDeptId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             if (SysUserService.CONTENT_PERMISSIONS_ALL == entity.getContentPermissions()

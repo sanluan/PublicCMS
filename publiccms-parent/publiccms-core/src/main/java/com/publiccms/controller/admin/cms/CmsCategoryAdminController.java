@@ -112,7 +112,6 @@ public class CmsCategoryAdminController {
             if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            entity.setSiteId(oldEntity.getSiteId());
         }
         service.saveTagAndAttribute(site.getId(), site.getSitePath(), entity, oldEntity, admin.getId(), attribute,
                 modelComponent.getCategoryType(site.getId(), entity.getTypeId()), categoryParameters);
@@ -145,8 +144,15 @@ public class CmsCategoryAdminController {
             @ModelAttribute CmsCategoryListParameters categoryListParameters, HttpServletRequest request) {
         CmsCategory copy = service.getEntity(id);
         if (null != copy && site.getId() == copy.getSiteId() && CommonUtils.notEmpty(categoryListParameters.getCategoryList())) {
+            CmsCategory parent = null;
+            if (null != parentId) {
+                parent = service.getEntity(parentId);
+                if (null == parent || site.getId() == parent.getSiteId()) {
+                    parent = null;
+                }
+            }
             for (CmsCategory entity : categoryListParameters.getCategoryList()) {
-                if (null != parentId) {
+                if (null != parent) {
                     entity.setParentId(parentId);
                 }
                 service.copy(site.getId(), entity, copy);
@@ -160,6 +166,7 @@ public class CmsCategoryAdminController {
                     CommonUtils.now(), JsonUtils.getString(categoryListParameters.getCategoryList())));
         }
         return CommonConstants.TEMPLATE_DONE;
+
     }
 
     /**
@@ -173,7 +180,7 @@ public class CmsCategoryAdminController {
     @Csrf
     public String saveSeo(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
             @ModelAttribute CmsCategorySEOParameters seoParameters, HttpServletRequest request) {
-        attributeService.updateSeo(seoParameters.getAttributeList());
+        attributeService.updateSeo(site.getId(), seoParameters.getAttributeList());
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                 "save.category.seo", RequestUtils.getIpAddress(request), CommonUtils.now(),
                 JsonUtils.getString(seoParameters.getAttributeList())));

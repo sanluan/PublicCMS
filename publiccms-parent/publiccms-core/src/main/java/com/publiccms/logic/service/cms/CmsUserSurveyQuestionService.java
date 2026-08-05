@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsUserSurveyId;
 import com.publiccms.entities.cms.CmsUserSurveyQuestion;
 import com.publiccms.logic.dao.cms.CmsUserSurveyQuestionDao;
 
@@ -39,13 +40,14 @@ public class CmsUserSurveyQuestionService extends BaseService<CmsUserSurveyQuest
     }
 
     /**
+     * @param cmsUserSurveyId
      * @param entityList
      */
-    public void updateScore(List<CmsUserSurveyQuestion> entityList) {
+    public void updateScore(CmsUserSurveyId cmsUserSurveyId, List<CmsUserSurveyQuestion> entityList) {
         if (CommonUtils.notEmpty(entityList)) {
             for (CmsUserSurveyQuestion entity : entityList) {
                 CmsUserSurveyQuestion oldEntity = getEntity(entity.getId());
-                if (null != oldEntity) {
+                if (null != oldEntity && oldEntity.getSurveyId() == cmsUserSurveyId.getSurveyId()) {
                     oldEntity.setScore(entity.getScore());
                 }
             }

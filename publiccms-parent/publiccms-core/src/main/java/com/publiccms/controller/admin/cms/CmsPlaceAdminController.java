@@ -157,6 +157,10 @@ public class CmsPlaceAdminController {
                 if (ControllerUtils.errorCustom("statusError", CmsPlaceService.STATUS_CHECKING == oldEntity.getStatus(), model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
+                if (ControllerUtils.errorCustom("statusError",
+                        null == oldEntity.getPath() || !oldEntity.getPath().equalsIgnoreCase(entity.getPath()), model)) {
+                    return CommonConstants.TEMPLATE_ERROR;
+                }
                 entity.setUpdateDate(CommonUtils.now());
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 if (null != entity) {
