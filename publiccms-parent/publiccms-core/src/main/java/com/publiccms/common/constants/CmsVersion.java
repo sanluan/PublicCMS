@@ -31,14 +31,21 @@ public class CmsVersion {
      * @return version
      */
     public static final String getVersion() {
-        return BASE_VERSION + ".202506";
+        return CommonUtils.joinString(BASE_VERSION, ".", getDababaseVersion());
+    }
+
+    /**
+     * @return version
+     */
+    public static final String getDababaseVersion() {
+        return "202608";
     }
 
     /**
      * @return revision
      */
     public static final String getRevision() {
-        return "e";
+        return "a";
     }
 
     /**

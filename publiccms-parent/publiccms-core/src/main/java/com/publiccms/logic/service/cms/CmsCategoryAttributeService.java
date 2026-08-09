@@ -11,6 +11,7 @@ import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
+import com.publiccms.logic.dao.cms.CmsCategoryDao;
 
 import jakarta.annotation.Resource;
 
@@ -26,7 +27,7 @@ public class CmsCategoryAttributeService extends BaseService<CmsCategoryAttribut
     private String[] seoIgnoreProperties = new String[] { "categoryId", "data" };
 
     @Resource
-    private CmsCategoryService categoryService;
+    private CmsCategoryDao categoryDao;
 
     /**
      * @param siteId
@@ -39,7 +40,7 @@ public class CmsCategoryAttributeService extends BaseService<CmsCategoryAttribut
             for (CmsCategoryAttribute entity : entityList) {
                 categoryIdList.add(Integer.valueOf(entity.getCategoryId()));
             }
-            List<CmsCategory> categoryList = categoryService.getEntitys(categoryIdList);
+            List<CmsCategory> categoryList = categoryDao.getEntitys(categoryIdList);
             for (CmsCategory category : categoryList) {
                 if (siteId != category.getSiteId()) {
                     categoryIdList.remove(category.getId());

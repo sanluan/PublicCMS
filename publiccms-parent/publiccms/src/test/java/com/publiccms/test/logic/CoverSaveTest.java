@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,6 +24,7 @@ import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.logic.service.tools.SqlService;
 
 import config.spring.ApplicationConfig;
+import jakarta.annotation.Resource;
 
 /**
  *
