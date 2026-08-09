@@ -139,3 +139,8 @@ ALTER TABLE `cms_word`
   DROP INDEX `cms_word_hidden`,
   ADD INDEX `cms_word_hidden`(`site_id`, `hidden`, `search_count`),
   ADD INDEX `cms_word_lang`(`site_id`, `lang`, `hidden`, `search_count`);
+-- 2026-08-09 --
+ALTER TABLE `log_task` 
+  ADD INDEX `log_task_begintime`(`site_id`, `begintime`);
+ALTER TABLE `visit_history` 
+  ADD INDEX `visit_history_visit_hour` (`visit_date`, `visit_hour`);

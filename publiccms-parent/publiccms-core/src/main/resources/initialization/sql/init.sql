@@ -676,7 +676,8 @@ CREATE TABLE `log_task` (
   `result` longtext COMMENT '执行结果',
   PRIMARY KEY  (`id`),
   KEY `log_task_task_id` (`site_id`, `task_id`, `begintime`),
-  KEY `log_task_success` (`site_id`, `success`, `begintime`)
+  KEY `log_task_success` (`site_id`, `success`, `begintime`),
+  KEY `log_task_begintime` (`site_id`, `begintime`)
 ) COMMENT='任务计划日志';
 
 -- ----------------------------
@@ -2538,7 +2539,8 @@ CREATE TABLE `visit_history` (
   KEY `visit_history_create_date` (`site_id`, `create_date`, `session_id`, `ip`),
   KEY `visit_history_user_id` (`site_id`, `create_date`, `user_id`),
   KEY `visit_history_visit_date` (`site_id`, `visit_date`, `visit_hour`),
-  KEY `visit_history_item_type` (`site_id`, `visit_date`, `item_type`)
+  KEY `visit_history_item_type` (`site_id`, `visit_date`, `item_type`),
+  KEY `visit_history_visit_hour` (`visit_date`, `visit_hour`)
 ) COMMENT='访问日志';
 
 -- ----------------------------
