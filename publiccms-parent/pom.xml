@@ -30,7 +30,7 @@
         <!-- https://spring.io/projects/spring-boot -->
         <version.springBoot>4.1.0</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
-        <version.juint>6.1.2</version.juint>
+        <version.juint>6.1.3</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
         <version.hibernate>7.4.5.Final</version.hibernate>
