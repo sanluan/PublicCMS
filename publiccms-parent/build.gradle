@@ -131,8 +131,11 @@ subprojects {
         // 2 for ehcache
         jaxbVersion = "2.3.9"
     }
-    sourceCompatibility = 17
-    targetCompatibility = 17
+
+    java {
+        sourceCompatibility = 17
+        targetCompatibility = 17
+    }
 
     compileJava {
         options.encoding = "UTF-8"
