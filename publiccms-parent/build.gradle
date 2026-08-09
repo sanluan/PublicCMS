@@ -18,11 +18,9 @@ plugins {
 }
 
 subprojects {
-    plugins {
-        id "java"
-        id "idea"
-        id "eclipse-wtp"
-    }
+    apply plugin: "java"
+    apply plugin: "idea"
+    apply plugin: "eclipse-wtp"
 
     group = "com.publiccms"
     version = "V5.202608.a"
