@@ -35,7 +35,7 @@ gradle(使用以下文件：gradle,build.gradle,settings.gradle,gradlew,gradlew.
 
 linux更新wrapper
 ./mvnw -N io.takari:maven:wrapper
-./gradlew wrapper --gradle-version 9.7.0
+./gradlew wrapper --gradle-version 9.7.0 #8.15.5 in java 8
 windows更新wrapper
 mvnw -N io.takari:maven:wrapper
-gradlew wrapper --gradle-version 9.7.0
+gradlew wrapper --gradle-version 9.7.0 #8.15.5 in java 8
