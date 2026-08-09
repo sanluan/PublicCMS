@@ -43,6 +43,7 @@ pre{background-color: #efefef;overflow: auto;padding: 10px;}
         <h3>指令(命名空间:cms)</h3>
         <ul>
             <li><a href="#cms-category">category</a></li>
+            <li><a href="#cms-categoryLang">categoryLang</a></li>
             <li><a href="#cms-categoryList">categoryList</a></li>
             <li><a href="#cms-categoryModel">categoryModel</a></li>
             <li><a href="#cms-categoryModelList">categoryModelList</a></li>
@@ -52,11 +53,14 @@ pre{background-color: #efefef;overflow: auto;padding: 10px;}
             <li><a href="#cms-commentList">commentList</a></li>
             <li><a href="#cms-content">content</a></li>
             <li><a href="#cms-contentFileList">contentFileList</a></li>
+            <li><a href="#cms-contentLang">contentLang</a></li>
             <li><a href="#cms-contentList">contentList</a></li>
             <li><a href="#cms-contentProduct">contentProduct</a></li>
             <li><a href="#cms-contentProductList">contentProductList</a></li>
             <li><a href="#cms-contentQuoteList">contentQuoteList</a></li>
             <li><a href="#cms-contentRelatedList">contentRelatedList</a></li>
+            <li><a href="#cms-contentSource">contentSource</a></li>
+            <li><a href="#cms-contentSourceList">contentSourceList</a></li>
             <li><a href="#cms-dictionary">dictionary</a></li>
             <li><a href="#cms-dictionaryData">dictionaryData</a></li>
             <li><a href="#cms-dictionaryDataList">dictionaryDataList</a></li>
@@ -67,6 +71,8 @@ pre{background-color: #efefef;overflow: auto;padding: 10px;}
             <li><a href="#cms-editorHistory">editorHistory</a></li>
             <li><a href="#cms-editorHistoryList">editorHistoryList</a></li>
             <li><a href="#cms-facetSearch">facetSearch</a></li>
+            <li><a href="#cms-language">language</a></li>
+            <li><a href="#cms-languageList">languageList</a></li>
             <li><a href="#cms-model">model</a></li>
             <li><a href="#cms-modelList">modelList</a></li>
             <li><a href="#cms-place">place</a></li>
@@ -108,6 +114,10 @@ pre{background-color: #efefef;overflow: auto;padding: 10px;}
             <li><a href="#log-task">task</a></li>
             <li><a href="#log-taskList">taskList</a></li>
             <li><a href="#log-uploadList">uploadList</a></li>
+        </ul>
+        <h3>指令(命名空间:oauth)</h3>
+        <ul>
+            <li><a href="#oauth-list">list</a></li>
         </ul>
         <h3>指令(命名空间:sys)</h3>
         <ul>
@@ -198,7 +208,6 @@ pre{background-color: #efefef;overflow: auto;padding: 10px;}
             <li><a href="#tools-systemProperties">systemProperties</a></li>
             <li><a href="#tools-templatePlaceList">templatePlaceList</a></li>
             <li><a href="#tools-templateRegionList">templateRegionList</a></li>
-            <li><a href="#tools-templateResult">templateResult</a></li>
             <li><a href="#tools-templateSearchList">templateSearchList</a></li>
             <li><a href="#tools-thumb">thumb</a></li>
             <li><a href="#tools-userAgent">userAgent</a></li>
@@ -260,6 +269,7 @@ pre{background-color: #efefef;overflow: auto;padding: 10px;}
             <li><a href="#method-getIpv4Number">getIpv4Number</a></li>
             <li><a href="#method-getIpv6Number">getIpv6Number</a></li>
             <li><a href="#method-getKeywords">getKeywords</a></li>
+            <li><a href="#method-getLangPath">getLangPath</a></li>
             <li><a href="#method-getLayoutStyle">getLayoutStyle</a></li>
             <li><a href="#method-getLicense">getLicense</a></li>
             <li><a href="#method-getLicenseData">getLicenseData</a></li>
@@ -286,7 +296,7 @@ pre{background-color: #efefef;overflow: auto;padding: 10px;}
         </ul>
     </div>
     <div class="doc">
-        <h1>PublicCMS 函数指令手册 202506</h1>
+        <h1>PublicCMS 函数指令手册 202608</h1>
         <div class="block" data-id="api-appClient">appClient 客户端注册接口
 <p>参数列表</p>
 <ul>
@@ -295,7 +305,7 @@ pre{background-color: #efefef;overflow: auto;padding: 10px;}
 </ul>
 <p>使用示例</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/appClient?uuid=1&amp;clientVersion=1.0&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/appClient?uuid=1&amp;clientVersion=1.0',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
 });
 &lt;/script&gt;
  </pre></div>
@@ -313,8 +323,8 @@ $.getJSON('${site.dynamicPath}api/appClient?uuid=1&amp;clientVersion=1.0&amp;app
 </ul>
 <p>使用示例</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/appToken?appKey=1&amp;appSecret=1', function(data){
-  $('article p em').text(data.clicks);
+fetch('${site.dynamicPath}api/appToken?appKey=1&amp;appSecret=1').then(res =&gt; res.json()).then(data=&gt;{
+  console.log(data.appToken);
 });
 &lt;/script&gt;
  </pre></div>
@@ -354,7 +364,7 @@ $.getJSON('${site.dynamicPath}api/appToken?appKey=1&amp;appSecret=1', function(d
 </ul>
 <p>使用示例</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/autoLogin?uuid=1&amp;username=admin&amp;channel=web', function(data){
+fetch('${site.dynamicPath}api/autoLogin?uuid=1&amp;username=admin&amp;channel=web').then(res =&gt; res.json()).then(data=&gt;{
     console.log(result+","+authToken+","+user.nickname+","+expiryDate);
 });
 &lt;/script&gt;
@@ -371,7 +381,7 @@ $.getJSON('${site.dynamicPath}api/autoLogin?uuid=1&amp;username=admin&amp;channe
 </ul>
 <p>使用示例</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/bindingUser?uuid=1&amp;channel=web&amp;authToken=用户登录授权&amp;authUserId=1', function(data){
+fetch('${site.dynamicPath}api/bindingUser?uuid=1&amp;channel=web',{"headers":{"authToken":"用户登录授权","authUserId":"1"}}).then(res =&gt; res.json()).then(data=&gt;{
 console.log(data.result);
 });
 &lt;/script&gt;
@@ -379,7 +389,7 @@ console.log(data.result);
         <div class="block" data-id="api-clearCache">clearCache 缓存清理接口
 <p>使用示例</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/clearCache&amp;appToken=接口访问授权Token', function(data){
+   fetch('${site.dynamicPath}api/clearCache',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
      console.log("ok");
    });
    &lt;/script&gt;
@@ -394,7 +404,7 @@ console.log(data.result);
 <ul></ul>
 <p>使用示例</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath!}api/contentCheck?ids=1,2&amp;authToken=用户登录授权&amp;authUserId=1&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath!}api/contentCheck?ids=1,2',{"headers":{"appToken":"接口访问授权Token","authToken":"用户登录授权","authUserId":"1"}}).then(res =&gt; res.json()).then(data=&gt;{
 });
 &lt;/script&gt;
  </pre></div>
@@ -409,8 +419,8 @@ $.getJSON('${site.dynamicPath!}api/contentCheck?ids=1,2&amp;authToken=用户登�
 </ul>
 <p>使用示例</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/contentClick?id=1', function(data){
-  console.log(data.clicks);
+fetch('${site.dynamicPath}api/contentClick?id=1').then(res =&gt; res.json()).then(data=&gt;{
+  document.querySelector('article p em').textContent=data.clicks;
 });
 &lt;/script&gt;
  </pre></div>
@@ -421,6 +431,7 @@ $.getJSON('${site.dynamicPath}api/contentClick?id=1', function(data){
  <li><code>categoryId</code>:分类id</li>
  <li><code>modelId</code>:模型id</li>
  <li><code>title</code>:标题</li>
+ <li><code>cover</code>:封面图</li>
  <li><code>description</code>:描述</li>
  <li><code>author</code>:作者</li>
  <li><code>editor</code>:编辑</li>
@@ -449,7 +460,7 @@ $.getJSON('${site.dynamicPath}api/contentClick?id=1', function(data){
 </ul>
 <p>使用示例</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath!}api/contentCreate?categoryId=1&amp;modelId=article&amp;title=title&amp;text=%3Cdiv%3Econtent%3C/div%3E&amp;extendData.field1=value1&amp;extendData.field2=value2&amp;authToken=用户登录授权&amp;authUserId=1&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath!}api/contentCreate?categoryId=1&amp;modelId=article&amp;title=title&amp;text=%3Cdiv%3Econtent%3C/div%3E&amp;extendData.field1=value1&amp;extendData.field2=value2',{"headers":{"appToken":"接口访问授权Token""authToken":"用户登录授权","authUserId":"1"}}).then(res =&gt; res.json()).then(data=&gt;{
 console.log(data.result);
 });
 &lt;/script&gt;
@@ -491,7 +502,7 @@ console.log(data.result);
 </ul>
 <p>使用示例</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/login?username=admin&amp;password=sha512encodingpassword&amp;encoding=sha512&amp;channel=web', function(data){
+fetch('${site.dynamicPath}api/login?username=admin&amp;password=sha512encodingpassword&amp;encoding=sha512&amp;channel=web').then(res =&gt; res.json()).then(data=&gt;{
     console.log(result+","+authToken+","+user.nickname+","+expiryDate);
 });
 &lt;/script&gt;
@@ -540,6 +551,7 @@ $.getJSON('${site.dynamicPath}api/login?username=admin&amp;password=sha512encodi
    <li><code>categoryId</code> : category id 分类ID</li>
    <li><code>modelId</code> : model id 模型ID</li>
    <li><code>parentId</code> : parent id 父内容ID</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>quoteContentId</code> : quote content id 引用内容ID</li>
    <li><code>copied</code> : copied 转载</li>
    <li><code>author</code> : author 作者</li>
@@ -573,7 +585,7 @@ $.getJSON('${site.dynamicPath}api/login?username=admin&amp;password=sha512encodi
 <p>使用示例</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath!}api/myContentList?pageSize=10&amp;authToken=用户登录授权&amp;authUserId=1', function(data){
+fetch('${site.dynamicPath!}api/myContentList?pageSize=10',{"headers":{"authToken":"用户登录授权","authUserId":"1"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -592,7 +604,7 @@ $.getJSON('${site.dynamicPath!}api/myContentList?pageSize=10&amp;authToken=用�
 <p>使用示例</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/login?appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/login',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(appToken+","+expiryDate);
 });
 &lt;/script&gt;
@@ -609,7 +621,7 @@ $.getJSON('${site.dynamicPath}api/login?appToken=接口访问授权Token', funct
 </ul>
 <p>使用示例</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/unBindingUser?uuid=1&amp;channel=web&amp;authToken=用户登录授权&amp;authUserId=1', function(data){
+fetch('${site.dynamicPath}api/unBindingUser?uuid=1&amp;channel=web',{"headers":{"authToken":"用户登录授权","authUserId":"1"}}).then(res =&gt; res.json()).then(data=&gt;{
 console.log(data.result);
 });
 &lt;/script&gt;
@@ -638,17 +650,21 @@ console.log(data.result);
 </ul>
 <p>使用示例</p>
 <pre>&lt;script&gt;
-$('input[type=file]').change(function() {
+document.querySelector("input[type=file]").addEventListener("change",function(event) {
     var formData = new FormData();
-    var file = this.files[0];
-    formData.append('file', file);
-    $.ajax({url:'${site.dynamicPath}api/upload',type:'post',headers: {'appToken': 'your app token','':'','':''},data: formData,, success:function(data){
+    var file = event.target.files[0];
+    formData.append("file", file);
+    fetch("${site.dynamicPath}api/upload",{method:"post",headers:{"appToken":"接口访问授权Token""authToken":"用户登录授权","authUserId":"1"},body: formData}).then(res =&gt; res.json()).then(data=&gt;{
         console.log(result+","+error+","+fileName);
     });
 });
 &lt;/script&gt;
  </pre></div>
         <div class="block" data-id="cms-category">category 分类查询指令
+<p>上下文变量</p>
+<ul>
+ <li><code>lang</code>:语言</li>
+</ul>
 <p>参数列表</p>
 <ul>
  <li><code>id</code>:分类id,结果返回<code>object</code>
@@ -656,7 +672,9 @@ $('input[type=file]').change(function() {
    <li><code>id</code> : id</li>
    <li><code>name</code> : name 名称</li>
    <li><code>parentId</code> : parent id 父id</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>typeId</code> : type id 分类类型id</li>
+   <li><code>parentIds</code> : parent ids 父分类id</li>
    <li><code>childIds</code> : child ids 子分类id</li>
    <li><code>tagTypeIds</code> : tag type ids 标签类型id</li>
    <li><code>code</code> : code 编码</li>
@@ -678,15 +696,36 @@ $('input[type=file]').change(function() {
  <li><code>ids</code>: 多个分类id,逗号或空格间隔,当id或code为空时生效,结果返回<code>map</code>(id,<code>object</code>)</li>
 </ul>
 <p>使用示例</p>
-<p>&lt;@cms.category id=1&gt;${object.name}&lt;/@cms.category&gt;</p>
+<p>&lt;#assign lang="cn"/&gt; &lt;@cms.category id=1&gt;${object.name}&lt;/@cms.category&gt;</p>
 <p>&lt;@cms.category ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.category&gt;</p>
 <pre>   &lt;script&gt;
-    $.getJSON('${site.dynamicPath}api/directive/cms/category?id=1', function(data){
+    fetch('${site.dynamicPath}api/directive/cms/category?id=1',{"headers":{"lang":"cn"}}).then(res =&gt; res.json()).then(data=&gt;{
+      console.log(data.name);
+    });
+    &lt;/script&gt;
+ </pre></div>
+        <div class="block" data-id="cms-categoryLang">categoryLang 分类语言查询指令
+<p>参数列表</p>
+<ul>
+ <li><code>id</code>:分类id,结果返回<code>object</code>
+  <ul style="padding-left:20px;">
+   <li><code>url</code> : url 链接地址</li>
+  </ul></li>
+ <li><code>lang</code>:语言</li>
+</ul>
+<p>使用示例</p>
+<p>&lt;@cms.categoryLang id=1 lang=cn&gt;${object.name}&lt;/@cms.category&gt;</p>
+<pre>   &lt;script&gt;
+    fetch('${site.dynamicPath}api/directive/cms/categoryLang?id=1&amp;lang=cn',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
       console.log(data.name);
     });
     &lt;/script&gt;
  </pre></div>
         <div class="block" data-id="cms-categoryList">categoryList 分类列表查询指令
+<p>上下文变量</p>
+<ul>
+ <li><code>lang</code>:语言</li>
+</ul>
 <p>参数列表</p>
 <ul>
  <li><code>parentId</code>:父分类id</li>
@@ -718,7 +757,9 @@ $('input[type=file]').change(function() {
    <li><code>id</code> : id</li>
    <li><code>name</code> : name 名称</li>
    <li><code>parentId</code> : parent id 父id</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>typeId</code> : type id 分类类型id</li>
+   <li><code>parentIds</code> : parent ids 父分类id</li>
    <li><code>childIds</code> : child ids 子分类id</li>
    <li><code>tagTypeIds</code> : tag type ids 标签类型id</li>
    <li><code>code</code> : code 编码</li>
@@ -736,9 +777,9 @@ $('input[type=file]').change(function() {
   </ul></li>
 </ul>
 <p>使用示例</p>
-<p>&lt;@cms.categoryList pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryList&gt;</p>
+<p>&lt;#assign lang="cn"/&gt; &lt;@cms.categoryList pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryList&gt;</p>
 <pre>   &lt;script&gt;
-    $.getJSON('${site.dynamicPath}api/directive/cms/categoryList?pageSize=10', function(data){
+    fetch('${site.dynamicPath}api/directive/cms/categoryList?pageSize=10',{"headers":{"lang":"cn"}}).then(res =&gt; res.json()).then(data=&gt;{
       console.log(data.page.totalCount);
     });
     &lt;/script&gt;
@@ -761,7 +802,7 @@ $('input[type=file]').change(function() {
 <p>&lt;@cms.categoryModel categoryId=1 modelId='article'&gt;${object.templatePath}&lt;/@cms.categoryModel&gt;</p>
 <p>&lt;@cms.categoryModel categoryIds=1,2,3 modelId='article'&gt;&lt;#list map as k,v&gt;${k}:${v.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryModel&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/categoryModel?categoryId=1&amp;modelId=article', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/categoryModel?categoryId=1&amp;modelId=article').then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.templatePath);
    });
    &lt;/script&gt;
@@ -785,7 +826,7 @@ $('input[type=file]').change(function() {
 <p>使用示例</p>
 <p>&lt;@cms.categoryModelList modelId='article'&gt;&lt;#list list as a&gt;${a.templatePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryModelList&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/categoryModelList?modelId=article', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/categoryModelList?modelId=article').then(res =&gt; res.json()).then(data=&gt;{
      console.log(data[0].totalCount);
    });
    &lt;/script&gt;
@@ -819,7 +860,7 @@ $('input[type=file]').change(function() {
 <p>&lt;@cms.categoryType id=1&gt;${object.name}&lt;/@cms.categoryType&gt;</p>
 <p>&lt;@cms.categoryType ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryType&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/categoryType?id=banner', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/categoryType?id=banner').then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.name);
    });
    &lt;/script&gt;
@@ -863,7 +904,7 @@ $('input[type=file]').change(function() {
 <p>使用示例</p>
 <p>&lt;@cms.categoryTypeList&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.categoryTypeList&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/categoryTypeList', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/categoryTypeList').then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.page.totalCount);
    });
    &lt;/script&gt;
@@ -894,7 +935,7 @@ $('input[type=file]').change(function() {
 <p>&lt;@cms.comment id=1&gt;${object.text}&lt;/@cms.comment&gt;</p>
 <p>&lt;@cms.comment ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.comment&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/comment?id=1&amp;appToken=接口访问授权Token', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/comment?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.text);
    });
    &lt;/script&gt;
@@ -950,12 +991,16 @@ $('input[type=file]').change(function() {
 <p>使用示例</p>
 <p>&lt;@cms.commentList contentId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.commentList&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/commentList?contentId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/commentList?contentId=1&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.page.totalCount);
    });
    &lt;/script&gt;
  </pre></div>
         <div class="block" data-id="cms-content">content 内容查询指令
+<p>上下文变量</p>
+<ul>
+ <li><code>lang</code>:语言</li>
+</ul>
 <p>参数列表</p>
 <ul>
  <li><code>id</code> 内容id,结果返回<code>object</code>
@@ -968,6 +1013,7 @@ $('input[type=file]').change(function() {
    <li><code>categoryId</code> : category id 分类ID</li>
    <li><code>modelId</code> : model id 模型ID</li>
    <li><code>parentId</code> : parent id 父内容ID</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>quoteContentId</code> : quote content id 引用内容ID</li>
    <li><code>copied</code> : copied 转载</li>
    <li><code>author</code> : author 作者</li>
@@ -1003,15 +1049,19 @@ $('input[type=file]').change(function() {
  <li><code>ids</code>: 多个内容id,逗号或空格间隔,当id为空时生效,结果返回<code>map</code>(id,<code>object</code>)</li>
 </ul>
 <p>使用示例</p>
-<p>&lt;@cms.content id=1&gt;${object.title}&lt;/@cms.content&gt;</p>
+<p>&lt;#assign lang="cn"/&gt; &lt;@cms.content id=1&gt;${object.title}&lt;/@cms.content&gt;</p>
 <p>&lt;@cms.content ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.content&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/content?id=1', function(data){    
+   fetch('${site.dynamicPath}api/directive/cms/content?id=1',{"headers":{"lang":"cn"}}).then(res =&gt; res.json()).then(data=&gt;{    
      console.log(data.title);
    });
    &lt;/script&gt;
  </pre></div>
-        <div class="block" data-id="cms-contentFileList">categoryFileList 内容附件列表查询指令
+        <div class="block" data-id="cms-contentFileList">contentFileList 内容附件列表查询指令
+<p>上下文变量</p>
+<ul>
+ <li><code>lang</code>:语言</li>
+</ul>
 <p>参数列表</p>
 <ul>
  <li><code>fileTypes</code>:文件类型,【image:图片,video:视频,audio:音频,other:其他】</li>
@@ -1042,6 +1092,7 @@ $('input[type=file]').change(function() {
    <li><code>id</code> : id</li>
    <li><code>contentId</code> : content id
     <p>内容id</p></li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>userId</code> : upload user id
     <p>上传用户id</p></li>
    <li><code>filepath</code> : file path
@@ -1063,14 +1114,35 @@ $('input[type=file]').change(function() {
   </ul></li>
 </ul>
 <p>使用示例</p>
-<p>&lt;@cms.contentFileList contentId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.filePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;</p>
+<p>&lt;#assign lang="cn"/&gt; &lt;@cms.contentFileList contentId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.filePath}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentFileList&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/contentFileList?contentId=1&amp;pageSize=10', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/contentFileList?contentId=1&amp;pageSize=10',{"headers":{"lang":"cn"}}).then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.page.totalCount);
    });
    &lt;/script&gt;
  </pre></div>
+        <div class="block" data-id="cms-contentLang">contentLang 分类语言查询指令
+<p>参数列表</p>
+<ul>
+ <li><code>id</code>:分类id,结果返回<code>object</code>
+  <ul style="padding-left:20px;">
+   <li><code>url</code> : url 链接地址</li>
+  </ul></li>
+ <li><code>lang</code>:语言</li>
+</ul>
+<p>使用示例</p>
+<p>&lt;@cms.contentLang id=1 lang=cn&gt;${object.name}&lt;/@cms.content&gt;</p>
+<pre>   &lt;script&gt;
+    fetch('${site.dynamicPath}api/directive/cms/contentLang?id=1&amp;lang=cn',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
+      console.log(data.name);
+    });
+    &lt;/script&gt;
+ </pre></div>
         <div class="block" data-id="cms-contentList">contentList 内容列表查询指令
+<p>上下文变量</p>
+<ul>
+ <li><code>lang</code>:语言</li>
+</ul>
 <p>参数列表</p>
 <ul>
  <li><code>categoryId</code>:分类id,当parentId为空时有效</li>
@@ -1125,6 +1197,7 @@ $('input[type=file]').change(function() {
    <li><code>categoryId</code> : category id 分类ID</li>
    <li><code>modelId</code> : model id 模型ID</li>
    <li><code>parentId</code> : parent id 父内容ID</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>quoteContentId</code> : quote content id 引用内容ID</li>
    <li><code>copied</code> : copied 转载</li>
    <li><code>author</code> : author 作者</li>
@@ -1156,9 +1229,9 @@ $('input[type=file]').change(function() {
   </ul></li>
 </ul>
 使用示例
-<p>&lt;@cms.contentList pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentList&gt;</p>
+<p>&lt;#assign lang="cn"/&gt; &lt;@cms.contentList pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentList&gt;</p>
 <pre>  &lt;script&gt;
-    $.getJSON('${site.dynamicPath}api/directive/cms/contentList?pageSize=10', function(data){    
+    fetch('${site.dynamicPath}api/directive/cms/contentList?pageSize=10',{"headers":{"lang":"cn"}}).then(res =&gt; res.json()).then(data=&gt;{
       console.log(data.page.totalCount);
     });
     &lt;/script&gt;
@@ -1195,7 +1268,7 @@ $('input[type=file]').change(function() {
 <p>&lt;@cms.contentProduct id=1&gt;${object.title}&lt;/@cms.contentProduct&gt;</p>
 <p>&lt;@cms.contentProduct ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentProduct&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/contentProduct?id=1', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/contentProduct?id=1').then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.title);
    });
    &lt;/script&gt;
@@ -1253,7 +1326,7 @@ $('input[type=file]').change(function() {
 <p>使用示例</p>
 <p>&lt;@cms.contentProductList contentId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentProductList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/contentProductList?contentId=1&amp;pageSize=10', function(data){
+  fetch('${site.dynamicPath}api/directive/cms/contentProductList?contentId=1&amp;pageSize=10').then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
@@ -1275,6 +1348,7 @@ $('input[type=file]').change(function() {
    <li><code>categoryId</code> : category id 分类ID</li>
    <li><code>modelId</code> : model id 模型ID</li>
    <li><code>parentId</code> : parent id 父内容ID</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>quoteContentId</code> : quote content id 引用内容ID</li>
    <li><code>copied</code> : copied 转载</li>
    <li><code>author</code> : author 作者</li>
@@ -1308,7 +1382,7 @@ $('input[type=file]').change(function() {
 <p>使用示例</p>
 <p>&lt;@cms.contentQuoteList contentId=1 pageSize=10&gt;&lt;#list list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentQuoteList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/contentQuoteList?contentId=1', function(data){
+  fetch('${site.dynamicPath}api/directive/cms/contentQuoteList?contentId=1').then(res =&gt; res.json()).then(data=&gt;{
     console.log(data);
   });
   &lt;/script&gt;
@@ -1355,11 +1429,13 @@ $('input[type=file]').change(function() {
 <p>使用示例</p>
 <p>&lt;@cms.contentRelatedList contentId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.contentRelatedList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/contentRelatedList?contentId=1&amp;pageSize=10', function(data){
+  fetch('${site.dynamicPath}api/directive/cms/contentRelatedList?contentId=1&amp;pageSize=10').then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
  </pre></div>
+        <div class="block" data-id="cms-contentSource">CmsContentSourceDirective</div>
+        <div class="block" data-id="cms-contentSourceList">CmsContentSourceListDirective</div>
         <div class="block" data-id="cms-dictionary">dictionary 数据字典查询指令
 <p>参数列表</p>
 <ul>
@@ -1375,12 +1451,16 @@ $('input[type=file]').change(function() {
 <p>&lt;@cms.dictionary id='data'&gt;${object.name}&lt;/@cms.dictionary&gt;</p>
 <p>&lt;@cms.dictionary values='data,data2'&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionary&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/dictionary?dictionaryId=data&amp;value=1', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/dictionary?dictionaryId=data&amp;value=1').then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.name);
    });
    &lt;/script&gt;
  </pre></div>
         <div class="block" data-id="cms-dictionaryData">dictionaryData 数据字典数据查询指令
+<p>上下文变量</p>
+<ul>
+ <li><code>lang</code>:语言</li>
+</ul>
 <p>参数列表</p>
 <ul>
  <li><code>dictionaryId</code>:数据字典id</li>
@@ -1390,21 +1470,27 @@ $('input[type=file]').change(function() {
     <p>父节点值</p></li>
    <li><code>text</code> : text
     <p>文本</p></li>
+   <li><code>langdata</code> : langdata
+    <p>语言数据</p></li>
    <li><code>sort</code> : sort
     <p>排序</p></li>
   </ul></li>
  <li><code>values</code> 多个值,逗号或空格间隔,当value为空时生效,结果返回<code>map</code>(id,<code>object</code>)</li>
 </ul>
 <p>使用示例</p>
-<p>&lt;@cms.dictionaryData dictionaryId='data' value='1'&gt;${object.text}&lt;/@cms.dictionaryData&gt;</p>
+<p>&lt;#assign lang="cn"/&gt; &lt;@cms.dictionaryData dictionaryId='data' value='1'&gt;${object.text}&lt;/@cms.dictionaryData&gt;</p>
 <p>&lt;@cms.dictionaryData dictionaryId values='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryData&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryData?dictionaryId=data&amp;value=1', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/dictionaryData?dictionaryId=data&amp;value=1',{"headers":{"lang":"cn"}}).then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.text);
    });
    &lt;/script&gt;
  </pre></div>
         <div class="block" data-id="cms-dictionaryDataList">dictionaryDataList 数据字典数据列表
+<p>上下文变量</p>
+<ul>
+ <li><code>lang</code>:语言</li>
+</ul>
 <p>参数列表</p>
 <ul>
  <li><code>dictionaryId</code>:字典id,为空时返回空结果</li>
@@ -1418,14 +1504,16 @@ $('input[type=file]').change(function() {
     <p>父节点值</p></li>
    <li><code>text</code> : text
     <p>文本</p></li>
+   <li><code>langdata</code> : langdata
+    <p>语言数据</p></li>
    <li><code>sort</code> : sort
     <p>排序</p></li>
   </ul></li>
 </ul>
 <p>使用示例</p>
-<p>&lt;@cms.dictionaryDataList dictionaryId='data'&gt;&lt;#list list as a&gt;${a.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryDataList&gt;</p>
+<p>&lt;#assign lang="cn"/&gt; &lt;@cms.dictionaryDataList dictionaryId='data'&gt;&lt;#list list as a&gt;${a.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryDataList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryDataList?dictionaryId=1&amp;parentValue=text', function(data){
+ fetch('${site.dynamicPath}api/directive/cms/dictionaryDataList?dictionaryId=1&amp;parentValue=text',{"headers":{"lang":"cn"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -1442,7 +1530,7 @@ $('input[type=file]').change(function() {
 <p>&lt;@cms.dictionaryExclude dictionaryId='data' excludeDictionaryId='data1'&gt;${object.id.excludeDictionaryId}&lt;/@cms.dictionaryExclude&gt;</p>
 <p>&lt;@cms.dictionaryExclude dictionaryId='data' excludeDictionaryIds='data1,data2'&gt;&lt;#list map as k,v&gt;${k}:${v.id.excludeDictionaryId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExclude&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExclude?dictionaryId=data&amp;value=1', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/dictionaryExclude?dictionaryId=data&amp;value=1').then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.id.excludeDictionaryId);
    });
    &lt;/script&gt;
@@ -1461,7 +1549,7 @@ $('input[type=file]').change(function() {
 <p>使用示例</p>
 <p>&lt;@cms.dictionaryExcludeList dictionaryId='data'&gt;&lt;#list list as a&gt;${a.id.excludeDictionaryId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExcludeList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionaryId=1&amp;parentValue=text', function(data){
+fetch('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionaryId=1&amp;parentValue=text').then(res =&gt; res.json()).then(data=&gt;{
   console.log(data);
 });
 &lt;/script&gt;
@@ -1482,7 +1570,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <p>&lt;@cms.dictionaryExcludeValue dictionaryId='data' excludeDictionaryId='data1' value='data1'&gt;${object.excludeValues}&lt;/@cms.dictionaryExcludeValue&gt;</p>
 <p>&lt;@cms.dictionaryExcludeValue dictionaryId='data' excludeDictionaryId='data1' values='1,2'&gt;&lt;#list map as k,v&gt;${k}:${v.excludeValues}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryExcludeValue&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeValue?dictionaryId=data&amp;excludeDictionaryId=data1&amp;value=1', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/dictionaryExcludeValue?dictionaryId=data&amp;excludeDictionaryId=data1&amp;value=1').then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.excludeValues);
    });
    &lt;/script&gt;
@@ -1517,7 +1605,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <p>使用示例</p>
 <p>&lt;@cms.dictionaryList name='data'&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.dictionaryList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryList?name=data', function(data){
+ fetch('${site.dynamicPath}api/directive/cms/dictionaryList?name=data').then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;
@@ -1531,6 +1619,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
    <li><code>itemType</code> : item type 项目类型</li>
    <li><code>itemId</code> : item id 项目id</li>
    <li><code>fieldName</code> : field name 字段名</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>createDate</code> : create date 创建日期</li>
    <li><code>userId</code> : user id 用户</li>
    <li><code>text</code> : content text 正文内容</li>
@@ -1541,7 +1630,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <p>&lt;@cms.editorHistory id=1&gt;${object.text}&lt;/@cms.editorHistory&gt;</p>
 <p>&lt;@cms.editorHistory ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.editorHistory&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/editorHistory?id=1&amp;appToken=接口访问授权Token', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/editorHistory?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.text);
    });
    &lt;/script&gt;
@@ -1576,6 +1665,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
    <li><code>itemType</code> : item type 项目类型</li>
    <li><code>itemId</code> : item id 项目id</li>
    <li><code>fieldName</code> : field name 字段名</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>createDate</code> : create date 创建日期</li>
    <li><code>userId</code> : user id 用户</li>
    <li><code>text</code> : content text 正文内容</li>
@@ -1584,7 +1674,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <p>使用示例</p>
 <p>&lt;@cms.editorHistoryList contentId=1 fieldName='text' pageSize=10&gt;&lt;#list page.list as a&gt;${a.text}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.editorHistoryList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/editorHistoryList?contentId=1&amp;fieldName='text'&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/cms/editorHistoryList?contentId=1&amp;fieldName='text'&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
@@ -1609,6 +1699,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
    <li><code>categoryId</code> : category id 分类ID</li>
    <li><code>modelId</code> : model id 模型ID</li>
    <li><code>parentId</code> : parent id 父内容ID</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>quoteContentId</code> : quote content id 引用内容ID</li>
    <li><code>copied</code> : copied 转载</li>
    <li><code>author</code> : author 作者</li>
@@ -1647,10 +1738,58 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
   &lt;/@cms.facetSearch&gt;
  </pre>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/facetSearch?word=cms&amp;pageSize=10', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/facetSearch?word=cms&amp;pageSize=10').then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.page.totalCount);
    });
    &lt;/script&gt;
+ </pre></div>
+        <div class="block" data-id="cms-language">language 数据字典数据查询指令
+<p>参数列表</p>
+<ul>
+ <li><code>code</code>:语言编码,结果返回<code>object</code>
+  <ul style="padding-left:20px;">
+   <li><code>name</code> : text
+    <p>文本</p></li>
+   <li><code>cover</code> : text
+    <p>文本</p></li>
+   <li><code>sort</code> : sort
+    <p>排序</p></li>
+  </ul></li>
+ <li><code>codes</code> 多个编码,逗号或空格间隔,当code为空时生效,结果返回<code>map</code>(id,<code>object</code>)</li>
+</ul>
+<p>使用示例</p>
+<p>&lt;@cms.Language code='cn' value='1'&gt;${object.name}&lt;/@cms.Language&gt;</p>
+<p>&lt;@cms.Language code values='cn,en,jp'&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.Language&gt;</p>
+<pre>  &lt;script&gt;
+   fetch('${site.dynamicPath}api/directive/cms/Language?code=cn').then(res =&gt; res.json()).then(data=&gt;{
+     console.log(data.text);
+   });
+   &lt;/script&gt;
+ </pre></div>
+        <div class="block" data-id="cms-languageList">languageList 数据字典数据列表
+<p>参数列表</p>
+<ul>
+ <li><code>code</code>:字典id,为空时返回空结果</li>
+</ul>
+<p>返回结果</p>
+<ul>
+ <li><code>list</code>:List类型 查询结果实体列表
+  <ul style="padding-left:20px;">
+   <li><code>name</code> : text
+    <p>文本</p></li>
+   <li><code>cover</code> : text
+    <p>文本</p></li>
+   <li><code>sort</code> : sort
+    <p>排序</p></li>
+  </ul></li>
+</ul>
+<p>使用示例</p>
+<p>&lt;@cms.LanguageList&gt;&lt;#list list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.LanguageList&gt;</p>
+<pre>&lt;script&gt;
+ fetch('${site.dynamicPath}api/directive/cms/languageList').then(res =&gt; res.json()).then(data=&gt;{
+   console.log(data);
+ });
+ &lt;/script&gt;
  </pre></div>
         <div class="block" data-id="cms-model">model 页面片段数据查询指令
 <p>参数列表</p>
@@ -1703,7 +1842,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <p>&lt;@cms.model id='article'&gt;${object.name}&lt;/@cms.model&gt;</p>
 <p>&lt;@cms.model ids='article,link,picture'&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.model&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/cms/model?id=article', function(data){
+   fetch('${site.dynamicPath}api/directive/cms/model?id=article').then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.name);
    });
    &lt;/script&gt;
@@ -1766,7 +1905,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <p>使用示例</p>
 <p>&lt;@cms.modelList&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.modelList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/modelList', function(data){
+  fetch('${site.dynamicPath}api/directive/cms/modelList').then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
@@ -1782,6 +1921,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
    <li><code>checkUserId</code> : check user id 审核用户id</li>
    <li><code>itemType</code> : item type 数据项类型</li>
    <li><code>itemId</code> : item id 数据项id</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>title</code> : title 标题</li>
    <li><code>url</code> : url 地址</li>
    <li><code>description</code> : description 描述</li>
@@ -1803,7 +1943,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <p>&lt;@cms.place id=1&gt;${object.title}&lt;/@cms.place&gt;</p>
 <p>&lt;@cms.place ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.place&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/place?id=1&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/cms/place?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.title);
   });
   &lt;/script&gt;
@@ -1813,6 +1953,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <ul>
  <li><code>path</code>:页面片段路径</li>
  <li><code>userId</code>:发布用户id</li>
+ <li><code>lang</code>:语言</li>
  <li><code>advanced</code>:开启高级选项, 默认为<code>false</code></li>
  <li><code>status</code>:高级选项:数据状态,【0:操作,1:已发布,2:待审核】</li>
  <li><code>disabled</code>:高级选项:禁用状态,默认为<code>false</code></li>
@@ -1848,6 +1989,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
    <li><code>checkUserId</code> : check user id 审核用户id</li>
    <li><code>itemType</code> : item type 数据项类型</li>
    <li><code>itemId</code> : item id 数据项id</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>title</code> : title 标题</li>
    <li><code>url</code> : url 地址</li>
    <li><code>description</code> : description 描述</li>
@@ -1865,12 +2007,16 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <p>使用示例</p>
 <p>&lt;@cms.placeList path='/1.html' pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.placeList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/placeList?path=/1.html&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/cms/placeList?path=/1.html&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
  </pre></div>
         <div class="block" data-id="cms-search">search 内容列表查询指令
+<p>上下文变量</p>
+<ul>
+ <li><code>lang</code>:语言</li>
+</ul>
 <p>参数列表</p>
 <ul>
  <li><code>word</code>:搜索词,多个搜索词时取并集结果</li>
@@ -1922,6 +2068,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
    <li><code>categoryId</code> : category id 分类ID</li>
    <li><code>modelId</code> : model id 模型ID</li>
    <li><code>parentId</code> : parent id 父内容ID</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>quoteContentId</code> : quote content id 引用内容ID</li>
    <li><code>copied</code> : copied 转载</li>
    <li><code>author</code> : author 作者</li>
@@ -1953,9 +2100,9 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
   </ul></li>
 </ul>
 使用示例
-<p>&lt;@cms.search word='cms' pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.search&gt;</p>
+<p>&lt;#assign lang="cn"/&gt; &lt;@cms.search word='cms' pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.search&gt;</p>
 <pre>  &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/search?word=cms&amp;pageSize=10', function(data){
+  fetch('${site.dynamicPath}api/directive/cms/search?word=cms&amp;pageSize=10',{"headers":{"lang":"cn"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
@@ -1982,7 +2129,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <p>&lt;@cms.survey id=1&gt;${object.title}&lt;/@cms.survey&gt;</p>
 <p>&lt;@cms.survey ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.survey&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/cms/survey?id=1', function(data){
+ fetch('${site.dynamicPath}api/directive/cms/survey?id=1').then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.title);
  });
  &lt;/script&gt;
@@ -2033,7 +2180,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <p>使用示例</p>
 <p>&lt;@cms.surveyList pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.surveyList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/cms/surveyList?pageSize=10', function(data){
+ fetch('${site.dynamicPath}api/directive/cms/surveyList?pageSize=10').then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;
@@ -2067,7 +2214,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <p>&lt;@cms.surveyQuestion id=1&gt;${object.title}&lt;/@cms.surveyQuestion&gt;</p>
 <p>&lt;@cms.surveyQuestion ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.surveyQuestion&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/cms/surveyQuestion?id=1&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/cms/surveyQuestion?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.title);
  });
  &lt;/script&gt;
@@ -2093,7 +2240,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <p>&lt;@cms.surveyQuestionItem id=1&gt;${object.title}&lt;/@cms.surveyQuestionItem&gt;</p>
 <p>&lt;@cms.surveyQuestionItem ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.surveyQuestionItem&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/cms/surveyQuestionItem?id=1', function(data){
+ fetch('${site.dynamicPath}api/directive/cms/surveyQuestionItem?id=1').then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.title);
  });
  &lt;/script&gt;
@@ -2136,7 +2283,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/dictionaryExcludeList?dictionary
 <p>使用示例</p>
 <p>&lt;@cms.surveyQuestionItemList questionId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.surveyQuestionItemList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/surveyQuestionItemList?questionId=1&amp;pageSize=10', function(data){
+fetch('${site.dynamicPath}api/directive/cms/surveyQuestionItemList?questionId=1&amp;pageSize=10').then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -2187,7 +2334,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/surveyQuestionItemList?questionI
 <p>使用示例</p>
 <p>&lt;@cms.surveyQuestionList surveyId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.surveyQuestionList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/surveyQuestionList?surveyId=1&amp;pageSize=10', function(data){
+fetch('${site.dynamicPath}api/directive/cms/surveyQuestionList?surveyId=1&amp;pageSize=10').then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -2211,7 +2358,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/surveyQuestionList?surveyId=1&am
 <p>&lt;@cms.tag id=1&gt;${object.name}&lt;/@cms.tag&gt;</p>
 <p>&lt;@cms.tag ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tag&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/tag?id=1', function(data){
+fetch('${site.dynamicPath}api/directive/cms/tag?id=1').then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.name);
 });
 &lt;/script&gt;
@@ -2254,7 +2401,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/tag?id=1', function(data){
 <p>使用示例</p>
 <p>&lt;@cms.tagList pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tagList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/tagList?pageSize=10', function(data){
+fetch('${site.dynamicPath}api/directive/cms/tagList?pageSize=10').then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -2276,7 +2423,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/tagList?pageSize=10', function(d
 <p>&lt;@cms.tagType id=1&gt;${object.name}&lt;/@cms.tagType&gt;</p>
 <p>&lt;@cms.tagType ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tagType&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/tagType?id=1', function(data){
+fetch('${site.dynamicPath}api/directive/cms/tagType?id=1').then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.name);
 });
 &lt;/script&gt;
@@ -2313,7 +2460,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/tagType?id=1', function(data){
 <p>使用示例</p>
 <p>&lt;@cms.tagTypeList pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.tagTypeList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/tagTypeList?pageSize=10', function(data){
+fetch('${site.dynamicPath}api/directive/cms/tagTypeList?pageSize=10').then(res =&gt; res.json()).then(data=&gt;{
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -2333,7 +2480,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/tagTypeList?pageSize=10', functi
 <p>&lt;@cms.userCollection userId=1 contentId=1&gt;${object.scores}&lt;/@cms.userCollection&gt;</p>
 <p>&lt;@cms.userCollection userId=1 contentIds='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.contentId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userCollection&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userCollection?id=1', function(data){
+fetch('${site.dynamicPath}api/directive/cms/userCollection?id=1').then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.scores);
 });
 &lt;/script&gt;
@@ -2368,7 +2515,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userCollection?id=1', function(d
 <p>使用示例</p>
 <p>&lt;@cms.userCollectionList userId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.scores}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userCollectionList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userCollectionList?userId=1&amp;pageSize=10', function(data){
+fetch('${site.dynamicPath}api/directive/cms/userCollectionList?userId=1&amp;pageSize=10').then(res =&gt; res.json()).then(data=&gt;{
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -2391,7 +2538,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userCollectionList?userId=1&amp;
 <p>&lt;@cms.userScore userId=1 itemType="content" itemId=1&gt;${object.scores}&lt;/@cms.userScore&gt;</p>
 <p>&lt;@cms.userScore userId=1 itemType="content" itemIds='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.scores}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userScore&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userScore?id=1', function(data){
+fetch('${site.dynamicPath}api/directive/cms/userScore?id=1').then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.scores);
 });
 &lt;/script&gt;
@@ -2429,7 +2576,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userScore?id=1', function(data){
 <p>使用示例</p>
 <p>&lt;@cms.userScoreList userId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.scores}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userScoreList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userScoreList?userId=1&amp;pageSize=10', function(data){
+fetch('${site.dynamicPath}api/directive/cms/userScoreList?userId=1&amp;pageSize=10').then(res =&gt; res.json()).then(data=&gt;{
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -2453,7 +2600,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userScoreList?userId=1&amp;pageS
 <p>&lt;@cms.userSurvey id=1&gt;${object.score}&lt;/@cms.userSurvey&gt;</p>
 <p>&lt;@cms.userSurvey ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.score}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userSurvey&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userSurvey?id=1&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/cms/userSurvey?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.score);
 });
 &lt;/script&gt;
@@ -2493,7 +2640,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userSurvey?id=1&amp;appToken=接
 <p>使用示例</p>
 <p>&lt;@cms.userSurveyList userId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.score}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userSurveyList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userSurveyList?userId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/cms/userSurveyList?userId=1&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -2521,7 +2668,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userSurveyList?userId=1&amp;page
 <p>&lt;@cms.userSurveyQuestion id=1&gt;${object.answer}&lt;/@cms.userSurveyQuestion&gt;</p>
 <p>&lt;@cms.userSurveyQuestion ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.answer}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userSurveyQuestion&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userSurveyQuestion?id=1&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/cms/userSurveyQuestion?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.answer);
 });
 &lt;/script&gt;
@@ -2566,7 +2713,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userSurveyQuestion?id=1&amp;appT
 <p>使用示例</p>
 <p>&lt;@cms.userSurveyQuestionList userId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.answer}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userSurveyQuestionList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userSurveyQuestionList?userId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/cms/userSurveyQuestionList?userId=1&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -2589,7 +2736,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userSurveyQuestionList?userId=1&
 <p>&lt;@cms.userVote id=1&gt;${object.itemId}&lt;/@cms.userVote&gt;</p>
 <p>&lt;@cms.userVote ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.itemId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userVote&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userVote?id=1', function(data){
+fetch('${site.dynamicPath}api/directive/cms/userVote?id=1').then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.itemId);
 });
 &lt;/script&gt;
@@ -2628,7 +2775,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userVote?id=1', function(data){
 <p>使用示例</p>
 <p>&lt;@cms.userVoteList userId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.ip}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userVoteList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/userVoteList?userId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/cms/userVoteList?userId=1&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -2653,7 +2800,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/userVoteList?userId=1&amp;pageSi
 <p>&lt;@cms.vote id=1&gt;${object.title}&lt;/@cms.vote&gt;</p>
 <p>&lt;@cms.vote ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.vote&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/vote?id=1', function(data){
+fetch('${site.dynamicPath}api/directive/cms/vote?id=1').then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.title);
 });
 &lt;/script&gt;
@@ -2679,7 +2826,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/vote?id=1', function(data){
 <p>&lt;@cms.voteItem id=1&gt;${object.title}&lt;/@cms.voteItem&gt;</p>
 <p>&lt;@cms.voteItem ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.voteItem&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/voteItem?id=1', function(data){
+fetch('${site.dynamicPath}api/directive/cms/voteItem?id=1').then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.title);
 });
 &lt;/script&gt;
@@ -2722,7 +2869,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/voteItem?id=1', function(data){
 <p>使用示例</p>
 <p>&lt;@cms.voteItemList voteId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.voteItemList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/voteItemList?voteId=1&amp;pageSize=10', function(data){
+fetch('${site.dynamicPath}api/directive/cms/voteItemList?voteId=1&amp;pageSize=10').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -2770,7 +2917,7 @@ console.log(data.page.totalCount);
 <p>使用示例</p>
 <p>&lt;@cms.voteList pageSize=10&gt;&lt;#list page.list as a&gt;${a.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.voteList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/voteList?pageSize=10', function(data){
+fetch('${site.dynamicPath}api/directive/cms/voteList?pageSize=10').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -2782,6 +2929,7 @@ console.log(data.page.totalCount);
   <ul style="padding-left:20px;">
    <li><code>id</code> : id</li>
    <li><code>name</code> : name 名称</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>searchCount</code> : search count 搜索次数</li>
    <li><code>hidden</code> : hidden 隐藏</li>
    <li><code>ip</code> : ip</li>
@@ -2793,12 +2941,16 @@ console.log(data.page.totalCount);
 <p>&lt;@cms.word id=1&gt;${object.name}&lt;/@cms.word&gt;</p>
 <p>&lt;@cms.word ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.word&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/word?id=1&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/cms/word?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.name);
 });
 &lt;/script&gt;
  </pre></div>
         <div class="block" data-id="cms-wordList">wordList 用户投票列表查询指令
+<p>上下文变量</p>
+<ul>
+ <li><code>lang</code>:语言</li>
+</ul>
 <p>参数列表</p>
 <ul>
  <li><code>startCreateDate</code>:起始创建日期,【2020-01-01 23:59:59】,【2020-01-01】</li>
@@ -2828,6 +2980,7 @@ $.getJSON('${site.dynamicPath}api/directive/cms/word?id=1&amp;appToken=接口访
   <ul style="padding-left:20px;">
    <li><code>id</code> : id</li>
    <li><code>name</code> : name 名称</li>
+   <li><code>lang</code> : lang 语言</li>
    <li><code>searchCount</code> : search count 搜索次数</li>
    <li><code>hidden</code> : hidden 隐藏</li>
    <li><code>ip</code> : ip</li>
@@ -2835,9 +2988,9 @@ $.getJSON('${site.dynamicPath}api/directive/cms/word?id=1&amp;appToken=接口访
   </ul></li>
 </ul>
 <p>使用示例</p>
-<p>&lt;@cms.wordList userId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.ip}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.wordList&gt;</p>
+<p>&lt;#assign lang="cn"/&gt; &lt;@cms.wordList userId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.ip}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.wordList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/cms/wordList?userId=1&amp;pageSize=10', function(data){
+fetch('${site.dynamicPath}api/directive/cms/wordList?userId=1&amp;pageSize=10',{"headers":{"lang":"cn"}}).then(res =&gt; res.json()).then(data=&gt;{
 console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -2859,7 +3012,7 @@ console.log(data.page.totalCount);
 <p>使用示例</p>
 <p>&lt;@cms.wordload pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.wordload&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/cms/wordload?pageSize=10&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/cms/wordload?pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
@@ -2908,14 +3061,12 @@ console.log(data.page.totalCount);
     <p>登录结果</p></li>
    <li><code>createDate</code> : login date
     <p>登录日期</p></li>
-   <li><code>errorPassword</code> : error password
-    <p>错误密码</p></li>
   </ul></li>
 </ul>
 <p>使用示例</p>
 <p>&lt;@log.loginList pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@log.loginList&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/log/loginList?pageSize=10&amp;appToken=接口访问授权Token', function(data){
+   fetch('${site.dynamicPath}api/directive/log/loginList?pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.page.totalCount);
    });
    &lt;/script&gt;
@@ -2946,7 +3097,7 @@ console.log(data.page.totalCount);
 <p>&lt;@log.operate id=1&gt;${object.content}&lt;/@log.operate&gt;</p>
 <p>&lt;@log.operate ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.content}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@log.operate&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/log/operate?id=1&amp;appToken=接口访问授权Token', function(data){    
+fetch('${site.dynamicPath}api/directive/log/operate?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
   console.log(data.content);
 });
 &lt;/script&gt;
@@ -3000,7 +3151,7 @@ $.getJSON('${site.dynamicPath}api/directive/log/operate?id=1&amp;appToken=接口
 <p>使用示例</p>
 <p>&lt;@log.operateList pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@log.operateList&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/log/OperateList?pageSize=10&amp;appToken=接口访问授权Token', function(data){
+   fetch('${site.dynamicPath}api/directive/log/OperateList?pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.page.totalCount);
    });
    &lt;/script&gt;
@@ -3028,7 +3179,7 @@ $.getJSON('${site.dynamicPath}api/directive/log/operate?id=1&amp;appToken=接口
 <p>&lt;@log.task id=1&gt;${object.result}&lt;/@log.task&gt;</p>
 <p>&lt;@log.task ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.result}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@log.task&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/log/task?id=1&amp;appToken=接口访问授权Token', function(data){    
+fetch('${site.dynamicPath}api/directive/log/task?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
   console.log(data.result);
 });
 &lt;/script&gt;
@@ -3075,7 +3226,7 @@ $.getJSON('${site.dynamicPath}api/directive/log/task?id=1&amp;appToken=接口访
 <p>使用示例</p>
 <p>&lt;@log.taskList pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@log.taskList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/log/TaskList?pageSize=10&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/log/TaskList?pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
@@ -3127,10 +3278,23 @@ $.getJSON('${site.dynamicPath}api/directive/log/task?id=1&amp;appToken=接口访
 <p>使用示例</p>
 <p>&lt;@log.uploadList pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@log.uploadList&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/log/UploadList?pageSize=10&amp;appToken=接口访问授权Token', function(data){
+   fetch('${site.dynamicPath}api/directive/log/UploadList?pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
      console.log(data.page.totalCount);
    });
    &lt;/script&gt;
+ </pre></div>
+        <div class="block" data-id="oauth-list">oauthList 第三方登录查询指令
+<p>参数列表 返回结果</p>
+<ul>
+ <li><code>list</code>登录渠道名称列表</li>
+</ul>
+使用示例
+<p>&lt;@oauth.list&gt;&lt;#list list as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@oauth.list&gt;</p>
+<pre> &lt;script&gt;
+  fetch('${site.dynamicPath}api/directive/oauth/list').then(res =&gt; res.json()).then(data=&gt;{
+    console.log(data);
+  });
+  &lt;/script&gt;
  </pre></div>
         <div class="block" data-id="sys-app">sysApp 应用查询指令
 <p>参数列表</p>
@@ -3155,7 +3319,7 @@ $.getJSON('${site.dynamicPath}api/directive/log/task?id=1&amp;appToken=接口访
 <p>&lt;@sys.app id=1&gt;${object.channel}&lt;/@sys.app&gt;</p>
 <p>&lt;@sys.app ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.channel}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.app&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/app?id=1&amp;appToken=接口访问授权Token', function(data){    
+fetch('${site.dynamicPath}api/directive/sys/app?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
   console.log(data.channel);
 });
 &lt;/script&gt;
@@ -3187,7 +3351,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/app?id=1&amp;appToken=接口访�
 <p>&lt;@sys.appClient id=1&gt;${object.clientVersion}&lt;/@sys.appClient&gt;</p>
 <p>&lt;@sys.appClient ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.clientVersion}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.appClient&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/appClient?id=1&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/sys/appClient?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.clientVersion);
 });
 &lt;/script&gt;
@@ -3243,7 +3407,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/appClient?id=1&amp;appToken=接�
 <p>使用示例</p>
 <p>&lt;@sys.appClientList pageSize=10&gt;&lt;#list page.list as a&gt;${a.uuid}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.appClientList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/appClientList?pageSize=10&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/sys/appClientList?pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
@@ -3330,7 +3494,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/appClient?id=1&amp;appToken=接�
 <p>&lt;@sys.authorized roleIds='1,2,3' url='cmsContent/list'&gt;${object}&lt;/@sys.authorized&gt;</p>
 <p>&lt;@sys.authorized roleIds='1,2,3' urls='cmsContent/list,cmsCategory/list'&gt;&lt;#list map as k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.authorized&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/sys/authorized?roleIds=1,2,3&amp;url=cmsContent/list&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/sys/authorized?roleIds=1,2,3&amp;url=cmsContent/list',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -3377,7 +3541,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/appClient?id=1&amp;appToken=接�
 <p>使用示例</p>
 <p>&lt;@sys.clusterList pageSize=10&gt;&lt;#list page.list as a&gt;${a.uuid}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.clusterList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/clusterList?pageSize=10', function(data){
+  fetch('${site.dynamicPath}api/directive/sys/clusterList?pageSize=10').then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
@@ -3398,7 +3562,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/appClient?id=1&amp;appToken=接�
 <p>使用示例</p>
 <p>&lt;@sys.config code='site'&gt;${object.description}&lt;/@sys.config&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/config?code=site&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/sys/config?code=site',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.description);
 });
 &lt;/script&gt;
@@ -3419,7 +3583,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/config?code=site&amp;appToken=�
 <p>使用示例</p>
 <p>&lt;@sys.configData code='site'&gt;${object.register_url}&lt;/@sys.configData&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/configData?code=site&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/sys/configData?code=site',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
  console.log(data.register_url);
 });
 &lt;/script&gt;
@@ -3446,13 +3610,14 @@ $.getJSON('${site.dynamicPath}api/directive/sys/configData?code=site&amp;appToke
    <li><code>defaultValue</code> : default value 默认值</li>
    <li><code>dictionaryId</code> : dictionary id 数据字典</li>
    <li><code>multiple</code> : multiple 多选</li>
+   <li><code>multipleLang</code> : multiple lang 多语言</li>
    <li><code>sort</code> : sort 排序</li>
   </ul></li>
 </ul>
 <p>使用示例</p>
 <p>&lt;@sys.configFieldList pageSize=10&gt;&lt;#list list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.configFieldList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/configFieldList?appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/sys/configFieldList',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data);
   });
   &lt;/script&gt;
@@ -3473,7 +3638,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/configData?code=site&amp;appToke
 <p>使用示例</p>
 <p>&lt;@sys.configList&gt;&lt;#list list as a&gt;${a.code}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.configList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/configList?appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/sys/configList',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data);
   });
   &lt;/script&gt;
@@ -3511,7 +3676,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/configData?code=site&amp;appToke
 <p>&lt;@sys.dept id=1&gt;${object.name}&lt;/@sys.dept&gt;</p>
 <p>&lt;@sys.dept ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.dept&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('//sys.publicsys.com/api/directive/sys/dept?id=1&amp;appToken=接口访问授权Token', function(data){    
+fetch('//sys.publicsys.com/api/directive/sys/dept?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
   console.log(data.name);
 });
 &lt;/script&gt;
@@ -3527,7 +3692,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/dept?id=1&amp;appToken=接口�
 <p>&lt;@sys.deptItem deptId=1 ItemId=1&gt;${object}&lt;/@sys.deptItem&gt;</p>
 <p>&lt;@sys.deptItem deptId=1 ItemIds=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.deptItem&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/deptItem?deptId=1&amp;ItemId=1&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/sys/deptItem?deptId=1&amp;ItemId=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data);
   });
   &lt;/script&gt;
@@ -3562,7 +3727,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/dept?id=1&amp;appToken=接口�
 <p>使用示例</p>
 <p>&lt;@sys.deptCategoryList deptId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.id.deptId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.deptCategoryList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/deptCategoryList?deptId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/sys/deptCategoryList?deptId=1&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
@@ -3617,7 +3782,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/dept?id=1&amp;appToken=接口�
 <p>使用示例</p>
 <p>&lt;@sys.deptList pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.deptList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/deptList?pageSize=10&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/sys/deptList?pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
@@ -3642,7 +3807,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/dept?id=1&amp;appToken=接口�
 <p>&lt;@sys.domain id='www.publiccms.com'&gt;${object.name}&lt;/@sys.domaing&gt;</p>
 <p>&lt;@sys.domain ids='www.publiccms.com,www.sanluan.com'&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.domain&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/domain?id=1&amp;appToken=接口访问授权Token', function(data){    
+fetch('${site.dynamicPath}api/directive/sys/domain?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
   console.log(data.name);
 });
 &lt;/script&gt;
@@ -3684,7 +3849,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/domain?id=1&amp;appToken=接口�
 <p>使用示例</p>
 <p>&lt;@sys.domainList deptId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.domainList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/domainList?pageSize=10&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/sys/domainList?pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.page.totalCount);
   });
   &lt;/script&gt;
@@ -3713,13 +3878,14 @@ $.getJSON('${site.dynamicPath}api/directive/sys/domain?id=1&amp;appToken=接口�
    <li><code>defaultValue</code> : default value 默认值</li>
    <li><code>dictionaryId</code> : dictionary id 数据字典</li>
    <li><code>multiple</code> : multiple 多选</li>
+   <li><code>multipleLang</code> : multiple lang 多语言</li>
    <li><code>sort</code> : sort 排序</li>
   </ul></li>
 </ul>
 <p>使用示例</p>
 <p>&lt;@sys.extendFieldList deptId=1 pageSize=10&gt;&lt;#list list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.extendFieldList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/extendFieldList?extendId=1&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/sys/extendFieldList?extendId=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data);
   });
   &lt;/script&gt;
@@ -3746,7 +3912,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/domain?id=1&amp;appToken=接口�
 <p>&lt;@sys.lock id=1&gt;${object.count}&lt;/@sys.lock&gt;</p>
 <p>&lt;@sys.lock ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.count}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.lock&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/lock?id=1', function(data){
+fetch('${site.dynamicPath}api/directive/sys/lock?id=1').then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.count);
 });
 &lt;/script&gt;
@@ -3778,7 +3944,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/lock?id=1', function(data){
 <p>&lt;@sys.module id='page'&gt;${object.url}&lt;/@sys.module&gt;</p>
 <p>&lt;@sys.module ids='page,develop'&gt;&lt;#list map as k,v&gt;${k}:${v.url}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.module&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('//sys.publicsys.com/api/directive/sys/module?id=page&amp;appToken=接口访问授权Token', function(data){    
+fetch('//sys.publicsys.com/api/directive/sys/module?id=page',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
   console.log(data.url);
 });
 &lt;/script&gt;
@@ -3809,7 +3975,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/module?id=page&amp;appToken=接
 <p>使用示例</p>
 <p>&lt;@sys.moduleLang moduleId='page' lang='zh'&gt;${object}&lt;/@sys.moduleLang&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('//sys.publicsys.com/api/directive/sys/moduleLang?moduleId=page&amp;lang=zh', function(data){
+fetch('//sys.publicsys.com/api/directive/sys/moduleLang?moduleId=page&amp;lang=zh').then(res =&gt; res.json()).then(data=&gt;{
  console.log(data);
 });
 &lt;/script&gt;
@@ -3858,7 +4024,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/moduleLang?moduleId=page&amp;la
 <p>使用示例</p>
 <p>&lt;@sys.moduleList parentId='page' pageSize=10&gt;&lt;#list page.list as a&gt;${springMacroRequestContext.getMessage('menu.'+a.id)}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.moduleList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/sys/moduleList?parentId=page&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/sys/moduleList?parentId=page&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;
@@ -3879,7 +4045,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/moduleLang?moduleId=page&amp;la
 <p>使用示例</p>
 <p>&lt;@sys.record code='site' data='data'&gt;${object.data}&lt;/@sys.record&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/record?code=site&amp;data=data&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/sys/record?code=site&amp;data=data',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
  console.log(data.data);
 });
 &lt;/script&gt;
@@ -3908,7 +4074,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/record?code=site&amp;data=data&a
 <p>使用示例</p>
 <p>&lt;@sys.recordList&gt;&lt;#list list as a&gt;${a.data}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.recordList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/recordList?appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/sys/recordList',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data);
   });
   &lt;/script&gt;
@@ -3932,7 +4098,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/record?code=site&amp;data=data&a
 <p>&lt;@sys.role id=1&gt;${object.name}&lt;/@sys.role&gt;</p>
 <p>&lt;@sys.role ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.role&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('//sys.publicsys.com/api/directive/sys/role?id=1&amp;appToken=接口访问授权Token', function(data){    
+fetch('//sys.publicsys.com/api/directive/sys/role?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
   console.log(data.name);
 });
 &lt;/script&gt;
@@ -3970,7 +4136,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/role?id=1&amp;appToken=接口�
 <p>使用示例</p>
 <p>&lt;@sys.roleList deptId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.roleList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/sys/roleList?deptId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/sys/roleList?deptId=1&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;
@@ -3986,7 +4152,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/role?id=1&amp;appToken=接口�
 <p>&lt;@sys.roleModule roleIds='1,2,3' modelId='page'&gt;${object}&lt;/@sys.roleModule&gt;</p>
 <p>&lt;@sys.roleModule roleIds='1,2,3' modelIds='page,content'&gt;&lt;#list map as k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.roleModule&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/roleModule?roleIds=1,2,3&amp;modelId=page&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/sys/roleModule?roleIds=1,2,3&amp;modelId=page',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data);
 });
 &lt;/script&gt;
@@ -4020,7 +4186,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/roleModule?roleIds=1,2,3&amp;mod
 <p>使用示例</p>
 <p>&lt;@sys.roleModuleList roleId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.id.roleId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.roleModuleList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/sys/sysDeptCategoryList?roleId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/sys/sysDeptCategoryList?roleId=1&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;
@@ -4054,7 +4220,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/roleModule?roleIds=1,2,3&amp;mod
 <p>使用示例</p>
 <p>&lt;@sys.roleUserList roleId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.id.roleId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.roleUserList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/sys/roleUserList?roleId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/sys/roleUserList?roleId=1&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;
@@ -4090,7 +4256,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/roleModule?roleIds=1,2,3&amp;mod
 <p>&lt;@sys.site id=1&gt;${object.name}&lt;/@sys.site&gt;</p>
 <p>&lt;@sys.site ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.site&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('//sys.publicsys.com/api/directive/sys/site?id=1&amp;appToken=接口访问授权Token', function(data){    
+fetch('//sys.publicsys.com/api/directive/sys/site?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
   console.log(data.name);
 });
 &lt;/script&gt;
@@ -4144,7 +4310,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/site?id=1&amp;appToken=接口�
 <p>使用示例</p>
 <p>&lt;@sys.siteList pageSize=10&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.siteList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/sys/siteList?pageSize=10&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/sys/siteList?pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;
@@ -4169,7 +4335,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/site?id=1&amp;appToken=接口�
 <p>&lt;@sys.task id=1&gt;${object.name}&lt;/@sys.task&gt;</p>
 <p>&lt;@sys.task ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.task&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('//sys.publicsys.com/api/directive/sys/task?id=1&amp;appToken=接口访问授权Token', function(data){
+fetch('//sys.publicsys.com/api/directive/sys/task?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.name);
 });
 &lt;/script&gt;
@@ -4210,7 +4376,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/task?id=1&amp;appToken=接口�
 <p>使用示例</p>
 <p>&lt;@sys.taskList deptId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.id.deptId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.taskList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/sys/taskList?deptId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/sys/taskList?deptId=1&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;
@@ -4247,7 +4413,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/task?id=1&amp;appToken=接口�
 <p>&lt;@sys.user id=1&gt;${object.name}&lt;/@sys.user&gt;</p>
 <p>&lt;@sys.user ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.user&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('//sys.publicsys.com/api/directive/sys/user?id=1&amp;appToken=接口访问授权Token', function(data){    
+fetch('//sys.publicsys.com/api/directive/sys/user?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
   console.log(data.name);
 });
 &lt;/script&gt;
@@ -4309,7 +4475,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/user?id=1&amp;appToken=接口�
 <p>使用示例</p>
 <p>&lt;@sys.userList deptId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.nickname}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.userList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/sys/userList?deptId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/sys/userList?deptId=1&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;
@@ -4326,7 +4492,7 @@ $.getJSON('//sys.publicsys.com/api/directive/sys/user?id=1&amp;appToken=接口�
 <p>使用示例</p>
 <p>&lt;@sys.UserSetting userId=1 code='home_title'&gt;${object}&lt;/@sys.UserSetting&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
  console.log(data.register_url);
 });
 &lt;/script&gt;
@@ -4373,7 +4539,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site&amp;appT
 <p>使用示例</p>
 <p>&lt;@sys.userTokenList userId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.id.deptId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.userTokenList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/sys/userTokenList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id', function(data){
+ fetch('${site.dynamicPath}api/directive/sys/userTokenList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id').then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;
@@ -4408,13 +4574,14 @@ $.getJSON('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site&amp;appT
    <li><code>defaultValue</code> : default value 默认值</li>
    <li><code>dictionaryId</code> : dictionary id 数据字典</li>
    <li><code>multiple</code> : multiple 多选</li>
+   <li><code>multipleLang</code> : multiple lang 多语言</li>
    <li><code>sort</code> : sort 排序</li>
   </ul></li>
 </ul>
 <p>使用示例</p>
 <p>&lt;@sys.extendFieldList deptId=1 pageSize=10&gt;&lt;#list list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@sys.extendFieldList&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/sys/workflowStepList?workflowId=1', function(data){
+  fetch('${site.dynamicPath}api/directive/sys/workflowStepList?workflowId=1').then(res =&gt; res.json()).then(data=&gt;{
     console.log(data);
   });
   &lt;/script&gt;
@@ -4434,7 +4601,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site&amp;appT
 <p>使用示例</p>
 <p>&lt;@task.clearLog&gt;&lt;#list result as k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@task.clearLog&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/task/clearLog?appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/task/clearLog',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;
@@ -4448,7 +4615,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site&amp;appT
 <p>使用示例</p>
 <p>&lt;@task.indexContent id=1&gt;&lt;&lt;/@task.indexContent&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/task/indexContent?id=1&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/task/indexContent?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;
@@ -4468,7 +4635,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site&amp;appT
 <p>使用示例</p>
 <p>&lt;@task.publishCategory id=1&gt;&lt;#list map as k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@task.publishCategory&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/task/publishCategory?id=1&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/task/publishCategory?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -4486,7 +4653,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site&amp;appT
 <p>使用示例</p>
 <p>&lt;@task.publishContent id=1&gt;&lt;#list map as k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@task.publishContent&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/task/publishContent?id=1&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/task/publishContent?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -4503,7 +4670,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site&amp;appT
 <p>使用示例</p>
 <p>&lt;@task.publishPage&gt;&lt;#list map as k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@task.publishPage&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/task/publishPage?path=&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/task/publishPage?path=',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -4520,7 +4687,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site&amp;appT
 <p>使用示例</p>
 <p>&lt;@task.publishPlace&gt;&lt;#list map as k,v&gt;${k}:${v}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@task.publishPlace&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/task/publishPlace?path=&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/task/publishPlace?path=',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -4541,7 +4708,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site&amp;appT
 <p>使用示例</p>
 <p>&lt;@tools.createCategoryFile id=1 templatePath='category.html' filePath='category/'+1+'.html'&gt;${url}&lt;/@tools.createCategoryFile&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/createCategoryFile?id=1&amp;templatePath=category.html&amp;filePath=category/1.html&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/createCategoryFile?id=1&amp;templatePath=category.html&amp;filePath=category/1.html',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -4550,6 +4717,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site&amp;appT
 <p>参数列表</p>
 <ul>
  <li><code>id</code>:内容id</li>
+ <li><code>lang</code>:语言</li>
  <li><code>templatePath</code>:模板路径</li>
  <li><code>filePath</code>:静态文件路径</li>
  <li><code>pageIndex</code>:当前页码,默认为1</li>
@@ -4561,7 +4729,7 @@ $.getJSON('${site.dynamicPath}api/directive/sys/UserSetting?uscode=site&amp;appT
 <p>使用示例</p>
 <p>&lt;@tools.createContentFile id=1 templatePath='content.html' filePath='content/'+1+'.html'&gt;${url}&lt;/@tools.createContentFile&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/tools/createContentFile?id=1&amp;templatePath=content.html&amp;filePath=content/1.html&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/tools/createContentFile?id=1&amp;templatePath=content.html&amp;filePath=content/1.html',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data);
 });
 &lt;/script&gt;
@@ -4592,7 +4760,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/createContentFile?id=1&amp;tem
 <p>使用示例</p>
 <p>&lt;@tools.createLock itemType='content' itemId='1' userId='1'&gt;${url}&lt;/@tools.createLock&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/tools/createLock?itemType=content&amp;itemId=1&amp;userId=1&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/tools/createLock?itemType=content&amp;itemId=1&amp;userId=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data);
 });
 &lt;/script&gt;
@@ -4602,6 +4770,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/createLock?itemType=content&am
 <ul>
  <li><code>templatePath</code>:模板路径</li>
  <li><code>filePath</code>:静态文件路径</li>
+ <li><code>lang</code>:语言</li>
  <li><code>pageIndex</code>:当前页码,默认为1</li>
  <li><code>parameters</code>:参数map</li>
 </ul>
@@ -4612,7 +4781,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/createLock?itemType=content&am
 <p>使用示例</p>
 <p>&lt;@tools.createTemplateFile templatePath='template.html' filePath='page/'+1+'.html' parameters={"parameter1","value1"}&gt;${url}&lt;/@tools.createTemplateFile&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/tools/createTemplateFile?id=1&amp;templatePath=template.html&amp;filePath=page/1.html&amp;parameters.parameter1=value1&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/tools/createTemplateFile?id=1&amp;templatePath=template.html&amp;filePath=page/1.html&amp;parameters.parameter1=value1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data);
 });
 &lt;/script&gt;
@@ -4639,7 +4808,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/createTemplateFile?id=1&amp;te
 <p>使用示例</p>
 <p>&lt;@tools.disk&gt;${freeSpace}&lt;/@tools.disk&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/tools/disk',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
  console.log(data);
 });
 &lt;/script&gt;
@@ -4694,7 +4863,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 <p>使用示例</p>
 <p>&lt;@tools.diyMetadata itemType='region' itemId='00000000-0000-0000-0000-000000000000'&gt;${object.name}&lt;/@tools.diyMetadata&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/diyMetadata?itemType=region&amp;itemId=00000000-0000-0000-0000-000000000000&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/diyMetadata?itemType=region&amp;itemId=00000000-0000-0000-0000-000000000000',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.name);
  });
  &lt;/script&gt;
@@ -4750,7 +4919,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 <p>使用示例</p>
 <p>&lt;@tools.diyMetadataList itemType='region'&gt;&lt;#list page.list as a&gt;${a.name}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.diyMetadataList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/diyMetadataList?itemType=region&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/diyMetadataList?itemType=region',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.name);
  });
  &lt;/script&gt;
@@ -4775,7 +4944,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 <p>使用示例</p>
 <p>&lt;@tools.diyMetadata id='00000000-0000-0000-0000-000000000000'&gt;${object.id}&lt;/@tools.diyMetadata&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/regionData?itemId=00000000-0000-0000-0000-000000000000&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/regionData?itemId=00000000-0000-0000-0000-000000000000',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.id);
  });
  &lt;/script&gt;
@@ -4797,7 +4966,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 <p>使用示例</p>
 <p>&lt;@tools.executeScript command='backupdb.bat'/&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/executeScript?command=backupdb.bat&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/executeScript?command=backupdb.bat',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.id);
  });
  &lt;/script&gt;
@@ -4815,7 +4984,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 <p>使用示例</p>
 <p>&lt;@tools.fileBackupContent type='file' path='index.html'&gt;${object}&lt;/@tools.fileBackupContent&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/fileBackupContent?type=file&amp;path=index.html&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/fileBackupContent?type=file&amp;path=index.html',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -4834,7 +5003,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 <p>使用示例</p>
 <p>&lt;@tools.fileBackupList path='/'&gt;&lt;#list list as a&gt;${a.fileName}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.fileBackupList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/fileBackupList?path=/&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/fileBackupList?path=/',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -4852,7 +5021,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 <p>使用示例</p>
 <p>&lt;@tools.fileContent path='index.html'&gt;${object}&lt;/@tools.fileContent&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/fileContent?path=index.html&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/fileContent?path=index.html',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -4870,7 +5039,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 <p>使用示例</p>
 <p>&lt;@tools.fileExists type='file' path='/'&gt;&lt;#list list as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.fileExists&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/fileExists?type=file&amp;path=/&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/fileExists?type=file&amp;path=/',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -4888,7 +5057,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 <p>使用示例</p>
 <p>&lt;@tools.fileHistoryContent type='file' path='index.html/2020-01-01_01-01-000000'&gt;${object}&lt;/@tools.fileHistoryContent&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/fileHistoryContent?type=file&amp;path=index.html/2020-01-01_01-01-000000&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/fileHistoryContent?type=file&amp;path=index.html/2020-01-01_01-01-000000',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -4907,7 +5076,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 <p>使用示例</p>
 <p>&lt;@tools.fileHistoryList path='/'&gt;&lt;#list list as a&gt;${a.fileName}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.fileHistoryList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/fileHistoryList?path=/&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/fileHistoryList?path=/',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -4926,7 +5095,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 <p>使用示例</p>
 <p>&lt;@tools.fileList path='/'&gt;&lt;#list list as a&gt;${a.fileName}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.fileList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/fileList?path=/&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/fileList?path=/',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -4940,15 +5109,19 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 <p>使用示例</p>
 <p>&lt;@tools.includeLayout id='00000000-0000-0000-0000-000000000000'&gt;${index},&lt;/@tools.includeLayout&gt;</p></div>
         <div class="block" data-id="tools-includePlace">includePlace 包含页面片段指令
+<p>上下文变量</p>
+<ul>
+ <li><code>lang</code>:语言</li>
+</ul>
 <p>参数列表</p>
 <ul>
  <li><code>path</code>:路径</li>
 </ul>
 <p>打印包含结果</p>
 <p>使用示例</p>
-<p>&lt;@tools.includePlace path='00000000-0000-0000-0000-000000000000'/&gt;</p>
+<p>&lt;#assign lang="cn"/&gt; &lt;@tools.includePlace path='/00000000-0000-0000-0000-000000000000'/&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/includePlace?path=00000000-0000-0000-0000-000000000000.html&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/includePlace?path=/00000000-0000-0000-0000-000000000000.html',{"headers":{"appToken":"接口访问授权Token","lang":"cn"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -4973,7 +5146,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/disk?appToken=接口访问授�
 <p>使用示例</p>
 <p>&lt;@tools.licenseVerify licenseData='content'&gt;${url}&lt;/@tools.licenseVerify&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/tools/licenseVerify?licenseData=content', function(data){
+fetch('${site.dynamicPath}api/directive/tools/licenseVerify?licenseData=content').then(res =&gt; res.json()).then(data=&gt;{
  console.log(data);
 });
 &lt;/script&gt;
@@ -4991,7 +5164,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/licenseVerify?licenseData=cont
 <p>使用示例</p>
 <p>&lt;@tools.memory&gt;${totalMemory}&lt;/@tools.memory&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/tools/memory',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
  console.log(data);
 });
 &lt;/script&gt;
@@ -5000,6 +5173,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 <p>参数列表</p>
 <ul>
  <li><code>path</code>:模板路径</li>
+ <li><code>lang</code>:语言</li>
 </ul>
 <p>返回结果</p>
 <ul>
@@ -5007,6 +5181,8 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
   <ul style="padding-left:20px;">
    <li><code>alias</code> : alias
     <p>别名</p></li>
+   <li><code>enableMultilingual</code> : enable multilingual
+    <p>启用国际化</p></li>
    <li><code>publishPath</code> : static file path
     <p>静态文件路径</p></li>
    <li><code>useDynamic</code> : allow dynamic access
@@ -5025,12 +5201,14 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
     <p>扩展字段列表</p></li>
    <li><code>parameterTypeMap</code> : parameter type map
     <p>参数类型表</p></li>
+   <li><code>extendData</code> : pagedata
+    <p>页面数据</p></li>
   </ul></li>
 </ul>
 <p>使用示例</p>
 <p>&lt;@tools.metadata path='index.html'&gt;${object.alias}&lt;/@tools.metadata&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/metadata?path=index.html&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/metadata?path=index.html',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.alias);
  });
  &lt;/script&gt;
@@ -5039,6 +5217,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 <p>参数列表</p>
 <ul>
  <li><code>path</code>:模板路径</li>
+ <li><code>lang</code>:语言</li>
 </ul>
 <p>返回结果</p>
 <ul>
@@ -5048,6 +5227,10 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
     <p>别名</p></li>
    <li><code>size</code> : data size
     <p>数据条数</p></li>
+   <li><code>enableMultilingual</code> : enable multilingual
+    <p>启用国际化</p></li>
+   <li><code>enablePlaceMultilingual</code> : enable place multilingual
+    <p>启用推荐位国际化</p></li>
    <li><code>adminIds</code> : front administrator ids
     <p>前台管理员ids</p></li>
    <li><code>allowContribute</code> : allow contribute
@@ -5072,12 +5255,14 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
     <p>扩展字段列表</p></li>
    <li><code>metadataExtendList</code> : metadata extend field list
     <p>元数据扩展字段列表</p></li>
+   <li><code>extendData</code> : pagedata
+    <p>页面数据</p></li>
   </ul></li>
 </ul>
 <p>使用示例</p>
 <p>&lt;@tools.placeMetadata path='00000000-0000-0000-0000-000000000000'&gt;${object.alias}&lt;/@tools.placeMetadata&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/placeMetadata?path=00000000-0000-0000-0000-000000000000.html&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/placeMetadata?path=00000000-0000-0000-0000-000000000000.html',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.alias);
  });
  &lt;/script&gt;
@@ -5089,6 +5274,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
  <li><code>cc</code>:多个抄送地址</li>
  <li><code>bcc</code>:多个密送地址</li>
  <li><code>title</code>:标题</li>
+ <li><code>lang</code>:语言</li>
  <li><code>templatePath</code>:内容模板路径</li>
  <li><code>content</code>:邮件内容,templatePath为空时有效</li>
  <li><code>fileNames</code>:多个附件名称</li>
@@ -5102,7 +5288,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 <p>使用示例</p>
 <p>&lt;@tools.sendEmail email='master@puliccms.com' title='title' content='content' parameters={"parameter1":"value1"}/&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/sendEmail?email=master@puliccms.com&amp;title=title&amp;content=content&amp;parameters.parameter1=value1&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/sendEmail?email=master@puliccms.com&amp;title=title&amp;content=content&amp;parameters.parameter1=value1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.alias);
  });
  &lt;/script&gt;
@@ -5129,7 +5315,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 <p>使用示例</p>
 <p>&lt;@tools.systemProperties&gt;${.vars['java.version']}&lt;/@tools.systemProperties&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/systemProperties?appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/systemProperties',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data['java.version']);
  });
  &lt;/script&gt;
@@ -5146,7 +5332,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 <p>使用示例</p>
 <p>&lt;@tools.templatePlaceList path='index.html'&gt;&lt;#list list as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.templatePlaceList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/templatePlaceList?path=index.html&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/templatePlaceList?path=index.html',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -5163,22 +5349,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 <p>使用示例</p>
 <p>&lt;@tools.templateRegionList path='index.html'&gt;&lt;#list list as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.templateRegionList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/templateRegionList?path=index.html&amp;appToken=接口访问授权Token', function(data){
-   console.log(data);
- });
- &lt;/script&gt;
- </pre></div>
-        <div class="block" data-id="tools-templateResult">templateResult 模板渲染结果指令
-<p>参数列表</p>
-<ul>
- <li><code>parameters</code>:参数map</li>
- <li><code>templateContent</code>:模板内容</li>
-</ul>
-打印渲染结果
-<p>使用示例</p>
-<p>&lt;@tools.templateResult templateContent='${name}' parameters={'name':'value'}/&gt;</p>
-<pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/templateResult?path=$%7Bname%7D&amp;parameters.name=value&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/templateRegionList?path=index.html',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -5196,7 +5367,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 <p>使用示例</p>
 <p>&lt;@tools.templateSearchList path='/' word='script'&gt;&lt;#list list as a&gt;${a.path}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@tools.templateSearchList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/templateSearchList?path=/&amp;word=script&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/templateSearchList?path=/&amp;word=script',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data);
  });
  &lt;/script&gt;
@@ -5212,7 +5383,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 <p>使用示例</p>
 <p>&lt;@tools.thumb path='images/logo.jpg' width=100 height=100/&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/thumb?path=images/logo.jpg&amp;width=100&amp;height=100&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/thumb?path=images/logo.jpg&amp;width=100&amp;height=100',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.deviceType);
  });
  &lt;/script&gt;
@@ -5236,7 +5407,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 <p>使用示例</p>
 <p>&lt;@tools.userAgent&gt;${a.deviceType}&lt;/@tools.userAgent&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/userAgent', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/userAgent').then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.deviceType);
  });
  &lt;/script&gt;
@@ -5256,7 +5427,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 <p>使用示例</p>
 <p>&lt;@tools.version path='/'&gt;${a.fileName}&lt;/@tools.version&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/tools/version', function(data){
+ fetch('${site.dynamicPath}api/directive/tools/version').then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.cms);
  });
  &lt;/script&gt;
@@ -5278,7 +5449,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 <p>&lt;@trade.account id=1&gt;${object.amount}&lt;/@trade.account&gt;</p>
 <p>&lt;@trade.account ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.account&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/trade/account?id=1&amp;appToken=接口访问授权Token', function(data){    
+   fetch('${site.dynamicPath}api/directive/trade/account?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
      console.log(data.amount);
    });
    &lt;/script&gt;
@@ -5314,7 +5485,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 <p>&lt;@trade.accountHistory id=1&gt;${object.balance}&lt;/@trade.accountHistory&gt;</p>
 <p>&lt;@trade.accountHistory ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.balance}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.accountHistory&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/trade/accountHistory?id=1&amp;appToken=接口访问授权Token', function(data){    
+  fetch('${site.dynamicPath}api/directive/trade/accountHistory?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
     console.log(data.balance);
   });
   &lt;/script&gt;
@@ -5370,7 +5541,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 使用示例
 <p>&lt;@trade.accountHistoryList pageSize=10&gt;&lt;#list page.list as a&gt;${a.amountChange}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.accountHistoryList&gt;</p>
 <pre>  &lt;script&gt;
-   $.getJSON('${site.dynamicPath}api/directive/trade/accountHistoryList?authToken=用户登录Token&amp;authUserId=用户id', function(data){    
+   fetch('${site.dynamicPath}api/directive/trade/accountHistoryList?authToken=用户登录Token&amp;authUserId=用户id').then(res =&gt; res.json()).then(data=&gt;{    
      console.log(data.page.totalCount);
    });
    &lt;/script&gt;
@@ -5408,7 +5579,7 @@ $.getJSON('${site.dynamicPath}api/directive/tools/memory?appToken=接口访问�
 使用示例
 <p>&lt;@trade.accountList pageSize=10&gt;&lt;#list page.list as a&gt;${a.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.accountList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/trade/accountList?pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+fetch('${site.dynamicPath}api/directive/trade/accountList?pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -5423,7 +5594,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/accountList?pageSize=10&amp;ap
 使用示例
 <p>&lt;@oauth.list&gt;&lt;#list list as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@oauth.list&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/trade/gatewayList', function(data){
+  fetch('${site.dynamicPath}api/directive/trade/gatewayList').then(res =&gt; res.json()).then(data=&gt;{
     console.log(data);
   });
   &lt;/script&gt;
@@ -5476,7 +5647,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/accountList?pageSize=10&amp;ap
 <p>&lt;@trade.order id=1&gt;${object.title}&lt;/@trade.order&gt;</p>
 <p>&lt;@trade.order ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.order&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/trade/order?id=1&amp;appToken=接口访问授权Token', function(data){    
+  fetch('${site.dynamicPath}api/directive/trade/order?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
     console.log(data.title);
   });
   &lt;/script&gt;
@@ -5502,7 +5673,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/accountList?pageSize=10&amp;ap
 <p>&lt;@trade.orderHistory id=1&gt;${object.amount}&lt;/@trade.orderHistory&gt;</p>
 <p>&lt;@trade.orderHistory ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.orderHistory&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/trade/orderHistory?id=1&amp;appToken=接口访问授权Token', function(data){    
+  fetch('${site.dynamicPath}api/directive/trade/orderHistory?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
     console.log(data.amount);
   });
   &lt;/script&gt;
@@ -5546,7 +5717,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/accountList?pageSize=10&amp;ap
 使用示例
 <p>&lt;@trade.orderHistoryList orderId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.content}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.orderHistoryList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/trade/orderHistoryList?orderId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+fetch('${site.dynamicPath}api/directive/trade/orderHistoryList?orderId=1&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -5620,7 +5791,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/orderHistoryList?orderId=1&amp
 使用示例
 <p>&lt;@trade.orderList pageSize=10&gt;&lt;#list page.list as a&gt;${a.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.orderList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/trade/orderList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id', function(data){    
+fetch('${site.dynamicPath}api/directive/trade/orderList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id').then(res =&gt; res.json()).then(data=&gt;{    
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -5652,7 +5823,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/orderList?pageSize=10&amp;auth
 <p>&lt;@trade.orderProduct id=1&gt;${object.quantity}&lt;/@trade.orderProduct&gt;</p>
 <p>&lt;@trade.orderProduct ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.quantity}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.orderProduct&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/trade/orderProduct?id=1&amp;appToken=接口访问授权Token', function(data){    
+  fetch('${site.dynamicPath}api/directive/trade/orderProduct?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
     console.log(data.quantity);
   });
   &lt;/script&gt;
@@ -5699,7 +5870,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/orderList?pageSize=10&amp;auth
 使用示例
 <p>&lt;@trade.orderProductList orderId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.productId}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.orderProductList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/trade/orderProductList?orderId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+fetch('${site.dynamicPath}api/directive/trade/orderProductList?orderId=1&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -5746,7 +5917,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/orderProductList?orderId=1&amp
 <p>&lt;@trade.payment id=1&gt;${object.amount}&lt;/@trade.payment&gt;</p>
 <p>&lt;@trade.payment ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.payment&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/trade/payment?id=1&amp;appToken=接口访问授权Token', function(data){    
+  fetch('${site.dynamicPath}api/directive/trade/payment?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
     console.log(data.amount);
   });
   &lt;/script&gt;
@@ -5772,7 +5943,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/orderProductList?orderId=1&amp
 <p>&lt;@trade.paymentHistory id=1&gt;${object.content}&lt;/@trade.paymentHistory&gt;</p>
 <p>&lt;@trade.paymentHistory ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.content}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.paymentHistory&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/trade/paymentHistory?id=1&amp;appToken=接口访问授权Token', function(data){    
+  fetch('${site.dynamicPath}api/directive/trade/paymentHistory?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
     console.log(data.content);
   });
   &lt;/script&gt;
@@ -5816,7 +5987,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/orderProductList?orderId=1&amp
 使用示例
 <p>&lt;@trade.paymentHistory paymentId=1 pageSize=10&gt;&lt;#list page.list as a&gt;${a.content}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.paymentHistory&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/trade/paymentHistory?paymentId=1&amp;pageSize=10&amp;appToken=接口访问授权Token', function(data){    
+fetch('${site.dynamicPath}api/directive/trade/paymentHistory?paymentId=1&amp;pageSize=10',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -5886,7 +6057,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/paymentHistory?paymentId=1&amp
 使用示例
 <p>&lt;@trade.paymentList pageSize=10&gt;&lt;#list page.list as a&gt;${a.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.paymentList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/trade/paymentList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id', function(data){    
+fetch('${site.dynamicPath}api/directive/trade/paymentList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id').then(res =&gt; res.json()).then(data=&gt;{    
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -5926,7 +6097,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/paymentList?pageSize=10&amp;au
 <p>&lt;@trade.refund id=1&gt;${object.amount}&lt;/@trade.refund&gt;</p>
 <p>&lt;@trade.refund ids=1,2,3&gt;&lt;#list map as k,v&gt;${k}:${v.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.refund&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/trade/refund?id=1&amp;appToken=接口访问授权Token', function(data){    
+  fetch('${site.dynamicPath}api/directive/trade/refund?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
     console.log(data.amount);
   });
   &lt;/script&gt;
@@ -5987,7 +6158,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/paymentList?pageSize=10&amp;au
 使用示例
 <p>&lt;@trade.refundList pageSize=10&gt;&lt;#list page.list as a&gt;${a.amount}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@trade.refundList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/trade/refundList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id', function(data){    
+fetch('${site.dynamicPath}api/directive/trade/refundList?pageSize=10&amp;authToken=用户登录Token&amp;authUserId=用户id').then(res =&gt; res.json()).then(data=&gt;{    
  console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -6010,7 +6181,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/refundList?pageSize=10&amp;aut
 <p>使用示例</p>
 <p>&lt;@visit.day visitDate='2020-01-01' visitHour=9&gt;${object.pv}&lt;/@visit.day&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/visit/day?visitDate=2020-01-01&amp;visitHour=9&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/visit/day?visitDate=2020-01-01&amp;visitHour=9',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.pv);
   });
   &lt;/script&gt;
@@ -6051,7 +6222,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/refundList?pageSize=10&amp;aut
 <p>使用示例</p>
 <p>&lt;@visit.dayList hourAnalytics=false&gt;&lt;#list page.list as a&gt;${a.pv}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@visit.dayList&gt;</p>
 <pre>&lt;script&gt;
- $.getJSON('${site.dynamicPath}api/directive/visit/dayList?hourAnalytics=false&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/directive/visit/dayList?hourAnalytics=false',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
    console.log(data.page.totalCount);
  });
  &lt;/script&gt;
@@ -6081,7 +6252,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/refundList?pageSize=10&amp;aut
 <p>&lt;@visit.history id=1&gt;${object.title}&lt;/@visit.history&gt;</p>
 <p>&lt;@visit.history ids='1,2,3'&gt;&lt;#list map as k,v&gt;${k}:${v.title}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@visit.history&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/visit/history?id=1&amp;appToken=接口访问授权Token', function(data){    
+  fetch('${site.dynamicPath}api/directive/visit/history?id=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{    
     console.log(data.title);
   });
   &lt;/script&gt;
@@ -6131,7 +6302,7 @@ $.getJSON('${site.dynamicPath}api/directive/trade/refundList?pageSize=10&amp;aut
 <p>使用示例</p>
 <p>&lt;@visit.historyList hourAnalytics=false&gt;&lt;#list page.list as a&gt;${a.url}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@visit.historyList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/visit/historyList?hourAnalytics=false&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/visit/historyList?hourAnalytics=false',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -6153,7 +6324,7 @@ $.getJSON('${site.dynamicPath}api/directive/visit/historyList?hourAnalytics=fals
 <p>使用示例</p>
 <p>&lt;@visit.item visitDate='2020-01-01' visitHour=9&gt;${object.pv}&lt;/@visit.item&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/visit/item?visitDate=2020-01-01&amp;itemType=content&amp;itemId=1&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/visit/item?visitDate=2020-01-01&amp;itemType=content&amp;itemId=1',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.pv);
   });
   &lt;/script&gt;
@@ -6166,6 +6337,7 @@ $.getJSON('${site.dynamicPath}api/directive/visit/historyList?hourAnalytics=fals
  <li><code>dayAnalytics</code>:天统计,【true,false】,默认true</li>
  <li><code>itemType</code>:项目类型,【category,content,user等页面统计时中的itemType】</li>
  <li><code>itemId</code>:项目id</li>
+ <li><code>orderField</code> 排序字段,【uv:用户浏览数,ipviews:IP浏览数,pv:页面浏览数】,默认pv倒序</li>
  <li><code>pageIndex</code>:页码</li>
  <li><code>pageSize</code>:每页条数</li>
 </ul>
@@ -6194,7 +6366,7 @@ $.getJSON('${site.dynamicPath}api/directive/visit/historyList?hourAnalytics=fals
 <p>使用示例</p>
 <p>&lt;@visit.itemList itemType='content'&gt;&lt;#list page.list as a&gt;${a.pv}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@visit.itemList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/visit/itemList?itemType=content&amp;appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/visit/itemList?itemType=content',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -6217,7 +6389,7 @@ $.getJSON('${site.dynamicPath}api/directive/visit/itemList?itemType=content&amp;
 <p>使用示例</p>
 <p>&lt;@visit.session visitDate='2020-01-01' sessionId='xxxx-xxxx-xxxx'&gt;${object.pv}&lt;/@visit.session&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/visit/session?visitDate=2020-01-01&amp;sessionId=xxxx-xxxx-xxxx&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/visit/session?visitDate=2020-01-01&amp;sessionId=xxxx-xxxx-xxxx',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.pv);
   });
   &lt;/script&gt;
@@ -6260,7 +6432,7 @@ $.getJSON('${site.dynamicPath}api/directive/visit/itemList?itemType=content&amp;
 <p>使用示例</p>
 <p>&lt;@visit.sessionList&gt;&lt;#list page.list as a&gt;${a.pv}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@visit.sessionList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/visit/sessionList?appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/visit/sessionList',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -6282,7 +6454,7 @@ $.getJSON('${site.dynamicPath}api/directive/visit/sessionList?appToken=接口访
 <p>使用示例</p>
 <p>&lt;@visit.url visitDate='2020-01-01' urlMd5='md5' urlSha='sha'&gt;${object.pv}&lt;/@visit.url&gt;</p>
 <pre> &lt;script&gt;
-  $.getJSON('${site.dynamicPath}api/directive/visit/url?visitDate=2020-01-01&amp;urlMd5=MD5&amp;urlSha=sha&amp;appToken=接口访问授权Token', function(data){
+  fetch('${site.dynamicPath}api/directive/visit/url?visitDate=2020-01-01&amp;urlMd5=MD5&amp;urlSha=sha',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
     console.log(data.pv);
   });
   &lt;/script&gt;
@@ -6321,7 +6493,7 @@ $.getJSON('${site.dynamicPath}api/directive/visit/sessionList?appToken=接口访
 <p>使用示例</p>
 <p>&lt;@visit.urlList&gt;&lt;#list page.list as a&gt;${a.pv}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@visit.urlList&gt;</p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/directive/visit/urlList?appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/directive/visit/urlList',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
   console.log(data.page.totalCount);
 });
 &lt;/script&gt;
@@ -6347,7 +6519,7 @@ $.getJSON('${site.dynamicPath}api/directive/visit/urlList?appToken=接口访问�
  &lt;div id="content"&gt;${(result.text)!}&lt;/div&gt;
  </pre>
 <pre> &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/method/confuse?parameters=aaa&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/method/confuse?parameters=aaa',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
      console.log(data);
  });
  &lt;/script&gt;
@@ -6380,7 +6552,7 @@ $.getJSON('${site.dynamicPath}api/directive/visit/urlList?appToken=接口访问�
  &lt;/script&gt;
  </pre>
 <pre> &lt;script&gt;
- $.getJSON('${site.dynamicPath}api/method/confuseHtml?parameters=aaa&amp;appToken=接口访问授权Token', function(data){
+ fetch('${site.dynamicPath}api/method/confuseHtml?parameters=aaa',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
      console.log(data);
  });
  &lt;/script&gt;
@@ -6402,7 +6574,7 @@ $.getJSON('${site.dynamicPath}api/directive/visit/urlList?appToken=接口访问�
 <p>${attribute.title!}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getCategoryAttribute?parameters=1', function(data){
+fetch('${site.dynamicPath}api/method/getCategoryAttribute?parameters=1').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data.title);
 });
 &lt;/script&gt;
@@ -6421,7 +6593,7 @@ console.log(data.title);
 <p>${attributeMap['1'].title!}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getCategoryAttributes?parameters=1,2,3,4', function(data){
+fetch('${site.dynamicPath}api/method/getCategoryAttributes?parameters=1,2,3,4').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6440,7 +6612,7 @@ console.log(data);
 <p>${(attribute.text?no_esc)!}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getContentAttribute?appToken=接口访问授权Token&amp;parameters=1', function(data){
+fetch('${site.dynamicPath}api/method/getContentAttribute?appToken=接口访问授权Token&amp;parameters=1').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data.text);
 });
 &lt;/script&gt;
@@ -6459,7 +6631,7 @@ console.log(data.text);
 <p>${attributeMap['1'].text?no_esc!}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getContentAttributes?appToken=接口访问授权Token&amp;parameters=1,2,3,4', function(data){
+fetch('${site.dynamicPath}api/method/getContentAttributes?appToken=接口访问授权Token&amp;parameters=1,2,3,4').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6490,7 +6662,7 @@ console.log(data);
 <p>${textPage.text?no_esc!} current page :${textPage.page.pageIndex}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getContentAttributes?parameters=正文内容&amp;parameters=2', function(data){
+fetch('${site.dynamicPath}api/method/getContentAttributes?parameters=正文内容&amp;parameters=2').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data.text);
 });
 &lt;/script&gt;
@@ -6509,7 +6681,7 @@ console.log(data.text);
 <p>${getDate('thisSunday','2020-01-01')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getDate?parameters=thisSunday&amp;parameters=2020-01-01', function(data){
+fetch('${site.dynamicPath}api/method/getDate?parameters=thisSunday&amp;parameters=2020-01-01').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6524,7 +6696,7 @@ console.log(data);
 <p>${getDict()}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getDict?appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/method/getDict',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6538,7 +6710,7 @@ console.log(data);
 <p>${getDictEnable()}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getDictEnable', function(data){
+fetch('${site.dynamicPath}api/method/getDictEnable').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6554,7 +6726,7 @@ console.log(data);
 <p>${getFileUploadPrefix()}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getFileUploadPrefix', function(data){
+fetch('${site.dynamicPath}api/method/getFileUploadPrefix').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6568,7 +6740,7 @@ console.log(data);
 <p>&lt;#list getFontList() as font&gt;${font}&lt;/#list&gt;</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getFontList?appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/method/getFontList',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6586,7 +6758,7 @@ console.log(data);
 <p>${getHash('aaa')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getHash?parameters=aaa', function(data){
+fetch('${site.dynamicPath}api/method/getHash?parameters=aaa').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6608,7 +6780,7 @@ console.log(data);
 <p>${getHtml('https://www.publiccms.com/',{"parameters1":"value1","parameters2":"value2"},{"headers1":"value1","headers2":"value2"})}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getHtml?appToken=接口访问授权Token&amp;parameters=https://www.publiccms.com/', function(data){
+fetch('${site.dynamicPath}api/method/getHtml?appToken=接口访问授权Token&amp;parameters=https://www.publiccms.com/').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6623,7 +6795,7 @@ console.log(data);
 <p>${getIpRegion('127.0.0.1')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getIpRegion?parameters=127.0.0.1', function(data){
+fetch('${site.dynamicPath}api/method/getIpRegion?parameters=127.0.0.1').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6641,7 +6813,7 @@ console.log(data);
 <p>${getIpv4Number('127.0.0.1')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getIpv4Number?parameters=127.0.0.1', function(data){
+fetch('${site.dynamicPath}api/method/getIpv4Number?parameters=127.0.0.1').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6659,7 +6831,7 @@ console.log(data);
 <p>${getIpv6Number('FF01:0:0:0:0:0:0:1101')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getIpv4Number?parameters=FF01:0:0:0:0:0:0:1101', function(data){
+fetch('${site.dynamicPath}api/method/getIpv4Number?parameters=FF01:0:0:0:0:0:0:1101').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6677,7 +6849,25 @@ console.log(data);
 <p>&lt;#list getKeywords('这是一段话') as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;&lt;</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getKeywords?parameters=这是一段话', function(data){
+fetch('${site.dynamicPath}api/method/getKeywords?parameters=这是一段话').then(res =&gt; res.json()).then(data=&gt;{
+console.log(data);
+});
+&lt;/script&gt;
+ </pre></div>
+        <div class="block" data-id="method-getLangPath">getLangPath 获取站点多语言地址
+<p>参数列表</p>
+<ol>
+ <li><code>lang</code>,语言</li>
+</ol>
+<p>返回结果</p>
+<ul>
+ <li><code>lang path</code>:站点多语言地址</li>
+</ul>
+<p>使用示例</p>
+<p>${getLangPath('cn')}</p>
+<p></p>
+<pre>&lt;script&gt;
+fetch('${site.dynamicPath}api/method/getLangPath?parameters=cn').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6696,7 +6886,7 @@ console.log(data);
 <p>${getLayoutStyle('/* selecter */','.diy-layout')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getLayoutStyle?appToken=接口访问授权Token&amp;parameters=/* selecter */&amp;parameters=.diy-layout', function(data){
+fetch('${site.dynamicPath}api/method/getLayoutStyle?appToken=接口访问授权Token&amp;parameters=/* selecter */&amp;parameters=.diy-layout').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6711,7 +6901,7 @@ console.log(data);
 <p>${getLicense().domain}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getLicense?appToken=接口访问授权Token, function(data){
+fetch('${site.dynamicPath}api/method/getLicense?appToken=接口访问授权Token).then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6725,7 +6915,7 @@ console.log(data);
 <p>${getLicenseData()}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getLicenseData, function(data){
+fetch('${site.dynamicPath}api/method/getLicenseData).then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6743,7 +6933,7 @@ console.log(data);
 <p>${getMd5('aaa')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getMd5?parameters=aaa', function(data){
+fetch('${site.dynamicPath}api/method/getMd5?parameters=aaa').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6764,7 +6954,7 @@ console.log(data);
 <p>${getPage('https://search.publiccms.com/?word=cms',2,'pageIndex')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getHash?parameters=https://www.publiccms.com/introduction/index_3.html&amp;parameters=2', function(data){
+fetch('${site.dynamicPath}api/method/getHash?parameters=https://www.publiccms.com/introduction/index_3.html&amp;parameters=2').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6778,7 +6968,7 @@ console.log(data);
 <p>&lt;#list getParameterTypeList() as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getParameterTypeList?appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/method/getParameterTypeList',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6797,7 +6987,7 @@ console.log(data);
 <p>${(attribute.description)!}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getContentAttribute?appToken=接口访问授权Token&amp;parameters=1', function(data){
+fetch('${site.dynamicPath}api/method/getContentAttribute?appToken=接口访问授权Token&amp;parameters=1').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data.description);
 });
 &lt;/script&gt;
@@ -6816,7 +7006,7 @@ console.log(data.description);
 <p>${attributeMap['1'].description!}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getPlaceAttributes?parameters=1,2,3,4', function(data){
+fetch('${site.dynamicPath}api/method/getPlaceAttributes?parameters=1,2,3,4').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6836,7 +7026,7 @@ console.log(data);
 <p>${getPrivateUrl('index.html')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getPrivateUrl?appToken=接口访问授权Token&amp;parameters=index.html', function(data){
+fetch('${site.dynamicPath}api/method/getPrivateUrl?appToken=接口访问授权Token&amp;parameters=index.html').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6850,7 +7040,7 @@ console.log(data);
 <p>&lt;#list getProcessTypeList() as a&gt;${a}&lt;#sep&gt;,&lt;/#list&gt;</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getProcessTypeList?appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/method/getProcessTypeList',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6869,7 +7059,7 @@ console.log(data);
 <p>${getRandom(100)}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getRandom?parameters=100', function(data){
+fetch('${site.dynamicPath}api/method/getRandom?parameters=100').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6887,7 +7077,7 @@ console.log(data);
 <p>${getSha1('aaa')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getSha1?parameters=aaa', function(data){
+fetch('${site.dynamicPath}api/method/getSha1?parameters=aaa').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6908,7 +7098,7 @@ console.log(data);
 <p>${getSha256('aaa')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getSha256?parameters=aaa', function(data){
+fetch('${site.dynamicPath}api/method/getSha256?parameters=aaa').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6926,7 +7116,7 @@ console.log(data);
 <p>${getSha512('aaa')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getSha512?parameters=aaa', function(data){
+fetch('${site.dynamicPath}api/method/getSha512?parameters=aaa').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6945,7 +7135,7 @@ console.log(data);
 <p>${(getSitefile('aaa-site.zip').name)!}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getSitefile?appToken=接口访问授权Token&amp;parameters=aaa-site.zip', function(data){
+fetch('${site.dynamicPath}api/method/getSitefile?appToken=接口访问授权Token&amp;parameters=aaa-site.zip').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6960,7 +7150,7 @@ console.log(data);
 <p>${getSkipWord()}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getRandom?appToken=接口访问授权Token', function(data){
+fetch('${site.dynamicPath}api/method/getRandom',{"headers":{"appToken":"接口访问授权Token"}}).then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -6990,7 +7180,7 @@ console.log(data);
 <p>${getTemplateResult('${.now}')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getDate?appToken=接口访问授权Token&amp;parameters=${.now}', function(data){
+fetch('${site.dynamicPath}api/method/getDate?appToken=接口访问授权Token&amp;parameters=${.now}').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -7008,7 +7198,7 @@ console.log(data);
 <p>${getTextFromHtml('&lt;a href="http://www.publiccms.com/"&gt;publiccms&lt;/a&gt;')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getTextFromHtml?parameters=&lt;a href="http://www.publiccms.com/"&gt;publiccms&lt;/a&gt;', function(data){
+fetch('${site.dynamicPath}api/method/getTextFromHtml?parameters=&lt;a href="http://www.publiccms.com/"&gt;publiccms&lt;/a&gt;').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -7023,7 +7213,7 @@ console.log(data);
 <p>${getUUID()}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getUUID', function(data){
+fetch('${site.dynamicPath}api/method/getUUID').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
@@ -7042,7 +7232,7 @@ console.log(data);
 <p>${getUrl(site.sitePath,'index.html')} ${getUrl('index.html')}</p>
 <p></p>
 <pre>&lt;script&gt;
-$.getJSON('${site.dynamicPath}api/method/getUrl?parameters=index.html', function(data){
+fetch('${site.dynamicPath}api/method/getUrl?parameters=index.html').then(res =&gt; res.json()).then(data=&gt;{
 console.log(data);
 });
 &lt;/script&gt;
