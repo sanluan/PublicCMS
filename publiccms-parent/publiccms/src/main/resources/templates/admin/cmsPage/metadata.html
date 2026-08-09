@@ -21,8 +21,8 @@
                     <dt><@t.page 'static_page'/>:</dt>
                     <dd>
                         <a class="button" href="cmsTemplate/publish?path=${path}&_csrf=<@tools.csrfToken admin=true/>" target="ajaxTodo"><@t.page 'publish_page'/></a>
-                        <a class="button" href="cmsDiy/preview.html?url=${(site.sitePath+(lang?has_content)?then(lang+'/','')+metadata.publishPath)?url}" target="navTab" rel="cmsDiy/preview" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
-                        <a class="button" href="${site.sitePath+(lang?has_content)?then(lang+'/','')+metadata.publishPath?url_path}" target="_blank"><i class="icon-external-link"></i></a>
+                        <a class="button" href="cmsDiy/preview.html?url=${(getLangPath(lang)+metadata.publishPath)?url}" target="navTab" rel="cmsDiy/preview" title="<@t.page 'diy.preview'/>"><@t.page 'button.view_page'/></a>
+                        <a class="button" href="${getLangPath(lang)+metadata.publishPath?url_path}" target="_blank"><i class="icon-external-link"></i></a>
                     </dd>
                 </dl>
             </#if>
@@ -82,7 +82,7 @@
                                 <#if lang?has_content && language.id.code =lang || !lang?has_content && language.id.code=siteAttribute.default_language>
                                 ${language.name!}
                                 <#else>
-                                <a href="cmsPage/metadata.html?path=${(path?url)!}<#if language.id.code != siteAttribute.default_language>&lang=${language.id.code}</#if>" target="ajax" rel="pageBox"/>${language.name!}</a>
+                                <a href="cmsPage/metadata.html?path=${(path?url)!}&lang=${language.id.code}" target="ajax" rel="pageBox"/>${language.name!}</a>
                                 </#if>
                             </#list>
                             </@cms.languageList>

@@ -362,7 +362,6 @@ CREATE TABLE `cms_language` (
   `site_id` smallint NOT NULL COMMENT '站点',
   `name` varchar(100) NOT NULL COMMENT '名称',
   `cover` varchar(255) DEFAULT NULL COMMENT '封面图',
-  `html_lang` varchar(20) DEFAULT NULL COMMENT '页面语言',
   `sort` int NOT NULL DEFAULT '0' COMMENT '顺序',
   PRIMARY KEY (`code`,`site_id`)
 ) COMMENT='语言';
@@ -617,7 +616,8 @@ CREATE TABLE `cms_word` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `cms_word_name` (`site_id`, `name`),
-  KEY `cms_word_hidden` (`site_id`,`lang`, `hidden`)
+  KEY `cms_word_hidden`(`site_id`, `hidden`, `search_count`),
+  KEY `cms_word_lang`(`site_id`, `lang`, `hidden`, `search_count`)
 ) COMMENT='搜索词';
 
 -- ----------------------------
@@ -676,7 +676,8 @@ CREATE TABLE `log_task` (
   `result` longtext COMMENT '执行结果',
   PRIMARY KEY  (`id`),
   KEY `log_task_task_id` (`site_id`, `task_id`, `begintime`),
-  KEY `log_task_success` (`site_id`, `success`, `begintime`)
+  KEY `log_task_success` (`site_id`, `success`, `begintime`),
+  KEY `log_task_begintime` (`site_id`, `begintime`)
 ) COMMENT='任务计划日志';
 
 -- ----------------------------
@@ -1049,7 +1050,7 @@ INSERT INTO `sys_module` VALUES ('myself_device', 'myself/userDeviceList', 'sysA
 INSERT INTO `sys_module` VALUES ('myself_log_login', 'myself/logLogin', NULL, 'icon-signin', 'myself', 1, 0, 4);
 INSERT INTO `sys_module` VALUES ('myself_log_operate', 'myself/logOperate', NULL, 'icon-list-alt', 'myself', 1, 0, 3);
 INSERT INTO `sys_module` VALUES ('myself_password', 'myself/password', 'changePassword', NULL, 'myself_profile', 1, 0, 0);
-INSERT INTO `sys_module` VALUES ('myself_profile', 'myself/profile', 'sysUser/update,myself/otpsettings,otpSetting/bind,otpSetting/unbind,webauthn/attestation/options,webauthn/attestation/result,webauthn/getCredentials,webauthn/deleteCredential', 'icon-user', 'myself', 1, 1, 0);
+INSERT INTO `sys_module` VALUES ('myself_profile', 'myself/profile', 'sysUser/update,myself/otpsettings,otpSetting/bind,otpSetting/check,otpSetting/getRegisterURI,otpSetting/unbind,webauthn/attestation/options,webauthn/attestation/result,webauthn/getCredentials,webauthn/deleteCredential', 'icon-user', 'myself', 1, 1, 0);
 INSERT INTO `sys_module` VALUES ('myself_token', 'myself/userTokenList', 'sysUserToken/delete', 'icon-unlock-alt', 'myself', 1, 0, 5);
 INSERT INTO `sys_module` VALUES ('operation', NULL, NULL, 'bi bi-binoculars-fill', NULL, 1, 1, 7);
 INSERT INTO `sys_module` VALUES ('order_confirm', 'tradeOrder/confirmParameters', 'tradeOrder/confirm', NULL, 'order_list', 0, 0, 0);
@@ -2538,7 +2539,8 @@ CREATE TABLE `visit_history` (
   KEY `visit_history_create_date` (`site_id`, `create_date`, `session_id`, `ip`),
   KEY `visit_history_user_id` (`site_id`, `create_date`, `user_id`),
   KEY `visit_history_visit_date` (`site_id`, `visit_date`, `visit_hour`),
-  KEY `visit_history_item_type` (`site_id`, `visit_date`, `item_type`)
+  KEY `visit_history_item_type` (`site_id`, `visit_date`, `item_type`),
+  KEY `visit_history_visit_hour` (`visit_date`, `visit_hour`)
 ) COMMENT='访问日志';
 
 -- ----------------------------

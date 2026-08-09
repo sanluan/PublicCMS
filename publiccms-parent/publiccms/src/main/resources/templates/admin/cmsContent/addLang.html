@@ -84,14 +84,14 @@
                         <#if model.hasImages||model.hasFiles>
                             <#if model.hasImages>
                                 <fieldset>
-                                    <legend><@t.page "seo"/></legend>
-                                    <@contentFiles true id false lang.id.code/>
+                                    <legend><@t.page "image_list"/></legend>
+                                    <@contentFiles true id false lang.id.code 'contentLangList['+index+'].images'/>
                                 </fieldset>
                             </#if>
                             <#if model.hasFiles>
                                 <fieldset>
-                                    <legend><@t.page "seo"/></legend>
-                                    <@contentFiles false id false lang.id.code/>
+                                    <legend><@t.page "attach_list"/></legend>
+                                    <@contentFiles false id false lang.id.code 'contentLangList['+index+'].files'/>
                                 </fieldset>
                             </#if>
                         </#if>
@@ -158,13 +158,13 @@
                             <#if model.hasImages>
                                 <fieldset>
                                     <legend><@t.page "image_list"/></legend>
-                                    <@contentFiles true id false lang.id.code/>
+                                    <@contentFiles true id false lang.id.code 'contentLangList['+index+'].images'/>
                                 </fieldset>
                             </#if>
                             <#if model.hasFiles>
                                 <fieldset>
                                     <legend><@t.page "attach_list"/></legend>
-                                    <@contentFiles false id false lang.id.code/>
+                                    <@contentFiles false id false lang.id.code 'contentLangList['+index+'].files'/>
                                 </fieldset>
                             </#if>
                         </#if>

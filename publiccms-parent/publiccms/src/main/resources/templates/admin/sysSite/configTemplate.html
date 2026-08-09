@@ -21,7 +21,7 @@
     <dl class="nowrap">
         <dt><@t.page 'server_config.tomcat'/>:</dt>
         <dd><textarea class="code" mode="xml">
-        &lt;!-- this valve replaces the apparent client remote IP address and hostname and scheme for the request --&gt;
+        &lt;!-- this valve replaces the apparent client remote IP address and hostname and scheme for the request,When starting the CMS from the command line, add the -Dcms.initProto=false parameter,For example:java -jar -server -Dcms.initProto=false publiccms.war --&gt;
         &lt;Valve className="org.apache.catalina.valves.RemoteIpValve" protocolHeader="X-Forwarded-Proto" portHeader="X-Forwarded-Port"/&gt;</textarea>
             <span class="info"><@t.page 'server_config.tomcat_description'/></span>
         </dd>
@@ -104,7 +104,7 @@ server {
         index   index.html;
         <#if dynamicLocation=siteLocation>
         client_max_body_size 100m;
-        try_files  $uri  $uri/  @cmsproxy;
+        try_files  $uri  @cmsproxy;
         </#if>
     }
             <#if a?has_content && a.hasChild && a.multiple>
@@ -116,7 +116,7 @@ server {
         alias   ${realRootPath}/web/site_${a.id}/;
         index  index.html;
         <#if dynamicLocation=siteLocation>
-        try_files  $uri  $uri/  @cmsproxy;
+        try_files  $uri  @cmsproxy;
         </#if>
     }
                         </#if>

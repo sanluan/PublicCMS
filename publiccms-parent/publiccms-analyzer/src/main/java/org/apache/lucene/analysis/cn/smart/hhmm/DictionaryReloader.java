@@ -1,6 +1,7 @@
 package org.apache.lucene.analysis.cn.smart.hhmm;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 import com.publiccms.common.tools.CommonUtils;
@@ -27,7 +28,10 @@ public class DictionaryReloader {
         if (new File(CommonUtils.joinString(dctroot, DICT_COREDICT)).exists()
                 || new File(CommonUtils.joinString(dctroot, MEM_COREDICT)).exists()) {
             WordDictionary dict = WordDictionary.getInstance();
-            dict.load(dctroot);
+            try {
+                dict.load(dctroot);
+            } catch (IOException e) {
+            }
         }
         if (new File(CommonUtils.joinString(dctroot, DICT_BIGRAMDICT)).exists()
                 || new File(CommonUtils.joinString(dctroot, MEM_BIGRAMDICT)).exists()) {

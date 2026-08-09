@@ -18,19 +18,6 @@ ALTER TABLE `cms_place`
  ADD COLUMN `lang` varchar(20) default NULL COMMENT '语言' AFTER `item_id`,
  DROP INDEX `cms_place_site_id`,
  ADD INDEX  `cms_place_site_id` (`site_id`, `path`, `lang` ,`status`, `disabled`);
--- ----------------------------
--- Table structure for cms_language
--- ----------------------------
-DROP TABLE IF EXISTS `cms_language`;
-CREATE TABLE `cms_language` (
-  `code` varchar(20) NOT NULL COMMENT '编码',
-  `site_id` smallint NOT NULL COMMENT '站点',
-  `name` varchar(100) NOT NULL COMMENT '名称',
-  `cover` varchar(255) DEFAULT NULL COMMENT '封面图',
-  `html_lang` varchar(20) DEFAULT NULL COMMENT '页面语言',
-  `sort` int NOT NULL DEFAULT '0' COMMENT '顺序',
-  PRIMARY KEY (`code`,`site_id`)
-) COMMENT='语言';
 INSERT INTO `sys_module` VALUES ('lang_add', 'cmsLanguage/add', 'cmsLanguage/save,cmsLanguage/virify', NULL, 'lang_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('lang_delete',  NULL,'cmsLanguage/delete', NULL, 'lang_list', 0, 0, 0);
 INSERT INTO `sys_module` VALUES ('lang_list', 'cmsLanguage/list', NULL, 'bi bi-globe', 'config', 1, 1, 5);
@@ -132,3 +119,28 @@ ALTER TABLE `cms_word`
 DELETE FROM sys_module WHERE id in ('myself_content_view','myself_process_view');
 -- 2026-06-08 --
 ALTER TABLE `cms_category` ADD COLUMN `parent_ids` text NULL COMMENT '所有父分类' AFTER `type_id`;
+-- 2026-07-03 --
+ UPDATE sys_module SET authorized_url = 'sysUser/update,myself/otpsettings,otpSetting/bind,otpSetting/check,otpSetting/getRegisterURI,otpSetting/unbind,webauthn/attestation/options,webauthn/attestation/result,webauthn/getCredentials,webauthn/deleteCredential' WHERE id = 'myself_profile';
+-- 2026-07-31 --
+ -- ----------------------------
+-- Table structure for cms_language
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_language`;
+CREATE TABLE `cms_language` (
+  `code` varchar(20) NOT NULL COMMENT '编码',
+  `site_id` smallint NOT NULL COMMENT '站点',
+  `name` varchar(100) NOT NULL COMMENT '名称',
+  `cover` varchar(255) DEFAULT NULL COMMENT '封面图',
+  `sort` int NOT NULL DEFAULT '0' COMMENT '顺序',
+  PRIMARY KEY (`code`,`site_id`)
+) COMMENT='语言';
+-- 2026-08-01 --
+ALTER TABLE `cms_word` 
+  DROP INDEX `cms_word_hidden`,
+  ADD INDEX `cms_word_hidden`(`site_id`, `hidden`, `search_count`),
+  ADD INDEX `cms_word_lang`(`site_id`, `lang`, `hidden`, `search_count`);
+-- 2026-08-09 --
+ALTER TABLE `log_task` 
+  ADD INDEX `log_task_begintime`(`site_id`, `begintime`);
+ALTER TABLE `visit_history` 
+  ADD INDEX `visit_history_visit_hour` (`visit_date`, `visit_hour`);

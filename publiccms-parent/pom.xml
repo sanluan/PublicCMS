@@ -20,7 +20,7 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <version.publiccms>V6.202506.e</version.publiccms>
+        <version.publiccms>V6.202608.a</version.publiccms>
         <!-- https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
         <version.servlet>6.1.0</version.servlet>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
@@ -30,21 +30,21 @@
         <!-- https://spring.io/projects/spring-boot -->
         <version.springBoot>4.1.0</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
-        <version.juint>6.1.0</version.juint>
+        <version.juint>6.1.3</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>7.4.1.Final</version.hibernate>
+        <version.hibernate>7.4.5.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm -->
-        <version.hibernateTools>7.3.8.Final</version.hibernateTools>
+        <version.hibernateTools>7.3.13.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
         <version.hibernateSearch>8.4.0.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
-        <version.hibernateValidator>9.1.0.Final</version.hibernateValidator>
+        <version.hibernateValidator>9.1.3.Final</version.hibernateValidator>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
         <version.mybatis>3.5.19</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
-        <version.mybatisSpring>4.0.0</version.mybatisSpring>
+        <version.mybatisSpring>4.1.0</version.mybatisSpring>
         <!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
         <version.mybatisGenerator>2.0.0</version.mybatisGenerator>
         <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
@@ -54,21 +54,21 @@
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.12.0</version.ehcache>
         <!-- https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind -->
-        <version.jackson>3.2.0</version.jackson>
+        <version.jackson>3.2.1</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.34</version.freemarker>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
-        <version.lucene>10.4.0</version.lucene>
+        <version.lucene>10.5.0</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <!-- https://github.com/redis/jedis -->
-        <version.jedis>7.5.2</version.jedis>
+        <version.jedis>7.5.3</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.5.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
         <!-- https://github.com/brettwooldridge/HikariCP -->
         <version.hikariCP>7.1.0</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
-        <version.mysql>9.7.0</version.mysql>
+        <version.mysql>26.7.0</version.mysql>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.14</version.httpclient>
@@ -89,13 +89,13 @@
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
         <version.compress>1.28.0</version.compress>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
-        <version.codec>1.22.0</version.codec>
+        <version.codec>1.22.1</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <version.log4j>2.26.0</version.log4j>
+        <version.log4j>2.26.1</version.log4j>
         <!-- https://mvnrepository.com/artifact/org.jboss.logging/jboss-logging -->
         <version.jbossLogging>3.6.3.Final</version.jbossLogging>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
-        <version.extractor>2.20.0</version.extractor>
+        <version.extractor>2.21.0</version.extractor>
         <!-- https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio -->
         <version.webp>0.1.6</version.webp>
         <!-- https://mvnrepository.com/artifact/net.ifok.image/image4j -->
@@ -111,7 +111,7 @@
         <!-- https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc -->
         <version.therapiJavadoc>0.15.0</version.therapiJavadoc>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-        <version.jsoup>1.22.2</version.jsoup>
+        <version.jsoup>1.23.1</version.jsoup>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
         <version.annotation>3.0.0</version.annotation>
         <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->
@@ -119,6 +119,7 @@
         <!-- https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail -->
         <version.mail>2.0.2</version.mail>
         <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
+        <!-- 2 for ehcache -->
         <version.jaxb>2.3.1</version.jaxb>
     </properties>
     <dependencyManagement>

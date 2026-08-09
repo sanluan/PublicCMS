@@ -2,6 +2,7 @@ package com.publiccms.controller.admin.cms;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -10,6 +11,7 @@ import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsContentSource;
@@ -39,13 +41,18 @@ public class CmsContentSourceAdminController {
      * @param admin
      * @param entity
      * @param request
+     * @param model 
      * @return operate result
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsContentSource entity,
-            HttpServletRequest request) {
+            HttpServletRequest request, ModelMap model) {
         if (null != entity.getId()) {
+            CmsContentSource oldEntity = service.getEntity(entity.getId());
+            if (null == oldEntity || ControllerUtils.errorNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+                return CommonConstants.TEMPLATE_ERROR;
+            }
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsContentSource", RequestUtils.getIpAddress(request),

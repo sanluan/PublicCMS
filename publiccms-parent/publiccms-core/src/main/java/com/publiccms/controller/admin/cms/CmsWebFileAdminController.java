@@ -1,5 +1,6 @@
 package com.publiccms.controller.admin.cms;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -240,7 +241,8 @@ public class CmsWebFileAdminController {
                             ImageUtils.image2Ico(inputStream, suffix, size, fuleFilePath);
                         }
                     } else {
-                        try (InputStream inputStream = file.getInputStream()) {
+                        try (InputStream fileInputStream = file.getInputStream();
+                                BufferedInputStream inputStream = new BufferedInputStream(fileInputStream)) {
                             ImageUtils.image2Ico(inputStream, suffix, size, fuleFilePath);
                         }
                     }

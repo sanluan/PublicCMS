@@ -235,7 +235,7 @@
         </dl>
         </#if>
     </@cms.contentRelatedList>
-    <@sys.authorized roleIds=admin.roles urls='cmsComment/list,cmsComment/edit'><#assign authorizedMap=map/></@sys.authorized>
+    <@sys.authorized roleIds=admin.roles urls='cmsComment/list,cmsComment/edit,cmsContent/uncheck_list'><#assign authorizedMap=map/></@sys.authorized>
     <@cms.commentList advanced=true contentId=a.id pageSize=0>
         <dl class="nowrap">
             <dt>

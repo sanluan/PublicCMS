@@ -164,44 +164,46 @@ public class UeditorAdminController extends AbstractUeditorController {
                     CloseableHttpResponse response = httpclient.execute(httpget);
                     HttpEntity entity = response.getEntity();
                     if (null != entity) {
-                        BufferedInputStream inputStream = new BufferedInputStream(entity.getContent());
-                        FileType fileType = FileTypeDetector.detectFileType(inputStream);
-                        String suffix = fileType.getCommonExtension();
-                        if (null != fileType.getMimeType() && fileType.getMimeType().startsWith("image/")
-                                && CommonUtils.notEmpty(suffix)) {
-                            String fileName;
-                            FileUploadResult uploadResult;
-                            if (fileType.equals(FileType.WebP)) {
-                                fileName = CmsFileUtils.getUploadFileName("jpg");
-                                String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                                ImageUtils.webp2Image(inputStream, false, filepath);
-                                uploadResult = CmsFileUtils.getFileSize(filepath, fileName, suffix);
+                        try (BufferedInputStream inputStream = new BufferedInputStream(entity.getContent())) {
+                            FileType fileType = FileTypeDetector.detectFileType(inputStream);
+                            String suffix = fileType.getCommonExtension();
+                            if (null != fileType.getMimeType() && fileType.getMimeType().startsWith("image/")
+                                    && CommonUtils.notEmpty(suffix)) {
+                                String fileName;
+                                FileUploadResult uploadResult;
+                                if (fileType.equals(FileType.WebP)) {
+                                    fileName = CmsFileUtils.getUploadFileName("jpg");
+                                    String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
+                                    ImageUtils.webp2Image(inputStream, false, filepath);
+                                    uploadResult = CmsFileUtils.getFileSize(filepath, fileName, suffix);
+                                } else {
+                                    fileName = CmsFileUtils.getUploadFileName(suffix);
+                                    String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
+                                    CmsFileUtils.copyInputStreamToFile(inputStream, filepath);
+                                    uploadResult = CmsFileUtils.getFileSize(filepath, fileName, suffix);
+                                }
+                                logUploadService
+                                        .save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                                Constants.BLANK, false, CmsFileUtils.getFileType(suffix),
+                                                uploadResult.getFileSize(), uploadResult.getWidth(), uploadResult.getHeight(),
+                                                RequestUtils.getIpAddress(request), CommonUtils.now(), fileName));
+                                Map<String, Object> map = getResultMap();
+                                map.put("size", uploadResult.getFileSize());
+                                map.put("title", fileName);
+                                map.put("url", fileName);
+                                map.put("source", image);
+                                list.add(map);
                             } else {
-                                fileName = CmsFileUtils.getUploadFileName(suffix);
-                                String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                                CmsFileUtils.copyInputStreamToFile(inputStream, filepath);
-                                uploadResult = CmsFileUtils.getFileSize(filepath, fileName, suffix);
+                                Map<String, Object> map = getResultMap(false, "FAIL");
+                                map.put("source", image);
+                                list.add(map);
                             }
-                            logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                    Constants.BLANK, false, CmsFileUtils.getFileType(suffix), uploadResult.getFileSize(),
-                                    uploadResult.getWidth(), uploadResult.getHeight(), RequestUtils.getIpAddress(request),
-                                    CommonUtils.now(), fileName));
-                            Map<String, Object> map = getResultMap();
-                            map.put("size", uploadResult.getFileSize());
-                            map.put("title", fileName);
-                            map.put("url", fileName);
-                            map.put("source", image);
-                            list.add(map);
-                        } else {
-                            Map<String, Object> map = getResultMap(false,"FAIL");
-                            map.put("source", image);
-                            list.add(map);
                         }
                         EntityUtils.consume(entity);
                     }
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
-                    Map<String, Object> map = getResultMap(false,"FAIL");
+                    Map<String, Object> map = getResultMap(false, "FAIL");
                     map.put("source", image);
                     list.add(map);
                 }
@@ -214,7 +216,9 @@ public class UeditorAdminController extends AbstractUeditorController {
                 map.put("list", list);
                 return map;
             }
-        } else {
+        } else
+
+        {
             return getResultMap(false, LanguagesUtils.getMessage(CommonConstants.applicationContext,
                     localeResolver.resolveLocale(request), "verify.notEmpty.file"));
         }
