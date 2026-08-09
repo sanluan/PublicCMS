@@ -141,8 +141,11 @@ subprojects {
         // https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
         jaxbVersion = "2.3.1"
     }
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+
+    java {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 
     compileJava {
         options.encoding = "UTF-8"
