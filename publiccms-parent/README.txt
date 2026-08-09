@@ -34,8 +34,8 @@ gradle(使用以下文件：gradle,build.gradle,settings.gradle,gradlew,gradlew.
 配置idea工程 ：idea
 
 linux更新wrapper
-./mvnw -N io.takari:maven:wrapper
-./gradlew wrapper --gradle-version 9.7.0 #8.15.5 in java 8
+./mvnw wrapper:wrapper
+./gradlew wrapper --gradle-version 8.15.5 #9 for java 17
 windows更新wrapper
-mvnw -N io.takari:maven:wrapper
-gradlew wrapper --gradle-version 9.7.0 #8.15.5 in java 8
+mvnw wrapper:wrapper
+gradlew wrapper --gradle-version 8.15.5 #9 for java 17
