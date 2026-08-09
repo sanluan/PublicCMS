@@ -12,6 +12,6 @@ dependencies {
     // 2.2 for Java 17
     implementation "com.github.bastiaanjansen:otp-java:2.1.0"
     
-    compileOnly "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
+    annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
     compileOnly "javax.servlet:javax.servlet-api:${servletVersion}"
 }

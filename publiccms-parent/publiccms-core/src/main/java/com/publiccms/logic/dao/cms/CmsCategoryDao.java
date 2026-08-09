@@ -97,6 +97,9 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
         if (CommonUtils.empty(entity.getParentIds())) {
             entity.setParentIds(null);
         }
+        if (CommonUtils.empty(entity.getTagTypeIds())) {
+            entity.setTagTypeIds(null);
+        }
         if (CommonUtils.notEmpty(entity.getName())) {
             entity.setName(CommonUtils.keep(entity.getName(), 50));
         }

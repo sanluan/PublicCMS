@@ -12,6 +12,6 @@ dependencies {
     // https://mvnrepository.com/artifact/com.github.wechatpay-apiv3/wechatpay-apache-httpclient
     implementation "com.github.wechatpay-apiv3:wechatpay-apache-httpclient:0.6.0"
 
-    compileOnly "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
+    annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
     compileOnly "javax.servlet:javax.servlet-api:${servletVersion}"
 }

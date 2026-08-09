@@ -169,7 +169,7 @@ public class InstallServlet extends HttpServlet {
         CmsDataSource.initDefaultDataSource();
         File file = new File(CommonUtils.joinString(CommonConstants.CMS_FILEPATH, CommonConstants.INSTALL_LOCK_FILENAME));
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            outputStream.write(CmsVersion.getVersion().getBytes(StandardCharsets.UTF_8));
+            outputStream.write(CmsVersion.getDababaseVersion().getBytes(StandardCharsets.UTF_8));
         }
         log.info(CommonUtils.joinString("PublicCMS ", CmsVersion.getVersion(), " started!"));
     }

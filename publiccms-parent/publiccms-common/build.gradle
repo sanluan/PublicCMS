@@ -5,9 +5,6 @@ configurations {
 }
 
 dependencies {
-    compileOnly "javax.servlet:javax.servlet-api:${servletVersion}"
-    compileOnly "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
-
     implementation "org.springframework:spring-context-support:${springVersion}"
     implementation "org.springframework:spring-orm:${springVersion}"
     implementation "org.springframework:spring-webmvc:${springVersion}"
@@ -67,4 +64,7 @@ dependencies {
     implementation "org.glassfish.jaxb:jaxb-runtime:${jaxbVersion}"
     implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
     implementation "javax.transaction:jta:${jtaVersion}"
+    
+    compileOnly "javax.servlet:javax.servlet-api:${servletVersion}"
+    annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"
 }
