@@ -2,6 +2,7 @@ package com.publiccms.common.generator;
 
 import javax.sql.DataSource;
 
+import com.publiccms.common.constants.CmsVersion;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -35,7 +36,7 @@ public class DataDictionaryGenerator {
         ProcessConfig processConfig = ProcessConfig.builder().build();
 
         // 配置
-        Configuration config = Configuration.builder().version("202506").description("Data Dictionary").dataSource(dataSource)
+        Configuration config = Configuration.builder().version(CmsVersion.getDababaseVersion()).description("Data Dictionary").dataSource(dataSource)
                 .engineConfig(engineConfig).produceConfig(processConfig).build();
         // 执行生成
         new DocumentationExecute(config).execute();
