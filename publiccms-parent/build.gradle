@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
         maven {
             name = "aliyun"
-            url "https://maven.aliyun.com/repository/public/"
+            url = "https://maven.aliyun.com/repository/public/"
         }
     }
     dependencies {
@@ -18,9 +18,11 @@ plugins {
 }
 
 subprojects {
-    apply plugin: "java"
-    apply plugin: "idea"
-    apply plugin: "eclipse-wtp"
+    plugins {
+        id "java"
+        id "idea"
+        id "eclipse-wtp"
+    }
 
     group = "com.publiccms"
     version = "V4.0.202608.a"
