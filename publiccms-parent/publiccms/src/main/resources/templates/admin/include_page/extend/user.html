@@ -28,7 +28,7 @@
                 </#if>
                 <#if 'customform'=type>
                     <tr>
-                        <td colspan="2"><a href="javascript:;" onclick="var thisNode=this.parentElement.parentElement;var tr = document.createElement('tr');tr.innerHTML='<td><input name=\'${inputName}\' type=\'number\' size=\'30\'<#if extend.maxlength?has_content> maxlength=\'${extend.maxlength}\'</#if><#if extend.required> required=\'required\'</#if>/></td><td><a href=\'javascript:;\' onclick=\'this.parentElement.parentElement.remove()\'><@t.page 'button.delete'/></a></td>';thisNode.parentElement.insertBefore(tr,thisNode);"><@t.page 'button.new_line'/></a></td>
+                        <td colspan="2"><a href="javascript:;" onclick="var thisNode=this.parentElement.parentElement;var tr = document.createElement('tr');tr.innerHTML='<td><input name=\'${inputName}\' type=\'number\' size=\'30\'<#if extend.required> required=\'required\'</#if>/></td><td><a href=\'javascript:;\' onclick=\'this.parentElement.parentElement.remove()\'><@t.page 'button.delete'/></a></td>';thisNode.parentElement.insertBefore(tr,thisNode);"><@t.page 'button.new_line'/></a></td>
                     </tr>
                 </#if>
             </tbody>
