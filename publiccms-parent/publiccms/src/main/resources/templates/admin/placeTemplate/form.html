@@ -91,22 +91,24 @@ if(files.length){
                 formData.append('privatefile', "true");
             }
             fetch("${site.dynamicPath}file/doUpload", {
-                method: this.method,
-                body: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+                method: "post",
+                body: formData
             })
             .then(response => response.json())
             .then(data => {
                 if(data.success){
-                    document.querySelector(file.getAttribute("target")).value=data.fileName;
+                    document.querySelector("[name="+f.getAttribute("target").replace("[","\\[").replace("]","\\]")+"]").value=data.fileName;
+                    document.querySelector("[name="+f.getAttribute("target").replace("[","\\[").replace("]","\\]")+"]").dispatchEvent(new Event('change', {
+                        bubbles: true,
+                        cancelable: true
+                    }));
+                    f.value=null;
                 }else{
                     alert(data.error);
                 }
             })
             .catch(error => alert(error));
-          });
+          };
     });
 }
 </script>

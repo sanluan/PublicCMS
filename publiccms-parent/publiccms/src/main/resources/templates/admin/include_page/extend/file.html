@@ -32,7 +32,7 @@
                 </#if>
                 <#if 'customform'=type>
                     <tr>
-                        <td colspan="2"><a href="javascript:;" onclick="var thisNode=this.parentElement.parentElement;var tr = document.createElement('tr');tr.innerHTML='<td><input type=\'file\' target=\'${inputName}\' <#if extend.required> required=\'required\'</#if>/></td><td><a href=\'javascript:;\' onclick=\'this.parentElement.parentElement.remove()\'><@t.page 'button.delete'/></a></td>';thisNode.parentElement.insertBefore(tr,thisNode);"><@t.page 'button.new_line'/></a></td>
+                        <td colspan="2"><input type="file" target="${inputName}_filepath"/><input name="${inputName}_filepath" type="hidden" onchange="var thisNode=this.parentElement.parentElement;var tr = document.createElement('tr');tr.innerHTML='<td><a href=\'${getFileUploadPrefix()}'+this.value+'\' target=\'_blank\'>'+this.value+'</a><input name=\'${inputName}\' type=\'hidden\' value=\''+this.value+'\'/></td><td><a href=\'javascript:;\' onclick=\'this.parentElement.parentElement.remove()\'><@t.page 'button.delete'/></a></td>';thisNode.parentElement.insertBefore(tr,thisNode);"/></td>
                     </tr>
                 </#if>
             </tbody>

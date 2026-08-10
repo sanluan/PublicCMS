@@ -5,7 +5,7 @@
         <table<#if 'customform'!=type> class="list nowrap sortDrag itemDetail" addButton="<@t.page 'button.new_line'/>"</#if>>
             <thead>
                 <tr>
-                    <th width="400"<#if 'customform'!=type> type="attach" name="${inputName}"<#if extend.required> fieldClass=" required"</#if> size="50"<#if readonly> fieldAttrs='{"readonly":"readonly"}'</#if> lookupUrl="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}&privatefile=true" lookupGroup=""</#if>><@t.page 'image'/></th>
+                    <th width="400"<#if 'customform'!=type> type="attach" name="${inputName}"<#if extend.required> fieldClass="required"</#if> size="50"<#if readonly> fieldAttrs='{"readonly":"readonly"}'</#if> lookupUrl="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}&privatefile=true" lookupGroup=""</#if>><@t.page 'image'/></th>
                     <th width="60"<#if 'customform'!=type> type="delAndSort"</#if>><@t.page 'operate'/></th>
                 </tr>
             </thead>
@@ -15,9 +15,9 @@
                     <tr<#if 'customform'!=type> class="unitBox"</#if>>
                         <td>
                             <#if 'customform'=type>
-                                <img src="${getUrl(a?url_path)!}" alt="image" style="max-width:200px;max-height:200px;"/>
+                                <img src="${getPrivateUrl(a?url_path)!}" alt="image" style="max-width:200px;max-height:200px;"/>
                                 <br/>
-                                <input name="${inputName}" type="type" value="${a}"/>
+                                <input name="${inputName}" type="hidden" value="${a}"/>
                             <#else>
                                 <input name="${inputName}" type="text" size="50"<#if 'customform'=type><#if extend.required||a?is_first> required="required"</#if><#else> class="nocommas<#if extend.required||a?is_first> required</#if>"</#if> value="${a}"/>
                                 <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}&privatefile=true" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
@@ -32,7 +32,7 @@
                 </#if>
                 <#if 'customform'=type>
                     <tr>
-                        <td colspan="2"><a href="javascript:;" onclick="var thisNode=this.parentElement.parentElement;var tr = document.createElement('tr');tr.innerHTML='<td><input type=\'file\' target=\'${inputName}\' data-private=\'true\' <#if extend.required> required=\'required\'</#if>/></td><td><a href=\'javascript:;\' onclick=\'this.parentElement.parentElement.remove()\'><@t.page 'button.delete'/></a></td>';thisNode.parentElement.insertBefore(tr,thisNode);"><@t.page 'button.new_line'/></a></td>
+                        <td colspan="2"><input type="file" target="${inputName}_filepath"/><input name="${inputName}_filepath" type="hidden" onchange="var thisNode=this.parentElement.parentElement;var tr = document.createElement('tr');tr.innerHTML='<td>'+this.value+'<input name=\'${inputName}\' type=\'hidden\' value=\''+this.value+'\'/></td><td><a href=\'javascript:;\' onclick=\'this.parentElement.parentElement.remove()\'><@t.page 'button.delete'/></a></td>';thisNode.parentElement.insertBefore(tr,thisNode);"/></td>
                     </tr>
                 </#if>
             </tbody>
@@ -40,7 +40,7 @@
     </#if>
 <#else>
     <#if 'view'=type>
-        <img src="${getUrl(value?url_path)!}" alt="image" style="max-width:200px;max-height:200px;"/>
+        <img src="${getPrivateUrl(value?url_path)!}" alt="image" style="max-width:200px;max-height:200px;"/>
         <br/>
         ${(value)!}
     <#else>
