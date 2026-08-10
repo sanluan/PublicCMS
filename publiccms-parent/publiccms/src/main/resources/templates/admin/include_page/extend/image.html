@@ -1,0 +1,57 @@
+<#if extend.multiple>
+    <#if 'view'=type>
+        <#if value?has_content><#list value?split(",") as v><p>${v?counter}.${v!}<br/><img src="${getUrl(v?url_path)!}" alt="image" style="max-width:200px;max-height:200px;"/></p></#list></#if>
+    <#else>
+        <table<#if 'customform'!=type> class="list nowrap sortDrag itemDetail" addButton="<@t.page 'button.new_line'/>"</#if>>
+            <thead>
+                <tr>
+                    <th width="400"<#if 'customform'!=type> type="attach" name="${inputName}" fieldClass="preview <#if extend.required>required</#if>" size="45"<#if readonly>  fieldAttrs='{"readonly":"readonly"}'</#if> lookupUrl="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup=""</#if>><@t.page 'image'/></th>
+                    <th width="60"<#if 'customform'!=type> type="delAndSort"</#if>><@t.page 'operate'/></th>
+                </tr>
+            </thead>
+            <tbody>
+                <#if value?has_content>
+                    <#list value?split(",") as a>
+                    <tr<#if 'customform'!=type> class="unitBox"</#if>>
+                        <td>
+                            <#if 'customform'=type>
+                                <img src="${getUrl(a?url_path)!}" alt="image" style="max-width:200px;max-height:200px;"/>
+                                <br/>
+                                <input name="${inputName}" type="type" value="${a}"/>
+                            <#else>
+                                <input name="${inputName}" type="text" size="45"<#if 'customform'=type><#if extend.required||a?is_first> required="required"</#if><#else> class="nocommas preview<#if extend.required||a?is_first> required</#if>"</#if> value="${a}"/>
+                                <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
+                                <a class="view icon-eye-open" ref="${inputName}" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                            </#if>
+                        </td>
+                        <td>
+                            <#if 'customform'!=type><a href="javascript:;" class="icon-move"></a></#if>
+                            <a href="javascript:;"<#if 'customform'=type> onclick="this.parentElement.parentElement.remove()"<#else> class="btnDel"</#if>><@t.page 'button.delete'/></a>
+                        </td>
+                    </tr>
+                    </#list>
+                </#if>
+                <#if 'customform'=type>
+                    <tr>
+                        <td colspan="2"><a href="javascript:;" onclick="var thisNode=this.parentElement.parentElement;var tr = document.createElement('tr');tr.innerHTML='<td><input type=\'file\' target=\'${inputName}\' <#if extend.required> required=\'required\'</#if>/></td><td><a href=\'javascript:;\' onclick=\'this.parentElement.parentElement.remove()\'><@t.page 'button.delete'/></a></td>';thisNode.parentElement.insertBefore(tr,thisNode);"><@t.page 'button.new_line'/></a></td>
+                    </tr>
+                </#if>
+            </tbody>
+        </table>
+    </#if>
+<#else>
+    <#if 'view'=type>
+        <img src="${getUrl(value?url_path)!}" alt="image" style="max-width:200px;max-height:200px;"/>
+        <br/>
+        ${(value)!}
+    <#else>
+        <input name="${inputName}" type="text" maxlength="300" size="50"<#if 'customform'=type><#if extend.required> required="required"</#if><#else> class="preview<#if extend.required> required</#if>"</#if><#if readonly> readonly="readonly"</#if> value="<#if 'customform'=type>${r'${(attribute.'+extend.id.code+r')!}'}<#else>${(value)!}</#if>"/>
+        <#if 'customform'=type>
+            <input type="file" target="${inputName}"/>
+        <#else>
+            <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
+            <a class="view icon-eye-open" ref="${inputName}" data-prefix="${getFileUploadPrefix()}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+            <#if (extend.width)?has_content && (extend.height)?has_content><span class="info">${extend.width!}*${extend.height!}</span></#if>
+        </#if>
+    </#if>
+</#if>
