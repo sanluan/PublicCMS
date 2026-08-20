@@ -61,14 +61,14 @@ subprojects {
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "2.0.0"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "3.2.1"
+        jacksonVersion = "3.2.2"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.34"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-core
         luceneVersion = "10.5.0"
         // http://mvnrepository.com/artifact/redis.clients/jedis
         // https://github.com/redis/jedis
-        jedisVersion = "7.5.3"
+        jedisVersion = "8.0.0"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         // https://github.com/quartz-scheduler/quartz/releases
         quartzVersion = "2.5.2"
@@ -87,7 +87,7 @@ subprojects {
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
         fileuploadVersion = "1.6.0"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
-        collectionsVersion = "4.5.0"
+        collectionsVersion = "4.6.0"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         langVersion = "3.20.0"
         // http://mvnrepository.com/artifact/commons-io/commons-io
