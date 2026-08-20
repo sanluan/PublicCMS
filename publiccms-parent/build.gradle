@@ -65,7 +65,7 @@ subprojects {
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.34"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-core
-        luceneVersion = "10.5.0"
+        luceneVersion = "10.5.1"
         // http://mvnrepository.com/artifact/redis.clients/jedis
         // https://github.com/redis/jedis
         jedisVersion = "8.0.0"
