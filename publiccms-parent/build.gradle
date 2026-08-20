@@ -72,7 +72,7 @@ subprojects {
         dynamicSqlVersion = "2.0.0"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
         // 3.0 for Java 17+
-        jacksonVersion = "2.22.1"
+        jacksonVersion = "2.22.2"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.34"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
@@ -101,7 +101,7 @@ subprojects {
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
         fileuploadVersion = "1.6.0"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
-        collectionsVersion = "4.5.0"
+        collectionsVersion = "4.6.0"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         langVersion = "3.20.0"
         // http://mvnrepository.com/artifact/commons-io/commons-io
