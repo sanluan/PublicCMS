@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -31,6 +33,7 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigDataComponent;
 import com.publiccms.logic.component.config.SafeConfigComponent;
 import com.publiccms.logic.component.site.FileUploadComponent;
@@ -79,34 +82,35 @@ public class FileController {
      * @return view name
      */
     @PostMapping("doUpload")
+    @Csrf
     @ResponseBody
-    public Map<String, Object> upload(@RequestAttribute SysSite site, String captcha, MultipartFile file, String base64File,
-            String originalFilename, HttpServletRequest request) {
-        boolean privatefile = true;
+    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser user,
+            boolean privatefile, String captcha, MultipartFile file, String base64File, String originalFilename,
+            HttpServletRequest request) {
         ModelMap result = new ModelMap();
         result.put("success", false);
         if (CommonUtils.notEmpty(captcha)
                 || safeConfigComponent.enableCaptcha(site.getId(), SafeConfigComponent.CAPTCHA_MODULE_UPLOAD)) {
             String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
             request.getSession().removeAttribute("captcha");
-            if (ControllerUtils.errorCustom("captcha.error", null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha),
-                    result)) {
+            if (ControllerUtils.errorCustom("captcha.error",
+                    null == sessionCaptcha || !sessionCaptcha.equalsIgnoreCase(captcha), result)) {
                 return result;
             }
         }
-        String ip = RequestUtils.getIpAddress(request);
-        boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, ip,
-                null);
+        boolean locked = lockComponent.isLocked(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD,
+                String.valueOf(user.getId()), null);
         boolean sizeLocked = lockComponent.isLocked(site.getId(),
                 privatefile ? LockComponent.ITEM_TYPE_FILEUPLOAD_PRIVATE_SIZE : LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE,
-                ip, null);
+                String.valueOf(user.getId()), null);
         if (ControllerUtils.errorCustom("locked.user", locked, result)) {
-            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, ip, null, true);
+            lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()), null,
+                    true);
             return result;
         } else if (ControllerUtils.errorCustom("locked.user", sizeLocked, result)) {
             return result;
         }
-        lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, ip, null, true);
+        lockComponent.lock(site.getId(), LockComponent.ITEM_TYPE_FILEUPLOAD, String.valueOf(user.getId()), null, true);
         if (null != file && !file.isEmpty() || CommonUtils.notEmpty(base64File)) {
             String originalName;
             if (null != file && !file.isEmpty()) {
@@ -115,29 +119,31 @@ public class FileController {
                 originalName = originalFilename;
             }
             String suffix = CmsFileUtils.getSuffix(originalName);
-            if (ArrayUtils.contains(privatefile ? CmsFileUtils.IMAGE_FILE_SUFFIXS : safeConfigComponent.getSafeSuffix(site),
-                    suffix)) {
+            if (ArrayUtils.contains(
+                    privatefile ? CmsFileUtils.IMAGE_FILE_SUFFIXS : safeConfigComponent.getSafeSuffix(site), suffix)) {
                 try {
                     FileUploadResult uploadResult = null;
                     if (CommonUtils.notEmpty(base64File)) {
-                        uploadResult = fileUploadComponent.upload(site.getId(), VerificationUtils.base64Decode(base64File),
-                                privatefile, null, suffix, localeResolver.resolveLocale(request));
-                    } else {
-                        uploadResult = fileUploadComponent.upload(site.getId(), file, privatefile, null, suffix,
+                        uploadResult = fileUploadComponent.upload(site.getId(),
+                                VerificationUtils.base64Decode(base64File), privatefile, user.getNickname(), suffix,
                                 localeResolver.resolveLocale(request));
+                    } else {
+                        uploadResult = fileUploadComponent.upload(site.getId(), file, privatefile, user.getNickname(),
+                                suffix, localeResolver.resolveLocale(request));
                     }
                     lockComponent.lock(site.getId(),
                             privatefile ? LockComponent.ITEM_TYPE_FILEUPLOAD_PRIVATE_SIZE
                                     : LockComponent.ITEM_TYPE_FILEUPLOAD_SIZE,
-                            ip, null, (int) uploadResult.getFileSize() / 1024);
+                            String.valueOf(user.getId()), null, (int) uploadResult.getFileSize() / 1024);
                     result.put("success", true);
                     result.put("fileName", uploadResult.getFilename());
                     String fileType = CmsFileUtils.getFileType(suffix);
                     result.put("fileType", fileType);
                     result.put("fileSize", uploadResult.getFileSize());
-                    logUploadService.save(new LogUpload(site.getId(), 0, LogLoginService.CHANNEL_WEB, originalName,
-                            privatefile, fileType, uploadResult.getFileSize(), uploadResult.getWidth(), uploadResult.getHeight(),
-                            RequestUtils.getIpAddress(request), CommonUtils.now(), uploadResult.getFilename()));
+                    logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB,
+                            originalName, privatefile, fileType, uploadResult.getFileSize(), uploadResult.getWidth(),
+                            uploadResult.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.now(),
+                            uploadResult.getFilename()));
                 } catch (IOException e) {
                     log.error(e.getMessage(), e);
                     result.put(CommonConstants.ERROR, e.getMessage());
