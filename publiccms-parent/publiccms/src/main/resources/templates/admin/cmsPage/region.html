@@ -57,7 +57,7 @@
                                 </#if>
                             </div>
                             <#if a.cover?has_content>
-                            <div class="ctl-label">
+                            <div class="ctl-label text-center">
                                 <img src="${(getUrl(a.cover))!}" alt="${a.name}"/>
                             </div>
                             </#if>
@@ -86,6 +86,7 @@
                                                                 <div class="dragItem icon-move" data-id="${moduleData.id}" data-type="module" >
                                                                     ${moduleData.name}<span class="close">X</span>
                                                                     <div class="ctl-label">
+                                                                        <input data-name="name" data-maxlength="50" type="text" class="required hoverShow" value="${moduleData.name}"/>
                                                                         <@tools.placeMetadata path=moduleData.place>
                                                                             <#if (object.metadataExtendList)?has_content>
                                                                                 <a class="button" href="cmsPlace/metadata.html?path=${moduleData.place?url}" target="ajax" rel="diyConfigBox">${(object.alias)!moduleData.place}</a>
@@ -94,13 +95,12 @@
                                                                                 <a class="button" href="cmsPlace/dataList.html?path=${moduleData.place?url}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data'/>:${(object.alias)!}"><@t.page 'place_data'/>(${object.size})</a>
                                                                             </#if>
                                                                         </@tools.placeMetadata>
-                                                                        <input data-name="name" type="hidden" value="${moduleData.name}"/>
                                                                         <input data-name="place" type="hidden" value="${moduleData.place!}"/>
                                                                         <input data-name="fragment" type="hidden" value="${moduleData.fragment!}"/>
                                                                     </div>
                                                                     <@tools.diyMetadata itemType="module" itemId=moduleData.id;module>
                                                                         <#if module.cover?has_content>
-                                                                            <div class="ctl-label">
+                                                                            <div class="ctl-label text-center">
                                                                                 <img src="${(getUrl(module.cover))!}" alt="${moduleData.name}"/>
                                                                             </div>
                                                                         </#if>
