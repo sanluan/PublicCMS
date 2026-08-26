@@ -647,16 +647,17 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param ids
+     * @param siteId 
      * @param category
      */
-    public void saveQuote(Serializable[] ids, CmsCategory category) {
+    public void saveQuote(Serializable[] ids, short siteId, CmsCategory category) {
         List<CmsContent> entitys = getEntitys(ids);
-        if (CommonUtils.notEmpty(entitys) && null != category) {
+        if (CommonUtils.notEmpty(entitys) && null != category && siteId == category.getSiteId()) {
             for (CmsContent entity : entitys) {
                 if (null == entity.getParentId() && null != entity.getQuoteContentId()) {
                     entity = getEntity(entity.getQuoteContentId());
                 }
-                if (entity.getCategoryId() != category.getId()) {
+                if (entity.getCategoryId() != category.getId() && siteId == entity.getSiteId()) {
                     CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), category.getId(),
                             entity.getModelId(), entity.getLang(), entity.isCopied(), true, entity.isHasImages(),
                             entity.isHasFiles(), entity.isHasProducts(), entity.isHasStatic(), 0, 0, 0, BigDecimal.ZERO, 0, 0, 0,

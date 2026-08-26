@@ -48,7 +48,7 @@
             <p><#if content.copied>Source:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} Views:<em>loading...</em></p>
             <div id="content" class="clearfix">
                 ${(text?no_esc)!}
-                
+
                 <#if content.hasImages>
                      <@cms.contentFileList contentId=content.id fileTypes='image'>
                          <#list page.list as file>
@@ -187,12 +187,9 @@
     </script>
     </#if>
     <script>
-    var bread = document.querySelector('.bread a:first-child');
-    if(bread)
-        var nav = document.querySelector('nav a[data-id="'+bread.getAttribute("data-id")+'"]');
-        if(nav){
-            nav.className="selected";
-        }
+    var nav = document.querySelector('nav a[data-id="${category.parentIds?has_content?then(category.parentIds?split(',')[0],category.id)}"]');
+    if(nav){
+        nav.className="selected";
     }
 
     fetch('${site.dynamicPath!}api/contentClick?id=${content.id}').then(response => {

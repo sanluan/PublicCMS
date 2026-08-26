@@ -357,7 +357,7 @@ var JUI = {
                 }else if ($this.parents(".dialogContent").length != 0){
                     iLayoutH = $this.getSiblingsElemsH($this.parents(".dialogContent"));
                 }
-                
+
                 if ($this.parents(".card").length != 0){
                     var $cards = $this.parents(".card");
                     for(var i=0;i<$cards.length;i++){
@@ -506,7 +506,7 @@ var JUI = {
             return (new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/).test(this.trim()));
         },
         isUrl: function() {
-            return ( new RegExp(/^([a-zA-z]+:)?\/\/([a-zA-Z0-9\-\.]+)([-\w .\/?%&=:]*)$/).test(this) );
+            return ( new RegExp(/^([a-zA-z]+:)?\/\/([a-zA-Z0-9\-\.]+)([-\w .\/?%&=#;:]*)$/).test(this) );
         },
         isExternalUrl: function() {
             var domain = window.location.host;
