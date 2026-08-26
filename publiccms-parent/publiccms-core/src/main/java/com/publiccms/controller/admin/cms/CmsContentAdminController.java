@@ -563,7 +563,7 @@ public class CmsContentAdminController {
             service.changeModel(id, modelId);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "changeModel.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.now(), new StringBuilder().append(id).append(" to ").append(modelId).toString()));
+                    CommonUtils.now(), CommonUtils.joinString(id, " to ", modelId)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -597,8 +597,7 @@ public class CmsContentAdminController {
             CmsContent entity = service.sort(site.getId(), id, sort);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "sort.content", RequestUtils.getIpAddress(request), CommonUtils.now(),
-                    new StringBuilder().append(entity.getId()).append(":").append(entity.getTitle()).append(" to ").append(sort)
-                            .toString()));
+                    CommonUtils.joinString(entity.getId(), ":", entity.getTitle(), " to ", sort)));
             CmsCategory category = categoryService.getEntity(entity.getCategoryId());
             if (null != category) {
                 try {
@@ -646,13 +645,45 @@ public class CmsContentAdminController {
                         RequestContextUtils.getLocale(request), "message.content_static_fail", fail));
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "static.content", RequestUtils.getIpAddress(request),
-                        CommonUtils.now(),
-                        new StringBuilder(StringUtils.join(ids, Constants.COMMA)).append("; failed : ").append(fail).toString()));
+                        CommonUtils.now(), CommonUtils.joinString(StringUtils.join(ids, Constants.COMMA), "; failed : ", fail)));
             } else {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "static.content", RequestUtils.getIpAddress(request),
                         CommonUtils.now(), StringUtils.join(ids, Constants.COMMA)));
             }
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param ids
+     * @param categoryId
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("quote")
+    @Csrf
+    public String quote(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, Integer categoryId,
+            HttpServletRequest request, ModelMap model) {
+        CmsCategory category = categoryService.getEntity(categoryId);
+        if (null != category) {
+            if (ControllerUtils.errorNotEquals("siteId", site.getId(), category.getSiteId(), model)) {
+                return CommonConstants.TEMPLATE_ERROR;
+            }
+            service.saveQuote(ids, site.getId(), category);
+            try {
+                templateComponent.publish(site, category, null, null);
+            } catch (IOException | TemplateException e) {
+                model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                log.error(e.getMessage(), e);
+                return CommonConstants.TEMPLATE_ERROR;
+            }
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "quote.content", RequestUtils.getIpAddress(request), CommonUtils.now(),
+                    CommonUtils.joinString(StringUtils.join(ids, Constants.COMMA), " to ", category.getName())));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -841,8 +872,8 @@ public class CmsContentAdminController {
                     }
                 }
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "copy.content", RequestUtils.getIpAddress(request), CommonUtils.now(),
-                        StringUtils.join(categoryIds, Constants.COMMA)));
+                        LogLoginService.CHANNEL_WEB_MANAGER, "copy.content", RequestUtils.getIpAddress(request),
+                        CommonUtils.now(), StringUtils.join(categoryIds, Constants.COMMA)));
             }
         }
         return CommonConstants.TEMPLATE_DONE;

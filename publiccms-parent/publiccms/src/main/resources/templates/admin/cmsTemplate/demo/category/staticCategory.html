@@ -110,12 +110,9 @@
     </script>
 <#-- end footer -->
     <script>
-    var bread = document.querySelector('.bread a:first-child');
-    if(bread)
-        var nav = document.querySelector('nav a[data-id="'+bread.getAttribute("data-id")+'"]');
-        if(nav){
-            nav.className="selected";
-        }
+    var nav = document.querySelector('nav a[data-id="${category.parentIds?has_content?then(category.parentIds?split(',')[0],category.id)}"]');
+    if(nav){
+        nav.className="selected";
     }
     </script>
 </body>
