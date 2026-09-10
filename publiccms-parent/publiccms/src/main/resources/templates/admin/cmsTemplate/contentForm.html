@@ -99,8 +99,8 @@ if(files.length){
             .then(response => response.json())
             .then(data => {
                 if(data.success){
-                    document.querySelector("[name="+f.getAttribute("target").replace("[","\\[").replace("]","\\]")+"]").value=data.fileName;
-                    document.querySelector("[name="+f.getAttribute("target").replace("[","\\[").replace("]","\\]")+"]").dispatchEvent(new Event('change', {
+                    document.querySelector("[name="+f.getAttribute("target")+"]").value=data.fileName;
+                    document.querySelector("[name="+f.getAttribute("target")+"]").dispatchEvent(new Event('change', {
                         bubbles: true,
                         cancelable: true
                     }));
