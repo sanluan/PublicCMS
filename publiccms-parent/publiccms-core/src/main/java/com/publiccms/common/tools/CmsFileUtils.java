@@ -65,10 +65,7 @@ public class CmsFileUtils {
     private static final FileInfoComparator FILESIZE_COMPARATOR = new FileInfoComparator(ORDERFIELD_FILESIZE);
     private static final FileInfoComparator CREATEDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_CREATEDATE);
     private static final FileInfoComparator MODIFIEDDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_MODIFIEDDATE);
-    /**
-     * 
-     */
-    public static final List<String> IMAGE_FILE_SUFFIXS_LIST = Arrays.asList(".png", ".jpg", ".jpeg", ".gif", ".bmp", ".svg");
+    
 
     /**
      * 
@@ -81,7 +78,7 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final String[] IMAGE_FILE_SUFFIXS = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".svg", ".bmp" };
+    public static final String[] IMAGE_FILE_SUFFIXS = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".svg", ".bmp", ".webp" };
     /**
      * 
      */
