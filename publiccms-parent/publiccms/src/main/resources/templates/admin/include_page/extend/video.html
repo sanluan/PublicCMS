@@ -33,7 +33,7 @@
                 </#if>
                 <#if 'customform'=type>
                     <tr>
-                        <td colspan="2"><input type="file" target="${inputName}_filepath"/><input name="${inputName}_filepath" type="hidden" onchange="var thisNode=this.parentElement.parentElement;var tr = document.createElement('tr');tr.innerHTML='<td><video controls=\'controls\' src=\'${getFileUploadPrefix()}'+this.value+'\' style=\'max-width:500px;max-height:500px;\'></video><input name=\'${inputName}\' type=\'hidden\' value=\''+this.value+'\'/></td><td><a href=\'javascript:;\' onclick=\'this.parentElement.parentElement.remove()\'><@t.page 'button.delete'/></a></td>';thisNode.parentElement.insertBefore(tr,thisNode);"/></td>
+                        <td colspan="2"><input type="file"/><input type="hidden" onchange="var thisNode=this.parentElement.parentElement;var tr = document.createElement('tr');tr.innerHTML='<td><video controls=\'controls\' src=\'${getFileUploadPrefix()}'+this.value+'\' style=\'max-width:500px;max-height:500px;\'></video><input name=\'${inputName}\' type=\'hidden\' value=\''+this.value+'\'/></td><td><a href=\'javascript:;\' onclick=\'this.parentElement.parentElement.remove()\'><@t.page 'button.delete'/></a></td>';thisNode.parentElement.insertBefore(tr,thisNode);"/></td>
                     </tr>
                 </#if>
             </tbody>

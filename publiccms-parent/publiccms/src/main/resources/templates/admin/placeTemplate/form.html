@@ -97,11 +97,15 @@ if(files.length){
             .then(response => response.json())
             .then(data => {
                 if(data.success){
-                    document.querySelector("[name="+f.getAttribute("target").replace("[","\\[").replace("]","\\]")+"]").value=data.fileName;
-                    document.querySelector("[name="+f.getAttribute("target").replace("[","\\[").replace("]","\\]")+"]").dispatchEvent(new Event('change', {
-                        bubbles: true,
-                        cancelable: true
-                    }));
+                    var nextElement = f.nextElementSibling;
+                    if(nextElement){
+                        nextElement.value=data.fileName;
+                        nextElement.setAttribute("fileName",file.name);
+                        nextElement.dispatchEvent(new Event('change', {
+                            bubbles: true,
+                            cancelable: true
+                        }));
+                    }
                     f.value=null;
                 }else{
                     alert(data.error);
