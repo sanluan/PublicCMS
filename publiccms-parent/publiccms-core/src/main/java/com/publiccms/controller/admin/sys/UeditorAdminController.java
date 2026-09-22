@@ -26,7 +26,6 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ImageUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
@@ -169,19 +168,10 @@ public class UeditorAdminController extends AbstractUeditorController {
                             String suffix = fileType.getCommonExtension();
                             if (null != fileType.getMimeType() && fileType.getMimeType().startsWith("image/")
                                     && CommonUtils.notEmpty(suffix)) {
-                                String fileName;
-                                FileUploadResult uploadResult;
-                                if (fileType.equals(FileType.WebP)) {
-                                    fileName = CmsFileUtils.getUploadFileName("jpg");
-                                    String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                                    ImageUtils.webp2Image(inputStream, false, filepath);
-                                    uploadResult = CmsFileUtils.getFileSize(filepath, fileName, suffix);
-                                } else {
-                                    fileName = CmsFileUtils.getUploadFileName(suffix);
-                                    String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
-                                    CmsFileUtils.copyInputStreamToFile(inputStream, filepath);
-                                    uploadResult = CmsFileUtils.getFileSize(filepath, fileName, suffix);
-                                }
+                                String fileName = CmsFileUtils.getUploadFileName(suffix);
+                                String filepath = siteComponent.getWebFilePath(site.getId(), fileName);
+                                CmsFileUtils.copyInputStreamToFile(inputStream, filepath);
+                                FileUploadResult uploadResult = CmsFileUtils.getFileSize(filepath, fileName, suffix);
                                 logUploadService
                                         .save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                                 Constants.BLANK, false, CmsFileUtils.getFileType(suffix),
