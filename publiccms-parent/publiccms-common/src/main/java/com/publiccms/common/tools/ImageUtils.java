@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.FileImageInputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -35,7 +33,6 @@ import com.drew.metadata.Tag;
 import com.drew.metadata.exif.ExifIFD0Directory;
 import com.github.bgalek.security.svg.SvgSecurityValidator;
 import com.github.bgalek.security.svg.ValidationResult;
-import com.luciad.imageio.webp.WebPReadParam;
 import com.publiccms.common.constants.Constants;
 
 import net.ifok.image.image4j.codec.ico.ICOEncoder;
@@ -186,29 +183,6 @@ public class ImageUtils {
         return font[Constants.random.nextInt(4)];
     }
 
-    public static void webp2Image(InputStream webpInputStream, boolean png, String imageFilepath) throws IOException {
-        ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
-        WebPReadParam readParam = new WebPReadParam();
-        readParam.setBypassFiltering(true);
-        reader.setInput(webpInputStream);
-        BufferedImage image = reader.read(0, readParam);
-        ImageIO.write(image, png ? FORMAT_NAME_PNG : FORMAT_NAME_JPG, new File(imageFilepath));
-    }
-
-    public static void webp2Image(String webpFilepath, boolean png, String imageFilepath) throws IOException {
-        ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
-        WebPReadParam readParam = new WebPReadParam();
-        readParam.setBypassFiltering(true);
-        reader.setInput(new FileImageInputStream(new File(webpFilepath)));
-        BufferedImage image = reader.read(0, readParam);
-        ImageIO.write(image, png ? FORMAT_NAME_PNG : FORMAT_NAME_JPG, new File(imageFilepath));
-    }
-
-    public static void image2Webp(String imageFilepath, String webpFilepath) throws IOException {
-        BufferedImage image = ImageIO.read(new File(imageFilepath));
-        ImageIO.write(image, FORMAT_NAME_WEBP, new File(webpFilepath));
-    }
-
     public static void image2Ico(InputStream input, String suffix, int size, String icoFilepath) throws IOException {
         BufferedImage sourceImage = ImageIO.read(input);
         BufferedImage resultImage = thumb(sourceImage, size, size, 0, ".png".equalsIgnoreCase(suffix));
@@ -236,7 +210,7 @@ public class ImageUtils {
         return true;
     }
 
-    public static BufferedImage thumb(BufferedImage sourceImage, int width, int height, int angle, boolean png) {
+    private static BufferedImage thumb(BufferedImage sourceImage, int width, int height, int angle, boolean png) {
         BufferedImage resultImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = resultImage.createGraphics();
         if (png) {
