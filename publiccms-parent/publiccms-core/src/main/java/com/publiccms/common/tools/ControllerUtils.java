@@ -8,12 +8,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -55,6 +57,36 @@ public class ControllerUtils {
     public static <T> ResponseEntity<T> redirect(boolean found, String url) {
         return ResponseEntity.status(found ? HttpStatus.FOUND : HttpStatus.MOVED_PERMANENTLY)
                 .header("Location", RequestUtils.removeCRLF(url)).build();
+    }
+
+    public static boolean isUnSafeUrl(String url, SysSite site, String safeReturnUrl, String contextPath) {
+        if (CommonUtils.empty(url)) {
+            return true;
+        } else if (url.contains("\r") || url.contains("\n")) {
+            return true;
+        } else if (url.replace("\\", "/").contains(":") || url.replace("\\", "/").startsWith("//")) {
+            if (unSafe(url.replace("\\", "/"), site, contextPath)) {
+                if (CommonUtils.notEmpty(safeReturnUrl)) {
+                    for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, Constants.COMMA)) {
+                        if (url.startsWith(safeUrlPrefix)) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private static boolean unSafe(String url, SysSite site, String contextPath) {
+        String fixedUrl = url.substring(url.indexOf(":") + 1);
+        return !(url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
+                || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
+                || CommonUtils.notEmpty(contextPath) && url.startsWith(CommonUtils.joinString(contextPath, "/")));
     }
 
     /**
@@ -521,7 +553,7 @@ public class ControllerUtils {
 
     /**
      * @param request
-     * @param site 
+     * @param site
      */
     public static void setSiteToAttribute(HttpServletRequest request, SysSite site) {
         request.setAttribute(CommonConstants.getAttributeSite(), site);

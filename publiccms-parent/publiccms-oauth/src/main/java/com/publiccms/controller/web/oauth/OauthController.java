@@ -116,11 +116,8 @@ public class OauthController {
         Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
         RequestUtils.cancleCookie(request.getContextPath(), request.getScheme(), response, RETURN_URL, null);
         String returnUrl;
-        Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
-        String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
-        if (null != cookie && CommonUtils.notEmpty(cookie.getValue())
-                && !SafeConfigComponent.isUnSafeUrl(cookie.getValue(), site, safeReturnUrl, request.getContextPath())) {
-            returnUrl = cookie.getValue();
+        if (null != cookie && CommonUtils.notEmpty(cookie.getValue())) {
+            returnUrl = safeConfigComponent.getSafeUrl(cookie.getValue(), site, request.getContextPath());
         } else {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
@@ -137,14 +134,15 @@ public class OauthController {
                     SysUser user = ControllerUtils.getUserFromSession(session);
                     if (null == user) {
                         Date now = CommonUtils.now();
+                        Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
                         if (null == appClient) {
                             OauthUser oauthUser = oauthGateway.getUserInfo(site.getId(), oauthAccess);
                             Map<String, String> oauthConfig = configDataComponent.getConfigData(site.getId(),
                                     AbstractOauth.CONFIG_CODE);
                             if (null != oauthUser && CommonUtils.notEmpty(oauthConfig)
                                     && CommonUtils.notEmpty(config.get(SiteConfigComponent.CONFIG_REGISTER_URL))) {
-                                appClient = new SysAppClient(site.getId(), channel, oauthAccess.getOpenId(),
-                                        CommonUtils.now(), false);
+                                appClient = new SysAppClient(site.getId(), channel, oauthAccess.getOpenId(), CommonUtils.now(),
+                                        false);
                                 appClient.setClientVersion(CmsVersion.getVersion());
                                 appClient.setLastLoginIp(ip);
                                 appClientService.save(appClient);

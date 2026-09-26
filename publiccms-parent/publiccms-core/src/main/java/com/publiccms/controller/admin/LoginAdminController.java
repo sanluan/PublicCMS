@@ -171,7 +171,7 @@ public class LoginAdminController {
             logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER,
                     LogLoginService.METHOD_PASSWORD, true, CommonUtils.now()));
             String safeReturnUrl = safeConfig.get(SafeConfigComponent.CONFIG_RETURN_URL);
-            if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
+            if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
                 returnUrl = CommonConstants.getDefaultPage();
             }
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
