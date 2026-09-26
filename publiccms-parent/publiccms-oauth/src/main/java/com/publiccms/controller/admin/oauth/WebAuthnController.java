@@ -322,7 +322,7 @@ public class WebAuthnController {
     public String login(@RequestAttribute SysSite site, String returnUrl, HttpServletRequest request) {
         Map<String, String> config = configDataComponent.getConfigData(site.getId(), SiteConfigComponent.CONFIG_CODE);
         String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
-        if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
             returnUrl = CommonUtils.joinString("../", CommonConstants.getDefaultPage());
         }
         return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
