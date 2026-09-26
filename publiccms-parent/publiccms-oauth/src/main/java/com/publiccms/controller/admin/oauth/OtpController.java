@@ -109,7 +109,7 @@ public class OtpController {
             settingService.getOrCreateOrUpdate(otpadmin.getId(), SysUserSettingService.OPTSECRET_SETTINGS_CODE, secret);
             Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
             String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
-            if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
+            if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
                 returnUrl = CommonUtils.joinString("../", CommonConstants.getDefaultPage());
             }
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
@@ -158,7 +158,7 @@ public class OtpController {
                             LogLoginService.CHANNEL_WEB_MANAGER, LogLoginService.METHOD_OTPCODE, true, now));
                     Map<String, String> config = configDataComponent.getConfigData(site.getId(), SafeConfigComponent.CONFIG_CODE);
                     String safeReturnUrl = config.get(SafeConfigComponent.CONFIG_RETURN_URL);
-                    if (SafeConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
+                    if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
                         returnUrl = CommonUtils.joinString("../", CommonConstants.getDefaultPage());
                     }
                     return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
