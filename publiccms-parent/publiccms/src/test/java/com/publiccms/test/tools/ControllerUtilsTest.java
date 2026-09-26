@@ -23,6 +23,9 @@ class ControllerUtilsTest {
         Assertions.assertTrue(ControllerUtils.isUnSafeUrl("http://www.baidu.com/", site, "", ""));
         Assertions.assertFalse(ControllerUtils.isUnSafeUrl("//www.publiccms.com/", site, "", ""));
         Assertions.assertFalse(ControllerUtils.isUnSafeUrl("http://www.publiccms.com/", site, "", ""));
+        Assertions.assertFalse(ControllerUtils.isUnSafeUrl("login.html", site, "", ""));
+        Assertions.assertFalse(ControllerUtils.isUnSafeUrl("/login.html", site, "", ""));
+        Assertions.assertFalse(ControllerUtils.isUnSafeUrl("/", site, "", ""));
         Assertions.assertFalse(ControllerUtils.isUnSafeUrl("http://www.baidu.com/", site, "http://www.baidu.com", ""));
     }
 
