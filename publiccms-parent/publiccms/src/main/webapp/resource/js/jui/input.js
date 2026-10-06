@@ -321,7 +321,8 @@
             }
         });
         $.validator.setDefaults({
-            errorElement: "span"
+            errorElement: "span",
+            onkeyup: false
         });
         $.validator.autoCreateRanges = true;
     }
