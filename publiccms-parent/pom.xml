@@ -33,7 +33,7 @@
         <version.juint>6.1.3</version.juint>
         <!-- http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>7.4.10.Final</version.hibernate>
+        <version.hibernate>7.4.12.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm -->
         <version.hibernateTools>7.3.13.Final</version.hibernateTools>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
