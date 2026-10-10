@@ -413,29 +413,41 @@ visitChart.setOption({
                     <label><@t.page 'publiccms'/>:</label>
                     <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" title="<@t.page 'publiccms_website'/>">${cms}.${revision}</a> <span class="new hide" style="color:green">[<@t.page 'version.new'/>]</span><span class="old hide" style="color:red">[<@t.page 'version.old'/>]</span>
                 </li>
-    <@tools.systemProperties>
+        <@tools.masterSite>
+            <@tools.disk>
+                <li>
+                    <label><@t.page 'data.directory'/>:</label>
+                    ${(rootPath)!}
+                </li>
+            </@tools.disk>
+            <@tools.systemProperties>
                 <li>
                     <label><@t.page 'os.timezone'/>:</label>${.vars['user.timezone']!}
                 </li>
-    </@tools.systemProperties>
-    <@tools.masterSite>
-                <li>
+            </@tools.systemProperties>
+                <li style="width:auto;">
                     <label>${t.pageMessage(master?then('cluster.master','cluster.normal'))}:</label>
                     <a href="sysCluster/list.html" title="<@t.menu 'cluster'/>" target="navTab" rel="sysCluster/list">${cluster}</a>
                 </li>
+        </@tools.masterSite>
+        </div>
+    <@tools.masterSite>
+    <div class="divider"></div>
+        <div class="unit">
         <@tools.disk>
+            <ul>
                 <li>
-                    <label><@t.page 'data.directory'/>:</label>
-                    <a href="sysSite/monitor.html" title="<@t.page 'system_monitor'/>" target="navTab" rel="sysSite/monitor">${(rootPath)!}</a>
+                    <label><@t.page 'disk_space'/>:</label><a href="sysSite/monitor.html" title="<@t.page 'system_monitor'/>" target="navTab" rel="sysSite/monitor"><@t.fileSize totalSpace/></a>
                 </li>
                 <li>
-                    <label><@t.page 'disk_space'/>:</label><@t.fileSize totalSpace/>
+                    <label><@t.page 'report.used'/>:</label><a href="sysSite/monitor.html" title="<@t.page 'system_monitor'/>" target="navTab" rel="sysSite/monitor"><@t.fileSize totalSpace-freeSpace/></a>
+                </li>
+                <li>
+                    <label><@t.page 'report.unused'/>:</label><a href="sysSite/monitor.html" title="<@t.page 'system_monitor'/>" target="navTab" rel="sysSite/monitor"><@t.fileSize freeSpace/></a>
                 </li>
             </ul>
         </@tools.disk>
-    </@tools.masterSite>
         </div>
-    <@tools.masterSite>
         <div class="divider"></div>
         <div class="unit">
             <ul>
