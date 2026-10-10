@@ -79,7 +79,7 @@ subprojects {
         luceneVersion = "8.11.4"
         // http://mvnrepository.com/artifact/redis.clients/jedis
         // https://github.com/redis/jedis
-        jedisVersion = "8.0.1"
+        jedisVersion = "8.0.2"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         // https://github.com/quartz-scheduler/quartz/releases
         // 2.5 for jakarta
@@ -103,7 +103,7 @@ subprojects {
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
         collectionsVersion = "4.6.0"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-        langVersion = "3.20.0"
+        langVersion = "3.21.0"
         // http://mvnrepository.com/artifact/commons-io/commons-io
         ioVersion = "2.22.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-text
