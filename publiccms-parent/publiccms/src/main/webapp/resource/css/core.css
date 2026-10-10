@@ -310,7 +310,7 @@ a.button:hover{text-decoration:none;}
 #content p{min-width:initial;padding:0;}
 .CodeMirror{height:100%;line-height:16px;}
 
-fieldset{border:none;margin-bottom:15px;position:relative;padding:40px 20px 20px 20px;border-radius:5px;box-shadow:0 3px 6px 1px rgba( 31, 38, 135, 0.37 );}
+fieldset{border:none;clear:both;margin-bottom:15px;position:relative;padding:40px 20px 20px 20px;border-radius:5px;box-shadow:0 3px 6px 1px rgba( 31, 38, 135, 0.37 );}
 fieldset>label, .pageFormContent>label{margin-bottom:10px;}
 fieldset legend{position:absolute;top:0;font-weight:400;font-size:14px;padding:0;line-height:40px;}
 fieldset:last-child{margin-bottom:0px;}

@@ -68,7 +68,14 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
 
     protected Long getUserId(RenderHandler handler, String name) throws TemplateModelException {
         if (needUserToken()) {
-            Long authUserId = handler.getLong(AUTH_USER_ID);
+            Long authUserId = null;
+            try {
+                authUserId = Long.parseLong(handler.getStringAttribute(AUTH_USER_ID));
+            } catch (NumberFormatException e) {
+            }
+            if (null == authUserId) {
+                authUserId = handler.getLong(AUTH_USER_ID);
+            }
             if (null != authUserId) {
                 return authUserId;
             } else {

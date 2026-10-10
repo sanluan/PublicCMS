@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -40,17 +40,21 @@ public class TradeAddressController {
      * @param site
      * @param user
      * @param entity
+     * @param returnUrl 
      * @param request
      * @return operate result
      */
     @RequestMapping("save")
     @Csrf
-    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, TradeAddress entity,
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, TradeAddress entity, String returnUrl,
             HttpServletRequest request) {
         if (null != entity.getId()) {
-            entity = service.update(entity.getId(), entity, ignoreProperties);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
-                    "update.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
+            if (site.getId() == entity.getSiteId() && entity.getUserId() == user.getId()) {
+                entity = service.update(entity.getId(), entity, ignoreProperties);
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
+                        "update.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.now(),
+                        JsonUtils.getString(entity)));
+            }
         } else {
             entity.setSiteId(site.getId());
             entity.setUserId(user.getId());
@@ -58,7 +62,7 @@ public class TradeAddressController {
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "save.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.now(), JsonUtils.getString(entity)));
         }
-        return CommonConstants.TEMPLATE_DONE;
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     /**
@@ -66,18 +70,20 @@ public class TradeAddressController {
      * @param request
      * @param site
      * @param user
+     * @param returnUrl 
      * @return operate result
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long[] ids, HttpServletRequest request) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long[] ids, String returnUrl,
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(site.getId(), ids, user.getId());
             logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
                     "delete.tradeAddress", RequestUtils.getIpAddress(request), CommonUtils.now(),
                     StringUtils.join(ids, Constants.COMMA)));
         }
-        return CommonConstants.TEMPLATE_DONE;
+        return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
     }
 
     @Resource

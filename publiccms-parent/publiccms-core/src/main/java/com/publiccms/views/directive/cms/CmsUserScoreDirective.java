@@ -68,7 +68,7 @@ public class CmsUserScoreDirective extends AbstractTemplateDirective {
             } else {
                 Long[] itemIds = handler.getLongArray("itemIds");
                 if (CommonUtils.notEmpty(itemIds)) {
-                    CmsUserScoreId[] entityIds =  Stream.of(itemIds).map(e -> new CmsUserScoreId(userId, itemType, e))
+                    CmsUserScoreId[] entityIds = Stream.of(itemIds).map(e -> new CmsUserScoreId(userId, itemType, e))
                             .toArray(CmsUserScoreId[]::new);
                     List<CmsUserScore> entityList = service.getEntitys(entityIds);
                     Map<String, CmsUserScore> map = CommonUtils.listToMapSorted(entityList,
@@ -77,6 +77,11 @@ public class CmsUserScoreDirective extends AbstractTemplateDirective {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Resource
