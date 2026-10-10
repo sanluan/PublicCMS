@@ -17,20 +17,23 @@ import com.publiccms.common.handler.PageHandler;
 /**
  *
  * userCollectionList 用户评分列表查询指令
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ul>
  * <li><code>userId</code>:用户id
  * <li><code>contentId</code>:内容id
  * <li><code>pageIndex</code>:页码
  * <li><code>pageSize</code>:每页条数
  * </ul>
- * <p>返回结果
+ * <p>
+ * 返回结果
  * <ul>
  * <li><code>page</code>:{@link com.publiccms.common.handler.PageHandler}
  * <li><code>page.list</code>:List类型 查询结果实体列表
  * {@link com.publiccms.entities.cms.CmsUserCollection}
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * &lt;@cms.userCollectionList userId=1 pageSize=10&gt;&lt;#list page.list as
  * a&gt;${a.scores}&lt;#sep&gt;,&lt;/#list&gt;&lt;/@cms.userCollectionList&gt;
@@ -51,6 +54,11 @@ public class CmsUserCollectionListDirective extends AbstractTemplateDirective {
         PageHandler page = service.getPage(handler.getLong("userId"), handler.getLong("contentId"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
+    }
+
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Resource
