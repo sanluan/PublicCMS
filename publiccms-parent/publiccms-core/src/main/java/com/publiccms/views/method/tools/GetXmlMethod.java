@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.springframework.stereotype.Component;
+import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -21,7 +23,8 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * getXml 获取xml节点
- * <p>参数列表
+ * <p>
+ * 参数列表
  * <ol>
  * <li><code>string</code>:xml文本
  * </ol>
@@ -30,34 +33,39 @@ import freemarker.template.TemplateModelException;
  * <ul>
  * <li><code>xml</code>:xml模型
  * </ul>
- * <p>使用示例
+ * <p>
+ * 使用示例
  * <p>
  * ${getXml('&lt;xml&gt;&lt;data&gt;value&lt;/data&gt;&lt;/xml&gt;').xml.data}
  * <p>
  */
 @Component
 public class GetXmlMethod extends BaseMethod {
-    private boolean uninitialized = true;
+    private DocumentBuilderFactory dbf = null;
 
     @Override
     public Object execute(List<TemplateModel> arguments) throws TemplateModelException {
         String str = getString(0, arguments);
         if (CommonUtils.notEmpty(str)) {
-            if (uninitialized) {
+            if (null == dbf) {
                 try {
-                    DocumentBuilderFactory dbf = NodeModel.getDocumentBuilderFactory();
+                    dbf = DocumentBuilderFactory.newInstance();
+                    dbf.setNamespaceAware(true);
+                    dbf.setIgnoringElementContentWhitespace(true);
                     dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
                     dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
                     dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
                     dbf.setXIncludeAware(false);
                     dbf.setExpandEntityReferences(false);
-                    uninitialized = false;
                 } catch (ParserConfigurationException e) {
                 }
             }
             InputSource is = new InputSource(new StringReader(str));
             try {
-                return NodeModel.parse(is);
+                DocumentBuilder builder = dbf.newDocumentBuilder();
+                Document doc = builder.parse(is);
+                NodeModel.simplify(doc);
+                return NodeModel.wrap(doc);
             } catch (SAXException | IOException | ParserConfigurationException e) {
                 return null;
             }

@@ -1,6 +1,7 @@
 package com.publiccms.logic.component.config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -10,14 +11,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
-import com.publiccms.common.constants.CmsVersion;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.ExtendUtils;
+import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.entities.sys.SysConfigData;
+import com.publiccms.entities.sys.SysConfigDataId;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.service.sys.SysConfigDataService;
 
 import jakarta.annotation.Resource;
 
@@ -28,7 +32,8 @@ import jakarta.annotation.Resource;
  */
 @Component
 public class SafeConfigComponent implements Config {
-
+    @Resource
+    private SysConfigDataService service;
     /**
      * config code
      */
@@ -159,7 +164,25 @@ public class SafeConfigComponent implements Config {
         Map<String, String> config = configDataComponent.getConfigData(siteId, CONFIG_CODE);
         String signKey = config.get(CONFIG_PRIVATEFILE_KEY);
         if (CommonUtils.empty(signKey)) {
-            signKey = CommonUtils.joinString(siteId, CommonConstants.CMS_FILEPATH.hashCode(), CmsVersion.getClusterId());
+            synchronized (service) {
+                signKey = VerificationUtils.getRandomString("ABCDEFGHIJKLMNPOQRSTUVWXYZ0123456789", 16);
+                SysConfigData entity = service.getEntity(new SysConfigDataId(siteId, CONFIG_CODE));
+                Map<String, String> configMap = null;
+                if (null != entity && CommonUtils.notEmpty(entity.getData())) {
+                    configMap = ExtendUtils.getExtendMap(entity.getData());
+                    configMap.put(CONFIG_PRIVATEFILE_KEY, signKey);
+                    entity.setData(ExtendUtils.getExtendString(configMap));
+                    entity.setUpdateDate(CommonUtils.now());
+                    service.update(entity.getId(), entity, new String[] { "id", "createDate" });
+                } else {
+                    configMap = new HashMap<>();
+                    configMap.put(CONFIG_PRIVATEFILE_KEY, signKey);
+                    entity.setData(ExtendUtils.getExtendString(configMap));
+                    entity.setId(new SysConfigDataId(siteId, CONFIG_CODE));
+                    service.save(entity);
+                }
+                configDataComponent.clear(siteId);
+            }
         }
         return signKey;
     }
@@ -171,7 +194,6 @@ public class SafeConfigComponent implements Config {
         }
         return returnUrl;
     }
-
 
     public String[] getSafeSuffix(SysSite site) {
         Map<String, String> config = configDataComponent.getConfigData(site.getId(), CONFIG_CODE);
