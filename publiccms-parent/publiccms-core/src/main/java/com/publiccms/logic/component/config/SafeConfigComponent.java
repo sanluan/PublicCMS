@@ -181,6 +181,7 @@ public class SafeConfigComponent implements Config {
                     entity.setId(new SysConfigDataId(siteId, CONFIG_CODE));
                     service.save(entity);
                 }
+                configDataComponent.clear(siteId);
             }
         }
         return signKey;
