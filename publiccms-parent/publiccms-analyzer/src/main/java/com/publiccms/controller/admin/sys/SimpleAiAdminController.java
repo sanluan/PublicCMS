@@ -76,7 +76,7 @@ public class SimpleAiAdminController {
                         LogLoginService.CHANNEL_WEB_MANAGER, CommonUtils.joinString("ai.chat.", scene), ip, CommonUtils.now(),
                         JsonUtils.getString(logContent)));
             });
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(emitter);
+            return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -111,8 +111,7 @@ public class SimpleAiAdminController {
                 buffer.get(data, offset, remain);
                 offset += remain;
             }
-            String response = new String(data);
-            String temp = response.replaceAll("data: ", "").replaceAll("[DONE]", "");
+            String temp = new String(data);
             if (CommonUtils.notEmpty(temp)) {
                 try {
                     if (CommonUtils.notEmpty(tempCache)) {
@@ -125,30 +124,33 @@ public class SimpleAiAdminController {
                     }
                     String[] lines = StringUtils.split(temp, "\n");
                     for (String line : lines) {
-                        if (CommonUtils.notEmpty(line) && line.startsWith("{\"choices\":")) {
-                            try {
-                                Map<String, Object> map = Constants.objectMapper.readValue(line, Constants.objectMapper
-                                        .getTypeFactory().constructMapType(LinkedHashMap.class, String.class, Object.class));
-                                if (null != map.get("choices")) {
-                                    @SuppressWarnings("unchecked")
-                                    List<Map<String, Object>> choices = (List<Map<String, Object>>) map.get("choices");
-                                    if (!choices.isEmpty()) {
-                                        for (Map<String, Object> choice : choices) {
-                                            if (null != choice.get("delta")) {
-                                                @SuppressWarnings("unchecked")
-                                                Map<String, String> delta = (Map<String, String>) choice.get("delta");
-                                                if (CommonUtils.notEmpty(delta.get("content"))) {
-                                                    result.append(delta.get("content"));
+                        if (CommonUtils.notEmpty(line) && line.startsWith("data: ")) {
+                            line = line.substring(6);
+                            if (!"[DONE]".equals(line)) {
+                                try {
+                                    Map<String, Object> map = Constants.objectMapper.readValue(line, Constants.objectMapper
+                                            .getTypeFactory().constructMapType(LinkedHashMap.class, String.class, Object.class));
+                                    if (null != map.get("choices")) {
+                                        @SuppressWarnings("unchecked")
+                                        List<Map<String, Object>> choices = (List<Map<String, Object>>) map.get("choices");
+                                        if (!choices.isEmpty()) {
+                                            for (Map<String, Object> choice : choices) {
+                                                if (null != choice.get("delta")) {
+                                                    @SuppressWarnings("unchecked")
+                                                    Map<String, String> delta = (Map<String, String>) choice.get("delta");
+                                                    if (CommonUtils.notEmpty(delta.get("content"))) {
+                                                        result.append(delta.get("content"));
+                                                    }
                                                 }
                                             }
                                         }
                                     }
+                                } catch (JacksonException | ClassCastException e) {
                                 }
-                            } catch (JacksonException | ClassCastException e) {
                             }
                         }
                     }
-                    emitter.send(temp, MediaType.APPLICATION_JSON);
+                    emitter.send(temp, MediaType.TEXT_EVENT_STREAM);
                 } catch (IOException e) {
                     log.error(e.getMessage());
                 }

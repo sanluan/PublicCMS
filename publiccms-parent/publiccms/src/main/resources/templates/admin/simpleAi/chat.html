@@ -103,7 +103,7 @@ $(".send",$.pdialog.getCurrent()).on("click",function(){
                         $(".send",$.pdialog.getCurrent()).prop("disabled",false).removeClass("buttonDisabled");
                         return;
                     }
-                    var body = decoder.decode(value);
+                    var body = decoder.decode(value, { stream: true });
                     if(body){
                         if(tempResult){
                             body = tempResult+body;
@@ -115,14 +115,17 @@ $(".send",$.pdialog.getCurrent()).on("click",function(){
                         }
                         var lines = body.split("\n");
                         for (var line of lines) {
-                            if(line){
-                                try{
-                                    var jsonObj = JSON.parse(line);
-                                    if(jsonObj && jsonObj.choices && 0 < jsonObj.choices.length && jsonObj.choices[0] && jsonObj.choices[0].delta && jsonObj.choices[0].delta.content){
-                                        result += jsonObj.choices[0].delta.content;
+                            if(line && line.startsWith('data: ')){
+                                line = line.substring(6);
+                                if (line != '[DONE]') {
+                                    try{
+                                        var jsonObj = JSON.parse(line);
+                                        if(jsonObj && jsonObj.choices && 0 < jsonObj.choices.length && jsonObj.choices[0] && jsonObj.choices[0].delta && jsonObj.choices[0].delta.content){
+                                            result += jsonObj.choices[0].delta.content;
+                                        }
+                                    }catch(e){
+                                        console.log(e+":"+line);
                                     }
-                                }catch(e){
-                                    console.log(e+":"+line);
                                 }
                             }
                         }

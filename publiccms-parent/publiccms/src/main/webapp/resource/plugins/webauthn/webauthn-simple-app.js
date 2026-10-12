@@ -756,7 +756,6 @@
             }
 
             // base64 to base64url
-            // NOTE: "=" at the end of challenge is optional, strip it off here so that it's compatible with client
             thing = thing.replace(/\+/g, "-").replace(/\//g, "_").replace(/=*$/g, "");
 
             return thing;
@@ -820,7 +819,6 @@
             }
 
             // base64 to base64url
-            // NOTE: "=" at the end of challenge is optional, strip it off here
             thing = thing.replace(/\+/g, "-").replace(/\//g, "_").replace(/=*$/g, "");
 
             return thing;
