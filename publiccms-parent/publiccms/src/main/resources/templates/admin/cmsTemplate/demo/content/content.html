@@ -235,25 +235,25 @@
     </script>
     <script>
 function score(contentId){
-    fetch('${site.dynamicPath!}score/score?itemId='+contentId+'&itemType=content&_csrf=<@).then(res => res.json()).then(data=>{', function(data){
+    fetch('${site.dynamicPath!}score/score?itemId='+contentId+'&itemType=content&_csrf=<@tools.csrfToken/>').then(res => res.json()).then(data=>{
         alert("Score ok!");
         location.reload();
     });
 }
 function unscore(contentId){
-    fetch('${site.dynamicPath!}score/unscore?itemId='+contentId+'&itemType=content&_csrf=<@).then(res => res.json()).then(data=>{', function(data){
+    fetch('${site.dynamicPath!}score/unscore?itemId='+contentId+'&itemType=content&_csrf=<@tools.csrfToken/>').then(res => res.json()).then(data=>{
         alert("Cancel ok!");
         location.reload();
     });
 }
 function collect(contentId){
-    fetch('${site.dynamicPath!}collection/collect?contentId='+contentId+'&_csrf=<@).then(res => res.json()).then(data=>{', function(data){
+    fetch('${site.dynamicPath!}collection/collect?contentId='+contentId+'&_csrf=<@tools.csrfToken/>').then(res => res.json()).then(data=>{
         alert("Score ok!");
         location.reload();
     });
 }
 function uncollect(contentId){
-    fetch('${site.dynamicPath!}collection/uncollect?contentId='+contentId+'&_csrf=<@).then(res => res.json()).then(data=>{', function(data){
+    fetch('${site.dynamicPath!}collection/uncollect?contentId='+contentId+'&_csrf=<@tools.csrfToken/>').then(res => res.json()).then(data=>{
         alert("Cancel ok!");
         location.reload();
     });
