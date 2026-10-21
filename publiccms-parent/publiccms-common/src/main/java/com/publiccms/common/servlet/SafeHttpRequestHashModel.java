@@ -20,7 +20,7 @@ public final class SafeHttpRequestHashModel implements TemplateHashModelEx {
     private final HttpServletRequest request;
     private final HttpServletResponse response;
     private final ObjectWrapper wrapper;
-    private static final String[] BLOCKED_PREFIXES = { "org.springframework.web.servlet.DispatcherServlet.CONTEXT",
+    private static final String[] BLOCKED_PREFIXES = { "org.springframework.web.servlet.DispatcherServlet",
             "org.springframework.web.context.WebApplicationContext" };
 
     public SafeHttpRequestHashModel(HttpServletRequest request, ObjectWrapper wrapper) {
