@@ -40,14 +40,14 @@ subprojects {
         junitVersion = "6.1.3"
         // http://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "7.4.12.Final"
+        hibernateVersion = "7.4.13.Final"
         // http://mvnrepository.com/artifact/org.hibernate.tool/hibernate-tools-orm
         hibernateToolsVersion = "7.3.13.Final"
         // https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm
         // http://hibernate.org/search/downloads/
         hibernateSearchVersion = "8.4.0.Final"
         // https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator
-        hibernateValidatorVersion = "9.1.4.Final"
+        hibernateValidatorVersion = "9.1.5.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
         ehcacheVersion = "3.12.0"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
@@ -61,7 +61,7 @@ subprojects {
         // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
         dynamicSqlVersion = "2.0.0"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-        jacksonVersion = "3.2.3"
+        jacksonVersion = "3.2.4"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.35"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-core
@@ -76,7 +76,7 @@ subprojects {
         // https://github.com/brettwooldridge/HikariCP
         hikariCPVersion = "7.1.0"
         // https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
-        mysqlVersion = "26.7.0"
+        mysqlVersion = "26.10.0"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.14"
@@ -97,13 +97,13 @@ subprojects {
         // https://mvnrepository.com/artifact/org.apache.commons/commons-compress
         compressVersion = "1.28.0"
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
-        codecVersion = "1.22.1"
+        codecVersion = "1.23.0"
         // https://mvnrepository.com/artifact/org.jboss.logging/jboss-logging
         jbossLoggingVersion = "3.6.3.Final"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
         log4jVersion = "2.26.1"
         // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
-        extractorVersion = "2.21.0"
+        extractorVersion = "2.22.0"
         // https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio
         webpVersion = "0.1.6"
         // https://mvnrepository.com/artifact/net.ifok.image/image4j
