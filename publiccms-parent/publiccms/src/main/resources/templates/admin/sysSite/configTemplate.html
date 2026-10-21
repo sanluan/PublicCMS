@@ -106,7 +106,7 @@ server {
         index   index.html;
         <#if dynamicLocation=siteLocation>
         client_max_body_size 100m;
-        try_files  $uri  @cmsproxy;
+        try_files  $uri $uri/ @cmsproxy;
         </#if>
     }
             <#if a?has_content && a.hasChild && a.multiple>
