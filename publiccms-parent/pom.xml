@@ -66,7 +66,7 @@
         <version.ehcache>3.11.1</version.ehcache>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <!-- 3.0 for Java 17+ -->
-        <version.jackson>2.22.3</version.jackson>
+        <version.jackson>2.22.4</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.35</version.freemarker>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
@@ -82,7 +82,7 @@
         <!-- 5,6,7 for Java 11+ -->
         <version.hikariCP>4.0.3</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
-        <version.mysql>26.7.0</version.mysql>
+        <version.mysql>26.10.0</version.mysql>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.14</version.httpclient>
@@ -104,11 +104,11 @@
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-compress -->
         <version.compress>1.28.0</version.compress>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
-        <version.codec>1.22.1</version.codec>
+        <version.codec>1.23.0</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <version.log4j>2.26.1</version.log4j>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
-        <version.extractor>2.21.0</version.extractor>
+        <version.extractor>2.22.0</version.extractor>
         <!-- https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio -->
         <version.webp>0.1.6</version.webp>
         <!-- https://mvnrepository.com/artifact/net.ifok.image/image4j -->
