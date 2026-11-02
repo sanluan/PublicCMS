@@ -36,7 +36,7 @@ public final class SafeHttpRequestHashModel implements TemplateHashModelEx {
     @Override
     public TemplateModel get(String key) throws TemplateModelException {
         for (String prefiex : BLOCKED_PREFIXES) {
-            if (Strings.CI.startsWith(prefiex, key)) {
+            if (Strings.CI.startsWith(key, prefiex)) {
                 return null;
             }
         }
@@ -65,7 +65,7 @@ public final class SafeHttpRequestHashModel implements TemplateHashModelEx {
             String key = enumeration.nextElement();
             keys.add(key);
             for (String prefiex : BLOCKED_PREFIXES) {
-                if (Strings.CI.startsWith(prefiex, key)) {
+                if (Strings.CI.startsWith(key, prefiex)) {
                     keys.remove(key);
                 }
             }
@@ -80,7 +80,7 @@ public final class SafeHttpRequestHashModel implements TemplateHashModelEx {
             String key = enumeration.nextElement();
             values.add(request.getAttribute(key));
             for (String prefiex : BLOCKED_PREFIXES) {
-                if (Strings.CI.startsWith(prefiex, key)) {
+                if (Strings.CI.startsWith(key, prefiex)) {
                     values.remove(request.getAttribute(key));
                 }
             }
