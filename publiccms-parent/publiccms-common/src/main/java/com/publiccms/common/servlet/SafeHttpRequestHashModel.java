@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.Strings;
 
 import freemarker.template.ObjectWrapper;
 import freemarker.template.SimpleCollection;
@@ -34,8 +34,10 @@ public final class SafeHttpRequestHashModel implements TemplateHashModelEx {
 
     @Override
     public TemplateModel get(String key) throws TemplateModelException {
-        if (ArrayUtils.contains(BLOCKED_PREFIXES, key)) {
-            return null;
+        for (String prefiex : BLOCKED_PREFIXES) {
+            if (Strings.CI.startsWith(key, prefiex)) {
+                return null;
+            }
         }
         return wrapper.wrap(request.getAttribute(key));
     }
@@ -60,8 +62,11 @@ public final class SafeHttpRequestHashModel implements TemplateHashModelEx {
         List<String> keys = new ArrayList<>();
         for (Enumeration<String> enumeration = request.getAttributeNames(); enumeration.hasMoreElements();) {
             String key = enumeration.nextElement();
-            if (!ArrayUtils.contains(BLOCKED_PREFIXES, key)) {
-                keys.add(key);
+            keys.add(key);
+            for (String prefiex : BLOCKED_PREFIXES) {
+                if (Strings.CI.startsWith(key, prefiex)) {
+                    keys.remove(key);
+                }
             }
         }
         return new SimpleCollection(keys.iterator(), wrapper);
@@ -72,8 +77,11 @@ public final class SafeHttpRequestHashModel implements TemplateHashModelEx {
         List<Object> values = new ArrayList<>();
         for (Enumeration<String> enumeration = request.getAttributeNames(); enumeration.hasMoreElements();) {
             String key = enumeration.nextElement();
-            if (!ArrayUtils.contains(BLOCKED_PREFIXES, key)) {
-                values.add(request.getAttribute(key));
+            values.add(request.getAttribute(key));
+            for (String prefiex : BLOCKED_PREFIXES) {
+                if (Strings.CI.startsWith(key, prefiex)) {
+                    values.remove(request.getAttribute(key));
+                }
             }
         }
         return new SimpleCollection(values.iterator(), wrapper);
