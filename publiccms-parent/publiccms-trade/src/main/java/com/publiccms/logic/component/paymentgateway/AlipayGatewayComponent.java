@@ -213,7 +213,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
                     }
                     return true;
                 } else {
-                    service.pendingRefund(siteId, payment.getId());
+                    service.pendingRefund(siteId, refund.getUserId(), payment.getId());
                 }
             } catch (Exception e) {
                 TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.now(),

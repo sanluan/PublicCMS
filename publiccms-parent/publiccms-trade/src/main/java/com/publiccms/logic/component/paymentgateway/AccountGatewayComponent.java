@@ -59,10 +59,9 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
     public boolean refund(short siteId, TradePayment payment, TradeRefund refund) {
         if (null != payment && service.refunded(siteId, payment.getId())) {
             TradeAccountHistory history = accountService.change(siteId, payment.getSerialNumber(), payment.getUserId(),
-                    payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND, payment.getAmount(),
-                    payment.getDescription());
+                    payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND, payment.getAmount(), payment.getDescription());
             if (null == history) {
-                service.pendingRefund(siteId, payment.getId());
+                service.pendingRefund(siteId, refund.getUserId(), payment.getId());
             } else {
                 return true;
             }
