@@ -101,7 +101,7 @@ public class TradePaymentController {
 
     /**
      * @param site
-     * @param user 
+     * @param user
      * @param paymentId
      * @param returnUrl
      * @param request
@@ -110,8 +110,8 @@ public class TradePaymentController {
      */
     @RequestMapping(value = "cancel")
     @Csrf
-    public String cancel(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long paymentId, String returnUrl, HttpServletRequest request,
-            RedirectAttributes model) {
+    public String cancel(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long paymentId, String returnUrl,
+            HttpServletRequest request, RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         TradePayment entity = service.getEntity(paymentId);
         if (null == entity || ControllerUtils.errorNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
@@ -307,8 +307,8 @@ public class TradePaymentController {
     public String refund(@RequestAttribute SysSite site, @SessionAttribute SysUser user, TradeRefund entity, String returnUrl,
             HttpServletRequest request, RedirectAttributes model) {
         returnUrl = safeConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
-        if (ControllerUtils.errorCustom("tradePaymentStatus", !service.pendingRefund(site.getId(), entity.getPaymentId()),
-                model)) {
+        if (ControllerUtils.errorCustom("tradePaymentStatus",
+                !service.pendingRefund(site.getId(), user.getId(), entity.getPaymentId()), model)) {
             return CommonUtils.joinString(UrlBasedViewResolver.REDIRECT_URL_PREFIX, returnUrl);
         }
         if (null == entity.getId()) {

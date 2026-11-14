@@ -133,9 +133,9 @@ public class TradePaymentService extends BaseService<TradePayment> {
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED)
-    public boolean pendingRefund(short siteId, long paymentId) {
+    public boolean pendingRefund(short siteId, Long userId, long paymentId) {
         TradePayment entity = getEntity(paymentId);
-        if (null != entity && siteId == entity.getSiteId()
+        if (null != entity && siteId == entity.getSiteId() && (null == userId || entity.getUserId() == userId)
                 && (entity.getStatus() == STATUS_PAID || entity.getStatus() == STATUS_REFUNDED)) {
             entity.setStatus(STATUS_PENDING_REFUND);
             Date now = CommonUtils.now();
