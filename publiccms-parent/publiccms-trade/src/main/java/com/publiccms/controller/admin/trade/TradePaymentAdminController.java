@@ -60,7 +60,7 @@ public class TradePaymentAdminController {
         if (paymentGateway.refund(site.getId(), payment, entity)) {
             service.updateStatus(site.getId(), entity.getId(), admin.getId(), null, TradeRefundService.STATUS_REFUNDED);
         } else {
-            paymentService.pendingRefund(site.getId(), payment.getId());
+            paymentService.pendingRefund(site.getId(), payment.getUserId(), payment.getId());
             service.updateStatus(site.getId(), entity.getId(), admin.getId(), null, TradeRefundService.STATUS_FAIL);
         }
         return CommonConstants.TEMPLATE_DONE;

@@ -13,6 +13,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.handler.PageHandler;
 
 import freemarker.template.TemplateException;
+
 /**
  *
  * TradeAddressListDirective
@@ -23,9 +24,14 @@ public class TradeAddressListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, TemplateException {
-        PageHandler page = service.getPage(getSite(handler).getId(),handler.getLong("userId"), 
-                handler.getInteger("pageIndex",1), handler.getInteger("pageSize",30));
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"),
+                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
+    }
+
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Resource

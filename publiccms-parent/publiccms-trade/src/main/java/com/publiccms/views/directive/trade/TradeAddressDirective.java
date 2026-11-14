@@ -44,6 +44,11 @@ public class TradeAddressDirective extends AbstractTemplateDirective {
         }
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
     @Resource
     private TradeAddressService service;
 
