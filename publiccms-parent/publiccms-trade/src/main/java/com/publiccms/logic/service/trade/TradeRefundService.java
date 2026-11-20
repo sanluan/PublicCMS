@@ -72,8 +72,8 @@ public class TradeRefundService extends BaseService<TradeRefund> {
     @Transactional(isolation = Isolation.READ_COMMITTED)
     public boolean updateAmound(long refundId, long userId, BigDecimal amount, String reason) {
         TradeRefund entity = getEntity(refundId);
-        if (null != entity && entity.getUserId() == userId && entity.getStatus() == STATUS_PENDING
-                || entity.getStatus() == STATUS_REFUSE) {
+        if (null != entity && entity.getUserId() == userId &&( entity.getStatus() == STATUS_PENDING
+                || entity.getStatus() == STATUS_REFUSE)) {
             entity.setAmount(amount);
             entity.setReason(reason);
             entity.setStatus(STATUS_PENDING);
