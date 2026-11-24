@@ -10,7 +10,8 @@ dependencies {
 
     implementation "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}"
     // https://mvnrepository.com/artifact/org.lionsoul/ip2region
-    implementation 'org.lionsoul:ip2region:3.3.8'
+    // 3.3.8 for Java 11
+    implementation 'org.lionsoul:ip2region:3.3.7'
     implementation "com.github.therapi:therapi-runtime-javadoc:${therapiJavadocVersion}"
 
     annotationProcessor "com.github.therapi:therapi-runtime-javadoc-scribe:${therapiJavadocVersion}"

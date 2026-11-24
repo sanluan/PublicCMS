@@ -18,10 +18,11 @@
             <artifactId>lucene-analyzers-smartcn</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.lionsoul/ip2region -->
+        <!--  3.3.8 for Java 11 -->
         <dependency>
             <groupId>org.lionsoul</groupId>
             <artifactId>ip2region</artifactId>
-            <version>3.3.8</version>
+            <version>3.3.7</version>
         </dependency>
         <dependency>
             <groupId>com.github.therapi</groupId>
