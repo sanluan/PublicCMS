@@ -248,19 +248,19 @@ public abstract class AbstractCmsUpgrader {
                                 .prepareStatement("select * from sys_extend_field where extend_id = ?");) {
                             extendFieldStatement.setString(1, rs.getString("extend_id"));
                             try (ResultSet extendFieldRs = extendFieldStatement.executeQuery()) {
-                            while (extendFieldRs.next()) {
-                                SysExtendField e = new SysExtendField(extendFieldRs.getString("code"),
-                                        extendFieldRs.getString("input_type"), extendFieldRs.getBoolean("required"),
-                                        extendFieldRs.getString("name"), extendFieldRs.getString("description"),
-                                        extendFieldRs.getString("default_value"));
-                                e.setSort(extendFieldRs.getInt("sort"));
-                                e.setMaxlength(extendFieldRs.getInt("maxlength"));
-                                if (e.getMaxlength() != null && 0 == e.getMaxlength()) {
-                                    e.setMaxlength(null);
-                                }
+                                while (extendFieldRs.next()) {
+                                    SysExtendField e = new SysExtendField(extendFieldRs.getString("code"),
+                                            extendFieldRs.getString("input_type"), extendFieldRs.getBoolean("required"),
+                                            extendFieldRs.getString("name"), extendFieldRs.getString("description"),
+                                            extendFieldRs.getString("default_value"));
+                                    e.setSort(extendFieldRs.getInt("sort"));
+                                    e.setMaxlength(extendFieldRs.getInt("maxlength"));
+                                    if (e.getMaxlength() != null && 0 == e.getMaxlength()) {
+                                        e.setMaxlength(null);
+                                    }
                                     e.setDictionaryId(extendFieldRs.getString("dictionary_id"));
                                     extendList.add(e);
-                            }
+                                }
                             }
                         } catch (SQLException e1) {
                             stringWriter.write(e1.getMessage());
