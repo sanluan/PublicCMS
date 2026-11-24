@@ -60,7 +60,7 @@ subprojects {
         // 3.12 for Java 17+
         ehcacheVersion = "3.11.1"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
-        mybatisVersion = "3.5.19"
+        mybatisVersion = "3.6.0"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
         // 3.0 for Java 17+
         mybatisSpringVersion = "2.1.2"
@@ -72,7 +72,7 @@ subprojects {
         dynamicSqlVersion = "2.0.0"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
         // 3.0 for Java 17+
-        jacksonVersion = "2.22.4"
+        jacksonVersion = "2.23.0"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.35"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
@@ -97,13 +97,14 @@ subprojects {
         // 2.1.0 for Java 17+
         xhtmlConverterVersion = "2.0.6"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+        // 6.0 for Java 17+
         poiVersion = "5.5.1"
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
         fileuploadVersion = "1.6.0"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
         collectionsVersion = "4.6.0"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-        langVersion = "3.21.0"
+        langVersion = "3.22.0"
         // http://mvnrepository.com/artifact/commons-io/commons-io
         ioVersion = "2.22.0"
         // https://mvnrepository.com/artifact/org.apache.commons/commons-text
@@ -129,7 +130,7 @@ subprojects {
         // http://mvnrepository.com/artifact/com.blueconic/browscap-java
         browscapVersion = "1.5.1"
         // https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc
-        therapiJavadocVersion = "0.15.0"
+        therapiJavadocVersion = "0.16.0"
         // https://mvnrepository.com/artifact/org.jsoup/jsoup
         jsoupVersion = "1.23.2"
         // https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api
