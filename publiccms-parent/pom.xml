@@ -42,7 +42,7 @@
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <version.hibernateValidator>9.1.5.Final</version.hibernateValidator>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
-        <version.mybatis>3.5.19</version.mybatis>
+        <version.mybatis>3.6.0</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
         <version.mybatisSpring>4.1.0</version.mybatisSpring>
         <!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
@@ -74,6 +74,7 @@
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.14</version.httpclient>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+        <!-- 6.0 for Java 17+ -->
         <version.poi>5.5.1</version.poi>
         <!-- https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml -->
         <version.xhtmlConverter>2.2.0</version.xhtmlConverter>
@@ -82,7 +83,7 @@
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
         <version.collections>4.6.0</version.collections>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-        <version.lang>3.21.0</version.lang>
+        <version.lang>3.22.0</version.lang>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <version.io>2.22.0</version.io>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
@@ -110,9 +111,9 @@
         <!-- https://mvnrepository.com/artifact/com.blueconic/browscap-java -->
         <version.browscap>1.5.1</version.browscap>
         <!-- https://mvnrepository.com/artifact/com.github.therapi/therapi-runtime-javadoc -->
-        <version.therapiJavadoc>0.15.0</version.therapiJavadoc>
+        <version.therapiJavadoc>0.16.0</version.therapiJavadoc>
         <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-        <version.jsoup>1.23.2</version.jsoup>
+        <version.jsoup>1.24.1</version.jsoup>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
         <version.annotation>3.0.0</version.annotation>
         <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->
